@@ -1,64 +1,106 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF44290B17
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Oct 2020 20:06:35 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DAF294024
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Oct 2020 18:03:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 69A0A1562C3F1;
-	Fri, 16 Oct 2020 11:06:32 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.50; helo=upfm.com; envelope-from=dpoda@nqul.com; receiver=<UNKNOWN> 
-Received: from upfm.com (unknown [223.73.35.50])
-	by ml01.01.org (Postfix) with ESMTP id 1B9DC154B3C0D
-	for <linux-nvdimm@lists.01.org>; Fri, 16 Oct 2020 11:06:28 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 24 Oct 2020 02:07:04 +0800
-Message-ID: a4b8c6ec-6320-4adf-a306-9211cec708b3
+	by ml01.01.org (Postfix) with ESMTP id 0DC2F15D40DF1;
+	Tue, 20 Oct 2020 09:03:20 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=183.16.206.75; helo=smtp-mvcr.gov.cz; envelope-from=hiqusoaoi@bcpsoftware.com; receiver=<UNKNOWN> 
+Received: from smtp-mvcr.gov.cz (unknown [183.16.206.75])
+	by ml01.01.org (Postfix) with ESMTP id 5131F15D40DDF
+	for <linux-nvdimm@lists.01.org>; Tue, 20 Oct 2020 09:03:14 -0700 (PDT)
+Date: Wed, 21 Oct 2020 00:03:08 +0800 (CST)
+From: aaamould01 <aaamould01@163.com>
+Sender: hiqusoaoi <hiqusoaoi@bcpsoftware.com>
+To: linux-nvdimm <linux-nvdimm@lists.01.org>
+Message-ID: <1684296900.426801.1603209788134@smtp-mvcr.gov.cz>
+Subject: Re: Supplier
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E4=BA=8E=E9=A6=99=E6=B8?=
- =?utf-8?Q?=AF=E7=89=A9=E6=B5=81=EF=BC=9A=E4=B8=AD=E6=B8=AF=E8=B4=A7=E8?=
- =?utf-8?Q?=BF=90=EF=BC=8C=E4=B8=AD=E6=B8=AF=E5=BF=AB=E9=80=92?=
- <dpoda@nqul.com>
-From: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E4=BA=8E=E9=A6=99=E6=B8=AF?=
- =?utf-8?Q?=E7=89=A9=E6=B5=81=EF=BC=9A=E4=B8=AD=E6=B8=AF=E8=B4=A7=E8=BF?=
- =?utf-8?Q?=90=EF=BC=8C=E4=B8=AD=E6=B8=AF=E5=BF=AB=E9=80=92?=
- <vzhxqk@nqul.com>
-To: linux-nvdimm@lists.01.org
-Date: 24 Oct 2020 02:07:04 +0800
-Subject: =?utf-8?B?5LiT5rOo5LqO6aaZ5riv54mp5rWB77ya5Lit5riv6LSn6L+Q?=
- =?utf-8?B?77yM5Lit5riv5b+r6YCS?=
-Message-ID-Hash: MOJB35JAJZDMLRLIPIUWNUWVBTVPSOWT
-X-Message-ID-Hash: MOJB35JAJZDMLRLIPIUWNUWVBTVPSOWT
-X-MailFrom: dpoda@nqul.com
+Message-ID-Hash: IDVV7RAF7U5TSOZH5IZHLDVPPZV47GZH
+X-Message-ID-Hash: IDVV7RAF7U5TSOZH5IZHLDVPPZV47GZH
+X-MailFrom: hiqusoaoi@bcpsoftware.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MOJB35JAJZDMLRLIPIUWNUWVBTVPSOWT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IDVV7RAF7U5TSOZH5IZHLDVPPZV47GZH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============6353513169499060247=="
 
-Jm5ic3A7DQombmJzcDvkuK3muK/nur/mlaPotKflpKnlpKnlj5Hovabov5DovpPmk43kvZzmtYHn
-qIsNCjHjgIHor6bov7DotKflhrXvvIjlk4HlkI3vvJvnrrHmlbDvvJvljIXoo4XlsLrlr7jvvJvm
-nZDnp6/vvJvmr5vph43vvIkNCjLjgIHnj6DkuInop5LlhajljLrkuIrpl6jmj5DotKfvvIjkuqbl
-j6/pgInmi6noh6rpgIHmiJHlj7jku5PlupPvvIkNCjPjgIHmoLnmja7mg4XlhrXoo4XovabjgIHp
-hY3ovb0NCjTjgIHmt7HlnLPlj6PlsrjmiqXlhbPllYbmo4DvvIjlhajnlLHmiJHlj7jotJ/otKPv
-vIkNCjXjgIHmtbflhbPmn6XpqozovabovobjgIHotKfnianjgIHlrqHmoLjjgIHmlL7ooYwNCjbj
-gIHotKfnianliLDnianmtYHlhazlj7jpppnmuK/ku5PlupPvvIzotKfkuLvmiJblp5TmiZjkurrk
-u5PlupPmn6XjgIHpqozotKcNCjfjgIHnoa7orqTmlK/ku5jov5DotLnvvIjpppnmuK/mlLbotKfk
-urrkuqblj6/liLDku5jmuK/luIHvvIkNCjjjgIHpppnmuK/mtL7pgIHvvIzlh4bml7blhaXmtbfo
-v5Dku5PjgIHlm73pmYXlv6vpgJLku5PjgIHnqbrov5Dku5PnrYnmjIflrprlnLDngrkNCjnjgIHn
-rb7mlLbvvIznoa7orqTmlLbotKfmg4XlhrUNCiZuYnNwOw0KDQrkuK3muK/otKfov5DmnInpmZDl
-hazlj7gNCuiBlOezu+S6uu+8mkphY2sNCk1vYmlsZSZuYnNwO++8mis4Ni0xMzY0Mjk4MDkzNe+8
-iOW+ruS/oeWQjOWPt++8iQ0KRS1tYWlsJm5ic3A777yaJm5ic3A7d3VsaXU1NnNhbGVzMDFAaG90
-bWFpbC5jb20NCummmSZuYnNwO+a4r++8muiRtea2jOS4ieWPt+i0p+afnOeggeWktOeJqea1geS4
-reW/gyZuYnNwO0HluqflnLDkuIsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlz
-dHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxl
-YXZlQGxpc3RzLjAxLm9yZwo=
+--===============6353513169499060247==
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<p style=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0;li=
+ne-height:16px;background:white;vertical-align: baseline"><span style=3D"fo=
+nt-size:14px;color:black;background:white">Dear Sir or Madam,</span></p><p =
+style=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0;line-=
+height:16px;background:white;vertical-align: baseline"><span style=3D"font-=
+size:14px;color:black;background:white"><br/></span></p><p style=3D"margin-=
+top:0;margin-right:0;margin-bottom:3px;margin-left: 0;line-height:16px;back=
+ground:white;vertical-align: baseline"><span style=3D"font-size:14px;color:=
+black;background:white"> </span></p><p style=3D"margin-top:0;margin-right:0=
+;margin-bottom:3px;margin-left: 0;line-height:16px;background:white;vertica=
+l-align: baseline"><span style=3D"font-size:14px;color:black;background:whi=
+te">Have a good day.</span></p><p style=3D"margin-top:0;margin-right:0;marg=
+in-bottom:3px;margin-left: 0;line-height:16px;background:white;vertical-ali=
+gn: baseline"><span style=3D"font-size:14px;color:black;background:white"><=
+br/></span></p><p style=3D"margin-top:0;margin-right:0;margin-bottom:3px;ma=
+rgin-left: 0;text-indent:28px;line-height:16px;background:white;vertical-al=
+ign:baseline"><span style=3D"font-size:14px;color:black;background:white"> =
+</span></p><p style=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin=
+-left: 0;line-height:16px;background:white;vertical-align: baseline"><span =
+style=3D"font-size:14px;color:black;background:white"></span>I am Jason fro=
+m AAA MOULD. Our company focuses on mold making and product production.</p>=
+<p style=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0;li=
+ne-height:16px;background:white;vertical-align: baseline"><br/></p><p style=
+=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0;line-heigh=
+t:16px;background:white;vertical-align: baseline">&nbsp;At present, our com=
+pany&#39;s business includes: injection molds, plastic products, hardware p=
+roducts, die casting molds and other projects.</p><p style=3D"margin-top:0;=
+margin-right:0;margin-bottom:3px;margin-left: 0;line-height:16px;background=
+:white;vertical-align: baseline"><br/></p><p style=3D"margin-top:0;margin-r=
+ight:0;margin-bottom:3px;margin-left: 0;line-height:16px;background:white;v=
+ertical-align: baseline">&nbsp;If you need a quality supplier, please conta=
+ct us , We will reply to your email within 12 hours, you can also directly =
+send the design drawings to us, so that we can evaluate, thank you for your=
+ trust!<span style=3D"font-size:14px;color:black;background:white"></span><=
+/p><p style=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0=
+;line-height:16px;background:white;vertical-align: baseline"><br/></p><p st=
+yle=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0;line-he=
+ight:16px;background:white;vertical-align: baseline">Best wishes</p><p styl=
+e=3D"margin-top:0;margin-right:0;margin-bottom:3px;margin-left: 0;line-heig=
+ht:16px;background:white;vertical-align: baseline"><br/></p><p style=3D"mar=
+gin-bottom:2px;margin-top:2px;text-align:left;background:white"><span style=
+=3D";color:#3A3A3A;background:white">Jason</span></p><p style=3D"margin-bot=
+tom:2px;margin-top:2px;text-align:left;background:white"><span style=3D";co=
+lor:#3A3A3A;background:white">Manager</span></p><p style=3D"margin-bottom:2=
+px;margin-top:2px;text-align:left;background:white"><strong><span style=3D"=
+;color:#3A3A3A;background:white">AAA MOULD INDUSTRIAL CO.,LTD.</span></stro=
+ng></p><p style=3D"margin-bottom:2px;margin-top:2px;text-align:left;backgro=
+und:white"><br/></p><p style=3D"margin-bottom:2px;margin-top:2px;text-align=
+:left;background:white"><span style=3D";color:#3A3A3A;background:white">Dev=
+eloping 40-50 new molds and producing 1 million molded parts every month<br=
+/> 10 years</span><span style=3D";font-family: &#39;Arial&#39;,&#39;sans-se=
+rif&#39;;color:#3A3A3A;background:white">=E2=80=99</span><span style=3D";co=
+lor:#3A3A3A;background:white"> industry experience | 45 advanced injection =
+molding machines</span></p><p style=3D"margin-top: 2px; margin-bottom: 2px;=
+"><br/></p>
+--===============6353513169499060247==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6353513169499060247==--
