@@ -2,40 +2,55 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7FD294ABB
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Oct 2020 11:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2079294D75
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Oct 2020 15:25:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B795E1607E546;
-	Wed, 21 Oct 2020 02:47:04 -0700 (PDT)
-Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4D9091607E543
-	for <linux-nvdimm@lists.01.org>; Wed, 21 Oct 2020 02:47:02 -0700 (PDT)
-MIME-Version: 1.0
-Subject: Re: Understanding Any Piece Of Music By Ear
-From: laelialucasta@gmail.com
+	by ml01.01.org (Postfix) with ESMTP id 9C337159AE582;
+	Wed, 21 Oct 2020 06:25:34 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.151.16.239; helo=[103.151.16.239]; envelope-from=teamnsb2@o2.e.notification.intuit.com; receiver=<UNKNOWN> 
+Received: from [103.151.16.239] (unknown [103.151.16.239])
+	by ml01.01.org (Postfix) with ESMTP id 6DA84159AE581;
+	Wed, 21 Oct 2020 06:25:31 -0700 (PDT)
+Received: from [89.218.105.49] (account teamnsb2@o2.e.notification.intuit.com HELO NEEISIK.ho)
+	by  (Exim 4.89)
+	with ESMTPA id tM6Qo-5ckVib-27 for linux-nvdimm@lists.01.org; Wed, 21 Oct 2020 18:55:51 +0530
+Received: from  (
+ [74.79.21.32])        by  with SMTP id
+ CF3FF05237; Wed, 21 Oct 2020 18:55:51 +0530
+Date: Wed, 21 Oct 2020 18:55:51 +0530
+From: "-LLC" <quickbooks@notification.intuit.com>
 To: linux-nvdimm@lists.01.org
-Date: Wed, 21 Oct 2020 09:47:02 -0000
-Message-ID: <20201021094702.2812.59164@ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://lists.01.org/
-References: <20200905083505.2753.73987@ml01.vlan13.01.org>
-In-Reply-To: <20200905083505.2753.73987@ml01.vlan13.01.org>
-Message-ID-Hash: Q7WWS3IHVTEUB7OZW6M3LRZNRVIYUQNH
-X-Message-ID-Hash: Q7WWS3IHVTEUB7OZW6M3LRZNRVIYUQNH
-X-MailFrom: laelialucasta@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Message-ID: <107615.20201021185551@omnzlxuh.iasfu.o2.e.notification.intuit.com>
+Subject: Estimate 015758
+MIME-Version: 1.0
+Importance: normal
+Message-ID-Hash: KMUQLEULCMDZYEX6RMLH2Z7EDTHZA7VU
+X-Message-ID-Hash: KMUQLEULCMDZYEX6RMLH2Z7EDTHZA7VU
+X-MailFrom: teamnsb2@o2.e.notification.intuit.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: -LLC <quickbooks@notification.intuit.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Q7WWS3IHVTEUB7OZW6M3LRZNRVIYUQNH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KMUQLEULCMDZYEX6RMLH2Z7EDTHZA7VU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I am also practicing music writing, this year I am only 18 years old, and have written some country music. Friends and family all praise it as amazing, but there is no basis of expertise. It's great when someone hears and delivers my songs. Most of them are about my beloved family.
+               Dear Customer,Please review the estimate below.  Feel free t=
+o contact us if you have any questions.We look forward to working with you.=
+Thanks for your business!     =20
+             ------------------------ =A0=A0Estimate=A0Summary=A0=A0-------=
+-------------------Estimate=A0#=A0:=A0015758Estimate=A0Date:=A010/21/2020To=
+tal:=A0$5,753.00The=A0complete=A0version=A0has=A0been=A0provided=A0as=A0an=
+=A0attachment=A0to=A0this=A0email.-----------------------------------------=
+----------------------------                 =20
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
