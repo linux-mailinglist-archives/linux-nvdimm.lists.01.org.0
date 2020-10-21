@@ -1,68 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF932951C3
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Oct 2020 19:48:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A893929520E
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Oct 2020 20:18:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8AB88160892E8;
-	Wed, 21 Oct 2020 10:48:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+	by ml01.01.org (Postfix) with ESMTP id F0BF315F384F3;
+	Wed, 21 Oct 2020 11:18:19 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9988815F1674D
-	for <linux-nvdimm@lists.01.org>; Wed, 21 Oct 2020 10:48:37 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id dg9so3404843edb.12
-        for <linux-nvdimm@lists.01.org>; Wed, 21 Oct 2020 10:48:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 7839915F384EF
+	for <linux-nvdimm@lists.01.org>; Wed, 21 Oct 2020 11:18:16 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id t20so3506699edr.11
+        for <linux-nvdimm@lists.01.org>; Wed, 21 Oct 2020 11:18:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=wz+eFQ9E3XaBY60yIiY6/7ACNu1JGiJC/eGXK+f1jPc=;
-        b=DVzkzBJthtEEE9BytDByy1Zyi6AvIrMMfqilJKnpXorOKZpcoMkmRc0+51O1rnlt68
-         bMY0od0cPkgr22Fq/K+EKbRk9QUUZlKvr9mGhIHdkRS+RFdmguKEoaDMpwVT2MTekysU
-         aICew+9IVF+RRyoiu/PaGJVFHpxpM2ZfnviDOpSraD9hqMuMque7/usM9pzF/eaK9iyi
-         qZF3JdUTjmf2nLs5oVUYf43A1aDD3wYoYI9oxDRZY55ia14p0XqJNtzi/CDl0A92VIsH
-         Ytn7i5HZw9HsfFtKjUgs2Sf+IlYn4ti3aGTMDIrNugvXoKAtZI0M50rVaCu67NNkO/yB
-         jfiA==
+        bh=NBAipX6TcsGHUUwoOb+GAqip7teUB0SGQSkyDxyC1gs=;
+        b=XAOo5Jq2jx+pjinIp6W/j4WMIppRlBls2T2UtaNWf6C6rxdXwNqnvvCfeujW+bAm8R
+         lo0Pu6r0hPW8KHlfWj9zZxa9aW8L68TMkpmBu9LjAgb0/WgdOlKmiaFdgb8zpc9swRa/
+         tCRuriK0IOv3JLGjCAMgDPvu9Q6LKkkYYx+gxi+t+tEkhglXhAwqHR0liPIDAoGoiGmC
+         kc4Edw/gMXzwlV+ojHq8kZMyYnUBzIUwqLfy4+PWAe/mEIUimMtWlAJDdC4ouPfmIALW
+         QvjC6dJTdWdbum1QbvBiJtkUb3yiYusV40EH18iDzBcSH/pmyMZYXKXVYHpS8wZR7g1p
+         w1/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=wz+eFQ9E3XaBY60yIiY6/7ACNu1JGiJC/eGXK+f1jPc=;
-        b=HcY4yaNj37RIZXA728Cps7kmt0/2zgziAWVMo4JpfnSFu1q3XY0bj6MPRDhaMEgXhE
-         yuQdwNQMu8QxLyiY1emDxeUIEzZW77a3hJ3wZzY+6Lr1EbLZf0XgPo5umvd5LTCjBXK2
-         TaON8TFzlu9x04YmI4OqCbJM0Q/JhMYwDw6lK2GXqDrQqz2o2i0MxoG5uqCZESWp0Vzd
-         XQnSVW0nohvub6XEMRMiJGpz5pspkJBEPxjrEwfzxA02NfP0MwjB5KYgTbhlNtKUB7j6
-         2aDwliK0k+aBzIOuKALI1CNxC4BjJwSm9DezVvbsDAlmT+FJbdqXW22BzS87AWINDKI2
-         pL4g==
-X-Gm-Message-State: AOAM5327hR0ZXsPEYG8BEekR59DiyhxwO02xyVMkeX291Ev4SD1/uEwX
-	MzSUxBxoadaHo7WxZsxG0p0tAt+WXFSkDQgth4NtvA==
-X-Google-Smtp-Source: ABdhPJyjfO8m3iOuqLFtlf+FomXd1BC4F7cQcApVrqZXlZQ1jUukEoyZcjOKoq++KT+r97hpdUtXqWK1yOAZ0wQ8O8o=
-X-Received: by 2002:a05:6402:31b3:: with SMTP id dj19mr4292662edb.210.1603302515911;
- Wed, 21 Oct 2020 10:48:35 -0700 (PDT)
+        bh=NBAipX6TcsGHUUwoOb+GAqip7teUB0SGQSkyDxyC1gs=;
+        b=c4isMH0sk1j5mL47WZqfHZfXK6emPbmZFi34URZPWXupPT4vrvclgOuPD9fuZKXGkF
+         1d4aynWEffyuLXVFwpY2A9hKaoeNmCkMzyCiH5Lz9MCwlT2G6V3pD/mz3nEdoDz8+P6U
+         zBo2pt1Ki8bOCiPjXR3KhNPUSppsvX/w755bLH5j3v0TmjhdeZmwDOfy3IRPlXngLpEY
+         k1rbQLKMHh8Brz+kvfijKp2QWA4VOTfPkkszW0DMYRTX2RQ/x1UmLKgHMOlkquhBoqAy
+         eRATi4mCJRNnu3jYHLtVkLAP44ANnNOY6VqhIhhOGT4Y39pCggmFAwd3I8M5QgM02R0u
+         0pKw==
+X-Gm-Message-State: AOAM531/xa8u/dnZTv7iBB2QxXPBBL2SaS+fFXeGyDEVM3HcLMKifCWf
+	PkScgbAMhPfwpktl3t1tjwY+1IjifWgRR5tK67jheA==
+X-Google-Smtp-Source: ABdhPJwFv1vEpgBjqYY0mUD82Q7IPIdLR5dvMyvYhC1peIW682ciZIrOUy8jSAINdGc+hq2w+U3i5AaFLr9SS8798tg=
+X-Received: by 2002:a50:f404:: with SMTP id r4mr4510255edm.354.1603304293186;
+ Wed, 21 Oct 2020 11:18:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201012162736.65241-1-nmeeramohide@micron.com>
- <20201015080254.GA31136@infradead.org> <SN6PR08MB420880574E0705BBC80EC1A3B3030@SN6PR08MB4208.namprd08.prod.outlook.com>
- <CAPcyv4j7a0gq++rL--2W33fL4+S0asYjYkvfBfs+hY+3J=c_GA@mail.gmail.com>
- <SN6PR08MB420843C280D54D7B5B76EB78B31E0@SN6PR08MB4208.namprd08.prod.outlook.com>
- <CAPcyv4iYOk3i0pPgXxDTy47BxWCXqqXS0J6mrY5o+1M_41XoAw@mail.gmail.com> <SN6PR08MB4208A22F5C94AB05439A2703B31C0@SN6PR08MB4208.namprd08.prod.outlook.com>
-In-Reply-To: <SN6PR08MB4208A22F5C94AB05439A2703B31C0@SN6PR08MB4208.namprd08.prod.outlook.com>
+References: <160321640031.3386448.4879860972349220888.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20201021174252.GB165907@iweiny-DESK2.sc.intel.com>
+In-Reply-To: <20201021174252.GB165907@iweiny-DESK2.sc.intel.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 21 Oct 2020 10:48:24 -0700
-Message-ID: <CAPcyv4gOGi392Q3knF=cAuvKONnmp2AoKX82VQEQJU0c7o7AKA@mail.gmail.com>
-Subject: Re: [EXT] Re: [PATCH v2 00/22] add Object Storage Media Pool (mpool)
-To: "Nabeel Meeramohideen Mohamed (nmeeramohide)" <nmeeramohide@micron.com>
-Message-ID-Hash: TZXGWPGEZCGMPOKE3QF3GKRYLLSURDUS
-X-Message-ID-Hash: TZXGWPGEZCGMPOKE3QF3GKRYLLSURDUS
+Date: Wed, 21 Oct 2020 11:18:02 -0700
+Message-ID: <CAPcyv4gd+ywfS7gRsGtr5Wzazh3n5wZqcA_dcd99w=xGP8Ct_Q@mail.gmail.com>
+Subject: Re: [ndctl PATCH] Rework license identification
+To: Ira Weiny <ira.weiny@intel.com>
+Message-ID-Hash: BDNTKMJNVYLEZ2BNP4FOHPL5ADMZRNSW
+X-Message-ID-Hash: BDNTKMJNVYLEZ2BNP4FOHPL5ADMZRNSW
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Christoph Hellwig <hch@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Steve Moyer (smoyer)" <smoyer@micron.com>, "Greg Becker (gbecker)" <gbecker@micron.com>, "Pierre Labat (plabat)" <plabat@micron.com>, "John Groves (jgroves)" <jgroves@micron.com>
+CC: Christoph Hellwig <hch@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TZXGWPGEZCGMPOKE3QF3GKRYLLSURDUS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BDNTKMJNVYLEZ2BNP4FOHPL5ADMZRNSW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -71,29 +68,76 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 21, 2020 at 10:11 AM Nabeel Meeramohideen Mohamed
-(nmeeramohide) <nmeeramohide@micron.com> wrote:
+On Wed, Oct 21, 2020 at 10:43 AM Ira Weiny <ira.weiny@intel.com> wrote:
 >
-> On Tuesday, October 20, 2020 3:36 PM, Dan Williams <dan.j.williams@intel.com> wrote:
+> On Tue, Oct 20, 2020 at 10:53:20AM -0700, Dan Williams wrote:
+> > Convert to the LICENSES/ directory format for COPYING from the Linux
+> > kernel, and switch all remaining files over to SPDX annotations.
 > >
-> >     What does Linux get from merging mpool?
-> >
+> > Reported-by: Christoph Hellwig <hch@infradead.org>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
 >
-> What Linux gets from merging mpool is a generic object store target with some
-> unique and beneficial features:
+> [snip]
+>
+> > diff --git a/ndctl/lib/hpe1.h b/ndctl/lib/hpe1.h
+> > index 1afa54f127a6..acf82af7bb87 100644
+> > --- a/ndctl/lib/hpe1.h
+> > +++ b/ndctl/lib/hpe1.h
+> > @@ -1,16 +1,5 @@
+> > -/*
+> > - * Copyright (C) 2016 Hewlett Packard Enterprise Development LP
+> > - * Copyright (c) 2014-2015, Intel Corporation.
+> > - *
+> > - * This program is free software; you can redistribute it and/or modify it
+> > - * under the terms and conditions of the GNU Lesser General Public License,
+> > - * version 2.1, as published by the Free Software Foundation.
+> > - *
+> > - * This program is distributed in the hope it will be useful, but WITHOUT ANY
+> > - * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+> > - * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+> > - * more details.
+> > - */
+> > +// Copyright (C) 2016 Hewlett Packard Enterprise Development LP
+> > +// SPDX-License-Identifier: LGPL-2.1
+>
+> Why drop the Intel copyright here but not elsewhere?
 
-I'll try to make the point a different way. Mpool points out places
-where the existing apis fail to scale. Rather than attempt to fix that
-problem it proposes to replace the old apis. However, the old apis are
-still there. So now upstream has 2 maintenance burdens when it could
-have just had one. So when I ask "what does Linux get" it is in
-reference to the fact that Linux gets a compounded maintenance problem
-and whether the benefits of mpool outweigh that burden. Historically
-Linux has been able to evolve to meet the scaling requirements of new
-applications, so I am asking whether you have tried to solve the
-application problem by evolving rather than replacing existing
-infrastructure? The justification to replace rather than evolve is
-high because that's how core Linux stays relevant.
+Oversight, good catch.
+
+>
+> >  #ifndef __NDCTL_HPE1_H__
+> >  #define __NDCTL_HPE1_H__
+> >
+> > diff --git a/ndctl/lib/inject.c b/ndctl/lib/inject.c
+> > index 815f254308c6..00ef0a4d1d28 100644
+> > --- a/ndctl/lib/inject.c
+> > +++ b/ndctl/lib/inject.c
+> > @@ -1,15 +1,5 @@
+> > -/*
+> > - * Copyright (c) 2014-2017, Intel Corporation.
+> > - *
+> > - * This program is free software; you can redistribute it and/or modify it
+> > - * under the terms and conditions of the GNU Lesser General Public License,
+> > - * version 2.1, as published by the Free Software Foundation.
+> > - *
+> > - * This program is distributed in the hope it will be useful, but WITHOUT ANY
+> > - * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+> > - * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+> > - * more details.
+> > - */
+> > +// Copyright (c) 2014-2017, Intel Corporation. All rights reserved.
+> > +// SPDX-License-Identifier: LGPL-2.1
+>
+> And I'm not sure why some of the copyrights are extended to 2020 while others
+> are not.  I would think they would all be?  But this is more of a curious
+> questions.
+
+The intent was to update all Intel copyright dates to 2020 on the
+files I touched. So, another good catch, thanks Ira!
+
+I'll leave it to other copyright holders to update their dates when
+they touch the files.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
