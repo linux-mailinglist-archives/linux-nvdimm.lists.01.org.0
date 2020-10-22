@@ -2,49 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD7D295FFB
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Oct 2020 15:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A89652961CB
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Oct 2020 17:41:33 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 204121622046C;
-	Thu, 22 Oct 2020 06:26:46 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+1ec22d3227dac79b61d2+6269+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F3E051623E20A;
+	Thu, 22 Oct 2020 08:41:31 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 68A631622046A
-	for <linux-nvdimm@lists.01.org>; Thu, 22 Oct 2020 06:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=l2WBiCb5duYJRA9nKpihqrJOH1Qjg6utSrFiu8qAdtc=; b=WDc4vjUT22x0uDWdml0ad2Zl1+
-	deq3uUi1p3+tR87hRyCPjmVK9SaCuTdqWrvA3s93Kk6YaJ9T3XMfwGaku4+N64ElW5l26vkdKQdFj
-	/eUb9mb+qGTFLzuQHUkO70UsPT5gTQW8HM/Zt4qxFyau2w1HSnUIMW0i3NSsRh8kmkE+kDv21KNWx
-	GpHXdVRhL39adxcW3JBfyKouPZeqfuEmL1+Top+i2rMwA1V/mmm//TSMypQGZBlcdklbneAqYQGvJ
-	Y/+EVPO2yiXsQN6ghXmrMrKAiAkJootpROdWTZalb8y58MdwnMoP6PvpplZ9l8BIimSKZATwHnpSw
-	ZJg9BNNw==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kVabv-00072e-PZ; Thu, 22 Oct 2020 13:26:31 +0000
-Date: Thu, 22 Oct 2020 14:26:31 +0100
-From: Christoph Hellwig <hch@infradead.org>
+	by ml01.01.org (Postfix) with ESMTPS id E74231623E209
+	for <linux-nvdimm@lists.01.org>; Thu, 22 Oct 2020 08:41:29 -0700 (PDT)
+IronPort-SDR: 5+KJU3mC6Ta0g906JrCWyb8XK9knWoQb0mBQogjnjwKnRm/x28Xaz8ekNvO5yz3UXI+3VNNJE4
+ k3it81iapPhQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9781"; a="164954001"
+X-IronPort-AV: E=Sophos;i="5.77,404,1596524400";
+   d="scan'208";a="164954001"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2020 08:41:25 -0700
+IronPort-SDR: 1uNh9uMV4kVTPyhJoPRnk70kap5HaSBV3cpUlNni76LkNQIPkUaUd8Juxy7z9qjPb7Jx3xXh0/
+ ifXUwI6+s4RQ==
+X-IronPort-AV: E=Sophos;i="5.77,404,1596524400";
+   d="scan'208";a="524320271"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2020 08:41:25 -0700
+Date: Thu, 22 Oct 2020 08:41:24 -0700
+From: Ira Weiny <ira.weiny@intel.com>
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Subject: Re: [PATCH] mm/mremap_pages: Fix static key devmap_managed_key
  updates
-Message-ID: <20201022132631.GA26823@infradead.org>
+Message-ID: <20201022154124.GA537138@iweiny-DESK2.sc.intel.com>
 References: <20201022060753.21173-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Disposition: inline
 In-Reply-To: <20201022060753.21173-1-aneesh.kumar@linux.ibm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: EOYS4HHFC42M47CWDDYVMISWX4XSQ23F
-X-Message-ID-Hash: EOYS4HHFC42M47CWDDYVMISWX4XSQ23F
-X-MailFrom: BATV+1ec22d3227dac79b61d2+6269+infradead.org+hch@casper.srs.infradead.org
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: X5YFRDTHEDWTA5F6FPR4BQB4SVTIAU73
+X-Message-ID-Hash: X5YFRDTHEDWTA5F6FPR4BQB4SVTIAU73
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-mm@kvack.org, akpm@linux-foundation.org, Christoph Hellwig <hch@infradead.org>, Sachin Sant <sachinp@linux.vnet.ibm.com>, linux-nvdimm@lists.01.org, Jason Gunthorpe <jgg@mellanox.com>
+CC: linux-mm@kvack.org, akpm@linux-foundation.org, Christoph Hellwig <hch@infradead.org>, Sachin Sant <sachinp@linux.vnet.ibm.com>, linux-nvdimm@lists.01.org, Jason Gunthorpe <jgg@mellanox.com>, Ralph Campbell <rcampbell@nvidia.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EOYS4HHFC42M47CWDDYVMISWX4XSQ23F/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X5YFRDTHEDWTA5F6FPR4BQB4SVTIAU73/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,9 +56,134 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Looks good,
+On Thu, Oct 22, 2020 at 11:37:53AM +0530, Aneesh Kumar K.V wrote:
+> commit 6f42193fd86e ("memremap: don't use a separate devm action for
+> devmap_managed_enable_get") changed the static key updates such that we
+> now call devmap_managed_enable_put() without doing the equivalent
+> devmap_managed_enable_get().
+> 
+> devmap_managed_enable_get() is only called for MEMORY_DEVICE_PRIVATE and
+> MEMORY_DEVICE_FS_DAX, But memunmap_pages() get called for other pgmap
+> types too. This results in the below warning when switching between
+> system-ram and devdax mode for devdax namespace.
+> 
+>  jump label: negative count!
+>  WARNING: CPU: 52 PID: 1335 at kernel/jump_label.c:235 static_key_slow_try_dec+0x88/0xa0
+>  Modules linked in:
+>  ....
+> 
+>  NIP [c000000000433318] static_key_slow_try_dec+0x88/0xa0
+>  LR [c000000000433314] static_key_slow_try_dec+0x84/0xa0
+>  Call Trace:
+>  [c000000025c1f660] [c000000000433314] static_key_slow_try_dec+0x84/0xa0 (unreliable)
+>  [c000000025c1f6d0] [c000000000433664] __static_key_slow_dec_cpuslocked+0x34/0xd0
+>  [c000000025c1f700] [c0000000004337a4] static_key_slow_dec+0x54/0xf0
+>  [c000000025c1f770] [c00000000059c49c] memunmap_pages+0x36c/0x500
+>  [c000000025c1f820] [c000000000d91d10] devm_action_release+0x30/0x50
+>  [c000000025c1f840] [c000000000d92e34] release_nodes+0x2f4/0x3e0
+>  [c000000025c1f8f0] [c000000000d8b15c] device_release_driver_internal+0x17c/0x280
+>  [c000000025c1f930] [c000000000d883a4] bus_remove_device+0x124/0x210
+>  [c000000025c1f9b0] [c000000000d80ef4] device_del+0x1d4/0x530
+>  [c000000025c1fa70] [c000000000e341e8] unregister_dev_dax+0x48/0xe0
+>  [c000000025c1fae0] [c000000000d91d10] devm_action_release+0x30/0x50
+>  [c000000025c1fb00] [c000000000d92e34] release_nodes+0x2f4/0x3e0
+>  [c000000025c1fbb0] [c000000000d8b15c] device_release_driver_internal+0x17c/0x280
+>  [c000000025c1fbf0] [c000000000d87000] unbind_store+0x130/0x170
+>  [c000000025c1fc30] [c000000000d862a0] drv_attr_store+0x40/0x60
+>  [c000000025c1fc50] [c0000000006d316c] sysfs_kf_write+0x6c/0xb0
+>  [c000000025c1fc90] [c0000000006d2328] kernfs_fop_write+0x118/0x280
+>  [c000000025c1fce0] [c0000000005a79f8] vfs_write+0xe8/0x2a0
+>  [c000000025c1fd30] [c0000000005a7d94] ksys_write+0x84/0x140
+>  [c000000025c1fd80] [c00000000003a430] system_call_exception+0x120/0x270
+>  [c000000025c1fe20] [c00000000000c540] system_call_common+0xf0/0x27c
+> 
+> Cc: Christoph Hellwig <hch@infradead.org>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Cc: linux-nvdimm@lists.01.org
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: Jason Gunthorpe <jgg@mellanox.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  mm/memremap.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 73a206d0f645..d4402ff3e467 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -158,6 +158,16 @@ void memunmap_pages(struct dev_pagemap *pgmap)
+>  {
+>  	unsigned long pfn;
+>  	int i;
+> +	bool need_devmap_managed = false;
+> +
+> +	switch (pgmap->type) {
+> +	case MEMORY_DEVICE_PRIVATE:
+> +	case MEMORY_DEVICE_FS_DAX:
+> +		need_devmap_managed = true;
+> +		break;
+> +	default:
+> +		break;
+> +	}
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Is it overkill to avoid duplicating this switch logic in
+page_is_devmap_managed() by creating another call which can be used here?
+
+>  
+>  	dev_pagemap_kill(pgmap);
+>  	for (i = 0; i < pgmap->nr_range; i++)
+> @@ -169,7 +179,8 @@ void memunmap_pages(struct dev_pagemap *pgmap)
+>  		pageunmap_range(pgmap, i);
+>  
+>  	WARN_ONCE(pgmap->altmap.alloc, "failed to free all reserved pages\n");
+> -	devmap_managed_enable_put();
+> +	if (need_devmap_managed)
+> +		devmap_managed_enable_put();
+>  }
+>  EXPORT_SYMBOL_GPL(memunmap_pages);
+>  
+> @@ -307,7 +318,7 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+>  		.pgprot = PAGE_KERNEL,
+>  	};
+>  	const int nr_range = pgmap->nr_range;
+> -	bool need_devmap_managed = true;
+> +	bool need_devmap_managed = false;
+
+I'm CC'ing Ralph Campbell because I think some of his work has proposed this
+same change.
+
+Ira
+
+>  	int error, i;
+>  
+>  	if (WARN_ONCE(!nr_range, "nr_range must be specified\n"))
+> @@ -327,6 +338,7 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+>  			WARN(1, "Missing owner\n");
+>  			return ERR_PTR(-EINVAL);
+>  		}
+> +		need_devmap_managed = true;
+>  		break;
+>  	case MEMORY_DEVICE_FS_DAX:
+>  		if (!IS_ENABLED(CONFIG_ZONE_DEVICE) ||
+> @@ -334,13 +346,12 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+>  			WARN(1, "File system DAX not supported\n");
+>  			return ERR_PTR(-EINVAL);
+>  		}
+> +		need_devmap_managed = true;
+>  		break;
+>  	case MEMORY_DEVICE_GENERIC:
+> -		need_devmap_managed = false;
+>  		break;
+>  	case MEMORY_DEVICE_PCI_P2PDMA:
+>  		params.pgprot = pgprot_noncached(params.pgprot);
+> -		need_devmap_managed = false;
+>  		break;
+>  	default:
+>  		WARN(1, "Invalid pgmap type %d\n", pgmap->type);
+> -- 
+> 2.26.2
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
