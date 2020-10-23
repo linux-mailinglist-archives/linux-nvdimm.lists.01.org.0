@@ -2,72 +2,95 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E51297907
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Oct 2020 23:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E0C297917
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Oct 2020 23:50:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7E1FD15DC43F3;
-	Fri, 23 Oct 2020 14:45:56 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.63; helo=jjtz.com; envelope-from=nlpcc@jjtz.com; receiver=<UNKNOWN> 
-Received: from jjtz.com (unknown [223.73.128.63])
-	by ml01.01.org (Postfix) with ESMTP id EF3D515DC43C2
-	for <linux-nvdimm@lists.01.org>; Fri, 23 Oct 2020 14:45:49 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 24 Oct 2020 05:45:59 +0800
-Message-ID: 465a579d-00ba-4e49-8d26-bd437e5dc886
+	by ml01.01.org (Postfix) with ESMTP id DAC02163660A4;
+	Fri, 23 Oct 2020 14:50:16 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 428CA163660A2
+	for <linux-nvdimm@lists.01.org>; Fri, 23 Oct 2020 14:50:15 -0700 (PDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1603489811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cHZqtXRz0EpqKwmVvrfGdZyZvC7siQQGSvicS0vKKBg=;
+	b=0yAkbZnTwDY2ALAbXdGN6vr3ehp2VwpXNIcf51OXNu5rvFRvmCFOCTkkOciH3bsMMB1GTJ
+	M49Ooo+35dE2U2EdR4GV6DqIHTyROF7HKJgwhEe+YkykUW9BNC5m+IszzFX1oA8ZEa0XuD
+	1d/dCepUNoGiDlYmKWo738FoXRvvngEHtiadyKHOVShEMn5o8bVNUoOmknFSNyw0C29P1y
+	lG0GxNgCHxB0lekDN0U72B9z95n6HUAC3ZK2mGWWUMRbEJvRSTaJxxe2QqwdMQCr0LGqOO
+	auNEwTjIY0XSihJxFVb3YEpC1IQVLCt4JgLsfilbBuSQ9ygKHpb0dXjIER+lPQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1603489811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cHZqtXRz0EpqKwmVvrfGdZyZvC7siQQGSvicS0vKKBg=;
+	b=1RyBpBn3mRKQKuLJjCvQxmBBrnxabQDijrSaiAdGjc2n/P1b8Vr9dL2Zi4iX0nPaJ9AC7Q
+	vT1Rr3Z8/S0zuhCQ==
+To: ira.weiny@intel.com, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 06/10] x86/entry: Move nmi entry/exit into common code
+In-Reply-To: <20201022222701.887660-7-ira.weiny@intel.com>
+References: <20201022222701.887660-1-ira.weiny@intel.com> <20201022222701.887660-7-ira.weiny@intel.com>
+Date: Fri, 23 Oct 2020 23:50:11 +0200
+Message-ID: <874kmk6298.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E4=B8=9C=E8=8E=9E=E5=B8=82=E5=BE=80=E8=BF?=
- =?utf-8?Q?=94=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E9=9B=B6=E4=BD=86=EF?=
- =?utf-8?Q?=BC=8C=E6=95=B4=E8=BD=A6=E8=BF=90=E8=BE=93---=E4=B8=8A=E9=97?=
- =?utf-8?Q?=A8=E6=8F=90=E8=B4=A7=EF=BC=8C=E6=89=93=E6=9C=A8=E6=9E=B6=EF?=
- =?utf-8?Q?=BC=8C=E6=9C=A8=E7=AE=B1=E6=9C=8D=E5=8A=A1?=
- <nlpcc@jjtz.com>
-From: =?utf-8?Q?=E4=B8=9C=E8=8E=9E=E5=B8=82=E5=BE=80=E8=BF=94?=
- =?utf-8?Q?=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E9=9B=B6=E4=BD=86=EF=BC?=
- =?utf-8?Q?=8C=E6=95=B4=E8=BD=A6=E8=BF=90=E8=BE=93---=E4=B8=8A=E9=97=A8?=
- =?utf-8?Q?=E6=8F=90=E8=B4=A7=EF=BC=8C=E6=89=93=E6=9C=A8=E6=9E=B6=EF=BC?=
- =?utf-8?Q?=8C=E6=9C=A8=E7=AE=B1=E6=9C=8D=E5=8A=A1?=
- <ocfsu@jjtz.com>
-To: linux-nvdimm@lists.01.org
-Date: 24 Oct 2020 05:45:59 +0800
-Subject: =?utf-8?B?5Lic6I6e5biC5b6A6L+U5YWo5Zu95ZCE5Zyw6Zu25L2G77yM?=
- =?utf-8?B?5pW06L2m6L+Q6L6TLS0t5LiK6Zeo5o+Q6LSn77yM5omT5pyo5p6277yM?=
- =?utf-8?B?5pyo566x5pyN5Yqh?=
-Message-ID-Hash: KJZHJ3MNNXE7UJY7R7B2GOS473BJP3YQ
-X-Message-ID-Hash: KJZHJ3MNNXE7UJY7R7B2GOS473BJP3YQ
-X-MailFrom: nlpcc@jjtz.com
+Message-ID-Hash: ETNKLF4M5SJB3XE7VR4HHQTQGLWL6LTU
+X-Message-ID-Hash: ETNKLF4M5SJB3XE7VR4HHQTQGLWL6LTU
+X-MailFrom: tglx@linutronix.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KJZHJ3MNNXE7UJY7R7B2GOS473BJP3YQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ETNKLF4M5SJB3XE7VR4HHQTQGLWL6LTU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-IOS4nOiOnuW4guW+gOi/lOWFqOWbveWQhOWcsOmbtuS9hu+8jOaVtOi9pui/kOi+kw0KJm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7ICZuYnNwOyZu
-YnNwO+S4iumXqOaPkOi0p++8jOaJk+acqOaetu+8jOacqOeuseacjeWKoSZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyDmnKzlhazlj7jmib/mjqXlub/kuJzk
-uJzojp7oh7Plhajlm73lkITlnLDotKfov5DvvIzlhajluILkuIrpl6jmj5DotKfvvIznu5nmgqjo
-tLTlv4PlkajliLDmnI3liqHjgILnm7Tovr7lhajlm73otKfnianmlbTovabjgIHpm7bmi4Xov5Do
-vpPkuJrliqHvvIzotoXplb/jgIHotoXlrr3jgIHotoXpq5jjgIHotoXph43ov5DovpPjgIHlm57n
-qIvovabosIPluqbku5PlgqjjgIHpgIHnrYnmnI3liqHjgILmj5DkvpvlpJrnp43ov5DovpPmnI3l
-iqHvvIjlhazot6/jgIHpk4Hot6/jgIHoiKrnqbrvvInvvIzkuJrliqHlt7LpgY3lj4rlhajlm73l
-kITlnLDvvIzlnKjljY7kuJzjgIHljY7ljZfjgIHljY7kuK3jgIHljY7ljJflj4ropb/pg6jlnLDl
-jLrmnInoh6rlt7HnmoTliIbmi6jkuK3lv4PvvIzlpKnlpKnlj5HovaYs5a6J5YWo5b+r5o23LOS7
-o+WKnuS/nemZqSzku7fmoLzkvJjmg6DvvIzmrKLov47lkqjor6INCiZuYnNwOyDkvaDouqvovrnn
-moTnianmtYHkuJPlrrYmbmJzcDsmbmJzcDsg6IGU57O75Lq677yaSmNhayZuYnNwOyZuYnNwOyBN
-b2JpbGUg77yaKzg2LTE1ODE3NzA2NjA5ICjlvq7kv6HlkIzlj7fvvIkmbmJzcDsmbmJzcDsgRS1t
-YWlsIDogcnQ1NnNhbGVzQGhvdG1haWwuY29tDQombmJzcDsNCiZuYnNwOw0KJm5ic3A7DQpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
-bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
-c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Thu, Oct 22 2020 at 15:26, ira weiny wrote:
+
+> From: Thomas Gleixner <tglx@linutronix.de>
+>
+> Lockdep state handling on NMI enter and exit is nothing specific to X86. It's
+> not any different on other architectures. Also the extra state type is not
+> necessary, irqentry_state_t can carry the necessary information as well.
+>
+> Move it to common code and extend irqentry_state_t to carry lockdep
+> state.
+
+This lacks something like:
+
+ [ Ira: Made the states a union as they are mutually exclusive and added
+        the missing kernel doc ]
+
+Hrm.
+ 
+>  #ifndef irqentry_state
+>  typedef struct irqentry_state {
+> -	bool	exit_rcu;
+> +	union {
+> +		bool	exit_rcu;
+> +		bool	lockdep;
+> +	};
+>  } irqentry_state_t;
+>  #endif
+
+  -E_NO_KERNELDOC
+
+Thanks,
+
+        tglx
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
