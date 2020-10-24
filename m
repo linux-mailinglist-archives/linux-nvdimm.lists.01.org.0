@@ -2,89 +2,68 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4556429792D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Oct 2020 23:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09CF297A51
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Oct 2020 04:12:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7A02C1634E069;
-	Fri, 23 Oct 2020 14:56:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6D9B515E0A911;
+	Fri, 23 Oct 2020 19:12:42 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=187.0.30.10; helo=srv01.znettelecom.net; envelope-from=nina@vizenhosting.com; receiver=<UNKNOWN> 
+Received: from srv01.znettelecom.net (unknown [187.0.30.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B257C1632530E
-	for <linux-nvdimm@lists.01.org>; Fri, 23 Oct 2020 14:56:36 -0700 (PDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1603490194;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=79rTg2SKZLoa/evVojUPAbe7jLqXBquN2CeaB2ok8dM=;
-	b=EetW5+h2WAFfLhHoLTCZ9y+9G7Ei5unrNieHG1oDovYqkcijqZVi/zV19BnVNHeDAYAq1y
-	5BPQvOBeenBqLGZsMVj0lxrhTePplE91mlRbpz6CwZlY5ngqViOYE+dIpuSbgEqXN/hk+p
-	jZgnfrBD4hxFmjvZv0feO4rHUiJ10r7PGhwlaj55UBGIzybRn6FLG3VxHgQfGbyY8XfR5y
-	ZWdJnyBKnvxoeq281PMRil6StYpFCqPQgpfBqwHXqkT9CU72euIqVkVtoVbuIqm2lzXkVL
-	8SmRG2kKrV0hOeL1M2wDVZUriXPi0GcVcw6UJ+cQfZoek59YI4kGMXrtfSvuHw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1603490194;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=79rTg2SKZLoa/evVojUPAbe7jLqXBquN2CeaB2ok8dM=;
-	b=+wyfQHnakkKyqSE/2uGjxNcZTwxnMUoslSbSCXRrWkS+13bWcBa+tI0OQQwYJbaGoQJY9w
-	kc67vWEIFcKYyjAw==
-To: ira.weiny@intel.com, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 07/10] x86/entry: Pass irqentry_state_t by reference
-In-Reply-To: <20201022222701.887660-8-ira.weiny@intel.com>
-References: <20201022222701.887660-1-ira.weiny@intel.com> <20201022222701.887660-8-ira.weiny@intel.com>
-Date: Fri, 23 Oct 2020 23:56:33 +0200
-Message-ID: <87y2jw4ne6.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTPS id D639215E0A90E;
+	Fri, 23 Oct 2020 19:12:37 -0700 (PDT)
+Received: from [103.99.1.170] (helo=User)
+	by srv01.znettelecom.net with esmtpa (Exim 4.92.2)
+	(envelope-from <nina@vizenhosting.com>)
+	id 1kW92N-0001DN-T3; Sat, 24 Oct 2020 00:12:08 -0200
+From: "euro-millions.com"<nina@vizenhosting.com>
+Subject: Congratulation: You're a winner!
+Date: Fri, 23 Oct 2020 19:12:06 -0700
 MIME-Version: 1.0
-Message-ID-Hash: DO5TRGRFV4TTMY32WGLL7JFQUIS5F2WN
-X-Message-ID-Hash: DO5TRGRFV4TTMY32WGLL7JFQUIS5F2WN
-X-MailFrom: tglx@linutronix.de
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <E1kW92N-0001DN-T3@srv01.znettelecom.net>
+Message-ID-Hash: RUJ7F6CQVYUXINJTVS36ZVR2I7KOGFNI
+X-Message-ID-Hash: RUJ7F6CQVYUXINJTVS36ZVR2I7KOGFNI
+X-MailFrom: nina@vizenhosting.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: wkennth@zohomail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DO5TRGRFV4TTMY32WGLL7JFQUIS5F2WN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RUJ7F6CQVYUXINJTVS36ZVR2I7KOGFNI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
 
-On Thu, Oct 22 2020 at 15:26, ira weiny wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
->
-> In preparation for adding PKS information to struct irqentry_state_t
-> change all call sites and usages to pass the struct by reference
-> instead of by value.
-
-This still does not explain WHY you need to do that. 'Preparation' is a
-pretty useless information.
-
-What is the actual reason for this? Just because PKS information feels
-better that way?
-
-Also what is PKS information? Changelogs have to make sense on their own
-and not only in the context of a larger series of changes.
-
-> While we are editing the call sites it is a good time to standardize on
-> the name 'irq_state'.
-
-  While at it change all usage sites to consistently use the variable
-  name 'irq_state'.
-
-Or something like that. See Documentation/process/...
-
-Thanks,
-
-        tglx
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Q09OR1JBVFVMQVRJT04hISENCg0KV2l0aCByZWZlcmVuY2UgdG8gdGhlIDEsMzUwdGggRXVyb01p
+bGxpb25zIGRyYXcgd2hpY2ggdG9vayBwbGFjZSBvbiBGcmlkYXkgMjh0aCBBdWd1c3QgMjAyMCBh
+dCAyMTowMCBDRVNUICgyMDowMCBCU1QpIGFuZCB0aGUgd2lubmluZyBudW1iZXJzIGRyYXduIHdl
+cmU6DQoNCkx1Y2t5IG51bWJlcnMgNy0xMi0xNi0xNy0zMSBTdGFyIE51bWJlciA3LTkNCk1pbGxp
+b25haXJlIE1ha2VyOiBNTkhGNTI4NzYNCnNlcmlhbCBudW1iZXIgTVpOUzQ3MDM4DQpQcml6ZSBj
+cmVkaXRlZCB0byBmaWxlIEVVUk8vODYxNjkvMjAyMA0KDQpBbiBvZmZpY2lhbCBsZXR0ZXIgd2Fz
+IHNlbnQgdG8geW91ciBhZGRyZXNzLiBZb3VyIGVtYWlsIGFkZHJlc3MgaGFzIGJlZW4gYXdhcmRl
+ZCB0aGUgc3VtIG9mIKMyLDgwNCw2MTEuMTAgR0IgcG91bmRzLiBLaW5kbHksIGNvbmZpcm0gcmVj
+ZWlwdCBvZiB0aGlzIG5vdGlmaWNhdGlvbiBieSBjb250YWN0aW5nIHlvdXIgY2xhaW1zIG9mZmlj
+ZXIgTXIuIEtlbm5pdGggV2lsbGlhbSBvbiB3aWxsaW1rQHpvaG8uY29tIGZvciBtb3JlIGRldGFp
+bHMuDQoNCnZpc2l0IHRoZSBsaW5rIGh0dHBzOi8vd3d3LmV1cm8tbWlsbGlvbnMuY29tL3Jlc3Vs
+dHMvMjgtMDgtMjAyMCB0byB2aWV3IHlvdXIgd2lubmluZyBkZXRhaWxzIGFzIHB1Ymxpc2hlZCBv
+biB0aGUgRXVyby1NaWxsaW9ucyBzaXRlLg0KDQpFdXJvLU1pbGxpb25zIHByaXplcyBtdXN0IGJl
+IGNsYWltZWQgd2l0aGluIDE4MCBkYXlzIG9mIHRoZSBkcmF3IGRhdGUuIFRoaXMgaXMgYSBjb25m
+aWRlbnRpYWwgbWFpbCBzZW50IHRvIE9OTFkgd2lubmVycyBvZiB0aGlzIGRyYXdzLg0KDQpJZiB5
+b3UgaGF2ZSBhbnkgcXVlc3Rpb25zLCBwbGVhc2UgY29udGFjdCBvdXIgY3VzdG9tZXIgc3VwcG9y
+dC4NCg0KDQpLaW5kIHJlZ2FyZHMsDQpQZXRlciBKb25lcw0KQ3VzdG9tZXIgU3VwcG9ydA0KRVVS
+Ty1NSUxMSU9OUw0KQ3VzdG9tZXIgU2VydmljZQ0KVUsgUmVnaW9uYWwgT2ZmaWNlDQpBY29ybnMg
+T2Frd29vZCBQYXJrIEJ1c2luZXNzIENlbnRlcg0KRm91bnRhaW5zIFJvYWQgQmlzaG9wIFRob3Ju
+dG9uLCBIYXJyb2dhdGUNCkhHMyAzQkYsIFVLLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
+ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
+dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
