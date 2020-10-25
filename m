@@ -1,38 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D54298099
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 25 Oct 2020 07:37:20 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDDA29809D
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 25 Oct 2020 08:00:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9B2EF15F3844B;
-	Sat, 24 Oct 2020 23:37:17 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=180.108.76.106; helo=zyfgqtpm.org; envelope-from=ovbq@zyfgqtpm.org; receiver=<UNKNOWN> 
-Received: from zyfgqtpm.org (unknown [180.108.76.106])
-	by ml01.01.org (Postfix) with ESMTP id 26A9915F38449
-	for <linux-nvdimm@lists.01.org>; Sat, 24 Oct 2020 23:37:12 -0700 (PDT)
-Received: from reeuo (unknown [162.82.36.132])
-	by zyfgqtpm with SMTP id nIBwB23Cw37LyFWv.1
-	for <linux-nvdimm@lists.01.org>; Sun, 25 Oct 2020 14:37:13 +0800
-Date: Sun, 25 Oct 2020 14:37:03 +0800
-From: =?utf-8?B?6IuP5oms54Oo?= <ovbq@zyfgqtpm.org>
-To: <linux-nvdimm@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTP id 829B115A2CE02;
+	Sun, 25 Oct 2020 00:00:20 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=180.108.76.77; helo=xzrcydzw.net; envelope-from=dnf@xzrcydzw.net; receiver=<UNKNOWN> 
+Received: from xzrcydzw.net (unknown [180.108.76.77])
+	by ml01.01.org (Postfix) with ESMTP id AE403124FFCE6
+	for <Linux-nvdimm@lists.01.org>; Sun, 25 Oct 2020 00:00:16 -0700 (PDT)
+Received: from zpcnoht (unknown [206.119.216.120])
+	by xzrcydzw with SMTP id 3RttY2lOAHx6R7a8.1
+	for <Linux-nvdimm@lists.01.org>; Sun, 25 Oct 2020 15:00:17 +0800
+Date: Sun, 25 Oct 2020 15:00:11 +0800
+From: =?utf-8?B?5pu+5a6j?= <dnf@xzrcydzw.net>
+To: <Linux-nvdimm@lists.01.org>
 Subject: =?utf-8?B?5paw5a6i5oi35byA5Y+R562W55WlLCDlpoLkvZXnu5nlrqLmiLfkuIDkuKrml6Dms5Xmi5Lnu50=?=
-	=?utf-8?B?55qE55CG55Sx77yf6Ziz5YWJ5LiA5a626ZSA5ZSu5pyN5Yqh5pyJ6ZmQ5YWs5Y+46Z2S5bKb5YiG5YWs?=
-	=?utf-8?B?5Y+4MjAyMC8xMC8yNTE0OjM3OjEz?=
-Message-ID: <20201025143713831316@zyfgqtpm.org>
+	=?utf-8?B?55qE55CG55Sx77yf5rWZ5rGf6Jyc5auB5paH5YyW5Yib5oSP5pyJ6ZmQ5YWs5Y+4MjAyMA==?=
+	=?utf-8?B?LzEwLzI1MTU6MDA6MTY=?=
+Message-ID: <20201025150017121383@xzrcydzw.net>
 X-mailer: Foxmail 6, 13, 102, 15 [cn]
 Mime-Version: 1.0
-Message-ID-Hash: 2H3DZZOCLTRX55KZQTSN7XGLQS7WDBFC
-X-Message-ID-Hash: 2H3DZZOCLTRX55KZQTSN7XGLQS7WDBFC
-X-MailFrom: ovbq@zyfgqtpm.org
+Message-ID-Hash: SRA3A3VZZD5Q55XN656NXHKL5I7KOG52
+X-Message-ID-Hash: SRA3A3VZZD5Q55XN656NXHKL5I7KOG52
+X-MailFrom: dnf@xzrcydzw.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2H3DZZOCLTRX55KZQTSN7XGLQS7WDBFC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SRA3A3VZZD5Q55XN656NXHKL5I7KOG52/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -218,13 +218,11 @@ IOWQjeaIluWSqCDor6Lor7flj5HpgIHoh7Por6Xpgq4g566x77yM5oiR5Lus5bCG5Zyo5LiA5Liq
 6IGU57O777yM6LCi6LCi44CC77yJDQoNCg0KDQoNCg0K5oKo5Y+v5Lul5Y+R6YCB6YCA6K6i6Iez
 Mzg0NjMxMzc4QHFxLmNvbSDpgIDorqLmraTpgq7ku7bjgIINCg0KDQoNCg0KDQoNCg0KDQoNCg0K
 DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
-Cg0K6Ziz5YWJ5LiA5a626ZSA5ZSu5pyN5Yqh5pyJ6ZmQ5YWs5Y+46Z2S5bKb5YiG5YWs5Y+4DQrp
-mLPlhYnkuIDlrrbplIDllK7mnI3liqHmnInpmZDlhazlj7jpnZLlspvliIblhazlj7gNCumYs+WF
-ieS4gOWutumUgOWUruacjeWKoeaciemZkOWFrOWPuOmdkuWym+WIhuWFrOWPuA0K6Ziz5YWJ5LiA
-5a626ZSA5ZSu5pyN5Yqh5pyJ6ZmQ5YWs5Y+46Z2S5bKb5YiG5YWs5Y+4DQrpmLPlhYnkuIDlrrbp
-lIDllK7mnI3liqHmnInpmZDlhazlj7jpnZLlspvliIblhazlj7gNCumYs+WFieS4gOWutumUgOWU
-ruacjeWKoeaciemZkOWFrOWPuOmdkuWym+WIhuWFrOWPuA0K6Ziz5YWJ5LiA5a626ZSA5ZSu5pyN
-5Yqh5pyJ6ZmQ5YWs5Y+46Z2S5bKb5YiG5YWs5Y+4Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgt
-bnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4
-LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Cg0K5rWZ5rGf6Jyc5auB5paH5YyW5Yib5oSP5pyJ6ZmQ5YWs5Y+4DQrmtZnmsZ/onJzlq4Hmlofl
+jJbliJvmhI/mnInpmZDlhazlj7gNCua1meaxn+icnOWrgeaWh+WMluWIm+aEj+aciemZkOWFrOWP
+uA0K5rWZ5rGf6Jyc5auB5paH5YyW5Yib5oSP5pyJ6ZmQ5YWs5Y+4DQrmtZnmsZ/onJzlq4Hmlofl
+jJbliJvmhI/mnInpmZDlhazlj7gNCua1meaxn+icnOWrgeaWh+WMluWIm+aEj+aciemZkOWFrOWP
+uA0K5rWZ5rGf6Jyc5auB5paH5YyW5Yib5oSP5pyJ6ZmQ5YWs5Y+4Cl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3Qg
+LS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWls
+IHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
