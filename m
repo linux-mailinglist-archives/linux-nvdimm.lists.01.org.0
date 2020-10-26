@@ -2,42 +2,34 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919A2299173
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Oct 2020 16:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DAE299382
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Oct 2020 18:15:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A3D29161A2152;
-	Mon, 26 Oct 2020 08:52:03 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=85.33.102.18; helo=host-85-33-102-18.business.telecomitalia.it; envelope-from=exoticallyd52@smtprelay.gslb.es.oneadp.com; receiver=<UNKNOWN> 
-Received: from host-85-33-102-18.business.telecomitalia.it (host-85-33-102-18.business.telecomitalia.it [85.33.102.18])
-	by ml01.01.org (Postfix) with ESMTP id 7474A161A2151;
-	Mon, 26 Oct 2020 08:52:00 -0700 (PDT)
-Received: from [211.209.46.13] (helo=DUMICEZ.KAXYNAG.smtprelay.gslb.es.oneadp.com)
-	by host-85-33-102-18.business.telecomitalia.it with esmtpa (Exim 4.86)
-	(envelope-from )
-	id 78f8a3ff
-	for linux-nfc@lists.01.org; Mon, 26 Oct 2020 16:51:59 +0100
-Received: from  (
- [33.24.131.209])        by host-85-33-102-18.business.telecomitalia.it with SMTP id
- g4bwdjdzri3j8ic.9.20201026165159; Mon, 26 Oct 2020 16:51:59 +0100
-To: linux-nfc@lists.01.org
-Subject: ADP Payroll Invoice(s) 26-OCT-2020: 667087666
+	by ml01.01.org (Postfix) with ESMTP id 4F16616252760;
+	Mon, 26 Oct 2020 10:15:48 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=91.229.128.197; helo=ip197-128.dkt.dn.ua; envelope-from=sloshhll284@smtprelay.gslb.es.oneadp.com; receiver=<UNKNOWN> 
+Received: from ip197-128.dkt.dn.ua (unknown [91.229.128.197])
+	by ml01.01.org (Postfix) with ESMTP id 29034161A217A
+	for <linux-nvdimm@lists.01.org>; Mon, 26 Oct 2020 10:15:45 -0700 (PDT)
+Received: from WYMELIX.DOVENOB.qjr (WYMELIX.DOVENOB.qjr [11.72.28.111])
+        by WYMELIX.DOVENOB.qjr with ESMTP
+ id BDD111807E2E; Mon, 26 Oct 2020 19:15:45 +0200
 From: run.payroll.invoice@adp.com
-Date: Mon, 26 Oct 2020 16:51:59 +0100
-X-Priority: 3
-Thread-Index: xcSMZbllqysdEjru8GpyhBN2PLr93==
+To: edk2-devel-owner@lists.01.org
+Subject: ADP Payroll Invoice(s) 26-OCT-2020: 296117507
 MIME-Version: 1.0
-Message-ID: <620c95cb-c30b-496f-bf91-@TOGANIX.XOLOLOR.smtprelay.gslb.es.oneadp.com>
-Message-ID-Hash: 2KWXOAHZYAS2NXETW2UFWT56FJTQ7F5V
-X-Message-ID-Hash: 2KWXOAHZYAS2NXETW2UFWT56FJTQ7F5V
-X-MailFrom: exoticallyd52@smtprelay.gslb.es.oneadp.com
+Message-ID: <46884afd-765a-b44a-6aa4-@WYMELIX.DOVENOB.qjr>
+Date: Mon, 26 Oct 2020 19:15:45 +0200
+Message-ID-Hash: LXWO46AILUQPNVHCR7W5QTYVMRBSL4LZ
+X-Message-ID-Hash: LXWO46AILUQPNVHCR7W5QTYVMRBSL4LZ
+X-MailFrom: sloshhll284@smtprelay.gslb.es.oneadp.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Disposition: inline
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2KWXOAHZYAS2NXETW2UFWT56FJTQ7F5V/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LXWO46AILUQPNVHCR7W5QTYVMRBSL4LZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
