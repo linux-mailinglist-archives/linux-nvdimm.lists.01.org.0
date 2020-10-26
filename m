@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD8929886E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Oct 2020 09:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDA6298875
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Oct 2020 09:38:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 65861161990FE;
-	Mon, 26 Oct 2020 01:38:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8B587163A950D;
+	Mon, 26 Oct 2020 01:38:43 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 87DFF161990FD
-	for <linux-nvdimm@lists.01.org>; Mon, 26 Oct 2020 01:38:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E9860161990FF
+	for <linux-nvdimm@lists.01.org>; Mon, 26 Oct 2020 01:38:40 -0700 (PDT)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 437EB22409;
-	Mon, 26 Oct 2020 08:38:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTPSA id BBF6A2240A;
+	Mon, 26 Oct 2020 08:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603701511;
-	bh=6Unb/bgrma45bqFGeLstRI/KgoGYhWv2GwrnA2SWP34=;
+	s=default; t=1603701520;
+	bh=GNbANdDW3RFgsuBqyvyHdTRHbs4gcVZbEK81xGdtF5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1RL1x6NGZqKZJUzU4OhS1j9WKiVw40neaVAtRFcDgGFWqvE/GjjJJWn2l1zpIMCH
-	 bEP1XnRxeZ9q/0TpTxi+wg9IG5jWyZe1TGHnIA6+6QAgYMldh6yYt73essz+mAls96
-	 kOTmhPMtvK4jmqH3OjUj3q6fpS1ygyEQnz52eBo8=
+	b=A0X6HoKQx+5ZC/COKcHPScPcwMm7Kq3fH5V5+z2cldaegQ+J44itgThifMetJaCEI
+	 FXSFhsp2ks6dnetPNuI1/T132RbUWNNTOqtGplkV0X3/ltvVhCQyjrwEgKxz+EgF78
+	 FNdynOph7g4FoABaK1/8Rze77eOCWJN+3wkbl0h0=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v7 2/7] mmap: make mlock_future_check() global
-Date: Mon, 26 Oct 2020 10:37:47 +0200
-Message-Id: <20201026083752.13267-3-rppt@kernel.org>
+Subject: [PATCH v7 3/7] set_memory: allow set_direct_map_*_noflush() for multiple pages
+Date: Mon, 26 Oct 2020 10:37:48 +0200
+Message-Id: <20201026083752.13267-4-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201026083752.13267-1-rppt@kernel.org>
 References: <20201026083752.13267-1-rppt@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: Z5NVJIUFEYTPSSOITA5EAYWFWRMAG6X4
-X-Message-ID-Hash: Z5NVJIUFEYTPSSOITA5EAYWFWRMAG6X4
+Message-ID-Hash: INUJPPNBJREUBPHKSUU33TMDN7R43QU5
+X-Message-ID-Hash: INUJPPNBJREUBPHKSUU33TMDN7R43QU5
 X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -44,7 +44,7 @@ CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z5NVJIUFEYTPSSOITA5EAYWFWRMAG6X4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/INUJPPNBJREUBPHKSUU33TMDN7R43QU5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,44 +55,209 @@ Content-Transfer-Encoding: 7bit
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-It will be used by the upcoming secret memory implementation.
+The underlying implementations of set_direct_map_invalid_noflush() and
+set_direct_map_default_noflush() allow updating multiple contiguous pages
+at once.
+
+Add numpages parameter to set_direct_map_*_noflush() to expose this ability
+with these APIs.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- mm/internal.h | 3 +++
- mm/mmap.c     | 5 ++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/cacheflush.h |  4 ++--
+ arch/arm64/mm/pageattr.c            | 10 ++++++----
+ arch/riscv/include/asm/set_memory.h |  4 ++--
+ arch/riscv/mm/pageattr.c            |  8 ++++----
+ arch/x86/include/asm/set_memory.h   |  4 ++--
+ arch/x86/mm/pat/set_memory.c        |  8 ++++----
+ include/linux/set_memory.h          |  4 ++--
+ mm/vmalloc.c                        |  5 +++--
+ 8 files changed, 25 insertions(+), 22 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index c43ccdddb0f6..ae146a260b14 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -348,6 +348,9 @@ static inline void munlock_vma_pages_all(struct vm_area_struct *vma)
- extern void mlock_vma_page(struct page *page);
- extern unsigned int munlock_vma_page(struct page *page);
+diff --git a/arch/arm64/include/asm/cacheflush.h b/arch/arm64/include/asm/cacheflush.h
+index 9384fd8fc13c..831739bc93a6 100644
+--- a/arch/arm64/include/asm/cacheflush.h
++++ b/arch/arm64/include/asm/cacheflush.h
+@@ -138,8 +138,8 @@ static __always_inline void __flush_icache_all(void)
  
-+extern int mlock_future_check(struct mm_struct *mm, unsigned long flags,
-+			      unsigned long len);
-+
- /*
-  * Clear the page's PageMlocked().  This can be useful in a situation where
-  * we want to unconditionally remove a page from the pagecache -- e.g.,
-diff --git a/mm/mmap.c b/mm/mmap.c
-index d91ecb00d38c..d166ad427882 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1348,9 +1348,8 @@ static inline unsigned long round_hint_to_min(unsigned long hint)
- 	return hint;
+ int set_memory_valid(unsigned long addr, int numpages, int enable);
+ 
+-int set_direct_map_invalid_noflush(struct page *page);
+-int set_direct_map_default_noflush(struct page *page);
++int set_direct_map_invalid_noflush(struct page *page, int numpages);
++int set_direct_map_default_noflush(struct page *page, int numpages);
+ 
+ #include <asm-generic/cacheflush.h>
+ 
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index 1b94f5b82654..2d4e8c4cdab5 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -148,34 +148,36 @@ int set_memory_valid(unsigned long addr, int numpages, int enable)
+ 					__pgprot(PTE_VALID));
  }
  
--static inline int mlock_future_check(struct mm_struct *mm,
--				     unsigned long flags,
--				     unsigned long len)
-+int mlock_future_check(struct mm_struct *mm, unsigned long flags,
-+		       unsigned long len)
+-int set_direct_map_invalid_noflush(struct page *page)
++int set_direct_map_invalid_noflush(struct page *page, int numpages)
  {
- 	unsigned long locked, lock_limit;
+ 	struct page_change_data data = {
+ 		.set_mask = __pgprot(0),
+ 		.clear_mask = __pgprot(PTE_VALID),
+ 	};
++	unsigned long size = PAGE_SIZE * numpages;
  
+ 	if (!rodata_full)
+ 		return 0;
+ 
+ 	return apply_to_page_range(&init_mm,
+ 				   (unsigned long)page_address(page),
+-				   PAGE_SIZE, change_page_range, &data);
++				   size, change_page_range, &data);
+ }
+ 
+-int set_direct_map_default_noflush(struct page *page)
++int set_direct_map_default_noflush(struct page *page, int numpages)
+ {
+ 	struct page_change_data data = {
+ 		.set_mask = __pgprot(PTE_VALID | PTE_WRITE),
+ 		.clear_mask = __pgprot(PTE_RDONLY),
+ 	};
++	unsigned long size = PAGE_SIZE * numpages;
+ 
+ 	if (!rodata_full)
+ 		return 0;
+ 
+ 	return apply_to_page_range(&init_mm,
+ 				   (unsigned long)page_address(page),
+-				   PAGE_SIZE, change_page_range, &data);
++				   size, change_page_range, &data);
+ }
+ 
+ void __kernel_map_pages(struct page *page, int numpages, int enable)
+diff --git a/arch/riscv/include/asm/set_memory.h b/arch/riscv/include/asm/set_memory.h
+index 4c5bae7ca01c..e20f1bef9b11 100644
+--- a/arch/riscv/include/asm/set_memory.h
++++ b/arch/riscv/include/asm/set_memory.h
+@@ -22,8 +22,8 @@ static inline int set_memory_x(unsigned long addr, int numpages) { return 0; }
+ static inline int set_memory_nx(unsigned long addr, int numpages) { return 0; }
+ #endif
+ 
+-int set_direct_map_invalid_noflush(struct page *page);
+-int set_direct_map_default_noflush(struct page *page);
++int set_direct_map_invalid_noflush(struct page *page, int numpages);
++int set_direct_map_default_noflush(struct page *page, int numpages);
+ 
+ #endif /* __ASSEMBLY__ */
+ 
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 19fecb362d81..58743bb6b755 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -150,11 +150,11 @@ int set_memory_nx(unsigned long addr, int numpages)
+ 	return __set_memory(addr, numpages, __pgprot(0), __pgprot(_PAGE_EXEC));
+ }
+ 
+-int set_direct_map_invalid_noflush(struct page *page)
++int set_direct_map_invalid_noflush(struct page *page, int numpages)
+ {
+ 	int ret;
+ 	unsigned long start = (unsigned long)page_address(page);
+-	unsigned long end = start + PAGE_SIZE;
++	unsigned long end = start + PAGE_SIZE * numpages;
+ 	struct pageattr_masks masks = {
+ 		.set_mask = __pgprot(0),
+ 		.clear_mask = __pgprot(_PAGE_PRESENT)
+@@ -167,11 +167,11 @@ int set_direct_map_invalid_noflush(struct page *page)
+ 	return ret;
+ }
+ 
+-int set_direct_map_default_noflush(struct page *page)
++int set_direct_map_default_noflush(struct page *page, int numpages)
+ {
+ 	int ret;
+ 	unsigned long start = (unsigned long)page_address(page);
+-	unsigned long end = start + PAGE_SIZE;
++	unsigned long end = start + PAGE_SIZE * numpages;
+ 	struct pageattr_masks masks = {
+ 		.set_mask = PAGE_KERNEL,
+ 		.clear_mask = __pgprot(0)
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index 5948218f35c5..2c5fb6b338e7 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -80,8 +80,8 @@ int set_pages_wb(struct page *page, int numpages);
+ int set_pages_ro(struct page *page, int numpages);
+ int set_pages_rw(struct page *page, int numpages);
+ 
+-int set_direct_map_invalid_noflush(struct page *page);
+-int set_direct_map_default_noflush(struct page *page);
++int set_direct_map_invalid_noflush(struct page *page, int numpages);
++int set_direct_map_default_noflush(struct page *page, int numpages);
+ 
+ extern int kernel_set_to_readonly;
+ 
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 40baa90e74f4..239bdddf6f96 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2184,14 +2184,14 @@ static int __set_pages_np(struct page *page, int numpages)
+ 	return __change_page_attr_set_clr(&cpa, 0);
+ }
+ 
+-int set_direct_map_invalid_noflush(struct page *page)
++int set_direct_map_invalid_noflush(struct page *page, int numpages)
+ {
+-	return __set_pages_np(page, 1);
++	return __set_pages_np(page, numpages);
+ }
+ 
+-int set_direct_map_default_noflush(struct page *page)
++int set_direct_map_default_noflush(struct page *page, int numpages)
+ {
+-	return __set_pages_p(page, 1);
++	return __set_pages_p(page, numpages);
+ }
+ 
+ void __kernel_map_pages(struct page *page, int numpages, int enable)
+diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+index 860e0f843c12..a938a3775082 100644
+--- a/include/linux/set_memory.h
++++ b/include/linux/set_memory.h
+@@ -15,11 +15,11 @@ static inline int set_memory_nx(unsigned long addr, int numpages) { return 0; }
+ #endif
+ 
+ #ifndef CONFIG_ARCH_HAS_SET_DIRECT_MAP
+-static inline int set_direct_map_invalid_noflush(struct page *page)
++static inline int set_direct_map_invalid_noflush(struct page *page, int numpages)
+ {
+ 	return 0;
+ }
+-static inline int set_direct_map_default_noflush(struct page *page)
++static inline int set_direct_map_default_noflush(struct page *page, int numpages)
+ {
+ 	return 0;
+ }
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 6ae491a8b210..670fc20ad44c 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2179,13 +2179,14 @@ struct vm_struct *remove_vm_area(const void *addr)
+ }
+ 
+ static inline void set_area_direct_map(const struct vm_struct *area,
+-				       int (*set_direct_map)(struct page *page))
++				       int (*set_direct_map)(struct page *page,
++							     int numpages))
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < area->nr_pages; i++)
+ 		if (page_address(area->pages[i]))
+-			set_direct_map(area->pages[i]);
++			set_direct_map(area->pages[i], 1);
+ }
+ 
+ /* Handle removing and resetting vm mappings related to the vm_struct. */
 -- 
 2.28.0
 _______________________________________________
