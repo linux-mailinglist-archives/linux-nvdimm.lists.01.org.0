@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3B5298868
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Oct 2020 09:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD8929886E
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Oct 2020 09:38:36 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3F766161990FC;
-	Mon, 26 Oct 2020 01:38:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 65861161990FE;
+	Mon, 26 Oct 2020 01:38:34 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 033F716137514
-	for <linux-nvdimm@lists.01.org>; Mon, 26 Oct 2020 01:38:22 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 87DFF161990FD
+	for <linux-nvdimm@lists.01.org>; Mon, 26 Oct 2020 01:38:31 -0700 (PDT)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id ABDD0223FD;
-	Mon, 26 Oct 2020 08:38:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTPSA id 437EB22409;
+	Mon, 26 Oct 2020 08:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603701501;
-	bh=nd5wpKeun6M6wuu4RJz+VoUbDg9dXJAjWiNAXiA41II=;
+	s=default; t=1603701511;
+	bh=6Unb/bgrma45bqFGeLstRI/KgoGYhWv2GwrnA2SWP34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gns74qxW5xryqAJinfIwSYLR80CrazscO8JSxRgTJGuyWwsXjmQvWtRnztOGSH8Ul
-	 4+3hUq7OB8gqu6f+zqk3s0Pyop5tEpSDF2RHMQJ7N09mjxkQvuKDZpIRJ/dHERyHYB
-	 MfWQfZpLPN4aR+cq9IB6HDOHFrkWHzElUjNkmwgw=
+	b=e1RL1x6NGZqKZJUzU4OhS1j9WKiVw40neaVAtRFcDgGFWqvE/GjjJJWn2l1zpIMCH
+	 bEP1XnRxeZ9q/0TpTxi+wg9IG5jWyZe1TGHnIA6+6QAgYMldh6yYt73essz+mAls96
+	 kOTmhPMtvK4jmqH3OjUj3q6fpS1ygyEQnz52eBo8=
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v7 1/7] mm: add definition of PMD_PAGE_ORDER
-Date: Mon, 26 Oct 2020 10:37:46 +0200
-Message-Id: <20201026083752.13267-2-rppt@kernel.org>
+Subject: [PATCH v7 2/7] mmap: make mlock_future_check() global
+Date: Mon, 26 Oct 2020 10:37:47 +0200
+Message-Id: <20201026083752.13267-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201026083752.13267-1-rppt@kernel.org>
 References: <20201026083752.13267-1-rppt@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: 4QWIQZKVGPXNL2F7K3UCZFLVLJR4SMBI
-X-Message-ID-Hash: 4QWIQZKVGPXNL2F7K3UCZFLVLJR4SMBI
+Message-ID-Hash: Z5NVJIUFEYTPSSOITA5EAYWFWRMAG6X4
+X-Message-ID-Hash: Z5NVJIUFEYTPSSOITA5EAYWFWRMAG6X4
 X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -44,7 +44,7 @@ CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4QWIQZKVGPXNL2F7K3UCZFLVLJR4SMBI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z5NVJIUFEYTPSSOITA5EAYWFWRMAG6X4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,84 +55,44 @@ Content-Transfer-Encoding: 7bit
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-The definition of PMD_PAGE_ORDER denoting the number of base pages in the
-second-level leaf page is already used by DAX and maybe handy in other
-cases as well.
-
-Several architectures already have definition of PMD_ORDER as the size of
-second level page table, so to avoid conflict with these definitions use
-PMD_PAGE_ORDER name and update DAX respectively.
+It will be used by the upcoming secret memory implementation.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- fs/dax.c                | 11 ++++-------
- include/linux/pgtable.h |  3 +++
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ mm/internal.h | 3 +++
+ mm/mmap.c     | 5 ++---
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 5b47834f2e1b..de3dbcaa849a 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -49,9 +49,6 @@ static inline unsigned int pe_order(enum page_entry_size pe_size)
- #define PG_PMD_COLOUR	((PMD_SIZE >> PAGE_SHIFT) - 1)
- #define PG_PMD_NR	(PMD_SIZE >> PAGE_SHIFT)
+diff --git a/mm/internal.h b/mm/internal.h
+index c43ccdddb0f6..ae146a260b14 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -348,6 +348,9 @@ static inline void munlock_vma_pages_all(struct vm_area_struct *vma)
+ extern void mlock_vma_page(struct page *page);
+ extern unsigned int munlock_vma_page(struct page *page);
  
--/* The order of a PMD entry */
--#define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
--
- static wait_queue_head_t wait_table[DAX_WAIT_TABLE_ENTRIES];
- 
- static int __init init_dax_wait_table(void)
-@@ -98,7 +95,7 @@ static bool dax_is_locked(void *entry)
- static unsigned int dax_entry_order(void *entry)
- {
- 	if (xa_to_value(entry) & DAX_PMD)
--		return PMD_ORDER;
-+		return PMD_PAGE_ORDER;
- 	return 0;
- }
- 
-@@ -1471,7 +1468,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct address_space *mapping = vma->vm_file->f_mapping;
--	XA_STATE_ORDER(xas, &mapping->i_pages, vmf->pgoff, PMD_ORDER);
-+	XA_STATE_ORDER(xas, &mapping->i_pages, vmf->pgoff, PMD_PAGE_ORDER);
- 	unsigned long pmd_addr = vmf->address & PMD_MASK;
- 	bool write = vmf->flags & FAULT_FLAG_WRITE;
- 	bool sync;
-@@ -1530,7 +1527,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 	 * entry is already in the array, for instance), it will return
- 	 * VM_FAULT_FALLBACK.
- 	 */
--	entry = grab_mapping_entry(&xas, mapping, PMD_ORDER);
-+	entry = grab_mapping_entry(&xas, mapping, PMD_PAGE_ORDER);
- 	if (xa_is_internal(entry)) {
- 		result = xa_to_internal(entry);
- 		goto fallback;
-@@ -1696,7 +1693,7 @@ dax_insert_pfn_mkwrite(struct vm_fault *vmf, pfn_t pfn, unsigned int order)
- 	if (order == 0)
- 		ret = vmf_insert_mixed_mkwrite(vmf->vma, vmf->address, pfn);
- #ifdef CONFIG_FS_DAX_PMD
--	else if (order == PMD_ORDER)
-+	else if (order == PMD_PAGE_ORDER)
- 		ret = vmf_insert_pfn_pmd(vmf, pfn, FAULT_FLAG_WRITE);
- #endif
- 	else
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 38c33eabea89..bd0617fe066e 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -28,6 +28,9 @@
- #define USER_PGTABLES_CEILING	0UL
- #endif
- 
-+/* Number of base pages in a second level leaf page */
-+#define PMD_PAGE_ORDER	(PMD_SHIFT - PAGE_SHIFT)
++extern int mlock_future_check(struct mm_struct *mm, unsigned long flags,
++			      unsigned long len);
 +
  /*
-  * A page table page can be thought of an array like this: pXd_t[PTRS_PER_PxD]
-  *
+  * Clear the page's PageMlocked().  This can be useful in a situation where
+  * we want to unconditionally remove a page from the pagecache -- e.g.,
+diff --git a/mm/mmap.c b/mm/mmap.c
+index d91ecb00d38c..d166ad427882 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1348,9 +1348,8 @@ static inline unsigned long round_hint_to_min(unsigned long hint)
+ 	return hint;
+ }
+ 
+-static inline int mlock_future_check(struct mm_struct *mm,
+-				     unsigned long flags,
+-				     unsigned long len)
++int mlock_future_check(struct mm_struct *mm, unsigned long flags,
++		       unsigned long len)
+ {
+ 	unsigned long locked, lock_limit;
+ 
 -- 
 2.28.0
 _______________________________________________
