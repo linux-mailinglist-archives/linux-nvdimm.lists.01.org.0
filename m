@@ -2,203 +2,74 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0301D29CF21
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Oct 2020 10:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 457BB29CFB0
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Oct 2020 12:28:36 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BB766162DBE41;
-	Wed, 28 Oct 2020 02:11:05 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=77.238.177.147; helo=sonic314-21.consmr.mail.ir2.yahoo.com; envelope-from=federico_quevedo@yahoo.co.uk; receiver=<UNKNOWN> 
-Received: from sonic314-21.consmr.mail.ir2.yahoo.com (sonic314-21.consmr.mail.ir2.yahoo.com [77.238.177.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 59D4D162DBE4A
-	for <linux-nvdimm@lists.01.org>; Wed, 28 Oct 2020 02:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.co.uk; s=s2048; t=1603876261; bh=GejQxaYhVnAhg+RcMjXX7Ucxjt8bsIK2DQBt2gkKNhc=; h=Date:From:Subject:References:From:Subject; b=WXzyADSJYbHeyhfH+1ijePm08qE13JpYwSlaWkBAvw5PU657UunCo/J4EoMCCpTof5obNOsbHhf8cTXwa66TF7JO4XRr+fzKOLvKEV3N04AmjDCnRTHl5e8PX2rdJKV2qyXGkS3zt4RaKCbQAaJEJGZBUDeG/VV0olANz4kPuefHkHs9ZPPhhp6AJ1CgnCgINY/ZKJJdD/9xZToLpn3JFcxUrqMImcFjdECnXtwqng5OVZLl56oGhmSX4mfCcc60x6cT1yZVFJPHhzy7OVhyqvKJAC1CWCYUPZgZ+ZwcHZoOWSYu152p5UBaBf8feg9rmZj7e07iLmRmSQ+SoH7SRg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1603876261; bh=aKFFvY6RwtMTr2qHNpl0sZTMEMawZ8oEus2Sf4BDOmQ=; h=Date:From:Subject; b=Yt3c3ue091n48Uyjw3fXhBzSVRiKon0mUkvxUV+nxa36Ix+KxBZwsiMzVwilTeFoeaYbr0n/vIM//6Jf50VuQ9uwiYjDY5y4qKC67xGCpQcnny+j7vqP8NOQQi2GhpBPmf5REIwjE8R27d68esN9N7FdFz4sA8efjm1A2baibeRIW/yTw8PxGeBQ+KADmijp1SQF0NoX/oLSNgZrwOZboxrowv9SKw402AtFHj3GOoKwTyz/hTcZP8FJXruVKGAg/ZWkigtbaXauoEZ21ei1HFxBUloh9mEYzaliCYUcpvZ/ZOAbjmmLOSz6zDY7/ckAJGi6jnwiyuxj/b4Fwyu+Eg==
-X-YMail-OSG: vFYs_PYVM1mB2Wvoc.j7Ndi8Xs4v591aA7r8DfjbqLe98xTSfwCjUzyZzKcGC3E
- znfaoqGYb45iFuuvoq.5J6SB_RmHkC87DWyWzZ0H4_fJjp93dUUfHYDzg33jK2pR02Se1V2kIjrd
- XbwBZ93FeDsdlFy02oe9Y9zl1QgrgAkugyRQn8zMVc5Lt_XHmpdPGnvJesxnwCkdFKYZSQXriLh.
- inif8d35NG.W8QeEEbV_sn4hwGN_v.R4VLLOV1wZ9bA8kOVOTJ0x4ZzWU8Ey7sFD38Se70M7eU8U
- q5bGPCvtur6AOBswdD6rI9bC_YdAWYv5TAajdlaBVCKuYyHO0HL8nXaJGRJKjp8UviYjUnGzTPDw
- zRxmQMbPn7GxWh6HgSO9TKMywZRidqEsFQv6vi3UkQiQQ9xKqrGmEROzDw4AYngQdvqo_W57UyG3
- j5ExajcwRW016uJCPhkDOcfp8vl5HQbnmB1Bhl.URvmVXMRJoMO5KQZIZzWF9r291djxHqesek4F
- 8XdPMX097Yin3UUnpBaR6HIiA94aWdFQp1hWvSlQ4zYOYkvq_eh5jrfM6A0OEGHXT0prDx6L5UUL
- _383gE4bv529JBvqXMeO7EcvB5VPPGGyxu2ThT4k3AH4YDTDb1th5o8UiHMuP27tKIf4t9NA2etP
- oEtEQEJVUmkT983T3DhgM474TxuHHOpHvYmdrU80XzHmkZHqfwyBtTKWVCkEOgVhn9AavZwzYOkT
- qhQgZl8Xd3amJYEOSnGKMmaQJ6ihqfvoLY_6NvW_Kf_rL6lRQhqi.nQOdpqNlCQmaAFqwm1hnypY
- qeNztzr03mWncm0437r6yxJ0T29JONB.PYqVjokKf85uYIwPi3DF9TMissBdLzAetFZaQW8gBiEz
- mXoH1jJoBiXZR.9ZOseXXN4vVL48YyEM.D0gYpPIL5vWwQARgtjiFebTOskJEmWUImV_7kF37ED2
- oKdzx5rTcMgWUC_n3zErYgT1U6NiEd.CUxLYQolDA.KqKg872w48nErc6A8.NlW7QW2C95mGhXnL
- VwLI4AzxRBMlRW1Qf6hgWV_5cct9Wwh1xfWHhG3B2WDQysIyntuhgLSZBFuHVrrfs3D.l_RnOuV.
- sSkQrovRowQn6P4pxDpZGJEMhI56BL2l_1hdT8HDcWIXdR95gZF6fGdpEz7Wq23JErIfdaWR78uJ
- ygwte7cE4zOls57klHooQuQuzbjLtUKZG.vSwIf0mUXoi6piriK4WKM_Y9bcwIikoTAtj6Kqp6Gk
- 16.kMJDrUDo.0bTDHm41KBUzzo_TQoUzyV.bzYU5sZCdrmYVbJVkBhVetVVvbeV39b3n34sA00Vv
- Ud8SgdvcoeeddYbUkEsZ9MWKge6rBGs1VSH1AHX_ggzYeMsEeiUW7Wwi0gk_PXL8n53LHE2lWyj4
- lVMfk4xProF1Syq2Mb7iyX6MEg4s7kfyRMeT28JcVreZk7Z8t9tofg5tvcTTfgqJBEQ32IyNDuvM
- jm3RtsNDpQXZUmkTbZvX4iVKZVN0muu619jcobL9XwSMQYtcVU1bgO07OsWNgrEgsiARUuf60nf_
- QKfBRVATWNx_qAJQ8YoBKSaKxiy6DGCeMMVANdaG9D8wkNyTWk.rnnNeUL9t2fNHHntsT6kbgStD
- A2bHoOmlPcVuot0Ktq_1N7cAxEoQ3ua8iA_6WsKrfYGW5LQBQwjHtpuG0b0UJGtylSil18H5cDFQ
- VlBIJ7r7EZuvzgrBfTV3AZ4bRHZpolZlc9KHHeToRcaVH0WLl6pNKOIvtbTbicM1jG49DH80AXGF
- vA2k_Qx4JpvkDcjSDsjeOUlK7GEZda9c0mZNHlyc2nVUGhdI12L3VG1Ts0qczRkjabeXo3E9ef4F
- HMkkFO1FjGC9f7ggVYtC8f7qs6H67LJ79Gn5z1q.F8IpRZc5PDCugJy3IZDRYLurIGnesTQkEoDT
- R8T1BRCmQag8zw8Eo_fRVlfh0brDZSIVRvGnEebJ2FyvT8A13Ki3UMV65sH94jUk1yM1X6W.X.J8
- Vf9NoBFgIzWrFnFcSpm0RzKqr99nr9PYn1oB8HX.qmYTulHO9U6RDNu3pdWluF0xw2_2QxxxZ2ie
- p7YVM.uCdhEIoOGYCD93ynTXMDXsVaj6.cQIQwBDptrYeTDfMna6eRnMstWR87YRa3r2Pl9eGbId
- cESHobcQFS7Au1jcPRF3oyRMKJ2cH7h.oro53EcVPnUKe4NbZq72Y42p0E7g6bvR73jQppC6OiLL
- Dy9Frbru91ehVV9i3uRbLnUDFXJ64yiGp0DNipOJJGD9XoaFa0BhNke_NieohLFUaNbQBEhGt9eI
- uFwk6obp26ZNuXFfKUAfJ88jEfhdX9NHMRXbVrLOg6eJAcOODflJK881qCFxOKmtSAW0W_xeZMJe
- 5RIgRGoEN7zz_RODzvWVYGnBhTHr8N3f_gJT2G2VC797BDq.uHFM7.q5GdeOJFgkZGMeW4pH6XMs
- xeoD0z07vBt6G5gtxIl4KakDRnLVScMxhfHisezv9rz6Ks5AiXH_uQXH5VXbGxwgZsXGInFBMrhB
- G3Vrmc3UvkcY7pwbx2nEwenzBuSgBgUsmn2g8ATsGVSAKc0FPteqU0atr1jk4Iz8Gq2PI.36XkQv
- qM.bb.bUIFeDAKLkMc4Z050HltuBuOHl214udvSdxG0E6eN_2.7WItvcBMntt2WcWUqCRGADWasB
- QkB0urMRXaZlu1bkc0pjHgkm3NuMlM7W0JCVo3DhXdiITZ8hSbCk_prYlOzXoJwo_BfuYBS_CZ5m
- SPNYPUBB4A_WvPR9mjoQyfAkJiIDRLzh0gLClaMQRgjl6qLCSPYp6BVBUgsQhijWABdkA6oxX.kD
- 8w6Z9yp3YlK2gRKnyea201UXGDv5_JPD5K5iuqyCdVn8oaxp_AAsz4BXoQCrzE5_ZzU2N7tB0NQc
- 0iVjp87R3JlNhRBAaFWk5cpYFAk1wBQNOTyRUX1QI4qFOoeb6pi8gcifF2hN8epY0szgeqnZCVOe
- PNd5jP0xSS7nKM3AVj4oa5uOxgvHoQ.p6tApQy6VbNSbKcAp_zmlJaGVsMWsFtuTu.DDit4C0oEZ
- TNwPvIRWL1KyFMQsy5aWL_9iaMWgBBmsxfqjuy3OxfrqRB045poJA8UM0OxzGF9PfDNQbrju2NMZ
- Olv.TAggyoI19PvMZ657yQeSX9De6d.zAxEXcMVzjrHdv11CXzZunilQZsbrZRoevP_13RkjmX44
- RJ9V3J7_kfEx0iI8FE.6j2pKa41Jr9bEcMbhhtFNmJswb.g0VYBhEiq52gPK6p1YihorwOzAx.zy
- kZmwz4jrLg5lQH1VZCOpLS2pOgrFZpKu0sZLZ0Ap_q7IOasG9L7rQwYuUSE0OxHy8u5yAmK.jmpw
- it7RUdGAFRZ4_G16GyLKMBweJkMCaZ.JKP6cx3RBrBE0xE8sy7NrP1ztn2StZX2Pi_ots9MLMby2
- rEIdTeQ67y.TLHfMxvqw0SiUBKoS8bXFImCG..SmXDkTjUaZFbGAAUAp8xKJvyOv7lbQPe8RlL56
- Pmx0yf2hmSrWTDv7TuyaKymVLvwYvo5.Fu6CBEUiJQO9fzUuUsvY4YcE6IOTgAHBCDdo2_mggGAd
- bXWJWlVPdpJAOraFUPDiulne3xVhi2fUTuGI7c5GZ2CFjeRAF.FqyGtG1PjpmGnWqKam7UqCqcs7
- OdwY37ajaJZJ0EnvH35icP1tFIc6WEfwu9MmVcKfo7n7jt_HftSaxDUTMWyWPYcDqJnlO98neWut
- BMiHDfJay2mGDdzT580n6W7jdffwD52Dp0GtNKqqF1OZn9kNm9ncpX2M6UPXb.hKG2uLfqoR28nP
- FOHUhlSF2TAIZdvcXD_lYjfT89Axq1mOK62KjMFuaffOWq0JYWYPwPch0SCyarBWM2aFZyF2eOib
- OPBkwh.7OEbAVUTwHHGwNuG0H2eYMeSY36QsGAaY8EbloD9CCjuarChNJI_d.gNpPLLbnSVSu1Fk
- uDbcqIzIDcHD6C7IVbzBBcF7h7Je_71vgDCjxP99ZT4ytsnXm7E86ZdHz_CMQvhL2jRI59nSTvyj
- xg7CdKy84WYGaYTDuXa4PQu9S_A6gSoNefpzU9F1Y2GGn9vXVUkgoCQWAtDOD7zwGV5..TElhtCZ
- iTx2J4B0nzU5ZPfFB0bQeHBaREPpvxgysCb_CMz7wmJgNX1dxCKrHmPpDPuuoexk54d0yS9ZcMvW
- 7V8QdA92pODRX4TJMx7Wi.bLi6zovQNJV0aW1LWgCylJjlou1dUraz5KXI9M_O7mxFfhzpIE3eTx
- 8RluvZMwtdhlaTiU1qtOWKKxkLgTdu9ebMi9LOD5lPfHXBCB7CthwfEdZ4nzRGWUGh0CQ6etckBX
- 1gpvmSkNDr_KbMRFaSrXGVrsjWUkwJJIkAVHXB7PtacyrDyZlj57k2npRVOckYraafVHXnVOVg4m
- PiFHe4jM4jq8QPXAuDG6ZvJ00BPf4HJt7SFbi9QQzyrOTETj8x.6PylQdIUFr7radJJfTbCAVLCn
- .EVN4WzO796wAn3R9foF8WUab0zuJijUgagQNnXDT0yqdpcoOfSnnDrEK4neFkTZsZLY0S2TAVJT
- 4m8Ko_yrK6C.v4Z0AAufcpo1WJzfbB27bq_7BYPy9L0517WdBExbWpiI26hebA1fDG6Ba3OX4HGA
- 4ox3Al3W_CNwFkZAOLmBt4iV2uLrltteXsq2QVIkzFJ4CKwn1LPn62_NWUHb_5mD4o4WRen9wJuw
- Z6Lzvnc0cyc6XP4vRTKP.HYDL5LV..QvsT6OPySZFHd.ZyQGyM4yj3XRSJSIGVPtq2ipmAo0Yklq
- LQ_V_hw.u4ATGU8447ChvmDv9wKCXTrJed5R3dwaDOVhzKCtTrEpxOTj9zOr9osxIgxzdlG9qzg5
- o3DwitMvVBBTNHBGZZZaxV9KZFUPayBQlNrzCBbeSp_tXomVcGObSpbnMwCYqXnLDWnEaa4s4NN7
- CsUD7diY3rVvraVgFHX6RQYidjuWLs8OiXUcW2HEpMKiNejoTsd8AJAlUcOcivibeXvzYV5ke3Ki
- HXR7bEtFW1K6kumW81Zg0fFhodwgVHI5.Qkx.Dmst8CKkMstt_jRwy7l7gBBBGSIID76.ipO9kNu
- qfoHt45LUYWsv9HaKfV4Da_iQih1atYj4qqHBP8VaKYdhF0kT4lItE_QYnacOp9A9xWNwSi.0qZo
- 9C1p9Awv08idokxUP4THg0zdh8w1pwz7Jy1jOM3DMtJokqjXtGFV.fuKPPDDKKmgWIyBweJyqr.5
- .z82djnUuz3kbR34rCLOB7eKU0P8.PiefBt431UbPMvOU.FnWhukoeyMSdqGC4DtoyYHYDQfM.oB
- DFqu6mtUu1MVGeQez.VbYnS8meEkWm8BbeH4M6TfKKUNC0Aj3GfjnwMXbFE7cF_Dkzk4TUkC5BRJ
- m4XaxzTgSbyeRUZdF7YgiH8uY5qs.scCeC9XounWj6rsmiySBPi3CP8.QyvDaShMgOKaICPCncaj
- 432KnYcyUjfLqRRMJQpU_d.3zMQ_S6ywAy7rxvMfRpqY8.m0SlEx5TD4BRRBc90XgiNhOXsMY_7t
- BH1QVM7grRJ2YzHau5FHDzLzwA282yxLlUYcuGuhUh8P9__FY6OEPjAPyFmoUpXFZj7C.CfEmApq
- 39QDr4gxrHsGYdqT_HPjIs8c_AG25qB1FmrftHJI5UdpcevmiUHCMH.CHutICAIWb6M0X8v1ExEn
- cnXsIhRil6_hJxNjYKa1NTRQk_1cbqR7w5Zw.19_t1D2mbv2ACwg4qC4jZen96h_5x20SfRXvDBP
- XwiyDfONyGiexhe8CFNHnpkvdboqb8oLZLU_7VwFsHMZW1MLAE9889tejjVUxrM1aYY6cgaM._dv
- D5OpgKue4n_M9hHLvxMo8tzWO_knL.ENPRvpXiKqd5Mfxgv9av11DEnzuilNfNIetdKrLQFK.WG_
- WMSl_g6XWXJkCAfj5XTAXGF1CXkOV9rVngv6yboGwIzYJL1bV0ucTxXfge732BkJ62SXKxwcarnl
- 5Z36eM4ykJnM.CcrBXJHAh9dWah_jWXnZubl54GM4tmjVpZpm_XmQi1YNST4neYthTPKa68Et5R5
- 3makVxT22RrZxzxJ0l4MAIyZjKiAVLs7Ah3XYNu1YERyDlv64cBiDqiZEuUVFIgk82ZpLa4fNbAN
- 4SiCwHU2Av3.hPY9swln8VI.yUogbyS_DSOadduagB9Dc8WOcKX6oowqQ_.5vmhAIYPNGEeKrf06
- ALo2W1r2uM9Gq9fu0d1BNe_g5VsvcTfy1kIa.oAjAesJBJHOHSHU.IEFGjg8E4kPpdwhsl_1H.Al
- He4AFXoHC8Q3qrbeI9e9Mk6aAvAVvvbNWqBtziM6H7GlxLxsri9XX3CQARrDA6pemgmLcIbeoUAW
- 47wkKGHGhfGKeLdaWjQll0R2EgBjUmxrZGin292KPGe.jMSdJakZHJ.6ZJrgxD9IgI0grczeFpvO
- ekdywxYrXO5ZwrIWknRQ8CRDRDIKm4WO8Uob55sbb4rqwU3tfSpV0zGivf_GNNfbLP0vr6psHLhI
- WWiWssmTlGAAfAKHjplB4ulxXAxD36bJr2xuPSH0jbMU7hN6lPPUVjCioy59WfwozkNizZbCpVyM
- tuTO0DjPlQoZ4PIm.VCB4_faRjlHTq33toEwe5afSx8RvYKS3qv6U9r.SZZbjnsuKNWEBeeSITz4
- rTySE2R7zm6NyaMuaBSCTCr8fQWgdmsKIugOroxvlFO9zjZ7NpSSSaNp2MbV1z6R8lmvSTrhp_jP
- jtq.KPyK2gdKX2MLwlj5TWAqJTzNUJxfAy_.rKafURCUPRPD3Vt00x3_0TzAhV6MnwDgbAyN9gvc
- vKKnnMaKN5mCpyQUGS8e_bDfEQ6riX8erMdM8ZY2lX6H8csRZ_rQg4WT46NTfzfrE5n7_u_ZoI_n
- 5zBWFwDVuErF06X9GBGM5BgNdm8aGW2zsgKfcm7ha6GQr9pzihPD03zq2uJ.jlitFA_o6pb4ldhp
- 10Qyvtt52r_6.zm9_sKGCUqvLzslrNlQfrhFj8ZXdxniID.uoyN7hObKP._Ig0eOuZQOIf.SyDuO
- TP2Xvy2aXANQDrlQ3BrdSZwcsmUnDqIzbxJv62lPXyhT_lBLFV7RgwdmyOiT3kakaq3g59NYkTrQ
- z7Y0GrudBqz63THBLScWHNON5zpdWjnYB0XxZVt49jvp.Pomyaltr8yhRjwPL5wW4MHiiqqnk8Sg
- ZBuYcf51pdGwQ78iipLY.5d.jjZzLRUnUGlUnDTYnjIjfCJQoStjF3Q2er7.F5OMGXUqEHu3a2Xr
- nu.mulBiuCJhQnjquB52baCj9XO0aCZLXUe11iZJbhm_oOiLUQh.oIZeusYXTO_NMUXTKvKR8TLa
- 6SA.rBiukqydMKZQQbiPAG5ZnlN5rEVXMvx0VvntA9W344tYyGunGkcDZh1Ln7AoOZwjXUrRwPlJ
- ietZb5nGVAXbkvy6k_3SwUKjccxiRT5GDagS2bHS5fUtXgPE9cDMrrDsP1cAWBjHEtuFw0dyoYtK
- psDcJTKb31CUnYfZls.74AVPDP4gao9BIfE_tbNX1sf7liwJRyHGaZM1TiyWCcqJ7QaatWf.FD6C
- NKz_yP0a1Ekrc4M.XBOEUTdhwahobd_jSQM6ZrhE4XY8xT16lubnrq7gK8zug54ptu_q.P1chMwy
- uyveHSwlcGMHKgscwIEAyBv7EK_ie7_Sa7e3UpuXo4CsaLjDCoK8dBZsQD4TwKTx3sn6eqyCII29
- gqtxjDJTOJgoBDZZy3kupGIZ5xEV1DIioX9Sw5ChuHtEuDfotd5JUE.a2xBjUnbhhL2OUc_Kwvd.
- 7uaxsOA_q.TLjog0JtPqAe4HsyDntYYqEd60nw_4wicsGX3SZJwP5wjNhq_8HU_7KBCPs1vBhtCv
- tdOJDtteB2XVNjiXFqwwYy0oAryUm72jqeJO.Ux.ErcGgo8fPSAKec4JxAlXJqj0DPA_GHaKUpmg
- oIDKwQUa_o_R5YHvbKGxvX2Ls3kKI_25Bk0kU9yVCEwTt0S6y0MxOIMnN8elXrIq_GEiBdzQpXGK
- qESLP._ghoBU9bkV9o4K2VOTfjnjOkreGMoLJZdBD9EKUWBEwBKZHmdg0ZMkMwPaSOl3fi9LgbaW
- N0KY38wxPDFde1DNvxwFSo6zdgqM892Fi_EY1lli0ag41tSunxWE8aT9r4DoopRb4Q6jl6NdFyUm
- NLjpSX7AOBhiK240UKMoW6MPQ2rIQzy4mTWUbMQynnwh9HmMqX4n0kruEY0pFzC5zU7kb_jHo29N
- FkQcpIpfoTqrBLSGAcPzB7upMz.d8IBKgz3H6FvbztCWLy.fVb_Jaaq53pU0CNuxkEgJ.1TDc7.g
- T6qmTt3rcM1YlUkgiWR7heHqYuLzKEBY6P4DJec04VAClxF1t8OELcqCWHARxKfNpSUp5H5BhdfA
- B4Gfe6gCERWJltMgB61lKuhtGi8aDnjXttVkw7WKx.wgecwoHHDEuQjePkRqv0PSiFJtTsLAiiZI
- SddbpF2rQRlAUs1juSHnPCs46eXtuZ6eOe1FrkwqR6XmwQDmEefKPQYd4B1C3KY02WII_jMLULO1
- 0ozjuhaiM41p79ieknU7TOzoyCaSWIAlYo8Ezi2YkT5A9ApybXyHeItPLBIY6PSXBLkphS.8SwnT
- fRvIupq_s2uszsW2cE6pFYOu4B.3m0_O.asZcVp8pCu6LJlS2fcLw.YUi83usejrhHOnQr7XHah7
- EhnLtWnWlXtUU3YA.6vR0LpYI9ZBez4JgGJRIdkxDBOlesaYmOa_Vz_UvynlyHJ8yZSRUbdmzOLS
- BgK4uaF66N2D9Qk6ru.QP7omNGvtPnYcybiasNpmjUtfvs3XVWun6IJq3dq7FC0YabyiQ3gKSdJ3
- 8SDWcZx08XWAbBrGPtv57D7hItZvJrLSJGlKFgShw4GyjVfkzXhZfFuNRS20_5IqzQM06_stD3JV
- iehMCit2ktCCfYY2GT8rHuSPE.8npIS60o6NmAbZN3Dig0WgG85nV.DP_4p3YCd0qrsPy35PTcwf
- ddrFC7faeQ.CZD9h_aKkhMKXRALjCIk3t9d5JwQGNbBz4gyrr.wdGFg0TWygjc_vhh.Sa1hoQQWt
- .nar4LpeFafYKPMJjuOcUPrsLfW9em1z5a1q6lc5LhcnnwrzAsVAyBm9V0hm6SB2203AXaJaWyOa
- N9TBodB_bZXr3fqJdeA.YwNZKMmSzuTktdEbn47MFrrDLeEtGt7aDmZCeMmrsr5FK.zkPt7zFK5i
- mPAJbhwIbS7IVHpBeL6vUjRWvT1DwzudrR92In9JwwH_37LuJfYqHC_XE4.fyuQGvexq7v2PwD4.
- qFgIf58Y6gmqgXR5Lbn4pRBzMe3eH1nMpPdiyFtf6qSlnn3d9j_YvFXahqhGcWba6R0e4FB4MOBX
- Hbg_V4qI7M2GYQISWS5e44ncEkkCHjxrRlQkiHK5mYVMOp3fyOcuuZQyYg2F2A7q9DkzvmuIGK5d
- OYccRPRPmDnNesPb3aF6HSR0U122fV9K0Rfla3HQezNMyXuWYjWvVVAebIWrOJ1yKd_o3Nr__ZTN
- 2cHIV0cLQAMBVy5c8_IOYo2sL.AwGW4n4JXtVB.0mM26DCFruR.L1zopQu4X.6E.MT7nzlw9149N
- 3Ut9rGos9AnBn82NKobBSo6.eIiLBqDPq0_l2r_KRHY5PEQpu9ez_tvjblTvbi4NGYNIYGxXGMKn
- 1xs0okckDFlcV1M.507WXfnYk.mNZzBYY9o4ojwYajJKNXNitA1m_VMp6UaHRRWo7nO61dLXgjXR
- i1NQoofnqTvqcTucr5N_8CqzEOrcCzlBxq7hSHYk8XKifT3Mxkp41ctzRNfrDJ7NVc3l45LyXm0Z
- xOOa1qUKBBgwCFRCxWCWJ8YqmmPnef_bFeDl6OwXPtzx18AsvUBm3_KdbJKBqERg5ttv1Bs6ExKH
- W87Mwep1z5HxHoKMMpraCxC0Rfa2htbjzzcgRFmwhVe.xYJ4VJwXCC4xqLBsifEluM20wpkoKaey
- G.rNW
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ir2.yahoo.com with HTTP; Wed, 28 Oct 2020 09:11:01 +0000
-Date: Wed, 28 Oct 2020 09:11:00 +0000 (UTC)
-From: FEDERICO QUEVEDO <federico_quevedo@yahoo.co.uk>
-Message-ID: <525698599.6588543.1603876260342@mail.yahoo.com>
-Subject: COVID-19
+	by ml01.01.org (Postfix) with ESMTP id E14A6162EA068;
+	Wed, 28 Oct 2020 04:28:33 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=79.43.3.251; helo=host-79-43-3-251.retail.telecomitalia.it; envelope-from=countrified64@o1.e.notification.intuit.com; receiver=<UNKNOWN> 
+Received: from host-79-43-3-251.retail.telecomitalia.it (host-79-43-3-251.retail.telecomitalia.it [79.43.3.251])
+	by ml01.01.org (Postfix) with ESMTP id E3738162CDC2A
+	for <linux-nvdimm@lists.01.org>; Wed, 28 Oct 2020 04:28:28 -0700 (PDT)
+Received: from [49.3.9.88] (helo=lgnq.vzaolt.o1.e.notification.intuit.com)
+	by host-79-43-3-251.retail.telecomitalia.it with esmtpa
+	(envelope-from piedl0@o4.e.notification.intuit.com)
+	id NRC1aHeUMYoijJ.017
+	for linux-nvdimm@lists.01.org; Wed, 28 Oct 2020 12:28:30 +0100
+Received: from [178.55.203.178] (account piedl0@o4.e.notification.intuit.com HELO TOBIFYH.REGUSYL.cc)
+	by host-79-43-3-251.retail.telecomitalia.it (Postfix)
+	with esmtpa (Exim 4.86) id BA42DC6D42 for linux-nvdimm@lists.01.org; Wed, 28 Oct 2020 12:28:30 +0100
+To: linux-nvdimm@lists.01.org
+From: "Amazon.com" <fba-noreply@amazon.com>
+Subject: FBA Inbound Shipment Bill of Lading Ready (FBA126044ETA)
+Message-ID: <519546.20201028122830@dmucmybei.kfnaxjq.o1.e.notification.intuit.com>
+Date: Wed, 28 Oct 2020 12:28:30 +0100
 MIME-Version: 1.0
-References: <525698599.6588543.1603876260342.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16868 YMailNorrin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
-Message-ID-Hash: G3KT2PIRM2NJ35JYZ6R6GSAVEC2MG52D
-X-Message-ID-Hash: G3KT2PIRM2NJ35JYZ6R6GSAVEC2MG52D
-X-MailFrom: federico_quevedo@yahoo.co.uk
+Message-ID-Hash: YGNHT4BKNLAFQMZDPKMJVHOAYOBMLDAX
+X-Message-ID-Hash: YGNHT4BKNLAFQMZDPKMJVHOAYOBMLDAX
+X-MailFrom: countrified64@o1.e.notification.intuit.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: "Amazon.com" <fba-noreply@amazon.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/G3KT2PIRM2NJ35JYZ6R6GSAVEC2MG52D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YGNHT4BKNLAFQMZDPKMJVHOAYOBMLDAX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCi0tIA0KRGVhciBCZW5lZmljaWFyeQ0KUkU6IFVORFAgLUNPVklELTE5IGFwcHJvdmVkIEZ1
-bmRzIGZvciB0aGUgeWVhciAyMDIwLg0KVGhlIGNvcm9uYSB2aXJ1cyBoYXMgaW1wYWN0ZWQgb24g
-dXMgYWxsLiBIb3dldmVyLCB0byBoZWxwIGFkZHJlc3NjaGFsbGVuZ2VzIGZhY2luZyB0aGUgYnVz
-aW5lc3MgY29tbXVuaXR5LCB0aGUgVU5EUCBsYXVuY2hlZCBhIHNwZWNpYWxjb3ZpZC0xOSBSZXNw
-b25zZSBGdW5kIG9mICgkOCw1LDAwMCwwMDAuMDApIGZvciBlYWNoIGJ1c2luZXNzIGVudHJlcHJl
-bmV1cihzKSBvbmx5Lg0KV2UgYXJlIGdsYWQgdG8gYW5ub3VuY2UgdG8geW91IHRvZGF5IHRoYXQg
-dGhpcyBBdWd1c3QgYm9keSBpbmNvbmp1bmN0aW9uIHdpdGggV29ybGQgQmFuayBoYXZlIGNvbGxl
-Y3RpdmVseSBhcHByb3ZlZCBhbmRzaWduZWQgdGhlIFJlbGVhc2Ugb2YgKCQ4LjU1LDAwMCwwMDAu
-MDApIHRvIHlvdSwgYXMgcGFsbGlhdGl2ZS9TdGltdWx1cyBmdW5kIGFzIGFuIGVudHJlcHJlbmV1
-ci4NCkFwcGxpY2F0aW9uIFByb2Nlc3M6KGEpIEFwcGxpY2F0aW9uIGZvcm0gd2lsbCBiZSBnaXZl
-biB5b3UgdG8gZmlsbCBhbmQgcmV0dXJuLihiKVlvdXIgZGlyZWN0IHRlbGVwaG9uZSBhbmQgZmF4
-IG51bWJlcnMgd2l0aCB3aGF0c2FwcCBudW1iZXLCoChjKSBZb3VyIG1lYW5zIG9mIElkZW50aWZp
-Y2F0aW9uIG9yIHBhc3Nwb3J0IGlkIGNhcmTCoChkKUFwcGxpY2F0aW9uIGZvcm0gbXVzdCBiZSBz
-dWJtaXR0ZWQgd2l0aGluICgzKSBidXNpbmVzcyBkYXlzKGUpQXBwbGljYW50cyBtdXN0IHJlZ2lz
-dGVyIGdlbnVpbmUgZGV0YWlscyB0byByZWNlaXZlIHRoZSBzYWlkIGZ1bmR0aHJvdWdoIG91ciBh
-Y2NyZWRpdGVkIG9uLWxpbmUgYmFua2luZyBzZXJ2aWNlcyBvciBieSBBdG0gY2FyZCBkZWxpdmVy
-LihpKVBheW1lbnQgb2YgJDguNSwwMDAsMDAwLjAwIHRvIHN1Y2Nlc3NmdWwgQXBwbGljYW50cy9l
-bnRyZXByZW5ldXJzIGlzbWFkZSBieSBVTkRQIHRocm91Z2ggb3VyIGFjY3JlZGl0ZWQgYmFuayhz
-KSBpbiBBbWVyaWNhIOKAkyBFbmdsYW5kIHN1Y2hhcyBDby1vcGVyYXRpdmUgSlAgTW9yZ2FuIENo
-YXNlIEJhbmsgVVNBLihpaSlUaGlzIHByb2NlZHVyZSBpcyBjb25maWRlbnRpYWwgYW5kIG9ubHkg
-Zm9yIHRoZSBhcHBsaWNhbnQvYmVuZWZpY2lhcnkuDQpXZSBhd2FpdCB5b3VyIGNvbXBsaWFuY2Ug
-YXMgc29vbiBhcyBwb3NzaWJsZS4NCllvdXJzIHRydWx5LEpvaG4gTSBGbGludMKgRmluYW5jaWFs
-IFJlc29sdXRpb24gRGVwYXJ0bWVudA0KV2hhdHNhcHAgbnVtYmVyICsxKDU3MSk0NDQtNjg0NkUt
-bWFpbDogaW5mX29yZXYxQGxpdmUuY28udWvCoMKgDQoNCg0KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
-aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
-bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Greetings from Amazon.com
+
+The Bill of Lading document on your inbound shipment (FBA126044ETA)
+
+For your convenience, we have also attached a copy of the initial Bill of Lading to this email.
+
+Your carrier contact information:
+CENTRAL TRANSPORT INTERNATIONAL INC
+
+
+
+You can track the status of all inbound shipments, online by visiting Seller Central at:
+https://sellercentral.amazon.com/gp/ssof/shipping-queue.html
+
+If you've examined your shipment, but still need assistance,
+please contact Seller Support.
+
+Thank you for using Fulfillment by Amazon.
+
+Sincerely, 
+Amazon Services
+
+--------------------------------------------------------------------------
+This email was sent from a notification-only address that
+cannot accept incoming email. Please do not reply to this message.
+--------------------------------------------------------------------------
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
