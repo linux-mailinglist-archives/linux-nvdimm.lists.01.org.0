@@ -2,36 +2,34 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DD329CFBC
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Oct 2020 12:38:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D1829D02A
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Oct 2020 14:54:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F22DF162FD6E2;
-	Wed, 28 Oct 2020 04:38:03 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=51.253.120.69; helo=[51.253.120.69]; envelope-from=desmond65@o4.e.notification.intuit.com; receiver=<UNKNOWN> 
-Received: from [51.253.120.69] (unknown [51.253.120.69])
-	by ml01.01.org (Postfix) with ESMTP id 2E6BE162FD6E0
-	for <linux-nvdimm@lists.01.org>; Wed, 28 Oct 2020 04:37:56 -0700 (PDT)
-Received: from WOHAWOK.o4.e.notification.intuit.com (WOHAWOK.o4.e.notification.intuit.com
- [51.152.165.5])        by  with SMTP id
- iivclpn9f5tqrq9.6.20201028143755; Wed, 28 Oct 2020 14:37:55 +0300
-Subject: FBA Inbound Shipment Bill of Lading Ready (FBASGD9E4WCO)
+	by ml01.01.org (Postfix) with ESMTP id 5F39415A1113F;
+	Wed, 28 Oct 2020 06:54:10 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.229.185.197; helo=[223.229.185.197]; envelope-from=waders032@rsapps.net; receiver=<UNKNOWN> 
+Received: from [223.229.185.197] (unknown [223.229.185.197])
+	by ml01.01.org (Postfix) with ESMTP id DF97B15A11139
+	for <linux-nvdimm@lists.01.org>; Wed, 28 Oct 2020 06:52:39 -0700 (PDT)
+Received: from  (
+ [189.121.92.81])        by  with SMTP id
+ Rq0lDLgUG1eP2AB.863; Wed, 28 Oct 2020 19:22:38 +0530
 From: "Amazon.com" <fba-noreply@amazon.com>
-To: linux-nvdimm@lists.01.org
+To: edk2-devel-owner@lists.01.org
+Subject: FBA Inbound Shipment Bill of Lading Ready (FBA278PQ1O66)
 MIME-Version: 1.0
-Message-ID: <202058.326850@WOHAWOK.o4.e.notification.intuit.com>
-X-Priority: 3
-Date: Wed, 28 Oct 2020 14:37:55 +0300
-Message-ID-Hash: TGA7FTC2TRV3KUFJUKTZDYV57XFACNW4
-X-Message-ID-Hash: TGA7FTC2TRV3KUFJUKTZDYV57XFACNW4
-X-MailFrom: desmond65@o4.e.notification.intuit.com
+Message-ID: <114703.a12f28b9801f@VORILEX.rsapps.net>
+Date: Wed, 28 Oct 2020 19:22:38 +0530
+Message-ID-Hash: OHFJYV5MTXLPK532LVPG3EVBWJGEFGBE
+X-Message-ID-Hash: OHFJYV5MTXLPK532LVPG3EVBWJGEFGBE
+X-MailFrom: waders032@rsapps.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Disposition: inline
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TGA7FTC2TRV3KUFJUKTZDYV57XFACNW4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OHFJYV5MTXLPK532LVPG3EVBWJGEFGBE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -42,7 +40,7 @@ Content-Transfer-Encoding: 7bit
 
 Greetings from Amazon.com
 
-The Bill of Lading document on your inbound shipment (FBASGD9E4WCO)
+The Bill of Lading document on your inbound shipment (FBA278PQ1O66)
 
 For your convenience, we have also attached a copy of the initial Bill of Lading to this email.
 
