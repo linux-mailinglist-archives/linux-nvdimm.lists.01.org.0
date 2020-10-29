@@ -1,64 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DCC29E3A5
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Oct 2020 08:11:58 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E0829E8CC
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Oct 2020 11:16:54 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 431B11638992A;
-	Thu, 29 Oct 2020 00:11:56 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.140.238.162; helo=frwqg.net.cn; envelope-from=ttdhrs@frwqg.net.cn; receiver=<UNKNOWN> 
-Received: from frwqg.net.cn (unknown [103.140.238.162])
-	by ml01.01.org (Postfix) with ESMTP id F241116381CAB
-	for <linux-nvdimm@lists.01.org>; Thu, 29 Oct 2020 00:11:52 -0700 (PDT)
-Message-ID: <C786B3C86F1AAD143F1D30FC5CAF2E08@frwqg.net.cn>
-From: =?utf-8?B?5LiJ6I+xVUZK6YqA6KGM?= <account_post@tr.mufg.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?77yc6YeN6KaB77ye44CQ5LiJ6I+x77y177ym77yq44OL44Kz44K56YqA6KGM44CR44GU5Yip55So56K6?=
-	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
-Date: Thu, 29 Oct 2020 15:11:40 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19431
-Message-ID-Hash: 5AWTI7M554RSNGV43QUVKAXLCDBVTEPR
-X-Message-ID-Hash: 5AWTI7M554RSNGV43QUVKAXLCDBVTEPR
-X-MailFrom: ttdhrs@frwqg.net.cn
+	by ml01.01.org (Postfix) with ESMTP id D8E1D16381CD6;
+	Thu, 29 Oct 2020 03:16:51 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+253bd1d761fb220e0d1c+6276+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 5663116381CD5
+	for <linux-nvdimm@lists.01.org>; Thu, 29 Oct 2020 03:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=oDJgefKs9xoc4uZr+/1eK6hrCKP+Vr9doGZVzreNMJQ=; b=etZnIfsbPOgHfGNEo+WrBNGg68
+	psjP8u9zcw9rY93vQrENi8S9JJWh78rQwpB/1s67UrtzF3D1mzqU67tjBGqCXgITiHmzEzjvg/XTm
+	xanT4BVibDehZMYHReOnVQwq+5Jfc5vj+Gl8Xk649dMRLl/zTWK1ObGjxOgKE0E4UB/QWyLvxlOxj
+	9j1MojuGs4Hw/VAfeQ7OT28ty65X1kRSFX15YfQYY2VAw+ZsEy0gldW/7kwmEfiVSOiz3E7vmz8sv
+	zOsd8qkez+eKsy8IDwRhqHsgB2nbHgAno0OQtIf8s8HCAK0UI+dGhu2siVirEy5HQ/gT3OWqk1cvq
+	EnOa7oog==;
+Received: from 089144193201.atnat0002.highway.a1.net ([89.144.193.201] helo=localhost)
+	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1kY4z4-000453-OP; Thu, 29 Oct 2020 10:16:43 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: simplify follow_pte a bit
+Date: Thu, 29 Oct 2020 11:14:30 +0100
+Message-Id: <20201029101432.47011-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: UKGKRI6EQHSDW6VQ555QI6F3DGGTUY5O
+X-Message-ID-Hash: UKGKRI6EQHSDW6VQ555QI6F3DGGTUY5O
+X-MailFrom: BATV+253bd1d761fb220e0d1c+6276+infradead.org+hch@casper.srs.infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Daniel Vetter <daniel@ffwll.ch>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5AWTI7M554RSNGV43QUVKAXLCDBVTEPR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UKGKRI6EQHSDW6VQ555QI6F3DGGTUY5O/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQrjgYTjgaTjgoLlvIrnpL7jgqvjg7zjg4njgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorj
-gYzjgajjgYbjgZTjgZbjgYTjgb7jgZnjgIINCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip
-55So44Gu5oCl5aKX44Gr5Ly044GE44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW
-44K344K544OG44Og44CN44KS5bCO5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvj
-g7zjg4njga7jgZTliKnnlKjjgavlr77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPj
-gabjgYrjgorjgb7jgZnjgIINCg0K44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip
-55So44GL44Gp44GG44GL44KS56K66KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W
-5byV44GM44GC44KK44G+44GX44Gf44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr
-44O844OJ44Gu44GU5Yip55So44KS5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB
-44GU6YCj57Wh44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GX44Gf44CCDQoNCuOBpOOBjeOBvuOB
-l+OBpuOBr+OAgeS7peS4i+OBuOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWI
-qeeUqOeiuuiqjeOBq+OBlOWNlOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0K44GU5Zue
-562U44KS44GE44Gf44Gg44GR44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So5Yi2
-6ZmQ44GM57aZ57aa44GV44KM44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB5LqI
-44KB44GU5LqG5om/5LiL44GV44GE44CCDQoNCuKWoOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOC
-iQ0KDQrjgIBodHRwOi8vd3d3Lm11ZmcuemItaXByLmNvbS8NCg0K4pag55m66KGM6ICF4pagDQrk
-uInoj7HvvLXvvKbvvKrjg4vjgrPjgrnpioDooYwNCuOAgGh0dHA6Ly93d3cubXVmZy56Yi1pcHIu
-Y29tLw0K44CS5p2x5Lqs6YO95Y2D5Luj55Sw5Yy65aSW56We55SwNC0xNC0x56eL6JGJ5Y6f77y1
-77yk77y4Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
-bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1
-bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5v
-cmcK
+Hi Andrew,
+
+this small series drops the not needed follow_pte_pmd exports, and
+simplifies the follow_pte family of functions a bit.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
