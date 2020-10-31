@@ -1,68 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E28A2A7973
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Nov 2020 09:32:03 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC8D2A7AC1
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Nov 2020 10:42:07 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EA34A166C6142;
-	Thu,  5 Nov 2020 00:32:00 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=80.211.27.207; helo=server1.mail.fullbizgoal.com; envelope-from=ethan.smith@fullbizgoal.com; receiver=<UNKNOWN> 
-Received: from server1.mail.fullbizgoal.com (mail.fullbizgoal.com [80.211.27.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 12B98166C6140
-	for <linux-nvdimm@lists.01.org>; Thu,  5 Nov 2020 00:31:57 -0800 (PST)
-Received: by server1.mail.fullbizgoal.com (Postfix, from userid 1001)
-	id 6F309A5322; Thu,  5 Nov 2020 08:30:51 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fullbizgoal.com;
-	s=mail; t=1604565115;
-	bh=1A+RQztZunBjkjQlXgr2uQY18vlGaIq8j7jGOmWqiI0=;
-	h=Date:From:To:Subject:From;
-	b=z86tqx0xopwtsCSkI7qTOCb0Ja+Q3BAuOiLe1xd+NBQmvVuHVEKHMRyQ+9D5SMhMb
-	 iVB2OBR+zsBkF9fGxzHXiPpiMjN2lIIOFimldb6TRfBWAg2xtLggYk1by+akAYpHuN
-	 S8vHm7oQ7TKWXYOknIF1oLGmdH1Pw1C01T5WB071Sihzdn6EyHTk6jNOUhaTlgf+ha
-	 9J/sA3doeiBINjiP56ADUHAVAWAE3aW2ILR6w774Jh478sS9kxmai9xjfUVf51cC4n
-	 prQzBTwD5vL16i+S7TsrX7fadSyJz90GWeyDb1wiXjIJ0vP+nxW4BpD3uRYPPJHYlV
-	 fh40/9/0Ol8iw==
-Received: by mail.fullbizgoal.com for <linux-nvdimm@lists.01.org>; Thu,  5 Nov 2020 08:30:14 GMT
-Message-ID: <20201105074501-0.1.2o.ezus.0.8nbs6nl4n6@fullbizgoal.com>
-Date: Thu,  5 Nov 2020 08:30:14 GMT
-From: "Ethan Smith" <ethan.smith@fullbizgoal.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: Disinfectant
-X-Mailer: mail.fullbizgoal.com
+	by ml01.01.org (Postfix) with ESMTP id 81633166AD3D4;
+	Thu,  5 Nov 2020 01:42:05 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.110.34.91; helo=mail.vitalaxia.com; envelope-from=m.meissonnet@uni-vers.net; receiver=<UNKNOWN> 
+Received: from mail.vitalaxia.com (unknown [195.110.34.91])
+	by ml01.01.org (Postfix) with ESMTP id D69771667C951;
+	Thu,  5 Nov 2020 01:42:00 -0800 (PST)
+Received: from User ([103.99.1.170]) by vitalaxia.com with MailEnable ESMTP; Sat, 31 Oct 2020 05:54:11 +0100
+From: "euro-millions"<m.meissonnet@uni-vers.net>
+Subject: You're a winner!
+Date: Fri, 30 Oct 2020 21:54:08 -0700
 MIME-Version: 1.0
-Message-ID-Hash: I5BQNA4VTOCXXWPTHTN7ICOZ2PXRTE47
-X-Message-ID-Hash: I5BQNA4VTOCXXWPTHTN7ICOZ2PXRTE47
-X-MailFrom: ethan.smith@fullbizgoal.com
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <6592BAF8A7ED4A4BAB7009F3220E47A7.MAI@vitalaxia.com>
+Message-ID-Hash: N5F2PBC4F5K4OKMW7UG7NVPTQHEQEWMI
+X-Message-ID-Hash: N5F2PBC4F5K4OKMW7UG7NVPTQHEQEWMI
+X-MailFrom: m.meissonnet@uni-vers.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: wkennth@zohomail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I5BQNA4VTOCXXWPTHTN7ICOZ2PXRTE47/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/N5F2PBC4F5K4OKMW7UG7NVPTQHEQEWMI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
 
-Good morning,
-
-looking for companies interested in raising additional capital by diversifying their offer in soaps, liquids and gels for hand disinfection and cosmetics for body and hair care.
-
-The distribution of innovative products corresponding to the current preferences of customers in the field of hygiene and preventive healthcare allows our partners to gain new markets and achieve better economic results.
-
-In addition to products with bactericidal action, our range includes shower gels, shampoos and hair conditioners, as well as efficient, concentrated detergents.
-
-The versatility (suitable for all skin types) combined with an affordable price means that customers make an informed choice of a product among others available on the market.
-
-Are you interested in cooperation?
-
-Ethan Smith
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Q09OR1JBVFVMQVRJT04hISENCg0KV2l0aCByZWZlcmVuY2UgdG8gdGhlIDEsMzUwdGggRXVyb01p
+bGxpb25zIGRyYXcgd2hpY2ggdG9vayBwbGFjZSBvbiBGcmlkYXkgMjh0aCBBdWd1c3QgMjAyMCBh
+dCAyMTowMCBDRVNUICgyMDowMCBCU1QpIGFuZCB0aGUgd2lubmluZyBudW1iZXJzIGRyYXduIHdl
+cmU6DQoNCkx1Y2t5IG51bWJlcnMgNy0xMi0xNi0xNy0zMSBTdGFyIE51bWJlciA3LTkNCk1pbGxp
+b25haXJlIE1ha2VyOiBNTkhGNTI4NzYNCnNlcmlhbCBudW1iZXIgTVpOUzQ3MDM4DQpQcml6ZSBj
+cmVkaXRlZCB0byBmaWxlIEVVUk8vODYxNjkvMjAyMA0KDQpBbiBvZmZpY2lhbCBsZXR0ZXIgd2Fz
+IHNlbnQgdG8geW91ciBhZGRyZXNzLiBZb3VyIGVtYWlsIGFkZHJlc3MgaGFzIGJlZW4gYXdhcmRl
+ZCB0aGUgc3VtIG9mIKMyLDgwNCw2MTEuMTAgR0IgcG91bmRzLiBLaW5kbHksIGNvbmZpcm0gcmVj
+ZWlwdCBvZiB0aGlzIG5vdGlmaWNhdGlvbiBieSBjb250YWN0aW5nIHlvdXIgY2xhaW1zIG9mZmlj
+ZXIgTXIuIEtlbm5pdGggV2lsbGlhbSBmb3IgbW9yZSBkZXRhaWxzLg0KDQp2aXNpdCB0aGUgbGlu
+ayBodHRwczovL3d3dy5ldXJvLW1pbGxpb25zLmNvbS9yZXN1bHRzLzI4LTA4LTIwMjAgdG8gdmll
+dyB5b3VyIHdpbm5pbmcgZGV0YWlscyBhcyBwdWJsaXNoZWQgb24gdGhlIEV1cm8tTWlsbGlvbnMg
+c2l0ZS4NCg0KRXVyby1NaWxsaW9ucyBwcml6ZXMgbXVzdCBiZSBjbGFpbWVkIHdpdGhpbiAxODAg
+ZGF5cyBvZiB0aGUgZHJhdyBkYXRlLiBUaGlzIGlzIGEgY29uZmlkZW50aWFsIG1haWwgc2VudCB0
+byBPTkxZIHdpbm5lcnMgb2YgdGhpcyBkcmF3cy4NCg0KSWYgeW91IGhhdmUgYW55IHF1ZXN0aW9u
+cywgcGxlYXNlIGNvbnRhY3Qgb3VyIGN1c3RvbWVyIHN1cHBvcnQuDQoNCg0KS2luZCByZWdhcmRz
+LA0KUGV0ZXIgSm9uZXMNCkN1c3RvbWVyIFN1cHBvcnQNCkVVUk8tTUlMTElPTlMNCkN1c3RvbWVy
+IFNlcnZpY2UNClVLIFJlZ2lvbmFsIE9mZmljZQ0KQWNvcm5zIE9ha3dvb2QgUGFyayBCdXNpbmVz
+cyBDZW50ZXINCkZvdW50YWlucyBSb2FkIEJpc2hvcCBUaG9ybnRvbiwgSGFycm9nYXRlDQpIRzMg
+M0JGLCBVSy4NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpU
+byB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4w
+MS5vcmcK
