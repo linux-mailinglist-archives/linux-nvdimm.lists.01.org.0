@@ -1,113 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58092A3284
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Nov 2020 19:06:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97762A356A
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Nov 2020 21:53:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B3550162FF498;
-	Mon,  2 Nov 2020 10:06:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.163.184.147; helo=sonic309-21.consmr.mail.ne1.yahoo.com; envelope-from=jones_desmond.j568@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic309-21.consmr.mail.ne1.yahoo.com (sonic309-21.consmr.mail.ne1.yahoo.com [66.163.184.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 18191163330B1;
+	Mon,  2 Nov 2020 12:53:29 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7055C162FF497
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 10:06:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1604340362; bh=qYgR5pn3mpwhtvVFebgfRrJOEFYsieVyZ0yx33TZy5c=; h=Date:From:Reply-To:Subject:References:From:Subject; b=mc7BHp8DxXB2ciqbrLYGZrlvr5sF1zUYoP+Ra365EJTYdIWe5XO/fe4ovSKOvl5hgCw9sfFmUwLfWdJx3ZIqLBhRv+u4LSH3yOMMPVNcMTAIzzkRedx9+uLHZzMIWJZXYldQXQDZP24n2BvoiCKbShR2IimM0onXEKmXxfzODmA2YURFVvPk7jiloRJgAmQVOElif0I5WZNP4yq6Zo/c/AE/7aq5WFSMIEILcWEph6+8+U+C6v8pOrgBghe5U+84MyNHSr2C/5f9AHx9Og/c8S2D70d1Bthkfksv53RLLdE/xFye8H1l21cBLplORBk0kpyV/YXzpFJ7K5439VcN5w==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1604340362; bh=b8xVutsvSWuiUZOLkQoJdP6+sxDOYuQSIHfZDRWI5ur=; h=Date:From:Subject; b=IwmHTO0Jo1LeT7H6DzEFjvnQkquqNay0/C+CBuR/xWskPgW71Z4U5YSYrBcpmss4Avz867ITCq66dgR+9gXv2+j35PTkU070l5Ex3nTdy+rA9X9eCJ+7SIf51mDlAwXZbNeJrFxZR0A+d/ci3a4ChoR33yKXM9+jpcG+sMFPSEb9THW94ooybQ4xfrCYEG57mOU+adne1im4aPuJtWrgGdmfsmxHhTUVPW/ZP1cTQaPNsiEMAyPwqdZyLf7WAFz241qoYBDgiXSQN6C+bQ5gU9bie6T4xHxNW39QG9Q1TP7e4w48iHa+V/QtZzPYlQu8E2Ms9kFqLtpADkOATBiyYg==
-X-YMail-OSG: _A.W4CUVM1lTsRLVpthKeFoczIP5Ebm0TeXdj1qHCYKMJQHZTTazWuJVIqC_TSb
- 6.y2ZN6V.F9RJTLLgDSixKkiH1YIiUfZh0nVDKpPf85zylV.c15INlyT1I_7uZBHj7AAzHf2EB2N
- BaDzdol8O013pn5SRKrHM3Nz1JfCY8VCyYdlq7AVA0bR6zMqO86nRx9Z2gjC6kaRYrwqVm8VZ8VN
- TOnJaNindy_Z6UsM.VqS6g0Txdlw4oT7mK0_D9XrPtrUts5rjX.nptW4CTxBiTyOup4JYshgpMc2
- M6X04WVTi3z9pHKf1WOYimi7Y_ZqH511hTwcFEaJthq31dEmrNCWhMpZYg5EDUIMPemChvvxVpt6
- a27H1x1PvS1phRbLLDBNza6_g7JyKWUtzbdlVUSQPuYpwg4muHxgqnPWKs4oL_fF00wJokPl53M0
- kVBmuNHrRKZlFGu3tXPRCdkXE.Odv3CO862h1HLZf8oh9zPgiKx3XqSFYOHuRUphQVS_.IszHhr2
- XqZX3h31qrIAFA5yGoSGjV6bJuYMYNV_I35tMqMexV7Vk2pLVc5.kyJFhW23SBea9JRxIewZn0Yv
- 9OYXGBSpTOjLwoUaQZ6yygv0qbKypUKslua4ppyytJalwAQeIwctEJ_TLRHjDIBZWLWjvHSkcMYW
- PcdvLeozNHgV1jdMFuAaMbmd_Io.bib24lzKBYFlRy4OUy0JH1vQ9rWGlxsfc4rpc3RnH4psml2.
- mHU_iprjhXj8SpfgVrDrg9QNo1MiCIKumG23AMoBRMJxdoih3d_qllpztOSp8JHQFCOXYkCVPaRs
- Ub1mV4DaZepD2ofkOSDuF97oV4XLX4YIm2xcIQsAD5RBiX1H6X4ym8EQKu4orAr9ydFhf63NVkYU
- bc1plOcnNXO0GZVE4_dCJVPAj9N62B8ylnUMGe190yuM8o4bToj3QijONhqQ7TsD1YxHMOuKs5iS
- Zms7GgawjWok8uLaL1LoLHknnFzPVYJC..f7laovNzfcpbOcFB8m539qYit8i8prBgdtegpR5Qef
- 2YGoZnq4nTzwKGzOy7aj4F_T9sWP5lmn.qtpz7GcYpAMukoaZdYWVkYt8Ye9YQZTYYVueqvuiT4_
- qKk7QevY6NDfPYUbuJqmxkurx_YsMVXXxyDz9txEyFjN7fGC2NhKx2OgLLVYCeX9X6kM9ajE373p
- k.l2D.iFRJGlB7b1mKlW3Wm.xwdBy2AIBT2Ox3s6pBd2ljiTw3Txs9gnhr9yO3Uopzxbjd0RqBOA
- GOgUIHenqdg8TvcADCOWur.eJI_FxloobiOncSINSqGne.WS1WJyp5EPFv9PGyYI8RnAwAXPQ70L
- z0cb9pAvRNf.A3CKxlg7MYE6.8kfp3Ies0xUCwujyEsCNx6C1XX_S7KflG8f1Luhe_oQDa_P6IKX
- goPO7ILJL6pD6exK_nmgJzJJdOsZvxtpR5ELEMS23zWRvbGXmGxJbsjEi2BJNfZ1WDSpi7azkNXL
- pSIubNm_YxR2px910DuuCdXyZ.0MsfqytE7y1ZgSiN0s89SJD4oThnglq1.K6vJk6f5GXLJDDdT.
- FwvZ7Gz1G2S0hclUHmfx0oyZoMeSb1LKHPTQdSp6CDOGud5lKj7_9E4p2flqMfiIe9_HnvMeutHI
- il2sl_QLMiZOhkHl2y7Us4ms9xoGQ78h6gkpL7oxp3bWa76DXOzsSeITz1DA3Wq53buOLh_Xom3u
- q4V_1l9Ro4b6raWv._JR_9AcItbDDusq3xR0wjO5LoWJ8uNao8UIJS55GlGnjOgcKHBlpGQuI_mx
- An25DYOgTUCw4d5Wvuny3wPDaOzxK4efTXIxkrIkXBp3usyCNYvD4BrmmuTqMv7BxSk1TynLO.BX
- mRlKspHZAdpw4oP1dn3RaK2YjC2EFGEak9f09J_Sk0C5dMX3u5W_kj_T7M3A1kiUjpNUIs3UPB9E
- HadQdmsKyQxhvS3KTQG5LafAvy8g9W9D6lD4SO9RU2Et16PybuU0_JucVVFsNyuylL3LwONPYsYp
- VOTFINoSrt6SVd66p7B1.c1ZffxrqkDLLyHrIoH.2apJa8nDjmTwIJVr3gTeKb25Z1bqykMRIk.z
- 28XPCG_m0pOtB.3rI0D09XHKY9qgns4KR1CiH8SzIjJP2g9xdKFf58BIc8_YFXFxFa.vLdhM84bo
- GU4pNn92A2OO8aqP0ibxsq4ryFupdKJ1Nkf6j5Dvtgf5GU5xtBPPNskA5wRffZEw5ZEumfWUuNjS
- a0GeJMJbYdRYufwHmeKOLwhb6EBmotHAz9x4VWAk6Fqyb3ZAIQdBODhWtDgSBRK83Y0nIeDSYDn1
- HEqhkJhUzCIyVtHTq1lWbDoSxzpcJ00ME7BLBlkQVqpxYTGg2OzVlF1xUptMx4UX2s0.KO7eWRqQ
- zqhrf1Fp3cyWjJiddhZApVTHw4kzsvaG3KcAECpF4gOYOz5GYYdlT2SO63X8hnWYj1yZBpX1s2EN
- 9An749eDUVT2f4CnZ5y_tva5ma0D2Pn4p.32at7j4wr37oFGPRSx4Vaj1ejomxKPXzhck5v91YDP
- RDD41HrDo6XIn8N7XmPXO4MXzi8XFvWh7T7f6RSGlth.a_tH.4pSb6VlJPOMmGHkrqA7_5isTmPH
- YhfGkSYPrD3LNu7EeWU6yoCZUQklztX9he6aFMZTTajzf1u260iDe7J5J2McsSIojrXal8OjM5Cm
- g.U2C0yf5z5nSrbMZL6vZs1uWNuM7g6M_yLUMXKz1Q5TFy206QYKBeVww9a4XHpc7Mtlm4.QJhZp
- exQF4gzeVTxwtkTYp7in01Y_Mhnp5zmz1GaK1lOFh5zZoCmGVg4ErcrgT3Xb8EEkrkik9IVQBBdE
- GgOulLqWTs3BcOgySK21S7xXzZP6woGBtR8aulRKkpEQItx0T6msEDhW9BkxsnYnwteir_WRZ.cD
- AIfSENZGuWSADJbnXxu0N8rxgqwO4bRHP62IKStpeqkXUCowrjg7aY_GsQmKRxGv4W4_nJvgKMAv
- qEh9ucRsI664YPG8hXKlLbb1K.ox4DZbcWAH_bNA2VaE6R7o6iabF2XkrIlmSXxsgCvaBnO63AgZ
- urtkJL0UxNYyuAxr21P.EZPNmVSePQHQU2YM07wO_WWJUizDlHZyJqi.DKPmF9kloPIAAXHcDSot
- dtNo17rLdGg.N5Nl0dWzz_qVpaDHOvB_egejYL6HP7W.hfsAWfH4Q3YLcSvMur9e0eGVntpgJUO_
- 1I9se6khgT0uZJCGC0Jauh7YjTvL1NDBD0_BWUk.xoAwf5U5pkIt0VL12_BP6RXj7n29DWNvkowD
- vJk2ZmFagxWW5mF6eSPrmFE6Yb4RIKM8DdhMOALey4aYqZiSwmEQ91U37m3EGeVZ.oKZKpddFIuj
- .0adQmEjFikp2JDiP9gQAu1ujUVTvSMnVfK9G9mDNXW9m76Xwnpg1poH.k0lahNcJPdpnqkVayjd
- 9I2gSHwCKgt3XH0bDYF5F8Lvhq.59K1E4pr68DWCS0lePUwydh5KorF4YF3yTHBlaCCUZsSQInpv
- 8hsWuHG5sODdRf7iTWepPCp8D8xVdXSFhtjzpcaCQQmFA93DAr0l1bWqyKFu3bteZ7dQM9RNcWyT
- LcW1z415ymEhPV2tOpeQu4vD6YLy2PJ7TXQsRV0AEEU5E9PKccbJBf18m5MOvxypfAZZw9dUcHQ_
- oC2MGCs3OnNxLB_kNDTS9E3cFloTbuER0vTTK2NllajgqGYBXhBw.xlcZgBmnCG9gCZ5BIZFaMyw
- dUiIl3c.1rREF49fiMr.3wjJMzV8hnPBWI6U2gN8xcQLMHzLtrVViUd2xp5_iJ4psE7G0WB5o0zz
- 0FcimF6Lmr5WdgjdJdUhbu5YqPmKGMMDYirUBeyHp1T0gcXOUQTqJhhXXBO3wqm1Pd9nYOs4I63i
- fNLSD1n39mIEqYTWgxM.AqQxbLaFEYpGuT619m9TquRfOVv2nYabQCz3067mTXR5Myf1Z4hf7M9C
- s2BoOapK7yqO5I1weA48sImD1cCDY3j9knH5F7pkM3NMz2oEaCFlkLUGqPXHyp2Mr4Omgjqi.B04
- tlQhAGd8C9kHekgyoBh8ruJR6eHjpmDj0y9uTIcKaer1dutuUndUlB6JDF8I6kun3cjVB_YJ6lVG
- yv2q0Pv1kla8CpC3mBMTYToSDzp6ZgOXi2Te78iKrvERDF704ut.81gJROMxhDIYoErxUAzehRHv
- OxGVvNNhagw9mKEHw4TwPGqxSGE_iJ64y51zUajz7.tPQ44ibw355qGwDItcBYGc_4KXrd9k04ly
- bKWFHfDlf8wfwAttTUGYTsim4AXfnKv9m17_.shlWMWeKM.WvQRAl5rTOmLM6..ZxVXpaxj6Lsk1
- F1xpe6TqiakUD5oI4E20DOrfjN4YKbFxeKEq09k2aw2WCiCP81dhzQQfZMrb.pWKJGa9sS0Ia9SE
- O4iv_5LdnjvtQ3nHkpTZiptuzLVHRK6drARZafxw1Ct4zu3f1PIjzcUxIJOFc7lSu4pk5yyDxLkL
- yUvA55oTVy.dwK7NS2oe7R0Ovn5Qamsso_w7JylSUQ2kKOV7cXrjrg1LNzNiBeqUxMMm4Yo5gIc8
- 2Zr8YCMEwn6LvyhXHsu6byNTLp7QcFfOg5QzfEdQcTVfMwL6t_EBIC6M64D2vq.6cY2YP6gssFcJ
- db2uLwQgxz4XqCv0v1qyQyqeLXZB6azKf.2P6rH8.kokK2ZGdoihDRbvSPPKOwBdcFxtz87YnVxP
- GYSPWnPzt7ob5Q5Q46Hyuzm0roFhFMxAl608MBfmYJtf4YkvqblpfmUkjrixFmw.nXBklBdDn2ox
- jYqgyjh35PNsTyhz5UA6mQOn1Nipu_vTfZuZ_xyW86xS5GHBr_8Vq2YKWSTjidCcfk1BsxEg.OFN
- sJLhzy9..fgD3lL.ayTtu4kOpLsOjEJ6WavE1owp.jUogq1hheYatwlnBoQJhr203DHNptTuOGYg
- kTfMiOv8_3nAutm3flanr8oh7dC0b.w2DNI6b2HXRNu8xCyVqkzZvDDcTl1Bktv84jP7QYHDVK7C
- 5T9DH4b6XEMWAdJv.gKRgvNRBDoUb.SN0T3gCR8Mlk6MGUDlPp6_cEySzFCIC1RPCC6WgbHRbYNO
- 006Lt9b6wS0qexGgxRF3RybwTRJnO8XCBYgtI0B3tJkqbixK_6rRL0.iA2K.Fs9ex.J6jZh3b0hO
- f7Sobsw8oC_LV80BBZgT6ztaZ4un9LJvNNV32ggQDjxCexeO_OownH5w_UJYBperYXfEK1mb9iyn
- OnNsihGh45yEbPxRsNFHVlnIE2WvpFDCvmUxgGyUU0eiQaLeC8iMn0ZTavI576lCqVt_AUDeXH_E
- rkr4EKDCCJpcdWrSw1MvcF.dB6247obReAyjVGFaDyXzOgSb1S.UUc1d6FCcHsKQIp_.l74e0A9m
- ln5svpoDwoFrZHvn1D9tvo6Dy9bavr8.NggUJwKdqG7o1_CiawLNvaR6vywFQlTxw6mdMB8thMYL
- _HHsIhNFyHut00.UETNzZfwM9gvAOHvqgTW2OLwt8RkU2ZIGX4n.CIER0ITFS8RM5EcU9BiV3tSm
- XDEdX_M4RX7dGh0IzuGQVIcRvFisO
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Mon, 2 Nov 2020 18:06:02 +0000
-Date: Mon, 2 Nov 2020 18:06:01 +0000 (UTC)
-From: Mariah Blanchett Johnson <jones_desmond.j568@yahoo.com>
-Message-ID: <1433791616.760840.1604340361182@mail.yahoo.com>
-Subject: From Mariah Blanchett Johnson
+	by ml01.01.org (Postfix) with ESMTPS id 47D7E163330AD
+	for <linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 12:53:27 -0800 (PST)
+IronPort-SDR: zd1RuxaDLo2hZF+qqGlCGKbEkoMUpE8wnMRIx7BXMwhL3bp/s85mJu12m3heDHoYttZk8d89AK
+ 3Tnv0LcsQoRQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9793"; a="186790450"
+X-IronPort-AV: E=Sophos;i="5.77,445,1596524400";
+   d="scan'208";a="186790450"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2020 12:53:26 -0800
+IronPort-SDR: eruNOjlfVsT+d2xNmKeCN+wdpmM7mqC5KYx6km3g5kJ42UeIdR4MSsgP0ql6/hnCLDIR4njc9h
+ tNYZRr8Q7pRw==
+X-IronPort-AV: E=Sophos;i="5.77,445,1596524400";
+   d="scan'208";a="538165889"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2020 12:53:25 -0800
+From: ira.weiny@intel.com
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH V2 00/10] PKS: Add Protection Keys Supervisor (PKS) support
+Date: Mon,  2 Nov 2020 12:53:10 -0800
+Message-Id: <20201102205320.1458656-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 MIME-Version: 1.0
-References: <1433791616.760840.1604340361182.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16944 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36
-Message-ID-Hash: 3DEQ3NIAFV3IATHVPCGZHC6IEGHQFR3S
-X-Message-ID-Hash: 3DEQ3NIAFV3IATHVPCGZHC6IEGHQFR3S
-X-MailFrom: jones_desmond.j568@yahoo.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: 6ARYGLGUA7S5VUXS72JLX4MNQ7U7IQNF
+X-Message-ID-Hash: 6ARYGLGUA7S5VUXS72JLX4MNQ7U7IQNF
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: mb8958649@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3DEQ3NIAFV3IATHVPCGZHC6IEGHQFR3S/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ARYGLGUA7S5VUXS72JLX4MNQ7U7IQNF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -116,28 +57,166 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+From: Ira Weiny <ira.weiny@intel.com>
+
+Changes from V1
+	Rebase to TIP master; resolve conflicts and test
+	Clean up some kernel docs updates missed in V1
+	Add irqentry_state_t kernel doc for PKRS field
+	Removed redundant irq_state->pkrs
+		This is only needed when we add the global state and somehow
+		ended up in this patch series.  That will come back when we add
+		the global functionality in.
+	From Thomas Gleixner
+		Update commit messages
+		Add kernel doc for struct irqentry_state_t
+	From Dave Hansen add flags to pks_key_alloc()
+
+Changes from RFC V3[3]
+	Rebase to TIP master
+	Update test error output
+	Standardize on 'irq_state' for state variables
+	From Dave Hansen
+		Update commit messages
+		Add/clean up comments
+		Add X86_FEATURE_PKS to disabled-features.h and remove some
+			explicit CONFIG checks
+		Move saved_pkrs member of thread_struct
+		Remove superfluous preempt_disable()
+		s/irq_save_pks/irq_save_set_pks/
+		Ensure PKRS is not seen in faults if not configured or not
+			supported
+		s/pks_mknoaccess/pks_mk_noaccess/
+		s/pks_mkread/pks_mk_readonly/
+		s/pks_mkrdwr/pks_mk_readwrite/
+		Change pks_key_alloc return to -EOPNOTSUPP when not supported
+	From Peter Zijlstra
+		Clean up Attribution
+		Remove superfluous preempt_disable()
+		Add union to differentiate exit_rcu/lockdep use in
+			irqentry_state_t
+	From Thomas Gleixner
+		Add preliminary clean up patch and adjust series as needed
 
 
-From Mariah Blanchett Johnson
-Hello Dear friend
+Introduce a new page protection mechanism for supervisor pages, Protection Key
+Supervisor (PKS).
 
-I have sent you this e-mail for open discussions with you. I don't want you to misunderstand this offer in any aspect...if it is okay with you, I ask for your full cooperation. I have contacted you base on trust to handle an investment in your country/company on my behalf as a prospective partner.
+2 use cases for PKS are being developed, trusted keys and PMEM.  Trusted keys
+is a newer use case which is still being explored.  PMEM was submitted as part
+of the RFC (v2) series[1].  However, since then it was found that some callers
+of kmap() require a global implementation of PKS.  Specifically some users of
+kmap() expect mappings to be available to all kernel threads.  While global use
+of PKS is rare it needs to be included for correctness.  Unfortunately the
+kmap() updates required a large patch series to make the needed changes at the
+various kmap() call sites so that patch set has been split out.  Because the
+global PKS feature is only required for that use case it will be deferred to
+that set as well.[2]  This patch set is being submitted as a precursor to both
+of the use cases.
 
-My name is Mariah Blanchett Johnson It might interest you to know that I have US$3.600, 000.00, Three million Six Hundred thousand deposited by late father with a financial institution I want your partnership for investing the fund in your country/company. It is pertinent to ask if you can handle this fund/investment in your country, in any of this area
+For an overview of the entire PKS ecosystem, a git tree including this series
+and 2 proposed use cases can be found here:
 
-1). telecommunications
-2). Transportation industry
-3). Five star hotel
-4). property
-(5) Companies,
+	https://lore.kernel.org/lkml/20201009195033.3208459-1-ira.weiny@intel.com/
+	https://lore.kernel.org/lkml/20201009201410.3209180-1-ira.weiny@intel.com/
 
-Meanwhile, I am very honest in my dealings with people and I also demand the same from you as a Partner to be. Can I trust you with this fund?
 
-I want you to note that this is a mutual business venture there is a reward for your assistance. I shall let you know your benefit for your assistance as we proceed. For a more comprehensively about details of the fund, please contact me as soon as possible. If you find this letter offensive, please ignore it and accept my apologies.
+PKS enables protections on 'domains' of supervisor pages to limit supervisor
+mode access to those pages beyond the normal paging protections.  PKS works in
+a similar fashion to user space pkeys, PKU.  As with PKU, supervisor pkeys are
+checked in addition to normal paging protections and Access or Writes can be
+disabled via a MSR update without TLB flushes when permissions change.  Also
+like PKU, a page mapping is assigned to a domain by setting pkey bits in the
+page table entry for that mapping.
 
-Regards,
+Access is controlled through a PKRS register which is updated via WRMSR/RDMSR.
 
-Mariah Blanchett Johnson
+XSAVE is not supported for the PKRS MSR.  Therefore the implementation
+saves/restores the MSR across context switches and during exceptions.  Nested
+exceptions are supported by each exception getting a new PKS state.
+
+For consistent behavior with current paging protections, pkey 0 is reserved and
+configured to allow full access via the pkey mechanism, thus preserving the
+default paging protections on mappings with the default pkey value of 0.
+
+Other keys, (1-15) are allocated by an allocator which prepares us for key
+contention from day one.  Kernel users should be prepared for the allocator to
+fail either because of key exhaustion or due to PKS not being supported on the
+arch and/or CPU instance.
+
+The following are key attributes of PKS.
+
+   1) Fast switching of permissions
+	1a) Prevents access without page table manipulations
+	1b) No TLB flushes required
+   2) Works on a per thread basis
+
+PKS is available with 4 and 5 level paging.  Like PKRU it consumes 4 bits from
+the PTE to store the pkey within the entry.
+
+
+[1] https://lore.kernel.org/lkml/20200717072056.73134-1-ira.weiny@intel.com/
+[2] https://lore.kernel.org/lkml/20201009195033.3208459-2-ira.weiny@intel.com/
+[3] https://lore.kernel.org/lkml/20201009194258.3207172-1-ira.weiny@intel.com/
+
+
+Fenghua Yu (2):
+  x86/pks: Enable Protection Keys Supervisor (PKS)
+  x86/pks: Add PKS kernel API
+
+Ira Weiny (7):
+  x86/pkeys: Create pkeys_common.h
+  x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
+  x86/pks: Preserve the PKRS MSR on context switch
+  x86/entry: Pass irqentry_state_t by reference
+  x86/entry: Preserve PKRS MSR across exceptions
+  x86/fault: Report the PKRS state on fault
+  x86/pks: Add PKS test code
+
+Thomas Gleixner (1):
+  x86/entry: Move nmi entry/exit into common code
+
+ Documentation/core-api/protection-keys.rst  | 103 ++-
+ arch/x86/Kconfig                            |   1 +
+ arch/x86/entry/common.c                     |  64 +-
+ arch/x86/include/asm/cpufeatures.h          |   1 +
+ arch/x86/include/asm/disabled-features.h    |   8 +-
+ arch/x86/include/asm/idtentry.h             |  28 +-
+ arch/x86/include/asm/msr-index.h            |   1 +
+ arch/x86/include/asm/pgtable.h              |  13 +-
+ arch/x86/include/asm/pgtable_types.h        |  12 +
+ arch/x86/include/asm/pkeys.h                |  15 +
+ arch/x86/include/asm/pkeys_common.h         |  40 ++
+ arch/x86/include/asm/processor.h            |  18 +-
+ arch/x86/include/uapi/asm/processor-flags.h |   2 +
+ arch/x86/kernel/cpu/common.c                |  15 +
+ arch/x86/kernel/cpu/mce/core.c              |   6 +-
+ arch/x86/kernel/fpu/xstate.c                |  22 +-
+ arch/x86/kernel/kvm.c                       |   6 +-
+ arch/x86/kernel/nmi.c                       |   6 +-
+ arch/x86/kernel/process.c                   |  26 +
+ arch/x86/kernel/traps.c                     |  24 +-
+ arch/x86/mm/fault.c                         |  87 ++-
+ arch/x86/mm/pkeys.c                         | 194 +++++-
+ include/linux/entry-common.h                |  64 +-
+ include/linux/pgtable.h                     |   4 +
+ include/linux/pkeys.h                       |  24 +
+ kernel/entry/common.c                       |  62 +-
+ lib/Kconfig.debug                           |  12 +
+ lib/Makefile                                |   3 +
+ lib/pks/Makefile                            |   3 +
+ lib/pks/pks_test.c                          | 691 ++++++++++++++++++++
+ mm/Kconfig                                  |   2 +
+ tools/testing/selftests/x86/Makefile        |   3 +-
+ tools/testing/selftests/x86/test_pks.c      |  66 ++
+ 33 files changed, 1465 insertions(+), 161 deletions(-)
+ create mode 100644 arch/x86/include/asm/pkeys_common.h
+ create mode 100644 lib/pks/Makefile
+ create mode 100644 lib/pks/pks_test.c
+ create mode 100644 tools/testing/selftests/x86/test_pks.c
+
+-- 
+2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
