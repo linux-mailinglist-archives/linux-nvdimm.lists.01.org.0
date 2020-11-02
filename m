@@ -2,228 +2,121 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D8F2A3645
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Nov 2020 23:07:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C8A2A373A
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 00:36:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2247C16361029;
-	Mon,  2 Nov 2020 14:07:48 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=58.208.20.20; helo=cgnug.com; envelope-from=rcxtexc@cgnug.com; receiver=<UNKNOWN> 
-Received: from cgnug.com (unknown [58.208.20.20])
-	by ml01.01.org (Postfix) with ESMTP id 050691636102A
-	for <Linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 14:07:44 -0800 (PST)
-Received: from fegmmj (unknown [189.66.78.250])
-	by cgnug with SMTP id uP0KiicvmKo8gFXP.1
-	for <Linux-nvdimm@lists.01.org>; Tue, 03 Nov 2020 06:07:46 +0800
-Date: Tue, 3 Nov 2020 06:07:37 +0800
-From: =?utf-8?B?5p6X55Co6ZuF?= <rcxtexc@cgnug.com>
-To: <Linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?6YeH6LSt5oiQ5pys5o6n5Yi25LiO5L6b5bqU5ZWG6LCI5Yik5oqA5benICAgICDpg70=?=
-	=?utf-8?B?5Lul55So5oi35bCK6LS15L2T6aqM5Li65Lit5b+DIDIwMjAvMTEvMw==?=
-	=?utf-8?B?NjowNzo0NQ==?=
-Message-ID: <20201103060746872570@cgnug.com>
-X-mailer: Foxmail 6, 13, 102, 15 [cn]
-Mime-Version: 1.0
-Message-ID-Hash: D266ILIS5ZBHOLPWPWOOX6GODBX2H3TJ
-X-Message-ID-Hash: D266ILIS5ZBHOLPWPWOOX6GODBX2H3TJ
-X-MailFrom: rcxtexc@cgnug.com
+	by ml01.01.org (Postfix) with ESMTP id DEF921636102A;
+	Mon,  2 Nov 2020 15:36:23 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D2F8716313628
+	for <linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 15:36:20 -0800 (PST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1604360177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kn1MrKipST+qlcwJ1zIgvlMXZ9bQBl36MnESiK2hrlI=;
+	b=WO4xZRYluSA07JQGA2x48KKqtKPj2AWnFhCX4J0d8fVYBAG/4KfuMoZaJM3qbomnboDi2z
+	CNoPbn8hgmPj4tBAxx2T73ZlDljs9QXge+xSx3bZ+PcwOR5lyCNU9REeAlg9L0b+LqMlOJ
+	M+nbdv2UCJEEKxD3Vo67CqeXb6qvIcZzQJrF9+2il5iGZKzN+3o8X2F0Gk/EoJjsAsRUR+
+	Lt0wWGitJ3ETEGTmjWfa5e52sdgqUPh7KLMFsyHVdGhHUOuP7R2zhChRleod61fGgukIXx
+	i4TTKKT/QElFLXZav/sLONz5cABtcUlL8x6e++SDwGhZ6EqbgQJC25ccEH8AkQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1604360177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kn1MrKipST+qlcwJ1zIgvlMXZ9bQBl36MnESiK2hrlI=;
+	b=bDzdY9iY6ze7qjRQmBLq0m9WmLMx8uKsr4lxx48nJ3PFoOuoYOrQ6mJCbDTbxc7miMSovu
+	UMAas1KFWr29U4Dw==
+To: ira.weiny@intel.com, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH V2 00/10] PKS: Add Protection Keys Supervisor (PKS) support
+In-Reply-To: <20201102205320.1458656-1-ira.weiny@intel.com>
+References: <20201102205320.1458656-1-ira.weiny@intel.com>
+Date: Tue, 03 Nov 2020 00:36:16 +0100
+Message-ID: <871rhb8h73.fsf@nanos.tec.linutronix.de>
+MIME-Version: 1.0
+Message-ID-Hash: UFIA2BEXYDXQV37SHNGHM6AMZ2XKLM35
+X-Message-ID-Hash: UFIA2BEXYDXQV37SHNGHM6AMZ2XKLM35
+X-MailFrom: tglx@linutronix.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/D266ILIS5ZBHOLPWPWOOX6GODBX2H3TJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UFIA2BEXYDXQV37SHNGHM6AMZ2XKLM35/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCg0KDQrph4fotK3miJDmnKzmjqfliLbkuI7kvpvlupTllYbosIjliKTmioDlt6cNCg0KDQog
-MTHmnIgwNS0wNuaXpea3seWcsyAgICAgIDEx5pyIMTgtMTnml6XkuIrmtbcNCjQ2MDDlhYMv5Lq6
-KOWMheaLrOWfuSDorq3jgIHmlZkg5p2Q44CB5Lik5aSp5Y2I6aSQ44CB5Lul5Y+K5LiK5LiL5Y2I
-6Iy254K5562JKQ0K6LCB5p2l5Y+C5Yqg77ya5LyB5Lia5oC757uP55CG77yM5L6b5bqU6ZO+5oC7
-55uR77yM6YeH6LSt5oC755uR44CB57uP55CG44CB5Li7566h77yM6LWE5rex6YeH6LSt5bel56iL
-5biI562J44CCDQoNCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tDQoNCg0K6IOMIOaZrw0K56i75b2T5LuK5LiW55WM5q2j57uP5Y6G552A
-5LiA5Zy65LiW55WM5Y+y5LiK5Lil6YeN55qE6YeR6J6N5Y2x5py677yM5q2k5qyh6YeR6J6N5Y2x
-5py65a+55LyB5Lia55Sf5Lqn5ZKM57uP6JCl6YCg5oiQ5LqG5Lil6YeN5b2x5ZON77yM5ZCE5LyB
-5Lia57q357q36YCa6L+H5Yqg5by6566h55CG5p2l6ZmN5L2O6L+Q6JCl5oiQ5pys5Lul5bqU5a+5
-5Y2x5py644CC5Zyo6L+Z5qC355qE5oOF5b2i5LiL77yM5aaC5L2V6ZmN5L2O6YeH6LSt5oiQ5pys
-77yM55So5LuA5LmI5pa55rOV6ZmN5L2O6YeH6LSt5oiQ5pys5bCx5oiQ5Li65pys6K++56iL5a2m
-5Lmg55qE5Li76KaB6K+d6aKY44CCDQrph4fotK3miJDmnKzpmY3kvY4xJe+8jOWIqea2pueUmuiH
-s+iDveS4iuWNhzEwJeS7peS4iu+8geWNleS7juWOn+adkOaWmeaIkOacrOeahOinkuW6pueci++8
-jOmAmuW4uOaciTUwJeWIsDg1JeeahOaIkOacrOaYr+aUr+S7mOe7meS+m+W6lOWVhueahO+8jOmH
-h+i0reS6uuWRmOS8muWwhjYwJeeahOaXtumXtOeUqOS6juS4juWklumDqOS+m+W6lOWVhueahOWQ
-hOenjemHh+i0reiwiOWIpOOAgg0K5L6b5bqU5ZWG5a+55LyB5Lia55qE6YeN6KaB5oCn5LiO5pel
-5L+x5aKe77yM5Lq65Lus6YO95Zyo6LCI5L6b5bqU5ZWG5piv5oiR5Lus55qE5ZCI5L2c5LyZ5Ly0
-77yM5Y+v5piv546w5a6e5piv5oiR5Lus5LiN5pat5a+55byx5Yq/5L6b5bqU5ZWG5LiL6L6+6ZmN
-5L2O5oiQ5pys55qE5oyH5qCH77yM5Y+v5piv6YKj5Lqb5Z6E5pat6KGM5Lia55qE5by65Yq/5L6b
-5bqU5ZWG5ou/552A6auY5Yip5ram44CC6YeH6LSt5Lq65ZGY5Zyo5LyB5Lia5Lit6LaK5p2l6LaK
-5aSa5Zyw5omu5ryU552A6YeN6KaB6KeS6Imy77yM5aaC5p6c5piv5rKh5pyJ57uP6L+H5LiT5Lia
-6LCI5Yik6K6t57uD55qE6YeH6LSt5Lq65ZGY77yM5Zyo5YaF5aSW6YOo5a6i5oi36Z2i5YmN6KGo
-546w55qE5LiN6Ieq5L+h77yM5bCG5Lil6YeN5b2x5ZON5Liq5Lq644CB6YOo6Zeo5ZKM5YWs5Y+4
-57up5pWI77yM55Sx5q2k6LCI5Yik5oqA5ben5bey5oiQ5Li65oub6IGY5ZKM5Z+56K6t6YeH6LSt
-5Lq65ZGY55qE5LiA6aG55b+F6KaB5YaF5a6544CCDQrnjovkv53ljY7ogIHluIjlsIblhYjov5vn
-moTph4fotK3nkIblv7XkuI7lrp7nlKjnmoTph4fotK3mioDlt6fnm7jnu5PlkIjvvIzkuLrkvIHk
-uJrph4fotK3kurrlkZjmj5DkvpvkuobnroDogIzmmJPooYznmoTph4fotK3nrqHnkIbmlrnmoYjv
-vIzlr7nkuo7mg7PmjqfliLblpb3ph4fotK3miJDmnKznmoTkurrlnJ/mnaXor7TmmK/pnZ7luLjm
-nInku7flgLznmoTvvJvph4fotK3osIjliKTlhoXlrrnmtrXnm5bosIjliKTlrp7miJjnrZbnlaXj
-gIHosIjliKTkuI3lkIzpmLbmrrXmiYDpnIDopoHnlKjliLDnmoTph43opoHmioDlt6fjgIHosIjl
-iKTnmoTluLjop4Hpl67popjkuI7plJnor6/jgIHor7TmnI3lr7nmlrnnmoTljp/liJnkuI7mioDl
-t6fnrYnvvIzlpoLkvZXop6PlhrPph4fotK3osIjliKTkuK3nmoTpmr7popjvvIzlpoLkvZXlnKjo
-sIjliKTkuK3ojrflj5bkvJjlir/vvIzlpoLkvZXljJbop6PosIjliKTlg7XlsYDnrYnph4fotK3l
-kZjmnIDlhbPlv4PnmoTpl67popjvvIzmj5Dkvpvlrp7nlKjnmoTop6PlhrPlip7ms5UNCg0K6K++
-IOeoiyDnm64g55qEDQogICDkuobop6Plhazlj7jph4fotK3mtYHnqIvlkozkuqflk4Hlrprku7fo
-v4fnqIvvvJsNCu+DmOS6p+WTgeaIkOacrOeahOaguOeul+aWueazleOAgeatpemqpOOAgeihjOWK
-qOiuoeWIku+8mw0K74OY5o+Q5Y2H6YeH6LSt5pWw5o2u5YiG5p6Q6IO95Yqb77yM5o6M5o+h5Lqn
-5ZOB5Lu35qC857uT5p6E57uE5oiQ77ybDQrvg5jlrabkuaDnm4jkuo/lubPooaHliIbmnpDjgIHl
-rabkuaDmm7Lnur/lkoxRREHmlbDph4/mipjmiaPliIbmnpDvvJsNCu+DmOS7peWunuaImOahiOS+
-i+S4uuiDjOaZr++8jOaOjOaPoeaIkOacrOaOp+WItuS4juS8mOWMlueahOWNgeWkp+aWueazle+8
-mw0K74OY5LqG6Kej6YeH6LSt6LCI5Yik55qE54m554K55LiO5Z+65pys5Y6f5YiZ77ybDQrvg5jk
-uobop6PkvJjnp4DosIjliKTogIXnmoTnibnotKjkuI7miJDlip/osIjliKTlrojliJnvvJsNCu+D
-mOiupOivhuWIsOiwiOWIpOWJjeeahOWHhuWkh+W3peS9nOS4juS/oeaBr+aUtumbhumHjeimgeaA
-p++8mw0K74OY5piO56Gu5a6M5pW055qE6LCI5Yik5rWB56iL77yM5aaC5L2V562W5YiS5ZKM5a6e
-5pa95oiQ5Yqf55qE6LCI5Yik77ybDQrvg5jpoobmgp/osIjliKTnmoTnrZbnlaXkuI7mioDlt6fl
-j4rms6jmhI/kuovpobnvvJsNCu+DmOWtpuS8muWmguS9leaRhuiEseiwiOWIpOS4reWDteWxgOea
-hOWbsOWigw0KDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQ0KDQoNCuWfuS7orq0u5aSnLue6sg0K56ys5LiA5aSp77ya6YeH6LSt5oiQ
-5pys5LyY5YyW5LiO5o6n5Yi25oqA5benDQrkuIDjgIHph4fotK3miJDmnKzliIbmnpDkuI7miqXk
-u7fnrqHnkIYNCjEuIOmHh+i0rea1geeoiw0KMi4g6YeH6LSt5a6a5Lu36L+H56iL77yI6YeH6LSt
-5YiG5p6Q44CB5Lu35qC85YiG5p6Q44CB5oiQ5pys5YiG5p6Q44CB5Lu35YC85YiG5p6Q44CBUURB
-5pWw6YeP5oqY5omj5YiG5p6QIO+8iQ0K5LqM44CB5oiQ5pys5qC4566X5Z+65pys55CG6K66DQox
-LiDmiJDmnKzmpoLlv7XnmoTnkIbop6MNCjIuIOaIkOacrOaehOaIkOWPiuaguOeul+aWueazlQ0K
-My4g5oiQ5pys5o6n5Yi25qaC6L+wDQo0LiDku6Xnm4jliKnkuLrnm67nmoTnmoTmiJDmnKzmjqfl
-iLbmraXpqqQNCjUuIOaIkOacrOaOp+WItuS4reWQhOmDqOmXqOeahOS9nOeUqA0KNi4g6K6h5YiS
-5oiQ5pys5ZKM5a6e546w55uu5qCHDQo3LiDpmY3kvY7miJDmnKzooYzliqgNCjguIOebiOS6j+W5
-s+ihoeWIhuaekA0KOS4g5a2m5Lmg5puy57q/DQoxMC4gUURB5pWw6YeP5oqY5omj5YiG5p6QDQox
-MS4g5Lu35qC8L+aIkOacrOWIhuaekOeahOWNgeenjeacieaViOaWueazlQ0KYSkg5a6e57up5rOV
-DQpiKSDnm67moIfku7fmoLzms5UNCmMpIOaoquWQkeavlOi+g+azlQ0KZCkg5bqU55So57uP6aqM
-5rOVDQplKSDkvLDku7fmr5TovoPms5UNCmYpIOW4guWcuuS7t+agvOazlQ0KZykg5Yi26YCg5ZWG
-5Lu35qC85rWL566X5rOVDQpoKSDlrp7pmYXmiJDmnKzms5UNCmkpIOenkeWtpueugOaYk+eul+Wu
-muazlShBQkPkvZzkuJrmiJDmnKzms5UpDQpqKSDph4fotK3ku7fmoLzmoIflh4bms5UNCuS4ieOA
-geaIkOacrOaOp+WItuS4juS8mOWMlueahOacieaViOaWueazlQ0KMS4g5b2x5ZON6YeH6LSt5Lu3
-5qC855qE5Zug57SgDQoyLiDkvpvlupTluILlnLrnu5PmnoTkuI7ph4fotK3nrZbnlaUg77yI546w
-6LSn6YeH6LSt44CB5oyJ6ZyA6LSt5Lmw44CB5o+Q5YmN6LSt5Lmw44CB5oqV5py66LSt5Lmw44CB
-5om56YeP6LSt5Lmw5Y2P6K6u44CB5Lqn5ZOB55Sf5ZG95ZGo5pyf5L6b5bqU44CB5Y2z5pe25L6b
-6LSn5Yi244CB5a+E5ZSu44CB5L6b5bqU5ZWG6Ieq5Yqo6KGl6LSn5L2T57O7Vk1J44CB6YCa55So
-L+WfuuacrOWVhuWTge+8iQ0KMy4g6ZmN5L2O5oiQ5pys55qE562W55Wl5LiO5pa55rOVDQrop4Tp
-gb/miJDmnKzvvIzpmZDliLbmiJDmnKzkuI7pmY3kvY7miJDmnKznmoTljLrliKsNCuWFq+exu+aI
-kOacrOeahOiAg+iZke+8iOaXtuaViOOAgei0qOmHj+OAgeiAl+i0ueOAgeacuuS8muOAgeW6k+Wt
-mOOAgeeJqea1geOAgeS7k+WCqOOAgeaMgeacie+8iQ0K5Zub44CB6ZmN5L2O5oiQ5pys55qE5Y2B
-56eN5pyJ5pWI5pa55rOVDQoxKVZhbHVlIEFuYWx5c2lzKOS7t+WAvOWIhuaekO+8jFZBKSANCuah
-iOS+i+WIhuaekCDigJMg5pyo5YyF6KOFDQrmoYjkvovliIbmnpAg4oCTIOWwvOm+mem9v+i9ruWS
-jOmHkeWxnum9v+i9rg0KMilWYWx1ZSBFbmdpbmVlcmluZyjku7flgLzlt6XnqIvvvIxWRSkgDQrm
-oYjkvovliIbmnpAg4oCTIOieuumSieaVtOWQiA0KMylOZWdvdGlhdGlvbu+8iOiwiOWIpO+8iSAN
-CuahiOS+i+WIhuaekCDigJMg5Yqe5YWs5qW85qGI5L6LDQo0KVRhcmdldCBDb3N0aW5n77yI55uu
-5qCH5oiQ5pys5rOV77yJIA0KNSlFYXJseSBTdXBwbGllciBJbnZvbHZlbWVudO+8iOaXqeacn+S+
-m+W6lOWVhuWPguS4ju+8jEVTSe+8iSANCjYpTGV2ZXJhZ2luZyBQdXJjaGFzZXPvvIjmnaDmnYbp
-h4fotK0v6ZuG5Lit6YeH6LSt77yJIA0KNylDb25zb3J0aXVtIFB1cmNoYXNpbmfvvIjogZTlkIjp
-h4fotK3vvIkgDQo4KURlc2lnbiBmb3IgUHVyY2hhc2XvvIjkuLrkvr/liKnph4fotK3ogIzorr7o
-rqHvvIxERlDvvIkgDQo5KUNvc3QgYW5kIFByaWNlIEFuYWx5c2lzDQrvvIjku7fmoLzkuI7miJDm
-nKzliIbmnpDvvIkgDQpBQkMg5YiG5p6Q5rOV77yIMe+8iSDigJMgODAgLyAyMOazleWImQ0K5qGI
-5L6L5YiG5p6Q4oCT5bm/5ZGK54mMDQoxMClTdGFuZGFyZGl6YXRpb27vvIjmoIflh4bljJbvvIkN
-Cg0K56ys5LqM5aSp77ya6YeH6LSt6LCI5Yik562W55Wl5LiO5oqA5benDQrkuIDjgIHph4fotK3o
-sIjliKTmpoLov7ANCjEuIOS9leiwk+iwiOWIpA0KMi4g6LCI5Yik5Lit5Y+v6IO95raJ5Y+K55qE
-6K6u6aKYDQozLiDlvbHlk43osIjliKTlj4rlhbbnu5PmnpznmoTor7jlpJrlm6DntKANCjQuIOiw
-iOWIpOeahOW/g+eQhuaooeW8j++8iOWNlei1olzlj4zotaLvvIkNCjUuIOiwiOWIpOeahOWfuuac
-rOWOn+WIme+8iOS6pOaNolzotaLlrrZc5pWI546H77yJDQo2LiDosIjliKTnmoTkupTlpKfnibnn
-grkNCjcuIOiwiOWIpOeahOWfuuacrOmYtuautQ0K5LqM44CB5L+h5oGv5pS26ZuG5LiO6LCI5Yik
-5Zyw5L2N5YiG5p6QDQoxLiDkv6Hmga/mlLbpm4YNCjIuIOiwiOWIpOiAheWcsOS9jeWIhuaekA0K
-My4g5bi46KeB5a6a5Lu35Y6f5YiZ5LiO5pa55rOVDQo0LiDmiJDmnKzmoLjnrpfkuI7liIbmnpDm
-lrnms5UNCjUuIOWQiOWQjOS7t+agvOiuvuWumuS4juiwg+aVtOWOn+WImQ0K5LiJ44CB6LCI5Yik
-562W55Wl44CB6LCI5Yik5oqA5ben5LiO5pa55rOVDQoxLiDorq7ku7fljLrpl7TliIbmnpANCjIu
-IOiwiOWIpOaImOeVpeWItuWumueahOWbm+atpeabsg0KMy4g5aaC5L2V5LyY5YWI5o6M5o6n6LCI
-5Yik6IqC5aWPDQo0LiDmnInmlYjosIjliKTnmoTmioDlt6cNCjUuIOS7t+agvOiwiOWIpOeahOaT
-jeS9nOimgemihg0KNi4g6LCI5Yik5Lit6ZyA6KaB6YG/5YWN55qEOeS4quS6i+mhuQ0KNy4g5Zyo
-5rS96LCI55qE5YeG5aSH5Lit6KaB6ICD6JmR55qE5LiJ5Liq5Li76KaB6Zeu6aKYDQo4LiDku7fm
-oLzosIjliKTnmoTkupTkuKrmraXpqqQNCjkuIOW8gOS7t+aKgOW3pw0KMTAuIOS7t+agvOino+mH
-iueahOS6lOWkp+imgee0oA0KMTEuIOiwiOWIpOi/h+eoi+S4reeahOKAnOWNgeimgeKAneWSjOKA
-nOWNgeS4jeimgeKAnQ0KMTIuIOS7gOS5iOaYr+acieaViOiwiOWIpA0KMTMuIOiwiOWIpOeahOab
-v+S7o+aWueW8jw0K5Zub44CB5aaC5L2V5pGG6ISx5YO15oyB5oiW5YO15bGA55qE5Zuw5aKDDQox
-LiDpmbflhaXlg7XlsYDnmoTosIjliKQNCjIuIOaJk+egtOWDteWxgOeahOWNgeWkp+etlueVpQ0K
-My4g6K6p5q2l55qE5oqA5ben5LiO562W55WlDQrkupTjgIHkvJjnp4DosIjliKTogIXnmoTnibno
-tKjkuI7miJDlip/osIjliKTlrojliJkNCjEuIOS8mOengOiwiOWIpOS6uuWRmOeahOeJuei0qA0K
-Mi4g5oiQ5Yqf6LCI5Yik55qE5a6I5YiZDQozLiDmiJDlip/nmoTosIjliKQNCg0KLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQrorrIg5biI
-IOeugCDku4sgDQrnjovkv53ljY4NCiAgIOS4reWbveeJqea1geWtpuS8muW4uOWKoeeQhuS6i++8
-mw0K74Gs5Lit5Zu954mp5rWB5LiO6YeH6LSt6IGU5ZCI5Lya5qC45b+D5LiT5a6277ybDQrvgazk
-uK3lm73ph4fotK3kuI7kvpvlupTpk77nrqHnkIbkuJPkuJrlp5TlkZjkvJrkuJPlrrbvvJsNCu+B
-rOmmmea4r+eQhuW3peWkp+WtpuavleS4mu+8jOWbvemZheiIqui/kOWSjOS+m+W6lOmTvueuoeeQ
-huehleWjq+WtpuS9je+8mw0K74Gs6auY57qn5Z+56K6t5biI44CCDQroi7Hlm71DSVBT57O75YiX
-6K++56iL5o6I5p2D6K6y5biI77yb576O5Zu95L6b5bqU6ZO+566h55CG5Y2P5Lya5Y+K5Lit5Zu9
-54mp5rWB5LiO6YeH6LSt6IGU5ZCI5Lya5o6I5p2D6K6y5biIDQrkuLvorrJDUE0gLyBDUFNN77yI
-5rOo5YaM6YeH6LSt57uP55CGL+azqOWGjOmHh+i0reS+m+W6lOe7j+eQhuW4iO+8ieWFqOezu+WI
-l+ivvueoi+OAguiOt+W+lzIwMDktMjAxMOW5tOW6pkNQTemhueebruS8mOengOiusuW4iOiNo+iq
-ieensOWPt+OAgg0K5oul5pyJ5Liw5a+M55qE6YeH6LSt5LiO5L6b5bqU6ZO+566h55CG55CG6K66
-44CB5a6e5oiY5ZKM5pWZ5a2m57uP6aqM44CC5pu+5Zyo5qyn576O6Leo5Zu9NTAw5by65LyB5Lia
-566h55CG5bGC5Lu76IGM5pW05pW0MjDlubTjgILlkIzml7bkuZ/mi6XmnInkuLDlr4znmoTlm73l
-hoXlpKflnovpm4blm6LkvIHkuJrnmoTnrqHnkIbnu4/pqozvvJvku5blnKjnvo7lm73mlr3kuZDl
-hazlj7jnrqHnkIblsYLku7vogYzljYHlpJrlubTlkI7osIPoh7Pms5Xlm73pmL/lsJTljaHnibnk
-uprlpKrlnLDljLrmgLvpg6jku7vkuprlpKrlnLDljLrph4fotK3mgLvnm5HlkozkvpvlupTpk77n
-rqHnkIbmgLvnm5HvvIzkuYvlkI7lj4jlnKjnvo7lm73miLTlsJTlhazlj7jkuprlpKrlnLDljLrm
-gLvpg6jku7vkuprlpKrlnLDljLrkvpvlupTpk77nrqHnkIbmgLvnm5HvvIzpmo/lkI7lj4jku7vo
-gYzkuo7oiqzlhbBFbGNvdGVR6ZuG5Zui5Lu76ZuG5Zui5Ymv5oC76KOB5Li7566h5YWo55CD6YeH
-6LSt6L+Q6JCl5bel5L2c44CC5Zyo5aSW5LyB5ouF5Lu76auY566hMjDlubTlkI7vvIzmm77lupTp
-goDkvpvogYzkuo7mtbflsJTpm4blm6Lmi4Xku7vpm4blm6Llia/mgLvoo4Hlj4rlhajnkIPokKXo
-v5DmgLvnu4/nkIbvvIzkuLvnrqHpm4blm6LlhajnkIPnm7TmjqXph4fotK3jgIHpl7TmjqXph4fo
-tK3vvIzkvpvlupTpk77nrqHnkIbjgIHnianmtYHokKXov5DjgIHlronlhajjgIHog73mupDvvIzl
-j4rooYzmlL/nrqHnkIbnrYnogYzog73pg6jpl6jjgIINCuS4u+iusuivvueoi++8muOAiuS+m+W6
-lOmTvuS9k+ezu+inhOWIkuOAgei/kOiQpeS4jumHh+i0reeuoeeQhuOAi+OAiumrmOe6p+mHh+i0
-reeuoeeQhuOAi+OAiuaImOeVpemHh+i0reS4juiwiOWIpOaKgOW3p+euoeeQhuOAi+OAiumHh+i0
-ree7qeaViOa1i+mHj+S4juivhOS8sOeuoeeQhuOAi+OAiuWunueUqOmHh+i0reiwiOWIpOaKgOW3
-p+OAi+OAiuS+m+W6lOeuoeeQhumihuWvvOWKm+OAi+OAiumHh+i0reaIkOacrOWIhuaekOS4jumZ
-jeS9juOAi+OAiuaImOeVpemHh+i0reiwiOWIpOOAi+OAiuS+m+W6lOWVhumAieaLqeivhOS8sOS4
-jueuoeeQhuOAi+OAiuezu+e7n+WMlueahOmHh+i0reeuoeeQhuS4juacgOS9s+Wunui3teOAi+OA
-gg0KICAgIOabvuW6lOWNl+W8gOWkp+WtpueOsOS7o+eJqea1geeglOeptuS4reW/g+mCgOivt+WF
-seWQjOaSsOWGmeS6hueUseacuuaisOW3peS4muWHuueJiOekvuWHuueJiOeahCDjgIrkuK3lm73n
-jrDku6PnianmtYHlj5HlsZXmiqXlkYrvvIgyMDAz77yJ44CL77yb5Lit5Zu954mp5rWB5LiO6YeH
-6LSt6IGU5ZCI5Lya6YKA6K+35YWx5ZCM5pKw5YaZ5LqG55Sx5Lit5Zu954mpIOi1hOWHuueJiOek
-vuWHuueJiOeahOOAiuS4reWbvemHh+i0reWPkeWxleaKpeWRiu+8iDIwMDjvvInjgIvjgIEg44CK
-5Lit5Zu96YeH6LSt5Y+R5bGV5oql5ZGK77yIMjAxMO+8ieOAiyDvvJvnv7vor5Hlh7rniYjkuobm
-s6jlhozph4fotK3kvpvlupTnu4/nkIbluIjkuJPkuJrkuJvkuabjgIrkvpvlupTnrqHnkIbnmoTp
-ooblr7zlipvjgIvjgIIgDQrlnKjlt6XkvZzkuYvkvZnvvIzluLjlnKjljJfkuqzmuIXljY7lpKfl
-rabjgIHkuIrmtbflpI3ml6blpKflrabjgIHkuIrmtbfkuqTpgJrlpKflrabjgIHkuIrmtbflpKfl
-rabnrYnnn6XlkI3lpKflraborrLmjojph4fotK3lj4rkvpvlupTpk77nrqHnkIbkuJPpopjor77n
-qIvjgILov5jlupTpgoDotbTpn6nlm73pq5jkuL3lpKflrabjgIHlj7Dmub7kuJzlkLTlpKflrabo
-rrLlrabvvJsyMDA15bm06LW05paw5Yqg5Z2h5Li75oyB5Zu96ZmF6YeH6LSt6K665Z2b77ybMjAw
-N+W5tOW6lOWNsOW6puaUv+W6nOmCgOivt+WcqOWNsOW6pummlumDveaWsOW+t+mHjOWPguWKoOW5
-tuS4u+aMgeKAnEVMQ09NUCBJbmlkYSAyMDA34oCd5Zu96ZmF6YeH6LSt6K665Z2b77ybMjAwOOW5
-tOWcqOWMl+S6rOW6lOmCgOS4u+aMgeS4reWklueJqea1geS8geS4muWbvemZheWQiOS9nOmrmOWz
-sOiuuuWdm+OAgg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tDQrmiqUg5ZCNIOWbniDmiacgIOivt+WbnuWkjeiHs+S4i+aWuemCruS7tu+8
-mg0KDQoNCg0K5YWsIOWPuO+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAg6LS5IOeUqOaAu+iuoe+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICDor74g56iL77yaIOOAiumHh+i0reaIkOacrOaOp+WItuS4juS+m+W6lOWVhuiw
-iOWIpOaKgOW3p+OAiyANCuWPgiDkvJrkurox5aeT5ZCN77yaICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIOeUtSDor53vvJogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IOmCriDnrrHvvJogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIOaJiyDmnLrvvJog
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA0K5Y+CIOS8muS6ujHlp5PlkI3vvJog
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg55S1IOivne+8miAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAg6YKuIOeuse+8miAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAg5omLIOacuu+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQrk
-uLsg6KaBIOiBlOezu+S6uu+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDnlLUg
-6K+d77yaICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDpgq4g566x77yaICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICDmiYsg5py677yaICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICANCuivt+Whq+WGmeS7peS4iuS/oeaBr+W5tuWbnuWkjeiHs+aMh+Wu
-mumCriDnrrHvvIzmnKzpgq7ku7bkuLrns7vnu5/oh6rliqjlj5HpgIHvvIzor7fli7/nm7TmjqXl
-m57lpI3vvIzosKLosKLjgIIgDQoNCuaKpSDlkI0v5ZKoIOivou+8miDnqIvlhYjnlJ8NCuaJi+ac
-uuWFvOW+ruS/oe+8mjE3NzE1NTQzOTc077yI5ZCM5b6u5L+h77yJDQrnlLXor53vvJogRW1haWzv
-vJozODQ2MzEzNzhAcXEuY29tDQrvvIjor7flsIYg5oqlIOWQjSDlm54g5omnIOWPkemAgeiHs+at
-pOmCrueuse+8jOWLv+ebtOaOpeWbnuWkjeacrOmCruS7tu+8jOiwouiwou+8iSANCg0KDQoNCg0K
-DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
-Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
-DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCumDveS7peeUqOaIt+Wwiui0teS9k+mqjOS4uuS4
-reW/gw0KDQrpg73ku6XnlKjmiLflsIrotLXkvZPpqozkuLrkuK3lv4MNCg0K6YO95Lul55So5oi3
-5bCK6LS15L2T6aqM5Li65Lit5b+DDQoNCumDveS7peeUqOaIt+Wwiui0teS9k+mqjOS4uuS4reW/
-gw0KDQrpg73ku6XnlKjmiLflsIrotLXkvZPpqozkuLrkuK3lv4MNCg0K6YO95Lul55So5oi35bCK
-6LS15L2T6aqM5Li65Lit5b+DDQrpg73ku6XnlKjmiLflsIrotLXkvZPpqozkuLrkuK3lv4MKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
-IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
-IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Mon, Nov 02 2020 at 12:53, ira weiny wrote:
+> Fenghua Yu (2):
+>   x86/pks: Enable Protection Keys Supervisor (PKS)
+>   x86/pks: Add PKS kernel API
+>
+> Ira Weiny (7):
+>   x86/pkeys: Create pkeys_common.h
+>   x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
+>   x86/pks: Preserve the PKRS MSR on context switch
+>   x86/entry: Pass irqentry_state_t by reference
+>   x86/entry: Preserve PKRS MSR across exceptions
+>   x86/fault: Report the PKRS state on fault
+>   x86/pks: Add PKS test code
+>
+> Thomas Gleixner (1):
+>   x86/entry: Move nmi entry/exit into common code
+
+So the actual patch ordering is:
+
+   x86/pkeys: Create pkeys_common.h
+   x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
+   x86/pks: Enable Protection Keys Supervisor (PKS)
+   x86/pks: Preserve the PKRS MSR on context switch
+   x86/pks: Add PKS kernel API
+
+   x86/entry: Move nmi entry/exit into common code
+   x86/entry: Pass irqentry_state_t by reference
+
+   x86/entry: Preserve PKRS MSR across exceptions
+   x86/fault: Report the PKRS state on fault
+   x86/pks: Add PKS test code
+
+This is the wrong ordering, really.
+
+     x86/entry: Move nmi entry/exit into common code
+
+is a general cleanup and has absolutely nothing to do with PKRS.So this
+wants to go first.
+
+Also:
+
+    x86/entry: Move nmi entry/exit into common code
+
+is a prerequisite for the rest. So why is it in the middle of the
+series?
+
+And then you enable all that muck _before_ it is usable:
+
+   Patch 3/N: x86/pks: Enable Protection Keys Supervisor (PKS)
+
+Bisectability is overrrated, right?
+
+Once again: Read an understand Documentation/process/*
+
+Aside of that using a spell checker is not optional.
+
+Thanks,
+
+        tglx
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
