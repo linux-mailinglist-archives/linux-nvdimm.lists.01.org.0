@@ -1,1008 +1,229 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657532A3584
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Nov 2020 21:53:50 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D8F2A3645
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Nov 2020 23:07:50 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CA46F164D856D;
-	Mon,  2 Nov 2020 12:53:48 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 54A2A163330C0
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 12:53:46 -0800 (PST)
-IronPort-SDR: IvOsaN98oT+lE51DFmxbGDoPvW3PhW5CW5wzZU3If6PQj0vLJni0H4IbMeQCXX+QaSXEH3jKq6
- Q19FNBCPip9w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9793"; a="148806065"
-X-IronPort-AV: E=Sophos;i="5.77,445,1596524400";
-   d="scan'208";a="148806065"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2020 12:53:46 -0800
-IronPort-SDR: HD5Rjg1NcjvImlJjWtZIi8FarYAvbSdS0fBAl9VISW1HOxWtOEq2gi9rczOsxw+0zsQf4FWxr/
- G9cSE8y7X4Yw==
-X-IronPort-AV: E=Sophos;i="5.77,445,1596524400";
-   d="scan'208";a="305820921"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2020 12:53:45 -0800
-From: ira.weiny@intel.com
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH V2 10/10] x86/pks: Add PKS test code
-Date: Mon,  2 Nov 2020 12:53:20 -0800
-Message-Id: <20201102205320.1458656-11-ira.weiny@intel.com>
-X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
-In-Reply-To: <20201102205320.1458656-1-ira.weiny@intel.com>
-References: <20201102205320.1458656-1-ira.weiny@intel.com>
-MIME-Version: 1.0
-Message-ID-Hash: JKLEPIHSG4MDSQPUVPGMYJ72XTISG6HT
-X-Message-ID-Hash: JKLEPIHSG4MDSQPUVPGMYJ72XTISG6HT
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+	by ml01.01.org (Postfix) with ESMTP id 2247C16361029;
+	Mon,  2 Nov 2020 14:07:48 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=58.208.20.20; helo=cgnug.com; envelope-from=rcxtexc@cgnug.com; receiver=<UNKNOWN> 
+Received: from cgnug.com (unknown [58.208.20.20])
+	by ml01.01.org (Postfix) with ESMTP id 050691636102A
+	for <Linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 14:07:44 -0800 (PST)
+Received: from fegmmj (unknown [189.66.78.250])
+	by cgnug with SMTP id uP0KiicvmKo8gFXP.1
+	for <Linux-nvdimm@lists.01.org>; Tue, 03 Nov 2020 06:07:46 +0800
+Date: Tue, 3 Nov 2020 06:07:37 +0800
+From: =?utf-8?B?5p6X55Co6ZuF?= <rcxtexc@cgnug.com>
+To: <Linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?6YeH6LSt5oiQ5pys5o6n5Yi25LiO5L6b5bqU5ZWG6LCI5Yik5oqA5benICAgICDpg70=?=
+	=?utf-8?B?5Lul55So5oi35bCK6LS15L2T6aqM5Li65Lit5b+DIDIwMjAvMTEvMw==?=
+	=?utf-8?B?NjowNzo0NQ==?=
+Message-ID: <20201103060746872570@cgnug.com>
+X-mailer: Foxmail 6, 13, 102, 15 [cn]
+Mime-Version: 1.0
+Message-ID-Hash: D266ILIS5ZBHOLPWPWOOX6GODBX2H3TJ
+X-Message-ID-Hash: D266ILIS5ZBHOLPWPWOOX6GODBX2H3TJ
+X-MailFrom: rcxtexc@cgnug.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JKLEPIHSG4MDSQPUVPGMYJ72XTISG6HT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/D266ILIS5ZBHOLPWPWOOX6GODBX2H3TJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-From: Ira Weiny <ira.weiny@intel.com>
-
-The core PKS functionality provides an interface for kernel users to
-reserve keys to their domains set up the page tables with those keys and
-control access to those domains when needed.
-
-Define test code which exercises the core functionality of PKS via a
-debugfs entry.  Basic checks can be triggered on boot with a kernel
-command line option while both basic and preemption checks can be
-triggered with separate debugfs values.
-
-debugfs controls are:
-
-'0' -- Run access tests with a single pkey
-'1' -- Set up the pkey register with no access for the pkey allocated to
-       this fd
-'2' -- Check that the pkey register updated in '1' is still the same.
-       (To be used after a forced context switch.)
-'3' -- Allocate all pkeys possible and run tests on each pkey allocated.
-       DEFAULT when run at boot.
-
-Closing the fd will cleanup and release the pkey, therefore to exercise
-context switch testing a user space program is provided in:
-
-	.../tools/testing/selftests/x86/test_pks.c
-
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-
----
-Changes for V1
-	Update for new pks_key_alloc()
-
-Changes from RFC V3
-	Comments from Dave Hansen
-		clean up whitespace dmanage
-		Clean up Kconfig help
-		Clean up user test error output
-		s/pks_mknoaccess/pks_mk_noaccess/
-		s/pks_mkread/pks_mk_readonly/
-		s/pks_mkrdwr/pks_mk_readwrite/
-	Comments from Jing Han
-		Remove duplicate stdio.h
----
- Documentation/core-api/protection-keys.rst |   1 +
- arch/x86/mm/fault.c                        |  23 +
- lib/Kconfig.debug                          |  12 +
- lib/Makefile                               |   3 +
- lib/pks/Makefile                           |   3 +
- lib/pks/pks_test.c                         | 691 +++++++++++++++++++++
- tools/testing/selftests/x86/Makefile       |   3 +-
- tools/testing/selftests/x86/test_pks.c     |  66 ++
- 8 files changed, 801 insertions(+), 1 deletion(-)
- create mode 100644 lib/pks/Makefile
- create mode 100644 lib/pks/pks_test.c
- create mode 100644 tools/testing/selftests/x86/test_pks.c
-
-diff --git a/Documentation/core-api/protection-keys.rst b/Documentation/core-api/protection-keys.rst
-index c4e6c480562f..8ffdfbff013c 100644
---- a/Documentation/core-api/protection-keys.rst
-+++ b/Documentation/core-api/protection-keys.rst
-@@ -164,3 +164,4 @@ of WRPKRU.  So to quote from the WRPKRU text:
- 	until all prior executions of WRPKRU have completed execution
- 	and updated the PKRU register.
- 
-+Example code can be found in lib/pks/pks_test.c
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 931603102010..0a51b168e8ee 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -18,6 +18,7 @@
- #include <linux/uaccess.h>		/* faulthandler_disabled()	*/
- #include <linux/efi.h>			/* efi_recover_from_page_fault()*/
- #include <linux/mm_types.h>
-+#include <linux/pkeys.h>
- 
- #include <asm/cpufeature.h>		/* boot_cpu_has, ...		*/
- #include <asm/traps.h>			/* dotraplinkage, ...		*/
-@@ -1149,6 +1150,25 @@ bool fault_in_kernel_space(unsigned long address)
- 	return address >= TASK_SIZE_MAX;
- }
- 
-+#ifdef CONFIG_PKS_TESTING
-+bool pks_test_callback(irqentry_state_t *irq_state);
-+static bool handle_pks_testing(unsigned long hw_error_code, irqentry_state_t *irq_state)
-+{
-+	/*
-+	 * If we get a protection key exception it could be because we
-+	 * are running the PKS test.  If so, pks_test_callback() will
-+	 * clear the protection mechanism and return true to indicate
-+	 * the fault was handled.
-+	 */
-+	return (hw_error_code & X86_PF_PK) && pks_test_callback(irq_state);
-+}
-+#else
-+static bool handle_pks_testing(unsigned long hw_error_code, irqentry_state_t *irq_state)
-+{
-+	return false;
-+}
-+#endif
-+
- /*
-  * Called for all faults where 'address' is part of the kernel address
-  * space.  Might get called for faults that originate from *code* that
-@@ -1165,6 +1185,9 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
- 	if (!cpu_feature_enabled(X86_FEATURE_PKS))
- 		WARN_ON_ONCE(hw_error_code & X86_PF_PK);
- 
-+	if (handle_pks_testing(hw_error_code, irq_state))
-+		return;
-+
- #ifdef CONFIG_X86_32
- 	/*
- 	 * We can fault-in kernel-space virtual memory on-demand. The
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index d7a7bc3b6098..028beedd86f5 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2444,6 +2444,18 @@ config HYPERV_TESTING
- 	help
- 	  Select this option to enable Hyper-V vmbus testing.
- 
-+config PKS_TESTING
-+	bool "PKey (S)upervisor testing"
-+	default n
-+	depends on ARCH_HAS_SUPERVISOR_PKEYS
-+	help
-+	  Select this option to enable testing of PKS core software and
-+	  hardware.  The PKS core provides a mechanism to allocate keys as well
-+	  as maintain the protection settings across context switches.
-+	  Answer N if you don't know what supervisor keys are.
-+
-+	  If unsure, say N.
-+
- endmenu # "Kernel Testing and Coverage"
- 
- endmenu # Kernel hacking
-diff --git a/lib/Makefile b/lib/Makefile
-index ce45af50983a..6a402bc1b9a0 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -352,3 +352,6 @@ obj-$(CONFIG_BITFIELD_KUNIT) += bitfield_kunit.o
- obj-$(CONFIG_LIST_KUNIT_TEST) += list-test.o
- obj-$(CONFIG_LINEAR_RANGES_TEST) += test_linear_ranges.o
- obj-$(CONFIG_BITS_TEST) += test_bits.o
-+
-+# PKS test
-+obj-y += pks/
-diff --git a/lib/pks/Makefile b/lib/pks/Makefile
-new file mode 100644
-index 000000000000..7d1df7563db9
---- /dev/null
-+++ b/lib/pks/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-$(CONFIG_PKS_TESTING) += pks_test.o
-diff --git a/lib/pks/pks_test.c b/lib/pks/pks_test.c
-new file mode 100644
-index 000000000000..fab4a855edc3
---- /dev/null
-+++ b/lib/pks/pks_test.c
-@@ -0,0 +1,691 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright(c) 2020 Intel Corporation. All rights reserved.
-+ *
-+ * Implement PKS testing
-+ * Access to run this test can be with a command line parameter
-+ * ("pks-test-on-boot") or more detailed tests can be triggered through:
-+ *
-+ *    /sys/kernel/debug/x86/run_pks
-+ *
-+ *  debugfs controls are:
-+ *
-+ *  '0' -- Run access tests with a single pkey
-+ *
-+ *  '1' -- Set up the pkey register with no access for the pkey allocated to
-+ *         this fd
-+ *  '2' -- Check that the pkey register updated in '1' is still the same.  (To
-+ *         be used after a forced context switch.)
-+ *
-+ *  '3' -- Allocate all pkeys possible and run tests on each pkey allocated.
-+ *         DEFAULT when run at boot.
-+ *
-+ *  Closing the fd will cleanup and release the pkey.
-+ *
-+ *  A companion user space program is provided in:
-+ *
-+ *          .../tools/testing/selftests/x86/test_pks.c
-+ *
-+ *  which will better test the context switching.
-+ *
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <linux/debugfs.h>
-+#include <linux/delay.h>
-+#include <linux/entry-common.h>
-+#include <linux/fs.h>
-+#include <linux/list.h>
-+#include <linux/mman.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/percpu-defs.h>
-+#include <linux/pgtable.h>
-+#include <linux/pkeys.h>
-+#include <linux/slab.h>
-+#include <linux/vmalloc.h>
-+
-+#define PKS_TEST_MEM_SIZE (PAGE_SIZE)
-+
-+/*
-+ * run_on_boot default '= false' which checkpatch complains about initializing;
-+ * so we don't
-+ */
-+static bool run_on_boot;
-+static struct dentry *pks_test_dentry;
-+static bool run_9;
-+
-+/*
-+ * We must lock the following globals for brief periods while the fault handler
-+ * checks/updates them.
-+ */
-+static DEFINE_SPINLOCK(test_lock);
-+static int test_armed_key;
-+static unsigned long prev_cnt;
-+static unsigned long fault_cnt;
-+
-+struct pks_test_ctx {
-+	bool pass;
-+	bool pks_cpu_enabled;
-+	int pkey;
-+	char data[64];
-+};
-+static struct pks_test_ctx *test_exception_ctx;
-+
-+static pte_t *walk_table(void *ptr)
-+{
-+	struct page *page = NULL;
-+	pgd_t *pgdp;
-+	p4d_t *p4dp;
-+	pud_t *pudp;
-+	pmd_t *pmdp;
-+	pte_t *ret = NULL;
-+
-+	pgdp = pgd_offset_k((unsigned long)ptr);
-+	if (pgd_none(*pgdp) || pgd_bad(*pgdp))
-+		goto error;
-+
-+	p4dp = p4d_offset(pgdp, (unsigned long)ptr);
-+	if (p4d_none(*p4dp) || p4d_bad(*p4dp))
-+		goto error;
-+
-+	pudp = pud_offset(p4dp, (unsigned long)ptr);
-+	if (pud_none(*pudp) || pud_bad(*pudp))
-+		goto error;
-+
-+	pmdp = pmd_offset(pudp, (unsigned long)ptr);
-+	if (pmd_none(*pmdp) || pmd_bad(*pmdp))
-+		goto error;
-+
-+	ret = pte_offset_map(pmdp, (unsigned long)ptr);
-+	if (pte_present(*ret)) {
-+		page = pte_page(*ret);
-+		if (!page) {
-+			pte_unmap(ret);
-+			goto error;
-+		}
-+		pr_info("page 0x%lx; flags 0x%lx\n",
-+		       (unsigned long)page, page->flags);
-+	}
-+
-+error:
-+	return ret;
-+}
-+
-+static bool check_pkey_val(u32 pk_reg, int pkey, u32 expected)
-+{
-+	u32 pkey_shift = pkey * PKR_BITS_PER_PKEY;
-+	u32 pkey_mask = ((1 << PKR_BITS_PER_PKEY) - 1) << pkey_shift;
-+
-+	pk_reg = (pk_reg & pkey_mask) >> pkey_shift;
-+	return (pk_reg == expected);
-+}
-+
-+/*
-+ * Check if the register @pkey value matches @expected value
-+ *
-+ * Both the cached and actual MSR must match.
-+ */
-+static bool check_pkrs(int pkey, u32 expected)
-+{
-+	bool ret = true;
-+	u64 pkrs;
-+	u32 *tmp_cache;
-+
-+	tmp_cache = get_cpu_ptr(&pkrs_cache);
-+	if (!check_pkey_val(*tmp_cache, pkey, expected))
-+		ret = false;
-+	put_cpu_ptr(tmp_cache);
-+
-+	rdmsrl(MSR_IA32_PKRS, pkrs);
-+	if (!check_pkey_val(pkrs, pkey, expected))
-+		ret = false;
-+
-+	return ret;
-+}
-+
-+static void check_exception(irqentry_state_t *irq_state)
-+{
-+	/* Check the thread saved state */
-+	if (!check_pkey_val(irq_state->pkrs, test_armed_key, PKEY_DISABLE_WRITE)) {
-+		pr_err("     FAIL: checking irq_state->pkrs\n");
-+		test_exception_ctx->pass = false;
-+	}
-+
-+	/* Check the exception state */
-+	if (!check_pkrs(test_armed_key, PKEY_DISABLE_ACCESS)) {
-+		pr_err("     FAIL: PKRS cache and MSR\n");
-+		test_exception_ctx->pass = false;
-+	}
-+
-+	/*
-+	 * Check we can update the value during exception without affecting the
-+	 * calling thread.  The calling thread is checked after exception...
-+	 */
-+	pks_mk_readwrite(test_armed_key);
-+	if (!check_pkrs(test_armed_key, 0)) {
-+		pr_err("     FAIL: exception did not change register to 0\n");
-+		test_exception_ctx->pass = false;
-+	}
-+	pks_mk_noaccess(test_armed_key);
-+	if (!check_pkrs(test_armed_key, PKEY_DISABLE_ACCESS)) {
-+		pr_err("     FAIL: exception did not change register to 0x%x\n",
-+			PKEY_DISABLE_ACCESS);
-+		test_exception_ctx->pass = false;
-+	}
-+}
-+
-+/* Silence prototype warning */
-+bool pks_test_callback(irqentry_state_t *irq_state);
-+
-+/**
-+ * pks_test_callback() is exported so that the fault handler can detect
-+ * and report back status of intentional faults.
-+ *
-+ * NOTE: It clears the protection key from the page such that the fault handler
-+ * will not re-trigger.
-+ */
-+bool pks_test_callback(irqentry_state_t *irq_state)
-+{
-+	bool armed = (test_armed_key != 0);
-+
-+	if (test_exception_ctx) {
-+		check_exception(irq_state);
-+		/*
-+		 * We stop this check within the exception because the
-+		 * fault handler clean up code will call us 2x while checking
-+		 * the PMD entry and we don't need to check this again
-+		 */
-+		test_exception_ctx = NULL;
-+	}
-+
-+	if (armed) {
-+		/* Enable read and write to stop faults */
-+		irq_state->pkrs = update_pkey_val(irq_state->pkrs, test_armed_key, 0);
-+		fault_cnt++;
-+	}
-+
-+	return armed;
-+}
-+EXPORT_SYMBOL(pks_test_callback);
-+
-+static bool exception_caught(void)
-+{
-+	bool ret = (fault_cnt != prev_cnt);
-+
-+	prev_cnt = fault_cnt;
-+	return ret;
-+}
-+
-+static void report_pkey_settings(void *unused)
-+{
-+	u8 pkey;
-+	unsigned long long msr = 0;
-+	unsigned int cpu = smp_processor_id();
-+
-+	rdmsrl(MSR_IA32_PKRS, msr);
-+
-+	pr_info("for CPU %d : 0x%llx\n", cpu, msr);
-+	for (pkey = 0; pkey < PKS_NUM_KEYS; pkey++) {
-+		int ad, wd;
-+
-+		ad = (msr >> (pkey * PKR_BITS_PER_PKEY)) & PKEY_DISABLE_ACCESS;
-+		wd = (msr >> (pkey * PKR_BITS_PER_PKEY)) & PKEY_DISABLE_WRITE;
-+		pr_info("   %u: A:%d W:%d\n", pkey, ad, wd);
-+	}
-+}
-+
-+enum pks_access_mode {
-+	PKS_TEST_NO_ACCESS,
-+	PKS_TEST_RDWR,
-+	PKS_TEST_RDONLY
-+};
-+
-+static char *get_mode_str(enum pks_access_mode mode)
-+{
-+	switch (mode) {
-+	case PKS_TEST_NO_ACCESS:
-+		return "No Access";
-+	case PKS_TEST_RDWR:
-+		return "Read Write";
-+	case PKS_TEST_RDONLY:
-+		return "Read Only";
-+	default:
-+		pr_err("BUG in test invalid mode\n");
-+		break;
-+	}
-+
-+	return "";
-+}
-+
-+struct pks_access_test {
-+	enum pks_access_mode mode;
-+	bool write;
-+	bool exception;
-+};
-+
-+static struct pks_access_test pkey_test_ary[] = {
-+	/*  disable both */
-+	{ PKS_TEST_NO_ACCESS, true,  true },
-+	{ PKS_TEST_NO_ACCESS, false, true },
-+
-+	/*  enable both */
-+	{ PKS_TEST_RDWR, true,  false },
-+	{ PKS_TEST_RDWR, false, false },
-+
-+	/*  enable read only */
-+	{ PKS_TEST_RDONLY, true,  true },
-+	{ PKS_TEST_RDONLY, false, false },
-+};
-+
-+static int test_it(struct pks_test_ctx *ctx, struct pks_access_test *test, void *ptr)
-+{
-+	bool exception;
-+	int ret = 0;
-+
-+	spin_lock(&test_lock);
-+	WRITE_ONCE(test_armed_key, ctx->pkey);
-+
-+	if (test->write)
-+		memcpy(ptr, ctx->data, 8);
-+	else
-+		memcpy(ctx->data, ptr, 8);
-+
-+	exception = exception_caught();
-+
-+	WRITE_ONCE(test_armed_key, 0);
-+	spin_unlock(&test_lock);
-+
-+	if (test->exception != exception) {
-+		pr_err("pkey test FAILED: mode %s; write %s; exception %s != %s\n",
-+			get_mode_str(test->mode),
-+			test->write ? "TRUE" : "FALSE",
-+			test->exception ? "TRUE" : "FALSE",
-+			exception ? "TRUE" : "FALSE");
-+		ret = -EFAULT;
-+	}
-+
-+	return ret;
-+}
-+
-+static int run_access_test(struct pks_test_ctx *ctx,
-+			   struct pks_access_test *test,
-+			   void *ptr)
-+{
-+	switch (test->mode) {
-+	case PKS_TEST_NO_ACCESS:
-+		pks_mk_noaccess(ctx->pkey);
-+		break;
-+	case PKS_TEST_RDWR:
-+		pks_mk_readwrite(ctx->pkey);
-+		break;
-+	case PKS_TEST_RDONLY:
-+		pks_mk_readonly(ctx->pkey);
-+		break;
-+	default:
-+		pr_err("BUG in test invalid mode\n");
-+		break;
-+	}
-+
-+	return test_it(ctx, test, ptr);
-+}
-+
-+static void *alloc_test_page(int pkey)
-+{
-+	return __vmalloc_node_range(PKS_TEST_MEM_SIZE, 1, VMALLOC_START, VMALLOC_END,
-+				    GFP_KERNEL, PAGE_KERNEL_PKEY(pkey), 0,
-+				    NUMA_NO_NODE, __builtin_return_address(0));
-+}
-+
-+static void test_mem_access(struct pks_test_ctx *ctx)
-+{
-+	int i, rc;
-+	u8 pkey;
-+	void *ptr = NULL;
-+	pte_t *ptep;
-+
-+	ptr = alloc_test_page(ctx->pkey);
-+	if (!ptr) {
-+		pr_err("Failed to vmalloc page???\n");
-+		ctx->pass = false;
-+		return;
-+	}
-+
-+	ptep = walk_table(ptr);
-+	if (!ptep) {
-+		pr_err("Failed to walk table???\n");
-+		ctx->pass = false;
-+		goto done;
-+	}
-+
-+	pkey = pte_flags_pkey(ptep->pte);
-+	pr_info("ptep flags 0x%lx pkey %u\n",
-+	       (unsigned long)ptep->pte, pkey);
-+
-+	if (pkey != ctx->pkey) {
-+		pr_err("invalid pkey found: %u, test_pkey: %u\n",
-+			pkey, ctx->pkey);
-+		ctx->pass = false;
-+		goto unmap;
-+	}
-+
-+	if (!ctx->pks_cpu_enabled) {
-+		pr_err("not CPU enabled; skipping access tests...\n");
-+		ctx->pass = true;
-+		goto unmap;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(pkey_test_ary); i++) {
-+		rc = run_access_test(ctx, &pkey_test_ary[i], ptr);
-+
-+		/*  only save last error is fine */
-+		if (rc)
-+			ctx->pass = false;
-+	}
-+
-+unmap:
-+	pte_unmap(ptep);
-+done:
-+	vfree(ptr);
-+}
-+
-+static void pks_run_test(struct pks_test_ctx *ctx)
-+{
-+	ctx->pass = true;
-+
-+	pr_info("\n");
-+	pr_info("\n");
-+	pr_info("     ***** BEGIN: Testing (CPU enabled : %s) *****\n",
-+		ctx->pks_cpu_enabled ? "TRUE" : "FALSE");
-+
-+	if (ctx->pks_cpu_enabled)
-+		on_each_cpu(report_pkey_settings, NULL, 1);
-+
-+	pr_info("           BEGIN: pkey %d Testing\n", ctx->pkey);
-+	test_mem_access(ctx);
-+	pr_info("           END: PAGE_KERNEL_PKEY Testing : %s\n",
-+		ctx->pass ? "PASS" : "FAIL");
-+
-+	pr_info("     ***** END: Testing *****\n");
-+	pr_info("\n");
-+	pr_info("\n");
-+}
-+
-+static ssize_t pks_read_file(struct file *file, char __user *user_buf,
-+			     size_t count, loff_t *ppos)
-+{
-+	struct pks_test_ctx *ctx = file->private_data;
-+	char buf[32];
-+	unsigned int len;
-+
-+	if (!ctx)
-+		len = sprintf(buf, "not run\n");
-+	else
-+		len = sprintf(buf, "%s\n", ctx->pass ? "PASS" : "FAIL");
-+
-+	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
-+}
-+
-+static struct pks_test_ctx *alloc_ctx(const char *name)
-+{
-+	struct pks_test_ctx *ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
-+
-+	if (!ctx) {
-+		pr_err("Failed to allocate memory for test context\n");
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	ctx->pkey = pks_key_alloc(name, PKS_FLAG_EXCLUSIVE);
-+	if (ctx->pkey <= 0) {
-+		pr_err("Failed to allocate memory for test context\n");
-+		kfree(ctx);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	ctx->pks_cpu_enabled = cpu_feature_enabled(X86_FEATURE_PKS);
-+	sprintf(ctx->data, "%s", "DEADBEEF");
-+	return ctx;
-+}
-+
-+static void free_ctx(struct pks_test_ctx *ctx)
-+{
-+	pks_key_free(ctx->pkey);
-+	kfree(ctx);
-+}
-+
-+static void run_exception_test(void)
-+{
-+	void *ptr = NULL;
-+	bool pass = true;
-+	struct pks_test_ctx *ctx;
-+
-+	pr_info("     ***** BEGIN: exception checking\n");
-+
-+	ctx = alloc_ctx("Exception test");
-+	if (IS_ERR(ctx)) {
-+		pr_err("     FAIL: no context\n");
-+		pass = false;
-+		goto result;
-+	}
-+	ctx->pass = true;
-+
-+	ptr = alloc_test_page(ctx->pkey);
-+	if (!ptr) {
-+		pr_err("     FAIL: no vmalloc page\n");
-+		pass = false;
-+		goto free_context;
-+	}
-+
-+	pks_mk_readonly(ctx->pkey);
-+
-+	spin_lock(&test_lock);
-+	WRITE_ONCE(test_exception_ctx, ctx);
-+	WRITE_ONCE(test_armed_key, ctx->pkey);
-+
-+	memcpy(ptr, ctx->data, 8);
-+
-+	if (!exception_caught()) {
-+		pr_err("     FAIL: did not get an exception\n");
-+		pass = false;
-+	}
-+
-+	/*
-+	 * NOTE The exception code has to enable access (b00) to keep the
-+	 * fault from looping forever.  So we don't see the write disabled
-+	 * restored but rather full access restored.  Also note that as part
-+	 * of this test the exception callback attempted to disable access
-+	 * completely (b11) and so we ensure that we are seeing the proper
-+	 * thread value restored here.
-+	 */
-+	if (!check_pkrs(test_armed_key, 0)) {
-+		pr_err("     FAIL: PKRS not restored\n");
-+		pass = false;
-+	}
-+
-+	if (!ctx->pass)
-+		pass = false;
-+
-+	WRITE_ONCE(test_armed_key, 0);
-+	spin_unlock(&test_lock);
-+
-+	vfree(ptr);
-+free_context:
-+	free_ctx(ctx);
-+result:
-+	pr_info("     ***** END: exception checking : %s\n",
-+		 pass ? "PASS" : "FAIL");
-+}
-+
-+static void run_all(void)
-+{
-+	struct pks_test_ctx *ctx[PKS_NUM_KEYS];
-+	static char name[PKS_NUM_KEYS][64];
-+	int i;
-+
-+	for (i = 1; i < PKS_NUM_KEYS; i++) {
-+		sprintf(name[i], "pks ctx %d", i);
-+		ctx[i] = alloc_ctx((const char *)name[i]);
-+	}
-+
-+	for (i = 1; i < PKS_NUM_KEYS; i++) {
-+		if (!IS_ERR(ctx[i]))
-+			pks_run_test(ctx[i]);
-+	}
-+
-+	for (i = 1; i < PKS_NUM_KEYS; i++) {
-+		if (!IS_ERR(ctx[i]))
-+			free_ctx(ctx[i]);
-+	}
-+
-+	run_exception_test();
-+}
-+
-+static void crash_it(void)
-+{
-+	struct pks_test_ctx *ctx;
-+	void *ptr;
-+
-+	pr_warn("     ***** BEGIN: Unhandled fault test *****\n");
-+
-+	ctx = alloc_ctx("crashing kernel\n");
-+
-+	ptr = alloc_test_page(ctx->pkey);
-+	if (!ptr) {
-+		pr_err("Failed to vmalloc page???\n");
-+		ctx->pass = false;
-+		return;
-+	}
-+
-+	pks_mk_noaccess(ctx->pkey);
-+
-+	spin_lock(&test_lock);
-+	WRITE_ONCE(test_armed_key, 0);
-+	/* This purposely faults */
-+	memcpy(ptr, ctx->data, 8);
-+	spin_unlock(&test_lock);
-+
-+	vfree(ptr);
-+	free_ctx(ctx);
-+}
-+
-+static ssize_t pks_write_file(struct file *file, const char __user *user_buf,
-+			      size_t count, loff_t *ppos)
-+{
-+	char buf[2];
-+	struct pks_test_ctx *ctx = file->private_data;
-+
-+	if (copy_from_user(buf, user_buf, 1))
-+		return -EFAULT;
-+	buf[1] = '\0';
-+
-+	/*
-+	 * WARNING: Test "9" will crash the kernel.
-+	 *
-+	 * So we arm the test and print a warning.  A second "9" will run the
-+	 * test.
-+	 */
-+	if (!strcmp(buf, "9")) {
-+		if (run_9) {
-+			crash_it();
-+			run_9 = false;
-+		} else {
-+			pr_warn("CAUTION: Test 9 will crash in the kernel.\n");
-+			pr_warn("         Specify 9 a second time to run\n");
-+			pr_warn("         run any other test to clear\n");
-+			run_9 = true;
-+		}
-+	} else {
-+		run_9 = false;
-+	}
-+
-+	/*
-+	 * Test "3" will test allocating all keys. Do it first without
-+	 * using "ctx".
-+	 */
-+	if (!strcmp(buf, "3"))
-+		run_all();
-+
-+	if (!ctx) {
-+		ctx = alloc_ctx("pks test");
-+		if (IS_ERR(ctx))
-+			return -ENOMEM;
-+		file->private_data = ctx;
-+	}
-+
-+	if (!strcmp(buf, "0"))
-+		pks_run_test(ctx);
-+
-+	/* start of context switch test */
-+	if (!strcmp(buf, "1")) {
-+		/* Ensure a known state to test context switch */
-+		pks_mk_noaccess(ctx->pkey);
-+	}
-+
-+	/* After context switch msr should be restored */
-+	if (!strcmp(buf, "2") && ctx->pks_cpu_enabled) {
-+		unsigned long reg_pkrs;
-+		int access;
-+
-+		rdmsrl(MSR_IA32_PKRS, reg_pkrs);
-+
-+		access = (reg_pkrs >> (ctx->pkey * PKR_BITS_PER_PKEY)) &
-+			  PKEY_ACCESS_MASK;
-+		if (access != (PKEY_DISABLE_ACCESS | PKEY_DISABLE_WRITE)) {
-+			ctx->pass = false;
-+			pr_err("Context switch check failed\n");
-+		}
-+	}
-+
-+	return count;
-+}
-+
-+static int pks_release_file(struct inode *inode, struct file *file)
-+{
-+	struct pks_test_ctx *ctx = file->private_data;
-+
-+	if (!ctx)
-+		return 0;
-+
-+	free_ctx(ctx);
-+	return 0;
-+}
-+
-+static const struct file_operations fops_init_pks = {
-+	.read = pks_read_file,
-+	.write = pks_write_file,
-+	.llseek = default_llseek,
-+	.release = pks_release_file,
-+};
-+
-+static int __init parse_pks_test_options(char *str)
-+{
-+	run_on_boot = true;
-+
-+	return 0;
-+}
-+early_param("pks-test-on-boot", parse_pks_test_options);
-+
-+static int __init pks_test_init(void)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_PKS)) {
-+		if (run_on_boot)
-+			run_all();
-+
-+		pks_test_dentry = debugfs_create_file("run_pks", 0600, arch_debugfs_dir,
-+						      NULL, &fops_init_pks);
-+	}
-+
-+	return 0;
-+}
-+late_initcall(pks_test_init);
-+
-+static void __exit pks_test_exit(void)
-+{
-+	debugfs_remove(pks_test_dentry);
-+	pr_info("test exit\n");
-+}
-+module_exit(pks_test_exit);
-+
-+MODULE_AUTHOR("Intel Corporation");
-+MODULE_LICENSE("GPL v2");
-diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x86/Makefile
-index 6703c7906b71..f5c80f952eab 100644
---- a/tools/testing/selftests/x86/Makefile
-+++ b/tools/testing/selftests/x86/Makefile
-@@ -13,7 +13,8 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_cc.sh $(CC) trivial_program.c -no-pie)
- TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
- 			check_initial_reg_state sigreturn iopl ioperm \
- 			test_vdso test_vsyscall mov_ss_trap \
--			syscall_arg_fault fsgsbase_restore
-+			syscall_arg_fault fsgsbase_restore test_pks
-+
- TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
- 			test_FCMOV test_FCOMI test_FISTTP \
- 			vdso_restorer
-diff --git a/tools/testing/selftests/x86/test_pks.c b/tools/testing/selftests/x86/test_pks.c
-new file mode 100644
-index 000000000000..cd40f930b172
---- /dev/null
-+++ b/tools/testing/selftests/x86/test_pks.c
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#define _GNU_SOURCE
-+#include <sched.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <assert.h>
-+#include <stdio.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <fcntl.h>
-+
-+#define PKS_TEST_FILE "/sys/kernel/debug/x86/run_pks"
-+
-+int main(void)
-+{
-+	cpu_set_t cpuset;
-+	char result[32];
-+	pid_t pid;
-+	int fd;
-+
-+	CPU_ZERO(&cpuset);
-+	CPU_SET(0, &cpuset);
-+	/* Two processes run on CPU 0 so that they go through context switch. */
-+	sched_setaffinity(getpid(), sizeof(cpu_set_t), &cpuset);
-+
-+	pid = fork();
-+	if (pid == 0) {
-+		fd = open(PKS_TEST_FILE, O_RDWR);
-+		if (fd < 0) {
-+			printf("cannot open %s\n", PKS_TEST_FILE);
-+			return -1;
-+		}
-+
-+		/* Allocate test_pkey1 and run test. */
-+		write(fd, "0", 1);
-+
-+		/* Arm for context switch test */
-+		write(fd, "1", 1);
-+
-+		/* Context switch out... */
-+		sleep(4);
-+
-+		/* Check msr restored */
-+		write(fd, "2", 1);
-+	} else {
-+		sleep(2);
-+
-+		fd = open(PKS_TEST_FILE, O_RDWR);
-+		if (fd < 0) {
-+			printf("cannot open %s\n", PKS_TEST_FILE);
-+			return -1;
-+		}
-+
-+		/* run test with alternate pkey */
-+		write(fd, "0", 1);
-+	}
-+
-+	read(fd, result, 10);
-+	printf("#PF, context switch, pkey allocation and free tests: %s\n",
-+	       result);
-+
-+	close(fd);
-+
-+	return 0;
-+}
--- 
-2.28.0.rc0.12.gb6a658bd00c9
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCg0KDQrph4fotK3miJDmnKzmjqfliLbkuI7kvpvlupTllYbosIjliKTmioDlt6cNCg0KDQog
+MTHmnIgwNS0wNuaXpea3seWcsyAgICAgIDEx5pyIMTgtMTnml6XkuIrmtbcNCjQ2MDDlhYMv5Lq6
+KOWMheaLrOWfuSDorq3jgIHmlZkg5p2Q44CB5Lik5aSp5Y2I6aSQ44CB5Lul5Y+K5LiK5LiL5Y2I
+6Iy254K5562JKQ0K6LCB5p2l5Y+C5Yqg77ya5LyB5Lia5oC757uP55CG77yM5L6b5bqU6ZO+5oC7
+55uR77yM6YeH6LSt5oC755uR44CB57uP55CG44CB5Li7566h77yM6LWE5rex6YeH6LSt5bel56iL
+5biI562J44CCDQoNCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tDQoNCg0K6IOMIOaZrw0K56i75b2T5LuK5LiW55WM5q2j57uP5Y6G552A
+5LiA5Zy65LiW55WM5Y+y5LiK5Lil6YeN55qE6YeR6J6N5Y2x5py677yM5q2k5qyh6YeR6J6N5Y2x
+5py65a+55LyB5Lia55Sf5Lqn5ZKM57uP6JCl6YCg5oiQ5LqG5Lil6YeN5b2x5ZON77yM5ZCE5LyB
+5Lia57q357q36YCa6L+H5Yqg5by6566h55CG5p2l6ZmN5L2O6L+Q6JCl5oiQ5pys5Lul5bqU5a+5
+5Y2x5py644CC5Zyo6L+Z5qC355qE5oOF5b2i5LiL77yM5aaC5L2V6ZmN5L2O6YeH6LSt5oiQ5pys
+77yM55So5LuA5LmI5pa55rOV6ZmN5L2O6YeH6LSt5oiQ5pys5bCx5oiQ5Li65pys6K++56iL5a2m
+5Lmg55qE5Li76KaB6K+d6aKY44CCDQrph4fotK3miJDmnKzpmY3kvY4xJe+8jOWIqea2pueUmuiH
+s+iDveS4iuWNhzEwJeS7peS4iu+8geWNleS7juWOn+adkOaWmeaIkOacrOeahOinkuW6pueci++8
+jOmAmuW4uOaciTUwJeWIsDg1JeeahOaIkOacrOaYr+aUr+S7mOe7meS+m+W6lOWVhueahO+8jOmH
+h+i0reS6uuWRmOS8muWwhjYwJeeahOaXtumXtOeUqOS6juS4juWklumDqOS+m+W6lOWVhueahOWQ
+hOenjemHh+i0reiwiOWIpOOAgg0K5L6b5bqU5ZWG5a+55LyB5Lia55qE6YeN6KaB5oCn5LiO5pel
+5L+x5aKe77yM5Lq65Lus6YO95Zyo6LCI5L6b5bqU5ZWG5piv5oiR5Lus55qE5ZCI5L2c5LyZ5Ly0
+77yM5Y+v5piv546w5a6e5piv5oiR5Lus5LiN5pat5a+55byx5Yq/5L6b5bqU5ZWG5LiL6L6+6ZmN
+5L2O5oiQ5pys55qE5oyH5qCH77yM5Y+v5piv6YKj5Lqb5Z6E5pat6KGM5Lia55qE5by65Yq/5L6b
+5bqU5ZWG5ou/552A6auY5Yip5ram44CC6YeH6LSt5Lq65ZGY5Zyo5LyB5Lia5Lit6LaK5p2l6LaK
+5aSa5Zyw5omu5ryU552A6YeN6KaB6KeS6Imy77yM5aaC5p6c5piv5rKh5pyJ57uP6L+H5LiT5Lia
+6LCI5Yik6K6t57uD55qE6YeH6LSt5Lq65ZGY77yM5Zyo5YaF5aSW6YOo5a6i5oi36Z2i5YmN6KGo
+546w55qE5LiN6Ieq5L+h77yM5bCG5Lil6YeN5b2x5ZON5Liq5Lq644CB6YOo6Zeo5ZKM5YWs5Y+4
+57up5pWI77yM55Sx5q2k6LCI5Yik5oqA5ben5bey5oiQ5Li65oub6IGY5ZKM5Z+56K6t6YeH6LSt
+5Lq65ZGY55qE5LiA6aG55b+F6KaB5YaF5a6544CCDQrnjovkv53ljY7ogIHluIjlsIblhYjov5vn
+moTph4fotK3nkIblv7XkuI7lrp7nlKjnmoTph4fotK3mioDlt6fnm7jnu5PlkIjvvIzkuLrkvIHk
+uJrph4fotK3kurrlkZjmj5DkvpvkuobnroDogIzmmJPooYznmoTph4fotK3nrqHnkIbmlrnmoYjv
+vIzlr7nkuo7mg7PmjqfliLblpb3ph4fotK3miJDmnKznmoTkurrlnJ/mnaXor7TmmK/pnZ7luLjm
+nInku7flgLznmoTvvJvph4fotK3osIjliKTlhoXlrrnmtrXnm5bosIjliKTlrp7miJjnrZbnlaXj
+gIHosIjliKTkuI3lkIzpmLbmrrXmiYDpnIDopoHnlKjliLDnmoTph43opoHmioDlt6fjgIHosIjl
+iKTnmoTluLjop4Hpl67popjkuI7plJnor6/jgIHor7TmnI3lr7nmlrnnmoTljp/liJnkuI7mioDl
+t6fnrYnvvIzlpoLkvZXop6PlhrPph4fotK3osIjliKTkuK3nmoTpmr7popjvvIzlpoLkvZXlnKjo
+sIjliKTkuK3ojrflj5bkvJjlir/vvIzlpoLkvZXljJbop6PosIjliKTlg7XlsYDnrYnph4fotK3l
+kZjmnIDlhbPlv4PnmoTpl67popjvvIzmj5Dkvpvlrp7nlKjnmoTop6PlhrPlip7ms5UNCg0K6K++
+IOeoiyDnm64g55qEDQogICDkuobop6Plhazlj7jph4fotK3mtYHnqIvlkozkuqflk4Hlrprku7fo
+v4fnqIvvvJsNCu+DmOS6p+WTgeaIkOacrOeahOaguOeul+aWueazleOAgeatpemqpOOAgeihjOWK
+qOiuoeWIku+8mw0K74OY5o+Q5Y2H6YeH6LSt5pWw5o2u5YiG5p6Q6IO95Yqb77yM5o6M5o+h5Lqn
+5ZOB5Lu35qC857uT5p6E57uE5oiQ77ybDQrvg5jlrabkuaDnm4jkuo/lubPooaHliIbmnpDjgIHl
+rabkuaDmm7Lnur/lkoxRREHmlbDph4/mipjmiaPliIbmnpDvvJsNCu+DmOS7peWunuaImOahiOS+
+i+S4uuiDjOaZr++8jOaOjOaPoeaIkOacrOaOp+WItuS4juS8mOWMlueahOWNgeWkp+aWueazle+8
+mw0K74OY5LqG6Kej6YeH6LSt6LCI5Yik55qE54m554K55LiO5Z+65pys5Y6f5YiZ77ybDQrvg5jk
+uobop6PkvJjnp4DosIjliKTogIXnmoTnibnotKjkuI7miJDlip/osIjliKTlrojliJnvvJsNCu+D
+mOiupOivhuWIsOiwiOWIpOWJjeeahOWHhuWkh+W3peS9nOS4juS/oeaBr+aUtumbhumHjeimgeaA
+p++8mw0K74OY5piO56Gu5a6M5pW055qE6LCI5Yik5rWB56iL77yM5aaC5L2V562W5YiS5ZKM5a6e
+5pa95oiQ5Yqf55qE6LCI5Yik77ybDQrvg5jpoobmgp/osIjliKTnmoTnrZbnlaXkuI7mioDlt6fl
+j4rms6jmhI/kuovpobnvvJsNCu+DmOWtpuS8muWmguS9leaRhuiEseiwiOWIpOS4reWDteWxgOea
+hOWbsOWigw0KDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQ0KDQoNCuWfuS7orq0u5aSnLue6sg0K56ys5LiA5aSp77ya6YeH6LSt5oiQ
+5pys5LyY5YyW5LiO5o6n5Yi25oqA5benDQrkuIDjgIHph4fotK3miJDmnKzliIbmnpDkuI7miqXk
+u7fnrqHnkIYNCjEuIOmHh+i0rea1geeoiw0KMi4g6YeH6LSt5a6a5Lu36L+H56iL77yI6YeH6LSt
+5YiG5p6Q44CB5Lu35qC85YiG5p6Q44CB5oiQ5pys5YiG5p6Q44CB5Lu35YC85YiG5p6Q44CBUURB
+5pWw6YeP5oqY5omj5YiG5p6QIO+8iQ0K5LqM44CB5oiQ5pys5qC4566X5Z+65pys55CG6K66DQox
+LiDmiJDmnKzmpoLlv7XnmoTnkIbop6MNCjIuIOaIkOacrOaehOaIkOWPiuaguOeul+aWueazlQ0K
+My4g5oiQ5pys5o6n5Yi25qaC6L+wDQo0LiDku6Xnm4jliKnkuLrnm67nmoTnmoTmiJDmnKzmjqfl
+iLbmraXpqqQNCjUuIOaIkOacrOaOp+WItuS4reWQhOmDqOmXqOeahOS9nOeUqA0KNi4g6K6h5YiS
+5oiQ5pys5ZKM5a6e546w55uu5qCHDQo3LiDpmY3kvY7miJDmnKzooYzliqgNCjguIOebiOS6j+W5
+s+ihoeWIhuaekA0KOS4g5a2m5Lmg5puy57q/DQoxMC4gUURB5pWw6YeP5oqY5omj5YiG5p6QDQox
+MS4g5Lu35qC8L+aIkOacrOWIhuaekOeahOWNgeenjeacieaViOaWueazlQ0KYSkg5a6e57up5rOV
+DQpiKSDnm67moIfku7fmoLzms5UNCmMpIOaoquWQkeavlOi+g+azlQ0KZCkg5bqU55So57uP6aqM
+5rOVDQplKSDkvLDku7fmr5TovoPms5UNCmYpIOW4guWcuuS7t+agvOazlQ0KZykg5Yi26YCg5ZWG
+5Lu35qC85rWL566X5rOVDQpoKSDlrp7pmYXmiJDmnKzms5UNCmkpIOenkeWtpueugOaYk+eul+Wu
+muazlShBQkPkvZzkuJrmiJDmnKzms5UpDQpqKSDph4fotK3ku7fmoLzmoIflh4bms5UNCuS4ieOA
+geaIkOacrOaOp+WItuS4juS8mOWMlueahOacieaViOaWueazlQ0KMS4g5b2x5ZON6YeH6LSt5Lu3
+5qC855qE5Zug57SgDQoyLiDkvpvlupTluILlnLrnu5PmnoTkuI7ph4fotK3nrZbnlaUg77yI546w
+6LSn6YeH6LSt44CB5oyJ6ZyA6LSt5Lmw44CB5o+Q5YmN6LSt5Lmw44CB5oqV5py66LSt5Lmw44CB
+5om56YeP6LSt5Lmw5Y2P6K6u44CB5Lqn5ZOB55Sf5ZG95ZGo5pyf5L6b5bqU44CB5Y2z5pe25L6b
+6LSn5Yi244CB5a+E5ZSu44CB5L6b5bqU5ZWG6Ieq5Yqo6KGl6LSn5L2T57O7Vk1J44CB6YCa55So
+L+WfuuacrOWVhuWTge+8iQ0KMy4g6ZmN5L2O5oiQ5pys55qE562W55Wl5LiO5pa55rOVDQrop4Tp
+gb/miJDmnKzvvIzpmZDliLbmiJDmnKzkuI7pmY3kvY7miJDmnKznmoTljLrliKsNCuWFq+exu+aI
+kOacrOeahOiAg+iZke+8iOaXtuaViOOAgei0qOmHj+OAgeiAl+i0ueOAgeacuuS8muOAgeW6k+Wt
+mOOAgeeJqea1geOAgeS7k+WCqOOAgeaMgeacie+8iQ0K5Zub44CB6ZmN5L2O5oiQ5pys55qE5Y2B
+56eN5pyJ5pWI5pa55rOVDQoxKVZhbHVlIEFuYWx5c2lzKOS7t+WAvOWIhuaekO+8jFZBKSANCuah
+iOS+i+WIhuaekCDigJMg5pyo5YyF6KOFDQrmoYjkvovliIbmnpAg4oCTIOWwvOm+mem9v+i9ruWS
+jOmHkeWxnum9v+i9rg0KMilWYWx1ZSBFbmdpbmVlcmluZyjku7flgLzlt6XnqIvvvIxWRSkgDQrm
+oYjkvovliIbmnpAg4oCTIOieuumSieaVtOWQiA0KMylOZWdvdGlhdGlvbu+8iOiwiOWIpO+8iSAN
+CuahiOS+i+WIhuaekCDigJMg5Yqe5YWs5qW85qGI5L6LDQo0KVRhcmdldCBDb3N0aW5n77yI55uu
+5qCH5oiQ5pys5rOV77yJIA0KNSlFYXJseSBTdXBwbGllciBJbnZvbHZlbWVudO+8iOaXqeacn+S+
+m+W6lOWVhuWPguS4ju+8jEVTSe+8iSANCjYpTGV2ZXJhZ2luZyBQdXJjaGFzZXPvvIjmnaDmnYbp
+h4fotK0v6ZuG5Lit6YeH6LSt77yJIA0KNylDb25zb3J0aXVtIFB1cmNoYXNpbmfvvIjogZTlkIjp
+h4fotK3vvIkgDQo4KURlc2lnbiBmb3IgUHVyY2hhc2XvvIjkuLrkvr/liKnph4fotK3ogIzorr7o
+rqHvvIxERlDvvIkgDQo5KUNvc3QgYW5kIFByaWNlIEFuYWx5c2lzDQrvvIjku7fmoLzkuI7miJDm
+nKzliIbmnpDvvIkgDQpBQkMg5YiG5p6Q5rOV77yIMe+8iSDigJMgODAgLyAyMOazleWImQ0K5qGI
+5L6L5YiG5p6Q4oCT5bm/5ZGK54mMDQoxMClTdGFuZGFyZGl6YXRpb27vvIjmoIflh4bljJbvvIkN
+Cg0K56ys5LqM5aSp77ya6YeH6LSt6LCI5Yik562W55Wl5LiO5oqA5benDQrkuIDjgIHph4fotK3o
+sIjliKTmpoLov7ANCjEuIOS9leiwk+iwiOWIpA0KMi4g6LCI5Yik5Lit5Y+v6IO95raJ5Y+K55qE
+6K6u6aKYDQozLiDlvbHlk43osIjliKTlj4rlhbbnu5PmnpznmoTor7jlpJrlm6DntKANCjQuIOiw
+iOWIpOeahOW/g+eQhuaooeW8j++8iOWNlei1olzlj4zotaLvvIkNCjUuIOiwiOWIpOeahOWfuuac
+rOWOn+WIme+8iOS6pOaNolzotaLlrrZc5pWI546H77yJDQo2LiDosIjliKTnmoTkupTlpKfnibnn
+grkNCjcuIOiwiOWIpOeahOWfuuacrOmYtuautQ0K5LqM44CB5L+h5oGv5pS26ZuG5LiO6LCI5Yik
+5Zyw5L2N5YiG5p6QDQoxLiDkv6Hmga/mlLbpm4YNCjIuIOiwiOWIpOiAheWcsOS9jeWIhuaekA0K
+My4g5bi46KeB5a6a5Lu35Y6f5YiZ5LiO5pa55rOVDQo0LiDmiJDmnKzmoLjnrpfkuI7liIbmnpDm
+lrnms5UNCjUuIOWQiOWQjOS7t+agvOiuvuWumuS4juiwg+aVtOWOn+WImQ0K5LiJ44CB6LCI5Yik
+562W55Wl44CB6LCI5Yik5oqA5ben5LiO5pa55rOVDQoxLiDorq7ku7fljLrpl7TliIbmnpANCjIu
+IOiwiOWIpOaImOeVpeWItuWumueahOWbm+atpeabsg0KMy4g5aaC5L2V5LyY5YWI5o6M5o6n6LCI
+5Yik6IqC5aWPDQo0LiDmnInmlYjosIjliKTnmoTmioDlt6cNCjUuIOS7t+agvOiwiOWIpOeahOaT
+jeS9nOimgemihg0KNi4g6LCI5Yik5Lit6ZyA6KaB6YG/5YWN55qEOeS4quS6i+mhuQ0KNy4g5Zyo
+5rS96LCI55qE5YeG5aSH5Lit6KaB6ICD6JmR55qE5LiJ5Liq5Li76KaB6Zeu6aKYDQo4LiDku7fm
+oLzosIjliKTnmoTkupTkuKrmraXpqqQNCjkuIOW8gOS7t+aKgOW3pw0KMTAuIOS7t+agvOino+mH
+iueahOS6lOWkp+imgee0oA0KMTEuIOiwiOWIpOi/h+eoi+S4reeahOKAnOWNgeimgeKAneWSjOKA
+nOWNgeS4jeimgeKAnQ0KMTIuIOS7gOS5iOaYr+acieaViOiwiOWIpA0KMTMuIOiwiOWIpOeahOab
+v+S7o+aWueW8jw0K5Zub44CB5aaC5L2V5pGG6ISx5YO15oyB5oiW5YO15bGA55qE5Zuw5aKDDQox
+LiDpmbflhaXlg7XlsYDnmoTosIjliKQNCjIuIOaJk+egtOWDteWxgOeahOWNgeWkp+etlueVpQ0K
+My4g6K6p5q2l55qE5oqA5ben5LiO562W55WlDQrkupTjgIHkvJjnp4DosIjliKTogIXnmoTnibno
+tKjkuI7miJDlip/osIjliKTlrojliJkNCjEuIOS8mOengOiwiOWIpOS6uuWRmOeahOeJuei0qA0K
+Mi4g5oiQ5Yqf6LCI5Yik55qE5a6I5YiZDQozLiDmiJDlip/nmoTosIjliKQNCg0KLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQrorrIg5biI
+IOeugCDku4sgDQrnjovkv53ljY4NCiAgIOS4reWbveeJqea1geWtpuS8muW4uOWKoeeQhuS6i++8
+mw0K74Gs5Lit5Zu954mp5rWB5LiO6YeH6LSt6IGU5ZCI5Lya5qC45b+D5LiT5a6277ybDQrvgazk
+uK3lm73ph4fotK3kuI7kvpvlupTpk77nrqHnkIbkuJPkuJrlp5TlkZjkvJrkuJPlrrbvvJsNCu+B
+rOmmmea4r+eQhuW3peWkp+WtpuavleS4mu+8jOWbvemZheiIqui/kOWSjOS+m+W6lOmTvueuoeeQ
+huehleWjq+WtpuS9je+8mw0K74Gs6auY57qn5Z+56K6t5biI44CCDQroi7Hlm71DSVBT57O75YiX
+6K++56iL5o6I5p2D6K6y5biI77yb576O5Zu95L6b5bqU6ZO+566h55CG5Y2P5Lya5Y+K5Lit5Zu9
+54mp5rWB5LiO6YeH6LSt6IGU5ZCI5Lya5o6I5p2D6K6y5biIDQrkuLvorrJDUE0gLyBDUFNN77yI
+5rOo5YaM6YeH6LSt57uP55CGL+azqOWGjOmHh+i0reS+m+W6lOe7j+eQhuW4iO+8ieWFqOezu+WI
+l+ivvueoi+OAguiOt+W+lzIwMDktMjAxMOW5tOW6pkNQTemhueebruS8mOengOiusuW4iOiNo+iq
+ieensOWPt+OAgg0K5oul5pyJ5Liw5a+M55qE6YeH6LSt5LiO5L6b5bqU6ZO+566h55CG55CG6K66
+44CB5a6e5oiY5ZKM5pWZ5a2m57uP6aqM44CC5pu+5Zyo5qyn576O6Leo5Zu9NTAw5by65LyB5Lia
+566h55CG5bGC5Lu76IGM5pW05pW0MjDlubTjgILlkIzml7bkuZ/mi6XmnInkuLDlr4znmoTlm73l
+hoXlpKflnovpm4blm6LkvIHkuJrnmoTnrqHnkIbnu4/pqozvvJvku5blnKjnvo7lm73mlr3kuZDl
+hazlj7jnrqHnkIblsYLku7vogYzljYHlpJrlubTlkI7osIPoh7Pms5Xlm73pmL/lsJTljaHnibnk
+uprlpKrlnLDljLrmgLvpg6jku7vkuprlpKrlnLDljLrph4fotK3mgLvnm5HlkozkvpvlupTpk77n
+rqHnkIbmgLvnm5HvvIzkuYvlkI7lj4jlnKjnvo7lm73miLTlsJTlhazlj7jkuprlpKrlnLDljLrm
+gLvpg6jku7vkuprlpKrlnLDljLrkvpvlupTpk77nrqHnkIbmgLvnm5HvvIzpmo/lkI7lj4jku7vo
+gYzkuo7oiqzlhbBFbGNvdGVR6ZuG5Zui5Lu76ZuG5Zui5Ymv5oC76KOB5Li7566h5YWo55CD6YeH
+6LSt6L+Q6JCl5bel5L2c44CC5Zyo5aSW5LyB5ouF5Lu76auY566hMjDlubTlkI7vvIzmm77lupTp
+goDkvpvogYzkuo7mtbflsJTpm4blm6Lmi4Xku7vpm4blm6Llia/mgLvoo4Hlj4rlhajnkIPokKXo
+v5DmgLvnu4/nkIbvvIzkuLvnrqHpm4blm6LlhajnkIPnm7TmjqXph4fotK3jgIHpl7TmjqXph4fo
+tK3vvIzkvpvlupTpk77nrqHnkIbjgIHnianmtYHokKXov5DjgIHlronlhajjgIHog73mupDvvIzl
+j4rooYzmlL/nrqHnkIbnrYnogYzog73pg6jpl6jjgIINCuS4u+iusuivvueoi++8muOAiuS+m+W6
+lOmTvuS9k+ezu+inhOWIkuOAgei/kOiQpeS4jumHh+i0reeuoeeQhuOAi+OAiumrmOe6p+mHh+i0
+reeuoeeQhuOAi+OAiuaImOeVpemHh+i0reS4juiwiOWIpOaKgOW3p+euoeeQhuOAi+OAiumHh+i0
+ree7qeaViOa1i+mHj+S4juivhOS8sOeuoeeQhuOAi+OAiuWunueUqOmHh+i0reiwiOWIpOaKgOW3
+p+OAi+OAiuS+m+W6lOeuoeeQhumihuWvvOWKm+OAi+OAiumHh+i0reaIkOacrOWIhuaekOS4jumZ
+jeS9juOAi+OAiuaImOeVpemHh+i0reiwiOWIpOOAi+OAiuS+m+W6lOWVhumAieaLqeivhOS8sOS4
+jueuoeeQhuOAi+OAiuezu+e7n+WMlueahOmHh+i0reeuoeeQhuS4juacgOS9s+Wunui3teOAi+OA
+gg0KICAgIOabvuW6lOWNl+W8gOWkp+WtpueOsOS7o+eJqea1geeglOeptuS4reW/g+mCgOivt+WF
+seWQjOaSsOWGmeS6hueUseacuuaisOW3peS4muWHuueJiOekvuWHuueJiOeahCDjgIrkuK3lm73n
+jrDku6PnianmtYHlj5HlsZXmiqXlkYrvvIgyMDAz77yJ44CL77yb5Lit5Zu954mp5rWB5LiO6YeH
+6LSt6IGU5ZCI5Lya6YKA6K+35YWx5ZCM5pKw5YaZ5LqG55Sx5Lit5Zu954mpIOi1hOWHuueJiOek
+vuWHuueJiOeahOOAiuS4reWbvemHh+i0reWPkeWxleaKpeWRiu+8iDIwMDjvvInjgIvjgIEg44CK
+5Lit5Zu96YeH6LSt5Y+R5bGV5oql5ZGK77yIMjAxMO+8ieOAiyDvvJvnv7vor5Hlh7rniYjkuobm
+s6jlhozph4fotK3kvpvlupTnu4/nkIbluIjkuJPkuJrkuJvkuabjgIrkvpvlupTnrqHnkIbnmoTp
+ooblr7zlipvjgIvjgIIgDQrlnKjlt6XkvZzkuYvkvZnvvIzluLjlnKjljJfkuqzmuIXljY7lpKfl
+rabjgIHkuIrmtbflpI3ml6blpKflrabjgIHkuIrmtbfkuqTpgJrlpKflrabjgIHkuIrmtbflpKfl
+rabnrYnnn6XlkI3lpKflraborrLmjojph4fotK3lj4rkvpvlupTpk77nrqHnkIbkuJPpopjor77n
+qIvjgILov5jlupTpgoDotbTpn6nlm73pq5jkuL3lpKflrabjgIHlj7Dmub7kuJzlkLTlpKflrabo
+rrLlrabvvJsyMDA15bm06LW05paw5Yqg5Z2h5Li75oyB5Zu96ZmF6YeH6LSt6K665Z2b77ybMjAw
+N+W5tOW6lOWNsOW6puaUv+W6nOmCgOivt+WcqOWNsOW6pummlumDveaWsOW+t+mHjOWPguWKoOW5
+tuS4u+aMgeKAnEVMQ09NUCBJbmlkYSAyMDA34oCd5Zu96ZmF6YeH6LSt6K665Z2b77ybMjAwOOW5
+tOWcqOWMl+S6rOW6lOmCgOS4u+aMgeS4reWklueJqea1geS8geS4muWbvemZheWQiOS9nOmrmOWz
+sOiuuuWdm+OAgg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tDQrmiqUg5ZCNIOWbniDmiacgIOivt+WbnuWkjeiHs+S4i+aWuemCruS7tu+8
+mg0KDQoNCg0K5YWsIOWPuO+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAg6LS5IOeUqOaAu+iuoe+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICDor74g56iL77yaIOOAiumHh+i0reaIkOacrOaOp+WItuS4juS+m+W6lOWVhuiw
+iOWIpOaKgOW3p+OAiyANCuWPgiDkvJrkurox5aeT5ZCN77yaICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIOeUtSDor53vvJogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IOmCriDnrrHvvJogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIOaJiyDmnLrvvJog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA0K5Y+CIOS8muS6ujHlp5PlkI3vvJog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg55S1IOivne+8miAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAg6YKuIOeuse+8miAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAg5omLIOacuu+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQrk
+uLsg6KaBIOiBlOezu+S6uu+8miAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDnlLUg
+6K+d77yaICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDpgq4g566x77yaICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICDmiYsg5py677yaICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICANCuivt+Whq+WGmeS7peS4iuS/oeaBr+W5tuWbnuWkjeiHs+aMh+Wu
+mumCriDnrrHvvIzmnKzpgq7ku7bkuLrns7vnu5/oh6rliqjlj5HpgIHvvIzor7fli7/nm7TmjqXl
+m57lpI3vvIzosKLosKLjgIIgDQoNCuaKpSDlkI0v5ZKoIOivou+8miDnqIvlhYjnlJ8NCuaJi+ac
+uuWFvOW+ruS/oe+8mjE3NzE1NTQzOTc077yI5ZCM5b6u5L+h77yJDQrnlLXor53vvJogRW1haWzv
+vJozODQ2MzEzNzhAcXEuY29tDQrvvIjor7flsIYg5oqlIOWQjSDlm54g5omnIOWPkemAgeiHs+at
+pOmCrueuse+8jOWLv+ebtOaOpeWbnuWkjeacrOmCruS7tu+8jOiwouiwou+8iSANCg0KDQoNCg0K
+DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
+Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
+DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCumDveS7peeUqOaIt+Wwiui0teS9k+mqjOS4uuS4
+reW/gw0KDQrpg73ku6XnlKjmiLflsIrotLXkvZPpqozkuLrkuK3lv4MNCg0K6YO95Lul55So5oi3
+5bCK6LS15L2T6aqM5Li65Lit5b+DDQoNCumDveS7peeUqOaIt+Wwiui0teS9k+mqjOS4uuS4reW/
+gw0KDQrpg73ku6XnlKjmiLflsIrotLXkvZPpqozkuLrkuK3lv4MNCg0K6YO95Lul55So5oi35bCK
+6LS15L2T6aqM5Li65Lit5b+DDQrpg73ku6XnlKjmiLflsIrotLXkvZPpqozkuLrkuK3lv4MKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
+IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
+IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
