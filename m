@@ -2,115 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BCB2A4F21
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 19:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D082A5A16
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 23:28:55 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B22AA100A01B2;
-	Tue,  3 Nov 2020 10:42:21 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	by ml01.01.org (Postfix) with ESMTP id 25BD71652CE57;
+	Tue,  3 Nov 2020 14:28:53 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a06:dd00:1:4:1::2c6; helo=s317931.savps.ru; envelope-from=add@s317931.savps.ru; receiver=<UNKNOWN> 
+Received: from s317931.savps.ru (unknown [IPv6:2a06:dd00:1:4:1::2c6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8C678100A01AF
-	for <linux-nvdimm@lists.01.org>; Tue,  3 Nov 2020 10:42:19 -0800 (PST)
-IronPort-SDR: GfJj+vya/iJdz8xqeE3E3lKSSu8p7hnju9AY6TpLpU+IkgaYpLKDpBbArV19hEU5VGwAdBZXMU
- oLIl63PPn11A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9794"; a="166517121"
-X-IronPort-AV: E=Sophos;i="5.77,448,1596524400";
-   d="scan'208";a="166517121"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2020 10:42:19 -0800
-IronPort-SDR: NHUhhr4Ld0+ktxaexVqc9ly5ziPRS5Y+EjthlhRuorVcxAnBGj8aOQJlCSYv9leRTjjDuriVDY
- sxTjbk20XkgQ==
-X-IronPort-AV: E=Sophos;i="5.77,448,1596524400";
-   d="scan'208";a="528593430"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2020 10:42:19 -0800
-Date: Tue, 3 Nov 2020 10:42:18 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH V2 05/10] x86/pks: Add PKS kernel API
-Message-ID: <20201103184218.GB1531489@iweiny-DESK2.sc.intel.com>
-References: <20201102205320.1458656-1-ira.weiny@intel.com>
- <20201102205320.1458656-6-ira.weiny@intel.com>
- <20201103065024.GC75930@kroah.com>
- <20201103175335.GA1531489@iweiny-DESK2.sc.intel.com>
- <20201103181407.GA83845@kroah.com>
+	by ml01.01.org (Postfix) with ESMTPS id 01B6D1652CE55
+	for <linux-nvdimm@lists.01.org>; Tue,  3 Nov 2020 14:28:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=s317931.savps.ru; s=dkim; h=Sender:Content-Type:MIME-Version:Date:Subject:
+	From:Message-ID:Reply-To:To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=V6O8npAlBxow57FOD/AvPAVE2ib4fAwLkynRqAd9Gr8=; b=P95w03ygpRmcSRUTYD2Bm7xKYc
+	6FeqPNM/fjA83ZgrpvKwbh2t/cEdbw4MFg6cyTa6MPZPFVdh+/hYgQN6YN2TX+A/chKjrbfu5x1uv
+	KPW/PKW2QN5WDIjVS3K/GAzpLo/382Dt9/BpqUEtfjLaxcCfgfAmMRYnzLBvqcLL9O4w=;
+Received: by s317931.savps.ru with esmtpsa (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.94)
+	id 1ka4nE-0006Fv-KF; Wed, 04 Nov 2020 01:28:44 +0300
+Message-ID: <EAEF590A01D5EE5D8184CD4E0A9CB32C@meta.ua>
+From: "SITE" <innforms@meta.ua>
+Subject: =?windows-1251?B?zu/y6Ozo5+D26P8g6CDv8O7k4ujm5e3o5SDR?=
+	=?windows-1251?B?wMnSzsIg7eAgz8XQwtPeIPHy8ODt6PbzIO/u?=
+	=?windows-1251?B?6PHq7uL79SDx6PHy5ewh?=
+Date: Wed, 4 Nov 2020 00:24:51 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201103181407.GA83845@kroah.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: 5ILJKFZ5W4CCGQFOWDI54ZFUSWLWITTX
-X-Message-ID-Hash: 5ILJKFZ5W4CCGQFOWDI54ZFUSWLWITTX
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+X-Antivirus: Avast (VPS 201103-6, 03.11.2020), Outbound message
+X-Antivirus-Status: Clean
+Sender: add@s317931.savps.ru
+Message-ID-Hash: 7J6BPTIXGIYVRT53PFDUGBIGGZV22PV2
+X-Message-ID-Hash: 7J6BPTIXGIYVRT53PFDUGBIGGZV22PV2
+X-MailFrom: add@s317931.savps.ru
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5ILJKFZ5W4CCGQFOWDI54ZFUSWLWITTX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7J6BPTIXGIYVRT53PFDUGBIGGZV22PV2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-On Tue, Nov 03, 2020 at 07:14:07PM +0100, Greg KH wrote:
-> On Tue, Nov 03, 2020 at 09:53:36AM -0800, Ira Weiny wrote:
-> > On Tue, Nov 03, 2020 at 07:50:24AM +0100, Greg KH wrote:
-> > > On Mon, Nov 02, 2020 at 12:53:15PM -0800, ira.weiny@intel.com wrote:
-> > > > From: Fenghua Yu <fenghua.yu@intel.com>
-> > > > 
-> > 
-> > [snip]
-> > 
-> > > > diff --git a/include/linux/pkeys.h b/include/linux/pkeys.h
-> > > > index 2955ba976048..0959a4c0ca64 100644
-> > > > --- a/include/linux/pkeys.h
-> > > > +++ b/include/linux/pkeys.h
-> > > > @@ -50,4 +50,28 @@ static inline void copy_init_pkru_to_fpregs(void)
-> > > >  
-> > > >  #endif /* ! CONFIG_ARCH_HAS_PKEYS */
-> > > >  
-> > > > +#define PKS_FLAG_EXCLUSIVE 0x00
-> > > > +
-> > > > +#ifndef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
-> > > > +static inline int pks_key_alloc(const char * const pkey_user, int flags)
-> > > > +{
-> > > > +	return -EOPNOTSUPP;
-> > > > +}
-> > > > +static inline void pks_key_free(int pkey)
-> > > > +{
-> > > > +}
-> > > > +static inline void pks_mk_noaccess(int pkey)
-> > > > +{
-> > > > +	WARN_ON_ONCE(1);
-> > > 
-> > > So for panic-on-warn systems, this is ok to reboot the box?
-> > 
-> > I would not expect this to reboot the box no.  But it is a violation of the API
-> > contract.  If pky_key_alloc() returns an error calling any of the other
-> > functions is an error.
-> > 
-> > > 
-> > > Are you sure, that feels odd...
-> > 
-> > It does feel odd and downright wrong...  But there are a lot of WARN_ON_ONCE's
-> > out there to catch this type of internal programming error.  Is panic-on-warn
-> > commonly used?
-> 
-> Yes it is, and we are trying to recover from that as it is something
-> that you should recover from.  Properly handle the error and move on.
-
-Sorry, I did not know that...  Ok I'll look at the series because I probably
-have others I need to change.
-
-Thanks,
-Ira
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+z/Du5OLo5uXt6OUg8eDp8u7iIOIg0s7PLTMNCg0K0s7L3MrOICLBxcvbxSIgzMXSzsTbIM/QzsTC
+yMbFzcjfINHAydLOwiENCg0KzPsg5+Dt6Ozg5ezx/yDv8O7k4ujm5e3o5ewg8eDp8u7ioOIgR09P
+R0xFIOggWUFOREVYDQoNCtfy7uEgwuD4IPHg6fIg7eD34Osg7/Do7e7x6PL8IO/w6OH76/wsIO3z
+5u3uIPDg8erw8/Lo8vwg5ePuIOIg7+7o8eru4vv1IPHo8fLl7OD1IO/uIO3z5u377CDC4Owg8evu
+4uDsXPTw4Ofg7Cwg6iDv8Ojs5fDzIOXx6+ggwuD44CDk5f/y5ev87e7x8vwgz87LyMPQwNTI3ywg
+8u4g7/DoIOLi7uTlIOIg7+7o8eru4ujqIP3y7uPuIPHr7uLgLCDC4Pgg8eDp8iDk7uvm5e0g4fvy
+/CDt4CDv5fDi7ukg8fLw4O3o9uUg4iDv7ujx6uUsIOjt4PflIMLg+Oj1IO/u8uXt9ujg6/zt+/Ug
+6uvo5e3y7uIg5+Dh5fDz8iDC4PjoIOru7erz8OXt8vsuoA0KDQrS8Ogg+ODj4CDqIO/w7uTi6Obl
+7ej+IMLg+OXj7iDx4Ony4CENCg0Kz87Ewc7QIMrL3tfFwtvVINTQwMcgxMvfINHAydLADQrM+yDh
+5fHv6+Dy7e4g7/Du4uXk5ewg4O3g6+jnIMLg+OXj7iDx4Ony4CDoIOL7+Ovl7CDC4Owg8e/o8e7q
+IPTw4Ocg7+4gwuD45ekg8uXs4PLo6uUuDQoNCtHFziDOz9LIzMjHwNbI3yDRwMnSwKANCs3g7+jx
+4O3o5SDn4OPu6+7i6u7iLCDv8ODi6Ov87fv1INHFziDu7+jx4O3o6Swg6uv+9+Xi+/Ug9PDg5yDo
+IO/l8OXr6O3q7uLq4CDx8vDg7ej2Lg0KDQrP0M7EwsjGxc3IxSDPziDKy97XxcLbzCDU0MDHwMwN
+Cs/w7uTi6Obl7ejlIPHg6fLgIO/uIOL74fDg7e377CDC4OzoIOrr/vfl4vvsIPTw4Ofg7CDiINLO
+zyDv7ujx6u7i+/Ug8ejx8uXsLg0KDQrK4Oog5+Dq4Ofg8vwg7/Du5OLo5uXt6OUg8eDp8uANCg0K
+xOv/IOfg6uDn4CDv8O7k4ujm5e3o/yDC4Pjl4+4g8eDp8uAg7eDv6Pjo8uUg7eDsIOXj7iDg5PDl
+8Swg7Psg7/Du4uXk5ewg4O3g6+jnIOggwvv46+XsIMLg7CDv8OXk6+7m5e3o5SDv7iDv8O7k4ujm
+5e3o/iDiINLOzyDv7ujx6u7i+/Ug8ejx8uXsLg0KDQrRINPi4Obl7ejl7CDC6+Dk6Ozo8CDA6+Xq
+8eDt5PDu4uj3DQoNCnRlbDogKzM4MDYzNDAxMDc0MQ0KDQpza3lwZTogb3JnLXJlZXN0cg0KDQpt
+YWlsOiBpbmZvby11YUBiaWdtaXIubmV0DQoNCs7y6uDn4PL88f8g7vIg8ODx8fvr6uig6OvooOjn
+7OXt6PL8IOru7fLg6vLt8/4g6O307vDs4Pbo/i4NCg0KDQotLSANCt3y7iDx7u7h+eXt6OUg7/Du
+4uXw5e3uIO3gIOLo8PPx+yDg7fLo4ujw8/Hu7CBBdmFzdC4NCmh0dHBzOi8vd3d3LmF2YXN0LmNv
+bS9hbnRpdmlydXMNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9y
+ZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0
+cy4wMS5vcmcK
