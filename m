@@ -1,252 +1,491 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0DE2A3B13
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 04:37:29 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875842A3CF6
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 07:50:34 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B0EB416395A4D;
-	Mon,  2 Nov 2020 19:37:27 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=61.242.58.7; helo=xsif.com; envelope-from=charlie@xsif.com; receiver=<UNKNOWN> 
-Received: from xsif.com (unknown [61.242.58.7])
-	by ml01.01.org (Postfix) with ESMTP id 635AB16395A4C
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 19:37:22 -0800 (PST)
-Received: from localhost ([127.0.0.1]) by localhost via TCP with ESMTPA; Tue, 03 Nov 2020 11:31:33 +0800
+	by ml01.01.org (Postfix) with ESMTP id 8710E15D723DC;
+	Mon,  2 Nov 2020 22:50:32 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 3132015CEE860
+	for <linux-nvdimm@lists.01.org>; Mon,  2 Nov 2020 22:50:30 -0800 (PST)
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 0DB9822277;
+	Tue,  3 Nov 2020 06:50:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1604386229;
+	bh=MAxrnbt5VIvXOwsvpicABX0MkmmlreTcaHNcZhiy7CA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EsTSPVC9j10ih+q2EMTVwZOtdEAKNetrRW9ikYC4jlFJLRmZmVAyccU2hmWR1dfRo
+	 xKq0jVFsgjWZJtFD6+CK7uJCJr0rUzMJPiUqcRVXHxZXU73KRvLO+wozvcpayScpkP
+	 ExKkmRj244rGFoo2ONBt0S+ylaBIu8qbUKYtgJCk=
+Date: Tue, 3 Nov 2020 07:50:24 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: ira.weiny@intel.com
+Subject: Re: [PATCH V2 05/10] x86/pks: Add PKS kernel API
+Message-ID: <20201103065024.GC75930@kroah.com>
+References: <20201102205320.1458656-1-ira.weiny@intel.com>
+ <20201102205320.1458656-6-ira.weiny@intel.com>
 MIME-Version: 1.0
-Date: Tue, 03 Nov 2020 11:31:33 +0800
-Message-ID: <017845DAA0B0CCA8E1C201852E9E8296EF5E4B01@PC020120726HDCH>
-X-Priority: 3 (Normal)
-To: linux-nvdimm@lists.01.org
-From: fanjun <gzfanjun@126.com>
-Subject: =?utf-8?B?5oKo5Lus6ZyA6KaB55qE6LWE5paZ77yM6L+Y6IO95Yay5Yqo77yM6KGo56S65L2g6L+Y5a+5?=
- =?utf-8?B?55Sf5rS75pyJ5r+A5oOF77yM5oC75piv5Yay5Yqo77yM6KGo56S65L2g6L+Y5LiN5oeC55Sf?=
- =?utf-8?B?5rS744CC?=
-Message-ID-Hash: ERC2X6BIVHMZI62AD2D4KTILUTCMKY27
-X-Message-ID-Hash: ERC2X6BIVHMZI62AD2D4KTILUTCMKY27
-X-MailFrom: charlie@xsif.com
+Content-Disposition: inline
+In-Reply-To: <20201102205320.1458656-6-ira.weiny@intel.com>
+Message-ID-Hash: WEQG7HMF7SESNV4RSIMZC3OZIEE4FBNE
+X-Message-ID-Hash: WEQG7HMF7SESNV4RSIMZC3OZIEE4FBNE
+X-MailFrom: gregkh@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: gzfanjun@126.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ERC2X6BIVHMZI62AD2D4KTILUTCMKY27/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WEQG7HMF7SESNV4RSIMZC3OZIEE4FBNE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0469560983922897923=="
-
---===============0469560983922897923==
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
-
-PGh0bWw+PGhlYWQ+PE1FVEEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0
-L2h0bWw7Y2hhcnNldD11dGYtOCI+PC9oZWFkPjxib2R5PjxwPjxzcGFuIHN0eWxlPSdjb2xvcjog
-cmdiKDc5LCA5OCwgNDApOyBmb250LWZhbWlseTogIuW+rui9r+mbhem7kSIsInNhbnMtc2VyaWYi
-OyBmb250LXNpemU6IDE1cHQ7IGZvbnQtd2VpZ2h0OiBub3JtYWw7IG1zby1hc2NpaS1mb250LWZh
-bWlseTogSGVsdmV0aWNhOyBtc28taGFuc2ktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLWJp
-ZGktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10
-aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFu
-Z3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLWZvbnQtd2Vp
-Z2h0OiBib2xkOyc+bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZ+aCqOWlve+8geaCqOaJgOmcgOim
-geeahOeql+W4mOmDveWcqOi/memHjO+8jOasoui/juiuoui0reWSqOivou+8ge+8muW5v+W3nuac
-neiJuueql+W4mOaYr+S4gOmXtOmbhuiuvuiuoeOAgeeUn+S6p+OAgemUgOWUruS6juS4gOS9k+ea
-hOmBrumYs+S8geS4mu+8jOS4muWKoea2teebluS6huS8l+WkmuWkp+S4reWei+ijhemlsOW3peeo
-i+mhueebrjwvc3Bhbj48c3Ryb25nPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0nY29sb3I6IHJn
-Yig3OSwgOTgsIDQwKTsgZm9udC1mYW1pbHk6ICJIZWx2ZXRpY2EiLCJzYW5zLXNlcmlmIjsgZm9u
-dC1zaXplOiAxNXB0OyBmb250LXdlaWdodDogbm9ybWFsOyBtc28tdGhlbWVjb2xvcjogYWNjZW50
-MzsgbXNvLXRoZW1lc2hhZGU6IDEyODsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFy
-ZWFzdC1sYW5ndWFnZTogWkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQTsgbXNvLWJpZGkt
-Zm9udC13ZWlnaHQ6IGJvbGQ7IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDlvq7ova/pm4Xpu5E7
-Jz4sPC9zcGFuPjwvc3Ryb25nPjxzdHJvbmc+PHNwYW4gc3R5bGU9J2NvbG9yOiByZ2IoNzksIDk4
-LCA0MCk7IGZvbnQtZmFtaWx5OiAi5b6u6L2v6ZuF6buRIiwic2Fucy1zZXJpZiI7IGZvbnQtc2l6
-ZTogMTVwdDsgZm9udC13ZWlnaHQ6IG5vcm1hbDsgbXNvLWFzY2lpLWZvbnQtZmFtaWx5OiBIZWx2
-ZXRpY2E7IG1zby1oYW5zaS1mb250LWZhbWlseTogSGVsdmV0aWNhOyBtc28tYmlkaS1mb250LWZh
-bWlseTogSGVsdmV0aWNhOyBtc28tdGhlbWVjb2xvcjogYWNjZW50MzsgbXNvLXRoZW1lc2hhZGU6
-IDEyODsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFnZTogWkgt
-Q047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQTsgbXNvLWJpZGktZm9udC13ZWlnaHQ6IGJvbGQ7
-Jz7lnKjooYzkuJrkuK3mi6XmnInoia/lpb3lo7Doqok8L3NwYW4+PC9zdHJvbmc+PHN0cm9uZz48
-c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9J2NvbG9yOiByZ2IoNzksIDk4LCA0MCk7IGZvbnQtZmFt
-aWx5OiAiSGVsdmV0aWNhIiwic2Fucy1zZXJpZiI7IGZvbnQtc2l6ZTogMTVwdDsgZm9udC13ZWln
-aHQ6IG5vcm1hbDsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7
-IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBt
-c28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLWZvbnQtd2VpZ2h0OiBib2xkOyBtc28t
-ZmFyZWFzdC1mb250LWZhbWlseTog5b6u6L2v6ZuF6buROyc+Ljwvc3Bhbj48L3N0cm9uZz48c3Ry
-b25nPjxzcGFuIHN0eWxlPSdjb2xvcjogcmdiKDc5LCA5OCwgNDApOyBmb250LWZhbWlseTogIuW+
-rui9r+mbhem7kSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6IDE1cHQ7IGZvbnQtd2VpZ2h0OiBu
-b3JtYWw7IG1zby1hc2NpaS1mb250LWZhbWlseTogSGVsdmV0aWNhOyBtc28taGFuc2ktZm9udC1m
-YW1pbHk6IEhlbHZldGljYTsgbXNvLWJpZGktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLXRo
-ZW1lY29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdl
-OiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTog
-QVItU0E7IG1zby1iaWRpLWZvbnQtd2VpZ2h0OiBib2xkOyc+5YWs5Y+45Lqn5ZOB5YyF5ous77ya
-5bel56iL5Y235biY57O75YiX44CB6ZOd5ZCI6YeR55m+5Y+256qX5biY57O75YiX44CB5a6e5pyo
-55m+5Y+256qX5biY57O75YiX44CB56u557uH5biY57O75YiX44CB5a625bGF5biD5biY57O75YiX
-44CB6JyC5bei5biY44CB5qKm5bm75biY44CB5paR6ams5biY44CB5Z6C55u056qX5biY57O75YiX
-44CB55S15Yqo56qX5biY57O75YiX562J562J44CC5aGR6YCg5LqG56qX5biY6YGu6Ziz6KGM5Lia
-55qE5paw5b2i6LGh77yM5oOg5Y+K5pu05aSa5raI6LS55Lq6576k77yM6K6p5bm/5aSn5raI6LS5
-6ICF55yf5q2j5oul5pyJ5LqG6LaF5YC844CB5LyY6LSo55qE5raI6LS55Lqr5Y+XPC9zcGFuPjwv
-c3Ryb25nPjxzdHJvbmc+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxlPSdjb2xvcjogcmdiKDc5LCA5
-OCwgNDApOyBmb250LWZhbWlseTogIkhlbHZldGljYSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6
-IDE1cHQ7IGZvbnQtd2VpZ2h0OiBub3JtYWw7IG1zby10aGVtZWNvbG9yOiBhY2NlbnQzOyBtc28t
-dGhlbWVzaGFkZTogMTI4OyBtc28tYW5zaS1sYW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxh
-bmd1YWdlOiBaSC1DTjsgbXNvLWJpZGktbGFuZ3VhZ2U6IEFSLVNBOyBtc28tYmlkaS1mb250LXdl
-aWdodDogYm9sZDsgbXNvLWZhcmVhc3QtZm9udC1mYW1pbHk6IOW+rui9r+mbhem7kTsnPi4gPC9z
-cGFuPjwvc3Ryb25nPjxzdHJvbmc+PHNwYW4gc3R5bGU9J2NvbG9yOiByZ2IoNzksIDk4LCA0MCk7
-IGZvbnQtZmFtaWx5OiAi5b6u6L2v6ZuF6buRIiwic2Fucy1zZXJpZiI7IGZvbnQtc2l6ZTogMTVw
-dDsgZm9udC13ZWlnaHQ6IG5vcm1hbDsgbXNvLWFzY2lpLWZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7
-IG1zby1oYW5zaS1mb250LWZhbWlseTogSGVsdmV0aWNhOyBtc28tYmlkaS1mb250LWZhbWlseTog
-SGVsdmV0aWNhOyBtc28tdGhlbWVjb2xvcjogYWNjZW50MzsgbXNvLXRoZW1lc2hhZGU6IDEyODsg
-bXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFnZTogWkgtQ047IG1z
-by1iaWRpLWxhbmd1YWdlOiBBUi1TQTsgbXNvLWJpZGktZm9udC13ZWlnaHQ6IGJvbGQ7Jz7or5rk
-v6HkuLrmnKw8L3NwYW4+PC9zdHJvbmc+PHN0cm9uZz48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9
-J2NvbG9yOiByZ2IoNzksIDk4LCA0MCk7IGZvbnQtZmFtaWx5OiAiSGVsdmV0aWNhIiwic2Fucy1z
-ZXJpZiI7IGZvbnQtc2l6ZTogMTVwdDsgZm9udC13ZWlnaHQ6IG5vcm1hbDsgbXNvLXRoZW1lY29s
-b3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1V
-UzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7
-IG1zby1iaWRpLWZvbnQtd2VpZ2h0OiBib2xkOyBtc28tZmFyZWFzdC1mb250LWZhbWlseTog5b6u
-6L2v6ZuF6buROyc+LDwvc3Bhbj48L3N0cm9uZz48c3Ryb25nPjxzcGFuIHN0eWxlPSdjb2xvcjog
-cmdiKDc5LCA5OCwgNDApOyBmb250LWZhbWlseTogIuW+rui9r+mbhem7kSIsInNhbnMtc2VyaWYi
-OyBmb250LXNpemU6IDE1cHQ7IGZvbnQtd2VpZ2h0OiBub3JtYWw7IG1zby1hc2NpaS1mb250LWZh
-bWlseTogSGVsdmV0aWNhOyBtc28taGFuc2ktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLWJp
-ZGktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10
-aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFu
-Z3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLWZvbnQtd2Vp
-Z2h0OiBib2xkOyc+6L+95rGC5Y2T6LaKPC9zcGFuPjwvc3Ryb25nPjxzdHJvbmc+PHNwYW4gbGFu
-Zz0iRU4tVVMiIHN0eWxlPSdjb2xvcjogcmdiKDc5LCA5OCwgNDApOyBmb250LWZhbWlseTogIkhl
-bHZldGljYSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6IDE1cHQ7IGZvbnQtd2VpZ2h0OiBub3Jt
-YWw7IG1zby10aGVtZWNvbG9yOiBhY2NlbnQzOyBtc28tdGhlbWVzaGFkZTogMTI4OyBtc28tYW5z
-aS1sYW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxhbmd1YWdlOiBaSC1DTjsgbXNvLWJpZGkt
-bGFuZ3VhZ2U6IEFSLVNBOyBtc28tYmlkaS1mb250LXdlaWdodDogYm9sZDsgbXNvLWZhcmVhc3Qt
-Zm9udC1mYW1pbHk6IOW+rui9r+mbhem7kTsnPiw8L3NwYW4+PC9zdHJvbmc+PHN0cm9uZz48c3Bh
-biBzdHlsZT0nY29sb3I6IHJnYig3OSwgOTgsIDQwKTsgZm9udC1mYW1pbHk6ICLlvq7ova/pm4Xp
-u5EiLCJzYW5zLXNlcmlmIjsgZm9udC1zaXplOiAxNXB0OyBmb250LXdlaWdodDogbm9ybWFsOyBt
-c28tYXNjaWktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLWhhbnNpLWZvbnQtZmFtaWx5OiBI
-ZWx2ZXRpY2E7IG1zby1iaWRpLWZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IG1zby10aGVtZWNvbG9y
-OiBhY2NlbnQzOyBtc28tdGhlbWVzaGFkZTogMTI4OyBtc28tYW5zaS1sYW5ndWFnZTogRU4tVVM7
-IG1zby1mYXJlYXN0LWxhbmd1YWdlOiBaSC1DTjsgbXNvLWJpZGktbGFuZ3VhZ2U6IEFSLVNBOyBt
-c28tYmlkaS1mb250LXdlaWdodDogYm9sZDsnPuW0h+WwmuWIm+aWsDwvc3Bhbj48L3N0cm9uZz48
-c3Ryb25nPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0nY29sb3I6IHJnYig3OSwgOTgsIDQwKTsg
-Zm9udC1mYW1pbHk6ICJIZWx2ZXRpY2EiLCJzYW5zLXNlcmlmIjsgZm9udC1zaXplOiAxNXB0OyBm
-b250LXdlaWdodDogbm9ybWFsOyBtc28tdGhlbWVjb2xvcjogYWNjZW50MzsgbXNvLXRoZW1lc2hh
-ZGU6IDEyODsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFnZTog
-WkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQTsgbXNvLWJpZGktZm9udC13ZWlnaHQ6IGJv
-bGQ7IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDlvq7ova/pm4Xpu5E7Jz4sPC9zcGFuPjwvc3Ry
-b25nPjxzdHJvbmc+PHNwYW4gc3R5bGU9J2NvbG9yOiByZ2IoNzksIDk4LCA0MCk7IGZvbnQtZmFt
-aWx5OiAi5b6u6L2v6ZuF6buRIiwic2Fucy1zZXJpZiI7IGZvbnQtc2l6ZTogMTVwdDsgZm9udC13
-ZWlnaHQ6IG5vcm1hbDsgbXNvLWFzY2lpLWZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IG1zby1oYW5z
-aS1mb250LWZhbWlseTogSGVsdmV0aWNhOyBtc28tYmlkaS1mb250LWZhbWlseTogSGVsdmV0aWNh
-OyBtc28tdGhlbWVjb2xvcjogYWNjZW50MzsgbXNvLXRoZW1lc2hhZGU6IDEyODsgbXNvLWFuc2kt
-bGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFnZTogWkgtQ047IG1zby1iaWRpLWxh
-bmd1YWdlOiBBUi1TQTsgbXNvLWJpZGktZm9udC13ZWlnaHQ6IGJvbGQ7Jz7miJHku6zlsIbkvJrn
-u6fnu63ku6XmjIHnu63mlLnov5vnmoTnsr7npZ48L3NwYW4+PC9zdHJvbmc+PHN0cm9uZz48c3Bh
-biBsYW5nPSJFTi1VUyIgc3R5bGU9J2NvbG9yOiByZ2IoNzksIDk4LCA0MCk7IGZvbnQtZmFtaWx5
-OiAiSGVsdmV0aWNhIiwic2Fucy1zZXJpZiI7IGZvbnQtc2l6ZTogMTVwdDsgZm9udC13ZWlnaHQ6
-IG5vcm1hbDsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1z
-by1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28t
-YmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLWZvbnQtd2VpZ2h0OiBib2xkOyBtc28tZmFy
-ZWFzdC1mb250LWZhbWlseTog5b6u6L2v6ZuF6buROyc+LDwvc3Bhbj48L3N0cm9uZz48c3Ryb25n
-PjxzcGFuIHN0eWxlPSdjb2xvcjogcmdiKDc5LCA5OCwgNDApOyBmb250LWZhbWlseTogIuW+rui9
-r+mbhem7kSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6IDE1cHQ7IGZvbnQtd2VpZ2h0OiBub3Jt
-YWw7IG1zby1hc2NpaS1mb250LWZhbWlseTogSGVsdmV0aWNhOyBtc28taGFuc2ktZm9udC1mYW1p
-bHk6IEhlbHZldGljYTsgbXNvLWJpZGktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLXRoZW1l
-Y29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBF
-Ti1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVIt
-U0E7IG1zby1iaWRpLWZvbnQtd2VpZ2h0OiBib2xkOyc+57K+55uK5rGC57K+PC9zcGFuPjwvc3Ry
-b25nPjxzdHJvbmc+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxlPSdjb2xvcjogcmdiKDc5LCA5OCwg
-NDApOyBmb250LWZhbWlseTogIkhlbHZldGljYSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6IDE1
-cHQ7IGZvbnQtd2VpZ2h0OiBub3JtYWw7IG1zby10aGVtZWNvbG9yOiBhY2NlbnQzOyBtc28tdGhl
-bWVzaGFkZTogMTI4OyBtc28tYW5zaS1sYW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxhbmd1
-YWdlOiBaSC1DTjsgbXNvLWJpZGktbGFuZ3VhZ2U6IEFSLVNBOyBtc28tYmlkaS1mb250LXdlaWdo
-dDogYm9sZDsgbXNvLWZhcmVhc3QtZm9udC1mYW1pbHk6IOW+rui9r+mbhem7kTsnPiw8L3NwYW4+
-PC9zdHJvbmc+PHN0cm9uZz48c3BhbiBzdHlsZT0nY29sb3I6IHJnYig3OSwgOTgsIDQwKTsgZm9u
-dC1mYW1pbHk6ICLlvq7ova/pm4Xpu5EiLCJzYW5zLXNlcmlmIjsgZm9udC1zaXplOiAxNXB0OyBm
-b250LXdlaWdodDogbm9ybWFsOyBtc28tYXNjaWktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNv
-LWhhbnNpLWZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IG1zby1iaWRpLWZvbnQtZmFtaWx5OiBIZWx2
-ZXRpY2E7IG1zby10aGVtZWNvbG9yOiBhY2NlbnQzOyBtc28tdGhlbWVzaGFkZTogMTI4OyBtc28t
-YW5zaS1sYW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxhbmd1YWdlOiBaSC1DTjsgbXNvLWJp
-ZGktbGFuZ3VhZ2U6IEFSLVNBOyBtc28tYmlkaS1mb250LXdlaWdodDogYm9sZDsnPuS4juaXtuS/
-sei/mzwvc3Bhbj48L3N0cm9uZz48c3Ryb25nPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0nY29s
-b3I6IHJnYig3OSwgOTgsIDQwKTsgZm9udC1mYW1pbHk6ICJIZWx2ZXRpY2EiLCJzYW5zLXNlcmlm
-IjsgZm9udC1zaXplOiAxNXB0OyBmb250LXdlaWdodDogbm9ybWFsOyBtc28tdGhlbWVjb2xvcjog
-YWNjZW50MzsgbXNvLXRoZW1lc2hhZGU6IDEyODsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBt
-c28tZmFyZWFzdC1sYW5ndWFnZTogWkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQTsgbXNv
-LWJpZGktZm9udC13ZWlnaHQ6IGJvbGQ7IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDlvq7ova/p
-m4Xpu5E7Jz4uPC9zcGFuPjwvc3Ryb25nPjxzdHJvbmc+PHNwYW4gc3R5bGU9J2NvbG9yOiByZ2Io
-NzksIDk4LCA0MCk7IGZvbnQtZmFtaWx5OiAi5b6u6L2v6ZuF6buRIiwic2Fucy1zZXJpZiI7IGZv
-bnQtc2l6ZTogMTVwdDsgZm9udC13ZWlnaHQ6IG5vcm1hbDsgbXNvLWFzY2lpLWZvbnQtZmFtaWx5
-OiBIZWx2ZXRpY2E7IG1zby1oYW5zaS1mb250LWZhbWlseTogSGVsdmV0aWNhOyBtc28tYmlkaS1m
-b250LWZhbWlseTogSGVsdmV0aWNhOyBtc28tdGhlbWVjb2xvcjogYWNjZW50MzsgbXNvLXRoZW1l
-c2hhZGU6IDEyODsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVTOyBtc28tZmFyZWFzdC1sYW5ndWFn
-ZTogWkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQTsgbXNvLWJpZGktZm9udC13ZWlnaHQ6
-IGJvbGQ7Jz7kuLrmjqjliqjnqpfluJjpga7pmLPooYzkuJrnmoTlj5HlsZXogIzkuI3mlq3lpYvm
-lpc8L3NwYW4+PC9zdHJvbmc+PHN0cm9uZz48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9J2NvbG9y
-OiByZ2IoNzksIDk4LCA0MCk7IGZvbnQtZmFtaWx5OiAiSGVsdmV0aWNhIiwic2Fucy1zZXJpZiI7
-IGZvbnQtc2l6ZTogMTVwdDsgZm9udC13ZWlnaHQ6IG5vcm1hbDsgbXNvLXRoZW1lY29sb3I6IGFj
-Y2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNv
-LWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1i
-aWRpLWZvbnQtd2VpZ2h0OiBib2xkOyBtc28tZmFyZWFzdC1mb250LWZhbWlseTog5b6u6L2v6ZuF
-6buROyc+Ljwvc3Bhbj48L3N0cm9uZz48c3Ryb25nPjxzcGFuIHN0eWxlPSdjb2xvcjogcmdiKDc5
-LCA5OCwgNDApOyBmb250LWZhbWlseTogIuW+rui9r+mbhem7kSIsInNhbnMtc2VyaWYiOyBmb250
-LXNpemU6IDE1cHQ7IGZvbnQtd2VpZ2h0OiBub3JtYWw7IG1zby1hc2NpaS1mb250LWZhbWlseTog
-SGVsdmV0aWNhOyBtc28taGFuc2ktZm9udC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLWJpZGktZm9u
-dC1mYW1pbHk6IEhlbHZldGljYTsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNo
-YWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6
-IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLWZvbnQtd2VpZ2h0OiBi
-b2xkOyc+5pyd6Im65Lq65oS/5LiO5oKo5pC65omL5YWx5Yib576O5aW95piO5aSp77yBPC9zcGFu
-Pjwvc3Ryb25nPjxiIHN0eWxlPSJtc28tYmlkaS1mb250LXdlaWdodDogbm9ybWFsOyI+PHNwYW4g
-bGFuZz0iRU4tVVMiIHN0eWxlPSdjb2xvcjogcmdiKDc5LCA5OCwgNDApOyBmb250LWZhbWlseTog
-IlRhaG9tYSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6IDE1cHQ7IG1zby1iaWRpLWZvbnQtZmFt
-aWx5OiAiVGltZXMgTmV3IFJvbWFuIjsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10aGVt
-ZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3Vh
-Z2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1mYXJlYXN0LWZvbnQtZmFt
-aWx5OiDlvq7ova/pm4Xpu5E7IG1zby1iaWRpLXRoZW1lLWZvbnQ6IG1pbm9yLWJpZGk7Jz4yNDwv
-c3Bhbj48c3BhbiBzdHlsZT0nY29sb3I6IHJnYig3OSwgOTgsIDQwKTsgZm9udC1mYW1pbHk6ICLl
-vq7ova/pm4Xpu5EiLCJzYW5zLXNlcmlmIjsgZm9udC1zaXplOiAxNXB0OyBtc28tYXNjaWktZm9u
-dC1mYW1pbHk6IFRhaG9tYTsgbXNvLWhhbnNpLWZvbnQtZmFtaWx5OiBUYWhvbWE7IG1zby1iaWRp
-LWZvbnQtZmFtaWx5OiAiVGltZXMgTmV3IFJvbWFuIjsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7
-IG1zby10aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVh
-c3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLXRo
-ZW1lLWZvbnQ6IG1pbm9yLWJpZGk7Jz7lsI/ml7blkqjor6LogZTns7vnlLXor53vvIjlvq7kv6Hl
-kIzlj7fvvInvvJo8L3NwYW4+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxlPSdjb2xvcjogcmdiKDc5
-LCA5OCwgNDApOyBmb250LWZhbWlseTogIlRhaG9tYSIsInNhbnMtc2VyaWYiOyBmb250LXNpemU6
-IDE1cHQ7IG1zby1iaWRpLWZvbnQtZmFtaWx5OiAiVGltZXMgTmV3IFJvbWFuIjsgbXNvLXRoZW1l
-Y29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1zby1hbnNpLWxhbmd1YWdlOiBF
-Ti1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28tYmlkaS1sYW5ndWFnZTogQVIt
-U0E7IG1zby1mYXJlYXN0LWZvbnQtZmFtaWx5OiDlvq7ova/pm4Xpu5E7IG1zby1iaWRpLXRoZW1l
-LWZvbnQ6IG1pbm9yLWJpZGk7Jz4xMzcxMDUyODQ1OTxzcGFuIHN0eWxlPSJtc28tc3BhY2VydW46
-IHllczsiPiZuYnNwOyA8L3NwYW4+PC9zcGFuPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0nY29s
-b3I6IHJnYig3OSwgOTgsIDQwKTsgZm9udC1mYW1pbHk6ICJUYWhvbWEiLCJzYW5zLXNlcmlmIjsg
-Zm9udC1zaXplOiAxNHB0OyBtc28tYmlkaS1mb250LWZhbWlseTogIlRpbWVzIE5ldyBSb21hbiI7
-IG1zby10aGVtZWNvbG9yOiBhY2NlbnQzOyBtc28tdGhlbWVzaGFkZTogMTI4OyBtc28tYW5zaS1s
-YW5ndWFnZTogRU4tVVM7IG1zby1mYXJlYXN0LWxhbmd1YWdlOiBaSC1DTjsgbXNvLWJpZGktbGFu
-Z3VhZ2U6IEFSLVNBOyBtc28tZmFyZWFzdC1mb250LWZhbWlseTog5b6u6L2v6ZuF6buROyBtc28t
-YmlkaS10aGVtZS1mb250OiBtaW5vci1iaWRpOyc+PHNwYW4gc3R5bGU9Im1zby1zcGFjZXJ1bjog
-eWVzOyI+Jm5ic3A7Jm5ic3A7Jm5ic3A7PC9zcGFuPjwvc3Bhbj48c3BhbiBzdHlsZT0nY29sb3I6
-IHJnYig3OSwgOTgsIDQwKTsgZm9udC1mYW1pbHk6ICLlvq7ova/pm4Xpu5EiLCJzYW5zLXNlcmlm
-IjsgZm9udC1zaXplOiAxNHB0OyBtc28tYXNjaWktZm9udC1mYW1pbHk6IFRhaG9tYTsgbXNvLWhh
-bnNpLWZvbnQtZmFtaWx5OiBUYWhvbWE7IG1zby1iaWRpLWZvbnQtZmFtaWx5OiAiVGltZXMgTmV3
-IFJvbWFuIjsgbXNvLXRoZW1lY29sb3I6IGFjY2VudDM7IG1zby10aGVtZXNoYWRlOiAxMjg7IG1z
-by1hbnNpLWxhbmd1YWdlOiBFTi1VUzsgbXNvLWZhcmVhc3QtbGFuZ3VhZ2U6IFpILUNOOyBtc28t
-YmlkaS1sYW5ndWFnZTogQVItU0E7IG1zby1iaWRpLXRoZW1lLWZvbnQ6IG1pbm9yLWJpZGk7Jz7o
-gZTns7vkurrvvJrojIPlhYjnlJ88L3NwYW4+PHNwYW4gc3R5bGU9J2NvbG9yOiByZ2IoNzksIDk4
-LCA0MCk7IGZvbnQtZmFtaWx5OiAiVGFob21hIiwic2Fucy1zZXJpZiI7IGZvbnQtc2l6ZTogMTRw
-dDsgbXNvLWJpZGktZm9udC1mYW1pbHk6ICJUaW1lcyBOZXcgUm9tYW4iOyBtc28tdGhlbWVjb2xv
-cjogYWNjZW50MzsgbXNvLXRoZW1lc2hhZGU6IDEyODsgbXNvLWFuc2ktbGFuZ3VhZ2U6IEVOLVVT
-OyBtc28tZmFyZWFzdC1sYW5ndWFnZTogWkgtQ047IG1zby1iaWRpLWxhbmd1YWdlOiBBUi1TQTsg
-bXNvLWZhcmVhc3QtZm9udC1mYW1pbHk6IOW+rui9r+mbhem7kTsgbXNvLWJpZGktdGhlbWUtZm9u
-dDogbWlub3ItYmlkaTsnPiZuYnNwOyDmiJbogZTns7vnlLXor53vvJowMjAtODk4NDE4Njc8L3Nw
-YW4+PC9iPjwvcD48L2JvZHk+PC9odG1sPg==
-
---===============0469560983922897923==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Mon, Nov 02, 2020 at 12:53:15PM -0800, ira.weiny@intel.com wrote:
+> From: Fenghua Yu <fenghua.yu@intel.com>
+> 
+> PKS allows kernel users to define domains of page mappings which have
+> additional protections beyond the paging protections.
+> 
+> Add an API to allocate, use, and free a protection key which identifies
+> such a domain.  Export 5 new symbols pks_key_alloc(), pks_mknoaccess(),
+> pks_mkread(), pks_mkrdwr(), and pks_key_free().  Add 2 new macros;
+> PAGE_KERNEL_PKEY(key) and _PAGE_PKEY(pkey).
+> 
+> Update the protection key documentation to cover pkeys on supervisor
+> pages.
+> 
+> Co-developed-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+> 
+> ---
+> Changes from V1
+> 	Per Dave Hansen
+> 		Add flags to pks_key_alloc() to help future proof the
+> 		interface if/when the key space is exhausted.
+> 
+> Changes from RFC V3
+> 	Per Dave Hansen
+> 		Put WARN_ON_ONCE in pks_key_free()
+> 		s/pks_mknoaccess/pks_mk_noaccess/
+> 		s/pks_mkread/pks_mk_readonly/
+> 		s/pks_mkrdwr/pks_mk_readwrite/
+> 		Change return pks_key_alloc() to EOPNOTSUPP when not
+> 			supported or configured
+> 	Per Peter Zijlstra
+> 		Remove unneeded preempt disable/enable
+> ---
+>  Documentation/core-api/protection-keys.rst | 102 ++++++++++++++---
+>  arch/x86/include/asm/pgtable_types.h       |  12 ++
+>  arch/x86/include/asm/pkeys.h               |  11 ++
+>  arch/x86/include/asm/pkeys_common.h        |   4 +
+>  arch/x86/mm/pkeys.c                        | 126 +++++++++++++++++++++
+>  include/linux/pgtable.h                    |   4 +
+>  include/linux/pkeys.h                      |  24 ++++
+>  7 files changed, 265 insertions(+), 18 deletions(-)
+> 
+> diff --git a/Documentation/core-api/protection-keys.rst b/Documentation/core-api/protection-keys.rst
+> index ec575e72d0b2..c4e6c480562f 100644
+> --- a/Documentation/core-api/protection-keys.rst
+> +++ b/Documentation/core-api/protection-keys.rst
+> @@ -4,25 +4,33 @@
+>  Memory Protection Keys
+>  ======================
+>  
+> -Memory Protection Keys for Userspace (PKU aka PKEYs) is a feature
+> -which is found on Intel's Skylake (and later) "Scalable Processor"
+> -Server CPUs. It will be available in future non-server Intel parts
+> -and future AMD processors.
+> -
+> -For anyone wishing to test or use this feature, it is available in
+> -Amazon's EC2 C5 instances and is known to work there using an Ubuntu
+> -17.04 image.
+> -
+>  Memory Protection Keys provides a mechanism for enforcing page-based
+>  protections, but without requiring modification of the page tables
+> -when an application changes protection domains.  It works by
+> -dedicating 4 previously ignored bits in each page table entry to a
+> -"protection key", giving 16 possible keys.
+> +when an application changes protection domains.
+> +
+> +PKeys Userspace (PKU) is a feature which is found on Intel's Skylake "Scalable
+> +Processor" Server CPUs and later.  And It will be available in future
+> +non-server Intel parts and future AMD processors.
+> +
+> +Future Intel processors will support Protection Keys for Supervisor pages
+> +(PKS).
+> +
+> +For anyone wishing to test or use user space pkeys, it is available in Amazon's
+> +EC2 C5 instances and is known to work there using an Ubuntu 17.04 image.
+> +
+> +pkeys work by dedicating 4 previously Reserved bits in each page table entry to
+> +a "protection key", giving 16 possible keys.  User and Supervisor pages are
+> +treated separately.
+> +
+> +Protections for each page are controlled with per CPU registers for each type
+> +of page User and Supervisor.  Each of these 32 bit register stores two separate
+> +bits (Access Disable and Write Disable) for each key.
+>  
+> -There is also a new user-accessible register (PKRU) with two separate
+> -bits (Access Disable and Write Disable) for each key.  Being a CPU
+> -register, PKRU is inherently thread-local, potentially giving each
+> -thread a different set of protections from every other thread.
+> +For Userspace the register is user-accessible (rdpkru/wrpkru).  For
+> +Supervisor, the register (MSR_IA32_PKRS) is accessible only to the kernel.
+> +
+> +Being a CPU register, pkeys are inherently thread-local, potentially giving
+> +each thread an independent set of protections from every other thread.
+>  
+>  There are two new instructions (RDPKRU/WRPKRU) for reading and writing
+>  to the new register.  The feature is only available in 64-bit mode,
+> @@ -30,8 +38,11 @@ even though there is theoretically space in the PAE PTEs.  These
+>  permissions are enforced on data access only and have no effect on
+>  instruction fetches.
+>  
+> -Syscalls
+> -========
+> +For kernel space rdmsr/wrmsr are used to access the kernel MSRs.
+> +
+> +
+> +Syscalls for user space keys
+> +============================
+>  
+>  There are 3 system calls which directly interact with pkeys::
+>  
+> @@ -98,3 +109,58 @@ with a read()::
+>  The kernel will send a SIGSEGV in both cases, but si_code will be set
+>  to SEGV_PKERR when violating protection keys versus SEGV_ACCERR when
+>  the plain mprotect() permissions are violated.
+> +
+> +
+> +Kernel API for PKS support
+> +==========================
+> +
+> +The following interface is used to allocate, use, and free a pkey which defines
+> +a 'protection domain' within the kernel.  Setting a pkey value in a supervisor
+> +mapping adds that mapping to the protection domain.
+> +
+> +        int pks_key_alloc(const char * const pkey_user, int flags);
+> +        #define PAGE_KERNEL_PKEY(pkey)
+> +        #define _PAGE_KEY(pkey)
+> +        void pks_mk_noaccess(int pkey);
+> +        void pks_mk_readonly(int pkey);
+> +        void pks_mk_readwrite(int pkey);
+> +        void pks_key_free(int pkey);
+> +
+> +pks_key_alloc() allocates keys dynamically to allow better use of the limited
+> +key space.  'flags' alter the allocation based on the users need.  Currently
+> +they can request an exclusive key.
+> +
+> +Callers of pks_key_alloc() _must_ be prepared for it to fail and take
+> +appropriate action.  This is due mainly to the fact that PKS may not be
+> +available on all arch's.  Failure to check the return of pks_key_alloc() and
+> +using any of the rest of the API is undefined.
+> +
+> +Kernel users must set the PTE permissions in the page table entries for the
+> +mappings they want to protect.  This can be done with PAGE_KERNEL_PKEY() or
+> +_PAGE_KEY().
+> +
+> +The pks_mk*() family of calls allows kernel users the ability to change the
+> +protections for the domain identified by the pkey specified.  3 states are
+> +available pks_mk_noaccess(), pks_mk_readonly(), and pks_mk_readwrite() which
+> +set the access to none, read, and read/write respectively.
+> +
+> +Finally, pks_key_free() allows a user to return the key to the allocator for
+> +use by others.
+> +
+> +The interface maintains pks_mk_noaccess() (Access Disabled (AD=1)) for all keys
+> +not currently allocated.  Therefore, the user can depend on access being
+> +disabled when pks_key_alloc() returns a key and the user should remove mappings
+> +from the domain (remove the pkey from the PTE) prior to calling pks_key_free().
+> +
+> +It should be noted that the underlying WRMSR(MSR_IA32_PKRS) is not serializing
+> +but still maintains ordering properties similar to WRPKRU.  Thus it is safe to
+> +immediately use a mapping when the pks_mk*() functions returns.
+> +
+> +The current SDM section on PKRS needs updating but should be the same as that
+> +of WRPKRU.  So to quote from the WRPKRU text:
+> +
+> +	WRPKRU will never execute transiently. Memory accesses
+> +	affected by PKRU register will not execute (even transiently)
+> +	until all prior executions of WRPKRU have completed execution
+> +	and updated the PKRU register.
+> +
+> diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+> index 816b31c68550..c9fdfbdcbbfb 100644
+> --- a/arch/x86/include/asm/pgtable_types.h
+> +++ b/arch/x86/include/asm/pgtable_types.h
+> @@ -73,6 +73,12 @@
+>  			 _PAGE_PKEY_BIT2 | \
+>  			 _PAGE_PKEY_BIT3)
+>  
+> +#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> +#define _PAGE_PKEY(pkey)	(_AT(pteval_t, pkey) << _PAGE_BIT_PKEY_BIT0)
+> +#else
+> +#define _PAGE_PKEY(pkey)	(_AT(pteval_t, 0))
+> +#endif
+> +
+>  #if defined(CONFIG_X86_64) || defined(CONFIG_X86_PAE)
+>  #define _PAGE_KNL_ERRATUM_MASK (_PAGE_DIRTY | _PAGE_ACCESSED)
+>  #else
+> @@ -229,6 +235,12 @@ enum page_cache_mode {
+>  #define PAGE_KERNEL_IO		__pgprot_mask(__PAGE_KERNEL_IO)
+>  #define PAGE_KERNEL_IO_NOCACHE	__pgprot_mask(__PAGE_KERNEL_IO_NOCACHE)
+>  
+> +#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> +#define PAGE_KERNEL_PKEY(pkey)	__pgprot_mask(__PAGE_KERNEL | _PAGE_PKEY(pkey))
+> +#else
+> +#define PAGE_KERNEL_PKEY(pkey) PAGE_KERNEL
+> +#endif
+> +
+>  #endif	/* __ASSEMBLY__ */
+>  
+>  /*         xwr */
+> diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
+> index 4526245b03e5..f84351b4ac7c 100644
+> --- a/arch/x86/include/asm/pkeys.h
+> +++ b/arch/x86/include/asm/pkeys.h
+> @@ -3,6 +3,7 @@
+>  #define _ASM_X86_PKEYS_H
+>  
+>  #include <asm/pkeys_common.h>
+> +#include <asm-generic/mman-common.h>
+>  
+>  #define ARCH_DEFAULT_PKEY	0
+>  
+> @@ -138,4 +139,14 @@ static inline int vma_pkey(struct vm_area_struct *vma)
+>  
+>  u32 update_pkey_val(u32 pk_reg, int pkey, unsigned int flags);
+>  
+> +#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> +int pks_key_alloc(const char *const pkey_user, int flags);
+> +void pks_key_free(int pkey);
+> +
+> +void pks_mk_noaccess(int pkey);
+> +void pks_mk_readonly(int pkey);
+> +void pks_mk_readwrite(int pkey);
+> +
+> +#endif /* CONFIG_ARCH_HAS_SUPERVISOR_PKEYS */
+> +
+>  #endif /*_ASM_X86_PKEYS_H */
+> diff --git a/arch/x86/include/asm/pkeys_common.h b/arch/x86/include/asm/pkeys_common.h
+> index 801a75615209..cd492c23b28c 100644
+> --- a/arch/x86/include/asm/pkeys_common.h
+> +++ b/arch/x86/include/asm/pkeys_common.h
+> @@ -26,6 +26,10 @@
+>  			 PKR_AD_KEY(10) | PKR_AD_KEY(11) | PKR_AD_KEY(12) | \
+>  			 PKR_AD_KEY(13) | PKR_AD_KEY(14) | PKR_AD_KEY(15))
+>  
+> +/*  PKS supports 16 keys. Key 0 is reserved for the kernel. */
+> +#define        PKS_KERN_DEFAULT_KEY    0
+> +#define        PKS_NUM_KEYS            16
+> +
+>  #ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+>  void write_pkrs(u32 new_pkrs);
+>  #else
+> diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+> index 76a62419c446..0dc77409957a 100644
+> --- a/arch/x86/mm/pkeys.c
+> +++ b/arch/x86/mm/pkeys.c
+> @@ -3,6 +3,9 @@
+>   * Intel Memory Protection Keys management
+>   * Copyright (c) 2015, Intel Corporation.
+>   */
+> +#undef pr_fmt
+> +#define pr_fmt(fmt) "x86/pkeys: " fmt
+> +
+>  #include <linux/debugfs.h>		/* debugfs_create_u32()		*/
+>  #include <linux/mm_types.h>             /* mm_struct, vma, etc...       */
+>  #include <linux/pkeys.h>                /* PKEY_*                       */
+> @@ -231,6 +234,7 @@ u32 update_pkey_val(u32 pk_reg, int pkey, unsigned int flags)
+>  
+>  	return pk_reg;
+>  }
+> +EXPORT_SYMBOL_GPL(update_pkey_val);
+>  
+>  DEFINE_PER_CPU(u32, pkrs_cache);
+>  
+> @@ -262,3 +266,125 @@ void write_pkrs(u32 new_pkrs)
+>  	}
+>  	put_cpu_ptr(pkrs);
+>  }
+> +EXPORT_SYMBOL_GPL(write_pkrs);
+> +
+> +/**
+> + * Do not call this directly, see pks_mk*() below.
+> + *
+> + * @pkey: Key for the domain to change
+> + * @protection: protection bits to be used
+> + *
+> + * Protection utilizes the same protection bits specified for User pkeys
+> + *     PKEY_DISABLE_ACCESS
+> + *     PKEY_DISABLE_WRITE
+> + *
+> + */
+> +static inline void pks_update_protection(int pkey, unsigned long protection)
+> +{
+> +	current->thread.saved_pkrs = update_pkey_val(current->thread.saved_pkrs,
+> +						     pkey, protection);
+> +	write_pkrs(current->thread.saved_pkrs);
+> +}
+> +
+> +/**
+> + * PKS access control functions
+> + *
+> + * Change the access of the domain specified by the pkey.  These are global
+> + * updates.  They only affects the current running thread.  It is undefined and
+> + * a bug for users to call this without having allocated a pkey and using it as
+> + * pkey here.
+> + *
+> + * pks_mk_noaccess()
+> + *     Disable all access to the domain
+> + * pks_mk_readonly()
+> + *     Make the domain Read only
+> + * pks_mk_readwrite()
+> + *     Make the domain Read/Write
+> + *
+> + * @pkey the pkey for which the access should change.
+> + *
+> + */
+> +void pks_mk_noaccess(int pkey)
+> +{
+> +	pks_update_protection(pkey, PKEY_DISABLE_ACCESS);
+> +}
+> +EXPORT_SYMBOL_GPL(pks_mk_noaccess);
+> +
+> +void pks_mk_readonly(int pkey)
+> +{
+> +	pks_update_protection(pkey, PKEY_DISABLE_WRITE);
+> +}
+> +EXPORT_SYMBOL_GPL(pks_mk_readonly);
+> +
+> +void pks_mk_readwrite(int pkey)
+> +{
+> +	pks_update_protection(pkey, 0);
+> +}
+> +EXPORT_SYMBOL_GPL(pks_mk_readwrite);
+> +
+> +static const char pks_key_user0[] = "kernel";
+> +
+> +/* Store names of allocated keys for debug.  Key 0 is reserved for the kernel.  */
+> +static const char *pks_key_users[PKS_NUM_KEYS] = {
+> +	pks_key_user0
+> +};
+> +
+> +/*
+> + * Each key is represented by a bit.  Bit 0 is set for key 0 and reserved for
+> + * its use.  We use ulong for the bit operations but only 16 bits are used.
+> + */
+> +static unsigned long pks_key_allocation_map = 1 << PKS_KERN_DEFAULT_KEY;
+> +
+> +/*
+> + * pks_key_alloc - Allocate a PKS key
+> + * @pkey_user: String stored for debugging of key exhaustion.  The caller is
+> + *             responsible to maintain this memory until pks_key_free().
+> + * @flags: Flags to modify behavior: see pks_alloc_flags
+> + *
+> + * Returns: pkey if success
+> + *          -EOPNOTSUPP if pks is not supported or not enabled
+> + *          -ENOSPC if no keys are available (even for sharing)
+> + */
+> +int pks_key_alloc(const char * const pkey_user, int flags)
+> +{
+> +	int nr;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_PKS))
+> +		return -EOPNOTSUPP;
+> +
+> +	while (1) {
+> +		nr = find_first_zero_bit(&pks_key_allocation_map, PKS_NUM_KEYS);
+> +		if (nr >= PKS_NUM_KEYS) {
+> +			pr_info("Cannot allocate supervisor key for %s.\n",
+> +				pkey_user);
+> +			return -ENOSPC;
+> +		}
+> +		if (!test_and_set_bit_lock(nr, &pks_key_allocation_map))
+> +			break;
+> +	}
+> +
+> +	/* for debugging key exhaustion */
+> +	pks_key_users[nr] = pkey_user;
+> +
+> +	return nr;
+> +}
+> +EXPORT_SYMBOL_GPL(pks_key_alloc);
+> +
+> +/*
+> + * pks_key_free - Free a previously allocate PKS key
+> + * @pkey: Key to be free'ed
+> + */
+> +void pks_key_free(int pkey)
+> +{
+> +	if (!cpu_feature_enabled(X86_FEATURE_PKS))
+> +		return;
+> +
+> +	if (WARN_ON_ONCE(pkey >= PKS_NUM_KEYS || pkey <= PKS_KERN_DEFAULT_KEY))
+> +		return;
+> +
+> +	/* Restore to default of no access */
+> +	pks_mk_noaccess(pkey);
+> +	pks_key_users[pkey] = NULL;
+> +	__clear_bit(pkey, &pks_key_allocation_map);
+> +}
+> +EXPORT_SYMBOL_GPL(pks_key_free);
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 38c33eabea89..cd72d73e8e1c 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1402,6 +1402,10 @@ static inline bool arch_has_pfn_modify_check(void)
+>  # define PAGE_KERNEL_EXEC PAGE_KERNEL
+>  #endif
+>  
+> +#ifndef PAGE_KERNEL_PKEY
+> +#define PAGE_KERNEL_PKEY(pkey) PAGE_KERNEL
+> +#endif
+> +
+>  /*
+>   * Page Table Modification bits for pgtbl_mod_mask.
+>   *
+> diff --git a/include/linux/pkeys.h b/include/linux/pkeys.h
+> index 2955ba976048..0959a4c0ca64 100644
+> --- a/include/linux/pkeys.h
+> +++ b/include/linux/pkeys.h
+> @@ -50,4 +50,28 @@ static inline void copy_init_pkru_to_fpregs(void)
+>  
+>  #endif /* ! CONFIG_ARCH_HAS_PKEYS */
+>  
+> +#define PKS_FLAG_EXCLUSIVE 0x00
+> +
+> +#ifndef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> +static inline int pks_key_alloc(const char * const pkey_user, int flags)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +static inline void pks_key_free(int pkey)
+> +{
+> +}
+> +static inline void pks_mk_noaccess(int pkey)
+> +{
+> +	WARN_ON_ONCE(1);
+
+So for panic-on-warn systems, this is ok to reboot the box?
+
+Are you sure, that feels odd...
+
+greg k-h
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============0469560983922897923==--
