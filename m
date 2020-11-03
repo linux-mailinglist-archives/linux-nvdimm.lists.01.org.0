@@ -1,55 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FBF2A427C
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 11:39:36 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50262A46F2
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 14:52:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 081F016544F92;
-	Tue,  3 Nov 2020 02:39:34 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	by ml01.01.org (Postfix) with ESMTP id 97BFE1652CDFD;
+	Tue,  3 Nov 2020 05:52:27 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=80.241.56.172; helo=mout-p-202.mailbox.org; envelope-from=hagen@jauu.net; receiver=<UNKNOWN> 
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C3C5316544F91
-	for <linux-nvdimm@lists.01.org>; Tue,  3 Nov 2020 02:39:31 -0800 (PST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1604399966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=77FSFVw1wEgpqHD3g7fXJa5TjMy2ujnsWNKfTk4sE7Y=;
-	b=y4ByPkZ0wX/QgFwS2SYrqvUfhi+sCS77ny5e6/zRNEfl+fQimC7oeuTV1T+6IbEAQgUJnE
-	JJG65h6l4nL2XeDm+oJoE8RjGqhYAXoIHdcA21+wm/h0q3kQQqqcpC/WHmHUevU8Y6yvmt
-	82VyaA7Km9Eqq/rkNEQGCV3isUQyprzg8wlmkFkasSKxI59fqnwgswjcHKHbSQvJtU0KD4
-	E9GDY+SjTXiCgyOrhO6AfVef1UsBYvVgyd43T6o/DE9N++h+wlWpmgtg1OMhOqtXX63XIr
-	pth5P7uXacHlZyXNEM7PEFIntD3Wv2/QbQVCMf8JMyfzSUIDMBQuuKgmCy4w8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1604399966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=77FSFVw1wEgpqHD3g7fXJa5TjMy2ujnsWNKfTk4sE7Y=;
-	b=/YfxklNfi/VzDvGCu+aBfmlOC/O157U8w8e1tcpXRL68Wi+xM7kS6eZbwcO2BVw5bB1upO
-	sj326S83253ogAAg==
-To: Dan Williams <dan.j.williams@intel.com>, Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH] x86/mm: Fix phys_to_target_node() export
-In-Reply-To: <CAPcyv4gj9ibFuBY1yt79CdKRgYAftdveXT1Ow4QvyRxri4jBRA@mail.gmail.com>
-References: <160402498564.4173389.2743697400148832021.stgit@dwillia2-desk3.amr.corp.intel.com> <20201031091012.GA27844@infradead.org> <CAPcyv4gj9ibFuBY1yt79CdKRgYAftdveXT1Ow4QvyRxri4jBRA@mail.gmail.com>
-Date: Tue, 03 Nov 2020 11:39:26 +0100
-Message-ID: <87h7q67mht.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTPS id 844191652CDFD
+	for <linux-nvdimm@lists.01.org>; Tue,  3 Nov 2020 05:52:25 -0800 (PST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4CQWS671PfzQkKw;
+	Tue,  3 Nov 2020 14:52:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+	by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de [80.241.56.125]) (amavisd-new, port 10030)
+	with ESMTP id FlqcKCn97r9e; Tue,  3 Nov 2020 14:52:18 +0100 (CET)
+Date: Tue, 3 Nov 2020 14:52:14 +0100 (CET)
+From: Hagen Paul Pfeifer <hagen@jauu.net>
+To: Mike Rapoport <rppt@kernel.org>
+Message-ID: <1547601988.128687.1604411534845@office.mailbox.org>
+In-Reply-To: <20201102154028.GD4879@kernel.org>
+References: <20200924132904.1391-1-rppt@kernel.org>
+ <20201101110935.GA4105325@laniakea> <20201102154028.GD4879@kernel.org>
+Subject: Re: [PATCH v6 0/6] mm: introduce memfd_secret system call to create
+ "secret" memory areas
 MIME-Version: 1.0
-Message-ID-Hash: EEOKYDLLSHBFISNHFUNRQPUXK754IU2Z
-X-Message-ID-Hash: EEOKYDLLSHBFISNHFUNRQPUXK754IU2Z
-X-MailFrom: tglx@linutronix.de
+X-Priority: 3
+Importance: Normal
+X-MBO-SPAM-Probability: 
+X-Rspamd-Score: -0.65 / 15.00 / 15.00
+X-Rspamd-Queue-Id: D612C1723
+X-Rspamd-UID: 9101f0
+Message-ID-Hash: LTJRMML6UCMCIDA3EZOZKHZ5GIVFUCAC
+X-Message-ID-Hash: LTJRMML6UCMCIDA3EZOZKHZ5GIVFUCAC
+X-MailFrom: hagen@jauu.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>, Joao Martins <joao.m.martins@oracle.com>, X86 ML <x86@kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kerne
+ l.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EEOKYDLLSHBFISNHFUNRQPUXK754IU2Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LTJRMML6UCMCIDA3EZOZKHZ5GIVFUCAC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,31 +58,49 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 02 2020 at 15:52, Dan Williams wrote:
-> On Sat, Oct 31, 2020 at 2:10 AM Christoph Hellwig <hch@infradead.org> wrote:
-> The dependency on NUMA_KEEP_MEMINFO for DEV_DAX_HMEM_DEVICES is invalid
-> now that the symbol is properly exported / stubbed in all combinations
-> of CONFIG_NUMA_KEEP_MEMINFO and CONFIG_MEMORY_HOTPLUG.
->
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Reported-by: Thomas Gleixner <tglx@linutronix.de>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Christoph Hellwig <hch@infradead.org>
-> Fixes: a035b6bf863e ("mm/memory_hotplug: introduce default phys_to_target_node() implementation")
-> Cc: Joao Martins <joao.m.martins@oracle.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: x86@kernel.org
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> On 11/02/2020 4:40 PM Mike Rapoport <rppt@kernel.org> wrote:
 
-Tested-by: Thomas Gleixner <tglx@linutronix.de>
+> > Isn't memfd_secret currently *unnecessarily* designed to be a "one task
+> > feature"? memfd_secret fulfills exactly two (generic) features:
+> > 
+> > - address space isolation from kernel (aka SECRET_EXCLUSIVE, not in kernel's
+> >   direct map) - hide from kernel, great
+> > - disabling processor's memory caches against speculative-execution vulnerabilities
+> >   (spectre and friends, aka SECRET_UNCACHED), also great
+> > 
+> > But, what about the following use-case: implementing a hardened IPC mechanism
+> > where even the kernel is not aware of any data and optionally via SECRET_UNCACHED
+> > even the hardware caches are bypassed! With the patches we are so close to
+> > achieving this.
+> > 
+> > How? Shared, SECRET_EXCLUSIVE and SECRET_UNCACHED mmaped pages for IPC
+> > involved tasks required to know this mapping (and memfd_secret fd). After IPC
+> > is done, tasks can copy sensitive data from IPC pages into memfd_secret()
+> > pages, un-sensitive data can be used/copied everywhere.
+> 
+> As long as the task share the file descriptor, they can share the
+> secretmem pages, pretty much like normal memfd.
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Including process_vm_readv() and process_vm_writev()? Let's take a hypothetical
+"dbus-daemon-secure" service that receives data from process A and wants to
+copy/distribute it to data areas of N other processes. Much like dbus but without
+SOCK_DGRAM rather direct copy into secretmem/mmap pages (ring-buffer). Should be
+possible, right?
+
+> > One missing piece is still the secure zeroization of the page(s) if the
+> > mapping is closed by last process to guarantee a secure cleanup. This can
+> > probably done as an general mmap feature, not coupled to memfd_secret() and
+> > can be done independently ("reverse" MAP_UNINITIALIZED feature).
+> 
+> There are "init_on_alloc" and "init_on_free" kernel parameters that
+> enable zeroing of the pages on alloc and on free globally.
+> Anyway, I'll add zeroing of the freed memory to secretmem.
+
+Great, this allows page-specific (thus runtime-performance-optimized) zeroing
+of secured pages. init_on_free lowers the performance to much and is not precice
+enough.
+
+Hagen
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
