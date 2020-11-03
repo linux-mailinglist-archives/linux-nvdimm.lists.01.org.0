@@ -1,82 +1,105 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B179C2A4D7E
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 18:52:26 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9A12A4D89
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Nov 2020 18:53:41 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DB30C163D018C;
-	Tue,  3 Nov 2020 09:52:24 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.38.202.176; helo=cha1.chairmaneventsummit.info; envelope-from=info-linux+2dnvdimm=lists.01.org@chairmaneventsummit.info; receiver=<UNKNOWN> 
-Received: from cha1.chairmaneventsummit.info (ip176.ip-54-38-202.eu [54.38.202.176])
+	by ml01.01.org (Postfix) with ESMTP id 1D440163D0192;
+	Tue,  3 Nov 2020 09:53:40 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EA2EA15CEE860
-	for <linux-nvdimm@lists.01.org>; Tue,  3 Nov 2020 09:52:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=chairmaneventsummit.info;
- h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=info@chairmaneventsummit.info;
- bh=PqbpB5gzhR238uA0zeBh1baS1lY=;
- b=LAs6MZVEj9qWLK8Yp5Zn59rTUoOcc4GLs40aZm3JdhazhNmlmpZYjH2GAMH57dZjTg2P5XtLBx5o
-   HSFzK7+cVhhmyspDh/8ILLNYv7acn1wUmu6CrgzTen8NTa7KI9LZq0sFDb9kY8o9xfda6UHic1wR
-   8KPtBUFhnB37LiTwOlQJY5f0YDy1ixly7sMY+bxt/HxT4OBOGLkJuPjO/i986fOKMKwQyfX/IG71
-   OB3Y5EPC2SvGGhIefidldAe42NBHgdKEWfLa3ztyiE3g8xCahDqc44bq07fWuQ5wacE1ZVx664DU
-   QRokBWRzSpRdrZhfdyHQcc5jG4qk1XWWfA6J4A==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=chairmaneventsummit.info;
- b=HZPha/DH6z8lGGe0Uh9XUAzAuuCsRA4jlOw+ldJr/4H8/sNeaxOpBmEekD2XsUUKsAGVG1abs5Sy
-   SSNQwbl33Ixc8fjZLJqTf3tvsDg11GUyOIz+QArBWDkf3sbALgW2Mxb6lNlvGfas+LGWPkv+YAre
-   ZJCssPua2CyVj7V9TJQZXWd8I4ifn97pTRmdH5O6CD8gIEJanvDFXoEfC2EThtq6+Wt5FrOuAaMO
-   Pe4oQ2BA9+4mNvnpl/d7XN4ZmcZsCMFJ5/a0WOj1+xFfH+SNhEQWa3/N1IMHKmHz2y0GBj+zOY66
-   Zd1mBSi+VWkwU3/9P0TkvzJ5BsSqGrCasWHWAg==;
-Received: from chairmaneventsummit.info (51.83.131.67) by cha1.chairmaneventsummit.info id hk6cdfi19tku for <linux-nvdimm@lists.01.org>; Tue, 3 Nov 2020 17:52:19 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info>)
-Date: Tue, 3 Nov 2020 17:52:19 +0000
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-From: Garcia Taylor <info@chairmaneventsummit.info>
-Subject: RE: 10K LinkedIn Leads at 500
-Message-ID: <9029fd0b3148f95bd09cd512592ec32c@chairmaneventsummit.info>
-X-Trgm-Campaign-Uid: jm7712913v85c
-X-Trgm-Subscriber-Uid: xj9408r1qtf27
-X-Trgm-Customer-Uid: cl716wf5hl7c7
-X-Trgm-Customer-Gid: 0
-X-Trgm-Delivery-Sid: 1
-X-Trgm-Tracking-Did: 0
-X-Report-Abuse: Please report abuse for this campaign here: https://chairmaneventsummit.info/emm/index.php/campaigns/jm7712913v85c/report-abuse/tr3842wxgefa2/xj9408r1qtf27
-Feedback-ID: jm7712913v85c:xj9408r1qtf27:tr3842wxgefa2:cl716wf5hl7c7
-Precedence: bulk
-X-Trgm-EBS: https://chairmaneventsummit.info/emm/index.php/lists/block-address
-X-Sender: info@chairmaneventsummit.info
-X-Receiver: linux-nvdimm@lists.01.org
-X-Trgm-Mailer: PHPMailer - 5.2.21
+	by ml01.01.org (Postfix) with ESMTPS id 6B2E615CEE860
+	for <linux-nvdimm@lists.01.org>; Tue,  3 Nov 2020 09:53:37 -0800 (PST)
+IronPort-SDR: gZdv/vB9pkKuD5ZNszhzOdTFynBlJE9A99BDaSuxdLfMIyc8mIFLwgjq69H+Q2ZCocQXK3F4lb
+ E6G/JX2EnVgw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9794"; a="186948687"
+X-IronPort-AV: E=Sophos;i="5.77,448,1596524400";
+   d="scan'208";a="186948687"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2020 09:53:37 -0800
+IronPort-SDR: t3rM9zLgd6ZRLLAjOl3vZJlufQNSBy4tjSshCJtsEFelCEQ7FWt2oAwJFA325Js+8uCWdVnDR2
+ O0TkS4PUyBAA==
+X-IronPort-AV: E=Sophos;i="5.77,448,1596524400";
+   d="scan'208";a="538578108"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2020 09:53:36 -0800
+Date: Tue, 3 Nov 2020 09:53:36 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH V2 05/10] x86/pks: Add PKS kernel API
+Message-ID: <20201103175335.GA1531489@iweiny-DESK2.sc.intel.com>
+References: <20201102205320.1458656-1-ira.weiny@intel.com>
+ <20201102205320.1458656-6-ira.weiny@intel.com>
+ <20201103065024.GC75930@kroah.com>
 MIME-Version: 1.0
-Message-ID-Hash: 2RXOFCBXZUP655JODWLAREJNER6JNJAK
-X-Message-ID-Hash: 2RXOFCBXZUP655JODWLAREJNER6JNJAK
-X-MailFrom: info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Content-Disposition: inline
+In-Reply-To: <20201103065024.GC75930@kroah.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: 366KXX3GBXIOAYZBDDVMNTSCD6HZSUWN
+X-Message-ID-Hash: 366KXX3GBXIOAYZBDDVMNTSCD6HZSUWN
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
-Reply-To: Garcia Taylor <garcia@soltecmaredm.info>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2RXOFCBXZUP655JODWLAREJNER6JNJAK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/366KXX3GBXIOAYZBDDVMNTSCD6HZSUWN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QXJlIHlvdSBpbnRlcmVzdGVkIHRvIHB1cmNoYXNlIDEwMCUgYWNjdXJhdGUgMTAsMDAwIFRhcmdl
-dGVkIExlYWRzDQpmcm9tIExpbmtlZEluIGF0ICQ1MDAoQW55IHRpdGxlcy9pbmR1c3RyeS9sb2Nh
-dGlvbi9rZXl3b3Jkcyk/DQpJZiB5b3UgaGF2ZSBhIHZlcnkgdGFyZ2V0ZWQgZGF0YSByZXF1aXJl
-bWVudCBhbmQgeW91IG5lZWQgTGlua2VkSW4NCmRhdGFiYXNlLCB3ZSB3aWxsIHB1bGwgdGFyZ2V0
-ZWQgZGF0YWJhc2VzIGZvciB5b3Ugd2l0aCB0aGVpciBMaW5rZWRJbg0KcHJvZmlsZSBsaW5rLCBu
-YW1lLCB0aXRsZSwgZW1haWwgYWRkcmVzcywgY29tcGFueSBuYW1lLCBjaXR5LCBjb21wYW55DQpz
-aXplIGV0Yy4gUGxlYXNlIHNoYXJlIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIGFuZCBJIHdpbGwgc3Vw
-cGx5IHRoZQ0Kc2FtcGxlIHdpdGhpbiAxIGJ1c2luZXNzIGRheXPigJkgdGltZS4NClRoYW5rcyBh
-bmQgbGV0IG1lIGtub3cuDQpHYXJjaWEgVGF5bG9yDQpMZWFkIGdlbmVyYXRpb24gVGVhbQ0KUHJl
-bWl1bSBMaW5rZWRJbiBEYXRhYmFzZQ0KVW5zdWJzY3JpYmUNCmh0dHBzOi8vY2hhaXJtYW5ldmVu
-dHN1bW1pdC5pbmZvL2VtbS9pbmRleC5waHAvbGlzdHMvdHIzODQyd3hnZWZhMi91bnN1YnNjcmli
-ZS94ajk0MDhyMXF0ZjI3L2ptNzcxMjkxM3Y4NWMNCg0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Tue, Nov 03, 2020 at 07:50:24AM +0100, Greg KH wrote:
+> On Mon, Nov 02, 2020 at 12:53:15PM -0800, ira.weiny@intel.com wrote:
+> > From: Fenghua Yu <fenghua.yu@intel.com>
+> > 
+
+[snip]
+
+> > diff --git a/include/linux/pkeys.h b/include/linux/pkeys.h
+> > index 2955ba976048..0959a4c0ca64 100644
+> > --- a/include/linux/pkeys.h
+> > +++ b/include/linux/pkeys.h
+> > @@ -50,4 +50,28 @@ static inline void copy_init_pkru_to_fpregs(void)
+> >  
+> >  #endif /* ! CONFIG_ARCH_HAS_PKEYS */
+> >  
+> > +#define PKS_FLAG_EXCLUSIVE 0x00
+> > +
+> > +#ifndef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> > +static inline int pks_key_alloc(const char * const pkey_user, int flags)
+> > +{
+> > +	return -EOPNOTSUPP;
+> > +}
+> > +static inline void pks_key_free(int pkey)
+> > +{
+> > +}
+> > +static inline void pks_mk_noaccess(int pkey)
+> > +{
+> > +	WARN_ON_ONCE(1);
+> 
+> So for panic-on-warn systems, this is ok to reboot the box?
+
+I would not expect this to reboot the box no.  But it is a violation of the API
+contract.  If pky_key_alloc() returns an error calling any of the other
+functions is an error.
+
+> 
+> Are you sure, that feels odd...
+
+It does feel odd and downright wrong...  But there are a lot of WARN_ON_ONCE's
+out there to catch this type of internal programming error.  Is panic-on-warn
+commonly used?
+
+Ira
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
