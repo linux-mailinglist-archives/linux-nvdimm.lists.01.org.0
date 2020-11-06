@@ -2,32 +2,32 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E6D2AA140
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 00:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBAD2AA141
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 00:29:39 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 97F4316466753;
-	Fri,  6 Nov 2020 15:29:36 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	by ml01.01.org (Postfix) with ESMTP id AE51316466757;
+	Fri,  6 Nov 2020 15:29:37 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CFCE61646674C
-	for <linux-nvdimm@lists.01.org>; Fri,  6 Nov 2020 15:29:33 -0800 (PST)
-IronPort-SDR: WkvjqwwWC2wBnR7AHaHp83H9S5KOOeiepHc9IxHxKCWZ31tWCo/k5u1ma6Zc+G8/wnjGmtAFYY
- FMJ10VkxTgBw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9797"; a="187544990"
+	by ml01.01.org (Postfix) with ESMTPS id 52C601646674C
+	for <linux-nvdimm@lists.01.org>; Fri,  6 Nov 2020 15:29:35 -0800 (PST)
+IronPort-SDR: 4ZF3eKFV8J14NoApfAtbnng7hFZypc5bJZtkGe9hXy503HLFdCWNQBZHDZCIOhI0jv5dOuhPAe
+ GjIewxOMbAtg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9797"; a="168830124"
 X-IronPort-AV: E=Sophos;i="5.77,457,1596524400";
-   d="scan'208";a="187544990"
+   d="scan'208";a="168830124"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 15:29:32 -0800
-IronPort-SDR: 7OXTxCuiKkfwSFExCxTUeymmQTDe7INfh86kVHcjc1y9qrZLrZ/kkJqkRhOnu/5xZMA39DYe9E
- Dqmpyit1/jwA==
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 15:29:34 -0800
+IronPort-SDR: CncoT33eax6JmMn/IVF5VtBGzfzBqjJQI8RhNbzuG9fRiuSFYvmL3CheoWI4L4FhTSLxO4/NdH
+ BCzBvWSApzRA==
 X-IronPort-AV: E=Sophos;i="5.77,457,1596524400";
-   d="scan'208";a="364338328"
+   d="scan'208";a="364844603"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 15:29:32 -0800
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 15:29:34 -0800
 From: ira.weiny@intel.com
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -35,22 +35,22 @@ To: Thomas Gleixner <tglx@linutronix.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH V3 06/10] x86/entry: Preserve PKRS MSR across exceptions
-Date: Fri,  6 Nov 2020 15:29:04 -0800
-Message-Id: <20201106232908.364581-7-ira.weiny@intel.com>
+Subject: [PATCH V3 07/10] x86/fault: Report the PKRS state on fault
+Date: Fri,  6 Nov 2020 15:29:05 -0800
+Message-Id: <20201106232908.364581-8-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 In-Reply-To: <20201106232908.364581-1-ira.weiny@intel.com>
 References: <20201106232908.364581-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: QUAY7Q3YIE3Q2MYU3H2GII6UUTZHMDQY
-X-Message-ID-Hash: QUAY7Q3YIE3Q2MYU3H2GII6UUTZHMDQY
+Message-ID-Hash: SUR7EJSAVRZHGAQIHSFK2YZL67V5GMKK
+X-Message-ID-Hash: SUR7EJSAVRZHGAQIHSFK2YZL67V5GMKK
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: x86@kernel.org, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QUAY7Q3YIE3Q2MYU3H2GII6UUTZHMDQY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SUR7EJSAVRZHGAQIHSFK2YZL67V5GMKK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -61,237 +61,250 @@ Content-Transfer-Encoding: 7bit
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-The PKRS MSR is not managed by XSAVE.  It is preserved through a context
-switch but this support leaves exception handling code open to memory
-accesses during exceptions.
+When only user space pkeys are enabled faulting within the kernel was an
+unexpected condition which should never happen.  Therefore a WARN_ON in
+the kernel fault handler would detect if it ever did.  Now this is no
+longer the case if PKS is enabled and supported.
 
-2 possible places for preserving this state were considered,
-irqentry_state_t or pt_regs.[1]  pt_regs was much more complicated and
-was potentially fraught with unintended consequences.[2]
-irqentry_state_t was already an object being used in the exception
-handling and is straightforward.  It is also easy for any number of
-nested states to be tracked and eventually can be enhanced to store the
-reference counting required to support PKS through kmap reentry
+Report a Pkey fault with a normal splat and add the PKRS state to the
+fault splat text.  Note the PKS register is reset during an exception
+therefore the saved PKRS value from before the beginning of the
+exception is passed down.
 
-Preserve the current task's PKRS values in irqentry_state_t on exception
-entry and restoring them on exception exit.
+If PKS is not enabled, or not active, maintain the WARN_ON_ONCE() from
+before.
 
-Each nested exception is further saved allowing for any number of levels
-of exception handling.
+Because each fault has its own state the pkrs information will be
+correctly reported even if a fault 'faults'.
 
-Peter and Thomas both suggested parts of the patch, IDT and NMI respectively.
-
-[1] https://lore.kernel.org/lkml/CALCETrVe1i5JdyzD_BcctxQJn+ZE3T38EFPgjxN1F577M36g+w@mail.gmail.com/
-[2] https://lore.kernel.org/lkml/874kpxx4jf.fsf@nanos.tec.linutronix.de/#t
-
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Suggested-by: Andy Lutomirski <luto@kernel.org>
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
 ---
-Changes from V1
-	remove redundant irq_state->pkrs
-		This value is only needed for the global tracking.  So
-		it should be included in that patch and not in this one.
+Changes from V2
+	Fix compilation error
 
 Changes from RFC V3
-	Standardize on 'irq_state' variable name
+	Update commit message
 	Per Dave Hansen
-		irq_save_pkrs() -> irq_save_set_pkrs()
-	Rebased based on clean up patch by Thomas Gleixner
-		This includes moving irq_[save_set|restore]_pkrs() to
-		the core as well.
+		Don't print PKRS if !cpu_feature_enabled(X86_FEATURE_PKS)
+		Fix comment
+		Remove check on CONFIG_ARCH_HAS_SUPERVISOR_PKEYS in favor of
+			disabled-features.h
 ---
- arch/x86/entry/common.c             | 38 +++++++++++++++++++++++++++++
- arch/x86/include/asm/pkeys_common.h |  5 ++--
- arch/x86/mm/pkeys.c                 |  2 +-
- include/linux/entry-common.h        | 13 ++++++++++
- kernel/entry/common.c               | 14 +++++++++--
- 5 files changed, 67 insertions(+), 5 deletions(-)
+ arch/x86/mm/fault.c | 58 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 33 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 87dea56a15d2..1b6a419a6fac 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -19,6 +19,7 @@
- #include <linux/nospec.h>
- #include <linux/syscalls.h>
- #include <linux/uaccess.h>
-+#include <linux/pkeys.h>
- 
- #ifdef CONFIG_XEN_PV
- #include <xen/xen-ops.h>
-@@ -209,6 +210,41 @@ SYSCALL_DEFINE0(ni_syscall)
- 	return -ENOSYS;
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 8d20c4c13abf..90029ce9b0da 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -504,7 +504,8 @@ static void show_ldttss(const struct desc_ptr *gdt, const char *name, u16 index)
  }
  
-+#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
-+/*
-+ * PKRS is a per-logical-processor MSR which overlays additional protection for
-+ * pages which have been mapped with a protection key.
-+ *
-+ * The register is not maintained with XSAVE so we have to maintain the MSR
-+ * value in software during context switch and exception handling.
-+ *
-+ * Context switches save the MSR in the task struct thus taking that value to
-+ * other processors if necessary.
-+ *
-+ * To protect against exceptions having access to this memory we save the
-+ * current running value and set the PKRS value for the duration of the
-+ * exception.  Thus preventing exception handlers from having the elevated
-+ * access of the interrupted task.
-+ */
-+noinstr void irq_save_set_pkrs(irqentry_state_t *irq_state, u32 val)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_PKS))
-+		return;
-+
-+	irq_state->thread_pkrs = current->thread.saved_pkrs;
-+	write_pkrs(INIT_PKRS_VALUE);
-+}
-+
-+noinstr void irq_restore_pkrs(irqentry_state_t *irq_state)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_PKS))
-+		return;
-+
-+	write_pkrs(irq_state->thread_pkrs);
-+	current->thread.saved_pkrs = irq_state->thread_pkrs;
-+}
-+#endif /* CONFIG_ARCH_HAS_SUPERVISOR_PKEYS */
-+
- #ifdef CONFIG_XEN_PV
- #ifndef CONFIG_PREEMPTION
- /*
-@@ -272,6 +308,8 @@ __visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
- 
- 	inhcall = get_and_clear_inhcall();
- 	if (inhcall && !WARN_ON_ONCE(irq_state.exit_rcu)) {
-+		/* Normally called by irqentry_exit, we must restore pkrs here */
-+		irq_restore_pkrs(&irq_state);
- 		instrumentation_begin();
- 		irqentry_exit_cond_resched();
- 		instrumentation_end();
-diff --git a/arch/x86/include/asm/pkeys_common.h b/arch/x86/include/asm/pkeys_common.h
-index 801a75615209..11a95e6efd2d 100644
---- a/arch/x86/include/asm/pkeys_common.h
-+++ b/arch/x86/include/asm/pkeys_common.h
-@@ -27,9 +27,10 @@
- 			 PKR_AD_KEY(13) | PKR_AD_KEY(14) | PKR_AD_KEY(15))
- 
- #ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
--void write_pkrs(u32 new_pkrs);
-+DECLARE_PER_CPU(u32, pkrs_cache);
-+noinstr void write_pkrs(u32 new_pkrs);
- #else
--static inline void write_pkrs(u32 new_pkrs) { }
-+static __always_inline void write_pkrs(u32 new_pkrs) { }
- #endif
- 
- #endif /*_ASM_X86_PKEYS_INTERNAL_H */
-diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
-index 76a62419c446..6892d4524868 100644
---- a/arch/x86/mm/pkeys.c
-+++ b/arch/x86/mm/pkeys.c
-@@ -248,7 +248,7 @@ DEFINE_PER_CPU(u32, pkrs_cache);
-  *     until all prior executions of WRPKRU have completed execution
-  *     and updated the PKRU register.
-  */
--void write_pkrs(u32 new_pkrs)
-+noinstr void write_pkrs(u32 new_pkrs)
+ static void
+-show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long address)
++show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long address,
++		irqentry_state_t *irq_state)
  {
- 	u32 *pkrs;
- 
-diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
-index 1193a70bcf1b..21eae007061d 100644
---- a/include/linux/entry-common.h
-+++ b/include/linux/entry-common.h
-@@ -348,6 +348,8 @@ void irqentry_exit_to_user_mode(struct pt_regs *regs);
- #ifndef irqentry_state
- /**
-  * struct irqentry_state - Opaque object for exception state storage
-+ * @thread_pkrs: Thread Supervisor Pkey value to be restored when exception is
-+ *               complete.
-  * @exit_rcu: Used exclusively in the irqentry_*() calls; signals whether the
-  *            exit path has to invoke rcu_irq_exit().
-  * @lockdep: Used exclusively in the irqentry_nmi_*() calls; ensures that
-@@ -362,6 +364,9 @@ void irqentry_exit_to_user_mode(struct pt_regs *regs);
-  * the maintenance of the irqentry_*() functions.
-  */
- typedef struct irqentry_state {
-+#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
-+	u32 thread_pkrs;
-+#endif
- 	union {
- 		bool	exit_rcu;
- 		bool	lockdep;
-@@ -369,6 +374,14 @@ typedef struct irqentry_state {
- } irqentry_state_t;
- #endif
+ 	if (!oops_may_print())
+ 		return;
+@@ -548,6 +549,11 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
+ 		 (error_code & X86_PF_PK)    ? "protection keys violation" :
+ 					       "permissions violation");
  
 +#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
-+noinstr void irq_save_set_pkrs(irqentry_state_t *irq_state, u32 val);
-+noinstr void irq_restore_pkrs(irqentry_state_t *irq_state);
-+#else
-+static __always_inline void irq_save_set_pkrs(irqentry_state_t *irq_state, u32 val) { }
-+static __always_inline void irq_restore_pkrs(irqentry_state_t *irq_state) { }
++	if (cpu_feature_enabled(X86_FEATURE_PKS) && irq_state && (error_code & X86_PF_PK))
++		pr_alert("PKRS: 0x%x\n", irq_state->thread_pkrs);
 +#endif
 +
- /**
-  * irqentry_enter - Handle state tracking on ordinary interrupt entries
-  * @regs:	Pointer to pt_regs of interrupted context
-diff --git a/kernel/entry/common.c b/kernel/entry/common.c
-index 5ed9d45fb41b..3590f5bb5870 100644
---- a/kernel/entry/common.c
-+++ b/kernel/entry/common.c
-@@ -334,7 +334,7 @@ noinstr void irqentry_enter(struct pt_regs *regs, irqentry_state_t *irq_state)
- 		instrumentation_end();
+ 	if (!(error_code & X86_PF_USER) && user_mode(regs)) {
+ 		struct desc_ptr idt, gdt;
+ 		u16 ldtr, tr;
+@@ -626,7 +632,8 @@ static void set_signal_archinfo(unsigned long address,
  
- 		irq_state->exit_rcu = true;
--		return;
-+		goto done;
+ static noinline void
+ no_context(struct pt_regs *regs, unsigned long error_code,
+-	   unsigned long address, int signal, int si_code)
++	   unsigned long address, int signal, int si_code,
++	   irqentry_state_t *irq_state)
+ {
+ 	struct task_struct *tsk = current;
+ 	unsigned long flags;
+@@ -732,7 +739,7 @@ no_context(struct pt_regs *regs, unsigned long error_code,
+ 	 */
+ 	flags = oops_begin();
+ 
+-	show_fault_oops(regs, error_code, address);
++	show_fault_oops(regs, error_code, address, irq_state);
+ 
+ 	if (task_stack_end_corrupted(tsk))
+ 		printk(KERN_EMERG "Thread overran stack, or stack corrupted\n");
+@@ -785,7 +792,8 @@ static bool is_vsyscall_vaddr(unsigned long vaddr)
+ 
+ static void
+ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+-		       unsigned long address, u32 pkey, int si_code)
++		       unsigned long address, u32 pkey, int si_code,
++		       irqentry_state_t *irq_state)
+ {
+ 	struct task_struct *tsk = current;
+ 
+@@ -832,14 +840,14 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+ 	if (is_f00f_bug(regs, address))
+ 		return;
+ 
+-	no_context(regs, error_code, address, SIGSEGV, si_code);
++	no_context(regs, error_code, address, SIGSEGV, si_code, irq_state);
+ }
+ 
+ static noinline void
+ bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+-		     unsigned long address)
++		     unsigned long address, irqentry_state_t *irq_state)
+ {
+-	__bad_area_nosemaphore(regs, error_code, address, 0, SEGV_MAPERR);
++	__bad_area_nosemaphore(regs, error_code, address, 0, SEGV_MAPERR, irq_state);
+ }
+ 
+ static void
+@@ -853,7 +861,7 @@ __bad_area(struct pt_regs *regs, unsigned long error_code,
+ 	 */
+ 	mmap_read_unlock(mm);
+ 
+-	__bad_area_nosemaphore(regs, error_code, address, pkey, si_code);
++	__bad_area_nosemaphore(regs, error_code, address, pkey, si_code, NULL);
+ }
+ 
+ static noinline void
+@@ -923,7 +931,7 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
+ {
+ 	/* Kernel mode? Handle exceptions or die: */
+ 	if (!(error_code & X86_PF_USER)) {
+-		no_context(regs, error_code, address, SIGBUS, BUS_ADRERR);
++		no_context(regs, error_code, address, SIGBUS, BUS_ADRERR, NULL);
+ 		return;
  	}
  
- 	/*
-@@ -348,6 +348,9 @@ noinstr void irqentry_enter(struct pt_regs *regs, irqentry_state_t *irq_state)
- 	rcu_irq_enter_check_tick();
- 	trace_hardirqs_off_finish();
- 	instrumentation_end();
-+
-+done:
-+	irq_save_set_pkrs(irq_state, INIT_PKRS_VALUE);
- }
- 
- void irqentry_exit_cond_resched(void)
-@@ -369,7 +372,12 @@ noinstr void irqentry_exit(struct pt_regs *regs, irqentry_state_t *irq_state)
- 	/* Check whether this returns to user mode */
- 	if (user_mode(regs)) {
- 		irqentry_exit_to_user_mode(regs);
--	} else if (!regs_irqs_disabled(regs)) {
-+		return;
-+	}
-+
-+	irq_restore_pkrs(irq_state);
-+
-+	if (!regs_irqs_disabled(regs)) {
- 		/*
- 		 * If RCU was not watching on entry this needs to be done
- 		 * carefully and needs the same ordering of lockdep/tracing
-@@ -415,10 +423,12 @@ void noinstr irqentry_nmi_enter(struct pt_regs *regs, irqentry_state_t *irq_stat
- 	trace_hardirqs_off_finish();
- 	ftrace_nmi_enter();
- 	instrumentation_end();
-+	irq_save_set_pkrs(irq_state, INIT_PKRS_VALUE);
- }
- 
- void noinstr irqentry_nmi_exit(struct pt_regs *regs, irqentry_state_t *irq_state)
+@@ -957,7 +965,7 @@ mm_fault_error(struct pt_regs *regs, unsigned long error_code,
+ 	       unsigned long address, vm_fault_t fault)
  {
-+	irq_restore_pkrs(irq_state);
+ 	if (fatal_signal_pending(current) && !(error_code & X86_PF_USER)) {
+-		no_context(regs, error_code, address, 0, 0);
++		no_context(regs, error_code, address, 0, 0, NULL);
+ 		return;
+ 	}
+ 
+@@ -965,7 +973,7 @@ mm_fault_error(struct pt_regs *regs, unsigned long error_code,
+ 		/* Kernel mode? Handle exceptions or die: */
+ 		if (!(error_code & X86_PF_USER)) {
+ 			no_context(regs, error_code, address,
+-				   SIGSEGV, SEGV_MAPERR);
++				   SIGSEGV, SEGV_MAPERR, NULL);
+ 			return;
+ 		}
+ 
+@@ -980,7 +988,7 @@ mm_fault_error(struct pt_regs *regs, unsigned long error_code,
+ 			     VM_FAULT_HWPOISON_LARGE))
+ 			do_sigbus(regs, error_code, address, fault);
+ 		else if (fault & VM_FAULT_SIGSEGV)
+-			bad_area_nosemaphore(regs, error_code, address);
++			bad_area_nosemaphore(regs, error_code, address, NULL);
+ 		else
+ 			BUG();
+ 	}
+@@ -1148,14 +1156,14 @@ bool fault_in_kernel_space(unsigned long address)
+  */
+ static void
+ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
+-		   unsigned long address)
++		   unsigned long address, irqentry_state_t *irq_state)
+ {
+ 	/*
+-	 * Protection keys exceptions only happen on user pages.  We
+-	 * have no user pages in the kernel portion of the address
+-	 * space, so do not expect them here.
++	 * PF_PK is only expected on kernel addresses when supervisor pkeys are
++	 * enabled.
+ 	 */
+-	WARN_ON_ONCE(hw_error_code & X86_PF_PK);
++	if (!cpu_feature_enabled(X86_FEATURE_PKS))
++		WARN_ON_ONCE(hw_error_code & X86_PF_PK);
+ 
+ #ifdef CONFIG_X86_32
+ 	/*
+@@ -1204,7 +1212,7 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
+ 	 * Don't take the mm semaphore here. If we fixup a prefetch
+ 	 * fault we could otherwise deadlock:
+ 	 */
+-	bad_area_nosemaphore(regs, hw_error_code, address);
++	bad_area_nosemaphore(regs, hw_error_code, address, irq_state);
+ }
+ NOKPROBE_SYMBOL(do_kern_addr_fault);
+ 
+@@ -1245,7 +1253,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 		     !(hw_error_code & X86_PF_USER) &&
+ 		     !(regs->flags & X86_EFLAGS_AC)))
+ 	{
+-		bad_area_nosemaphore(regs, hw_error_code, address);
++		bad_area_nosemaphore(regs, hw_error_code, address, NULL);
+ 		return;
+ 	}
+ 
+@@ -1254,7 +1262,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * in a region with pagefaults disabled then we must not take the fault
+ 	 */
+ 	if (unlikely(faulthandler_disabled() || !mm)) {
+-		bad_area_nosemaphore(regs, hw_error_code, address);
++		bad_area_nosemaphore(regs, hw_error_code, address, NULL);
+ 		return;
+ 	}
+ 
+@@ -1316,7 +1324,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 			 * Fault from code in kernel from
+ 			 * which we do not expect faults.
+ 			 */
+-			bad_area_nosemaphore(regs, hw_error_code, address);
++			bad_area_nosemaphore(regs, hw_error_code, address, NULL);
+ 			return;
+ 		}
+ retry:
+@@ -1375,7 +1383,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	if (fault_signal_pending(fault, regs)) {
+ 		if (!user_mode(regs))
+ 			no_context(regs, hw_error_code, address, SIGBUS,
+-				   BUS_ADRERR);
++				   BUS_ADRERR, NULL);
+ 		return;
+ 	}
+ 
+@@ -1415,7 +1423,7 @@ trace_page_fault_entries(struct pt_regs *regs, unsigned long error_code,
+ 
+ static __always_inline void
+ handle_page_fault(struct pt_regs *regs, unsigned long error_code,
+-			      unsigned long address)
++		  unsigned long address, irqentry_state_t *irq_state)
+ {
+ 	trace_page_fault_entries(regs, error_code, address);
+ 
+@@ -1424,7 +1432,7 @@ handle_page_fault(struct pt_regs *regs, unsigned long error_code,
+ 
+ 	/* Was the fault on kernel-controlled part of the address space? */
+ 	if (unlikely(fault_in_kernel_space(address))) {
+-		do_kern_addr_fault(regs, error_code, address);
++		do_kern_addr_fault(regs, error_code, address, irq_state);
+ 	} else {
+ 		do_user_addr_fault(regs, error_code, address);
+ 		/*
+@@ -1482,7 +1490,7 @@ DEFINE_IDTENTRY_RAW_ERRORCODE(exc_page_fault)
+ 	irqentry_enter(regs, &irq_state);
+ 
  	instrumentation_begin();
- 	ftrace_nmi_exit();
- 	if (irq_state->lockdep) {
+-	handle_page_fault(regs, error_code, address);
++	handle_page_fault(regs, error_code, address, &irq_state);
+ 	instrumentation_end();
+ 
+ 	irqentry_exit(regs, &irq_state);
 -- 
 2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
