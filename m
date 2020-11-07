@@ -2,81 +2,74 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D142AA274
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 06:03:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED94D2AA2B5
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 06:57:01 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B538916493644;
-	Fri,  6 Nov 2020 21:03:04 -0800 (PST)
-Received-SPF: Pass (helo) identity=helo; client-ip=139.59.245.33; helo=onzsolutions.com; envelope-from=prandairyrecipe@whm.onzsolutions.com; receiver=<UNKNOWN> 
-Received: from onzsolutions.com (onzsolutions.com [139.59.245.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1D86D16493644
-	for <linux-nvdimm@lists.01.org>; Fri,  6 Nov 2020 21:03:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=prandairyrecipe.com; s=default; h=Date:Message-Id:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:Reply-To:From:Subject:To:Sender:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=3rchMYdWDZR+Wq+enY3SdWZkYuNwHG0Z65jKST0hiGo=; b=g448nzsDhkjSOPxcArBfM+TdOO
-	b9tdKN22OWy8xgMP+EjZpHWLaIX+XKPUqGoqluvcYSDy1Ey/q7RHzkEeJdfvef8hZoH6P5o+npu4H
-	jhB3tvJQiZV/seKOMEmx9n8Fv6hVikAyyyupYmJj8yLMUockg8kxdUNNe2PjrYnWb0WXC0v7y6jmv
-	nvWhDvQpevqQY7pSSqpz6YOvO7drnRQQNNHXGLKyYkZF6p9kLMu5iJ53HIQmkKDZc8L65jsOB8S6z
-	rauYM+UJiskCnH3X4swbkyIvRBkLQ6g+/W3zslKn79kmwsztD9GEftIkWDuToWvRrmHTdh4XJIIG6
-	VCxA1eLA==;
-Received: from prandairyrecipe by whm.onzsolutions.com with local (Exim 4.93)
-	(envelope-from <prandairyrecipe@whm.onzsolutions.com>)
-	id 1kbGNQ-00020x-1i
-	for linux-nvdimm@lists.01.org; Sat, 07 Nov 2020 11:03:00 +0600
-To: linux-nvdimm@lists.01.org
-Subject: I have a beneficial deal for you.
-X-PHP-Script: prandairyrecipe.com/js/shub.php for 129.205.124.158
-X-PHP-Originating-Script: 1048:shub.php
-From: Huiman <info@yahoo.com>
-MIME-Version: 1.0
-Message-Id: <E1kbGNQ-00020x-1i@whm.onzsolutions.com>
-Date: Sat, 07 Nov 2020 11:03:00 +0600
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - whm.onzsolutions.com
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [1048 993] / [47 12]
-X-AntiAbuse: Sender Address Domain - whm.onzsolutions.com
-X-Get-Message-Sender-Via: whm.onzsolutions.com: authenticated_id: prandairyrecipe/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: whm.onzsolutions.com: prandairyrecipe
-X-Source: 
-X-Source-Args: /opt/cpanel/ea-php73/root/usr/bin/php-cgi 
-X-Source-Dir: prandairyrecipe.com:/public_html/js
-Message-ID-Hash: MOFMFJ5O6GFL5PELFFR4D7WHTZWSBA5R
-X-Message-ID-Hash: MOFMFJ5O6GFL5PELFFR4D7WHTZWSBA5R
-X-MailFrom: prandairyrecipe@whm.onzsolutions.com
+	by ml01.01.org (Postfix) with ESMTP id A6A9A16467406;
+	Fri,  6 Nov 2020 21:56:59 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.140.238.182; helo=vkpl.cn; envelope-from=dvhycwmsaj@vkpl.cn; receiver=<UNKNOWN> 
+Received: from vkpl.cn (unknown [103.140.238.182])
+	by ml01.01.org (Postfix) with ESMTP id DFF0316225F7F
+	for <linux-nvdimm@lists.01.org>; Fri,  6 Nov 2020 21:56:56 -0800 (PST)
+Message-ID: <A349B643D0B426AF06801C3758C9C03E@vkpl.cn>
+From: =?utf-8?B?5LiJ6I+x77y177ym77yq44OL44Kz44K56YqA6KGM?= <account_post@tr.mufg.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ5LiJ6I+x77y177ym77yq6YqA6KGM44CR6YeN6KaB77ya5b+F44Ga44GK6Kqt44G/44GP44Gg44GV?=
+	=?utf-8?B?44GE?=
+Date: Sat, 7 Nov 2020 13:56:49 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19846
+Message-ID-Hash: MEIOLZSPO63RHS7FZVOJ7BUKOT7O4AH4
+X-Message-ID-Hash: MEIOLZSPO63RHS7FZVOJ7BUKOT7O4AH4
+X-MailFrom: dvhycwmsaj@vkpl.cn
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: yhuiman0@yandex.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MOFMFJ5O6GFL5PELFFR4D7WHTZWSBA5R/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MEIOLZSPO63RHS7FZVOJ7BUKOT7O4AH4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5764647177642125721=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============5764647177642125721==
-Content-Type: text/html
-Content-Transfer-Encoding: 7bit
-
-I have a beneficial proposal for you worth $45,275,000
---===============5764647177642125721==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============5764647177642125721==--
+DQrjgYTjgaTjgoLlvIrnpL7jgqvjg7zjg4njgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorj
+gYzjgajjgYbjgZTjgZbjgYTjgb7jgZnjgIINCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip
+55So44Gu5oCl5aKX44Gr5Ly044GE44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW
+44K344K544OG44Og44CN44KS5bCO5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvj
+g7zjg4njga7jgZTliKnnlKjjgavlr77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPj
+gabjgYrjgorjgb7jgZnjgIINCg0K44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip
+55So44GL44Gp44GG44GL44KS56K66KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W
+5byV44GM44GC44KK44G+44GX44Gf44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr
+44O844OJ44Gu44GU5Yip55So44KS5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB
+44GU6YCj57Wh44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GX44Gf44CCDQoNCuOBpOOBjeOBvuOB
+l+OBpuOBr+OAgeS7peS4i+OBuOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWI
+qeeUqOeiuuiqjeOBq+OBlOWNlOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0K44GU5Zue
+562U44KS44GE44Gf44Gg44GR44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So5Yi2
+6ZmQ44GM57aZ57aa44GV44KM44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB5LqI
+44KB44GU5LqG5om/5LiL44GV44GE44CCDQoNCuKWoOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOC
+iQ0KDQrjgIBodHRwOi8vd3d3LmNyLm1uZmcudGFpcGVpLW5pZ2h0Y2x1YnMuY29tLw0KDQrilqDn
+mbrooYzogIXilqANCuS4ieiPse+8te+8pu+8quODi+OCs+OCuemKgOihjA0K44CAaHR0cDovL3d3
+dy5jci5tbmZnLnRhaXBlaS1uaWdodGNsdWJzLmNvbS8NCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4g4pag57eo6ZuG44O755m66KGMOuag
+quW8j+S8muekvuS4ieiPsVVGSumKgOihjA0KPiDmnbHkuqzpg73ljYPku6PnlLDljLrkuLjjga7l
+hoUyLTctMQ0KPiBb55m76Yyy6YeR6J6N5qmf6ZaiXemWouadseiyoeWLmeWxgOmVtyjnmbvph5Ep
+56ysNeWPtw0KPiBb5Yqg5YWl5Y2U5LyaXeaXpeacrOiovOWIuOalreWNlOS8mg0KPiDkuIDoiKzn
+pL7lm6Pms5XkurrjgIDph5Hono3lhYjnianlj5blvJXmpa3ljZTkvJoNCj4g5LiA6Iis56S+5Zuj
+5rOV5Lq644CA56ys5LqM56iu6YeR6J6N5ZWG5ZOB5Y+W5byV5qWt5Y2U5LyaDQo+IA0KPiDilqDj
+gZTnmbvpjLLjgavjgYrlv4PjgYLjgZ/jgorjga7jgarjgYTloLTlkIjjgoTpm7vlrZDnvbLlkI3j
+gavjgaTjgYTjgabjga7jgYrllY/jgYTlkIjjgo/jgZsNCj4gPOOCpOODs+OCv+ODvOODjeODg+OD
+iOODkOODs+OCreODs+OCsOODmOODq+ODl+ODh+OCueOCrz4NCj4gMDEyMC01NDMtNTU1KOOBvuOB
+n+OBrzA0Mi0zMTEtNzAwMCjpgJroqbHmlpnmnInmlpkpKQ0KPiDlj5fku5jmmYLplpMv5q+O5pel
+44CAOTowMO+9njIxOjAwCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAx
+Lm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBs
+aXN0cy4wMS5vcmcK
