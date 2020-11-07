@@ -2,36 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED94D2AA2B5
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 06:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C96E2AA346
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 09:13:58 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A6A9A16467406;
-	Fri,  6 Nov 2020 21:56:59 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.140.238.182; helo=vkpl.cn; envelope-from=dvhycwmsaj@vkpl.cn; receiver=<UNKNOWN> 
-Received: from vkpl.cn (unknown [103.140.238.182])
-	by ml01.01.org (Postfix) with ESMTP id DFF0316225F7F
-	for <linux-nvdimm@lists.01.org>; Fri,  6 Nov 2020 21:56:56 -0800 (PST)
-Message-ID: <A349B643D0B426AF06801C3758C9C03E@vkpl.cn>
-From: =?utf-8?B?5LiJ6I+x77y177ym77yq44OL44Kz44K56YqA6KGM?= <account_post@tr.mufg.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ5LiJ6I+x77y177ym77yq6YqA6KGM44CR6YeN6KaB77ya5b+F44Ga44GK6Kqt44G/44GP44Gg44GV?=
-	=?utf-8?B?44GE?=
-Date: Sat, 7 Nov 2020 13:56:49 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19846
-Message-ID-Hash: MEIOLZSPO63RHS7FZVOJ7BUKOT7O4AH4
-X-Message-ID-Hash: MEIOLZSPO63RHS7FZVOJ7BUKOT7O4AH4
-X-MailFrom: dvhycwmsaj@vkpl.cn
+	by ml01.01.org (Postfix) with ESMTP id 78754164BCF8C;
+	Sat,  7 Nov 2020 00:13:56 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.38.202.178; helo=cha4.chairmaneventsummit.info; envelope-from=info-linux+2dnvdimm=lists.01.org@chairmaneventsummit.info; receiver=<UNKNOWN> 
+Received: from cha4.chairmaneventsummit.info (ip178.ip-54-38-202.eu [54.38.202.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 64ED5164BCF89
+	for <linux-nvdimm@lists.01.org>; Sat,  7 Nov 2020 00:13:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=chairmaneventsummit.info;
+ h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=info@chairmaneventsummit.info;
+ bh=4uX1R7lfP8msRa7X31EhG7/SAgE=;
+ b=eodsRb98IFo3OOk7bbExPnbXd+vAHRt4f6cigRqZIgOkWDTN2FR9dl5BmmXRwtLzP7TBYd/kDy6d
+   tMe9k7B5swgWT0/cj28K5d0F/iF61QMDdmbv6HZIgufFNKH/gjXQWWLrWWr+5C2IjBdqplgsJ9dT
+   WnFR1WbsUvync55CRKTz4EBQDYhGo9eBZlz4MoSr7GSBobWgOHfNAMiXyBRdxFZIJTaI59rOsb1O
+   LvEdyawj3TNuYDw2GLnoiSKjn0/qeQGSsR7e/C1e1uSBL0JKsVwNZ1vA8LpUTqKTqsPEQ35re3ka
+   vdBAGeeitz5T+1Alp5pbBegFxw6G9O0RH8iFEQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=chairmaneventsummit.info;
+ b=IzhjfTkOq4xlQjWypBHD9xOg0uo7CIWlYXHjU5DDLfO+ZGBPMHMKzKL7tBzI/lHJWUJYlfN5/QUh
+   MmG723PBiXeRFPWcxi4Be34060d3oJ6jltCRSFL5IjxnCHxz5LS49xxPVPHm0wJVP3+5kuvwpyno
+   JJFuUJqijh+A4wCg1EZWvFEDZlkVQYhxpytLAisjLjP88KynQIVqgOekSEOWO7G3cDtOWv7F+nnG
+   aj9LOd8SfJh83EJdo8J3YeQ8tTRhyrOdL4irz7ZrHrGGlb0R4JXmp7KoJczKPfsQO4+y+otIR4yb
+   9Z+Nx+Zd+qiCUoanB8SP+UBJLRxnHBwg6Df95w==;
+Received: from chairmaneventsummit.info (51.83.131.67) by cha1.chairmaneventsummit.info id hkpbk3i19tkj for <linux-nvdimm@lists.01.org>; Sat, 7 Nov 2020 08:13:49 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info>)
+Date: Sat, 7 Nov 2020 08:13:49 +0000
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+From: Garcia Taylor <info@chairmaneventsummit.info>
+Subject: RE: 10K LinkedIn Leads at 500
+Message-ID: <38648c42e6d449e10948f8cc342b87c9@chairmaneventsummit.info>
+X-Trgm-Campaign-Uid: nv041ezp7a4ba
+X-Trgm-Subscriber-Uid: xj9408r1qtf27
+X-Trgm-Customer-Uid: cl716wf5hl7c7
+X-Trgm-Customer-Gid: 0
+X-Trgm-Delivery-Sid: 1
+X-Trgm-Tracking-Did: 0
+X-Report-Abuse: Please report abuse for this campaign here: https://chairmaneventsummit.info/emm/index.php/campaigns/nv041ezp7a4ba/report-abuse/tr3842wxgefa2/xj9408r1qtf27
+Feedback-ID: nv041ezp7a4ba:xj9408r1qtf27:tr3842wxgefa2:cl716wf5hl7c7
+Precedence: bulk
+X-Trgm-EBS: https://chairmaneventsummit.info/emm/index.php/lists/block-address
+X-Sender: info@chairmaneventsummit.info
+X-Receiver: linux-nvdimm@lists.01.org
+X-Trgm-Mailer: PHPMailer - 5.2.21
+MIME-Version: 1.0
+Message-ID-Hash: BTNKFVWQDY6KZEP2DTKGRNA6Q2BGWTAI
+X-Message-ID-Hash: BTNKFVWQDY6KZEP2DTKGRNA6Q2BGWTAI
+X-MailFrom: info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Garcia Taylor <garcia@soltecmaredm.info>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MEIOLZSPO63RHS7FZVOJ7BUKOT7O4AH4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BTNKFVWQDY6KZEP2DTKGRNA6Q2BGWTAI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -40,36 +65,18 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-DQrjgYTjgaTjgoLlvIrnpL7jgqvjg7zjg4njgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorj
-gYzjgajjgYbjgZTjgZbjgYTjgb7jgZnjgIINCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip
-55So44Gu5oCl5aKX44Gr5Ly044GE44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW
-44K344K544OG44Og44CN44KS5bCO5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvj
-g7zjg4njga7jgZTliKnnlKjjgavlr77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPj
-gabjgYrjgorjgb7jgZnjgIINCg0K44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip
-55So44GL44Gp44GG44GL44KS56K66KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W
-5byV44GM44GC44KK44G+44GX44Gf44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr
-44O844OJ44Gu44GU5Yip55So44KS5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB
-44GU6YCj57Wh44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GX44Gf44CCDQoNCuOBpOOBjeOBvuOB
-l+OBpuOBr+OAgeS7peS4i+OBuOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWI
-qeeUqOeiuuiqjeOBq+OBlOWNlOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0K44GU5Zue
-562U44KS44GE44Gf44Gg44GR44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So5Yi2
-6ZmQ44GM57aZ57aa44GV44KM44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB5LqI
-44KB44GU5LqG5om/5LiL44GV44GE44CCDQoNCuKWoOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOC
-iQ0KDQrjgIBodHRwOi8vd3d3LmNyLm1uZmcudGFpcGVpLW5pZ2h0Y2x1YnMuY29tLw0KDQrilqDn
-mbrooYzogIXilqANCuS4ieiPse+8te+8pu+8quODi+OCs+OCuemKgOihjA0K44CAaHR0cDovL3d3
-dy5jci5tbmZnLnRhaXBlaS1uaWdodGNsdWJzLmNvbS8NCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4g4pag57eo6ZuG44O755m66KGMOuag
-quW8j+S8muekvuS4ieiPsVVGSumKgOihjA0KPiDmnbHkuqzpg73ljYPku6PnlLDljLrkuLjjga7l
-hoUyLTctMQ0KPiBb55m76Yyy6YeR6J6N5qmf6ZaiXemWouadseiyoeWLmeWxgOmVtyjnmbvph5Ep
-56ysNeWPtw0KPiBb5Yqg5YWl5Y2U5LyaXeaXpeacrOiovOWIuOalreWNlOS8mg0KPiDkuIDoiKzn
-pL7lm6Pms5XkurrjgIDph5Hono3lhYjnianlj5blvJXmpa3ljZTkvJoNCj4g5LiA6Iis56S+5Zuj
-5rOV5Lq644CA56ys5LqM56iu6YeR6J6N5ZWG5ZOB5Y+W5byV5qWt5Y2U5LyaDQo+IA0KPiDilqDj
-gZTnmbvpjLLjgavjgYrlv4PjgYLjgZ/jgorjga7jgarjgYTloLTlkIjjgoTpm7vlrZDnvbLlkI3j
-gavjgaTjgYTjgabjga7jgYrllY/jgYTlkIjjgo/jgZsNCj4gPOOCpOODs+OCv+ODvOODjeODg+OD
-iOODkOODs+OCreODs+OCsOODmOODq+ODl+ODh+OCueOCrz4NCj4gMDEyMC01NDMtNTU1KOOBvuOB
-n+OBrzA0Mi0zMTEtNzAwMCjpgJroqbHmlpnmnInmlpkpKQ0KPiDlj5fku5jmmYLplpMv5q+O5pel
-44CAOTowMO+9njIxOjAwCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAx
-Lm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBs
-aXN0cy4wMS5vcmcK
+QXJlIHlvdSBpbnRlcmVzdGVkIHRvIHB1cmNoYXNlIDEwMCUgYWNjdXJhdGUgMTAsMDAwIFRhcmdl
+dGVkIExlYWRzDQpmcm9tIExpbmtlZEluIGF0ICQ1MDAoQW55IHRpdGxlcy9pbmR1c3RyeS9sb2Nh
+dGlvbi9rZXl3b3Jkcyk/DQpJZiB5b3UgaGF2ZSBhIHZlcnkgdGFyZ2V0ZWQgZGF0YSByZXF1aXJl
+bWVudCBhbmQgeW91IG5lZWQgTGlua2VkSW4NCmRhdGFiYXNlLCB3ZSB3aWxsIHB1bGwgdGFyZ2V0
+ZWQgZGF0YWJhc2VzIGZvciB5b3Ugd2l0aCB0aGVpciBMaW5rZWRJbg0KcHJvZmlsZSBsaW5rLCBu
+YW1lLCB0aXRsZSwgZW1haWwgYWRkcmVzcywgY29tcGFueSBuYW1lLCBjaXR5LCBjb21wYW55DQpz
+aXplIGV0Yy4gUGxlYXNlIHNoYXJlIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIGFuZCBJIHdpbGwgc3Vw
+cGx5IHRoZQ0Kc2FtcGxlIHdpdGhpbiAxIGJ1c2luZXNzIGRheXPigJkgdGltZS4NClRoYW5rcyBh
+bmQgbGV0IG1lIGtub3cuDQpHYXJjaWEgVGF5bG9yDQpMZWFkIGdlbmVyYXRpb24gVGVhbQ0KUHJl
+bWl1bSBMaW5rZWRJbiBEYXRhYmFzZQ0KVW5zdWJzY3JpYmUNCmh0dHBzOi8vY2hhaXJtYW5ldmVu
+dHN1bW1pdC5pbmZvL2VtbS9pbmRleC5waHAvbGlzdHMvdHIzODQyd3hnZWZhMi91bnN1YnNjcmli
+ZS94ajk0MDhyMXF0ZjI3L252MDQxZXpwN2E0YmENCg0KX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
+eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
+dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
