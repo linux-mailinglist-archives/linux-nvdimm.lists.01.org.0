@@ -2,81 +2,93 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C96E2AA346
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 09:13:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CFB2AA416
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Nov 2020 10:03:37 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 78754164BCF8C;
-	Sat,  7 Nov 2020 00:13:56 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.38.202.178; helo=cha4.chairmaneventsummit.info; envelope-from=info-linux+2dnvdimm=lists.01.org@chairmaneventsummit.info; receiver=<UNKNOWN> 
-Received: from cha4.chairmaneventsummit.info (ip178.ip-54-38-202.eu [54.38.202.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 09693164BF7B0;
+	Sat,  7 Nov 2020 01:03:35 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::745; helo=mail-qk1-x745.google.com; envelope-from=34wkmxw4jdeqjov.gmxktzca88msgor.iusrot03-t1jossroyzy.67.uxm@trix.bounces.google.com; receiver=<UNKNOWN> 
+Received: from mail-qk1-x745.google.com (mail-qk1-x745.google.com [IPv6:2607:f8b0:4864:20::745])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 64ED5164BCF89
-	for <linux-nvdimm@lists.01.org>; Sat,  7 Nov 2020 00:13:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=chairmaneventsummit.info;
- h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=info@chairmaneventsummit.info;
- bh=4uX1R7lfP8msRa7X31EhG7/SAgE=;
- b=eodsRb98IFo3OOk7bbExPnbXd+vAHRt4f6cigRqZIgOkWDTN2FR9dl5BmmXRwtLzP7TBYd/kDy6d
-   tMe9k7B5swgWT0/cj28K5d0F/iF61QMDdmbv6HZIgufFNKH/gjXQWWLrWWr+5C2IjBdqplgsJ9dT
-   WnFR1WbsUvync55CRKTz4EBQDYhGo9eBZlz4MoSr7GSBobWgOHfNAMiXyBRdxFZIJTaI59rOsb1O
-   LvEdyawj3TNuYDw2GLnoiSKjn0/qeQGSsR7e/C1e1uSBL0JKsVwNZ1vA8LpUTqKTqsPEQ35re3ka
-   vdBAGeeitz5T+1Alp5pbBegFxw6G9O0RH8iFEQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=chairmaneventsummit.info;
- b=IzhjfTkOq4xlQjWypBHD9xOg0uo7CIWlYXHjU5DDLfO+ZGBPMHMKzKL7tBzI/lHJWUJYlfN5/QUh
-   MmG723PBiXeRFPWcxi4Be34060d3oJ6jltCRSFL5IjxnCHxz5LS49xxPVPHm0wJVP3+5kuvwpyno
-   JJFuUJqijh+A4wCg1EZWvFEDZlkVQYhxpytLAisjLjP88KynQIVqgOekSEOWO7G3cDtOWv7F+nnG
-   aj9LOd8SfJh83EJdo8J3YeQ8tTRhyrOdL4irz7ZrHrGGlb0R4JXmp7KoJczKPfsQO4+y+otIR4yb
-   9Z+Nx+Zd+qiCUoanB8SP+UBJLRxnHBwg6Df95w==;
-Received: from chairmaneventsummit.info (51.83.131.67) by cha1.chairmaneventsummit.info id hkpbk3i19tkj for <linux-nvdimm@lists.01.org>; Sat, 7 Nov 2020 08:13:49 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info>)
-Date: Sat, 7 Nov 2020 08:13:49 +0000
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-From: Garcia Taylor <info@chairmaneventsummit.info>
-Subject: RE: 10K LinkedIn Leads at 500
-Message-ID: <38648c42e6d449e10948f8cc342b87c9@chairmaneventsummit.info>
-X-Trgm-Campaign-Uid: nv041ezp7a4ba
-X-Trgm-Subscriber-Uid: xj9408r1qtf27
-X-Trgm-Customer-Uid: cl716wf5hl7c7
-X-Trgm-Customer-Gid: 0
-X-Trgm-Delivery-Sid: 1
-X-Trgm-Tracking-Did: 0
-X-Report-Abuse: Please report abuse for this campaign here: https://chairmaneventsummit.info/emm/index.php/campaigns/nv041ezp7a4ba/report-abuse/tr3842wxgefa2/xj9408r1qtf27
-Feedback-ID: nv041ezp7a4ba:xj9408r1qtf27:tr3842wxgefa2:cl716wf5hl7c7
-Precedence: bulk
-X-Trgm-EBS: https://chairmaneventsummit.info/emm/index.php/lists/block-address
-X-Sender: info@chairmaneventsummit.info
-X-Receiver: linux-nvdimm@lists.01.org
-X-Trgm-Mailer: PHPMailer - 5.2.21
+	by ml01.01.org (Postfix) with ESMTPS id CE60A1647FFA3
+	for <linux-nvdimm@lists.01.org>; Sat,  7 Nov 2020 01:03:32 -0800 (PST)
+Received: by mail-qk1-x745.google.com with SMTP id k188so2429584qke.3
+        for <linux-nvdimm@lists.01.org>; Sat, 07 Nov 2020 01:03:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:message-id:date:subject:from:to;
+        bh=ezihhqBndM6x13x5NMhxt87Mgy6pNpSR5ZjznqWYLQU=;
+        b=WrTFEmEN9vj5vDO0o/zzwwPVe4MafwzQxGq4lbpGRuVhLamIw/tRpXKbtjbCx3YbIU
+         qwlSU1t4/F6yl3QO96ARXJMwFkFg99MMabuFFsD2z8iKXmdvnvV5mBdnqRTxEb7B+u4i
+         F7zvprWMLJ1J6Zpu0ulBozaGEL8kS9XKeBMEsCF83Xxs7BJfH1tdS9ds+pRenitkkBU/
+         PMWIOoM/bCdwmOjjIwww1DROKANkZ8XiASuzVHktpaq+yEvchK33ZEQpFrlo9wmpHkhs
+         hMXOdeJvPkp3eq1d75ZHofMhHriU5cFLrzCHGkzQu+kmFwC4tGQVZ6fzwJBjnTwe11oa
+         eFMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:message-id:date:subject
+         :from:to;
+        bh=ezihhqBndM6x13x5NMhxt87Mgy6pNpSR5ZjznqWYLQU=;
+        b=fqm+3yLgx92LIzmKOzrEC8A5hE8kBcT2+ThBKFZ5wQ7f01K9WArdr1PafslEqKWUQy
+         slN1veZClhLYbuWB9r9nmFUeU00bN+i14NCMWpreELVALF58pu4hZBzfnw7nBT9QPD/Y
+         9KMaasR5yXUGwxvnkLZWFB6izPGEqwRBQzo+Y8ATrXr8tgHi+cLXnOPvporJPquTk8yt
+         H4x4LScF4LkjGkKzxiyvVm4ZN+pziLYjKGhLj2RNs/xR527o7K9LUD8busdKU3QD9o6s
+         2zH+HjT0tBR+v6tNLYcDvoJuBXrVNeg03rOZb38YdQagfOaFj1mDyu5EVam6VYE7IFKo
+         bw/w==
+X-Gm-Message-State: AOAM530XVjhn5g1I7ewmrrtS75WyvavQbZS08qHVPKCOGRYTXUC05A+7
+	lhlYYyCzFhUv7wC563jvfZxf5QYRuLD31oPaIzEq
 MIME-Version: 1.0
-Message-ID-Hash: BTNKFVWQDY6KZEP2DTKGRNA6Q2BGWTAI
-X-Message-ID-Hash: BTNKFVWQDY6KZEP2DTKGRNA6Q2BGWTAI
-X-MailFrom: info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info
+X-Received: by 2002:a05:620a:818:: with SMTP id s24mt5221122qks.181.1604739809662;
+ Sat, 07 Nov 2020 01:03:29 -0800 (PST)
+X-No-Auto-Attachment: 1
+Message-ID: <0000000000004ffd4805b3809ab4@google.com>
+Date: Sat, 07 Nov 2020 09:03:32 +0000
+Subject: U.S. Customs and Border Protection.
+From: dip.agrent6422@gmail.com
+To: linux-nvdimm@lists.01.org
+Message-ID-Hash: 7DMWGQSYVY2E2566FRCX7MLL4YR26M7X
+X-Message-ID-Hash: 7DMWGQSYVY2E2566FRCX7MLL4YR26M7X
+X-MailFrom: 34WKmXw4JDEQjov.gmxktzCA88msgor.iusrot03-t1jossroyzy.67.uxm@trix.bounces.google.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Reply-To: Garcia Taylor <garcia@soltecmaredm.info>
+Precedence: list
+Reply-To: dip.agrent6422@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BTNKFVWQDY6KZEP2DTKGRNA6Q2BGWTAI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7DMWGQSYVY2E2566FRCX7MLL4YR26M7X/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="utf-8"; format="flowed"; delsp="yes"
 Content-Transfer-Encoding: base64
 
-QXJlIHlvdSBpbnRlcmVzdGVkIHRvIHB1cmNoYXNlIDEwMCUgYWNjdXJhdGUgMTAsMDAwIFRhcmdl
-dGVkIExlYWRzDQpmcm9tIExpbmtlZEluIGF0ICQ1MDAoQW55IHRpdGxlcy9pbmR1c3RyeS9sb2Nh
-dGlvbi9rZXl3b3Jkcyk/DQpJZiB5b3UgaGF2ZSBhIHZlcnkgdGFyZ2V0ZWQgZGF0YSByZXF1aXJl
-bWVudCBhbmQgeW91IG5lZWQgTGlua2VkSW4NCmRhdGFiYXNlLCB3ZSB3aWxsIHB1bGwgdGFyZ2V0
-ZWQgZGF0YWJhc2VzIGZvciB5b3Ugd2l0aCB0aGVpciBMaW5rZWRJbg0KcHJvZmlsZSBsaW5rLCBu
-YW1lLCB0aXRsZSwgZW1haWwgYWRkcmVzcywgY29tcGFueSBuYW1lLCBjaXR5LCBjb21wYW55DQpz
-aXplIGV0Yy4gUGxlYXNlIHNoYXJlIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIGFuZCBJIHdpbGwgc3Vw
-cGx5IHRoZQ0Kc2FtcGxlIHdpdGhpbiAxIGJ1c2luZXNzIGRheXPigJkgdGltZS4NClRoYW5rcyBh
-bmQgbGV0IG1lIGtub3cuDQpHYXJjaWEgVGF5bG9yDQpMZWFkIGdlbmVyYXRpb24gVGVhbQ0KUHJl
-bWl1bSBMaW5rZWRJbiBEYXRhYmFzZQ0KVW5zdWJzY3JpYmUNCmh0dHBzOi8vY2hhaXJtYW5ldmVu
-dHN1bW1pdC5pbmZvL2VtbS9pbmRleC5waHAvbGlzdHMvdHIzODQyd3hnZWZhMi91bnN1YnNjcmli
-ZS94ajk0MDhyMXF0ZjI3L252MDQxZXpwN2E0YmENCg0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+SSd2ZSBpbnZpdGVkIHlvdSB0byBmaWxsIG91dCB0aGUgZm9sbG93aW5nIGZvcm06DQpVbnRpdGxl
+ZCBmb3JtDQoNClRvIGZpbGwgaXQgb3V0LCB2aXNpdDoNCmh0dHBzOi8vZG9jcy5nb29nbGUuY29t
+L2Zvcm1zL2QvZS8xRkFJcFFMU2ZmejltQUl0dlRHWVN5M19XZ21HVnFzb3cwdmJwTjVRRnVqQTk5
+TGphbzJYTEk3Zy92aWV3Zm9ybT92Yz0wJmFtcDtjPTAmYW1wO3c9MSZhbXA7ZmxyPTAmYW1wO3Vz
+cD1tYWlsX2Zvcm1fbGluaw0KDQpHb29kIG1vcm5pbmcgdG8geW91Lg0KDQpUaGlzIG1lc3NhZ2Ug
+aXMgY29taW5nIHRvIHlvdSBmcm9tIFUuUy4gQ3VzdG9tcyBhbmQgQm9yZGVyIFByb3RlY3Rpb24g
+LSAgDQpDaGllZiBNb3VudGFpbiBQb3J0IG9mIEVudHJ5LCBUaGUgbWVzc2FnZSBpcyBiZWNhdXNl
+IG9mIHlvdXIgcGFja2FnZSBib3ggIA0Kd2hpY2ggd2FzIGp1c3QgcmVsZWFzZWQgYW5kIGNsZWFy
+ZWQgYWJvdXQgMzAgbWludXRlcyBhZ2/igKYgd2Ugd2FudCB5b3UgdG8gIA0KY29tZSBkb3duIGhl
+cmUgaW4gcGVyc29uIGFuZCB0YWtlIGF3YXkgeW91ciBwYWNrYWdlIHdpdGhvdXQgYW55IHF1ZXN0
+aW9uIG9yICANCmRlbGF5IGZyZWVseSAoQWRkcmVzczogMTM5NSBDaGllZiBNb3VudGFpbiBId3ks
+IEJhYmIsIE1UIDU5NDExLCBVbml0ZWQgIA0KU3RhdGVzKQ0KYnV0IGlmIGl0IGNhbuKAmXQgYmUg
+cG9zc2libGUgZm9yIHlvdSB0byBjb21lIGRvd24gZHVlIHRvIHdvcmtpbmcgaG91ciBqdXN0ICAN
+CmdvIGRvd24gdG8gYW55IG5lYXJlc3Qgc3RvcmUgYnV5IHN0ZWFtIGNhcmQgb3Igbm9yZHN0cm9t
+IGNhcmQgb2YgJDE5MCBhbmQgIA0Kc2VuZCBpdCB0byB5b3VyIGRlbGl2ZXJ5IGFnZW50IHZpYSBl
+IGVtYWlsIChob25vcmFibGVoYXJyaXNvbjJAZ21haWwuY29tKSAgDQpvciBwaG9uZSArMSAoMjE2
+KSA0NjUtNTMxNyBpIGV4cGVjdCB5b3VyIHVyZ2VudCBjYWxsIHBsZWFzZSBhbHNvIHByb3ZpZGUg
+IA0KeW91ciBhZGRyZXNzIHdoZXJlIHlvdSB3YW50IHlvdXIgcGFja2FnZSBib3ggdG8gYmUgZGVs
+aXZlcmVkIHRvICB5b3UgaW4gIA0KbmV4dCA0IGhvdXJzIHlvdSB3aWxsIGNvbmZpcm0geW91ciBw
+YWNrYWdlIGltbWVkaWF0ZWx5LCBwbGVhc2UgZG9u4oCZdCBpZ25vcmUgIA0KdGhpcyBtZXNzYWdl
+IGJlY2F1c2UgeW91IGFyZSB2ZXJ5IGx1Y2t5IHBlcnNvbiB0b2RheeKApi4uDQoNClUuUy4gQ3Vz
+dG9tcyBhbmQgQm9yZGVyIFByb3RlY3Rpb24uDQoNCkdvb2dsZSBGb3JtczogQ3JlYXRlIGFuZCBh
+bmFseXplIHN1cnZleXMuDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
+MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
+bGlzdHMuMDEub3JnCg==
