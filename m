@@ -2,51 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EA22AA918
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  8 Nov 2020 05:43:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 113362AA9C2
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  8 Nov 2020 07:04:41 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 652F515D96B41;
-	Sat,  7 Nov 2020 20:43:55 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.215.7.217; helo=yegp.com; envelope-from=pfiapz@yegp.com; receiver=<UNKNOWN> 
-Received: from yegp.com (unknown [223.215.7.217])
-	by ml01.01.org (Postfix) with ESMTP id 231D31650F814
-	for <linux-nvdimm@lists.01.org>; Sat,  7 Nov 2020 20:43:51 -0800 (PST)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sun, 08 Nov 2020 12:43:42 +0800
-Message-ID: 9e4ac179-5b0a-42df-94a4-733d5d66f5be
+	by ml01.01.org (Postfix) with ESMTP id 0738E161A7F6B;
+	Sat,  7 Nov 2020 22:04:39 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=133.125.49.213; helo=zykxlxgc.icu; envelope-from=admin@zykxlxgc.icu; receiver=<UNKNOWN> 
+Received: from zykxlxgc.icu (ik1-442-53459.vs.sakura.ne.jp [133.125.49.213])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 901A2161A7F69
+	for <linux-nvdimm@lists.01.org>; Sat,  7 Nov 2020 22:04:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=zykxlxgc.icu;
+ h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
+ i=admin@zykxlxgc.icu;
+ bh=a4VXox1Co5AqyBZhqb2ayWKyF7oDjeKuC7e0TrN9Ufo=;
+ b=YAb6AciUwBv/L/Tudq3LlDTKg0/tA87CBh4jFoFJbJxmJeJgkSUi+w1GZYA5LCsiLcp9jLZLhOHx
+   0jEKUoyl6tyDdvSqYRWiiqm9PBpqt5PFIKE2365XQXsx1O3VQosfuMrriNlNjuPvGaq4rB+RV7LP
+   xONBtWw71tBartk9L08=
+Message-ID: <20201108140433615865@zykxlxgc.icu>
+From: "Amazon.co.jp" <admin@zykxlxgc.icu>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?iso-2022-jp?B?QW1hem9uLmNvLmpwIBskQiUiJSslJiVzJUg9ak0tGyhC?=
+	=?iso-2022-jp?B?GyRCOCIkTj5aTEAhSkw+QTAhIiQ9JE5CPjhEP00+cEpzIUskTjNORycbKEI=?=
+Date: Sun, 8 Nov 2020 14:04:28 +0800
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E8=81=94=E7=B3=BB=E4=BA=BA=EF=BC=9A=E9=99=88=E6=BD=AE?=
- =?utf-8?Q?=E8=8D=A3133=2D7676=2D5948?= <pfiapz@yegp.com>
-From: =?utf-8?Q?=E8=81=94=E7=B3=BB=E4=BA=BA=EF=BC=9A=E9=99=88=E6=BD=AE?=
- =?utf-8?Q?=E8=8D=A3133=2D7676=2D5948?= <nitg@yegp.com>
-To: linux-nvdimm@lists.01.org
-Date: 8 Nov 2020 12:43:42 +0800
-Subject: =?utf-8?B?5oKo5aW95LqyLOi0teWFrOWPuOacgOi/kemcgOimgeW8gOWP?=
- =?utf-8?B?keelqOS5iO+8n+eCleexvWFG5oqY5YuS6LS15piOVVBp?=
-Message-ID-Hash: JHZXMLMSAALKOAW4A7B32V3I5R5FLMI2
-X-Message-ID-Hash: JHZXMLMSAALKOAW4A7B32V3I5R5FLMI2
-X-MailFrom: pfiapz@yegp.com
+Message-ID-Hash: QUH4Y3RLFPMQQZSTXCZL4QINLODJNHH7
+X-Message-ID-Hash: QUH4Y3RLFPMQQZSTXCZL4QINLODJNHH7
+X-MailFrom: admin@zykxlxgc.icu
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JHZXMLMSAALKOAW4A7B32V3I5R5FLMI2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QUH4Y3RLFPMQQZSTXCZL4QINLODJNHH7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: 7bit
 
-bGludXgtbnZkaW1t77yM5oKo5aW9DQoyMDIw5bm0MTHmnIgwOOaXpTEy5pe2NDPliIY0Muenkg0K
-5Y+v5Luj5byA5Y+v5p+l55yf5Lyq5Y+R56WoJm5ic3A7Jm5ic3A7IOWPr+S7pemqjOivgeWQjuS7
-mOasvg0K6IGU57O75Lq677yaMTMzLTc2NzYtNTk0OOmZiOa9ruiNow0K55m+5YiG55m+55yf56Wo
-Jm5ic3A7Jm5ic3A7IOmhueebrum9kOWFqCZuYnNwOyZuYnNwOyDlip7nkIbpgJ/luqblv6sNCuS7
-t+agvOS8mOe+jiZuYnNwOyZuYnNwOyZuYnNwOyDmrKLov47lkITnlYzmnIvlj4vkurrlo6vjgIHm
-tL3osIjlip7nkIbkuJrliqHvvIwNCuS4tOmXtOeOsOenr+ays+mSruefm+WFtOedgOS7veaiqOeM
-queimOajjei/qumZjeWPtuWogeeahOmUjOWmu+eptuaFouaKpOivpgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0
-IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFp
-bCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+
+ 
+Amazon お客様
+Amazonチームはあなたのアカウントの状態が異常であることを発見しました。バインディングされたカードが期限が切れていたり、システムのアップグレードによるアドレス情報が間違っていたりして、あなたのアカウント情報を更新できませんでした。
+リアルタイム サポートをご利用ください
+お客様の Amazon アカウントは 24 時間 365 日対応のサポートの対象となっておりますので、Amazon サポートチームにご連絡いただければ、アカウントの所有権の証明をお手伝いします。
+お客様の Amazon アカウント
+アカウント所有権の証明をご自身で行う場合は、Amazon 管理コンソールにログインし、所定の手順でお手続きください。アカウント所有権の証明についてのヘルプセンター記事も併せてご参照ください。
+状態: 
+異常は更新待ちです
+所有権の証明
+
+
+
+数日以内アカウント所有権をご証明いただかなかった場合、Amazonアカウントは自動的に削除されますのでご注意ください。
+今後ともよろしくお願い申し上げます。
+Amazon チーム
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
