@@ -1,44 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7217A2AC052
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  9 Nov 2020 16:58:34 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B232AC22D
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  9 Nov 2020 18:26:37 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E14B815608EB0;
-	Mon,  9 Nov 2020 07:58:32 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangqilong3@huawei.com; receiver=<UNKNOWN> 
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6F7B716593960;
+	Mon,  9 Nov 2020 09:26:35 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BB2AB15608E9E
-	for <linux-nvdimm@lists.01.org>; Mon,  9 Nov 2020 07:58:28 -0800 (PST)
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CVFyX5pxVzhjfR
-	for <linux-nvdimm@lists.01.org>; Mon,  9 Nov 2020 23:58:12 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Mon, 9 Nov 2020
- 23:58:16 +0800
-From: Zhang Qilong <zhangqilong3@huawei.com>
-To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
-	<dave.jiang@intel.com>, <ira.weiny@intel.com>
-Subject: [PATCH] libnvdimm/label: Return -ENXIO for no slot in __blk_label_update
-Date: Tue, 10 Nov 2020 00:02:05 +0800
-Message-ID: <20201109160205.1937765-1-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.25.4
+	by ml01.01.org (Postfix) with ESMTPS id CD83616649EFB
+	for <linux-nvdimm@lists.01.org>; Mon,  9 Nov 2020 09:26:32 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id o20so9634542eds.3
+        for <linux-nvdimm@lists.01.org>; Mon, 09 Nov 2020 09:26:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GJc7DxZxtIuzdI/2gpdlhjHr5AKQak7pICrpafaazgc=;
+        b=pTxaQZQnDKvPEbiCmPRd9EW9mdYmiurVniIl8T2fXNF+JNApwcfoGGcvMh/jDusIvP
+         dqgChHcijPnZM19ZNe4Hx0zJj6pAY7a+4WqsdWYgM/WdQD63jPge/acFmwGopnMHWRfW
+         Jaq3NLVVfhndbooxaamr7SIrhFbIwoPsMIB26z9aC6IAJh6AxNoZTsms0BeD8niqsiVI
+         XPFHC3FMjhMw+/BXgSfqK6vDSvxL46I7W5nxgx2kp7jYRSWT5GYUv7Z8niS+pFX/3XIA
+         F6w/xBPIiRxe/iNDjfgZzB0qUFg5smAGnSv+BRli9ZONE3MpZ3y99vp39/leHnQuvCao
+         pOpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GJc7DxZxtIuzdI/2gpdlhjHr5AKQak7pICrpafaazgc=;
+        b=OzlzfGi8QwSMbACCWlxQFBDSZCdUU34ZHQE800754TDxd89Xyy2hJsXdS/t/Ou81wL
+         TNzWbQFY1uGtF4HQeRpRiA+ChgPSmZA8uJ9D/y517NDjDUS1jA4sSixV32lg8THEO4Vc
+         cDeo9g8DBD2xdqPQLb5avVO6AYhQZVd6d1IgENYLidXuygJI0AmJFeBkW+8wnEJZgFmA
+         l5wtom0/ax7K8FXsTh7Drb9N63NdY8J65R4fmUgvk5QBT6N0+OwFnVI1WXmLafZnaYy1
+         mqk/nDz4QJdwLSl8NLHKmHS8Xe8GE8smq/Ue2Bc+zdWWJdgX9nfgfhVjO1YfI86xApzt
+         G8Hg==
+X-Gm-Message-State: AOAM532URJimV7G59kD4eDEEyXqPyDeRtKNqhBvF00eJndhClA7Wt5hl
+	SyVIhQG4NB5ssAfeLcc6SJrGq/Mv6JMvYus1EKrnbQ==
+X-Google-Smtp-Source: ABdhPJyXZiUe7xKcYYQoUUxc+Neqs9b3cRZ/OgSCMXPCfT5lCZ0GwwWmg+WliDyLWn+FjR1evh2tnHedP8j5BQG23N8=
+X-Received: by 2002:aa7:cc84:: with SMTP id p4mr16049370edt.97.1604942790913;
+ Mon, 09 Nov 2020 09:26:30 -0800 (PST)
 MIME-Version: 1.0
-X-Originating-IP: [10.175.127.227]
-X-CFilter-Loop: Reflected
-Message-ID-Hash: B5DDL5NEXGJ3OWR5QVWYTWKWZLOV4RL4
-X-Message-ID-Hash: B5DDL5NEXGJ3OWR5QVWYTWKWZLOV4RL4
-X-MailFrom: zhangqilong3@huawei.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org
+References: <1687234809.1086398.1604889506963.JavaMail.zimbra@redhat.com>
+ <4ed7ea52-20be-68fe-f920-238ba358395c@redhat.com> <20201109141216.GD244516@ziepe.ca>
+In-Reply-To: <20201109141216.GD244516@ziepe.ca>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 9 Nov 2020 09:26:19 -0800
+Message-ID: <CAPcyv4gJG_-gGwzaenQdnVq13JUWLjEnsTV+e4swuVtpGVpC8g@mail.gmail.com>
+Subject: Re: regression from 5.10.0-rc3: BUG: Bad page state in process
+ kworker/41:0 pfn:891066 during fio on devdax
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Message-ID-Hash: O7LVJOMRPLF3VYMHORVWFULTLUHTYK3O
+X-Message-ID-Hash: O7LVJOMRPLF3VYMHORVWFULTLUHTYK3O
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Yi Zhang <yi.zhang@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B5DDL5NEXGJ3OWR5QVWYTWKWZLOV4RL4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O7LVJOMRPLF3VYMHORVWFULTLUHTYK3O/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -47,33 +69,26 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Forget to set error code when nd_label_alloc_slot failed, and we
-add it to avoid overwritten error code.
+On Mon, Nov 9, 2020 at 6:12 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>
+> Wow, this is surprising
+>
+> This has been widely backported already, Dan please check??
+>
+> I thought pgprot_decrypted was a NOP on most x86 platforms -
+> sme_me_mask == 0:
+>
+> #define __sme_set(x)            ((x) | sme_me_mask)
+> #define __sme_clr(x)            ((x) & ~sme_me_mask)
+>
+> ??
+>
+> Confused how this can be causing DAX issues
 
-Fixes: 0ba1c634892b3 ("libnvdimm: write blk label set")
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- drivers/nvdimm/label.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Does that correctly preserve the "soft" pte bits? Especially
+PTE_DEVMAP that DAX uses?
 
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 47a4828b8b31..05c1f186a6be 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -999,8 +999,10 @@ static int __blk_label_update(struct nd_region *nd_region,
- 		if (is_old_resource(res, old_res_list, old_num_resources))
- 			continue; /* carry-over */
- 		slot = nd_label_alloc_slot(ndd);
--		if (slot == UINT_MAX)
-+		if (slot == UINT_MAX) {
-+			rc = -ENXIO;
- 			goto abort;
-+		}
- 		dev_dbg(ndd->dev, "allocated: %d\n", slot);
- 
- 		nd_label = to_label(ndd, slot);
--- 
-2.25.4
+I'll check...
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
