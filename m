@@ -2,71 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA602AAF8D
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  9 Nov 2020 03:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A23AB2AAFAC
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  9 Nov 2020 04:01:15 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3C0F7165F6720;
-	Sun,  8 Nov 2020 18:39:33 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=165.84.180.109; helo=fjdigihfdg.xyz; envelope-from=jyzqunbm@fjdigihfdg.xyz; receiver=<UNKNOWN> 
-Received: from fjdigihfdg.xyz (165084180109.ctinets.com [165.84.180.109])
-	by ml01.01.org (Postfix) with ESMTP id 55887165EABED
-	for <linux-nvdimm@lists.01.org>; Sun,  8 Nov 2020 18:39:32 -0800 (PST)
-Sender: jyzqunbm@fjdigihfdg.xyz
-Message-ID: <84482433C5E988E5A707974FE16E2438@fjdigihfdg.xyz>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <thankyou@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44CR44OI44Op44Oz44K244Kv44K344On44Oz5L+d55WZ5Lit?=
-Date: Mon, 9 Nov 2020 10:39:19 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19846
-Message-ID-Hash: RTK6WULGJGXWGJSNEWMXQL2X6FRW5ODZ
-X-Message-ID-Hash: RTK6WULGJGXWGJSNEWMXQL2X6FRW5ODZ
-X-MailFrom: jyzqunbm@fjdigihfdg.xyz
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+	by ml01.01.org (Postfix) with ESMTP id D4117165FB3E4;
+	Sun,  8 Nov 2020 19:01:13 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 61277165FB3E2
+	for <linux-nvdimm@lists.01.org>; Sun,  8 Nov 2020 19:01:12 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id o21so10141667ejb.3
+        for <linux-nvdimm@lists.01.org>; Sun, 08 Nov 2020 19:01:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Hgu/k4zI/PAPcWBWO9vf1j0+fK94QC+FCf314+RmfbY=;
+        b=sPhZ9whnk5VGdJCG9lq6Bz+Onj9yik5TGjS/BO/nCCTO10lVJvqunxCLkeCFuObFBF
+         EfwrDREbh42sbnNvNWfcbfse0g1TaM0L5Um6bjjnqlrPrMB1FREbV9If5S5PqqAA1pjE
+         CfhtYuDDSpMPRYcMXfM7twGI/Lq5sBYqlFrsDE87nF9AUDbge64T0stSbyjF6ZBmboP5
+         y8Z/NLgnDsa6VA0MawNzuWMH/MW5bpD/1ux/ub1OtWFZcwNl3V4UApvD2figbv9Cf/Sb
+         iw3fxkCXncBdSb1kzQcT/H9veKLfCY4X9pvbtAxKv2EHJTusdsptxLPRKUMssAmXih0O
+         DTPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Hgu/k4zI/PAPcWBWO9vf1j0+fK94QC+FCf314+RmfbY=;
+        b=VaO/bCtbSbFpRloAFqnjL799kgUvS5gbbdIa0BU2Cz+IAuHiJ7Yk+6cdbHARnv5S3J
+         gkOvzIxHYYY38PCymzTukQFO57KzlVeGkCJmaHrlw0AZERHi2+d4vvZ0nNyE/lzI2QIG
+         ioDRLD1M0gK0K14Wgxt4pUYaTfuOrpyF/gPMi2wa3w3zc5vz0uja4vA3gx7L938aFYkH
+         kkOkXVXQeUF/HIxmafNDiZwdE8omc/X8ADG5GJf0MUTuND1BA+ZrVW/IbfxDL5t8MRh6
+         yzfQXgoD8pZCA0CH0YLXl33bfvrfJ/7MNtrGMAmDPsJg3UZHrsjHdn0m5dAWMMCnNhnw
+         sH3g==
+X-Gm-Message-State: AOAM531DA79TNPwr0g3OQsVDo6X7m3S0QWE/gZ/l2OJusyY6/AsJtmXL
+	zt0Moo57fvJkoOAy5xqAYYVFrKioiixOrA02xmxO2g==
+X-Google-Smtp-Source: ABdhPJzogCBPEJxw3FL8TpXkAzXDhgiSH6XRoKH6IHll9g1LqC0+ZZd2V+SlZNiyc6//kt3VRnk5Oo14KrT8AylHfyg=
+X-Received: by 2002:a17:906:ad8e:: with SMTP id la14mr12395099ejb.264.1604890869322;
+ Sun, 08 Nov 2020 19:01:09 -0800 (PST)
+MIME-Version: 1.0
+References: <1934921834.1085815.1604889035798.JavaMail.zimbra@redhat.com> <1687234809.1086398.1604889506963.JavaMail.zimbra@redhat.com>
+In-Reply-To: <1687234809.1086398.1604889506963.JavaMail.zimbra@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sun, 8 Nov 2020 19:00:58 -0800
+Message-ID: <CAPcyv4jto-LCR6EUZj0bka8De9NTwB5OkYLbK83O5hubGfknPQ@mail.gmail.com>
+Subject: Re: regression from 5.10.0-rc3: BUG: Bad page state in process
+ kworker/41:0 pfn:891066 during fio on devdax
+To: Yi Zhang <yi.zhang@redhat.com>
+Message-ID-Hash: XSVYXBIXVRNNMUN7W3L3TROJ6GHNSZ5H
+X-Message-ID-Hash: XSVYXBIXVRNNMUN7W3L3TROJ6GHNSZ5H
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RTK6WULGJGXWGJSNEWMXQL2X6FRW5ODZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XSVYXBIXVRNNMUN7W3L3TROJ6GHNSZ5H/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQogDQoNCg0K5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or
-6YCB5Y+X5L+h44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLDQrp
-h43opoHjgarpgJrnn6Xjgajjgarjgorjgb7jgZnjgIINCg0KDQoNCg0K44GE44Gk44KCUyBNIEIg
-Q+OCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOB
-hOOBvuOBmeOAgiANCuW8iuekvuOBp+OBr+OAgeOBiuWuouanmOOBq+WuieW/g+OBl+OBpuOCq+OD
-vOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBj+OBk+OBqOOCkuebrueahOOBq+OAgQ0K56ys5LiJ
-6ICF44Gr44KI44KL5LiN5q2j5L2/55So44KS6Ziy5q2i44GZ44KL44Oi44OL44K/44Oq44Oz44Kw
-44KS6KGM44Gj44Gm44GE44G+44GZ44CCDQrlvZPnpL7jga7mpJzlh7rjgpLntYzjgabjgIHnrKwz
-6ICF44GM5LiN5rOV5oKq5oSP44Ot44Kw44Kk44Oz44GC44Gq44Gf44Gu5LiJ5LqV5L2P5Y+L44OL
-44Kz44K5d2Vi44K144O844OT44K544CCIA0KDQrjgYrlv5njgZfjgYTjgajjgZPjgo3lpKflpInm
-gZDjgozlhaXjgorjgb7jgZnjgYzjgIHoqbPntLDjga9WcGFzc0lEIOODreOCsOOCpOODs+OCkuOC
-r+ODquODg+OCr+OBl+OBpuOBj+OBoOOBleOBhOOAglZwYXNzSUQg44Ot44Kw44Kk44OzIA0KDQrj
-garjgYrjgIHjgZTlpZHntITjgYTjgZ/jgaDjgYTjgabjgYTjgovjgqvjg7zjg4njgavjgaTjgYTj
-gabjga/jgIHnrKzkuInogIXjgavjgojjgovkuI3mraPkvb/nlKjjga4NCuWPr+iDveaAp+OBjOOB
-lOOBluOBhOOBvuOBmeOBruOBp+OAgeOCq+ODvOODieOBruOBlOWIqeeUqOOCkuS4gOaZgueahOOB
-q+WBnOatouOBleOBm+OBpuOBhOOBn+OBoOOBhOOBpuOBhOOCi+OAgQ0K44KC44GX44GP44Gv5LuK
-5b6M5YGc5q2i44GV44Gb44Gm44GE44Gf44Gg44GP5aC05ZCI44GM44GU44GW44GE44G+44GZ44CC
-DQrjgZTkuI3kvr/jgajjgZTlv4PphY3jgpLjgYrjgYvjgZHjgZfjgb7jgZfjgaboqqDjgavnlLPj
-gZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgYzjgIENCuS9leOBqOOBnuOBlOeQhuino+iznOOCiuOB
-n+OBj+OBiumhmOOBhOeUs+OBl+OBguOBkuOBvuOBmeOAgg0KDQroh7PmgKXjgIFTIE0gQiBD44Kr
-44O844OJ5Lya5ZOh44K144O844OT44K544Gr5L+u5q2j5oOF5aCx44KS5YaN55m76Yyy44GX44Gm
-44GP44Gg44GV44GEDQogDQoNCuS4ieS6leS9j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K4oC7
-5pys44Oh44O844Or44Gv6YCB5L+h5bCC55So44Gn44GZ44CCDQrigLvmnKzjg6Hjg7zjg6vjga/j
-gIxWcGFzc+OAjeOBq+ODoeODvOODq+OCouODieODrOOCueOCkuOBlOeZu+mMsuOBhOOBn+OBoOOB
-hOOBpuOBiuOCiuOAgeOAjFZwYXNz44CN44Gn5ZCE56iu44GK55Sz44GX6L6844G/44KS44GV44KM
-44Gf5pa544Gr44GK6YCB44KK44GX44Gm44GE44G+44GZ44CCDQoNCg0K44CADQpDb3B5cmlnaHQg
-KEMpIDIwMjAgU3VtaXRvbW8gTWl0c3VpIENhcmQgQ28uLCBMdGQuDQogCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxp
-c3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVt
-YWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On Sun, Nov 8, 2020 at 6:38 PM Yi Zhang <yi.zhang@redhat.com> wrote:
+>
+> Hello
+>
+> I found this regression during devdax fio test on 5.10.0-rc3, could anyone help check it, thanks.
+
+Have you been able to bisect it?
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
