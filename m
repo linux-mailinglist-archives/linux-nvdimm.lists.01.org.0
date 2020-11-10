@@ -2,176 +2,123 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273B42ADC6D
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Nov 2020 17:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADFB2ADCB8
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Nov 2020 18:17:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 514D31665D228;
-	Tue, 10 Nov 2020 08:51:22 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=yi.zhang@redhat.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 466BC16640201;
+	Tue, 10 Nov 2020 09:17:46 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3D67A1665D225
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Nov 2020 08:51:20 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 264CF168211CF
+	for <linux-nvdimm@lists.01.org>; Tue, 10 Nov 2020 09:17:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1605027079;
+	s=mimecast20190719; t=1605028662;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ANvNEj4RY1EDnbfn96bJVLdyXeWuYf3pvqCwLoIKvZE=;
-	b=BZu4FQc45X9Ix5p1mo+REi2Xr35NWkFqjbJkrq+ic8128kUn9ttYP92YQKeDRrnyouDz1U
-	I3MdjHugNXRMngIDDRYRr5tZsQlaGqJNECP+7NWUlsLI1phX+Y1m69XDxTY2KeTAFWAPN0
-	cg7ssgPW9Px1QORXTNJxQ9fcLaSS8ao=
+	bh=LzJjyVY4ylm22B+GsjUVJTMLO29F4ZbRIlWrsGH0w2g=;
+	b=WGKyvXwWUPQdJETyBQ7x+8qm+K8+KAkfS67ZsYyOD5z+T59gT26SZ8M+oHhdgxohJNiFmi
+	zmnfGzvBv3M930oCmUkWlu6L6kgkHVlYWkrvevOFLgE8upwB51nzSjjjEnJpF4S9ApvRFS
+	mxv1UH3rqskLaT+vfDwk8IJs7KhKU8Q=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-435-l727hKsYNP-N8CuSFlyJQw-1; Tue, 10 Nov 2020 11:51:17 -0500
-X-MC-Unique: l727hKsYNP-N8CuSFlyJQw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+ us-mta-373-X1NkAVToMrqmIhC-vp3-wQ-1; Tue, 10 Nov 2020 12:17:40 -0500
+X-MC-Unique: X1NkAVToMrqmIhC-vp3-wQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BA7DE6D248;
-	Tue, 10 Nov 2020 16:51:15 +0000 (UTC)
-Received: from localhost.localdomain (ovpn-12-67.pek2.redhat.com [10.72.12.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id B09C675132;
-	Tue, 10 Nov 2020 16:51:13 +0000 (UTC)
-Subject: Re: regression from 5.10.0-rc3: BUG: Bad page state in process
- kworker/41:0 pfn:891066 during fio on devdax
-From: Yi Zhang <yi.zhang@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Dan Williams <dan.j.williams@intel.com>
-References: <1687234809.1086398.1604889506963.JavaMail.zimbra@redhat.com>
- <4ed7ea52-20be-68fe-f920-238ba358395c@redhat.com>
- <20201109141216.GD244516@ziepe.ca>
- <CAPcyv4gJG_-gGwzaenQdnVq13JUWLjEnsTV+e4swuVtpGVpC8g@mail.gmail.com>
- <20201109175442.GE244516@ziepe.ca> <20201110003616.GA525483@nvidia.com>
- <27b0fccb-7f71-ca99-129d-bd3e373c2a85@redhat.com>
-Message-ID: <053911f5-a66f-f788-3f9e-98526ed8234f@redhat.com>
-Date: Wed, 11 Nov 2020 00:51:10 +0800
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CAE7D11BD341;
+	Tue, 10 Nov 2020 17:17:34 +0000 (UTC)
+Received: from [10.36.114.232] (ovpn-114-232.ams2.redhat.com [10.36.114.232])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 4FDB65D9D2;
+	Tue, 10 Nov 2020 17:17:27 +0000 (UTC)
+Subject: Re: [PATCH v8 2/9] mmap: make mlock_future_check() global
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+References: <20201110151444.20662-1-rppt@kernel.org>
+ <20201110151444.20662-3-rppt@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <9e2fafd7-abb0-aa79-fa66-cd8662307446@redhat.com>
+Date: Tue, 10 Nov 2020 18:17:26 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <27b0fccb-7f71-ca99-129d-bd3e373c2a85@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=yi.zhang@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+In-Reply-To: <20201110151444.20662-3-rppt@kernel.org>
 Content-Language: en-US
-Message-ID-Hash: HS3PB67U2PNFMRBXAAD6KMQXJCYMOGUN
-X-Message-ID-Hash: HS3PB67U2PNFMRBXAAD6KMQXJCYMOGUN
-X-MailFrom: yi.zhang@redhat.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: 4P4SXJ3GKXL2JUDI3P764MT5BVPPHMYH
+X-Message-ID-Hash: 4P4SXJ3GKXL2JUDI3P764MT5BVPPHMYH
+X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.o
+ rg, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HS3PB67U2PNFMRBXAAD6KMQXJCYMOGUN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4P4SXJ3GKXL2JUDI3P764MT5BVPPHMYH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Transfer-Encoding: 7bit
 
-DQoNCk9uIDExLzEwLzIwIDM6MzYgUE0sIFlpIFpoYW5nIHdyb3RlOg0KPg0KPg0KPiBPbiAxMS8x
-MC8yMCA4OjM2IEFNLCBKYXNvbiBHdW50aG9ycGUgd3JvdGU6DQo+PiBPbiBNb24sIE5vdiAwOSwg
-MjAyMCBhdCAwMTo1NDo0MlBNIC0wNDAwLCBKYXNvbiBHdW50aG9ycGUgd3JvdGU6DQo+Pj4gT24g
-TW9uLCBOb3YgMDksIDIwMjAgYXQgMDk6MjY6MTlBTSAtMDgwMCwgRGFuIFdpbGxpYW1zIHdyb3Rl
-Og0KPj4+PiBPbiBNb24sIE5vdiA5LCAyMDIwIGF0IDY6MTIgQU0gSmFzb24gR3VudGhvcnBlIDxq
-Z2dAemllcGUuY2E+IHdyb3RlOg0KPj4+Pj4gV293LCB0aGlzIGlzIHN1cnByaXNpbmcNCj4+Pj4+
-DQo+Pj4+PiBUaGlzIGhhcyBiZWVuIHdpZGVseSBiYWNrcG9ydGVkIGFscmVhZHksIERhbiBwbGVh
-c2UgY2hlY2s/Pw0KPj4+Pj4NCj4+Pj4+IEkgdGhvdWdodCBwZ3Byb3RfZGVjcnlwdGVkIHdhcyBh
-IE5PUCBvbiBtb3N0IHg4NiBwbGF0Zm9ybXMgLQ0KPj4+Pj4gc21lX21lX21hc2sgPT0gMDoNCj4+
-Pj4+DQo+Pj4+PiAjZGVmaW5lIF9fc21lX3NldCh4KcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKCh4
-KSB8IHNtZV9tZV9tYXNrKQ0KPj4+Pj4gI2RlZmluZSBfX3NtZV9jbHIoeCnCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgICgoeCkgJiB+c21lX21lX21hc2spDQo+Pj4+Pg0KPj4+Pj4gPz8NCj4+Pj4+DQo+
-Pj4+PiBDb25mdXNlZCBob3cgdGhpcyBjYW4gYmUgY2F1c2luZyBEQVggaXNzdWVzDQo+Pj4+IERv
-ZXMgdGhhdCBjb3JyZWN0bHkgcHJlc2VydmUgdGhlICJzb2Z0IiBwdGUgYml0cz8gRXNwZWNpYWxs
-eQ0KPj4+PiBQVEVfREVWTUFQIHRoYXQgREFYIHVzZXM/DQo+Pj4+DQo+Pj4+IEknbGwgY2hlY2su
-Li4NCj4+PiDCoCBleHRlcm4gdTY0IHNtZV9tZV9tYXNrOw0KPj4+IMKgICNkZWZpbmUgX19wZ3By
-b3QoeCnCoMKgwqDCoMKgwqDCoCAoKHBncHJvdF90KSB7ICh4KSB9ICkNCj4+PiDCoCAjZGVmaW5l
-IHBncHJvdF92YWwoeCnCoMKgwqDCoMKgwqDCoCAoKHgpLnBncHJvdCkNCj4+PiDCoCAjZGVmaW5l
-IF9fc21lX2Nscih4KcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKCh4KSAmIH5zbWVfbWVfbWFzaykN
-Cj4+PiDCoCAjZGVmaW5lIHBncHJvdF9kZWNyeXB0ZWQocHJvdCkgX19wZ3Byb3QoX19zbWVfY2xy
-KHBncHJvdF92YWwocHJvdCkpKQ0KPj4+DQo+Pj4gwqAgc3RhdGljIGlubGluZSBpbnQgaW9fcmVt
-YXBfcGZuX3JhbmdlKHN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqdm1hLA0KPj4+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIHVuc2lnbmVkIGxvbmcgYWRkciwgdW5zaWduZWQgDQo+Pj4gbG9uZyBwZm4sDQo+Pj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgdW5zaWduZWQgbG9uZyBzaXplLCBwZ3Byb3RfdCANCj4+PiBwcm90
-KQ0KPj4+IMKgIHsNCj4+PiDCoMKgwqDCoMKgwqDCoCByZXR1cm4gcmVtYXBfcGZuX3JhbmdlKHZt
-YSwgYWRkciwgcGZuLCBzaXplLCANCj4+PiBwZ3Byb3RfZGVjcnlwdGVkKHByb3QpKTsNCj4+PiDC
-oCB9DQo+Pj4NCj4+PiBOb3Qgc2VlaW5nIGhvdyB0aGF0IGNvdWxkIGNoYW5nZSB0aGUgcGdwcm90
-IGluIGFueSBoYXJtZnVsIHdheT8NCj4+Pg0KPj4+IFlpLCBhcmUgeW91IHVzaW5nIGEgcGxhdGZv
-cm0gd2hlcmUgc21lX21lX21hc2sgIT0gMCA/DQo+Pj4NCj4+PiBUaGF0IGNvZGUgbG9va3MgY2xl
-YXJseSBsaWtlIGl0IHdvdWxkIG9ubHkgdHJpZ2dlciBvbiBBTUQgU01FIHN5c3RlbXMsDQo+Pj4g
-aXMgdGhhdCB3aGF0IHlvdSBhcmUgdXNpbmc/DQo+PiBDYW4ndCBiZSwgdGhlIHN5c3RlbSBpcyB0
-b28gb2xkOg0KPj4NCj4+IMKgIFvCoCAzOTguNDU1OTE0XSBIYXJkd2FyZSBuYW1lOiBIUCBQcm9M
-aWFudCBETDM4MCBHZW45L1Byb0xpYW50IERMMzgwIA0KPj4gR2VuOSwgQklPUyBQODkgMTAvMDUv
-MjAxNg0KPj4NCj4+IEknbSBhdCBhIHRvdGFsIGxvc3MgaG93IHRoaXMgY2hhbmdlIGNvdWxkIGV2
-ZW4gZG8gYW55dGhpbmcgb24gYQ0KPj4gbm9uLUFNRCBzeXN0ZW0sIGxldCBhbG9uZSBob3cgdGhp
-cyBpbnRlcnNlY3RzIGluIGFueSB3YXkgd2l0aCBERVZEQVgsDQo+PiB3aGljaCBJIGNvdWxkIG5v
-dCBmaW5kIGJlaW5nIHVzZWQgd2l0aCBpb19yZW1hcF9wZm5fcmFuZ2UoKQ0KPg0KPiBJIHdpbGwg
-ZG91YmxlIGNvbmZpcm0gaXQuDQo+DQpIaSBEYW4vSmFzb24NCg0KSXQgdHVybnMgb3V0IHRoYXQg
-aXQgd2FzIGludHJvZHVjZWQgYnkgYmVsbG93IHBhdGNoWzFdIHdoaWNoIGZpeGVkIHRoZSANCiJz
-dGF0aWMga2V5IGRldm1hcF9tYW5hZ2VkX2tleSIgaXNzdWUsIGJ1dCBpbnRyb2R1Y2VkIFsyXQ0K
-RmluYWxseSBJIGZvdW5kIGl0IHdhcyBub3QgMTAwJSByZXByb2R1Y2VkLCBhbmQgc29ycnkgZm9y
-IG15IG1pc3Rha2UuDQoNClsxXQ0KY29tbWl0IDQ2YjFlZTM4YjJiYTFhOTUyNGM4ZTg4NmFkMDc4
-YmQzY2E0MGRlMmEgKEhFQUQpDQpBdXRob3I6IFJhbHBoIENhbXBiZWxsIDxyY2FtcGJlbGxAbnZp
-ZGlhLmNvbT4NCkRhdGU6wqDCoCBTdW4gTm92IDEgMTc6MDc6MjMgMjAyMCAtMDgwMA0KDQogwqDC
-oMKgIG1tL21yZW1hcF9wYWdlczogZml4IHN0YXRpYyBrZXkgZGV2bWFwX21hbmFnZWRfa2V5IHVw
-ZGF0ZXMNCg0KWzJdDQpbIDExMjkuNzkyNjczXSBtZW1tYXBfaW5pdF96b25lX2RldmljZSBpbml0
-aWFsaXNlZCAyMDYzODcyIHBhZ2VzIGluIDM0bXMNClsgMTEyOS44NjU0NjldIG1lbW1hcF9pbml0
-X3pvbmVfZGV2aWNlIGluaXRpYWxpc2VkIDIwNjM4NzIgcGFnZXMgaW4gMzRtcw0KWyAxMTI5Ljky
-NDA4MF0gbWVtbWFwX2luaXRfem9uZV9kZXZpY2UgaW5pdGlhbGlzZWQgMjA2Mzg3MiBwYWdlcyBp
-biAyNG1zDQpbIDExMjkuOTg3MTYwXSBtZW1tYXBfaW5pdF96b25lX2RldmljZSBpbml0aWFsaXNl
-ZCAyMDYzODcyIHBhZ2VzIGluIDI1bXMNClsgMTE3MC43ODUxMTRdIEJVRzogQmFkIHBhZ2Ugc3Rh
-dGUgaW4gcHJvY2VzcyBrd29ya2VyLzY3OjIgcGZuOjE4OWUzZQ0KWyAxMTcwLjgxNTg1OV0gcGFn
-ZTowMDAwMDAwMDJmNWZlMDQ3IHJlZmNvdW50OjAgbWFwY291bnQ6LTEwMjQgDQptYXBwaW5nOjAw
-MDAwMDAwMDAwMDAwMDAgaW5kZXg6MHgwIHBmbjoweDE4OWUzZQ0KWyAxMTcwLjg2NDc3Ml0gZmxh
-Z3M6IDB4MTdmZmZmYzAwMDAwMDAoKQ0KWyAxMTcwLjg4MzI5MV0gcmF3OiAwMDE3ZmZmZmMwMDAw
-MDAwIGRlYWQwMDAwMDAwMDAxMDAgZGVhZDAwMDAwMDAwMDEyMiANCjAwMDAwMDAwMDAwMDAwMDAN
-ClsgMTE3MC45MjA1MzddIHJhdzogMDAwMDAwMDAwMDAwMDAwMCAwMDAwMDAwMDAwMDAwMDAwIDAw
-MDAwMDAwZmZmZmZiZmYgDQowMDAwMDAwMDAwMDAwMDAwDQpbIDExNzAuOTU3NjI3XSBwYWdlIGR1
-bXBlZCBiZWNhdXNlOiBub256ZXJvIG1hcGNvdW50DQpbIDExNzAuOTgwMTAxXSBNb2R1bGVzIGxp
-bmtlZCBpbjogcnBjc2VjX2dzc19rcmI1IGF1dGhfcnBjZ3NzIG5mc3Y0IA0KZG5zX3Jlc29sdmVy
-IG5mcyBsb2NrZCBncmFjZSBuZnNfc3NjIGZzY2FjaGUgcmZraWxsIHN1bnJwYyB2ZmF0IGZhdCAN
-CmRtX211bHRpcGF0aCBpbnRlbF9yYXBsX21zciBpbnRlbF9yYXBsX2NvbW1vbiBzYl9lZGFjIA0K
-eDg2X3BrZ190ZW1wX3RoZXJtYWwgaW50ZWxfcG93ZXJjbGFtcCBjb3JldGVtcCBrdm1faW50ZWwg
-aXBtaV9zc2lmIGt2bSANCmlycWJ5cGFzcyBtZ2FnMjAwIGNyY3QxMGRpZl9wY2xtdWwgaVRDT193
-ZHQgaTJjX2FsZ29fYml0IGNyYzMyX3BjbG11bCANCmlUQ09fdmVuZG9yX3N1cHBvcnQgZHJtX2tt
-c19oZWxwZXIgc3lzY29weWFyZWEgYWNwaV9pcG1pIA0KZ2hhc2hfY2xtdWxuaV9pbnRlbCBzeXNm
-aWxscmVjdCBpcG1pX3NpIHJhcGwgc3lzaW1nYmx0IGZiX3N5c19mb3BzIA0KaTJjX2k4MDEgaXBt
-aV9kZXZpbnRmIGRybSBpcG1pX21zZ2hhbmRsZXIgaW50ZWxfY3N0YXRlIGludGVsX3VuY29yZSAN
-CmRheF9wbWVtX2NvbXBhdCBkZXZpY2VfZGF4IGlvYXRkbWEgaTJjX3NtYnVzIGFjcGlfdGFkIGpv
-eWRldiANCmRheF9wbWVtX2NvcmUgcGNzcGtyIGhwd2R0IGxwY19pY2ggYWNwaV9wb3dlcl9tZXRl
-ciBocGlsbyBkY2EgaXBfdGFibGVzIA0KeGZzIHNyX21vZCBjZHJvbSBzZF9tb2QgdDEwX3BpIHNn
-IG5kX3BtZW0gbmRfYnR0IGFoY2kgYm54MnggbGliYWhjaSBuZml0IA0KbGliYXRhIHRnMyBsaWJu
-dmRpbW0gaHBzYSBtZGlvIHNjc2lfdHJhbnNwb3J0X3NhcyBsaWJjcmMzMmMgd21pIA0KY3JjMzJj
-X2ludGVsIGRtX21pcnJvciBkbV9yZWdpb25faGFzaCBkbV9sb2cgZG1fbW9kDQpbIDExNzEuMzMy
-MjgxXSBDUFU6IDY3IFBJRDogMjcwMCBDb21tOiBrd29ya2VyLzY3OjIgVGFpbnRlZDogRyANClPC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgNS4xMC4wLXJjMi40NmIxZWUzOGIyYmErICM0
-DQpbIDExNzEuMzc4MzM0XSBIYXJkd2FyZSBuYW1lOiBIUCBQcm9MaWFudCBETDM4MCBHZW45L1By
-b0xpYW50IERMMzgwIA0KR2VuOSwgQklPUyBQODkgMTAvMDUvMjAxNg0KWyAxMTcxLjQxOTc3NF0g
-V29ya3F1ZXVlOiBtbV9wZXJjcHVfd3Egdm1zdGF0X3VwZGF0ZQ0KWyAxMTcxLjQ0MjcyNl0gQ2Fs
-bCBUcmFjZToNClsgMTE3MS40NTQ0ODFdwqAgZHVtcF9zdGFjaysweDU3LzB4NmENClsgMTE3MS40
-NzA1OTddwqAgYmFkX3BhZ2UuY29sZC4xMTQrMHg5Yi8weGEwDQpbIDExNzEuNDg5ODQxXcKgIGZy
-ZWVfcGNwcGFnZXNfYnVsaysweDUzOC8weDc2MA0KWyAxMTcxLjUwOTEyNF3CoCBkcmFpbl96b25l
-X3BhZ2VzKzB4MWYvMHgzMA0KWyAxMTcxLjUyNzY0OV3CoCByZWZyZXNoX2NwdV92bV9zdGF0cysw
-eDFlYS8weDJiMA0KWyAxMTcxLjU0ODkzNV3CoCB2bXN0YXRfdXBkYXRlKzB4Zi8weDUwDQpbIDEx
-NzEuNTY1OTYxXcKgIHByb2Nlc3Nfb25lX3dvcmsrMHgxYTQvMHgzNDANClsgMTE3MS41ODUxNDJd
-wqAgPyBwcm9jZXNzX29uZV93b3JrKzB4MzQwLzB4MzQwDQpbIDExNzEuNjA1MTQ3XcKgIHdvcmtl
-cl90aHJlYWQrMHgzMC8weDM3MA0KWyAxMTcxLjYyMjYwM13CoCA/IHByb2Nlc3Nfb25lX3dvcmsr
-MHgzNDAvMHgzNDANClsgMTE3MS42NDIzNTVdwqAga3RocmVhZCsweDExNi8weDEzMA0KWyAxMTcx
-LjY1NzUxOV3CoCA/IGt0aHJlYWRfcGFyaysweDgwLzB4ODANClsgMTE3MS42NzQ3MTNdwqAgcmV0
-X2Zyb21fZm9yaysweDIyLzB4MzANClsgMTE3MS42OTEyOTFdIERpc2FibGluZyBsb2NrIGRlYnVn
-Z2luZyBkdWUgdG8ga2VybmVsIHRhaW50DQoNCj4+IEhvdyBjb25maWRlbnQgYXJlIHlvdSBpbiB0
-aGUgYmlzZWN0aW9uPw0KPj4NCj4+IEphc29uDQo+Pg0KPiBfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXw0KPiBMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0t
-IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcNCj4gVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFp
-bCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnDQo+DQpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0
-IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFp
-bCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On 10.11.20 16:14, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> It will be used by the upcoming secret memory implementation.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>   mm/internal.h | 3 +++
+>   mm/mmap.c     | 5 ++---
+>   2 files changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index c43ccdddb0f6..ae146a260b14 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -348,6 +348,9 @@ static inline void munlock_vma_pages_all(struct vm_area_struct *vma)
+>   extern void mlock_vma_page(struct page *page);
+>   extern unsigned int munlock_vma_page(struct page *page);
+>   
+> +extern int mlock_future_check(struct mm_struct *mm, unsigned long flags,
+> +			      unsigned long len);
+> +
+>   /*
+>    * Clear the page's PageMlocked().  This can be useful in a situation where
+>    * we want to unconditionally remove a page from the pagecache -- e.g.,
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 61f72b09d990..c481f088bd50 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1348,9 +1348,8 @@ static inline unsigned long round_hint_to_min(unsigned long hint)
+>   	return hint;
+>   }
+>   
+> -static inline int mlock_future_check(struct mm_struct *mm,
+> -				     unsigned long flags,
+> -				     unsigned long len)
+> +int mlock_future_check(struct mm_struct *mm, unsigned long flags,
+> +		       unsigned long len)
+>   {
+>   	unsigned long locked, lock_limit;
+>   
+> 
+
+So, an interesting question is if you actually want to charge secretmem 
+pages against mlock now, or if you want a dedicated secretmem cgroup 
+controller instead?
+
+-- 
+Thanks,
+
+David / dhildenb
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
