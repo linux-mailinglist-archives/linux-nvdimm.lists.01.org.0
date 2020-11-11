@@ -1,70 +1,80 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617EE2AE62A
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Nov 2020 03:09:45 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EBF2AE651
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Nov 2020 03:21:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8B53B16833EAF;
-	Tue, 10 Nov 2020 18:09:43 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=165.84.180.110; helo=fjdigihfdg.monster; envelope-from=pwsttvrw@fjdigihfdg.monster; receiver=<UNKNOWN> 
-Received: from fjdigihfdg.monster (165084180110.ctinets.com [165.84.180.110])
-	by ml01.01.org (Postfix) with ESMTP id ABFD216833EAC
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Nov 2020 18:09:39 -0800 (PST)
-Sender: pwsttvrw@fjdigihfdg.monster
-Message-ID: <CA3A57BFA5D899BA114C29BB8D5B4658@fjdigihfdg.monster>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <thankyou@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44CR77yc5LiJ5LqV5L2P5Y+L44Kr44O844OJ77ye44GU5Yip55So56K66KqN44Gu44GK?=
-	=?utf-8?B?6aGY44GE?=
-Date: Wed, 11 Nov 2020 02:09:29 +0800
+	by ml01.01.org (Postfix) with ESMTP id 95ED71671246E;
+	Tue, 10 Nov 2020 18:21:27 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3peqrxwwkdokyopdlfwytpcdrzzrwp.nzxwtyfi-ygotxxwtded.lm.zcr@flex--ndesaulniers.bounces.google.com; receiver=<UNKNOWN> 
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 99F7E1671246D
+	for <linux-nvdimm@lists.01.org>; Tue, 10 Nov 2020 18:21:25 -0800 (PST)
+Received: by mail-yb1-xb4a.google.com with SMTP id v12so830846ybi.6
+        for <linux-nvdimm@lists.01.org>; Tue, 10 Nov 2020 18:21:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=sender:date:in-reply-to:message-id:mime-version:references:subject
+         :from:to:cc;
+        bh=C5CJXWtztogE8YGBqU6z1Oq0yEo7wNJFt1eX9+HlMtc=;
+        b=k+jciPx6CWVV41y0DFUewoeFIV6SfcBQMoy2ESs5LNChqv0ObN0B1B/rfq8vbrWWG0
+         heCk4rKfzOGxxHZm+BO3kAGjUqowwBnd5wzLt4B/6l+XPcbiY0cN5XpGZmt/jnXslOoc
+         43kmzeEBbNGbO084siFjeDmLUwdToI8gNVUpArmhz/qwGD3/QV32cklxfMwqolgysbJ7
+         AF/hMsLDz63vWpiL/to+3/KCe99EcVPnYpSy5hbWnTQ9GT7jQo+e743d7fsjdzGFkMTD
+         2glgL1c49i8OS/vtZZpEdxXbuTF2vWtaMrl7J5jrKLUXxNbfe8OH1D45cV9kR2TLpSOl
+         +WVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
+         :references:subject:from:to:cc;
+        bh=C5CJXWtztogE8YGBqU6z1Oq0yEo7wNJFt1eX9+HlMtc=;
+        b=UrCh+LlOKkouJsDi51EXD/fUmfopzP9KpO0MXVWmowDaqE5ZijYWJZrJXoMGAULpva
+         sFnIjrg5kTEVXGEQpcf/9yRnxtfIYUQrpPdCb4db/p+oyR5fd9/KOsF0M2W6whszJQGN
+         DJTixhihS+KEzjcathjLhGfU0HAECs1NINTIAmqV4ndyMxwAFrC3GBmMHdOsK3VMh+7V
+         FF/CYWIMQA/4M6ekxWX93MXMrCWUa4pG6Ju0m4ZZB5ZNCntxgg5PV7asLskdPvfpnMWl
+         EnEZWn5EQ4fXS1UwRk/uinE2xcGLG59OB7xZOKKoVOOfo8GfRF3Jay/lO4fqJ6dGz6WI
+         AJBQ==
+X-Gm-Message-State: AOAM531tjyoBWrWH4sa2lh1zPxwArm49ysoFPf+DwMON1FCng8vDpHy6
+	XePXPtaifIvQRMNUj22MA05AI4jynmXkP4RZBxA=
+X-Google-Smtp-Source: ABdhPJxvxcfPlRvAs53Nfpq0r7dtScIlARHBVcwQzof4jhhEpU7A+HIt5nl8mHAB+KrrAMucIS0r20+3TCh+MWXSprw=
+Sender: "ndesaulniers via sendgmr" <ndesaulniers@ndesaulniers1.mtv.corp.google.com>
+X-Received: from ndesaulniers1.mtv.corp.google.com ([2620:15c:211:202:f693:9fff:fef4:4d25])
+ (user=ndesaulniers job=sendgmr) by 2002:a25:8809:: with SMTP id
+ c9mr30786370ybl.521.1605061284396; Tue, 10 Nov 2020 18:21:24 -0800 (PST)
+Date: Tue, 10 Nov 2020 18:21:22 -0800
+In-Reply-To: <20201029101432.47011-3-hch@lst.de>
+Message-Id: <20201111022122.1039505-1-ndesaulniers@google.com>
 Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19431
-Message-ID-Hash: SSEYDWOHOAJXUJN3N3O2Q6PIIQ7LFW4I
-X-Message-ID-Hash: SSEYDWOHOAJXUJN3N3O2Q6PIIQ7LFW4I
-X-MailFrom: pwsttvrw@fjdigihfdg.monster
+References: <20201029101432.47011-3-hch@lst.de>
+X-Mailer: git-send-email 2.29.2.222.g5d2a92d10f8-goog
+Subject: Re: [PATCH 2/2] mm: simplify follow_pte{,pmd}
+From: Nick Desaulniers <ndesaulniers@google.com>
+To: hch@lst.de
+Message-ID-Hash: VPYLPVD4TQYTM6SNVE6MXRG6TCIJZPVH
+X-Message-ID-Hash: VPYLPVD4TQYTM6SNVE6MXRG6TCIJZPVH
+X-MailFrom: 3pEqrXwwKDOkYOPdLfWYTPcdRZZRWP.NZXWTYfi-YgOTXXWTded.lm.ZcR@flex--ndesaulniers.bounces.google.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: akpm@linux-foundation.org, daniel@ffwll.ch, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@de.ibm.com>, clang-built-linux@googlegroups.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SSEYDWOHOAJXUJN3N3O2Q6PIIQ7LFW4I/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VPYLPVD4TQYTM6SNVE6MXRG6TCIJZPVH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQogDQoNCg0K5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or
-6YCB5Y+X5L+h44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLDQrp
-h43opoHjgarpgJrnn6Xjgajjgarjgorjgb7jgZnjgIINCg0K44GE44Gk44KC5byK56S+44Kr44O8
-44OJ44KS44GU5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ
-44CCDQoNCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip55So44Gu5oCl5aKX44Gr5Ly044GE
-44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW44K344K544OG44Og44CN44KS5bCO
-5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvjg7zjg4njga7jgZTliKnnlKjjgavl
-r77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPjgabjgYrjgorjgb7jgZnjgIINCg0K
-44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS56K6
-6KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX44Gf
-44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So44KS
-5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm44GE
-44Gf44Gg44GN44G+44GX44Gf44CCDQoNCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
-44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
-5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHj
-garjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozj
-govjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXj
-gYTjgIINCg0KDQrilqDjgZTliKnnlKjnorroqo3jga/jgZPjgaHjgonilqANCg0K44CAIA0KDQoN
-CuiHs+aApeOAgVMgTSBCIEPjgqvjg7zjg4nkvJrlk6HjgrXjg7zjg5Pjgrnjgavmg4XloLHjgpLl
-ho3nmbvpjLLjgZfjgabjgY/jgaDjgZXjgYQNCg0KDQrilqDnmbrooYzogIXilqANCuS4ieS6leS9
-j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K44CAaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbS8N
-CuOAkjEwNS04MDExIOadseS6rOmDvea4r+WMuua1t+WyuDHkuIHnm64y55WqMjDlj7cg5rGQ55WZ
-44OT44Or44OH44Kj44Oz44KwDQoNCg0KDQoNCuOAgA0KQ29weXJpZ2h0IChDKSAyMDIwIFN1bWl0
-b21vIE1pdHN1aSBDYXJkIENvLiwgTHRkLg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
-ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
-dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+Sorry, I think this patch may be causing a regression for us for s390?
+https://travis-ci.com/github/ClangBuiltLinux/continuous-integration/jobs/432129279#L768
+
+(via https://lore.kernel.org/linux-mm/20201029101432.47011-3-hch@lst.de)
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
