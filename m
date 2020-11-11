@@ -2,49 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C622AFA03
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Nov 2020 21:48:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0282AFBBD
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Nov 2020 01:04:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 085AA169A377A;
-	Wed, 11 Nov 2020 12:48:48 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=50.31.38.73; helo=o1.ptr2397.indusdrills.org; envelope-from=bounces+19272268-890e-linux-nvdimm=lists.01.org@em8497.indusdrills.org; receiver=<UNKNOWN> 
-Received: from o1.ptr2397.indusdrills.org (o1.ptr2397.indusdrills.org [50.31.38.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 82FC216765347
-	for <linux-nvdimm@lists.01.org>; Wed, 11 Nov 2020 12:48:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=indusdrills.org; h=from:to:subject:mime-version:content-type;
-	s=s1; bh=wkdgBlK3V3w26EfUWJIK997b5Gg1YQlvLOzVVaWmp1c=; b=uquBtVi
-	wR9KVxKzhoIQBN7tcKLa0T6puA7vWnWYJLcuoSwczkm2CgOpmTkaRmsEzBDTLBHP
-	4XkXYkmtKr5XE9eo6u7/EZmHGb4lTBoqG9bEj1PD/bwwQGQCQTTuABNDSfDyrDBT
-	BVKydlX8Vo+DaHkYjtfZIU38CKJZwoziawNI=
-Received: by filter2727p1mdw1.sendgrid.net with SMTP id filter2727p1mdw1-29611-5FAC4E2C-B
-        2020-11-11 20:48:44.213297694 +0000 UTC m=+515640.438828997
-Received: from ec2-99-79-56-76.ca-central-1.compute.amazonaws.com (unknown)
-	by ismtpd0017p1iad2.sendgrid.net (SG) with ESMTP id nxsnHl0iQ1KLM1JDQuSYPg
-	for <linux-nvdimm@lists.01.org>; Wed, 11 Nov 2020 20:48:44.138 +0000 (UTC)
-From: "support@lists.01.org" <mail@indusdrills.org>
-To: linux-nvdimm@lists.01.org
-Subject: New Recording [13913790]
-Date: Wed, 11 Nov 2020 20:48:44 +0000 (UTC)
-Message-ID: <20201111204844.EEF3BA449B1D3B3C@indusdrills.org>
-MIME-Version: 1.0
-X-SG-EID: ke+Bwwuh8DadKJDZimY4ZO2X8vVub/nPehTySyaiYrRoVXEpHsk1kEW95V6hvgw2x8ZkvoK+miiN+C
- ygHIoguxA6Dp2DtxzWDhL17UF7EGeZVSjP6xPM9EZ7exDJ004E0SuJ3Ntvj2GEY3H8v2ZED8lBf5d8
- Ndn289W9nYgqtT+Ej/j/kRg3NZsT+GzflbJ/VfkmeelH106t7GXrpIxnKITfY/XlmZ1hltmZ26lLFl
- ykpuyDorq+C2zhHZdezPuH
-X-Entity-ID: dhzRN/rFlU4I7ApPkNgmNA==
-Message-ID-Hash: GWUSBJ5THLDLQHCTYK4A6ENLBLXX26BR
-X-Message-ID-Hash: GWUSBJ5THLDLQHCTYK4A6ENLBLXX26BR
-X-MailFrom: bounces+19272268-890e-linux-nvdimm=lists.01.org@em8497.indusdrills.org
+	by ml01.01.org (Postfix) with ESMTP id 0410E1528BA81;
+	Wed, 11 Nov 2020 16:04:16 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=165.84.180.110; helo=fjdigihfdg.monster; envelope-from=teu@fjdigihfdg.monster; receiver=<UNKNOWN> 
+Received: from fjdigihfdg.monster (165084180110.ctinets.com [165.84.180.110])
+	by ml01.01.org (Postfix) with ESMTP id 631DB1528BA80
+	for <linux-nvdimm@lists.01.org>; Wed, 11 Nov 2020 16:04:11 -0800 (PST)
+Sender: teu@fjdigihfdg.monster
+Message-ID: <702BE77CD62E981674C8FBA7EC685EBA@fjdigihfdg.monster>
+From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <thankyou@vpass.ne.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ6YeN6KaB44CR77yc5LiJ5LqV5L2P5Y+L44Kr44O844OJ77ye44GU5Yip55So56K66KqN44Gu44GK?=
+	=?utf-8?B?6aGY44GE?=
+Date: Thu, 12 Nov 2020 00:03:59 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19431
+Message-ID-Hash: REIEOQPRA2QJQHZ57DOTW6IAXHX5MTBN
+X-Message-ID-Hash: REIEOQPRA2QJQHZ57DOTW6IAXHX5MTBN
+X-MailFrom: teu@fjdigihfdg.monster
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GWUSBJ5THLDLQHCTYK4A6ENLBLXX26BR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/REIEOQPRA2QJQHZ57DOTW6IAXHX5MTBN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,20 +41,30 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-wqANCsKgDQoNCklEOiA8IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcgPg0KDQpBIGNhbGxlciBp
-biB5b3VyIGRpcmVjdG9yeSBqdXN0IGxlZnQgeW91IGEgbWVzc2FnZS4NCg0KQ2FsbGVyIDogKzEg
-NzAxIDMyOCA5MDEwDQpEYXRlOiAxMS0xMC0yMDIwDQpEdXJhdGlvbjogMDE6MHNlYw0KDQpMaXN0
-ZW4gdG8gVm9pY2UgTWVzc8SFZ2UgDQoowqBodHRwczovL3UxOTI3MjI2OC5jdC5zZW5kZ3JpZC5u
-ZXQvbHMvY2xpY2s/dXBuPWNKRkpueTN4Y1NIZFdGQi0yQm1XZENrS29KN3Y0bGN2WWMtMkJzRlZI
-NzRTeE5YbjV4bzAxLTJCem8ySGRTVUtxd1g3TmxSM2swZmhiNkxTNUFnZXVRUlJRREswNkxCc2x4
-N3BuUUhmWi0yQmtFbHVvRGhGWHBTMlJwS0M3bmtQVm91V0JkcTQzbUgtMkJDSGxBLTJGVXVMNnh2
-cm5EREhaZy0zRC0zRElkTlZfNnB3S0hKOFBoMVhUeXY3T05abE9CSkpRRzJ6NXN3dDEweUJhLTJG
-WWNiZVl3THhnNC0yRlhKQ2hycFdHZXV4Y2tISU5nZE5zNjVndWFuMUNPc0N2cGh0M28xQkZvLTJC
-RjBCbEg2dFZ2aG8wLTJGWlp1bG1TNm5uSGloTUVzS0ctMkZaZHZ0TGQ2QXFLRmtueGRPZXljVFUx
-V0V5NWhwRXRjN29RaEhpNjFNOS0yRlVrMUppOVV5bEw0ZUZhV3JQMG9BcFZULTJGekJQMWRMVzJv
-OGtYdVZ5eDA0ZjVCdlhFcGlURzJYNmZlc01VUXpsUjgwT3dFbXNvLTNEDQoNCkVtYWlsIHdhcyBz
-ZW50IHRvIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcNCg0KWW91ciBtZXNzYWdlIGxpbmsgbGFz
-dCBmb3IgMTIgaG91cnPCoApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
-MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
-bGlzdHMuMDEub3JnCg==
+DQogDQoNCg0K5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or
+6YCB5Y+X5L+h44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLDQrp
+h43opoHjgarpgJrnn6Xjgajjgarjgorjgb7jgZnjgIINCg0K44GE44Gk44KC5byK56S+44Kr44O8
+44OJ44KS44GU5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ
+44CCDQoNCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip55So44Gu5oCl5aKX44Gr5Ly044GE
+44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW44K344K544OG44Og44CN44KS5bCO
+5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvjg7zjg4njga7jgZTliKnnlKjjgavl
+r77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPjgabjgYrjgorjgb7jgZnjgIINCg0K
+44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS56K6
+6KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX44Gf
+44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So44KS
+5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm44GE
+44Gf44Gg44GN44G+44GX44Gf44CCDQoNCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
+44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
+5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHj
+garjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozj
+govjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXj
+gYTjgIINCg0KDQrilqDjgZTliKnnlKjnorroqo3jga/jgZPjgaHjgonilqANCg0K44CAIA0KDQoN
+CuiHs+aApeOAgVMgTSBCIEPjgqvjg7zjg4nkvJrlk6HjgrXjg7zjg5Pjgrnjgavmg4XloLHjgpLl
+ho3nmbvpjLLjgZfjgabjgY/jgaDjgZXjgYQNCg0KDQrilqDnmbrooYzogIXilqANCuS4ieS6leS9
+j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K44CAaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbS8N
+CuOAkjEwNS04MDExIOadseS6rOmDvea4r+WMuua1t+WyuDHkuIHnm64y55WqMjDlj7cg5rGQ55WZ
+44OT44Or44OH44Kj44Oz44KwDQoNCg0KDQoNCuOAgA0KQ29weXJpZ2h0IChDKSAyMDIwIFN1bWl0
+b21vIE1pdHN1aSBDYXJkIENvLiwgTHRkLg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
+ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
+dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
