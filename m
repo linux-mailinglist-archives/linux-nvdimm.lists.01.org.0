@@ -1,167 +1,177 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E822AEF4D
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Nov 2020 12:13:16 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3767B2AEFA1
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Nov 2020 12:30:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E314C1673CADF;
-	Wed, 11 Nov 2020 03:13:14 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=203.11.71.1; helo=ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN> 
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 583EC167416AB;
+	Wed, 11 Nov 2020 03:30:15 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8F6DF1672CA56
-	for <linux-nvdimm@lists.01.org>; Wed, 11 Nov 2020 03:13:10 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4CWMXV5mSTz9sSs;
-	Wed, 11 Nov 2020 22:12:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-	s=201702; t=1605093181;
-	bh=QE1/yS9A+y7apFmQa9E6DBK0BKDrYI0qrcJCc+5O2Fk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WSivZMUuFx6UDN1/vyBmQUbbtks3lK2MkkHMbBq91c8+7lsfmb4kP9XSt1DqdaCTH
-	 A35OlMR2A1BcFrEpEKGWBb2xdfRfrEyYVAtR2Z/G74lbvUPE+beBdkmDI1yFVyRGH6
-	 uTkr7ptr4paiukHoqOz4tjWOXhgUbBmQwLkvNCRCLyVvQYGosYQ3q5Gbw5escDzjQL
-	 8MoR2Z5fSscYhDwxMqTzrTlarhysFifkwLFSuxsDdhioAPk1ub6xUqUSF6sIqZ3jwf
-	 B1JeOQ0zWASSBvCKQx5ayHpPHvO+53ojBuJqQNfuWr+thoL7BB9pIfESms+vG4vw6P
-	 d6742qRZd1oxQ==
-Date: Wed, 11 Nov 2020 22:12:54 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 2/2] mm: simplify follow_pte{,pmd}
-Message-ID: <20201111221254.7f6a3658@canb.auug.org.au>
-In-Reply-To: <20201111082842.GA23677@lst.de>
-References: <20201029101432.47011-3-hch@lst.de>
-	<20201111022122.1039505-1-ndesaulniers@google.com>
-	<20201111081800.GA23492@lst.de>
-	<673267d5-93f5-7278-7a9d-a7b35ede6d48@de.ibm.com>
-	<20201111082842.GA23677@lst.de>
+	by ml01.01.org (Postfix) with ESMTPS id 8550B167416A8
+	for <linux-nvdimm@lists.01.org>; Wed, 11 Nov 2020 03:30:12 -0800 (PST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ABBTvU2141921;
+	Wed, 11 Nov 2020 11:30:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=g4MSiwdfP5ikHmPs/Oc4530jBG5JfCXE+gSEtaWwu1o=;
+ b=HnxG4L1BWXXS7Zt+IVdghcZ4DRgA2igSEVR+rqsdJkfSG/Opy9dpJP4J/+6nxw8Xc57z
+ wv74Cjw4NP/DMzifainRNlI8lZHUGyEusuheQ58UDz4QVtfwxjJ+RgaF1WlCLwKB01BH
+ p07rLAA7rKVh3Q2xILVjffH5OSTAL2cphpPeiG92gJUZaqPfUQM88cJm35lV219q1x7B
+ uDGIEkUcwWtnGM5lMKC9TOHC5cm8EuCEHi+KMg/SXdGMUCA6SCQvxhTGP/SyDY9Eh7LM
+ rrVZhVru2jwdMMydivgyciIzXkhLif3SLc3pH8rg/vAcY5iS7pVJW/0NZPW1xYLuw5Gu yA==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by aserp2120.oracle.com with ESMTP id 34nkhm0du8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 11 Nov 2020 11:30:10 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ABBKtmp096785;
+	Wed, 11 Nov 2020 11:30:10 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+	by aserp3020.oracle.com with ESMTP id 34p5g1kvp0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Nov 2020 11:30:07 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0ABBU69a032013;
+	Wed, 11 Nov 2020 11:30:06 GMT
+Received: from mwanda (/41.57.98.10)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Wed, 11 Nov 2020 03:30:05 -0800
+Date: Wed, 11 Nov 2020 14:30:00 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: dan.j.williams@intel.com
+Subject: [bug report] ACPI: NFIT: Define runtime firmware activation commands
+Message-ID: <20201111113000.GA1237157@mwanda>
 MIME-Version: 1.0
-Message-ID-Hash: 3PTUTO3WJSX47YB6RYLQYO7JJUED343P
-X-Message-ID-Hash: 3PTUTO3WJSX47YB6RYLQYO7JJUED343P
-X-MailFrom: sfr@canb.auug.org.au
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9801 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 malwarescore=0
+ adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 suspectscore=3
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011110065
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9801 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 priorityscore=1501
+ mlxscore=0 suspectscore=3 mlxlogscore=999 lowpriorityscore=0 spamscore=0
+ malwarescore=0 adultscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011110066
+Message-ID-Hash: UMW52LPXEK5E3SQ52U6IIXWKLTXUILYY
+X-Message-ID-Hash: UMW52LPXEK5E3SQ52U6IIXWKLTXUILYY
+X-MailFrom: dan.carpenter@oracle.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Christian Borntraeger <borntraeger@de.ibm.com>, Nick Desaulniers <ndesaulniers@google.com>, akpm@linux-foundation.org, daniel@ffwll.ch, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, clang-built-linux@googlegroups.com, Linux-Next Mailing List <linux-next@vger.kernel.org>
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3PTUTO3WJSX47YB6RYLQYO7JJUED343P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UMW52LPXEK5E3SQ52U6IIXWKLTXUILYY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1211472155932878259=="
-
---===============1211472155932878259==
-Content-Type: multipart/signed; boundary="Sig_/Mc_NX=GVNozxrVPRgbb7NWp";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-
---Sig_/Mc_NX=GVNozxrVPRgbb7NWp
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Christoph,
-
-On Wed, 11 Nov 2020 09:28:42 +0100 Christoph Hellwig <hch@lst.de> wrote:
->
-> On Wed, Nov 11, 2020 at 09:26:20AM +0100, Christian Borntraeger wrote:
-> >=20
-> > On 11.11.20 09:18, Christoph Hellwig wrote: =20
-> > > On Tue, Nov 10, 2020 at 06:21:22PM -0800, Nick Desaulniers wrote: =20
-> > >> Sorry, I think this patch may be causing a regression for us for s39=
-0?
-> > >> https://travis-ci.com/github/ClangBuiltLinux/continuous-integration/=
-jobs/432129279#L768
-> > >>
-> > >> (via https://lore.kernel.org/linux-mm/20201029101432.47011-3-hch@lst=
-.de) =20
-> > >=20
-> > > Hmm, the call to follow_pte_pmd in the s390 code does not actually ex=
-ist
-> > > in my tree. =20
-> >=20
-> > This is a mid-air collision in linux-next between
-> >=20
-> > b2ff5796a934 ("mm: simplify follow_pte{,pmd}")
-> > a67a88b0b8de ("s390/pci: remove races against pte updates") =20
->=20
-> Ah.  The fixup is trivial: just s/follow_pte_pmd/follow_pte/.
-
-ok, so tomorrow I will add the following to the merge of the
-akpm-current tree:
-
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Wed, 11 Nov 2020 22:08:32 +1100
-Subject: [PATCH] merge fix for "s390/pci: remove races against pte updates"
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
----
- arch/s390/pci/pci_mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index 1a6adbc68ee8..4a4993837413 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -173,7 +173,7 @@ SYSCALL_DEFINE3(s390_pci_mmio_write, unsigned long, mmi=
-o_addr,
- 	if (!(vma->vm_flags & VM_WRITE))
- 		goto out_unlock_mmap;
-=20
--	ret =3D follow_pte_pmd(vma->vm_mm, mmio_addr, NULL, &ptep, NULL, &ptl);
-+	ret =3D follow_pte(vma->vm_mm, mmio_addr, NULL, &ptep, NULL, &ptl);
- 	if (ret)
- 		goto out_unlock_mmap;
-=20
-@@ -317,7 +317,7 @@ SYSCALL_DEFINE3(s390_pci_mmio_read, unsigned long, mmio=
-_addr,
- 	if (!(vma->vm_flags & VM_WRITE))
- 		goto out_unlock_mmap;
-=20
--	ret =3D follow_pte_pmd(vma->vm_mm, mmio_addr, NULL, &ptep, NULL, &ptl);
-+	ret =3D follow_pte(vma->vm_mm, mmio_addr, NULL, &ptep, NULL, &ptl);
- 	if (ret)
- 		goto out_unlock_mmap;
-=20
---=20
-2.29.2
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/Mc_NX=GVNozxrVPRgbb7NWp
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl+rxzYACgkQAVBC80lX
-0GzxoggAnTSbP2MvHm/AvrWkgYxvOlLSLXdQ/ImkKzdhpKhThkA1ncXWZFIvTgHc
-46Y9TwSWR1HQOm/f/jyDe0qAIJP0857bxOHXTlFvY/3FSDv+WZc/2pSf1v5zAZnG
-edhdutlXgBgCqwhnux5ooDQUqwjwqiom+evJLaLtWzRAopB3QoLWA4vjk3KQ4HPa
-Z30h1i+dcqrXCDfbELftpAIDBZ7S0OWZakJzDPWKAYHlz4cbV/BhkDRf9rpb0i+I
-c/tpAnopxEVSWx1JCooiR7ZC2y/kXNl18K+Y83xy8bJdAmaR1jCSqlZsHDdBnpU3
-k/JOL0denkdXvrOMB7V3apBHpRJ8iQ==
-=AA7r
------END PGP SIGNATURE-----
-
---Sig_/Mc_NX=GVNozxrVPRgbb7NWp--
-
---===============1211472155932878259==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Hello Dan Williams,
+
+The patch 6450ddbd5d8e: "ACPI: NFIT: Define runtime firmware
+activation commands" from Jul 20, 2020, leads to the following static
+checker warning:
+
+    drivers/acpi/nfit/core.c:481 acpi_nfit_ctl()
+    error: passing untrusted data 'family' to 'test_bit()'
+
+    drivers/acpi/nfit/core.c:483 acpi_nfit_ctl()
+    warn: uncapped user index 'acpi_desc->family_dsm_mask[family]'
+
+drivers/acpi/nfit/core.c
+   435  int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+   436                  unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc)
+   437  {
+   438          struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+   439          struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+   440          union acpi_object in_obj, in_buf, *out_obj;
+   441          const struct nd_cmd_desc *desc = NULL;
+   442          struct device *dev = acpi_desc->dev;
+   443          struct nd_cmd_pkg *call_pkg = NULL;
+   444          const char *cmd_name, *dimm_name;
+   445          unsigned long cmd_mask, dsm_mask;
+   446          u32 offset, fw_status = 0;
+   447          acpi_handle handle;
+   448          const guid_t *guid;
+   449          int func, rc, i;
+   450          int family = 0;
+   451  
+   452          if (cmd_rc)
+   453                  *cmd_rc = -EINVAL;
+   454  
+   455          if (cmd == ND_CMD_CALL)
+   456                  call_pkg = buf;
+                        ^^^^^^^^^^^^^^^
+If cmd == ND_CMD_CALL then call_pkg is controlled by the user.
+
+   457          func = cmd_to_func(nfit_mem, cmd, call_pkg, &family);
+
+cmd_to_func() checks "call_pkg->nd_family" but only if nfit_mem is
+non-NULL.
+
+   458          if (func < 0)
+   459                  return func;
+   460  
+   461          if (nvdimm) {
+   462                  struct acpi_device *adev = nfit_mem->adev;
+   463  
+   464                  if (!adev)
+   465                          return -ENOTTY;
+   466  
+   467                  dimm_name = nvdimm_name(nvdimm);
+   468                  cmd_name = nvdimm_cmd_name(cmd);
+   469                  cmd_mask = nvdimm_cmd_mask(nvdimm);
+   470                  dsm_mask = nfit_mem->dsm_mask;
+   471                  desc = nd_cmd_dimm_desc(cmd);
+   472                  guid = to_nfit_uuid(nfit_mem->family);
+   473                  handle = adev->handle;
+   474          } else {
+   475                  struct acpi_device *adev = to_acpi_dev(acpi_desc);
+   476  
+   477                  cmd_name = nvdimm_bus_cmd_name(cmd);
+   478                  cmd_mask = nd_desc->cmd_mask;
+   479                  if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
+   480                          family = call_pkg->nd_family;
+   481                          if (!test_bit(family, &nd_desc->bus_family_mask))
+                                              ^^^^^^
+if "family" is more BITS_PER_LONG then this will overflow.
+
+   482                                  return -EINVAL;
+   483                          dsm_mask = acpi_desc->family_dsm_mask[family];
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+
+   484                          guid = to_nfit_bus_uuid(family);
+   485                  } else {
+   486                          dsm_mask = acpi_desc->bus_dsm_mask;
+   487                          guid = to_nfit_uuid(NFIT_DEV_BUS);
+   488                  }
+   489                  desc = nd_cmd_bus_desc(cmd);
+   490                  handle = adev->handle;
+   491                  dimm_name = "bus";
+   492          }
+   493  
+   494          if (!desc || (cmd && (desc->out_num + desc->in_num == 0)))
+   495                  return -ENOTTY;
+   496  
+   497          /*
+   498           * Check for a valid command.  For ND_CMD_CALL, we also have to
+   499           * make sure that the DSM function is supported.
+   500           */
+   501          if (cmd == ND_CMD_CALL &&
+
+regards,
+dan carpenter
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============1211472155932878259==--
