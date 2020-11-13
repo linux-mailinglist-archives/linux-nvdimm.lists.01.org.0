@@ -2,187 +2,116 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3062B200F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Nov 2020 17:22:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953BA2B235A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Nov 2020 19:09:40 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B0FD4100EB84F;
-	Fri, 13 Nov 2020 08:22:17 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=77.238.178.146; helo=sonic308-18.consmr.mail.ir2.yahoo.com; envelope-from=lee_zzzz@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic308-18.consmr.mail.ir2.yahoo.com (sonic308-18.consmr.mail.ir2.yahoo.com [77.238.178.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C17B5100EB330;
+	Fri, 13 Nov 2020 10:09:38 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5D82C100EB829
-	for <linux-nvdimm@lists.01.org>; Fri, 13 Nov 2020 08:22:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1605284532; bh=u40UAv/ft2TfqMFI+YVSl2MpFRY7LISov8wENwNXdwg=; h=Date:From:Reply-To:In-Reply-To:References:Subject:From:Subject; b=TciEWYCExT9SrR3NWtvOmKwzeGfcMiZvTmkvVhfW02jCtqmfoQJsEJLf5Io/4V6qDM557f37cVAQLkqKKXCOQ+ThyuSdgRRdygM0M/F7fdLbIvrE6Nnbr1lkL7lX0O5ykefE+lHUzcvEPz40aXWz416TsVWrPawDaVjEAxAKikc6ZtVmtAExqJW5bmO8AOiCrTACD4+8NUsCW/b8XjgXXuE27CJV3iBso+uoScvVh7M/iDoUMLlBEtPE/Cz/33TLpqSRTwwmYHycFD+dH8uexIhKkI6x/VNNuG97mzsnwIItHlCvoS7IMXTrrcuz5BKxh6xQpxwzMCXGZT4PfKaFzg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1605284532; bh=ajjWcXNHcGDihSFHG3EMUZEhKDnyjnYEvSWOwbzhcaE=; h=Date:From:Subject:From:Subject; b=nMfqXXzUpaKPx7lhou16ePZ+zWMOEjGaIYygqGsLhZTgSCmhoL2Mwr5LO17hOCIRnr3c9tIb58RJym3xHMemqzAqwFTmLWl7Et7wcc/rfxYf1NiZKUskZehIwKq12+5kvt8moLnNikEaTQHT5Y3b/ZZRdVqi5W0t0nIuohXBQ9+asRvQg4w6U+omFCQAaDs7wpBL3V5w/xcqLIS+Z++AUCq1wqFggmQyIAllGNbc5iq1SgzEjl4RE+BLdQdbv+OH/RJfxmDhwDw13aLB242fMfoYKpxMAwMrh+Ms8yFEJR1zZbuxokWblShTk1g0QNiQzFa5mnN0QwOsCMcpUc8WdA==
-X-YMail-OSG: w.3C8lgVM1lQvtfZ8FxmnM7BSYQaXZzK.MQe7HAnL0WLWFNUwoTZ.suqNwTNpis
- 2G22TOg_B0GPYp5z_kr7Cfykyg46Sbr.WReoEGo976_3jod6HtP64Flebi7GktLkjs7jqs27nshB
- Ost_ULTmbjVmuDGTnNcaLz.Vbgr5JbsjrJeEzB5iCnJho0ifv1SN2qWLtwL8g6qeAhohYqPL8ovz
- hpFtPZwrjEOj7J7MxJ4_OzdhsknUlXb0kK5x9PVoZwCfct2zam8TSZJFVkt_Bp23LEwU2vFqx0ma
- REYcQltMUKWDItlpgyp_MvG9uEezYbkCzhFSuC0tW4OWQdH1BMSkKKwICYNjp9QIltGvkJCWdseI
- Vykw1FqaOhG8q9q0VQAuPdd96tK1Mia5OJiQfkZljLHJsAAIjokLE8intHEXnq4GLHPQeKhQuGOh
- sG.SmkwiBBWkB_UvOjMU1e8eYk6HjWM1UUkgrrzD4RODQYF6QIOCYaNakL2oJUrLYcfGdplAZ5Kz
- NGXuNZnhaWcAKqeBwnF132lCHbY.yPnME3yHiWeGz0Budj2VeD1Jmglop1p8i_AtxP0JsmeYiu8A
- JCykIFrxuowaINWX4R8tUeKSX7btbtH0BuMegUE1IaWPhiLiMl1ShRSLEH94N39Gzf.YYQZ5q70b
- UAtmuyHEDYX7fxsYtAQR4lLY6RuINUEjnzMkKeUkb5pIApLMPtbOnUSSo207GmN51jx34FgEp4nu
- spqt0u8750vgSx_RF4qhXAq85dwUBCSxDsNjb33YZl2HzFLcqCBIYsOgH3KhyJSqbwn4EhXL_LUB
- Sck_9Fk3hwvxZZI_N6y4da44IY1Gi55VO1eBCP.qN5jeTQyLAMF9SwNB86wcxruLJVevxmaojTAu
- hEDaSylkHE76EFRiBxTfk3nyNa5r.E9qCcQ0K5SRKGnDvH00O4dwrFahAms3B3ajgcIipC6vJ9f.
- uKwhWHfjcbcmJubDuMVisLIHpyLRuRFrjf_ztWrxZtcNyS7OXT5btEIDVOmGi5qpNj04umTJks.t
- ANAtrmJHcOt0v8P1ekQhzLugzKdGEehIL51ffyYv6I6bi9elNK4qfKdUCqKiKbEzkjOvprvZSQsC
- L9gwAHgPS3s.92b4mW1uT6jXSyi7M52XrnPvhjymC_vzyfWKCyafta7ZZhxRZml7TynJ0tZXXeV8
- dXDbMpRr_AxOGH7F8ud.xwkSGB.xogxkplO29Lw2Sw3dWzn2MTkB7Pr5pgPBXSuVmpmBGPpu2igr
- 2jwipxPXAl8WXY.IxbBdyAM0xnpRhx1eBP1KY4uIX_xJ1wi4_aGMZ1vyqVyzDJD28gVZfPENL0D1
- LqGRbibRrFmtnnwV9nbOSEpydi3rUHyZONQNyqBsRPU3mD6fFNyM49h1urWCuLlroId9qOAPJ4G5
- 2seIA2aZ9pzTRzhKezARr8k3wILrcoE6EIbQv0JCJ0XFyR7aMXLda.97GX2G70uHfxWpgOaYIBM0
- EO2b._.FMes5lJ5_4ERewr8IQ1gCf.wh.gZavDlbK9fbXh.Cr_Z2lITfllyMCwYIGG.lp1BshxYP
- uPSZq1v94S..kUJKCCQAIfvnIXR5CylhbYdDnhJxdMQEPPhlrVYRNWPKhRKobMleQH6waiyUycrB
- uddpIKHEu9zLE85gg.p4CYpNPPR.NxM6zpkdUbkCg9bGToSolnOY0ZnzatauPHZjGDRFw4kp5x0_
- 7SVX5lgg6GxJAJOqCAZGnoPSCdNis3bz1ZNBL4XQyg2VCWQvF9b2vqY71fmDkk7vcUxB4GqG9w9X
- yjVXJfxpyApfNmElKFfagwHjLp5F363zgHssSUBkQPen1ms4dY5K4xQz1WfDlkkNX2i1MADTTmGK
- L3_CRT48NO7pYhQvBtW_EIpQqOsT.gyPdeJTg68IKJXeNyy9hxA8Ic8YdlyQ_iRY3S9UWKZqzrAw
- ULH.BqHm6GBC6Hoyh10QyZ40puWNC8mMOLXmyF5VyEsWmjIFJ2shrLrqKJo.dI7nGJ9XXLwr6BJK
- inOxVV3SgKiwLJ5w7faphuB0F1L8F1zc7Xp7M5pOT6h4an3KeA5rdgnpl0gPKN0yVMlsLo5IJZkZ
- E7Y81eoTtiVNlUXnucRR7WM1h7nMHtYZimRtzmTpgb_faTjislMy2SAxAVapShXuwND85d48r1oP
- _ETTz5rbPFuqJl2OLGaSLOuH249a519oLrJro3KOFQhH9U1GZ7h__p_0GnTDQWI1njftcZ6CFCSE
- mrKRkJqXj0ERru7bY8hMwUa8IB5HrSO8yYiR8mkizrEf8OXkS2AqpSd7qcaPiwqJLtdVblXi3Tqv
- DRuPHwFdaoIIbC2HsCkIiLGzR__wxJxd0stWKBmJ7oyLX2O.IvgUNmwTm1k2E_m92MUAGDyItrCv
- lKkvF1iy9Qy1GE1oHeVq1EBEgeC9PafaV5m3.z56Av.HpVoHcdUzKEhuzd0ofUKJP6Uqrmn4xNHF
- 6vg177uV33WDO_wvwM4DBvG6dmLhyuHvugdWjFlEZz0m4SFnc3BEcy6jjo5yDLnG6PVYk4Bz3M02
- ol6Fv.XrSS3DGPxmiPUKwsJaz6AJXG7Z3eelpcbOhKiizJRZkLy0SjkQtKK6qVW.AhiYitQQ7pxR
- 7Ic6AH_YQs5QpmOhN55vX0t3EYylfNsqJzofFo3tSMOgNkkMVCmnYOenDMxrWnQyd_toLeedqwj2
- QLhjP3Dums.8oSZLlV_06lt48J8diIn655wcZgo7kNVcpsQ88RAONFGou8UemKnAeMxtmAWYqWm5
- XoQr5eUrY2qbAYIXCabBzGJYQAxver835jkQ2WFAzkMLIwgbBC9esVhxE8bd3qnkq1J_fGQCow0L
- oDsaxgEawqSZ2EEti9H3uDoMZXTYw9yW7XgBRWc9lTGDMuxdnnAv4I7piJDpwCrSwxBLmqoqeKmD
- 8c.ynTdVWy7rXg28Cf4kNU9h_zSbEyTl9r02MY7ip7McZofR50htHUPboo7M8iPYR_p_b9_ZG_mx
- sKEaqJomk1u_o4EUchvvIv.72TY6tMbQING73U1mhfj0a4PFHin5_KATnlyC4ydaRfw3lXxMmD9d
- c.X33cIPcFDuRH4vFqGSFkfD4ssM1KxJTpM_fEWiRalHqEtWgTIhpoQWM0UftIUOwKrro_GsIeit
- WPnZ.KgoHWZkYAGQl9KHdxJ9FNXH.FOEteQLFRctuq3JM6q8.irV0jX2TRcQNOphM.EvM0bitqRD
- .WRGpFaL8SkZ.AGuUM0u7SYGXVJvCBBA9Zxoi3SnUgA7q247D8G529y4vqhPVPVvQQr1reTF0qFT
- _alo5RQDuktx4W8w2DkmQo4kMIMRzOjQynJrEM0qOngsQDyg4wNzRud6HLp8Ol2px39gKvK0v86W
- lLcipAq5LArHE9MWH8vAfhEq7yBo..oYMzh.tRreuG4iK1u.hAbpcACQq7zPBEAcT_hT4aD56yT7
- Wy1wVdSP3maLZKgGjSyss6LMCXBt_rX6AkuCgZ8J_bduOASU57xS4qQQawydBNXwA1oADhNAzsIf
- Pj_ydQTpXNHknAuGVOnOmk0UyU1LlluVuPdrYc3c_o3RWKEfaJTxkyItYd3yvjHtIjpQdtig1ziD
- mte1VveroSeoyS7sgKEHVunPCbnFadCeJCeXauSxrsAARZEEdiR4Ngcz51uV5OoopcUj49Je.Pua
- KVR9K0_1R1DOTzfZOClRAmCPoyiKfUYTKilE3Q14NTjf_m_Ye1BcqQHEoWfU0kcpP1JNCDlmQoZg
- rs7wIlIzo.ZSZbOzgRuSPD7YunUHKzP87zo4DbYZYdzMbAQBaYFiORssTA7_.5424gYGpDHMXfj5
- Jaz0owIowiAtOpw39A_NmV4jT1l4ggUVSoiE_jx9wvasYcxGl4TAJPYQxW9BnpGlY63kbb3ZS3vh
- TgTuHbZYNig6j.MOGG_os1hvR.FXu6yyDNE2B_YVHnBy16PGbsYanKOXZPzZ2XnMeqRFpP3diGia
- zyoxxQRDEIz0tlFw62U5wNz49IiYEIMzuCd1NW1OUl77hcYfigOJgGCH2cwiLVxJcRrq4G6APm9a
- 7tbfLzEKHIt6o9EoNhpDUBd1Qu1u3q7AqLn7da_n1giEX3cc5xEf1jX6WhTiDc2fvTiLlop1H_hW
- UusKGZUrptXEOlkOP_kSnQBd_v3H.QQZK0VtNob1iIQh4_GFElQQINoGkCEkMOix3vlDwpgwnpNt
- BR.B1F375WCEO..HpvjlbvAGcAHyLpcijP1XdDY0VGf54_bZvPaWLNVINILKchmzpCw4bUlbM8iX
- 4znlzeBwZY94vVVzBHpnhXHgjTC2lfkphO6KoCoj73NKd5QVNrb604xt.Yl3Wh3c25ntD9q3A3uy
- 39ebNZ4NCx7rCePGdI_ZNZAVQembol9nWzQfCyfUOb_hQN1jfExOSlmyGlkwqOHDpYqGDsr8gjDA
- Mf1PR_3juAqqIFy1yfziqjY3hvfP1qejg66HsJ7cCs.WivDuXHDe.ZbPWKpPjT3jQUj_1mDHM0QS
- Y9Ne0_htBTN8Cg3BWRYyRNltRmI553KuMkmiE6yxaQMK3rfsA6u6.LLeTmCjHh38_MqID9RFqDx9
- ftRwv7nniVT0tXNEDP4pkIdreZW4NqbZtPkBFnLPf0dQWD50pHRV.wTt26H2KZ0vDuERWPEKM78U
- g6RvwWDm8R.9zxhrBOCrXdqhSR6PRLHAY0EosNxqXk4NLkW5byi6crtV.Cbttn7lMggJgpt3MmwQ
- Z_X9BetEumrRZ77EFdGc0z3iLj3Gy6WQSGzclkd3dDnsZykm6y5Nds6qpWbpYDr83TrRRAvaNPmn
- KWIOKAh52.BmkVlGrW5LyiPbd1i9f3ESqhc25AOAc5agcS3vPkkw33TFn7Dr0aiS4IdOIQAFYqvH
- OZ6_3D3Wy5icLoT1ICQ9_HR7ItlfstWz6ZLv.2JtKDAdkojVqNDWw3ayI6DcCc49POhvmAafEhgj
- A3WFgJGr0n6PVE1ImZgGoX1Qfuq6GGsVC3_p4YU5m7NMSt0fCma3KeYw5NxPtOky5oW7Q53iY0Fo
- 6zuhnS7NW.ak.rOUBj4L0MFOJkhZ_Mv0KUPZChPyPTuwJYg1S339by2iwSL57ighHxJYRu4JgoZa
- np_uyToefa0x.UBn8i942piGZfXFZcUovXKn7go.DTS1KWOpSt61GjYcBG2tYnuHPpUoeqRKtTrw
- neYFLum.jO501JbbPbOfJOS9l1QyT4zGRGw15Zl4QZ0twp2CCyD3qJ1xSQd.gDhRVWyAoWVRbsJz
- .cDdr0VwCn4K0mIzehqg0YdsxWHvjdE6w5iu8jUrhoJdGo6JC0Jj9z7iJLwLUFNCWLzFI9oux0uu
- .TnnOfANzdLl73oMvTrBhBrb4XSEf2nnlY.Eg7T0yaZN5qDlNb6KAExjLunP1OHgiY2lNNU7UHoo
- DcD2201mNmg9fsqOMxVctGslRJ51gSpK6FX5sFMAp2sj4BPRI85fSGDd9MBRec901t6Mdny4X3zZ
- LcVzprYUiB5awuFOardXrKLffX6YTwSxqFcEal19YXrDSVYEG32bnfyxGA9RjGFYsxPaYZU.M2_A
- PzP1KsukIlXi0kcHvKsBZQwCMyX7_Fi_7XMdK7f6RdABLfxDCtcGQZR5uoT3oMRFYE7sx4fxDaKJ
- CQLtpNCXG9RC6tlAp_pk5tqYDQYNQelPHwswxY6O0zAggS1eyB0Kg2oWWawO4jx43VLDc9vyHitB
- gHiXu00zJba0EbjgyBlUqwZxlhk8wFB39ZpFrjy2rmC28vmCD3sbXWua5TjO5BEX246VeBf8kdu6
- cPBRYX00glbqe_2rogNkhqm24sRXo26uJj0Zg0.MRS2g83teptvU9kNHk2u4jcfcwToCvUU4mCFr
- GGT1Gh.VYBraktyVYCBXamKauB22WvhFrt7r47YEMEE00yIK_ftnqtd2wHdb9M24RXQBNgbx366h
- mzdi_6ejSFTzp.4SrC3Me71qGIblbTVLz4vpNyZmHqUluszq0kxlPC2yWRmlnvwU3sGXQehb40nB
- Qh4jAtTQedZI1oEawH1hgVbj00x3htyY_W60Zeg5tAeEKwEy4.tYposs3Q3xNajxxtOwpSmZLsTy
- fy52qV3XZqlI8OSoPjXRKP0xiTFwy4uF_Zk3eO23Kro._mfVmcd_OoB_0XjDzy1RWdv7l.E.5czp
- NDK9v11z0diFlFNhulLDvXOcDB4naCKdYFuYCQS14lrnAvMO_FRgudkdKvBae4NmpNzKOXoZl6_2
- KwMV4BQCv3CeeiV4k7iGwJfnbNA97z1X5aulXMPec4LlyK_mkojaNbtF7OA7aHhAHZQJcpr6nRn2
- xgqyLxBGwxZ8I9AUXqnwUXS5XzQKCQc25bdQuoT4jnlitPoGBa3ZtOm_JH0cNX0omzzZRbilr8i6
- GG.smxV842ERZ7CONw4gBMkHG3anlqOJ4lhCB9t8WB.9qiPCT9agA_FCrWyqXBzvwI2vn.495ypt
- dJCDLhj2Rx_bsokt_y1V6xpud.0f3qlb0iLmLyuJEK7cTKdcR2Ink6qvNhLKZDx58.qxbgRyQnQ7
- Qe4CdJyoQyO4xjetDCXTwk22izTQKw3mQNhfTlVAccB139wQeEtB6TUUtE62v_Z2HOSyo3nJEgUN
- QlqrsMBSt2eWT3K7a.sWiEfrmGMMpIHTKRZM4UfnVRxdDTfyHC.Dop1QA_8BE7gShh6IpXwXdFf.
- 737dRRDBf6REzeXDjfP2oWKNAONXiMgOTiNdzgGfgpc0p0COj3172igDg4gNWmYaBrhXOGz8JUZz
- lBnTzrVMh2Tj9_no3O5H45M0Nh3f4IG4kyOtANF08f44I5lrCxQqlswBs9iaDCXE2xhrUjrvHzEn
- _2_Z58er8GYgBySNVo4zjlLz48mTlRJXgs67kXis249c8f9pW.SAkOFjslTg7YXH20qZfLfc6nAO
- Rqo2dTz7G8Un4IUHwC1aWYtoyqj5UFwBx0tajP2Xv95WmvvaKuUCTSgmCvlN4xEySK33FScXux_5
- UwSBO__Z8nV7xUMPsGmfSbXWn8n.0BJNa2wMGSQ2FX87UBeUgYEk.CSUhMD.PK0x4oWPuPEeeBnZ
- 786BPauWOil86jEB5avjZrkzckd1J_0yizCzldF3Gm9efIUQgz7IAr95kzxRLWcsADOd4W4ylRsX
- b5cKefCIFKy7GpCiPThz5DFQLSSI5dYeSSGCpkPBZvJQ3c9ZRiX54ZlorTfoIToqLEDKI.VePtXG
- jLDnEXHwWjWtYaJGDkVXHXWPXbA9Aw5OBL3qqgZ17QFcsZOnJ0iHwKfWCb8a1z7NOxIE4am3h9Ev
- Xx807bEDQ15ygcELs9HQyXFQ8Q.RW3pxiUmZ1tb9aHTdt8JWwgxPrCxgRbSzNI69_UyVlhnKAjUw
- VBYorXJaLKvbuSvhZpl9.XsR.R2yq436uXhz_VqPT6eZOSGYEUczEsxaA.Bs1avj4foUplTSYs2W
- eI2MAzH2U9hD3bvuuxQXWSHKIOXwyaCG9CFlyjFwQu8OW9nlbM_stwPPKYwWU2OfkmpE6rJamvBM
- 6OhIuxDpieYgrGUCGx0lmVu6s1BjBlkKRHOinHNn393pvCMzcyKCmbjo_UwAoJkWHQAd_5j_2o0h
- _Fzv_Lz_VAWarQW7AK0nc.Bs7t6gZCY_d8Txp2cAIkR9l8LC.iPSRbRStMsV0keU_o8zXvDq7BZk
- j1ff89NEiIooLMC3NtHcC.g.sZi.UwMPLbLddtzvhwGNzNlfIWYXTuxAHOJFGXeW5or7ypsMuOP0
- 7DVD.Zq.fprjSoKDwqwYF44dFu6BfZ0B7kg3DQd3VH4_bOhg1yjh2uoNeJohOz.fgQ8kH7LPxwFr
- kO6a7hosMvXNHqiujEZ4nbW.PRClZ0rQ8amZI7KvdDmgeZra96IQddf5RcERannCmpkwHT5tXYIU
- AjAU_1GpeRakkCZ596qLE7GneRKFXzrBS6R9cAKb4X2gUlO0tGe1QiznxGfyd_ZeMcammyyRfMho
- 6ITEeCHqFlj_Yt_UngEsuhSyemrCpblLxoq6Rye41oi_l_O2Bl_02EBQiBCOYbUlxXM6NK.s6.2Q
- y.bDyKnrFdGo0VVB.LbIny8QI0Y27MOtyiNztInsbh7rCmxecS6xmGf.lXtGqWcVBdT4wHHxZxH2
- m_KAcv38bU41I6iXRcDGANW4z.aux1hpemss4Xg1N.91wPibbUjQWcU.auZHMbR9nAOKkUHPZVgJ
- qEybo3iy_.TBaPkzFEWKu4YwFv2Q3yPKccdqux7bvGn5yQL3E08WVIlvmW4kELvcCDbOZsQc_9QP
- O8kQsjwdLSDVjzSNjmeuvCznZZf4pSOvx6.bOy_5aU1j.MTeE5hw3YBi73TCpI20b7GSkn64lNu3
- kR81OxcR_NSnzD6sIIC4DBOq0d9d3wNgHaNUBLfXVpt58Us5QljfGPxcKYGDAi7TOf0iXEaoETQH
- 4sz99QJKPC98ORIdEkMiSGDyjeSwz7ccmtrvLWIb7y30MHPhkPyKM1KxkJFxuYgRqdQYPOfpX34X
- qDwkA4x6JCxYNXBCooSec3VTfc5CLdF8Li_fIFs.AK4bmYnT3jbzKTK3CFKGC2HDwuWWTBXnKEpQ
- thrdq8EtEseBQkmY4fGPEDDYdUeQ-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Fri, 13 Nov 2020 16:22:12 +0000
-Date: Fri, 13 Nov 2020 16:22:11 +0000 (UTC)
-From: Global Financial Services SA <lee_zzzz@yahoo.com>
-Message-ID: <1289161142.9299321.1605284531332@mail.yahoo.com>
-In-Reply-To: <867191192.9306938.1605284517255@mail.yahoo.com>
-References: <2078839742.8012102.1605115598281.ref@mail.yahoo.com> <2078839742.8012102.1605115598281@mail.yahoo.com> <1434606456.9162924.1605272156929@mail.yahoo.com> <609231355.9193751.1605276305323@mail.yahoo.com> <814394213.9213354.1605276319727@mail.yahoo.com> <210885310.9218520.1605276332656@mail.yahoo.com> <1840294326.9198031.1605276349381@mail.yahoo.com> <942364333.9194229.1605276361616@mail.yahoo.com> <867191192.9306938.1605284517255@mail.yahoo.com>
-Subject: DO YOU NEED A FINANCIAL LOAN?
+	by ml01.01.org (Postfix) with ESMTPS id 69C76100EB32C
+	for <linux-nvdimm@lists.01.org>; Fri, 13 Nov 2020 10:09:36 -0800 (PST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADI5P5T057506;
+	Fri, 13 Nov 2020 18:09:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : cc : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=w30kjF3IvkMYC9EGxmwpXY7JR+ZtHECE1tYUqy4Z33w=;
+ b=K/BgZbJGJZATy1tm0rq4TdjSSzuHjewexRbk411OHkBALNxoQKuz0Mx8xPxBM+xOnGtM
+ T00+R6nHxZND4b8Eb3Lo8F49KA7/173Gq7MXePL4qg3MNBDjr1MRaiI1Z033I7t242dI
+ /2xtVXgBNqVL25D4ovuywWiz3k2X99f1OIV7ZToHWeOLEADGswQ09X5X9YTAQzZV6tpO
+ wzC/G446ry67Wdq+0ha4OrWw3NUIi70/+iJv3v1ppBpyZG0t3+Nw0hE488CfXY2+AV9F
+ jEsEvu+TeR9wi1OISyyt30cdCO2kfpV5JXYf/r5rBfAvy3RCWf4feq8mCsHjkFU+l5L7 SQ==
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+	by userp2120.oracle.com with ESMTP id 34p72f1t5y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 13 Nov 2020 18:09:21 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0ADI5OBm140700;
+	Fri, 13 Nov 2020 18:07:21 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by userp3020.oracle.com with ESMTP id 34rt589q39-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Nov 2020 18:07:21 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0ADI7G0J030581;
+	Fri, 13 Nov 2020 18:07:17 GMT
+Received: from [10.175.169.218] (/10.175.169.218)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Fri, 13 Nov 2020 10:07:16 -0800
+Subject: Re: [PATCH -next] device-dax: change error code from postive to
+ negative in range_parse
+To: Zhang Qilong <zhangqilong3@huawei.com>
+References: <20201026110425.136629-1-zhangqilong3@huawei.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+Message-ID: <0753306a-bac9-0b47-b21e-1831bbf9904f@oracle.com>
+Date: Fri, 13 Nov 2020 18:07:12 +0000
 MIME-Version: 1.0
-X-Mailer: WebService/1.1.16944 YMailNorrin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36
-Message-ID-Hash: RADK26RRFSYTOYNDLVB4KQINFIGI427J
-X-Message-ID-Hash: RADK26RRFSYTOYNDLVB4KQINFIGI427J
-X-MailFrom: lee_zzzz@yahoo.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+In-Reply-To: <20201026110425.136629-1-zhangqilong3@huawei.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9804 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=1 adultscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011130117
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9804 signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 suspectscore=1 lowpriorityscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2011130117
+Message-ID-Hash: MIPSEMU6HU3NI2MIFJIINAKZCUQJMXEE
+X-Message-ID-Hash: MIPSEMU6HU3NI2MIFJIINAKZCUQJMXEE
+X-MailFrom: joao.m.martins@oracle.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Global Financial Services SA <global.fs.za@consultant.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RADK26RRFSYTOYNDLVB4KQINFIGI427J/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MIPSEMU6HU3NI2MIFJIINAKZCUQJMXEE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IEdyZWV0aW5ncywNCg0KDQoNCsKgDQoNClRvIFdob20gSXQgTWF5IENvbmNlcm4sDQoNCsKgDQoN
-CldlLCB0aGUgR2xvYmFsIEZpbmFuY2lhbCBTZXJ2aWNlcyBhcmVvZmZlcmluZyBsb2FucyBhdCBh
-IHZlcnkgbG93IGludGVyZXN0IHJhdGUgb2bCoDMuNSXCoHBlciB5ZWFyLldlIG9mZmVyIFBlcnNv
-bmFsIGxvYW5zLCBEZWJ0IENvbnNvbGlkYXRpb24gTG9hbiwgVmVudHVyZSBDYXBpdGFsLCBCdXNp
-bmVzc0xvYW4sIEVkdWNhdGlvbiBMb2FuLCBIb21lIExvYW4gb3IgIkxvYW4gZm9yIGFueSByZWFz
-b24gYW5kIGZvciBhbGxjaXRpemVucyBhbmQgbm9uLWNpdGl6ZW5zIHdpdGggZWl0aGVyIGEgZ29v
-ZCBvciBiYWQgY3JlZGl0IGhpc3RvcnkuDQoNCsKgDQoNCkhhdmUgeW91IGJlZW4gdHVybmVkIGRv
-d24gYnkgeW91ciBiYW5rPyBEb3lvdSBoYXZlIGJhZCBjcmVkaXQ/IERvIHlvdSBoYXZlIHVucGFp
-ZCBiaWxscz8gQXJlIHlvdSBpbiBkZWJ0PyBCbGFja2xpc3RlZD9BcmUgeW91IHVuZGVyIERlYnQg
-cmV2aWV3PyBEbyB5b3UgbmVlZCB0byBzZXQgdXAgYSBidXNpbmVzcz8gV29ycnkgbm8gbW9yZSBh
-c3dlIGFyZSBoZXJlIHRvIG9mZmVyIHlvdSBhIGxvdyBpbnRlcmVzdCBsb2FuLg0KDQrCoA0KDQpP
-dXIgbG9hbiByYW5nZXMgZnJvbcKgVVMkMTAsIDAwMC4wMMKgKFRlbiBUaG91c2FuZFVuaXRlZCBT
-dGF0ZXMgRG9sbGFycykgdG/CoFVTJDI1LDAwMCwwMDAuMDDCoChUd2VudHkgRml2ZSBNaWxsaW9u
-IFVuaXRlZCBTdGF0ZXMgRG9sbGFycykuDQoNCsKgDQoNCkxvY2FsbHkgb3VyIGxvYW4gcmFuZ2Vz
-IGZyb23CoFIyMCwgMDAwLjAwwqAoVHdlbnR5VGhvdXNhbmQgUmFuZCkgdXAgdG8gdGhlIHN1bSBv
-ZsKgUjUsIDAwMCwwMDAuMDAoRml2ZSBNaWxsaW9uUmFuZCkuDQoNCsKgwqANCg0KDQoNCklmIHlv
-dSBhcmUgaW50ZXJlc3RlZCBraW5kbHljb250YWN0IHVzIHdpdGggeW91cjoNCg0KMS4gRnVsbCBO
-YW1lcw0KDQoyLiBDb250YWN0IEFkZHJlc3MNCg0KMy4gT2NjdXBhdGlvbg0KDQo0LiBDb250YWN0
-IFRlbGVwaG9uZU51bWJlcnMNCg0KNS4gVHlwZSBvZiBsb2FuDQoNCjYuIExvYW4gQW1vdW50DQoN
-CjcuIER1cmF0aW9uIG9mIHJlcGF5bWVudA0KDQrCoA0KDQpEbyBub3QgaGVzaXRhdGUgdG8gY29u
-dGFjdCB1cyBvbiB0aGV0ZWxlcGhvbmUgYW5kIGVtYWlsIGFkZHJlc3MgYmVsb3cgZm9yIGZ1cnRo
-ZXIgY2xhcmlmaWNhdGlvbihzKS4NCg0KVGVsL1doYXRzQXBwOsKgwqArMjcgNjPCoDkyMzE3NDcN
-Cg0KRW1haWxBZGRyZXNzOsKgIGdsb2JhbC5mcy56YUBjb25zdWx0YW50LmNvbcKgDQoNCsKgDQoN
-Cldhcm0gUmVnYXJkcywNCg0KQ3VzdG9tZXIgU2VydmljZQ0KR2xvYmFsIEZpbmFuY2lhbCBTZXJ2
-aWNlc1B0eSBTb3V0aCBBZnJpY2EuDQogICAgICAgICAgICAgICAgCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3Qg
-LS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWls
-IHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On 10/26/20 11:04 AM, Zhang Qilong wrote:
+> call trace:
+> 	-> mapping_store()
+> 		-> range_parse()
+> 		......
+> 		rc = -ENXIO;
+> 
+> According to context, the error return value of
+> range_parse should be negative.
+> 
+> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+
+> ---
+>  drivers/dax/bus.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
+> index 27513d311242..e15a1a7c2853 100644
+> --- a/drivers/dax/bus.c
+> +++ b/drivers/dax/bus.c
+> @@ -1047,7 +1047,7 @@ static ssize_t range_parse(const char *opt, size_t len, struct range *range)
+>  {
+>  	unsigned long long addr = 0;
+>  	char *start, *end, *str;
+> -	ssize_t rc = EINVAL;
+> +	ssize_t rc = -EINVAL;
+>  
+>  	str = kstrdup(opt, GFP_KERNEL);
+>  	if (!str)
+> 
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
