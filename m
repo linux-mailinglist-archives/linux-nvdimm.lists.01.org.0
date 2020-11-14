@@ -1,69 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82C42B30CD
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 14 Nov 2020 21:57:24 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79812B31CF
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Nov 2020 02:38:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 25FAC100EF258;
-	Sat, 14 Nov 2020 12:57:23 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=54.38.202.180; helo=cha7.b2blinkeddatabase.info; envelope-from=am-linux+2dnvdimm=lists.01.org@gmail.com; receiver=<UNKNOWN> 
-Received: from cha7.b2blinkeddatabase.info (ip180.ip-54-38-202.eu [54.38.202.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7B644100EF255
-	for <linux-nvdimm@lists.01.org>; Sat, 14 Nov 2020 12:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=gmail.com;
- h=To:Subject:Message-ID:Date:From:Reply-To:MIME-Version:List-Unsubscribe:Content-Type:Content-Transfer-Encoding; i=tina.cloudmigration@gmail.com;
- bh=dIPeTwMDsB//pHV8LymHEEzcz7Y=;
- b=nN9xJZuqEYVQY5VJYwRL+XaMiDKjNiV9WwE7M/72b6PaH12V1XcJtW5rvDCd92G+aJc4OMkJ+0kL
-   JJLsOotjVzl0rM5s0QzDg3UPoJ//9YOmpmyQSCCwEJccYrGe7wm1TzbIJplk3dY/FgwNQNuvZ0IH
-   QNCaiC3hC5bXAKSgqW/L65c9ExlCL+JA//WKcSyIznKnrdzIsIYADf+NzFI1rOFfj5Lsuj+DpkG9
-   1bEeINLN/0pdIRu1kfhDkpCp46+qxCzGE/XPE/gJJ4reDRxrZGnRuKpF0/v37lmi7Ro752i0Nv/K
-   J12BaoavebQEA6+/nWvV2srmPbVjLBkRW30bnA==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=gmail.com;
- b=lmA1oOPySURIHyPXWGSWZkynj+EHg3MCKZ1xNvaiKloWzkVJKSgV1LlrG+sWkInIKB75uyrXsnzB
-   QWhWUS+AQN0yeY2SL/7I0XxYN8YipvF8sLLHUNuIt0KetZ16fDOGSUPniF/r1Xa8UShqHjGUmZFm
-   bymsYKmZq3AzJO31EYkmAbsRieqxCoTJTMr5rMQRS9YF98MVkV15vRQkMh+zFxn4ejZ0C+PIUA2m
-   k0PhdUp/Q8ZGzUq0l6zYPi1lK0JgCd4SFXEF33ZX1LP6NCVl1vyFxmbaYByAaBj82kwbfcbDUQKf
-   Fi8QMlJhEbX6MBF9b9JxWibF2F3s5wdtg9+UZg==;
-Received: from b2blinkeddatabase.info (127.0.0.1) by cha1.b2blinkeddatabase.info id hm12b1i19tkt for <linux-nvdimm@lists.01.org>; Sat, 14 Nov 2020 20:57:17 +0000 (envelope-from <am-linux+2Dnvdimm=lists.01.org@gmail.com>)
-To: linux-nvdimm@lists.01.org
-Subject: RE: 10K LinkedIn Leads at 500
-Message-ID: <167d45d116adcc91ec9289438f9e9eb3@b2blinkeddatabase.info>
-Date: Sat, 14 Nov 2020 19:57:31 +0000
-From: "Tina Joseph" <tina.cloudmigration@gmail.com>
-MIME-Version: 1.0
-X-Mailer-LID: 12
-X-Mailer-RecptId: 9652722
-X-Mailer-SID: 6
-X-Mailer-Sent-By: 1
-Message-ID-Hash: KIKLX5WMXOCTJZXXVT6S2N7NCADE2T2O
-X-Message-ID-Hash: KIKLX5WMXOCTJZXXVT6S2N7NCADE2T2O
-X-MailFrom: am-linux+2Dnvdimm=lists.01.org@gmail.com
+	by ml01.01.org (Postfix) with ESMTP id 97957100EF261;
+	Sat, 14 Nov 2020 17:38:27 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=165.84.180.110; helo=fjdigihfdg.monster; envelope-from=dyqxtleuif@fjdigihfdg.monster; receiver=<UNKNOWN> 
+Received: from fjdigihfdg.monster (165084180110.ctinets.com [165.84.180.110])
+	by ml01.01.org (Postfix) with ESMTP id E3D8C100EF25F
+	for <linux-nvdimm@lists.01.org>; Sat, 14 Nov 2020 17:38:24 -0800 (PST)
+Sender: dyqxtleuif@fjdigihfdg.monster
+Message-ID: <E0292D2A253583AA4126A4265B183F6B@fjdigihfdg.monster>
+From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <thankyou@vpass.ne.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ6YeN6KaB44CR77yc5LiJ5LqV5L2P5Y+L44Kr44O844OJ77ye44GU5Yip55So56K66KqN44Gu44GK?=
+	=?utf-8?B?6aGY44GE?=
+Date: Sun, 15 Nov 2020 01:38:14 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19867
+Message-ID-Hash: OZUUOQSYLXLXMVGSTNYDOHUBWKNHWGZ5
+X-Message-ID-Hash: OZUUOQSYLXLXMVGSTNYDOHUBWKNHWGZ5
+X-MailFrom: dyqxtleuif@fjdigihfdg.monster
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: tina.cloudmigration@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KIKLX5WMXOCTJZXXVT6S2N7NCADE2T2O/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OZUUOQSYLXLXMVGSTNYDOHUBWKNHWGZ5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; format="flowed"; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://b2blinkeddatabase.info/emm/display.php?M=9652722&C=eoase7zvrzltf9tgdywzg79p92ka1687&S=6&L=12&N=1
-
-
-To stop receiving these
-emails:http://b2blinkeddatabase.info/emm/unsubscribe.php?M=9652722&C=eoase7zvrzltf9tgdywzg79p92ka1687&L=12&N=6
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQogDQoNCg0K5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or
+6YCB5Y+X5L+h44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLDQrp
+h43opoHjgarpgJrnn6Xjgajjgarjgorjgb7jgZnjgIINCg0K44GE44Gk44KC5byK56S+44Kr44O8
+44OJ44KS44GU5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ
+44CCDQoNCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip55So44Gu5oCl5aKX44Gr5Ly044GE
+44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW44K344K544OG44Og44CN44KS5bCO
+5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvjg7zjg4njga7jgZTliKnnlKjjgavl
+r77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPjgabjgYrjgorjgb7jgZnjgIINCg0K
+44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS56K6
+6KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX44Gf
+44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So44KS
+5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm44GE
+44Gf44Gg44GN44G+44GX44Gf44CCDQoNCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
+44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
+5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHj
+garjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozj
+govjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXj
+gYTjgIINCg0KDQrilqDjgZTliKnnlKjnorroqo3jga/jgZPjgaHjgonilqANCg0K44CAIA0KDQoN
+CuiHs+aApeOAgVMgTSBCIEPjgqvjg7zjg4nkvJrlk6HjgrXjg7zjg5Pjgrnjgavmg4XloLHjgpLl
+ho3nmbvpjLLjgZfjgabjgY/jgaDjgZXjgYQNCg0KDQrilqDnmbrooYzogIXilqANCuS4ieS6leS9
+j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K44CAaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbS8N
+CuOAkjEwNS04MDExIOadseS6rOmDvea4r+WMuua1t+WyuDHkuIHnm64y55WqMjDlj7cg5rGQ55WZ
+44OT44Or44OH44Kj44Oz44KwDQoNCg0KDQoNCuOAgA0KQ29weXJpZ2h0IChDKSAyMDIwIFN1bWl0
+b21vIE1pdHN1aSBDYXJkIENvLiwgTHRkLg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
+ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
+dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
