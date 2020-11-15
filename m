@@ -1,71 +1,152 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567682B3322
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Nov 2020 10:05:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CDD72B332B
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Nov 2020 10:17:21 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7FC70100EF273;
-	Sun, 15 Nov 2020 01:05:06 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=88.158.78.30; helo=mail.tigeramira.ro; envelope-from=financialcapability6@gmail.com; receiver=<UNKNOWN> 
-Received: from mail.tigeramira.ro (unknown [88.158.78.30])
-	by ml01.01.org (Postfix) with ESMTP id 966C1100EF271
-	for <linux-nvdimm@lists.01.org>; Sun, 15 Nov 2020 01:05:03 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.tigeramira.ro (Postfix) with ESMTP id E882BC11A34
-	for <linux-nvdimm@lists.01.org>; Sat, 14 Nov 2020 20:01:41 +0200 (EET)
-Received: from mail.tigeramira.ro ([127.0.0.1])
-	by localhost (mail.tigeramira.ro [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id SRO8ISaAVVZh for <linux-nvdimm@lists.01.org>;
-	Sat, 14 Nov 2020 20:01:26 +0200 (EET)
-Received: from mail.tigeramira.ro (localhost [127.0.0.1])
-	by mail.tigeramira.ro (Postfix) with ESMTP id 3EF67AF166E
-	for <linux-nvdimm@lists.01.org>; Sat, 14 Nov 2020 14:01:12 +0200 (EET)
-Received: from [156.96.44.214] (unknown [192.168.12.254])
-	by mail.tigeramira.ro (Postfix) with ESMTP id 0F092D3FCF6
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Nov 2020 17:09:41 +0200 (EET)
+	by ml01.01.org (Postfix) with ESMTP id 5D349100EF274;
+	Sun, 15 Nov 2020 01:17:19 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id F2C7B100EF273
+	for <linux-nvdimm@lists.01.org>; Sun, 15 Nov 2020 01:17:16 -0800 (PST)
+Received: from kernel.org (unknown [77.125.7.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 01B8422450;
+	Sun, 15 Nov 2020 09:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1605431835;
+	bh=XrsLu3AgfKf/yhCqreqSLPfO0QbxjM5u1nh2OTK+i7M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q0I4G8XBAWR7g47zvvLF17b4q7dpa65b9wkXecvSGjBwSxVcsrFJ8ESXu8JFAv6n6
+	 sdRm52xntWf8ZCcumTh9FSor5j2JPuQESup2yC2R21JKmZx1500hzTDazlR+vjkiGB
+	 IVdV6hSWm3dBik27GJTFfn5JfaFip6aaLkmt9qWY=
+Date: Sun, 15 Nov 2020 11:17:00 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Roman Gushchin <guroan@gmail.com>
+Subject: Re: [PATCH v8 6/9] secretmem: add memcg accounting
+Message-ID: <20201115091700.GY4758@kernel.org>
+References: <20201110151444.20662-1-rppt@kernel.org>
+ <20201110151444.20662-7-rppt@kernel.org>
+ <CALo0P13aq3GsONnZrksZNU9RtfhMsZXGWhK1n=xYJWQizCd4Zw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Description: Mail message body
-Subject: Corporate and Personal Loan/
-To: linux-nvdimm@lists.01.org
-From: "Investment  Corporate" <financialcapability6@gmail.com>
-Date: Tue, 10 Nov 2020 06:10:10 -0800
-Message-Id: <20201110150942.0F092D3FCF6@mail.tigeramira.ro>
-Message-ID-Hash: LHXEUVHM5PEJBU4VHQAL2LFTCY3GMSEV
-X-Message-ID-Hash: LHXEUVHM5PEJBU4VHQAL2LFTCY3GMSEV
-X-MailFrom: financialcapability6@gmail.com
+Content-Disposition: inline
+In-Reply-To: <CALo0P13aq3GsONnZrksZNU9RtfhMsZXGWhK1n=xYJWQizCd4Zw@mail.gmail.com>
+Message-ID-Hash: BIBYC65HLUEDCONTNY3QL2ULIU4TY535
+X-Message-ID-Hash: BIBYC65HLUEDCONTNY3QL2ULIU4TY535
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-ap
+ i@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: hmurrah39@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LHXEUVHM5PEJBU4VHQAL2LFTCY3GMSEV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BIBYC65HLUEDCONTNY3QL2ULIU4TY535/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hello linux-nvdimm@lists.01.org
-
-
-We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
-
-
-We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
-
-
-Please get back to me if you are interested for more
-
-details.
-
-
-Yours faithfully,
-
-Hashim Murrah
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gRnJpLCBOb3YgMTMsIDIwMjAgYXQgMDM6NDI6MjVQTSAtMDgwMCwgUm9tYW4gR3VzaGNoaW4g
+d3JvdGU6DQo+INCy0YIsIDEwINC90L7Rj9CxLiAyMDIwINCzLiDQsiAwNzoxNiwgTWlrZSBSYXBv
+cG9ydCA8cnBwdEBrZXJuZWwub3JnPjoNCj4gPg0KPiA+IEZyb206IE1pa2UgUmFwb3BvcnQgPHJw
+cHRAbGludXguaWJtLmNvbT4NCj4gPg0KPiA+IEFjY291bnQgbWVtb3J5IGNvbnN1bWVkIGJ5IHNl
+Y3JldG1lbSB0byBtZW1jZy4gVGhlIGFjY291bnRpbmcgaXMgdXBkYXRlZA0KPiA+IHdoZW4gdGhl
+IG1lbW9yeSBpcyBhY3R1YWxseSBhbGxvY2F0ZWQgYW5kIGZyZWVkLg0KPiA+DQo+ID4gU2lnbmVk
+LW9mZi1ieTogTWlrZSBSYXBvcG9ydCA8cnBwdEBsaW51eC5pYm0uY29tPg0KPiA+IC0tLQ0KPiA+
+ICBtbS9maWxlbWFwLmMgICB8ICAyICstDQo+ID4gIG1tL3NlY3JldG1lbS5jIHwgNDIgKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystDQo+ID4gIDIgZmlsZXMgY2hhbmdl
+ZCwgNDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQg
+YS9tbS9maWxlbWFwLmMgYi9tbS9maWxlbWFwLmMNCj4gPiBpbmRleCAyNDljZjQ4OWY1ZGYuLjEx
+Mzg3YTA3NzM3MyAxMDA2NDQNCj4gPiAtLS0gYS9tbS9maWxlbWFwLmMNCj4gPiArKysgYi9tbS9m
+aWxlbWFwLmMNCj4gPiBAQCAtODQ0LDcgKzg0NCw3IEBAIHN0YXRpYyBub2lubGluZSBpbnQgX19h
+ZGRfdG9fcGFnZV9jYWNoZV9sb2NrZWQoc3RydWN0IHBhZ2UgKnBhZ2UsDQo+ID4gICAgICAgICBw
+YWdlLT5tYXBwaW5nID0gbWFwcGluZzsNCj4gPiAgICAgICAgIHBhZ2UtPmluZGV4ID0gb2Zmc2V0
+Ow0KPiA+DQo+ID4gLSAgICAgICBpZiAoIWh1Z2UpIHsNCj4gPiArICAgICAgIGlmICghaHVnZSAm
+JiAhcGFnZS0+bWVtY2dfZGF0YSkgew0KPiA+ICAgICAgICAgICAgICAgICBlcnJvciA9IG1lbV9j
+Z3JvdXBfY2hhcmdlKHBhZ2UsIGN1cnJlbnQtPm1tLCBnZnApOw0KPiA+ICAgICAgICAgICAgICAg
+ICBpZiAoZXJyb3IpDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgZ290byBlcnJvcjsNCj4g
+PiBkaWZmIC0tZ2l0IGEvbW0vc2VjcmV0bWVtLmMgYi9tbS9zZWNyZXRtZW0uYw0KPiA+IGluZGV4
+IDFhYTJiN2NmZmUwZC4uMWViNzY2NzAxNmZhIDEwMDY0NA0KPiA+IC0tLSBhL21tL3NlY3JldG1l
+bS5jDQo+ID4gKysrIGIvbW0vc2VjcmV0bWVtLmMNCj4gPiBAQCAtMTcsNiArMTcsNyBAQA0KPiA+
+ICAjaW5jbHVkZSA8bGludXgvc3lzY2FsbHMuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L21lbWJs
+b2NrLmg+DQo+ID4gICNpbmNsdWRlIDxsaW51eC9wc2V1ZG9fZnMuaD4NCj4gPiArI2luY2x1ZGUg
+PGxpbnV4L21lbWNvbnRyb2wuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L3NldF9tZW1vcnkuaD4N
+Cj4gPiAgI2luY2x1ZGUgPGxpbnV4L3NjaGVkL3NpZ25hbC5oPg0KPiA+DQo+ID4gQEAgLTQ5LDYg
+KzUwLDM4IEBAIHN0cnVjdCBzZWNyZXRtZW1fY3R4IHsNCj4gPg0KPiA+ICBzdGF0aWMgc3RydWN0
+IGNtYSAqc2VjcmV0bWVtX2NtYTsNCj4gPg0KPiANCj4gSGkgTWlrZSENCj4gDQo+ID4gK3N0YXRp
+YyBpbnQgc2VjcmV0bWVtX21lbWNnX2NoYXJnZShzdHJ1Y3QgcGFnZSAqcGFnZSwgZ2ZwX3QgZ2Zw
+LCBpbnQgb3JkZXIpDQo+ID4gK3sNCj4gPiArICAgICAgIHVuc2lnbmVkIGxvbmcgbnJfcGFnZXMg
+PSAoMSA8PCBvcmRlcik7DQo+ID4gKyAgICAgICBpbnQgaSwgZXJyOw0KPiA+ICsNCj4gPiArICAg
+ICAgIGVyciA9IG1lbWNnX2ttZW1fY2hhcmdlX3BhZ2UocGFnZSwgZ2ZwLCBvcmRlcik7DQo+ID4g
+KyAgICAgICBpZiAoZXJyKQ0KPiA+ICsgICAgICAgICAgICAgICByZXR1cm4gZXJyOw0KPiA+ICsN
+Cj4gPiArICAgICAgIGZvciAoaSA9IDE7IGkgPCBucl9wYWdlczsgaSsrKSB7DQo+ID4gKyAgICAg
+ICAgICAgICAgIHN0cnVjdCBwYWdlICpwID0gcGFnZSArIGk7DQo+ID4gKw0KPiA+ICsgICAgICAg
+ICAgICAgICBwLT5tZW1jZ19kYXRhID0gcGFnZS0+bWVtY2dfZGF0YTsNCj4gPiArICAgICAgIH0N
+Cj4gDQo+IEhtLCBpdCBsb29rcyB2ZXJ5IHN0cmFuZ2UgdG8gbWUuIFdoeSBkbyB3ZSBuZWVkIHRv
+IGNvcHkgbWVtY2dfZGF0YT8NCj4gV2hhdCBhYm91dCBjc3MgcmVmZXJlbmNlIGNvdW50aW5nPw0K
+DQpJIG5lZWQgdG8gY29weSBtZW1jZ19kYXRhIHRvIG1hcmsgYSBwYWdlIGFzIGJlaW5nIGFjY291
+bnRlZCBzbyBpdCB3b24ndA0KYmUgY2hhcmdlZCBhZ2FpbiB3aGVuIGl0IGlzIGFkZGVkIHRvIHBh
+Z2UgY2FjaGUuDQoNCldoYXQgaGFwcGVucyBoZXJlIGlzIHRoYXQgSSBhbGxvY2F0ZSBhIGxhcmdl
+IHBhZ2UgYW5kIHRoZW4gdXNlIGl0IGFzIGENCmxvY2FsIGNhY2hlIGZvciBhbGxvY2F0aW9ucyBp
+biBzZWNyZXRtZW1fZmF1bHQoKS4gSSBjaGFyZ2UgdGhlIGxhcmdlDQpwYWdlIGFzIGttZW0uIA0K
+DQpEdXJpbmcgc2VjcmV0bWVtX2ZhdWx0KCkgYSBzbWFsbCBzdWItcGFnZSBmcm9tIHRoYXQgbGFy
+Z2UgcGFnZSBnb2VzIGludG8NCnBhZ2UgY2FjaGUgYW5kIHRoZXJlIEkgc2tpcCBpdHMgbWVtY2cg
+YWNjb3VudGluZy4NCg0KSW4gdGhlIGVuZCwgd2hlbiB0aGUgbGFyZ2UgcGFnZSBpcyBmcmVlZCwg
+dGhlIG1lbWNnX2RhdGEgZm9yIGFsbCBpdHMNCnN1Yi1wYWdlcyBpcyBjbGVhcmVkIGFuZCBJIHVu
+Y2hhcmdlIG1lbWNnIHdpdGggdGhlIG9yZGVyIG9mIGxhcmdlIHBhZ2UuDQoNCkFuIGFsdGVybmF0
+aXZlIHdvdWxkIGJlIHRvIHVuY2hhcmdlIGEgc21hbGwgcGFnZSBmcm9tIGttZW0gaW4NCnNlY3Jl
+dG1lbV9mYXVsdCgpIGFuZCBtYWtlIHRoaXMgcGFnZSBjaGFyZ2VkIGluIGFkZF90b19wYWdlX2Nh
+Y2hlKCksIGJ1dA0KdGhhdCB3b3VsZCBjb21wbGljYXRlIHRoZSByZWxlYXNlIHBhdGggYXMgSSB3
+b3VsZCBuZWVkIHRvIHJlLWNoYXJnZSB0aGUNCnNtYWxsIHBhZ2UgYmFjayB0byBrbWVtIGF0IHNl
+Y3JldG1lbV9mcmVlcGFnZSgpIGFuZCB0cmFjayBhbGwgdGhlDQpwYXJ0aWNpcGF0aW5nIG1lbWNn
+cyB0aWxsIHRoZSBsYXJnZSBwYWdlIGlzIGZyZWVkLg0KDQo+IEFuZCB3aGF0IGFib3V0IHN0YXRp
+c3RpY3M/DQoNCkhtbSwgdGhhdCdzIHByb2JhYmx5IHdvbid0IGJlIGFjY3VyYXRlIDotLw0KDQo+
+IEknbSBzb3JyeSBmb3IgYmVpbmcgbGF0ZS4NCj4gDQo+IFRoYW5rIHlvdSENCj4gDQo+ID4gKw0K
+PiA+ICsgICAgICAgcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkIHNl
+Y3JldG1lbV9tZW1jZ191bmNoYXJnZShzdHJ1Y3QgcGFnZSAqcGFnZSwgaW50IG9yZGVyKQ0KPiA+
+ICt7DQo+ID4gKyAgICAgICB1bnNpZ25lZCBsb25nIG5yX3BhZ2VzID0gKDEgPDwgb3JkZXIpOw0K
+PiA+ICsgICAgICAgaW50IGk7DQo+ID4gKw0KPiA+ICsgICAgICAgZm9yIChpID0gMTsgaSA8IG5y
+X3BhZ2VzOyBpKyspIHsNCj4gPiArICAgICAgICAgICAgICAgc3RydWN0IHBhZ2UgKnAgPSBwYWdl
+ICsgaTsNCj4gPiArDQo+ID4gKyAgICAgICAgICAgICAgIHAtPm1lbWNnX2RhdGEgPSAwOw0KPiA+
+ICsgICAgICAgfQ0KPiA+ICsNCj4gPiArICAgICAgIG1lbWNnX2ttZW1fdW5jaGFyZ2VfcGFnZShw
+YWdlLCBQTURfUEFHRV9PUkRFUik7DQo+ID4gK30NCj4gPiArDQo+ID4gIHN0YXRpYyBpbnQgc2Vj
+cmV0bWVtX3Bvb2xfaW5jcmVhc2Uoc3RydWN0IHNlY3JldG1lbV9jdHggKmN0eCwgZ2ZwX3QgZ2Zw
+KQ0KPiA+ICB7DQo+ID4gICAgICAgICB1bnNpZ25lZCBsb25nIG5yX3BhZ2VzID0gKDEgPDwgUE1E
+X1BBR0VfT1JERVIpOw0KPiA+IEBAIC02MSwxMCArOTQsMTQgQEAgc3RhdGljIGludCBzZWNyZXRt
+ZW1fcG9vbF9pbmNyZWFzZShzdHJ1Y3Qgc2VjcmV0bWVtX2N0eCAqY3R4LCBnZnBfdCBnZnApDQo+
+ID4gICAgICAgICBpZiAoIXBhZ2UpDQo+ID4gICAgICAgICAgICAgICAgIHJldHVybiAtRU5PTUVN
+Ow0KPiA+DQo+ID4gLSAgICAgICBlcnIgPSBzZXRfZGlyZWN0X21hcF9pbnZhbGlkX25vZmx1c2go
+cGFnZSwgbnJfcGFnZXMpOw0KPiA+ICsgICAgICAgZXJyID0gc2VjcmV0bWVtX21lbWNnX2NoYXJn
+ZShwYWdlLCBnZnAsIFBNRF9QQUdFX09SREVSKTsNCj4gPiAgICAgICAgIGlmIChlcnIpDQo+ID4g
+ICAgICAgICAgICAgICAgIGdvdG8gZXJyX2NtYV9yZWxlYXNlOw0KPiA+DQo+ID4gKyAgICAgICBl
+cnIgPSBzZXRfZGlyZWN0X21hcF9pbnZhbGlkX25vZmx1c2gocGFnZSwgbnJfcGFnZXMpOw0KPiA+
+ICsgICAgICAgaWYgKGVycikNCj4gPiArICAgICAgICAgICAgICAgZ290byBlcnJfbWVtY2dfdW5j
+aGFyZ2U7DQo+ID4gKw0KPiA+ICAgICAgICAgYWRkciA9ICh1bnNpZ25lZCBsb25nKXBhZ2VfYWRk
+cmVzcyhwYWdlKTsNCj4gPiAgICAgICAgIGVyciA9IGdlbl9wb29sX2FkZChwb29sLCBhZGRyLCBQ
+TURfU0laRSwgTlVNQV9OT19OT0RFKTsNCj4gPiAgICAgICAgIGlmIChlcnIpDQo+ID4gQEAgLTgx
+LDYgKzExOCw4IEBAIHN0YXRpYyBpbnQgc2VjcmV0bWVtX3Bvb2xfaW5jcmVhc2Uoc3RydWN0IHNl
+Y3JldG1lbV9jdHggKmN0eCwgZ2ZwX3QgZ2ZwKQ0KPiA+ICAgICAgICAgICogd29uJ3QgZmFpbA0K
+PiA+ICAgICAgICAgICovDQo+ID4gICAgICAgICBzZXRfZGlyZWN0X21hcF9kZWZhdWx0X25vZmx1
+c2gocGFnZSwgbnJfcGFnZXMpOw0KPiA+ICtlcnJfbWVtY2dfdW5jaGFyZ2U6DQo+ID4gKyAgICAg
+ICBzZWNyZXRtZW1fbWVtY2dfdW5jaGFyZ2UocGFnZSwgUE1EX1BBR0VfT1JERVIpOw0KPiA+ICBl
+cnJfY21hX3JlbGVhc2U6DQo+ID4gICAgICAgICBjbWFfcmVsZWFzZShzZWNyZXRtZW1fY21hLCBw
+YWdlLCBucl9wYWdlcyk7DQo+ID4gICAgICAgICByZXR1cm4gZXJyOw0KPiA+IEBAIC0zMTAsNiAr
+MzQ5LDcgQEAgc3RhdGljIHZvaWQgc2VjcmV0bWVtX2NsZWFudXBfY2h1bmsoc3RydWN0IGdlbl9w
+b29sICpwb29sLA0KPiA+ICAgICAgICAgaW50IGk7DQo+ID4NCj4gPiAgICAgICAgIHNldF9kaXJl
+Y3RfbWFwX2RlZmF1bHRfbm9mbHVzaChwYWdlLCBucl9wYWdlcyk7DQo+ID4gKyAgICAgICBzZWNy
+ZXRtZW1fbWVtY2dfdW5jaGFyZ2UocGFnZSwgUE1EX1BBR0VfT1JERVIpOw0KPiA+DQo+ID4gICAg
+ICAgICBmb3IgKGkgPSAwOyBpIDwgbnJfcGFnZXM7IGkrKykNCj4gPiAgICAgICAgICAgICAgICAg
+Y2xlYXJfaGlnaHBhZ2UocGFnZSArIGkpOw0KPiA+IC0tDQo+ID4gMi4yOC4wDQo+ID4NCj4gPg0K
+DQotLSANClNpbmNlcmVseSB5b3VycywNCk1pa2UuCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgt
+bnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4
+LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
