@@ -2,64 +2,88 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7702B3776
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Nov 2020 18:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4A62B382E
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Nov 2020 19:59:02 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1A6EE100ED485;
-	Sun, 15 Nov 2020 09:52:54 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=154.212.129.193; helo=vpass.ne.jp; envelope-from=ypgwqwclp@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (unknown [154.212.129.193])
-	by ml01.01.org (Postfix) with ESMTP id BAD87100ED480
-	for <linux-nvdimm@lists.01.org>; Sun, 15 Nov 2020 09:52:49 -0800 (PST)
-Sender: ypgwqwclp@vpass.ne.jp
-Message-ID: <3E83D0CB317EAAC501B1A1495B5FBEFA@vpass.ne.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?77yc6YeN6KaB77ye44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip55So56K66KqN44Gu44GK?=
-	=?utf-8?B?6aGY44GE?=
-Date: Mon, 16 Nov 2020 01:52:39 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19431
-Message-ID-Hash: QRVSKR4HAYO7OOCKASP7XPYHWCOJL4SY
-X-Message-ID-Hash: QRVSKR4HAYO7OOCKASP7XPYHWCOJL4SY
-X-MailFrom: ypgwqwclp@vpass.ne.jp
+	by ml01.01.org (Postfix) with ESMTP id A0303100ED487;
+	Sun, 15 Nov 2020 10:59:00 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D7287100ED485
+	for <linux-nvdimm@lists.01.org>; Sun, 15 Nov 2020 10:58:57 -0800 (PST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1605466732;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lM+Tn3Xn9woEdnNA0HLgCq49xITc6UQA2eZ6y/GPCoI=;
+	b=xy4LEmo+jlz0Jq+PPQQnClThn2BQPP2VK/gIjQk5I2KRckjCj7Drnsna9lksUk/ITpwuTz
+	sVtPgVlXN/2E2E21zA1k079EKJvTIkc7ENv9Jftd7gQE3ubTJ+lhaEDKmxMaSAqzp0Qeap
+	v+5xHxFsmZoQ2Q87P28QIuKhRzXpFQXzNYo3nNUHhM6WSWz53AGt9Lsfov+OPHZsGOadaf
+	k3qd+kTh6nngia5Ch9pnnaw/EQOevyqIT94eHQHLhmzS7VS3uXOdO+MtcdYkJjDzK6r80k
+	kNKu19wadW/FwBvJKeK2w/r0iIoagaFIN0IbDi6oaV3zya4QGqNDLRPDOUbzEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1605466732;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lM+Tn3Xn9woEdnNA0HLgCq49xITc6UQA2eZ6y/GPCoI=;
+	b=Qd+mE+OpsEvFKxHyQ2CT5n9hPmnIwB1brU84Jw4XCXyD0Jok+oJLKNA01C+Xh8tdkbW36v
+	QVxMvbDeCbijnIDw==
+To: ira.weiny@intel.com, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH V3 05/10] x86/entry: Pass irqentry_state_t by reference
+In-Reply-To: <20201106232908.364581-6-ira.weiny@intel.com>
+References: <20201106232908.364581-1-ira.weiny@intel.com> <20201106232908.364581-6-ira.weiny@intel.com>
+Date: Sun, 15 Nov 2020 19:58:52 +0100
+Message-ID: <87mtzi8n0z.fsf@nanos.tec.linutronix.de>
+MIME-Version: 1.0
+Message-ID-Hash: GILAWBG4TID7TUL2DECWB4MCVXCIQFSJ
+X-Message-ID-Hash: GILAWBG4TID7TUL2DECWB4MCVXCIQFSJ
+X-MailFrom: tglx@linutronix.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: x86@kernel.org, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QRVSKR4HAYO7OOCKASP7XPYHWCOJL4SY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GILAWBG4TID7TUL2DECWB4MCVXCIQFSJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
-44KJDQoNCuOAgGh0dHA6Ly9zbWNjLWNhY2Mud2ViYWNlYS54eXovDQoNCuKWoOeZuuihjOiAheKW
-oA0K5LiJ5LqV5L2P5Y+L44Kr44O844OJ5qCq5byP5Lya56S+DQrjgIBodHRwOi8vc21jYy1jYWNj
-LndlYmFjZWEueHl6Lw0K44CSMTA1LTgwMTEg5p2x5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLn
-laoyMOWPtyDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCg0KDQouLi4KX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlz
-dCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1h
-aWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Ira,
+
+On Fri, Nov 06 2020 at 15:29, ira weiny wrote:
+
+Subject prefix wants to 'entry:'. This changes generic code and the x86
+part is just required to fix the generic code change.
+
+> Currently struct irqentry_state_t only contains a single bool value
+> which makes passing it by value is reasonable.  However, future patches
+> propose to add information to this struct, for example the PKRS
+> register/thread state.
+>
+> Adding information to irqentry_state_t makes passing by value less
+> efficient.  Therefore, change the entry/exit calls to pass irq_state by
+> reference.
+
+The PKRS muck needs to add an u32 to that struct. So how is that a
+problem?
+
+The resulting struct still fits into 64bit which is by far more
+efficiently passed by value than by reference. So which problem are you
+solving here?
+
+Thanks
+
+        tglx
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
