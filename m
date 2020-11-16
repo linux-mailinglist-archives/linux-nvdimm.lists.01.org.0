@@ -1,90 +1,196 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2901D2B4400
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Nov 2020 13:51:14 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702792B449A
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Nov 2020 14:20:56 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8035E100ED4A3;
-	Mon, 16 Nov 2020 04:51:12 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=170.178.163.248; helo=deeptownguide.com; envelope-from=hhgahlenozr@netzero.net; receiver=<UNKNOWN> 
-Received: from deeptownguide.com (unknown [170.178.163.248])
-	by ml01.01.org (Postfix) with ESMTP id A5885100ED4A3
-	for <linux-nvdimm@lists.01.org>; Mon, 16 Nov 2020 04:51:09 -0800 (PST)
-To: linux-nvdimm@lists.01.org
-Subject: large capacity backpack
-Message-ID: <57b87c1d938ff6148402f60bf9a32f80@bauer.com>
-Date: Mon, 16 Nov 2020 06:34:43 +0100
-From: "Tony Young" <hhgahlenozr@netzero.net>
+	by ml01.01.org (Postfix) with ESMTP id A2811100ED4A5;
+	Mon, 16 Nov 2020 05:20:54 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=77.238.179.82; helo=sonic309-24.consmr.mail.ir2.yahoo.com; envelope-from=xxxx_lee@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic309-24.consmr.mail.ir2.yahoo.com (sonic309-24.consmr.mail.ir2.yahoo.com [77.238.179.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id A6A13100ED4A4
+	for <linux-nvdimm@lists.01.org>; Mon, 16 Nov 2020 05:20:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1605532849; bh=xq8dsUr1sBXNxxYreHV5AdRqHrmo7/Ell4lg/rZCgks=; h=Date:From:Reply-To:In-Reply-To:References:Subject:From:Subject; b=anbHHYL0q2zPKpa3cpi2bqn+dB4GXZdzFO1KH3X7v3KRmSFGqwtpgKrab7y+v06sZk6SBS4JsqAhHvbI/37oB9qF2eXUijTH0A8V3/YIbdRsdv7RMjp+XN8kcfVStGAR8UsXJNiN/NLB3ydTI6jT4QgrX7d4IxgptIeJb4OG31PRWaIJ71sQpJFr7pJuilsHOZz0Helr2hr3zyFzE0MCpF09mgvmQYJB4WjwUEbl8eU/SmNO6FgVkPKiLecUM3PBAUM2VaLRhfCSeF5eMWCI+3IQqoYzJWlyN28TeAWHi4GWDx5F3xVoY0hYRfdix01Ly2w/6uhvIWGI6SpVJixUbA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1605532849; bh=YmVr2OaxFuHZb+yEmzMSmxIg7WLHvx7UFDuRlvnku/M=; h=Date:From:Subject:From:Subject; b=I+0e8nDTWx8hP9ONBL7BLO8yBirdT4kci35X6n7TBHu4e95fZSR/JkQCme5l+4es8R4OyU863S2/uYvLAWWNA9yI5S7jjVOY8RzGV/mxySr+9+BJd3+TfUWT5VGr6QREm+SNdtJA25OaHK9KKAYdyhYyz3uJAFAjhHHrq8m7TxK6bMeCY8E9jUcC/QZVTSBpMPPNg+FvPm6t4yHAwHb7wGfA7lcBlUs3FqlJdL+XH0J+g9+U0HXthp9H0SyS6Ufx+JeYLSnm8xqq5ZLh5a0l+CqKrTEBUfmk2FL9K7XBAi+erm97IdN67u385u8B68dk9H/thgK6n5356rGYdv0C1w==
+X-YMail-OSG: Ezikic4VM1kWOtj8D3hIsmo8wvjRoX4qMUT1zERAGofePymX.gIp0oTdRMPBkWz
+ v.pUida5W6CFDhSE6WmN.sMMXFpwLU4pF1klywYV5CPDEAUL9IN4n2dHXmh59ABT34.mSNJN9.H4
+ 1wIgxdOWuQxeSafsGnL_sK9Ho7j4eDnG4NnpkBvwHPd.4wjZNCgr9HMC070lcX81CJGi9GnLUrxm
+ WB.19oHWhVpYaIkmiv8izVrCKgtYMbOi.ah1r_M2FNmRoWQnwpHT2nv.Py3ABlb0MTe9Zt3GuNAE
+ v0NM2oIemNumg6bV76TNwX2czkLEsbxze2t1LzBBD1qSIM3BYZtuBZsZRHg7vNfmDrijAmUe7a2J
+ Mzo8d9h3VS9y2FKc65NlRhB7SQmYhCl5nC3MR7DDkWYLZe56UdCwKu75Jdp5zRwjSlToS_bNhFvc
+ .2mCxK09L7Mz7WQicKY_X3RZOaaKv.ygvy.s_NFzbUTk2KVfILk_3ZTVwBZMyhx57AA71QgWhopd
+ 0D2dtslMxEb1AUq62qx7SYb52uqSbd6DpuX7IBonijQ17_q5bLf0Rbpy8.XgmsDQKPQW5whHwtu.
+ dniGQ_tFxG2RTaKVAmD7KK06JDGaMQxylRv.7Sc7CKpV0LFAOZLvy8mAIXlSgFu8RhaRLkqgB5yi
+ zvxComGSLlHTfYSI1UH0MkF2muurjuYoITPX7O1_hyO8SOCg4lKwQvrv4cIrY_vmBh85v9KhtTCC
+ dWW89Exfy8FE_81H9NUaRP.Layy8O94zdjdeHwmokuhGpVEk1g.oltCYGMKHKfWq_oyJmCOc2NLx
+ M0QKDoVFyrcr8eEcED1ozrfp.i4lm5ejItp_8yRix8sU090Gbe5uB9GVJZyq4U.A3WzKGHojOJoH
+ QjsVVleO8HiAIweox2NKSAGAW3q2l4Cxyrw3lSwAE7xdjD.e1Lk_oEfMozzxuzY__7QgQaBebqyv
+ 56F3wbxJHi3g.Nu3Ar0bupgDuRGZv6MRi1BHB8i4kMVHy3JAsbNTVYl0cpGYGhHoWs3WAIGsR8rM
+ Fxq0o1DGsOP9nGJYhx6xc6ej6hu5XJHuGI1dFbpSywnYVotuOosZOj_5oJMpiRf4yzlZtVA4A7gO
+ BhwYIlTWS1V9kY.JILSQx5dwIdtwjbMTP4aPQQjqVqqJs9bBL2kXb1_9w78D9OUPBXANjqmAvT6G
+ kEUg6m1bieWYfS6vlHWt8DsjrUBsF3hm2PA1z55rgY15XOoaI01UZm_dYOUlhstc7m3q_YSeCW59
+ 6xOcgGbiUsHCDX7QijWHDPrYvyAuDsA7ep6ivkAggTrFyE8HKvDZ3mZdR82A1j.7TZR2SX3GxZdT
+ TFBhUAtV7O28zhH6J..7oeZSH9ZmXyzkYMtPRFFhQQEG5pGCZ.4655eB7PxyIGIJV3cCYIR3Jy6_
+ sRFBUPafJP8EP4wR7fgYrw6IuK94s6u2GxAF.0HJVYB7FIRXDtUBAkrp3WQa.LvDJoUyhUPjp.BQ
+ RzFwT_uJsj9Km.G776np5IBZOL41iXmiJhSjonYKjMH3KRCFdLwHHd_DIXBOl0YAo6n1dhAvVhLM
+ SAaymhT0thWx5iG5AEDdV2I7v6Pwm5aA7UVrciqanRQ7rt3rlyAqJMEkfVSy.A0Xd3inJwbjXXlo
+ pIAJVWJIdDjZwF2B94PRBFmmux0YtkVOswO7tWcFlN_iKZl8HgK0tAMWHKHZh7J2ML.5m9tEFaOr
+ UuyV4PEdQxSTZ3tqfBofv_DYQUkRWI1.bXLXH3Qmk0evolKrkwsWGSxwylCyBf6t5NDRZnx_pHrO
+ 7MHe9NlbzEagJPSPo4ghcSKv1mfqbNpvZ7oqrbf3ZSoEVZi_Q51brZ8fh106TUCW1A4skOK4X9wU
+ fmXavqsfHwp9kHVy66NNHbifEil1.LOSjYPmldcKnK8jzlnZ8j2EAqmu3VRrrTFKLOFUdXb8ZF17
+ SjGpoi3z2qvxZc9Tv2k151KYyr7wZbKuxgC4EzcffDlPVSaVD6iut79FMgDNCELb1wq618cnA_Do
+ iISUHXgDVlKilK6alKg7mrPBkxv.U9Ar7KrT8U2Pluv_.FBbqNG7Vk97QT5XjJybnBafpBEqDxDq
+ ePyFx_h6d2D9gW3OgAN6n0zqc_YN5YiVzq.GfRVcTFZlAMv6.0oO8FWngq0tTFBuB6k0JzQ.Jbre
+ n4DcUOK01lxwiY1vcTT2OPfch1sM6w6Ae2tS5dmGLJyJ1JdN.TotHAWrxyEoOmbcMRrx0835T9A0
+ 9Kakdjpy0tahrY5QSc69NB81sm6DECfnBTUayB_nqo73n_UoyGXugdLBVuscJQMaLwD_YHJrlu7I
+ Rl70_x6BmjVa2QMhF8YEjLTwbuO3Zp0cy.OP_MHYpPMr_lN.VqhcrKnhxVXWWvCtEMZ2Nlyc_Pce
+ Sr7rp.SJXrQXSZA2Z9NcWRFLLlPGTMt5xzWnNnJXfRzdVOVY6R2Zft.alWIF0tcUfkU6DfqrIaug
+ d3tDxqPkmm1Q0QEUCNeIgatvu9ZPE.Xc1RIJp1N_JmEOBEAtjCUASfDt84Qy3AyT65P_DPIRY.E1
+ efNHmtPqwLXcHN6H1EimkHyym1aORHxFXSCoR2.f.Qgq_Td_LrhoNor0pV7X9nLOcdUgPerjpWm3
+ lIEq.2QdHxshrqIyS7nT4DpLuZaDENl._G55ZeBUPwN6YbYnyD4VvJEBkZfu8ANO6F0_WnerfvLR
+ 5rnonjgbq8QNDQRh0jMZVKWcIQA2x0B2bmwBofOHa_yOW3wBZO6IqmxQ97yO.kkskQPYcPTG5ytw
+ B2AbhbyGW3QKhV199nfXIFUe5u5VYbYeznKcdNo3cSwdc7foHQdBHq6abjSq0j6fOMUZNxLs2C_0
+ 2bmrwFD9gksqr7AlbqJnXJDkUtoIo3Ihi9.ZpxVrO5LHQn7XVBfo5ZVlHKRO4aJfMAF_U0Dba_iW
+ zg90LoWzRJGMyeRaVn9DfnipQdDyfiZD8Vn298B5mEPARL6NZkh1RghpXsLtvk_c4vkLYDv3zIui
+ 3Izj9dsmnM1Pf9y778sJuT4dPoofommct5wieINqD3nzPtGflFqYsgXbKCBjcGjye.dr7MkgOsmk
+ yqW4DpddehzMvstl6PX8aPguTxYj9PSzkY.8Z1FQuvDzf31ozj8HXFsWabLkQMmqbsrPe5JVtZX_
+ nsX1F9n7qgEn.3xfkFjeZo51rqoAKpxyoXRgduJs9oDp3CtwtH7GoJ5k3ddjAPnnGSO192Pdy2_x
+ KSysJnmNVEF9gOH_RqbX.QTjFm8F1K9HwyZuULWPGHxZzlzCtQXEBfBrT9Apb0cv2xPCZ9f2QlwP
+ 8cUl0HBgKGsoudg9YAsyzlOzOF9Fo7G2H52DRMMFRQ3hrjTWga_uFsnFN68b5UqfJ5iqfrG.po6g
+ o_CW1mOIIQcL8BMb9tpLPbWNcPLNDQlrYV8Eh7WPBdEpbS90FsDcHhHY_adqnfms431BEo5is7MF
+ LYpL20Tz9zl3xmUuZqGBXR2DS8JBecVNI.SPs7r2F0Wt51AA0ZSHu4.ZwsAb2nFuVNUO6B7sE.eC
+ luhnWMLsMvF5m01s3v_L.1aLhQjTJbQ7eLfRe39lJnA5a2nyljGp2Yr1Ic4bFCIxqtzcj1AFLkXL
+ 4mf5qLP5faReLmSXTbDo1bJy424sqG0THtDiXW0KzAVE4UluyGDknQHPeVxU6ntxmnMV.zT_fvmZ
+ 84a3sm_m4VW7.orrG3aT78yKrU5CKLJHGj.Kx4ITSPGxtM8KbqqXcrl2CzKcRwF6JSraFNRZZUSP
+ 8Fi7WeAsgHX1FLIAB1GyUHHn7W8.ild1uM1PmuScOGla2p_HRDUX0eyKT_vwgTZg8Bod1.YfHC7p
+ RVnAa4VumdPPZmErp_qOsnL6mnLlOjTZ0Ur_biIvDl_snuv9RWg0yNS3BWNVvv2B5rftQsYwZThn
+ FDZZPBlLHbdiEx6Iqb8YiGXVIm_mocJO5M0O6yaaUaF5b.kFDnCMK2nmQkVcRHi_JDaEi9JvCsDA
+ z5j7Kp1LhqMfY8urEtuJRwPYF1wyl8VFsWx6LcZ3b1O7wktZHCeHeYJujJMOtmlfaf9OR7rO609p
+ SswhatKm3_1KApY1KIgnRYhwy0LMGMvuRXF8hk6sqKWH_hFYiI9b2cyndeI55o859fivFRVKlqI3
+ k4Qs0ZuZdjt8__.eEgwdmCQdShlm_niXSNJwgpZVDUndE7hupHUUiJHyW2YPzfAXhkxzB04ut5Hn
+ MtD9r5Kl7n7GXUdAS_OoyDZ5b2LMJD_sPy40McA1_jR_elqmnDgNwzgC3cPYxb87if7kayqq_sYy
+ a0kKu92frrE5RCK5srIQbN1.YZjq6Xje0or2m.NTJg0Gs9ZlspbPgIceGc5Xk2uK_2TSFxg8c_ly
+ G5kyOlDHAnZzRG4ubchRBe8n4pu_nQFWldgUxZbyscKTJm6pxWBW.nFLVDQQ4ObJFMM9g40cYCUp
+ 6DkobenkVabrCdNqvwGW6qfydYw6T.Toerr.cv6DBQ4oXUFLYcFvDpiTLFSm4ENLWOkDagD5yUND
+ jA5x2FRpFy6vYkDfnSe_GtbCIdjYCEgqNXIhNYVqHPVYR3pIebvckfuG5A8B1YMY7lfTDijjcQTN
+ Pb0St.NN7u6Tj3HJOp2Vr0MccYhPhbM7PT84KM.cMSQZpqMnfBke6hHUs34INyQ5dPQ2xRh_zfTl
+ kBaEzDWwpONTyNDguAS79qPzaSD2UeFWMWfm7nd6K62PY1aa8QHjZLudvixJPL2qBcE31LEkxR6Z
+ SD8WeMeMyrWUOGUyRd84_6foE_z83L9OEicvpTZ_kia3_0hS9lFHNhwVqAgUvNggpWLFnlSQkUlM
+ sejDDnXbZjkkiZBRAXIORE2chzGhD3yM0Js.p0KwG0cYyqwiAhe4BbBPO2CLecfng0KF1jePFP8B
+ UAJCMR3emNneEYju24vdD6UJONnUg4upPjdN9MXwdbgJKl2eNl2Kej.aKwiK7ZlW.1spmRqeK4tr
+ cOOLLB4_IM5.jbDPyafgoulJ.ZaURzBkhjjnusNVImdQEMyjU03N2tMCENFQLGA2ZQiwJb7MZ3cZ
+ IXTjtCDAoAiuEfviMP2lvIrj35MPSmIBoOL5C3rXVT8dz47lf2FmQFb19V9mloDo5oQNjvLh_71g
+ 4tHN8Et8PwzDNbeXVI2puu5CsJbMJP8CFazioZlj04XCK2V6VYJAbgx9L57l2b.oWLENbPNV819m
+ foSxWPmEVocl_qk2i6TrnXlO21yoGiczx5fV1lQDKGLN9xGxPm8D9coVVGVh7f9qMBB9bGfyt1ds
+ vSOm0.qXYbMol_A3XZPqbK92mPONsrKYFqnzxX88RJLFRXuKd.9SXbQ24I1z.5c2teOXywldioAj
+ SCEi3j.5PiSWiisnzuLMjdivH2KCg.I8N.j4sRAnpDn1XnBDxs.g_uNQs.Isvyqv.Zdx9QKd6Rrv
+ 95udEoXdOtigxPZoUyjvjrvUSnPKuHrHgAolPqtJ3AGqMa0.FEfyk3PcR6BsDCjB.Qrg4DR5hv47
+ 5NyPc2fB6UYzrSJiTKxkPVIxDUmyPUKdD1bM26xMPbLGkCz.46eRmD1DyYFiN6yotHBx9vutoOXF
+ zI4K7G.NjvPHFYm.Vghwg5y4b3bHOJt3pyQOqwxsWFgOAeoBWb42vCMCnC50sJkFef9DmimkGCxY
+ rdtg8WSkYUdSXtc5WRKR.A2cjzeBvKsV236FlugFxLKv9X0Jcf9dYZ2Z9CsXVtxYcIcsQS0v9ufP
+ asX5ONLA8KUk1nCH3eE7Y.H9P416zo5mNZ7hNa0df42rh4kugSpkWrKG0wNPY6_Jbbl3V9DeqEV8
+ 0qXOZdaqAKzsBrjQ_4TIKCuE2Cx60owUWmmUZUt52.k_k7JvBxY9cNoUVrF7TzaSIrZjnmECQnp3
+ zaOWlcloKOavOGnaGB_GInZ13fO_ZEMgG6PsFeSBOZRSYB8R7lVHivc4VORlfZ0nsaIvn3Ylv_2v
+ MWIp7rzX16VUqIsUa20vz0k79dra8Z8fZWcl0Bbfp_pIgNuDSylm77n8glBFca.XoVnrefXHQlBJ
+ 9MVTZHG_wlnkR0YZ.3nTmNGAkjBc2fTELZf0wwnCEINRxgbqqYi.sP_.Caj3bcK8RmVIx1R75Kei
+ 7U0JRIFL1hJDqyA7.k3fT5FF9oIz9yQgLND4uEcUyThWsUaUYEQAwPckHDWGF1VRUWTC9h.GQ1Rn
+ kxZWgyzIZrw_UnU0x0R6cnUHMwCCtq_Ox3i_xKbBfJ3TgQknYXFA7DQScI7K9VTC5TnN6BbDM0Y.
+ ndwmOcBRR5QnAyyAtRaeGxPkeyq.ui7a51CC2igkbfE7KOP24sqCXKCX6xpwQOz6UN7kbbcA2Lkd
+ j4b81OvNp07v_uRtdLSLWQFzmXN0ukt3kodOYZwm5gEQvgoByFS9KdzB_JhPiF0YSR2p6x6xKn6F
+ NR5X2_UymfXQenlKgNnkbQFyty950Q8taWrok8C.HeJEmIFeedlX2RHcVp3pDFlx2lfz3IvZUOb9
+ 711uScYsPOObRky_H1L9jv.x5RCOmorGkVYR5juhm8y2l7a6eYs_uT6ZAqW9uTRsm4vLv4fXl2OM
+ rRLH8x2wEJV0AMMzcMtIw2khm1HKm78iu6ZxhTDLqt8T8.rkNO8QdxPSnAIiKy_yjfTIT5OFAuVm
+ XnItwYwzh4AjDBsLPNoLMw4KkPAct.YM9a0Pc7Ld6XJ.qAVGiavpGlKKIfHFCDJHWVha4FAt0UWc
+ sz79EuFXDN6s0bX8EkGVn1vhqQlwTKCo_DLfrnTDB5xMKNriSZTxjrwTnAD37xyJkGSyux6aqiZu
+ CnErgu6aSOivY2mfRIshAjsJYjVW9kg.Pn43VCG94j_.1tbZWZKRzH5zPHTP5B7QURmRiKKbB0TJ
+ wh5_CmZVMTIxm2NCxsAUgDsW5bF0K.4740utJLEWezVy9dTVrWUNgddwVVNWVnbpNyMP4RwGqVN8
+ 0lpHbxG_lQzqtqT_TkN1ZPfr.JNL5ced6TmwFUa5dK2.WfDd45EpsGr0CMJabzwg8HsHixCCkNfX
+ ERQ7DQtvrOYpdRciM4oIVOV9uPwP88KXlKQ_Ro51.cAuPKbq1rzRoLn8cNQw8zM3pwR1dqlluRIF
+ XaUtNYvKRNjBWL56q7k5hkxYlq6Sxplcp5KnnQxbp0OME8rZaG2SaDAtDrZga6b30S_8x9Volx.c
+ G8aoKcWvBeUh.ZcdY.S29z56dxSTg34_GKXqNzZd5gg2WQXRwCX8BBaJsMLnQ8_5hhzWTil2t.Tq
+ 1CsihRr5ho0zvojMWu9JcRsIuUw69dpZNg5_t_qRPi_ANTZxcupbZBF2cfP1YZFvVTPERDiU0PsG
+ X7nfPSn8dA8lFRxWgliyxCEtHhollnnOx4J5UHqBvEfrXh4Mdj0dOqSZov9spR74IFG8tghDiYhp
+ 51AL6BSxLDg.0zsl9HkHcaqVJgFxb79wlSFG4wt_o0PJXglKjfkdePeLshdD6PZdOyR2hdoaYLAa
+ SVXQZu_iPZzsFsLw0PWbm4vzkTHrqJDNa_ULmusm0zd58o6q5dH1RJsWJyVvXLLXFhCmH2EQMuUX
+ P5hOZj0j2vGqOJyr6FeK.E2WmXUQ5_O0iZtF9zfYjESAaJdeT5KwtastaTyBuDh6o465OmqC3VqG
+ 3VIFqj5hiuOF.Nq9lcZU.o84V_Gr0T_C6sxxzWiz0lHGFQds9GY9K7lZjYLptjWI_BmLNMWMW48g
+ roK7XcT6eWWoPAG3z0j25YbthdbAKLpw69pqQOfrUDbByMKed4v5kzcOeCj_7o.wS9m5hknjO0gY
+ r8kyfCCglKoC6wyDijtnHpAhSH1nAeLDF9q1aayX30E4h85MDTrIB85Vci5ZYc4tRKS7pLXN6xwm
+ f5DGOWlY400k1Ardv0EsIRlBLJUaYepJML.wNqc84tTUBf18RdXQXSmXHOU.T0TyK3Q.I3p4WIe7
+ rQ3JLzQZjUJFngKZ..mWXwy.Sy3PxhJS.7r_rU0c4NZ4KE1Zb.R8zYhTzX5jkUhbrNAlh7BUwYSZ
+ kCvjRgAVe1r3JKaVroD_Uxss1CyEzHdfpTg2Tm.5YZNMO_8I5hk6C72Cyr_U5Ck4CgO39ehwuv0t
+ nm7S6s6SFUSpS_j8M7.O2I3PZfe2t9F.AUlT4w0VYOupBV3DJjgk1ZpJIVa1FOubBc1ZvEiYEh9Q
+ rZebaH0BlbklKZKMzFh9fnwUdddtx53lkSc6PWa5IQDNmZXfa4a13ZDCjfzspgLPiqmXTbHV_uGc
+ wWgBkxtF7r8da5O1RYCNl9ob.MZHY8fFIXVL2tIXOyVihEeyobqbFfr9BMkHcLEXUsZBLdPuKTxH
+ Ilo_F8P4pvUx73jRJJG6ryXxcSm2w7_hSGbnYT6QKMlPSkQwtpt5fAtSUouyapgU1DFg1lKhhUP2
+ 1Jsw6KI0o1.wgewprLQCDyRYs5n5hT7Ti_JOp8MxBkXZc8dBxwN4j4TwdQfWhVZBJd1T0CJc_tWo
+ pamupeG5Nnnfo.xlZcJO91pjx5SwVKDLLLYMKy0hWbBwT8nFFtTP4rVUe6RAKI9Nk6_7K.7Q.Fdm
+ rxdAKDM3MzhLPctxkcYs.2Vvrmuv0JW78.YkBlTZVXHHV4pAVrodP0JsT6va.oUpRR0DZFfAmkpd
+ KHydcvxn3lDmy3mpho0YNzRgdfPGWMQbxJScm9z2HUlM7olAftwQtPm33f4w_s6_yl3cQPqvHcla
+ I1iiCDVpZaaayIijXIWPI9bIR7.KrRrLZnvGKetv3yfqC_Z3ZugWDTgycxRKYvHpDCVBxuWYAdNA
+ n8t1.VW6o1_kUq8EkNxuqvLfaAaP1t0GKmGx_TDklZqX6Rj12iIZudVa6EJiTVnj5oacfi1ksZ4b
+ K.UXklDVpDhVz4l488YTDh3f1IKuhJjT7I0ozVtJ5TJwxcJPUdzUErMonrN5lC6Z5b0GpssdyoO5
+ wrg0mM70M2.MUhccCZWCtEn7aksX8EGgll4zi_cd35vZJACteNoFY1Cg6HITN2QENdn1wa1Iavh_
+ uW3h19X19ydVGqKL69Ubf71n448BgO_2E_8V7j92Gma5e9SDqvcP3iznGoi7LntLZftQvdjcCogY
+ BAge_vsfTBQU3DtcejG6JRrWek2tYhW0aHkR0mgthRb_Qdt8vcteYhdBzNRUsf6.gT9rawKI6CoU
+ fRlSKhmQKXlP6Xs3xt5ZfcK2v2PUmhUxXJjwYU0NTh9SXVAkKolCuObdI_hWYQpFu5J5vuool_fk
+ W4N87xn9tgPJAGTcEsGfZ2uUWr8Z4FSIbNNTLgJzgOn4uNOFclk0494meIKfo7sREnEI-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Mon, 16 Nov 2020 13:20:49 +0000
+Date: Mon, 16 Nov 2020 13:20:48 +0000 (UTC)
+From: Global Financial Services SA <xxxx_lee@yahoo.com>
+Message-ID: <671769050.10565597.1605532848792@mail.yahoo.com>
+In-Reply-To: <1718162612.7256453.1605532792860@mail.yahoo.com>
+References: <525396845.7998440.1605115910708.ref@mail.yahoo.com> <525396845.7998440.1605115910708@mail.yahoo.com> <1733913056.9185753.1605276137144@mail.yahoo.com> <994015151.9304108.1605284286530@mail.yahoo.com> <1243972070.9307219.1605284303193@mail.yahoo.com> <2012465365.9299387.1605284326298@mail.yahoo.com> <1016367585.9299936.1605284347468@mail.yahoo.com> <1718162612.7256453.1605532792860@mail.yahoo.com>
+Subject: DO YOU NEED A FINANCIAL LOAN?
 MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: QMPVNCCGTXZG6UPMXNOSZ623NIYN3GBQ
-X-Message-ID-Hash: QMPVNCCGTXZG6UPMXNOSZ623NIYN3GBQ
-X-MailFrom: hhgahlenozr@netzero.net
+X-Mailer: WebService/1.1.16944 YMailNorrin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36
+Message-ID-Hash: 5KG6H26NNFSYNS4ZE6Q7NH36ZP424KBD
+X-Message-ID-Hash: 5KG6H26NNFSYNS4ZE6Q7NH36ZP424KBD
+X-MailFrom: xxxx_lee@yahoo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: hosamten@aliyun.com
+Reply-To: Global Financial Services SA <global.fs.za@consultant.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QMPVNCCGTXZG6UPMXNOSZ623NIYN3GBQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5KG6H26NNFSYNS4ZE6Q7NH36ZP424KBD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============2835355851746770860=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============2835355851746770860==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-Hi,<br /><br />How are you?<br /><span>Just want to check with you whethe=
-r
-you got our email from last week?&nbsp;</span><br /><br /><span>We have g=
-ot
-one new travel backpack in our stock, ready to&nbsp;ship to worldwide
-customers.</span><br /><span><br />Some features:<br />Large capacity<br
-/>Aanti-thief<br />USB Charging<br />17.3 inch<br />Waterproof<br
-/></span>Oxford material<br /><br />Price for different quantity:<br />1-=
-20
-units&nbsp; &nbsp;79.99 per piece<br />20-50 units 76.99 per piece<br
-/>50-100 units 72.99 per piece<br /><span data-bm=3D"49"><span
-data-bm=3D"49"><br />You can start to order it today, just reply our emai=
-l
-and send your shipping address, we arrange the shipping for you.<br /><br
-/><img src=3D"https://ae01.alicdn.com/kf/HTB1EHl2XsTxK1Rjy0Fgq6yovpXab.jp=
-g"
-width=3D"400" height=3D"404" /><img
-src=3D"https://ae01.alicdn.com/kf/HTB1zZX1XyYrK1Rjy0Fdq6ACvVXaF.jpg"
-width=3D"400" height=3D"422" /><br /><img
-src=3D"https://ae01.alicdn.com/kf/HTB1JhKCbcfrK1RkSmLyq6xGApXaT.jpg"
-width=3D"400" height=3D"432" /><img
-src=3D"https://ae01.alicdn.com/kf/HTB1O9QaimzqK1RjSZFHq6z3CpXaU.jpg"
-width=3D"400" height=3D"460" /><br /></span></span><img
-src=3D"https://ae01.alicdn.com/kf/HTB1TUp1XzDuK1Rjy1zjq6zraFXan.jpg"
-width=3D"400" height=3D"405" /><img
-src=3D"https://ae01.alicdn.com/kf/HTB1KUqNXua5K1Rjt_a0q6zGdVXah.jpg"
-width=3D"400" height=3D"243" /><br /><span data-bm=3D"49"><br />You can s=
-tart to
-order it today, just reply our email and send your shipping address, we
-arrange the shipping for you.<br /><br />Thanks,<br />Tony Young<br
-/></span>
-</body>
-</html>
-
---===============2835355851746770860==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============2835355851746770860==--
+IEdyZWV0aW5ncywNCg0KDQoNCsKgDQoNClRvIFdob20gSXQgTWF5IENvbmNlcm4sDQoNCsKgDQoN
+CldlLCB0aGUgR2xvYmFsIEZpbmFuY2lhbCBTZXJ2aWNlcyBhcmVvZmZlcmluZyBsb2FucyBhdCBh
+IHZlcnkgbG93IGludGVyZXN0IHJhdGUgb2bCoDMuNSXCoHBlciB5ZWFyLldlIG9mZmVyIFBlcnNv
+bmFsIGxvYW5zLCBEZWJ0IENvbnNvbGlkYXRpb24gTG9hbiwgVmVudHVyZSBDYXBpdGFsLCBCdXNp
+bmVzc0xvYW4sIEVkdWNhdGlvbiBMb2FuLCBIb21lIExvYW4gb3IgIkxvYW4gZm9yIGFueSByZWFz
+b24gYW5kIGZvciBhbGxjaXRpemVucyBhbmQgbm9uLWNpdGl6ZW5zIHdpdGggZWl0aGVyIGEgZ29v
+ZCBvciBiYWQgY3JlZGl0IGhpc3RvcnkuDQoNCsKgDQoNCkhhdmUgeW91IGJlZW4gdHVybmVkIGRv
+d24gYnkgeW91ciBiYW5rPyBEb3lvdSBoYXZlIGJhZCBjcmVkaXQ/IERvIHlvdSBoYXZlIHVucGFp
+ZCBiaWxscz8gQXJlIHlvdSBpbiBkZWJ0PyBCbGFja2xpc3RlZD9BcmUgeW91IHVuZGVyIERlYnQg
+cmV2aWV3PyBEbyB5b3UgbmVlZCB0byBzZXQgdXAgYSBidXNpbmVzcz8gV29ycnkgbm8gbW9yZSBh
+c3dlIGFyZSBoZXJlIHRvIG9mZmVyIHlvdSBhIGxvdyBpbnRlcmVzdCBsb2FuLg0KDQrCoA0KDQpP
+dXIgbG9hbiByYW5nZXMgZnJvbcKgVVMkMTAsIDAwMC4wMMKgKFRlbiBUaG91c2FuZFVuaXRlZCBT
+dGF0ZXMgRG9sbGFycykgdG/CoFVTJDI1LDAwMCwwMDAuMDDCoChUd2VudHkgRml2ZSBNaWxsaW9u
+IFVuaXRlZCBTdGF0ZXMgRG9sbGFycykuDQoNCsKgDQoNCkxvY2FsbHkgb3VyIGxvYW4gcmFuZ2Vz
+IGZyb23CoFIyMCwgMDAwLjAwwqAoVHdlbnR5VGhvdXNhbmQgUmFuZCkgdXAgdG8gdGhlIHN1bSBv
+ZsKgUjUsIDAwMCwwMDAuMDAoRml2ZSBNaWxsaW9uUmFuZCkuDQoNCsKgDQoNCsKgDQoNCklmIHlv
+dSBhcmUgaW50ZXJlc3RlZCBraW5kbHljb250YWN0IHVzIHdpdGggeW91cjoNCg0KMS4gRnVsbCBO
+YW1lcw0KDQoyLiBDb250YWN0IEFkZHJlc3MNCg0KMy4gT2NjdXBhdGlvbg0KDQo0LiBDb250YWN0
+IFRlbGVwaG9uZU51bWJlcnMNCg0KNS4gVHlwZSBvZiBsb2FuDQoNCjYuIExvYW4gQW1vdW50DQoN
+CjcuIER1cmF0aW9uIG9mIHJlcGF5bWVudA0KDQrCoA0KDQpEbyBub3QgaGVzaXRhdGUgdG8gY29u
+dGFjdCB1cyBvbiB0aGV0ZWxlcGhvbmUgYW5kIGVtYWlsIGFkZHJlc3MgYmVsb3cgZm9yIGZ1cnRo
+ZXIgY2xhcmlmaWNhdGlvbihzKS4NCg0KVGVsL1doYXRzQXBwOsKgwqArMjcgNjPCoDkyMzE3NDcN
+Cg0KRW1haWxBZGRyZXNzOsKgIGdsb2JhbC5mcy56YUBjb25zdWx0YW50LmNvbcKgDQoNCsKgDQoN
+Cldhcm0gUmVnYXJkcywNCg0KQ3VzdG9tZXIgU2VydmljZQ0KR2xvYmFsIEZpbmFuY2lhbCBTZXJ2
+aWNlc1B0eSBTb3V0aCBBZnJpY2EuDQogICAgICAgICAgICAgIApfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0t
+IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0
+byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
