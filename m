@@ -1,35 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DC22B4552
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Nov 2020 14:57:00 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE922B4886
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Nov 2020 16:09:11 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4EF5F100ED4AF;
-	Mon, 16 Nov 2020 05:56:58 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=78.189.111.192; helo=78.189.111.192.static.ttnet.com.tr; envelope-from=taupexkl872@mta.notifications.intuit.com; receiver=<UNKNOWN> 
-Received: from 78.189.111.192.static.ttnet.com.tr (unknown [78.189.111.192])
-	by ml01.01.org (Postfix) with ESMTP id 35862100ED4AD;
-	Mon, 16 Nov 2020 05:55:52 -0800 (PST)
-Received: from [4.52.155.205] (account necessitatedwrm924@amazonaws.com HELO psr.xy.qcx)
-	by 78.189.111.192.static.ttnet.com.tr (Exim 4.89)
-	with ESMTPA id 4E4906E6A2 for linux-nvdimm@lists.01.org; Mon, 16 Nov 2020 15:55:51 +0200
-From: "Invoice-notification@ups.com" <Invoice-notification@ups.com>
+	by ml01.01.org (Postfix) with ESMTP id 4734D100ED4B6;
+	Mon, 16 Nov 2020 07:09:09 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=77.43.86.106; helo=mail.censis.it; envelope-from=periwigszk79@njppsappsagent8.ups.com; receiver=<UNKNOWN> 
+Received: from mail.censis.it (unknown [77.43.86.106])
+	by ml01.01.org (Postfix) with ESMTP id 2C0FD100ED4B4;
+	Mon, 16 Nov 2020 07:09:00 -0800 (PST)
+Received: from [3.126.137.79] (helo=mrm.ne.njppsappsagent8.ups.com)
+	by mail.censis.it with esmtpa
+	(envelope-from )
+	id 6CF076A004
+	for linux-nvdimm@lists.01.org; Mon, 16 Nov 2020 16:08:59 +0100
+Received: from [30.73.206.13] (account periwigszk79@njppsappsagent8.ups.com HELO lhyylkbg.ihtydzub.swd)
+	by mail.censis.it (Exim 4.89)
+	with ESMTPA id 0BC084196E2E for linux-nvdimm@lists.01.org; Mon, 16 Nov 2020 16:08:59 +0100
 To: linux-nvdimm@lists.01.org
 Subject: UPS Invoice Notification
+From: "Invoice-notification@ups.com" <Invoice-notification@ups.com>
+Message-ID: <037079.67236.os@qmalh.dmrgdmqakq.njppsappsagent8.ups.com>
+Date: Mon, 16 Nov 2020 16:08:59 +0100
 MIME-Version: 1.0
-Message-ID: <220057.20201116155551@SAGAFAQ.RERAFYF.se>
-Date: Mon, 16 Nov 2020 15:55:51 +0200
-Message-ID-Hash: RUWUOMAPTDX6DDKCH26EXJ35HWKM5SXV
-X-Message-ID-Hash: RUWUOMAPTDX6DDKCH26EXJ35HWKM5SXV
-X-MailFrom: taupexkl872@mta.notifications.intuit.com
+Message-ID-Hash: C7V6HU23JP5WLLRUOXL33L3E7FOXHFSV
+X-Message-ID-Hash: C7V6HU23JP5WLLRUOXL33L3E7FOXHFSV
+X-MailFrom: periwigszk79@njppsappsagent8.ups.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: "Invoice-notification@ups.com" <Invoice-notification@ups.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RUWUOMAPTDX6DDKCH26EXJ35HWKM5SXV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C7V6HU23JP5WLLRUOXL33L3E7FOXHFSV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
