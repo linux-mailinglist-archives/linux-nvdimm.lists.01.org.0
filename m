@@ -1,64 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89412B7827
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 18 Nov 2020 09:08:21 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932C82B78F4
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 18 Nov 2020 09:42:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5700E100EBBC9;
-	Wed, 18 Nov 2020 00:08:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C6D3E100EBBCB;
+	Wed, 18 Nov 2020 00:42:01 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN> 
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 881B2100EBBC7
-	for <linux-nvdimm@lists.01.org>; Wed, 18 Nov 2020 00:08:17 -0800 (PST)
-Received: by mail-ed1-x541.google.com with SMTP id q16so983906edv.10
-        for <linux-nvdimm@lists.01.org>; Wed, 18 Nov 2020 00:08:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MYkzksRNaGbOMgyJtFrKrhjpOwtjgLuKKLI9H1meENs=;
-        b=xCWG2WDkXGUHEmmvlIEXs8mX9u3sb6FB0q9LFul6OKzhcg+CIPpbHyWVJyUIcZ6U0c
-         CxzCSvsRY1fmsdf7hUe3PrzVMR4XzcBUH5/oDkRiRzgCDh1l3MGg9f7qpopJPDhA/Osf
-         naXIzRtC+tCcAsimW4BCW/g1+nTYFw7Px93SotOJsq6n0lSPMi1qM3+8nb320uD64Ba8
-         gLMznJOGDpF+y5CXx6brPuOqhhmOYYTNKbiw7OmMCngWtim6jtwlUlja+b94KEBDE01Z
-         cClj/K8TpXVCCPjufmUZeja80w0hx/6KOG/M8vvoGE9/WY1lxBvSZ/eKf0rV7Sw9spuE
-         MEzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MYkzksRNaGbOMgyJtFrKrhjpOwtjgLuKKLI9H1meENs=;
-        b=eRn2K12mdwSjEaqMvD5eENaCvKm+4CXGv+BrdIm/6tzbd6nsID3IssbDViSsKiV43/
-         zuzGpfMk7HNLoWAQFzIC0Jjqk4whiXJAYl0HbwkRDSGXjVuBnLgL8Kx0ZKoZpf+xsVlk
-         Myn13ii01UUZgs/dFe/gyoecGhd7W7f0UCjhl2UoJ9aBXYB1rpKk4XN+TCR5dB0GKsES
-         rDOzXlnxk3UJKknm0ykIixOYph5woMRBIvSt1juXM/DE66BlN5RmlIjvPJpO43sniprs
-         r0ZGx9BhKzrtoEvjfS3rUBmDSQCsNBEaFu9n0bZlRgTwV6tjwbEZHx10O4UqBPM79O4p
-         og4g==
-X-Gm-Message-State: AOAM532knsDzXPIodVfQ0++jaZ+xw7plbEKjoScCSdiXMY+Beho/tg0W
-	SaUrNqj4kA8DKXMjr5lHlfMc9C+nTMSWF6I6K/pTKA==
-X-Google-Smtp-Source: ABdhPJyIpjJgJazX4fTSFDsxCZTxH/xxyf4fTir1+gkSOwPp8hbM6quT/hXeCY699yN511XwzGCCUFGquOJ6Buwje7k=
-X-Received: by 2002:a05:6402:144f:: with SMTP id d15mr25196770edx.300.1605686895096;
- Wed, 18 Nov 2020 00:08:15 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 5FA5A100EBBB8
+	for <linux-nvdimm@lists.01.org>; Wed, 18 Nov 2020 00:41:57 -0800 (PST)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Cbbrg6TyTz15NJp;
+	Wed, 18 Nov 2020 16:41:39 +0800 (CST)
+Received: from thunder-town.china.huawei.com (10.174.176.144) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 18 Nov 2020 16:41:47 +0800
+From: Zhen Lei <thunder.leizhen@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
+	<ira.weiny@intel.com>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, Len Brown
+	<lenb@kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-acpi
+	<linux-acpi@vger.kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/1] ACPI/nfit: correct the badrange to be reported in nfit_handle_mce()
+Date: Wed, 18 Nov 2020 16:41:17 +0800
+Message-ID: <20201118084117.1937-1-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.26.0.windows.1
 MIME-Version: 1.0
-References: <20201118073517.1884-1-thunder.leizhen@huawei.com>
-In-Reply-To: <20201118073517.1884-1-thunder.leizhen@huawei.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 18 Nov 2020 00:08:03 -0800
-Message-ID: <CAPcyv4iECY-XoJ=jhARDDqjv-j8fnOUiKxB9Z+M5J+kMoeeWhA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI/nfit: avoid accessing uninitialized memory in acpi_nfit_ctl()
-To: Zhen Lei <thunder.leizhen@huawei.com>
-Message-ID-Hash: TIPN7UF5HCWDKWWVFNYPLQTHOAPIFGQ2
-X-Message-ID-Hash: TIPN7UF5HCWDKWWVFNYPLQTHOAPIFGQ2
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Rafael J . Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-acpi <linux-acpi@vger.kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>
+X-Originating-IP: [10.174.176.144]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: H7Z536TNK6HK76HRRYCD7EEIQTVQGKLV
+X-Message-ID-Hash: H7Z536TNK6HK76HRRYCD7EEIQTVQGKLV
+X-MailFrom: thunder.leizhen@huawei.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Zhen Lei <thunder.leizhen@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TIPN7UF5HCWDKWWVFNYPLQTHOAPIFGQ2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/H7Z536TNK6HK76HRRYCD7EEIQTVQGKLV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,19 +50,29 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 17, 2020 at 11:36 PM Zhen Lei <thunder.leizhen@huawei.com> wrote:
->
-> The ACPI_ALLOCATE() does not zero the "buf", so when the condition
-> "integer->type != ACPI_TYPE_INTEGER" in int_to_buf() is met, the result
-> is unpredictable in acpi_nfit_ctl().
->
-> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+The badrange to be reported should always cover mce->addr.
 
-Looks good to me.
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+---
+ drivers/acpi/nfit/mce.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+diff --git a/drivers/acpi/nfit/mce.c b/drivers/acpi/nfit/mce.c
+index ee8d9973f60b..053e719c7bea 100644
+--- a/drivers/acpi/nfit/mce.c
++++ b/drivers/acpi/nfit/mce.c
+@@ -63,7 +63,7 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
+ 
+ 		/* If this fails due to an -ENOMEM, there is little we can do */
+ 		nvdimm_bus_add_badrange(acpi_desc->nvdimm_bus,
+-				ALIGN(mce->addr, L1_CACHE_BYTES),
++				ALIGN_DOWN(mce->addr, L1_CACHE_BYTES),
+ 				L1_CACHE_BYTES);
+ 		nvdimm_region_notify(nfit_spa->nd_region,
+ 				NVDIMM_REVALIDATE_POISON);
+-- 
+2.26.0.106.g9fadedd
 
-I'll pick this up.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
