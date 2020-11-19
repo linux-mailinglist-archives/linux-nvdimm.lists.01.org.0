@@ -2,69 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC412B9073
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Nov 2020 11:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0BA2B9024
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Nov 2020 11:32:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0E0FA100EBB86;
-	Thu, 19 Nov 2020 02:58:41 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=165.84.180.110; helo=fjdigihfdg.monster; envelope-from=xwsebdbtf@fjdigihfdg.monster; receiver=<UNKNOWN> 
-Received: from fjdigihfdg.monster (165084180110.ctinets.com [165.84.180.110])
-	by ml01.01.org (Postfix) with ESMTP id 2E53E100EC1C4
-	for <linux-nvdimm@lists.01.org>; Thu, 19 Nov 2020 02:58:37 -0800 (PST)
-Sender: xwsebdbtf@fjdigihfdg.monster
-Message-ID: <6008E871D87EA5FE9CEA41F21F2FE15B@fjdigihfdg.monster>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <thankyou@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44CR77yc5LiJ5LqV5L2P5Y+L44Kr44O844OJ77ye44GU5Yip55So56K66KqN44Gu44GK?=
-	=?utf-8?B?6aGY44GE?=
-Date: Thu, 19 Nov 2020 18:58:33 +0800
-Mime-Version: 1.0
+	by ml01.01.org (Postfix) with ESMTP id E2724100EC1C4;
+	Thu, 19 Nov 2020 02:32:45 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=137.236.4.43; helo=mailoutd.xpedite.com; envelope-from=jmsbfrn@ownmail.net; receiver=<UNKNOWN> 
+Received: from mailoutd.xpedite.com (mailoutd.xpedite.com [137.236.4.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 1AA25100EF252
+	for <linux-nvdimm@lists.01.org>; Thu, 19 Nov 2020 02:32:43 -0800 (PST)
+Received: from [10.230.230.81] ([10.230.230.81:54751] helo=User)
+	by tf-vmsmta-p002.xpedite.com (envelope-from <jmsbfrn@ownmail.net>)
+	(ecelerity 4.2.31.59853 r(Core:4.2.31.1)) with ESMTP
+	id D7/DB-07884-DB946BF5; Thu, 19 Nov 2020 05:32:42 -0500
+Message-ID: <D7.DB.07884.DB946BF5@tf-vmsmta-p002.xpedite.com>
+From: "HSBC London Office"<jmsbfrn@ownmail.net>
+Subject: (BANK ALERT) About Your Fund//   
+Date: Thu, 19 Nov 2020 09:32:41 -0800
+MIME-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19867
-Message-ID-Hash: 7RJNCIDU74GIUDTVJAH4NCI3N3OOW2WI
-X-Message-ID-Hash: 7RJNCIDU74GIUDTVJAH4NCI3N3OOW2WI
-X-MailFrom: xwsebdbtf@fjdigihfdg.monster
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID-Hash: SJ62GZ6IIEQJ4Z6PRV7Z7BUHVINJ5BFZ
+X-Message-ID-Hash: SJ62GZ6IIEQJ4Z6PRV7Z7BUHVINJ5BFZ
+X-MailFrom: jmsbfrn@ownmail.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: henrybanko1970@yahoo.co.jp
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7RJNCIDU74GIUDTVJAH4NCI3N3OOW2WI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SJ62GZ6IIEQJ4Z6PRV7Z7BUHVINJ5BFZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQogDQoNCg0K5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or
-6YCB5Y+X5L+h44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLDQrp
-h43opoHjgarpgJrnn6Xjgajjgarjgorjgb7jgZnjgIINCg0K44GE44Gk44KC5byK56S+44Kr44O8
-44OJ44KS44GU5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ
-44CCDQoNCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip55So44Gu5oCl5aKX44Gr5Ly044GE
-44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW44K344K544OG44Og44CN44KS5bCO
-5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvjg7zjg4njga7jgZTliKnnlKjjgavl
-r77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPjgabjgYrjgorjgb7jgZnjgIINCg0K
-44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS56K6
-6KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX44Gf
-44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So44KS
-5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm44GE
-44Gf44Gg44GN44G+44GX44Gf44CCDQoNCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
-44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
-5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHj
-garjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozj
-govjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXj
-gYTjgIINCg0KDQrilqDjgZTliKnnlKjnorroqo3jga/jgZPjgaHjgonilqANCg0K44CAIA0KDQoN
-CuiHs+aApeOAgVMgTSBCIEPjgqvjg7zjg4nkvJrlk6HjgrXjg7zjg5Pjgrnjgavmg4XloLHjgpLl
-ho3nmbvpjLLjgZfjgabjgY/jgaDjgZXjgYQNCg0KDQrilqDnmbrooYzogIXilqANCuS4ieS6leS9
-j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K44CAaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbS8N
-CuOAkjEwNS04MDExIOadseS6rOmDvea4r+WMuua1t+WyuDHkuIHnm64y55WqMjDlj7cg5rGQ55WZ
-44OT44Or44OH44Kj44Oz44KwDQoNCg0KDQoNCuOAgA0KQ29weXJpZ2h0IChDKSAyMDIwIFN1bWl0
-b21vIE1pdHN1aSBDYXJkIENvLiwgTHRkLg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
-ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
-dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+HSBC BANK PLC LONDON.(REGISTERED NO.1026167). 
+ADDRESS: 8 CANADA SQUARE, CANARY WHARF, LONDON E14 5HQ, UK.
+
+Attn: Beneficiary,
+
+We write to inform you that Series of meetings have been held with the Secretary General of United Nations,U.S Department of State, the meeting ended this week.
+
+During the meeting we discovered that you have not receive your long overdue part payment of US$21.5M due to past corrupt Government Officials who almost held the funds to themselves for their selfish reason and some individuals who have taken advantage in an attempt to defraud you, which has led to unnecessary delay in releasing the funds to you.
+
+The United Nations/ U.S. Department of State have successfully passed a payment mandate to our bank, to clear all over due Contract funds, Lottery winnings, Inheritance/Investment funds owed to you and other individuals/organizations who have been found not to have receive their long overdue payment.
+
+A woman by name (MRS: CINDY MAY A CITIZEN OF USA) submit an application to our bank stating that you gave her the power of attorney to be the beneficiary of your Outstanding fund. She made us to believe that you are dead and that she is your next of kin. We decided to send you email through this address hoping to find out if you are dead or alive and also to find out if you at any time gave her the power of attorney to represent you, we decided to contact you before we can take any action because of the sensitivity nature of the transaction and the amount of money that is involved:
+
+For immediate release of your $21.5M to you legally as the legal recipient if you are alive and did not authorize her at any time, you are required to reconfirm YOUR FULL NAME, CURRENT ADDRESS AND DIRECT CELL PHONE NUMBER for onward proceeding on how you are going to receive the said funds legally without any problem either now or in future. Treat as urgent.
+
+Yours Sincerely,
+
+Mr. Noel Quinn
+HSBC Chief Executive Officer .
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
