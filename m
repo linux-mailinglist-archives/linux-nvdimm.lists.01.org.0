@@ -2,48 +2,45 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB562BA093
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 20 Nov 2020 03:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B09752BA099
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 20 Nov 2020 03:45:23 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7A1DD100EF25D;
-	Thu, 19 Nov 2020 18:37:33 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	by ml01.01.org (Postfix) with ESMTP id 15CBA100EF25F;
+	Thu, 19 Nov 2020 18:45:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=liuzhiqiang26@huawei.com; receiver=<UNKNOWN> 
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C28A1100EF25B
-	for <linux-nvdimm@lists.01.org>; Thu, 19 Nov 2020 18:37:30 -0800 (PST)
-IronPort-SDR: CtkMlwIei1cS4DCQ0eH1Cgo9vU256EkkeKPFS1g+adSOiM9GwTekkYs1OkYj9Gdf0rVeaDyYV0
- itFXg/GVS2NQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9810"; a="170621281"
-X-IronPort-AV: E=Sophos;i="5.78,354,1599548400";
-   d="scan'208";a="170621281"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2020 18:37:27 -0800
-IronPort-SDR: se48A92A3Rjjbj82vDLQNjUawRaPJYHp0AEK6ud2eVbHNrsJr7w5iADqyU9lMC3A1+OYV/dD0e
- YILW692w9Vfw==
-X-IronPort-AV: E=Sophos;i="5.78,354,1599548400";
-   d="scan'208";a="360268598"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2020 18:37:25 -0800
-Subject: [ndctl PATCH] ndctl/namespace: Reconfigure in-place
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Thu, 19 Nov 2020 18:37:25 -0800
-Message-ID: <160583984571.3214303.18399638980700230679.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id 25302100EF25D
+	for <linux-nvdimm@lists.01.org>; Thu, 19 Nov 2020 18:45:18 -0800 (PST)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CcgrC46PCzhdMM
+	for <linux-nvdimm@lists.01.org>; Fri, 20 Nov 2020 10:44:59 +0800 (CST)
+Received: from [127.0.0.1] (10.174.176.238) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Fri, 20 Nov 2020
+ 10:45:08 +0800
+Subject: Re: [ndctl PATCH 0/8] fix serverl issues reported by Coverity
+To: <vishal.l.verma@intel.com>, <steve.scargall@intel.com>
+References: <bed3b3b3-1f30-6751-c0bf-15ecf70192f9@huawei.com>
+From: Zhiqiang Liu <liuzhiqiang26@huawei.com>
+Message-ID: <5a9465d5-b933-3b74-bd74-7e18e48a7467@huawei.com>
+Date: Fri, 20 Nov 2020 10:45:06 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Message-ID-Hash: C7HR7AU6E52SPY6W6JWSJAOFXAIIG7M7
-X-Message-ID-Hash: C7HR7AU6E52SPY6W6JWSJAOFXAIIG7M7
-X-MailFrom: dan.j.williams@intel.com
+In-Reply-To: <bed3b3b3-1f30-6751-c0bf-15ecf70192f9@huawei.com>
+Content-Language: en-US
+X-Originating-IP: [10.174.176.238]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: YVBXGBTJECG3E6JCDBKSEPSCY464YMVS
+X-Message-ID-Hash: YVBXGBTJECG3E6JCDBKSEPSCY464YMVS
+X-MailFrom: liuzhiqiang26@huawei.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Steve Scargall <steve.scargall@intel.com>
+CC: linux-nvdimm@lists.01.org, linfeilong <linfeilong@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C7HR7AU6E52SPY6W6JWSJAOFXAIIG7M7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YVBXGBTJECG3E6JCDBKSEPSCY464YMVS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,184 +49,40 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-While it has been documented that the namespace reconfiguration process
-involves destroying and recreating a namespace, the kernel device changing
-as result of a reconfigure operation is surprising. For example a sequence
-like:
+Friendly ping...
 
-ndctl create-namespace -s 4G
-ndctl create-namespace -s 4G
-ndctl create-namespace -s 4G
+I just wonder if this kind of patches will not be reviewed
+and processed.
 
-Results in 3 namespaces:
+I`d be very happy to receive any feedback.
 
-namespace0.0
-namespace0.1
-namespace0.2
-
-...whereby after each creation step the next seed is incremented. At the
-end of this process namespace0.3 is the next namespace that will be
-created. However, when reconfiguration also picks the seed for the target
-vessel of the new namespace configuration it is unexpected that:
-
-ndctl create-namespace -e namespace0.1 -m sector
-
-...results in namespace0.3 becoming enabled.
-
-Teach the reconfigure path in ndctl to try to reuse the existing kernel
-device whenever possible.
-
-Reported-by: Steve Scargall <steve.scargall@intel.com>
-Link: https://github.com/pmem/ndctl/issues/152
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- ndctl/namespace.c |   69 +++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 45 insertions(+), 24 deletions(-)
-
-diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-index f61e0fcda015..f223650628b8 100644
---- a/ndctl/namespace.c
-+++ b/ndctl/namespace.c
-@@ -1091,11 +1091,10 @@ static int zero_info_block(struct ndctl_namespace *ndns)
- 	return rc;
- }
- 
--static int namespace_destroy(struct ndctl_region *region,
-+static int namespace_prep_reconfig(struct ndctl_region *region,
- 		struct ndctl_namespace *ndns)
- {
- 	const char *devname = ndctl_namespace_get_devname(ndns);
--	unsigned long long size;
- 	bool did_zero = false;
- 	int rc;
- 
-@@ -1109,12 +1108,12 @@ static int namespace_destroy(struct ndctl_region *region,
- 		error("%s is active, specify --force for re-configuration\n",
- 				devname);
- 		return -EBUSY;
--	} else {
--		rc = ndctl_namespace_disable_safe(ndns);
--		if (rc)
--			return rc;
- 	}
- 
-+	rc = ndctl_namespace_disable_safe(ndns);
-+	if (rc)
-+		return rc;
-+
- 	ndctl_namespace_set_enforce_mode(ndns, NDCTL_NS_MODE_RAW);
- 
- 	rc = zero_info_block(ndns);
-@@ -1126,6 +1125,7 @@ static int namespace_destroy(struct ndctl_region *region,
- 	switch (ndctl_namespace_get_type(ndns)) {
-         case ND_DEVICE_NAMESPACE_PMEM:
-         case ND_DEVICE_NAMESPACE_BLK:
-+		rc = 2;
- 		break;
- 	default:
- 		/*
-@@ -1137,14 +1137,31 @@ static int namespace_destroy(struct ndctl_region *region,
- 			rc = 0;
- 		else
- 			rc = 1;
--		goto out;
-+		break;
- 	}
- 
-+	return rc;
-+}
-+
-+static int namespace_destroy(struct ndctl_region *region,
-+		struct ndctl_namespace *ndns)
-+{
-+	const char *devname = ndctl_namespace_get_devname(ndns);
-+	unsigned long long size;
-+	int rc;
-+
-+	rc = namespace_prep_reconfig(region, ndns);
-+	if (rc < 0)
-+		return rc;
-+
- 	size = ndctl_namespace_get_size(ndns);
- 
--	rc = ndctl_namespace_delete(ndns);
--	if (rc)
--		debug("%s: failed to reclaim\n", devname);
-+	/* Labeled namespace, destroy label / allocation */
-+	if (rc == 2) {
-+		rc = ndctl_namespace_delete(ndns);
-+		if (rc)
-+			debug("%s: failed to reclaim\n", devname);
-+	}
- 
- 	/*
- 	 * Don't report a destroyed namespace when no capacity was
-@@ -1153,7 +1170,6 @@ static int namespace_destroy(struct ndctl_region *region,
- 	if (size == 0 && rc == 0)
- 		rc = 1;
- 
--out:
- 	return rc;
- }
- 
-@@ -1167,7 +1183,7 @@ static int enable_labels(struct ndctl_region *region)
- 
- 	/* no dimms => no labels */
- 	if (!mappings)
--		return 0;
-+		return -ENODEV;
- 
- 	count = 0;
- 	ndctl_dimm_foreach_in_region(region, dimm) {
-@@ -1182,7 +1198,7 @@ static int enable_labels(struct ndctl_region *region)
- 
- 	/* all the dimms must support labeling */
- 	if (count != mappings)
--		return 0;
-+		return -ENODEV;
- 
- 	ndctl_region_disable_invalidate(region);
- 	count = 0;
-@@ -1250,23 +1266,28 @@ static int namespace_reconfig(struct ndctl_region *region,
- 	if (rc)
- 		return rc;
- 
--	rc = namespace_destroy(region, ndns);
-+	rc = namespace_prep_reconfig(region, ndns);
- 	if (rc < 0)
- 		return rc;
- 
- 	/* check if we can enable labels on this region */
- 	if (ndctl_region_get_nstype(region) == ND_DEVICE_NAMESPACE_IO
- 			&& p.autolabel) {
--		/* if this fails, try to continue label-less */
--		enable_labels(region);
--	}
--
--	ndns = region_get_namespace(region);
--	if (!ndns || !ndctl_namespace_is_configuration_idle(ndns)) {
--		debug("%s: no %s namespace seed\n",
--				ndctl_region_get_devname(region),
--				ndns ? "idle" : "available");
--		return -ENODEV;
-+		/*
-+		 * If this fails, try to continue label-less, if this
-+		 * got far enough to invalidate the region than @ndns is
-+		 * now invalid.
-+		 */
-+		rc = enable_labels(region);
-+		if (rc != -ENODEV)
-+			ndns = region_get_namespace(region);
-+		if (!ndns || (rc != -ENODEV
-+				&& !ndctl_namespace_is_configuration_idle(ndns))) {
-+			debug("%s: no %s namespace seed\n",
-+					ndctl_region_get_devname(region),
-+					ndns ? "idle" : "available");
-+			return -ENODEV;
-+		}
- 	}
- 
- 	return setup_namespace(region, ndns, &p);
+On 2020/11/6 17:23, Zhiqiang Liu wrote:
+> 
+> Recently, we use Coverity to analysis the ndctl package.
+> Several issues should be resolved to make Coverity happy.
+> 
+> lihaotian9 (8):
+>   namespace: check whether pfn|dax|btt is NULL in setup_namespace
+>   lib/libndctl: fix memory leakage problem in add_bus
+>   libdaxctl: fix memory leakage in add_dax_region()
+>   dimm: fix potential fd leakage in dimm_action()
+>   util/help: check whether strdup returns NULL in exec_man_konqueror
+>   lib/inject: check whether cmd is created successfully
+>   libndctl: check whether ndctl_btt_get_namespace returns NULL in
+>     callers
+>   namespace: check whether seed is NULL in validate_namespace_options
+> 
+>  daxctl/lib/libdaxctl.c |  3 +++
+>  ndctl/dimm.c           | 12 +++++++-----
+>  ndctl/lib/inject.c     |  8 ++++++++
+>  ndctl/lib/libndctl.c   |  1 +
+>  ndctl/namespace.c      | 23 ++++++++++++++++++-----
+>  test/libndctl.c        | 16 +++++++++++-----
+>  test/parent-uuid.c     |  2 +-
+>  util/help.c            |  8 +++++++-
+>  util/json.c            |  3 +++
+>  9 files changed, 59 insertions(+), 17 deletions(-)
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
