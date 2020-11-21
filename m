@@ -2,87 +2,82 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E66092BB3F0
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 20 Nov 2020 19:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C512BBD71
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 21 Nov 2020 06:51:50 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 266D9100EBBB3;
-	Fri, 20 Nov 2020 10:43:13 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2ABAE100ED48E;
+	Fri, 20 Nov 2020 21:51:49 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.68.149.170; helo=ceo6.openceotrendevent.info; envelope-from=info-linux+2dnvdimm=lists.01.org@openceotrendevent.info; receiver=<UNKNOWN> 
+Received: from ceo6.openceotrendevent.info (ip170.ip-51-68-149.eu [51.68.149.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 01471100ED484
-	for <linux-nvdimm@lists.01.org>; Fri, 20 Nov 2020 10:43:09 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id oq3so14242370ejb.7
-        for <linux-nvdimm@lists.01.org>; Fri, 20 Nov 2020 10:43:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uWG6CUV3RIK6FRcfWDlUWaPCHMD6i3u8L9cc344l/ZI=;
-        b=S0TOt6fHDESdJwK3Ace0+w4uisF6ORTa3OHhqLbQcMISwuGZEloIM3NDpuwkWLX3jc
-         fkA+mBpPl1Wdn9EiI9fC9/nnwNQF4bYf+ggE3FbikCIXxIZj1VDiTCnTUpvPfKUueto4
-         47XcHxZ+HRvWuMbX8xlJ7AlfPu9CipMcejCW7YsJDrOGJ1HkwSsDFaMU5hvBc+z6zZqF
-         oWZMwAOwXozvGAdQuhZl2yq21MZI32UhRWCCbU+4rRKW1cIRN2dUe2oZc0WDj0phsoPJ
-         xdSVhdtyugG/iHxWRzDwxsfNeiEnrd7/QU4DXLx9GvQGbsPHW7qKBCbBmuUZbDub1Kub
-         4vUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uWG6CUV3RIK6FRcfWDlUWaPCHMD6i3u8L9cc344l/ZI=;
-        b=rEEndz6ZxGWL9uYsOAIs+MGkRS3ev4Wpkir6ZgPOhPvyP7mx/F9RWqCqeRWTVSbpC6
-         dsl35LTfpk6XXs26Qe5aXCxPqD7sAvoVazhZHvYm+jB3reEQBg2uvhVeIB36J6J4+QED
-         be1OQ08dCM8kYw0kYy9bFSXbcZgen1ggLCPqhPKKG8bPwGSdXgkDlEmLU7dJNmV6O6ex
-         MEVAoX8p9L2f+En91LjAC63OL0uhtVMzdf9IDVcd4yddAzKp63wEC/9+jUjzOhZJqn4x
-         qDPZecrKNF/PTbF2szvGeKB7wxtYxDTAjO+PYsSoPZ+e8AbB+VhNKFGaS5vD7OZ1NcUZ
-         /u7w==
-X-Gm-Message-State: AOAM533DEerjmWlU8e0MuEGuo78fvoOqwMxt6s+BrWpiTz3b7Zr1lgWs
-	B9qCQLfq7TCUyfxpu2Htnzyp+G0bpw5OvkM+T56O+w==
-X-Google-Smtp-Source: ABdhPJzGGhvdpmWXuK+bFcP+csDTYmNEoWzduNtXQWYK60XEblraIPI6XJIniJSevq69L9VT5EQNg2tEp7BuZXZmwNU=
-X-Received: by 2002:a17:906:ad8e:: with SMTP id la14mr30194681ejb.264.1605897787978;
- Fri, 20 Nov 2020 10:43:07 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 9254B100ED48D
+	for <linux-nvdimm@lists.01.org>; Fri, 20 Nov 2020 21:51:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=openceotrendevent.info;
+ h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=info@openceotrendevent.info;
+ bh=TTI+EjLAoaQAcYW2ILF/Bot/cPE=;
+ b=c1o+iM53z7WWQozQ7FCtbWCfq28NZBO/v5CVYc63Pb/425CZMz1PfDLHR0YMwpIoM3rOi83u3MB+
+   ujZcH44V5cCE/+FkoNJm/DGAzCxg1Kt7BS8sfElDR0t84PySYu9Rv1LqhF2XgimVXrDExXIiHmku
+   aLhpAQB8YXCdaDCwVK4l4QOl8uvvS7sUhdxr2ArmCwGQqPh9UcBm5P3VHleiLSaAcKd6GDeqI32Z
+   D5G4eHDAqNNE/N5CRLRseH2ZZCTd+dsXmwVpstSAqbl8eadrQcPeOg8GirbQx5AAZ8Wt3dXOL0/P
+   Co6LwIhZPsB6wkgpdqd7CviaBQQCH388a+s2Dg==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=openceotrendevent.info;
+ b=eJm1xDFGSUP9jcwMkndEeROGpF2MXH3M7dzaFBswGK2pISp+hg+SaVf0QIudWTTRDoP35yeWpuek
+   Vr5tzWgKFhJibCmBJ5ARexRlIM1H0mCYzTJcQ5HEwJONWEJHsSRMW9PRzzfzuXUqP3qiVBalSVbX
+   8APB2GIHPC9dAMaDJXNo0z2cncTmA4E1Dec6D1NXS942cDxS5MENJrKsG9/8or5byVQBw6S6xQuJ
+   iM3FyJ51SBwQQ0GHqG1Riwnqq6kFtQntc7nNKSSkfNHkFwEjSX/D0TnnN4TkwnfkTZMIeRz2YCxV
+   CcBBcDaOU9qV1p1jDARde76M/nFtKRsStTAnsA==;
+Received: from openceotrendevent.info (127.0.0.1) by ceo1.openceotrendevent.info id hn2lebi19tk7 for <linux-nvdimm@lists.01.org>; Sat, 21 Nov 2020 05:49:42 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@openceotrendevent.info>)
+Message-ID: <5d0d31513eefb6afabf9022dffde9eb2@openceotrendevent.info>
+Date: Sat, 21 Nov 2020 05:49:42 +0000
+Subject: FW: 10K LinkedIn Leads at 500
+From: Tina Joseph <info@openceotrendevent.info>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 MIME-Version: 1.0
-References: <20201108121723.2089939-1-santosh@fossix.org>
-In-Reply-To: <20201108121723.2089939-1-santosh@fossix.org>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 20 Nov 2020 10:42:57 -0800
-Message-ID: <CAPcyv4jwUYTEXNtfEZkb3eApEgpiDebyNtppoWCc06nzQRGpuA@mail.gmail.com>
-Subject: Re: [RFC v4 0/1] PMEM device emulation without nfit depenency
-To: Santosh Sivaraj <santosh@fossix.org>
-Message-ID-Hash: STK4LZBOGQJY3WDTJRO3OWHOLXAWIAJE
-X-Message-ID-Hash: STK4LZBOGQJY3WDTJRO3OWHOLXAWIAJE
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+X-Sender: info@openceotrendevent.info
+X-Report-Abuse: Please report abuse for this campaign here:
+ https://openceotrendevent.info/latest/index.php/campaigns/po043rfqrw937/report-abuse/hz9812n0eqd9c/ty5527or2af9e
+X-Receiver: linux-nvdimm@lists.01.org
+X-Dggs-Tracking-Did: 0
+X-Dggs-Subscriber-Uid: ty5527or2af9e
+X-Dggs-Mailer: SwiftMailer - 5.4.x
+X-Dggs-EBS: https://openceotrendevent.info/latest/index.php/lists/block-address
+X-Dggs-Delivery-Sid: 1
+X-Dggs-Customer-Uid: dl4746dylhbde
+X-Dggs-Customer-Gid: 0
+X-Dggs-Campaign-Uid: po043rfqrw937
+Precedence: bulk
+Feedback-ID: po043rfqrw937:ty5527or2af9e:hz9812n0eqd9c:dl4746dylhbde
+Message-ID-Hash: RW6KP5FVOQETKSXDC4INUV5UMJL2CKZ6
+X-Message-ID-Hash: RW6KP5FVOQETKSXDC4INUV5UMJL2CKZ6
+X-MailFrom: info-linux+2Dnvdimm=lists.01.org@openceotrendevent.info
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Tina Joseph <tina.cloudmigration@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/STK4LZBOGQJY3WDTJRO3OWHOLXAWIAJE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RW6KP5FVOQETKSXDC4INUV5UMJL2CKZ6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Sun, Nov 8, 2020 at 4:18 AM Santosh Sivaraj <santosh@fossix.org> wrote:
->
-> The current test module cannot be used for testing platforms (make check)
-> that do not have support for NFIT. In order to get the ndctl tests working,
-> we need a module which can emulate NVDIMM devices without relying on
-> ACPI/NFIT.
->
-> The emulated PMEM device is made part of the PAPR family.
->
-> Corresponding changes for ndctl is also required, to add attributes needed
-> for the test, which will be sent as a reply to this patch.
->
-> The following is the test result, run on a x86 guest:
-
-Just wanted to let you know I have not forgotten about this and will
-be circling back to review it soon. Apologies for the delay.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+QXJlIHlvdSBpbnRlcmVzdGVkIHRvIHB1cmNoYXNlIDEwMCUgYWNjdXJhdGUgMTAsMDAwIFRhcmdl
+dGVkIExlYWRzDQpmcm9tIExpbmtlZEluIGF0ICQ1MDAoQW55IHRpdGxlcy9pbmR1c3RyeS9sb2Nh
+dGlvbi9rZXl3b3Jkcyk/DQpJZiB5b3UgaGF2ZSBhIHZlcnkgdGFyZ2V0ZWQgZGF0YSByZXF1aXJl
+bWVudCBhbmQgeW91IG5lZWQgTGlua2VkSW4NCmRhdGFiYXNlLCB3ZSB3aWxsIHB1bGwgdGFyZ2V0
+ZWQgZGF0YWJhc2VzIGZvciB5b3Ugd2l0aCB0aGVpciBMaW5rZWRJbg0KcHJvZmlsZSBsaW5rLCBu
+YW1lLCB0aXRsZSwgZW1haWwgYWRkcmVzcywgY29tcGFueSBuYW1lLCBjaXR5LCBjb21wYW55DQpz
+aXplIGV0Yy4gUGxlYXNlIHNoYXJlIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIGFuZCBJIHdpbGwgc3Vw
+cGx5IHRoZQ0Kc2FtcGxlIHdpdGhpbiAxIGJ1c2luZXNzIGRheXPigJkgdGltZS4NClRoYW5rcyBh
+bmQgbGV0IG1lIGtub3cuDQpUaW5hIEpvc2VwaA0KTGlua2VkSW4gRGF0YWJhc2UgUHJvdmlkZXIN
+CisxLSg2NzgpIDc0NS04Mzg1DQpVbnN1YnNjcmliZQ0KaHR0cHM6Ly9vcGVuY2VvdHJlbmRldmVu
+dC5pbmZvL2xhdGVzdC9pbmRleC5waHAvbGlzdHMvaHo5ODEybjBlcWQ5Yy91bnN1YnNjcmliZS90
+eTU1MjdvcjJhZjllL3BvMDQzcmZxcnc5MzcNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZk
+aW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52
+ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
