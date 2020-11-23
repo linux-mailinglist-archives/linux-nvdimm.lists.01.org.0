@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F6D2C05BA
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 13:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCCD2C056C
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 13:22:56 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8BA04100EBBBB;
-	Mon, 23 Nov 2020 04:26:11 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=104.160.190.102; helo=wheeldoctornj.com; envelope-from=themedydeoq@netzero.net; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id CAA1E100EC1EC;
+	Mon, 23 Nov 2020 04:22:54 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=104.160.190.102; helo=wheeldoctornj.com; envelope-from=themedydeoq@arrow.com; receiver=<UNKNOWN> 
 Received: from wheeldoctornj.com (unknown [104.160.190.102])
-	by ml01.01.org (Postfix) with ESMTP id 4DA15100EBBA0
-	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 04:26:09 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id F3AE0100EC1EC
+	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 04:22:47 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: backpack with Oxford material
-Message-ID: <9fcd80240d3fc63afc70be8b23b23658@marieclaire.com>
-Date: Mon, 23 Nov 2020 12:15:06 +0100
-From: "Jon Parker" <themseydeoq@netzero.net>
+Subject: backpack large capacity
+Message-ID: <39e140335d3971d9188f453d1ce68dfe@marieclaire.com>
+Date: Mon, 23 Nov 2020 12:38:02 +0100
+From: "Jon Parker" <themeaydeoq@arrow.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: FNGS5LXXGW2JID3JUTSITOFEHUWQTRMN
-X-Message-ID-Hash: FNGS5LXXGW2JID3JUTSITOFEHUWQTRMN
-X-MailFrom: themedydeoq@netzero.net
+Message-ID-Hash: 7TYJLIZTXBXV5TO6DBRUYW3LQRENZFQB
+X-Message-ID-Hash: 7TYJLIZTXBXV5TO6DBRUYW3LQRENZFQB
+X-MailFrom: themedydeoq@arrow.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: jonparker@889818.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FNGS5LXXGW2JID3JUTSITOFEHUWQTRMN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7TYJLIZTXBXV5TO6DBRUYW3LQRENZFQB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4715932098916609436=="
+Content-Type: multipart/mixed; boundary="===============0611675026347422589=="
 
---===============4715932098916609436==
+--===============0611675026347422589==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -76,7 +76,7 @@ p.p2 margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Verdana; min-height:
 </body>
 </html>
 
---===============4715932098916609436==
+--===============0611675026347422589==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -86,4 +86,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============4715932098916609436==--
+--===============0611675026347422589==--
