@@ -1,216 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8682C0FE7
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 17:18:32 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C5E2C10DF
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 17:42:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1E04E100EBBC4;
-	Mon, 23 Nov 2020 08:18:31 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=222.93.45.167; helo=yanzhanyi1517.net; envelope-from=ogcfnchwt@yanzhanyi1517.net; receiver=<UNKNOWN> 
-Received: from yanzhanyi1517.net (unknown [222.93.45.167])
-	by ml01.01.org (Postfix) with ESMTP id CD7D9100EBBC4
-	for <Linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 08:18:23 -0800 (PST)
-Received: from ku (unknown [83.133.193.129])
-	by yanzhanyi1517.net with SMTP id IfSrZnSV6zRM1dXn.1
-	for <Linux-nvdimm@lists.01.org>; Fri, 28 Aug 2009 18:15:00 +0800
-Date: Fri, 28 Aug 2009 18:14:46 +0800
-From: =?utf-8?B?6buE5paH5rWp?= <ogcfnchwt@yanzhanyi1517.net>
-To: <Linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5aaC5L2V5o+Q5Y2H5pyJ5pWI55S16K+d5rKf6YCa546H77yfIOWmguS9leaPkOmrmOWuouaIt+mihA==?=
-	=?utf-8?B?57qm6Z2i6LCI546H77yf5LiK5rW36YeR6bmP6ZKi57uT5p6E5pyJ6ZmQ5YWs5Y+4MjAwOQ==?=
-	=?utf-8?B?LzgvMjgxODoxNDo1OQ==?=
-Message-ID: <20090828181500363244@yanzhanyi1517.net>
-X-mailer: Foxmail 6, 13, 102, 15 [cn]
-Mime-Version: 1.0
-Message-ID-Hash: MSIPJSLISDP6HS6PODEBNKXI7ZNMDWE2
-X-Message-ID-Hash: MSIPJSLISDP6HS6PODEBNKXI7ZNMDWE2
-X-MailFrom: ogcfnchwt@yanzhanyi1517.net
+	by ml01.01.org (Postfix) with ESMTP id 324B1100EBBC8;
+	Mon, 23 Nov 2020 08:42:20 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=80.21.190.42; helo=host-80-21-190-42.business.telecomitalia.it; envelope-from=accustoming445@ch2fe56.corp.docusign.net; receiver=<UNKNOWN> 
+Received: from host-80-21-190-42.business.telecomitalia.it (host-80-21-190-42.business.telecomitalia.it [80.21.190.42])
+	by ml01.01.org (Postfix) with ESMTP id 69635100EBBC7
+	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 08:42:16 -0800 (PST)
+Received: from owkerf.rawl.CH2FE56.corp.docusign.net (owkerf.rawl.CH2FE56.corp.docusign.net [16.28.86.207])
+        by owkerf.rawl.CH2FE56.corp.docusign.net with ESMTP
+ id Wjb8tLTki6sY.515; Mon, 23 Nov 2020 17:42:15 +0100
+Received: from  (
+ [165.217.115.110])        by host-80-21-190-42.business.telecomitalia.it with SMTP id
+ bXcY-lqABSr-Ec; Mon, 23 Nov 2020 17:42:15 +0100
+To: linux-nvdimm@lists.01.org
+From: "Eduardo Daly via DocuSign" <dse_NA3@docusign.net>
+Subject: Please DocuSign: Invoice_Payment Form $1,740.00
+Message-ID: <987020.380006.309689.JavaMail.email@owkerf.rawl.CH2FE56.corp.docusign.net>
+Date: Mon, 23 Nov 2020 17:42:15 +0100
+MIME-Version: 1.0
+Message-ID-Hash: CG2FBVAZLZXJZUFQKXRAX4UP6GWUWHAB
+X-Message-ID-Hash: CG2FBVAZLZXJZUFQKXRAX4UP6GWUWHAB
+X-MailFrom: accustoming445@CH2FE56.corp.docusign.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Eduardo Daly via DocuSign <dse_NA3@docusign.net>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MSIPJSLISDP6HS6PODEBNKXI7ZNMDWE2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CG2FBVAZLZXJZUFQKXRAX4UP6GWUWHAB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-DQoNCg0K6ZSA5ZSu57K+6IuxMuWkqeW8uuWMluiuree7gw0KMjgwMOWFgy/kuozlpKkgDQrml7bp
-l7TvvJoyMDIw5bm0MTLmnIgwNS0wNuaXpeS4iua1tyAgIDEy5pyIMTItMTPml6Xmt7HlnLMgICAg
-ICAgICAgDQogDQrjgJDkuLvorrLjgJEgICDnjovotorogIHluIgNCuOAkOivvueoi+i0ueeUqOOA
-kQ0KDQoyODAw5YWDL+S6jOWkqSDvvIjlkKvmjojor77jgIHmlZnmnZDjgIHljYjppJDjgIHojLbn
-grnlkoznqI7otLnvvIkNCuOAkOaKpeWQjeWSqOivouOAkQ0KDQoNCg0K56iL5YWI55SfICAxNzcx
-NTU0Mzk3NO+8iOWQjOW+ruS/oe+8iSAgICAgIA0KDQoNCuOAkOaKpeWQjemCrueuseOAkTM4NDYz
-MTM3OEBxcS5jb20gKCDmiqXlkI3or7flj5HpgIHoh7Por6Xpgq7nrrHvvIzmiJHku6zlsIblnKjk
-uIDkuKrlt6XkvZzml6XlhoXlm57lpI0s5pyq5Y+K5pe25Zue5aSN6K+355S16K+d6IGU57O7DQog
-DQrjgJDog4zmma/jgJENCg0KMS7kuLrku4DkuYjmlrDkuJrliqHlkZjlt6XkvZzmiY3kuInkuKrm
-nIjmsqHmnInmlrnlkJHmhJ/vvJ8NCg0KMi7ogIHlkZjlt6XkuI3nn6XkuIrov5vvvIzmjqjkuIDk
-uIvliqjkuIDkuIvvvIzmgI7kuYjlip7vvJ8NCjMu5Li65LuA5LmI5pyJ5Lqb5Lia5Yqh5ZGY5Lia
-57up56iN5aW95LiA54K55bCx5byA5aeL6Ieq5ruh77yfDQo0LuS4uuS7gOS5iOS4muWKoeWRmOaA
-u+aYr+aKpeaAqOS4jeaYr+S6p+WTgei0tSzlsLHmmK/otKjph4/lt67vvJ8NCjUu5Li65LuA5LmI
-5Lia5Yqh5ZGY6KeB5Yiw5a6i5oi35om+5LiN5Yiw6K+d6K+077yf5LqM5qyh6Lef6L+b5pu05peg
-5LuO5LiL5omL77yfDQo2LuS4uuS7gOS5iOS4muWKoeWRmOi9u+aYk+S6ruWHuuiHquW3seeahOKA
-nOW6leeJjOKAne+8nw0KNy7kuLrku4DkuYjkuJrliqHlkZjooqvlrqLmiLfliY3lj7DjgIHpl6jl
-javlsLHog73ovbvmmJPmiZPlj5Hlm57mnaXvvJ8NCjgu5Li65LuA5LmI5Lia5Yqh5ZGY6YGH5Yiw
-5oyr5oqY5bCx54Gw5b+D5Lyk5Lin5rCU5LiN5pWi5Ye66Zeo5ouc6K6/5a6i5oi377yfDQo5LuS4
-uuS7gOS5iOS4muWKoeWRmOS4jeaVouWNlu+8n+aAu+aYr+aOqOiNkOS9juWIqea2pueahOiuouWN
-le+8nw0K4oCm4oCmDQrkuJrliqHlkZjpgYfliLDnmoTpl67popjvvIzpg73og73lnKjov5nph4zm
-ib7liLDnrZTmoYjvvIENCg0KDQrjgJDor77nqIvnm67nmoTjgJENCg0KMS7ku6Xnu4jkuLrlp4vv
-vJror77nqIvlm7Tnu5XkuJrnu6nmj5DljYfkuLrnm67nmoTlvIDlsZXnrZbnlaXkuI7mlrnms5Xn
-moTlrabkuaDvvJsNCg0KMi7lgqzljJbnlJ/lj5HvvJror77nqIvku6XlgqzljJblrablkZjnmoTm
-vZzlipvkuLrmoLjlv4PvvIzmlZnkvJrmib7nrZTmoYjnmoTmlrnms5XvvIzogIzkuI3mmK/nuq/o
-rrLmjojkuLrkuK3lv4PvvJsNCjMu6JC95Zyw5omn6KGM77ya6K++56iL5peg6ZmQ57uG5YyW562W
-55Wl5LiO5pa55rOV77yM5Lul56uL5Y2z5omn6KGM5Li65YmN5o+Q77yM6K6p5a2m5ZGY5a2m5a6M
-5bCx6IO955So77ybDQo0LuWFqOWRmOiQpemUgO+8mumAguWQiOS8geS4muaJgOaciemDqOmXqOea
-hOS6uuWPguWKoO+8jOiQpemAoOWFqOWRmOiQpemUgOeahOaEj+ivhg0K56m35bC95Y+v6IO977ya
-5pys6K++56iL6YCC5ZCI5Y+Y6Z2p5pyf44CB5LqS6IGU572R5oCd57u05LiL55qE5LyB5Lia5omA
-5pyJ6JCl6ZSA55u45YWz5Lq65ZGYDQoNCg0KDQrjgJDor77nqIvlpKfnurLjgJENCg0K56ys5LiA
-6YOo5Lu9ICDogIHlrqLmiLfmt7HluqbmjJbmvZwNCjHjgIHlpoLkvZXorqnogIHlrqLmiLfkuqfl
-k4Hmtqjku7fvvJ8NCg0K5L2O5Yip5ram55qE5a6i5oi35piv5LyB5Lia55qE5YyF6KKx77ybDQox
-M+S4qua2qOS7t+eahOeQhueUseaAu+e7kw0KMuOAgeWmguS9leiuqeiAgeWuouaIt+mHh+i0reS4
-jeWQjOS6p+WTge+8nw0KN+enjeS4jeWQjOeahOmUgOWUruaooeW8j++8muWinumUgOOAgei/vemU
-gOOAgemUgemUgOKApg0K5aaC5L2V6K6+6K6hM+enjeaIkOS6pOaPkOahiO+8nzPnp43ov73plIDm
-j5DmoYjvvJ8NCjPjgIHlpoLkvZXorqnogIHlrqLmiLfmj5DliY3pooTlrprvvJ8NCjTjgIHlpoLk
-vZXorqnogIHlrqLmiLfliqDlpKfmnIDkvY7otbforqLph4/vvJ8NCjXjgIHlpoLkvZXliLblrpro
-gIHlrqLmiLfovazku4vnu43mlL/nrZbkuI7mlrnms5XvvJ8NCjbjgIHlpoLkvZXmjL3lm57igJzm
-lq3nuqbigJ3lrqLmiLfvvJ8NCjfjgIHlpoLkvZXigJzlr7nmoIfigJ3nq57kuonlr7nmiYvnmoTo
-gIHlrqLmiLfvvJ8NCuernuS6ieWvueaJi+e7meiHquW3seaMh+aYjuaWueWQke+8mw0K5aaC5L2V
-5byA5bGV4oCc5bGg6b6Z5aSn5Lya4oCd77yf5L2g5YWI5ZCD5o6J6LCB77yfDQo444CB5aaC5L2V
-4oCc6ZSB5L2P4oCd6ICB5a6i5oi377yfDQrkuLrku4DkuYjlrqLmiLfnmoTigJzog4zlj5vigJ3m
-mK/kuIDnp43luLjmgIHvvJ8NCuS4jeimgeiuqeS9oOeahOWuouaIt+KAnOijuOWllOKAne+8jDMw
-56eN5pa55rOV5qCR56uL6Ziy5oqk5aKZ77ybDQoNCuesrOS6jOmDqOS7vSDmlrDlrqLmiLflvIDl
-j5ENCuesrOS4gOeroCDmlrDlrqLmiLflvIDlj5HnrZbnlaUNCuesrOS4gOiKgiDlj5HnjrDlrqLm
-iLcNCu+BrOiwgeaYr+WuouaIt++8n+WvueWuouaIt+e+pOS9k+i/m+ihjOaXoOmZkOe7huWIhg0K
-74Gs5a6i5oi35Zyo5ZOq77yf5om+5Yiw57K+5YeG6bG85aGYDQrvgazosIHov5jnn6XpgZPvvJ/l
-hajmupDmuKDpgZPlvIDlj5HlrqLmiLcNCu+BrOiuoeeul+WNleS9jeWuouaIt+aIkOS6pOaXtumX
-tOS4juaIkOacrA0K56ys5LqM6IqCICDlkLjlvJXlrqLmiLcNCu+BrOWmguS9lee7meWuouaIt+S4
-gOS4quaXoOazleaLkue7neeahOeQhueUse+8nw0K74Gs5a6i5oi36Zeu6aKY5riF5Y2V77ybDQrv
-gazlrqLmiLfnl5voi6bmuIXljZXvvJsNCu+BrOWuouaIt+WGs+etlumanOeijea4heWNle+8mw0K
-56ys5LiJ6IqCICDnspjkvY/lrqLmiLcNCu+BrOeymOS6uueymOW/g++8jOaUu+WfjuWFiOaUu+S6
-uu+8mw0K74Gs5aaC5L2V57uZ5a6i5oi34oCc5raC6IO25rC04oCd77yfDQrvgaznsr7noa7kvKDm
-kq3vvIzmib7liLDnsr7lh4bigJzmsLTpvpnlpLTigJ0NCuesrOWbm+iKgiDkuLvopoHnq57kuonl
-r7nmiYvliIbmnpANCjEu5aaC5L2V6Lef6auY56uv5q+U77yfDQoyLuWmguS9lei3n+S4reerr+av
-lO+8nw0KMy7lpoLkvZXot5/kvY7nq6/mr5TvvJ8NCjQu5aaC5L2V6Lef5pu/5Luj6ICF5q+U77yf
-DQrnrKzkupToioIgIOivgeaNruWHhuWkhw0K74Gs5LiN6KaB6K6p5a6i5oi35L+h5Lu75L2g77yM
-6ICM6KaB5L+h5Lu76K+B5o2u77ybDQrvgawxMuenjeivgeaYjua4heWNle+8mw0K74Gs5aaC5L2V
-5YaZ5a6i5oi36KeB6K+B77yfDQrnrKzlha3oioIgIOaIkOS6pOWuouaItw0K56ys5LiA6IqC5pa5
-5qGI5Yi25L2cDQrkuIDjgIHlpoLkvZXmj4/ov7DmoLjlv4Pkuqflk4HvvJ8NCuS6jOOAgeWmguS9
-leW8uuiwg+S6p+WTgeeahOeLrOeJueaAp++8nw0K5LiJ44CB5aaC5L2V6K6+6K6h4oCc6LaF5YC8
-6LWg5ZOB4oCd77yfDQrlm5vjgIHlpoLkvZXlvLrosIPnqIDnvLrmgKfkuI7ntKfov6vmgKfvvJ8N
-CuS6lOOAgeWmguS9leW8uuiwg+WAvOi/meS4quS7t++8nw0K56ys5LiD6IqCICDlrqLmiLfkvKDm
-kq0NCu+BrOWmguS9leiuqeWuouaIt+W4ruaIkeS7rOS8oOaSre+8nw0K56ys5LqM56ugICDlpoLk
-vZXlvIDlj5HmlrDnmoTljLrln5/jgIHpoobln5/vvJ8NCu+BrOWvu+aJvuWIqea2pumrmO+8jOmU
-gOWUruminemrmO+8jOWinumVv+W/q++8jOernuS6ieWwj+eahOWMuuWfn+S4jumihuWfn++8mw0K
-74Gs6LCo5oWO6K+V54K577yMIOmHjeeCuei/m+aUu++8jOacieaViOWkjeWItu+8jOi/hemAn+aJ
-qeW8oO+8mw0K56ys5LiJ56ug44CB5paw5a6i5oi36L2s5YyW546H5o+Q5Y2H6KaB54K577ybDQox
-44CB5aaC5L2V5o+Q5Y2H5pyJ5pWI55S16K+d5rKf6YCa546H77yfDQoy44CB5aaC5L2V5o+Q6auY
-5a6i5oi36aKE57qm6Z2i6LCI546H77yfDQoz44CB5aaC5L2V5o+Q6auY6aKE57qm5oiQ5Yqf546H
-77yfDQo044CB5aaC5L2V5o+Q6auY5oiQ5Lqk546H77yfDQo144CB5aaC5L2V5o+Q5Y2HVklQ5a6i
-5oi36L2s5YyW546H77yfDQo244CB5aaC5L2V5o+Q6auYVklQ5a6i5oi36L2s5b+g6K+a546H77yf
-DQo344CB5aaC5L2V5o+Q5Y2H5q+b5Yip546H77yfDQrnrKzlm5vnq6DjgIHmnaDmnYblgJ/lipsN
-Cu+BrOi/m+S4jeS6humXqO+8jOaJvuS4jeWIsOS6uuaAjuS5iOWKnu+8nw0K74Gs5YCf5Yqb77yM
-5omN5LiN6Iez5LqO5oqK6Ieq5bex55qE6LWE5rqQ5YWo6YOo5raI6ICX5a6M77ybDQrvgazlkJHo
-sIHlgJ/lipvku6Xlj4rlpoLkvZXlgJ/lipvvvJ8NCg0K56ys5LiJ6YOo5Lu9ICAg5Lia5Yqh5ZGY
-6Ieq5oiR5r2c6IO95oyW5o6YDQoxLuWmguS9leaPkOWNh+WGheWcqOWKqOWKm++8nyANCjIu5aaC
-5L2V5Y+R546w5Liq5Lq655O26aKI77yfDQozLuais+eQhumUgOWUrua1geeoi++8jOWItuWumuW3
-peS9nOagh+WHhu+8mw0K74Gs5a6i5oi35YeG5aSH5LiO5qCH5YeG6KaB5rGC77ybDQrvgaznlLXo
-r53kuI7pmYznlJ/mi5zorr/moIflh4bkuI7lhbPplK7liqjkvZzopoHmsYLvvJsNCu+BrOS4juWu
-ouaIt+W7uueri+S/oeS7u+WFs+ezu+eahOagh+WHhuS4juWFs+mUruWKqOS9nO+8mw0K74Gs5qC3
-5ZOB5LiO5pa55qGI55qE5qCH5YeG5LiO6KaB5rGC77ybDQrvgazlrqLmiLfogIPlr5/kuI7kvZPp
-qozmoIflh4bkuI7opoHmsYLvvJsNCu+BrOWuouaIt+W6lOmFrOS4juaOpeW+heagh+WHhuS4juim
-geaxgg0K74Gs5ZWG5Yqh6LCI5Yik5qCH5YeG5LiO6KaB5rGCDQrvgazmioDmnK/mtL3osIjmoIfl
-h4bkuI7opoHmsYINCu+BrOmUgOWUrui3n+i/m+agh+WHhuS4juimgeaxgg0K74Gs5ZSu5ZCO5pyN
-5Yqh5qCH5YeG5LiO6KaB5rGCDQrvgazotKbmrL7lgqzmlLbmoIflh4bkuI7opoHmsYINCjQu5LyY
-56eA6ZSA5ZSu5ZGY5aaC5L2V5a6e546w5Lia57up6L275p2+57+75YCN77yfDQo1LuS4mue7qemU
-gOWUruWRmOWmguS9leaPkOWNh+W3peS9nOenr+aegeaAp++8nw0KNi7lpoLkvZXorqnlt6XkvZzm
-l7bpl7Tmm7TmnInku7flgLzvvJ8NCjcu6ZSA5ZSu6L2m6L2u5oiY5pyv5Lit77yM5aaC5L2V6L+b
-6KGM5Lq65ZGY5YiG6YWN77yfDQo4LuS4muWKoeWRmOWuouaIt+aLnOiuv+mHj+e7huWMluS4juim
-geaxgu+8mw0KDQrnrKzlm5vpg6jku70g6YeN54K577yIVklQ77yJ5a6i5oi35YiG5p6Q5LiO5YWs
-5YWz562W55WlDQrnrKzkuIDoioLjgIHlrqLmiLfku7flgLzliIbnsbsNCu+BrOWmguS9lee7meWu
-ouaIt+WIhuexu++8nw0K74Gs5qC55o2u5a6i5oi35YiG57G75YGa6KGM5Yqo6K6h5YiS77ybDQrv
-gazlpoLkvZXliKTmlq3lrqLmiLfnmoTkv6HoqonkuI7mlK/ku5jog73lipvvvJ8NCuesrOS6jOiK
-giAg5a6i5oi35YaF6YOo6KeS6Imy5YiG5p6QDQoyLjHlrqLmiLflhoXpg6jop5LoibLlrprkvY3k
-uI7liIbmnpANCu+BruWGs+etluS6uui/veaxguS7gOS5iO+8nw0K74Gu6YeH6LSt6ICF6L+95rGC
-5LuA5LmI77yfDQrvga7mioDmnK/kurrlkZjov73msYLku4DkuYjvvJ8NCu+BruWFt+S9k+S9v+eU
-qOiAhei/veaxguS7gOS5iO+8nw0K74Gu56ys5LiJ5pa55py65p6E55qE5Lq66L+95rGC5LuA5LmI
-77yfDQrvga7liY3mnJ/kuLrku4DkuYjkuIDlrpropoHop4HliLDlhrPnrZbogIXvvJ8NCjIuMuiw
-geaJjeaYr+WFs+mUrueahOS6uu+8nw0K74Gu5ruh6Laz4oCc5YWz6ZSu5Lq64oCd55qEMTDkuKrm
-naHku7bvvJsNCu+BruS4jeWQjOmUgOWUrumYtuaute+8jOKAnOivtOS6hueul+KAneeahOS6uuaY
-r+S4gOagt+eahOWQl++8nw0K74Gu5pyJ5Lqb4oCc5bCP6KeS6Imy4oCd5piv5ZCm5bqU6K+l5Y2V
-54us6Lef6L+b77yfDQrvga7moYjkvovvvJrlvpfnvarogIHmnb/kurLkv6HnmoTlkI7mnpzjgIIN
-CjIuM+WuouaIt+WGhemDqOWFs+ezu+S4jueri+Wcug0K74Gu56ue5LqJ5a+55omL5LiO5a6i5oi3
-5LiN5ZCM6KeS6Imy55qE5YWz57O777ybDQrvga7lrqLmiLfkuI3lkIzop5LoibLlhoXpg6jlhbPn
-s7vkuI7nq4vlnLrvvJsNCu+BruafkOmDqOmXqOmihuWvvOi3n+aIkeaWueingueCueS4gOiHtO+8
-jOS4uuS7gOS5iOWNtOS4jeaUr+aMgeaIke+8nw0K74Gu5p+Q6YOo6Zeo5piO5piO5pSv5oyB5oiR
-77yM5Li65LuA5LmI5ZCO6Z2i5Y205YCS5oiI6L2s5ZCR56ue5LqJ5a+55omL77yfDQoyLjTkuKrk
-urrkuI7nu4Tnu4fliKnnm4oNCu+BruWvuee7hOe7h+acieWIqeebiueahOS6i++8jOS4quS6uuWw
-seS4gOWumuS8muaUr+aMgeWQl++8nw0K74Gu5a+55Liq5Lq655qE5Yip55uK5L2T546w5Zyo5ZOq
-5Lqb5pa56Z2i77yfDQrvga7kuLrku4DkuYjph4fotK3kuJPlkZjpmLvmjKHmiJHop4HlhrPnrZbk
-urrvvJ8NCuesrOS4ieiKgiDlrqLmiLfmnIDkvbPph4fotK3ml7bmnLoNCu+BrOWcqOmdnumHh+i0
-reaXtuacuueahOmAvOWNleaYr+S4gOenjemqmuaJsO+8mw0K74Gs5Zyo5LuA5LmI5oOF5Ya15LiL
-6LSt5Lmw5pe25py65omN5Lya5Ye6546w77yfDQrvgazlpoLkvZXliJvpgKDph4fotK3nmoTml7bm
-nLrvvJ8NCuesrOWbm+iKguOAgeivtOWvueivne+8jOWvueWuouaIt+mcgOaxguimgei/m+ihjOeh
-ruiupA0K74Gu5Z+65bGC44CB5Lit5bGC5LiO6auY5bGC55qE6ZyA5rGC54K55piv5LiN5LiA5qC3
-55qE77ybDQrvga7kuI3opoHotoXotorlrqLmiLfnmoTluIzmnJvvvIzlkKbliJnkvJrlvojnl5vo
-i6bvvIzkuI3miornu53mi5vkuIDmrKHnlKjlrozvvJsNCu+BruS4jeimgeaKiueMnOa1i+W9k+aI
-kOS6i+Wunu+8mw0K74Gu5o+Q5YmN6YeH6LSt5LiO5Y2z5pe26YeH6LSt77ybDQrvga7mibnph4/p
-h4fotK3kuI7lrp7ph4/ph4fotK3jgIINCuesrOS6lOiKguOAgeiwgeWcqOi3n+S9oOernuS6iS3n
-q57kuonlr7nmiYvliIbmnpANCjUuMSDkuLrku4DkuYjopoHkuobop6Pmg4XlhrXlr7nmiYvvvJ8N
-Cu+BruS4pOS4quWuouaIt+S5i+mXtOacgOWkp+WMuuWIq+WwseaYr+ernuS6ieWvueaJi+S4jeS4
-gOagt++8mw0K74Gu5Lia5Yqh5ZGY56ys5LiA5oCd57u05piv5oiY5LqJ5oCd57u077yM55+l5bex
-55+l5b2877yM5oOF5oql5pyA6YeN6KaB77ybDQrvga7kvaDmmK/lnKjot5/nq57kuonlr7nmiYvm
-iqLlrqLmiLfvvJsNCjUuMiDnq57kuonlr7nmiYvlr7nmiJHmlrnph4fnlKjnmoQz56eN562W55Wl
-77ybDQo1LjMg5Zub56eN56ue5LqJ5oOF5b2i5YiG5p6Q77ybDQo1LjQg6LCB5Li65L2g5o+Q5L6b
-5L+h5oGv77yfDQrvga7lhYnpnaDkuIDkuKrkurrmiJbkuKTkuInkuKrkurrmkJzpm4bkv6Hmga/j
-gIHot5HlhbPns7vjgIHnu7TmjIHlhbPns7vmmK/kuI3lpJ/nmoTvvJsNCu+BruWkp+mhueebruay
-oeaciee6v+S6uuW4ruWKqe+8jOebuOW9k+S6juebsuS6uuaRuOixoe+8mw0K74Gu5ZOq5Lqb5Lq6
-5Y+v5Lul5Z+55YW75oiQ5Li657q/5Lq677yfDQrvga7nur/kurrkuLrku4DkuYjkvJrluK7miJHv
-vJ8NCu+BrumcgOimgee6v+S6uuaPkOS+m+WTquS6m+W4ruWKqe+8nw0KDQoNCuOAkOiusuW4iOeu
-gOS7i+OAkQ0KDQrnjovotoogIOiAgeW4iA0KDQogICDlt6XkvZznu4/ljoYNCu+BrumUgOWUruWb
-oumYn+euoeeQhuWSqOivouW4iOOAgemUgOWUruWfueiureiusuW4iO+8mw0K74Gu5pu+5Lu75Y+v
-5Y+j5Y+v5LmQ77yI5Lit5Zu977yJ5YWs5Y+45Lia5Yqh57uP55CG77ybDQrvga7mm77ku7vpmL/p
-h4zlt7Tlt7TvvIjkuK3lm73vvInnvZHnu5zmioDmnK/mnInpmZDlhazlj7jkuJrliqHnu4/nkIbv
-vJsNCu+Brua4heWNjuWkp+Wtpi7ljZfkuqzlpKflraZFTUJB54m56YKA5Z+56K6t6K6y5biI77yb
-DQrvga7mlrDliqDlnaHojrHkvZvlo6vlrabpmaLnibnnuqborrLluIg7DQoNCuivpue7huS7i+e7
-jQ0K74GuMjAwMOW5tC0yMDA45bm05YWI5ZCO5Zyo5Y+v5Y+j5Y+v5LmQ5LiO6Zi/6YeM5be05be0
-5YWs5Y+45LuO5LqL6ZSA5ZSu5LiO6ZSA5ZSu5Zui6Zif566h55CG5bel5L2c77yM5Zyo6Zi/6YeM
-5be05be05YWs5Y+45pu+6I634oCc5oKN5bCG5p2v4oCd5qac55y844CC6L+e57utNeW5tOWbveWG
-hemUgOWUruWFrOW8gOivvuaOkuivvumHj+esrOS4gOS9je+8mw0K74GuMuWutuawkeS8geS4mumV
-v+W5tOiQpemUgOmhvumXru+8mw0K74Gu5pel56uL55S15qKv6L+e57utOOasoeaMh+WumuiQpemU
-gOWfueiureiusuW4iO+8mw0K74Gu5Y2a5aiB6ZuG5Zui6L+e57utM+asoeaMh+WumuiusuW4iA0K
-74Gu5Y2X5Lqs5p+Q55S15a2Q6ZuG5Zui6L+e57utM+W5tOWPguWKoDE45qyh77ybDQrvga7igKbi
-gKYNCg0K44CQ5pu+57uP5Z+56K6t6L+H55qE5Luj6KGo5a6i5oi344CRDQrljY7kuLrlhazlj7gv
-56uL6YKm5ryG5LiaL+WkquW5s+S/nemZqS/mrKfmma7nhafmmI4v5Y+v5Y+j5Y+v5LmQL+aJrOWt
-kOefs+WMli/po57liKnmtaYv55m+5bqmL+S4reWbveenu+WKqC/mkLrnqIvnvZHnu5wv5rex5Zyz
-5Y2X5rW36YWS5bqXL+i9r+mTtuWFrOWPuC/kuInkuIDph43lt6Uv5pel56uL55S15qKvL+WNmuWo
-gembhuWboi/mjbfmjbfnlLXlrZAv5YyX5Lqs5puy576O5a6256eBL+S5nemYs+eUteWZqC/nj6Dm
-uK/mnLrlnLov5bei5rmW6YKu5pS/L+a1juWNl+mCruaUvy/ljZfkuqzljLvoja/mgLvlhazlj7gv
-5Zu9576O55S15ZmoDQoNCg0K44CQ6K++56iL5oql5ZCN44CRDQoNCuOAiumUgOWUrueyvuiLsTLl
-pKnlvLrljJborq3nu4PjgIsNCg0KDQrljZXkvY3lkI3np7A6DQrlnLAg5Z2AOg0K6IGU57O75Lq6
-5aeT5ZCNOuaApyDliKs6DQrmiYsg5py6OueUtSDor506DQrpg6jpl6gv6IGM5YqhOkUtbWFpbDoN
-CuWPgiDkvJog5a2mIOWRmCDkv6Eg5oGvDQrlp5Mg5ZCN5oCnIOWIq+iBjCDkvY3miYsg5py6RS1t
-YWls6YeRIOminQ0KDQoNCg0K57y06LS55pa55byPIOKWoSDovazluJAgICDilqEg546w6YeRICAN
-CuS9j+Wuv+imgeaxgumihOWumu+8muWPjOS6uuaIvyAgICAgIOmXtO+8m+WNleS6uuaIvyAgICAg
-ICAgIOmXtO+8jOS9j+Wuv+aXtumXtO+8miAgICAg5pyIICAgICDoh7MgICAg5pelICjkuI3nlKjp
-ooTlrpror7fnlZnnqbopDQoNCg0KDQogDQoNCg0K5oql5ZCN6IGU57O777ya56iL5YWI55SfDQrn
-lLXor53vvJoxNzctMTU1NC0zOTc077yI5ZCM5b6u5L+h77yJDQrmiqUg5ZCNIOmCriDnrrHvvJoz
-ODQ2MzEzOEBxcS5jb20NCu+8iOaKpSDlkI0g6K+35aGr5YaZ5Lul5LiK5L+h5oGv5bm25Y+R6YCB
-6Iez6K+l6YKu566x44CC5oiR5Lus5bCG5Zyo5LiA5Liq5bel5L2c5pel5YaF5Zue5aSN77yM5pyq
-5Y+K5pe25Zue5aSN6K+35oKo55S16K+d6IGU57O777yM6LCi6LCi44CC77yJDQoNCg0KDQoNCg0K
-DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
-Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K5LiK5rW36YeR6bmP
-6ZKi57uT5p6E5pyJ6ZmQ5YWs5Y+4DQoNCuS4iua1t+mHkem5j+mSoue7k+aehOaciemZkOWFrOWP
-uA0KDQrkuIrmtbfph5HpuY/pkqLnu5PmnoTmnInpmZDlhazlj7gNCg0K5LiK5rW36YeR6bmP6ZKi
-57uT5p6E5pyJ6ZmQ5YWs5Y+4DQoNCuS4iua1t+mHkem5j+mSoue7k+aehOaciemZkOWFrOWPuA0K
-DQrkuIrmtbfph5HpuY/pkqLnu5PmnoTmnInpmZDlhazlj7gNCg0K5LiK5rW36YeR6bmP6ZKi57uT
-5p6E5pyJ6ZmQ5YWs5Y+4DQoNCuS4iua1t+mHkem5j+mSoue7k+aehOaciemZkOWFrOWPuA0KICAg
-ICAgICAgICAgICAgICAgIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
-MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
-bGlzdHMuMDEub3JnCg==
+EnvelopeActivation
+Please sign this Invoice\Payment Form $1,740.00.=20
+=A0=A0=A0=A0=A0=A0 REVIEW DOCUMENT =A0=A0=A0=A0=A0=A0
+
+
+
+
+Thanks.
+
+Do Not Share This Email This email contains a secure link to DocuSign. Plea=
+se do not share this email, link, or access code with others.About DocuSign=
+ Sign documents electronically in just minutes. It's safe, secure, and lega=
+lly binding. Whether you're in an office, at home, on-the-go -- or even acr=
+oss the globe -- DocuSign provides a professional trusted solution for Digi=
+tal Transaction Management=99.=20
+
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
