@@ -1,55 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CA42BFDA1
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 01:41:52 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F592BFDC4
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 01:47:39 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ECFEF100ED4B0;
-	Sun, 22 Nov 2020 16:41:50 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id D9AD9100ED498
-	for <linux-nvdimm@lists.01.org>; Sun, 22 Nov 2020 16:41:48 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.78,361,1599494400";
-   d="scan'208";a="101635247"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 23 Nov 2020 08:41:47 +0800
-Received: from G08CNEXMBPEKD06.g08.fujitsu.local (unknown [10.167.33.206])
-	by cn.fujitsu.com (Postfix) with ESMTP id 5CC4F4CE5475;
-	Mon, 23 Nov 2020 08:41:46 +0800 (CST)
-Received: from G08CNEXJMPEKD02.g08.fujitsu.local (10.167.33.202) by
- G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 23 Nov 2020 08:41:44 +0800
-Received: from G08CNEXCHPEKD05.g08.fujitsu.local (10.167.33.203) by
- G08CNEXJMPEKD02.g08.fujitsu.local (10.167.33.202) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 23 Nov 2020 08:41:47 +0800
-Received: from localhost.localdomain (10.167.225.141) by
- G08CNEXCHPEKD05.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Mon, 23 Nov 2020 08:41:46 +0800
-From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-mm@kvack.org>
-Subject: [RFC PATCH v2 6/6] fsdax: remove useless (dis)associate functions
-Date: Mon, 23 Nov 2020 08:41:16 +0800
-Message-ID: <20201123004116.2453-7-ruansy.fnst@cn.fujitsu.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201123004116.2453-1-ruansy.fnst@cn.fujitsu.com>
-References: <20201123004116.2453-1-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id D59B9100ED49A;
+	Sun, 22 Nov 2020 16:47:36 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=liuzhiqiang26@huawei.com; receiver=<UNKNOWN> 
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 8F805100ED487
+	for <linux-nvdimm@lists.01.org>; Sun, 22 Nov 2020 16:47:34 -0800 (PST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CfT4q25nrzkdLB;
+	Mon, 23 Nov 2020 08:47:07 +0800 (CST)
+Received: from [127.0.0.1] (10.174.176.238) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Mon, 23 Nov 2020
+ 08:47:21 +0800
+Subject: Re: [ndctl PATCH 0/8] fix serverl issues reported by Coverity
+To: Jeff Moyer <jmoyer@redhat.com>
+References: <bed3b3b3-1f30-6751-c0bf-15ecf70192f9@huawei.com>
+ <x49mtzcm0yb.fsf@segfault.boston.devel.redhat.com>
+From: Zhiqiang Liu <liuzhiqiang26@huawei.com>
+Message-ID: <44ff2574-48b7-fad8-e892-29ae8bc35e3b@huawei.com>
+Date: Mon, 23 Nov 2020 08:47:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 5CC4F4CE5475.ACCAE
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: Z6EF6AD42NC6AR67GOHOG6YBARKRKU7B
-X-Message-ID-Hash: Z6EF6AD42NC6AR67GOHOG6YBARKRKU7B
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
+In-Reply-To: <x49mtzcm0yb.fsf@segfault.boston.devel.redhat.com>
+Content-Language: en-US
+X-Originating-IP: [10.174.176.238]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: 3FMYHTX2DDLS64CMPAHYEWMPY6PI7OWS
+X-Message-ID-Hash: 3FMYHTX2DDLS64CMPAHYEWMPY6PI7OWS
+X-MailFrom: liuzhiqiang26@huawei.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+CC: linux-nvdimm@lists.01.org, linfeilong <linfeilong@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z6EF6AD42NC6AR67GOHOG6YBARKRKU7B/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3FMYHTX2DDLS64CMPAHYEWMPY6PI7OWS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,96 +50,47 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Since owner tarcking is triggerred by pmem device, these functions are
-useless.  So remove it.
+Thanks for your reply.
+I will add one empty line in 1/8 patch in v2.
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
----
- fs/dax.c | 46 ----------------------------------------------
- 1 file changed, 46 deletions(-)
+Regards
+Zhiqiang Liu
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 34471acde683..6c037287cb04 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -323,48 +323,6 @@ static unsigned long dax_end_pfn(void *entry)
- 	for (pfn = dax_to_pfn(entry); \
- 			pfn < dax_end_pfn(entry); pfn++)
- 
--/*
-- * TODO: for reflink+dax we need a way to associate a single page with
-- * multiple address_space instances at different linear_page_index()
-- * offsets.
-- */
--static void dax_associate_entry(void *entry, struct address_space *mapping,
--		struct vm_area_struct *vma, unsigned long address)
--{
--	unsigned long size = dax_entry_size(entry), pfn, index;
--	int i = 0;
--
--	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
--		return;
--
--	index = linear_page_index(vma, address & ~(size - 1));
--	for_each_mapped_pfn(entry, pfn) {
--		struct page *page = pfn_to_page(pfn);
--
--		WARN_ON_ONCE(page->mapping);
--		page->mapping = mapping;
--		page->index = index + i++;
--	}
--}
--
--static void dax_disassociate_entry(void *entry, struct address_space *mapping,
--		bool trunc)
--{
--	unsigned long pfn;
--
--	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
--		return;
--
--	for_each_mapped_pfn(entry, pfn) {
--		struct page *page = pfn_to_page(pfn);
--
--		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
--		WARN_ON_ONCE(page->mapping && page->mapping != mapping);
--		page->mapping = NULL;
--		page->index = 0;
--	}
--}
--
- static struct page *dax_busy_page(void *entry)
- {
- 	unsigned long pfn;
-@@ -516,7 +474,6 @@ static void *grab_mapping_entry(struct xa_state *xas,
- 			xas_lock_irq(xas);
- 		}
- 
--		dax_disassociate_entry(entry, mapping, false);
- 		xas_store(xas, NULL);	/* undo the PMD join */
- 		dax_wake_entry(xas, entry, true);
- 		mapping->nrexceptional--;
-@@ -653,7 +610,6 @@ static int __dax_invalidate_entry(struct address_space *mapping,
- 	    (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY) ||
- 	     xas_get_mark(&xas, PAGECACHE_TAG_TOWRITE)))
- 		goto out;
--	dax_disassociate_entry(entry, mapping, trunc);
- 	xas_store(&xas, NULL);
- 	mapping->nrexceptional--;
- 	ret = 1;
-@@ -747,8 +703,6 @@ static void *dax_insert_entry(struct xa_state *xas,
- 	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
- 		void *old;
- 
--		dax_disassociate_entry(entry, mapping, false);
--		dax_associate_entry(new_entry, mapping, vmf->vma, vmf->address);
- 		/*
- 		 * Only swap our new entry into the page cache if the current
- 		 * entry is a zero page or an empty entry.  If a normal PTE or
--- 
-2.29.2
-
-
+On 2020/11/21 0:45, Jeff Moyer wrote:
+> Zhiqiang Liu <liuzhiqiang26@huawei.com> writes:
+> 
+>> Recently, we use Coverity to analysis the ndctl package.
+>> Several issues should be resolved to make Coverity happy.
+>>
+>> lihaotian9 (8):
+>>   namespace: check whether pfn|dax|btt is NULL in setup_namespace
+>>   lib/libndctl: fix memory leakage problem in add_bus
+>>   libdaxctl: fix memory leakage in add_dax_region()
+>>   dimm: fix potential fd leakage in dimm_action()
+>>   util/help: check whether strdup returns NULL in exec_man_konqueror
+>>   lib/inject: check whether cmd is created successfully
+>>   libndctl: check whether ndctl_btt_get_namespace returns NULL in
+>>     callers
+>>   namespace: check whether seed is NULL in validate_namespace_options
+>>
+>>  daxctl/lib/libdaxctl.c |  3 +++
+>>  ndctl/dimm.c           | 12 +++++++-----
+>>  ndctl/lib/inject.c     |  8 ++++++++
+>>  ndctl/lib/libndctl.c   |  1 +
+>>  ndctl/namespace.c      | 23 ++++++++++++++++++-----
+>>  test/libndctl.c        | 16 +++++++++++-----
+>>  test/parent-uuid.c     |  2 +-
+>>  util/help.c            |  8 +++++++-
+>>  util/json.c            |  3 +++
+>>  9 files changed, 59 insertions(+), 17 deletions(-)
+> 
+> Except for the minor nit I pointed out, for the  series:
+> 
+> Acked-by: Jeff Moyer <jmoyer@redhat.com>
+> 
+> 
+> .
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
