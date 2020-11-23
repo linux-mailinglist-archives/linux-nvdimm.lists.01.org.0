@@ -1,42 +1,42 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5952C079C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 13:45:07 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5C12C05CE
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 13:37:46 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A0113100EBBB2;
-	Mon, 23 Nov 2020 04:45:05 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id F1178100EBBB0;
+	Mon, 23 Nov 2020 04:37:44 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E9556100EBBB0
-	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 04:45:02 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id BA97C100EBBA2
+	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 04:37:43 -0800 (PST)
 Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id CBA69208C3;
-	Mon, 23 Nov 2020 12:45:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTPSA id B62BC22203;
+	Mon, 23 Nov 2020 12:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1606135502;
-	bh=IuBWKROP9wFgKP8IK4xuW06+EcTDWeMX+sEi6RZcoU8=;
+	s=korg; t=1606135063;
+	bh=CNiP+4Hj3vw6UmF5OummcB34I0ZbFbNNqimg2SA/Qck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4uvSdRVw6BlNLOT7AvsRNOjDzFuaCKVwipvOnOAx7a6SIdWRKue+yFZmVT6RWZPJ
-	 YLiTRuKpXMDIr+H3TPJRcNO+P6CgLa5gRBQucqfgLcXEYlgJVdkpdLaO42AS0vh0Jn
-	 ih4tkpne0BuXc9pmLv/mdJTL4y+OedZG8IM4l178=
+	b=PbYyFxYx9zsF9B7BazhOEw5ZmzNUEg4LHSgHjn/D/1zs2tg84HMNVKljwA+Pxvi7F
+	 uuK1nnGcUBLz8TeSK30E2PfHXdFGXQq4dH8EEq9qAX20/8lO/Hj/lpJdAFSLx0DPVp
+	 Frg3dgdHs0n6cV+wsvdbInhJ6MK49xAQ5ADobgTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 5.9 092/252] MIPS: export has_transparent_hugepage() for modules
-Date: Mon, 23 Nov 2020 13:20:42 +0100
-Message-Id: <20201123121840.031718249@linuxfoundation.org>
+Subject: [PATCH 5.4 061/158] MIPS: export has_transparent_hugepage() for modules
+Date: Mon, 23 Nov 2020 13:21:29 +0100
+Message-Id: <20201123121822.882979950@linuxfoundation.org>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201123121835.580259631@linuxfoundation.org>
-References: <20201123121835.580259631@linuxfoundation.org>
+In-Reply-To: <20201123121819.943135899@linuxfoundation.org>
+References: <20201123121819.943135899@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
-Message-ID-Hash: 2HTHPZNVEWWDBUEOZUHA25RVMMKPDRHH
-X-Message-ID-Hash: 2HTHPZNVEWWDBUEOZUHA25RVMMKPDRHH
+Message-ID-Hash: KXQ62RVOPCABCMMB26PJRJQ2GCUQ7J2Y
+X-Message-ID-Hash: KXQ62RVOPCABCMMB26PJRJQ2GCUQ7J2Y
 X-MailFrom: gregkh@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -44,7 +44,7 @@ CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, ker
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2HTHPZNVEWWDBUEOZUHA25RVMMKPDRHH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KXQ62RVOPCABCMMB26PJRJQ2GCUQ7J2Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 38e2894d5fa32..1b939abbe4caa 100644
+index c13e46ced4252..60046445122b3 100644
 --- a/arch/mips/mm/tlb-r4k.c
 +++ b/arch/mips/mm/tlb-r4k.c
-@@ -438,6 +438,7 @@ int has_transparent_hugepage(void)
+@@ -437,6 +437,7 @@ int has_transparent_hugepage(void)
  	}
  	return mask == PM_HUGE_MASK;
  }
