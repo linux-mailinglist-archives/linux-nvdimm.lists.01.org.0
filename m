@@ -1,41 +1,40 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52692C080E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 14:14:16 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533912C0E2A
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 15:54:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3C781100EBBBB;
-	Mon, 23 Nov 2020 05:14:15 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.89.66.223; helo=[103.89.66.235]; envelope-from=auctionedbo6@b238-235.smtp-out.us-west-2.amazonses.com; receiver=<UNKNOWN> 
-Received: from [103.89.66.235] (unknown [103.89.66.223])
-	by ml01.01.org (Postfix) with ESMTP id E5046100EBBBE;
-	Mon, 23 Nov 2020 05:14:11 -0800 (PST)
-Received: from [197.43.170.35] (account auctionedbo6@b238-235.smtp-out.us-west-2.amazonses.com HELO WYKIXIK.TIFIFOW.top)
-	by  (Exim 4.89)
-	with ESMTPA id B912C7fd for igvt-g@lists.01.org; Mon, 23 Nov 2020 18:44:11 +0530
-Received: from [53.132.3.205] (account auctionedbo6@b238-235.smtp-out.us-west-2.amazonses.com HELO TALAPUWU.b238-235.smtp-out.us-west-2.amazonses.com)
-	by  (Exim 4.89)
-	with ESMTPA id 5rk0-p4m5rR-uW for igvt-g@lists.01.org; Mon, 23 Nov 2020 18:44:11 +0530
-Date: Mon, 23 Nov 2020 18:44:11 +0530
-From: <kwhite@billtrust.com>
-To: igvt-g@lists.01.org
-X-Priority: 3
-Message-ID: <UytkHPdIz_oR=VbvYy2xeSUCE3_xM=re9S5UkORJI@b238-235.smtp-out.us-west-2.amazonses.com>
-Subject: Your Invoice is Attached
+	by ml01.01.org (Postfix) with ESMTP id 96CE2100EBBBF;
+	Mon, 23 Nov 2020 06:54:47 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=41.175.177.136; helo=[41.175.177.136]; envelope-from=hoped193@ch3fe62.corp.docusign.net; receiver=<UNKNOWN> 
+Received: from [41.175.177.136] (unknown [41.175.177.136])
+	by ml01.01.org (Postfix) with ESMTP id 12223100EF24F;
+	Mon, 23 Nov 2020 06:54:37 -0800 (PST)
+Received: from [115.145.53.176] (helo=JEBYZYE.RORYTYQ.jkq)
+	by  with esmtpa (Exim 4.86_1)
+	(envelope-from )
+	id pjwc9lcxxxb1xb0.2.20201123165437
+	for linux-nvdimm@lists.01.org; Mon, 23 Nov 2020 16:54:37 +0200
+Received: from  (
+ [210.213.162.83])        by  with SMTP id
+ E66F798A56BD; Mon, 23 Nov 2020 16:54:37 +0200
+Date: Mon, 23 Nov 2020 16:54:37 +0200
+Message-ID: <A5E3.0042.de9727E5F0.c18fd@djjbhbnpcr.kays.tv>
+From: "Patricia Warner via DocuSign" <dse_NA3@docusign.net>
+To: linux-nvdimm@lists.01.org
+Subject: Please DocuSign: Invoice_Payment Form $1,880.00
 MIME-Version: 1.0
-Thread-Topic: Your Invoice is Attached
-Message-ID-Hash: 7TPYWKVLQGD3F45GOI4AL2YMZ3XO3F3G
-X-Message-ID-Hash: 7TPYWKVLQGD3F45GOI4AL2YMZ3XO3F3G
-X-MailFrom: auctionedbo6@b238-235.smtp-out.us-west-2.amazonses.com
+Message-ID-Hash: DH3BFKZ5N2VL5F5BRIQYJI4LXYEB6M3E
+X-Message-ID-Hash: DH3BFKZ5N2VL5F5BRIQYJI4LXYEB6M3E
+X-MailFrom: hoped193@CH3FE62.corp.docusign.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: kwhite@billtrust.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7TPYWKVLQGD3F45GOI4AL2YMZ3XO3F3G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DH3BFKZ5N2VL5F5BRIQYJI4LXYEB6M3E/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -44,10 +43,22 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-You have a new invoice.            Invoice Summary Information     =20
-       Due Date:    11/23/2020      =20
-       Amount Due:    462.16    =A0 =20
-                    Please review and pay your invoice.     =20
+EnvelopeActivation
+Please sign this Invoice\Payment Form $1,880.00.=20
+=A0=A0=A0=A0=A0=A0 REVIEW DOCUMENT =A0=A0=A0=A0=A0=A0
+
+
+
+
+Thanks.
+
+Do Not Share This Email This email contains a secure link to DocuSign. Plea=
+se do not share this email, link, or access code with others.About DocuSign=
+ Sign documents electronically in just minutes. It's safe, secure, and lega=
+lly binding. Whether you're in an office, at home, on-the-go -- or even acr=
+oss the globe -- DocuSign provides a professional trusted solution for Digi=
+tal Transaction Management=99.=20
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
