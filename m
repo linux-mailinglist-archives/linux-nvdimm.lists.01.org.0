@@ -1,89 +1,101 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCCD2C056C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 13:22:56 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB252C05BF
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Nov 2020 13:29:02 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CAA1E100EC1EC;
-	Mon, 23 Nov 2020 04:22:54 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=104.160.190.102; helo=wheeldoctornj.com; envelope-from=themedydeoq@arrow.com; receiver=<UNKNOWN> 
-Received: from wheeldoctornj.com (unknown [104.160.190.102])
-	by ml01.01.org (Postfix) with ESMTP id F3AE0100EC1EC
-	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 04:22:47 -0800 (PST)
-To: linux-nvdimm@lists.01.org
-Subject: backpack large capacity
-Message-ID: <39e140335d3971d9188f453d1ce68dfe@marieclaire.com>
-Date: Mon, 23 Nov 2020 12:38:02 +0100
-From: "Jon Parker" <themeaydeoq@arrow.com>
+	by ml01.01.org (Postfix) with ESMTP id A294B100EBBAC;
+	Mon, 23 Nov 2020 04:29:00 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 7EDD7100EBBA1
+	for <linux-nvdimm@lists.01.org>; Mon, 23 Nov 2020 04:28:58 -0800 (PST)
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 8A4D220728;
+	Mon, 23 Nov 2020 12:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1606134538;
+	bh=frCVka9YuGqxr2RrDANFnW8tkhiq/VbNt2PTcU9GSGs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=oVYWN0rb73jIECa6qB6AswUd341TO/WVOSR2msXks/78Zdi9TeFk7r2qdaSTutn2y
+	 P4gCjCA+dgGSbQFXlCHbCEsbhG8NCRnzWVXwKjpsvLo8WTAWZy2CooQaBLIijX7E3z
+	 Hji69cKs/R4knE5j3+VISqNnkZ+8rxVghNptIIuc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 4.14 25/60] MIPS: export has_transparent_hugepage() for modules
+Date: Mon, 23 Nov 2020 13:22:07 +0100
+Message-Id: <20201123121806.241846338@linuxfoundation.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201123121805.028396732@linuxfoundation.org>
+References: <20201123121805.028396732@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: 7TYJLIZTXBXV5TO6DBRUYW3LQRENZFQB
-X-Message-ID-Hash: 7TYJLIZTXBXV5TO6DBRUYW3LQRENZFQB
-X-MailFrom: themedydeoq@arrow.com
+Message-ID-Hash: YDHUR6BQRMCOKXL3ICP2GU5ZHKMMNVZ2
+X-Message-ID-Hash: YDHUR6BQRMCOKXL3ICP2GU5ZHKMMNVZ2
+X-MailFrom: gregkh@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, kernel test robot <lkp@intel.com>, Randy Dunlap <rdunlap@infradead.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, linux-nvdimm@lists.01.org, Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jonparker@889818.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7TYJLIZTXBXV5TO6DBRUYW3LQRENZFQB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YDHUR6BQRMCOKXL3ICP2GU5ZHKMMNVZ2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0611675026347422589=="
-
---===============0611675026347422589==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-Hi,<br /><br />How are you? Just to check if you got our last email
-regarding our backpack.<br /><br />We have got this backpack in our stock
-now, ready to ship to worldwide customers.<br /><br />Price details
-below:<br />1-20 pieces&nbsp; 85.90 per piece<br />20-50 pieces 78.90 per
-piece<br />50-100 pieces 72.90 per piece<br />price is u s d<br /><span
-data-bm=3D"49"><span data-bm=3D"49"><br />If you would like to order it, =
-just
-reply back with your shipping address, we will arrange the shipment for
-you.<br /><br /><img
-src=3D"https://i.ebayimg.com/images/g/oq0AAOSwwx9e~ElX/s-l500.jpg"
-width=3D"450" height=3D"431" /><img
-src=3D"https://i.ebayimg.com/images/g/1FsAAOSw11Je~ElX/s-l500.jpg"
-width=3D"450" height=3D"280" /><br /><img
-src=3D"https://i.ebayimg.com/images/g/FhsAAOSwD2Je~ElY/s-l1600.jpg"
-width=3D"450" height=3D"511" /><img
-src=3D"https://i.ebayimg.com/images/g/FiMAAOSwk6Fe~ElY/s-l1600.jpg"
-width=3D"450" height=3D"449" /><br /><br />Key features:<br />17.3 inch l=
-arge
-capacity<br />Aanti-thief feature<br />USB Charging feature<br
-/>Waterproof<br />Oxford material<br /></span></span><span data-bm=3D"49"=
-><br
-/>If you would like to order it, just reply back with your shipping
-address, we will arrange the shipment for you.<br /><br />Thanks,<br />Jo=
-n
-Parker</span>
-<style type=3D"text/css"><!--
-p.p1 margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Verdana
-p.p2 margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Verdana; min-height:
-12.0px
---></style>
-</body>
-</html>
-
---===============0611675026347422589==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+
+From: Randy Dunlap <rdunlap@infradead.org>
+
+[ Upstream commit 31b4d8e172f614adc53ddecb4b6b2f6411a49b84 ]
+
+MIPS should export its local version of "has_transparent_hugepage"
+so that loadable modules (dax) can use it.
+
+Fixes this build error:
+ERROR: modpost: "has_transparent_hugepage" [drivers/dax/dax.ko] undefined!
+
+Fixes: fd8cfd300019 ("arch: fix has_transparent_hugepage()")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-mips@vger.kernel.org
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: linux-nvdimm@lists.01.org
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/mips/mm/tlb-r4k.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 0596505770dba..11985399c4695 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -424,6 +424,7 @@ int has_transparent_hugepage(void)
+ 	}
+ 	return mask == PM_HUGE_MASK;
+ }
++EXPORT_SYMBOL(has_transparent_hugepage);
+ 
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE  */
+ 
+-- 
+2.27.0
+
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============0611675026347422589==--
