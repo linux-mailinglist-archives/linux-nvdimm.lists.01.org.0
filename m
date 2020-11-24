@@ -1,61 +1,53 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C12B2C2A7B
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 24 Nov 2020 15:55:51 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4092C2D46
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 24 Nov 2020 17:49:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2043D100EBBA8;
-	Tue, 24 Nov 2020 06:55:49 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C4129100EBB86;
+	Tue, 24 Nov 2020 08:49:49 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 861FF100EF263
-	for <linux-nvdimm@lists.01.org>; Tue, 24 Nov 2020 06:55:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1606229744;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IDhfVYWGoL+IpVNQ3e9z+GzCQ3AwBmJ5YyBaFP+39/s=;
-	b=NzH85F2xYPSuhTzemjNAZOKzFWzZhBrQtuFHJQKR79udsexoen6XUlWMmr7dgqz8K0gKhQ
-	mHvjewEeQZjNflGvb6d4HdJUzx5njjK3EIsLrBl61iVT6doUDNsp7NmlGNd4Ahmyqhimt+
-	yhCSRpAtIv7ctB7Npt5+4Gz9Qw0SwQw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-285-uhRFpvSLPfWubnd5bhYaXw-1; Tue, 24 Nov 2020 09:55:42 -0500
-X-MC-Unique: uhRFpvSLPfWubnd5bhYaXw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTPS id 1A429100EBBDE
+	for <linux-nvdimm@lists.01.org>; Tue, 24 Nov 2020 08:49:47 -0800 (PST)
+Received: from kernel.org (unknown [77.125.7.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E98ED9A229;
-	Tue, 24 Nov 2020 14:55:40 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 5BDB65D6AB;
-	Tue, 24 Nov 2020 14:55:40 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] ACPI: NFIT: Fix input validation of bus-family
-References: <160619566216.201177.9354229595539334957.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Tue, 24 Nov 2020 09:55:44 -0500
-In-Reply-To: <160619566216.201177.9354229595539334957.stgit@dwillia2-desk3.amr.corp.intel.com>
-	(Dan Williams's message of "Mon, 23 Nov 2020 21:27:42 -0800")
-Message-ID: <x49ft4yiz2n.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+	by mail.kernel.org (Postfix) with ESMTPSA id B0D65206D8;
+	Tue, 24 Nov 2020 16:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1606236586;
+	bh=ofUYlPrJWYYZntZI6e1UjFnjHWpt+ejZuqW8X4FikI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZCuQvSCf55hd5LYTHCkX7HoUl/qLUj9Aw9Qt2bN77Vq37ymtgqf1vlqa/54yGLfET
+	 9NqEFDk66Auv1EyiIzF9GLhnJC21iAtMI/wvzWombNFNDkOObvxkdIL/h8j9OReeJM
+	 eznOp2166MiDXEFDWf7MpCnskhIQaw8NFBBtv2Qk=
+Date: Tue, 24 Nov 2020 18:49:30 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v11 4/9] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-ID: <20201124164930.GK8537@kernel.org>
+References: <20201124092556.12009-1-rppt@kernel.org>
+ <20201124092556.12009-5-rppt@kernel.org>
+ <20201124105947.GA5527@gaia>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Message-ID-Hash: ATJDE3GR5BBFSXPV2XMGT6N7P47HUWCG
-X-Message-ID-Hash: ATJDE3GR5BBFSXPV2XMGT6N7P47HUWCG
-X-MailFrom: jmoyer@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, Dan Carpenter <dan.carpenter@oracle.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Disposition: inline
+In-Reply-To: <20201124105947.GA5527@gaia>
+Message-ID-Hash: ASB6KRJ5263SKWTCT72RTMV66YLILDUI
+X-Message-ID-Hash: ASB6KRJ5263SKWTCT72RTMV66YLILDUI
+X-MailFrom: rppt@kernel.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel
+ .org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ATJDE3GR5BBFSXPV2XMGT6N7P47HUWCG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ASB6KRJ5263SKWTCT72RTMV66YLILDUI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -64,53 +56,50 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Tue, Nov 24, 2020 at 10:59:48AM +0000, Catalin Marinas wrote:
+> Hi Mike,
+> 
+> On Tue, Nov 24, 2020 at 11:25:51AM +0200, Mike Rapoport wrote:
+> > +static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+> > +{
+> > +	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
 
-> Dan reports that smatch thinks userspace can craft an out-of-bound bus
-> family number. However, nd_cmd_clear_to_send() blocks all non-zero
-> values of bus-family since only the kernel can initiate these commands.
-> However, in the speculation path, family is a user controlled array
-> index value so mask it for speculation safety. Also, since the
-> nd_cmd_clear_to_send() safety is non-obvious and possibly may change in
-> the future include input validation is if userspace could get past the
-> nd_cmd_clear_to_send() gatekeeper.
->
-> Link: http://lore.kernel.org/r/20201111113000.GA1237157@mwanda
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/acpi/nfit/core.c |    6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index cda7b6c52504..b11b08a60684 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -5,6 +5,7 @@
->  #include <linux/list_sort.h>
->  #include <linux/libnvdimm.h>
->  #include <linux/module.h>
-> +#include <linux/nospec.h>
->  #include <linux/mutex.h>
->  #include <linux/ndctl.h>
->  #include <linux/sysfs.h>
-> @@ -479,8 +480,11 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
->  		cmd_mask = nd_desc->cmd_mask;
->  		if (cmd == ND_CMD_CALL && call_pkg->nd_family) {
->  			family = call_pkg->nd_family;
-> -			if (!test_bit(family, &nd_desc->bus_family_mask))
-> +			if (family > NVDIMM_BUS_FAMILY_MAX ||
-> +			    !test_bit(family, &nd_desc->bus_family_mask))
->  				return -EINVAL;
-> +			family = array_index_nospec(family,
-> +						    NVDIMM_BUS_FAMILY_MAX + 1);
->  			dsm_mask = acpi_desc->family_dsm_mask[family];
->  			guid = to_nfit_bus_uuid(family);
->  		} else {
+...
 
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+> > +
+> > +		err = set_direct_map_invalid_noflush(page, 1);
+> > +		if (err)
+> > +			goto err_del_page_cache;
+> 
+> On arm64, set_direct_map_default_noflush() returns 0 if !rodata_full but
+> no pgtable changes happen since the linear map can be a mix of small and
+> huge pages. The arm64 implementation doesn't break large mappings. I
+> presume we don't want to tell the user that the designated memory is
+> "secret" but the kernel silently ignored it.
+> 
+> We could change the arm64 set_direct_map* to return an error, however, I
+> think it would be pretty unexpected for the user to get a fault when
+> trying to access it. It may be better to return a -ENOSYS or something
+> on the actual syscall if the fault-in wouldn't be allowed later.
+> 
+> Alternatively, we could make the linear map always use pages on arm64,
+> irrespective of other config or cmdline options (maybe not justified
+> unless we have clear memsecret users). Yet another idea is to get
+> set_direct_map* to break pmd/pud mappings into pte but that's not always
+> possible without a stop_machine() and potentially disabling the MMU.
+
+My preference would be to check at secretmem initialization if
+set_direct_map_*() actually do anything and then return an error from
+the syscall if they are essentially nop.
+
+I'll update the patches with something like this in v12.
+
+> -- 
+> Catalin
+
+-- 
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
