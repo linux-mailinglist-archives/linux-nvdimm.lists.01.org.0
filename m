@@ -1,46 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4CB12C47B7
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Nov 2020 19:36:59 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D77B2C48AB
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Nov 2020 20:45:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0F08E100EF24A;
-	Wed, 25 Nov 2020 10:36:58 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 1344E100EF255;
+	Wed, 25 Nov 2020 11:45:42 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=ritundailb333@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 205EA100EE8C8
-	for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 10:36:54 -0800 (PST)
-Received: from gaia (unknown [95.146.230.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 1B04A2065D;
-	Wed, 25 Nov 2020 18:36:47 +0000 (UTC)
-Date: Wed, 25 Nov 2020 18:36:45 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v12 04/10] set_memory: allow querying whether
- set_direct_map_*() is actually enabled
-Message-ID: <20201125183645.GB16801@gaia>
-References: <20201125092208.12544-1-rppt@kernel.org>
- <20201125092208.12544-5-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 0382C100EF254
+	for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 11:45:38 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id s8so3075286wrw.10
+        for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 11:45:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=ijVS8wUG3QwdetotYuN3REyWbIEoH3Ho/x0z6dbbf5q+7FFvDE/GuvwKiU4updntdW
+         voFY1UU8Q6QqIkl5K5ujyVt7q5P/rnEnthHSQFJbhSCqoOL4tSDq13hGrTngDNme9/3L
+         BdLTP4tfgoTIylFUhE4hbnicXBXRkKTWRDH/1zrs7zqtlgXYM7YWg07Jorjba+fC9w6K
+         9RtLyTj0hHUn9HGxt6MFAqORxmw8cYsDXn4DC6DefByxtekpr1v0DVYO2yFt352fCD9D
+         Ktdxrvy7GH2/O0CCpRrvACbOI0OvPY857/tg40d3Yq4foOR5BjToYi+xY35Bje0jvQUM
+         EF/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=MT4M9SX2NqdNuOObXhIV8Gtkw+yoDX+gRyJnh+feBwM=;
+        b=Lqah/1LyVNnkPbL/DQlGsLmnlnrgY5IJS+Nzo5LA5uz5l+vkJ9Blf6ZtETJikZ3iCx
+         2DMFf7mUXyCIssKzQSbR2wRE0YMC1MwRhNyWMdCHXHkvXy2QeTBaz9MbElK4ByeDc1M2
+         uSj7c7akczVE5N2mVFTfSoNcFB04FHg1iiS1TOxMeWEoFZzYcp6ERZ5OKsRhSTAEdCem
+         APQUVbwYRqRATC3tqJfjGoGwOHViyOMgjyxIlltknHwCyZAnc9XNSofEQHTnfTCurglQ
+         LSCPHygyWlXOWUthJhms60ANIfr0idYogpCVmxz9XMzuyZA/yNZ6kH3aC07GDXt8vs1a
+         EV2g==
+X-Gm-Message-State: AOAM532+WFIptFLHwkxhuJ9aVJgnYlrt0sEZ5Ppj8lPecU4Ns9wwlbzI
+	TsIiyQ6PPAM864SHXdCT5DA=
+X-Google-Smtp-Source: ABdhPJxzr4Q0zuyxrkko/CfocHprWuP1vkYbXOdCVimHLwYFXWrdsnSECjDz+/TaEpVn/2l5MjC9Ig==
+X-Received: by 2002:a5d:5604:: with SMTP id l4mr5716440wrv.127.1606333537507;
+        Wed, 25 Nov 2020 11:45:37 -0800 (PST)
+Received: from [192.168.1.152] ([102.64.149.89])
+        by smtp.gmail.com with ESMTPSA id s2sm5757848wmh.37.2020.11.25.11.45.31
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Wed, 25 Nov 2020 11:45:36 -0800 (PST)
+Message-ID: <5fbeb460.1c69fb81.29222.d00f@mx.google.com>
+From: "Dailborh R." <ritundailb333@gmail.com>
+X-Google-Original-From: Dailborh R.
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201125092208.12544-5-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: RLPQ3VL6RRJ3QBZW7ZGGSNV7KMLOI6CF
-X-Message-ID-Hash: RLPQ3VL6RRJ3QBZW7ZGGSNV7KMLOI6CF
-X-MailFrom: cmarinas@kernel.org
+Content-Description: Mail message body
+Subject: Please reply to me
+To: Recipients <Dailborh@ml01.01.org>
+Date: Wed, 25 Nov 2020 19:44:41 +0000
+Message-ID-Hash: MS36WBB5QVQ4MUJPZGP4KNKVAD73AQRP
+X-Message-ID-Hash: MS36WBB5QVQ4MUJPZGP4KNKVAD73AQRP
+X-MailFrom: ritundailb333@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel
- .org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: dailrrob.83@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RLPQ3VL6RRJ3QBZW7ZGGSNV7KMLOI6CF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MS36WBB5QVQ4MUJPZGP4KNKVAD73AQRP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,24 +73,9 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 25, 2020 at 11:22:02AM +0200, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> On arm64, set_direct_map_*() functions may return 0 without actually
-> changing the linear map. This behaviour can be controlled using kernel
-> parameters, so we need a way to determine at runtime whether calls to
-> set_direct_map_invalid_noflush() and set_direct_map_default_noflush() have
-> any effect.
-> 
-> Extend set_memory API with can_set_direct_map() function that allows
-> checking if calling set_direct_map_*() will actually change the page table,
-> replace several occurrences of open coded checks in arm64 with the new
-> function and provide a generic stub for architectures that always modify
-> page tables upon calls to set_direct_map APIs.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+I'm Dailborh R. from US. I picked interest in you and I would like to know
+more about you and establish relationship with you. i will wait for
+your response. thank you.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
