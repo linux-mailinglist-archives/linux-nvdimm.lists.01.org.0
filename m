@@ -2,67 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DE92C4067
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Nov 2020 13:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE792C4495
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Nov 2020 17:00:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 11752100ED48C;
-	Wed, 25 Nov 2020 04:42:58 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 04B60100ED4AB;
+	Wed, 25 Nov 2020 08:00:24 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=kumsonkington@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0CDF0100ED48B
-	for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 04:42:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1606308172;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E+jgAoXCcc+2e3woKE/RD7YJatBg4rpbL38pBlAO/5Y=;
-	b=ChnIxKx23Ys5sKCDwaCdfohEzcY6/GaK8H8XT/sUe7LsvFvqwv64HXAkThPvAEbb0zrJDd
-	QKab0G2t+NHqPK/3c9UdFRmbW1JQnLPXCC4wj77qtiPdB9pvJT74IsSADXdLh3NlafvvZW
-	tjGLQUocGe8frVwFO+nBvleRN5jH7o4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-185-DI1Pfe2wOHqV_YxKmpoagw-1; Wed, 25 Nov 2020 07:42:50 -0500
-X-MC-Unique: DI1Pfe2wOHqV_YxKmpoagw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E63451E7C7;
-	Wed, 25 Nov 2020 12:42:44 +0000 (UTC)
-Received: from [10.36.112.131] (ovpn-112-131.ams2.redhat.com [10.36.112.131])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C339A5D6AC;
-	Wed, 25 Nov 2020 12:42:37 +0000 (UTC)
-Subject: Re: [PATCH v12 04/10] set_memory: allow querying whether
- set_direct_map_*() is actually enabled
-To: Mike Rapoport <rppt@linux.ibm.com>
-References: <20201125092208.12544-1-rppt@kernel.org>
- <20201125092208.12544-5-rppt@kernel.org>
- <5ea6eacd-79e8-0645-da39-d3461f60e627@redhat.com>
- <20201125121138.GJ123287@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <bb27ab9e-8c74-e297-acc1-a92bcc4087a9@redhat.com>
-Date: Wed, 25 Nov 2020 13:42:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+	by ml01.01.org (Postfix) with ESMTPS id 1E8B4100ED4AB
+	for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 08:00:20 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id j205so3828234lfj.6
+        for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 08:00:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=LTjiRN6GWpIjZZcdnIBBIo00u6kMbYPc0UAhfj0YtNY=;
+        b=MTn7Pxs3o4AtmoNxEpglYN17C+X4YEa0jpMzAieDENaAhBfVn8+Dmg+DmHSc6AHRnC
+         t/66Y/45GP8KyYrYLXNjK1uIya9eq+8TXgsV9yyxkqlJ46jD6rh1IopZhUh+RQZJo4cf
+         VmA/4+5gW6kOUqM68fOvGKIp7z0/lMiQOXlWCDJYNvI/r2qIucrlfNB9ktpTWTkFkKmM
+         u5ZW9/F11bNrQLQasmmP726ta+Ea9JhlI/k4EUhRt4yUyvMDCnTGstgdmFs4HsspLIX+
+         pII4GFtHqGtz/TbBtas4skgiros90GYEytx+BBiPR28g5Hv/JezXYnrcMM/JdsQWCFVL
+         35fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=LTjiRN6GWpIjZZcdnIBBIo00u6kMbYPc0UAhfj0YtNY=;
+        b=gSd7YZk2XQ7WH2r12f2LOkQO4qqLOJkvneyzWpBLFmb9lojNuYqVqGRKbe6aT1BgMg
+         pg8AA6c5Ppe8a8gHsTFEbigpq0iCNZsFmocLERMBa+hTlMZYoJe+OW+QM5cqOULZwg6J
+         0sD4bTqbL60Z/jtcf0+lSPJ9iZJpvOtha8H1LdZvduYPtdr2j6fm30+pJQ/byrjSJMmg
+         uPlT3LLvGnX8rHuSPvBnPqazv3rGa7f6SAnmaZcIf7iAHklH+c3nvVqttdiAP47PR+wI
+         j//fdCft7LLkFDW+zN4DwQWDMsa3HvPKYYmssTQtXEmYw1GUwoKmI5fiDte8d3OCj0mU
+         XQPg==
+X-Gm-Message-State: AOAM531RBSdh9hPZ0MJF4IBC1NCfPJ6EhP/5/C9RRH12Fjj5ieois0IU
+	cZrOSWGAndMAktioXdd2cQkKkyghjopsHRo/6D4=
+X-Google-Smtp-Source: ABdhPJwljXGPzviEDrSSaO1/WuHiVvxSt62ou/27tpQCBDLKgChWk3p4DeRsci5AnJ0EbqZUNDpWbfC5cjs1c9innm0=
+X-Received: by 2002:ac2:5e23:: with SMTP id o3mr1768821lfg.159.1606320016109;
+ Wed, 25 Nov 2020 08:00:16 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201125121138.GJ123287@linux.ibm.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Message-ID-Hash: UIDT7MUF4HPSUWZRUSXBIHVWTBGQZSKT
-X-Message-ID-Hash: UIDT7MUF4HPSUWZRUSXBIHVWTBGQZSKT
-X-MailFrom: david@redhat.com
+From: kumson kingston <kumsonkington@gmail.com>
+Date: Wed, 25 Nov 2020 08:00:16 -0800
+Message-ID: <CAKGseovuR4XHacR1Kh6TsCTO4J5phUamNE5kqe8XVhFXUrNmOw@mail.gmail.com>
+Subject: Request For Partnership.
+To: undisclosed-recipients:;
+Message-ID-Hash: WZ5ZJX3TV53AW474M5PJMAUBY6PXLQ6R
+X-Message-ID-Hash: WZ5ZJX3TV53AW474M5PJMAUBY6PXLQ6R
+X-MailFrom: kumsonkington@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kern
- el.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: kumsonkingston@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UIDT7MUF4HPSUWZRUSXBIHVWTBGQZSKT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WZ5ZJX3TV53AW474M5PJMAUBY6PXLQ6R/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -71,59 +66,54 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 25.11.20 13:11, Mike Rapoport wrote:
-> On Wed, Nov 25, 2020 at 12:22:52PM +0100, David Hildenbrand wrote:
->>>  #include <asm-generic/cacheflush.h>
->>>  
->>>  #endif /* __ASM_CACHEFLUSH_H */
->>> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
->>> new file mode 100644
->>> index 000000000000..ecb6b0f449ab
->>> --- /dev/null
->>> +++ b/arch/arm64/include/asm/set_memory.h
->>> @@ -0,0 +1,17 @@
->>> +/* SPDX-License-Identifier: GPL-2.0-only */
->>> +
->>> +#ifndef _ASM_ARM64_SET_MEMORY_H
->>> +#define _ASM_ARM64_SET_MEMORY_H
->>> +
->>> +#include <asm-generic/set_memory.h>
->>> +
->>> +bool can_set_direct_map(void);
->>> +#define can_set_direct_map can_set_direct_map
->>
->> Well, that looks weird.
->> [...]
-> 
-> We have a lot of those e.g. in linux/pgtable.h
-> 
->>>  }
->>> +#else /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
->>> +/*
->>> + * Some architectures, e.g. ARM64 can disable direct map modifications at
->>> + * boot time. Let them overrive this query.
->>> + */
->>> +#ifndef can_set_direct_map
->>> +static inline bool can_set_direct_map(void)
->>> +{
->>> +	return true;
->>> +}
->>
->> I think we prefer __weak functions for something like that, avoids the
->> ifdefery.
-> 
-> I'd prefer this for two reasons: first, static inline can be optimized
-> away and second, there is no really good place to put generic
-> implementation.
-
-Fair enough
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
--- 
-Thanks,
-
-David / dhildenb
+  Hello A Request For Partnership.
+I am particularly happy dealing with a person of your caliber who knows
+what international business is all about. This business is purely based on
+trust and it's 100% risk free business and I understand your willingness to
+assist me in actualizing this deal. As I told you in my first email, all I
+need from you is a confirmation that you can handle this deal in question,
+and then all the details will be given to you as we progress. My name is
+Mr. Kumson Kingston., the Vault Manager with a Private Storage Firm. Having
+worked with this storage company for the past 18 Years with dedication and
+having nothing to write home about. Hence I have to package this deal for
+our betterment.
+ There is this UNCLAIMED Trunk Boxes Deposited in our Company's Vault for
+the past 15 years ago, and nobody has ever shown up for the claims and
+collection till date. Having made inquiry and investigation why these Trunk
+Boxes has not been claimed by their depositors/Owners I discovered they are
+late/dead for the past 10 year ago, no forwarding contact addresses of this
+depositors/Owners, as every effort to locate any  surviving relatives or
+close family members of his proof abortive.
+ Just few Months ago, the Management and board of directors resolved to
+dispose All Unclaimed Trunk Boxes that has exceeded the period of 6year
+without it depositor coming for claims and collection be dislodged from the
+Vault and disposed, So as to create space to accommodate incoming Boxes.
+Actually, Many Boxes were dislodged from our Vault for disposal but being
+the Vault Manager, I decided to checkmate the contents of these boxes.
+After scanning these few Boxes electronically, I discovered wonders, their
+contents to be fiscal cash running into Millions of United States of
+American Dollars in $100 bills.
+May it interest you, to note that none of the staff or management of our
+company know anything relating to this development till date, I'm
+contacting you believing that you could afford me the assistance and help I
+need to legally secure and claim these Trunk Boxes from our company Vault
+for further delivery to your doorstep or any country of your designation.
+While upon completion of the clams and delivery to your doorstep I'll later
+join you in your country to Disburse/Share the proceeds of the Trunk Boxes
+50% / 50% with you.
+Should you need to peruse copies of the deposit Documents covering these
+Boxes issued to the late depositor by the management of our Firm, I will
+gladly and not hesitate to present them to your perusal and study. Should
+this interest you to partner with me, then Kindly forward your full contact
+Address, direct Telephone, Cell Phone numbers known to me. I guarantee you
+that, if only you give me a chance and cooperate with me within the next
+ten (10) working days from today the Trunk Boxes will be released and we
+process it onward delivery to your doorstep in your country. I know how to
+handle this and immediately after the completion of this transaction I will
+personally destroy and delete every information leading to the completion
+of this transaction. This is to assure you that I will not leave any traces.
+Best Regards.
+Kumson Kingston
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
