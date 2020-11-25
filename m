@@ -2,118 +2,122 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE792C4495
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Nov 2020 17:00:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62A32C4700
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Nov 2020 18:47:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 04B60100ED4AB;
-	Wed, 25 Nov 2020 08:00:24 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=kumsonkington@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+	by ml01.01.org (Postfix) with ESMTP id 2088D100EE8C8;
+	Wed, 25 Nov 2020 09:47:25 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::e46; helo=mail-vs1-xe46.google.com; envelope-from=3p5i-xw8jdnyjjgk6tsue2jlafk8e2ad.4gedafmp-fn5aeedaklk.st.gj8@trix.bounces.google.com; receiver=<UNKNOWN> 
+Received: from mail-vs1-xe46.google.com (mail-vs1-xe46.google.com [IPv6:2607:f8b0:4864:20::e46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1E8B4100ED4AB
-	for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 08:00:20 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id j205so3828234lfj.6
-        for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 08:00:20 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 7DB7D100EE8C8
+	for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 09:47:22 -0800 (PST)
+Received: by mail-vs1-xe46.google.com with SMTP id g3so559374vso.1
+        for <linux-nvdimm@lists.01.org>; Wed, 25 Nov 2020 09:47:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=LTjiRN6GWpIjZZcdnIBBIo00u6kMbYPc0UAhfj0YtNY=;
-        b=MTn7Pxs3o4AtmoNxEpglYN17C+X4YEa0jpMzAieDENaAhBfVn8+Dmg+DmHSc6AHRnC
-         t/66Y/45GP8KyYrYLXNjK1uIya9eq+8TXgsV9yyxkqlJ46jD6rh1IopZhUh+RQZJo4cf
-         VmA/4+5gW6kOUqM68fOvGKIp7z0/lMiQOXlWCDJYNvI/r2qIucrlfNB9ktpTWTkFkKmM
-         u5ZW9/F11bNrQLQasmmP726ta+Ea9JhlI/k4EUhRt4yUyvMDCnTGstgdmFs4HsspLIX+
-         pII4GFtHqGtz/TbBtas4skgiros90GYEytx+BBiPR28g5Hv/JezXYnrcMM/JdsQWCFVL
-         35fg==
+        h=mime-version:reply-to:message-id:date:subject:from:to;
+        bh=oWU5xdvAgHO+cO+LPUq+3kYapd9VlgYn32Y1pL6h0BI=;
+        b=gSsWfmHrvHaEHBvnQ0+I3EXdW5XvDxgBDlFLgK2KsmiF1AQgJaMf7ftiv3HPgasBHF
+         OnBA2QYL5d0cbe11GvuuQpFZEA9WOUAhCA6/UijUf3X2noA/X4wX76MwKYlrTT03diw2
+         9wG+FZA4FhiRo7NxgxmmOfAaNZsaI3Zn4KT2+2hMAYBdkgA+YU9RjXlSWKMLZ9EqiWrL
+         xryhTRldoKHqaEiRoiPnpwQxykdZ9p63lR8Nr/qe+gFSZASPYjrcAOGZvaJxQO9OGLcH
+         BdLfFs7M/D3QKHVWMfRmShBek8LlBUdrA7EYU1SXO+Klcw6ByF5FqEkmIKq96dMaYEPX
+         FPpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=LTjiRN6GWpIjZZcdnIBBIo00u6kMbYPc0UAhfj0YtNY=;
-        b=gSd7YZk2XQ7WH2r12f2LOkQO4qqLOJkvneyzWpBLFmb9lojNuYqVqGRKbe6aT1BgMg
-         pg8AA6c5Ppe8a8gHsTFEbigpq0iCNZsFmocLERMBa+hTlMZYoJe+OW+QM5cqOULZwg6J
-         0sD4bTqbL60Z/jtcf0+lSPJ9iZJpvOtha8H1LdZvduYPtdr2j6fm30+pJQ/byrjSJMmg
-         uPlT3LLvGnX8rHuSPvBnPqazv3rGa7f6SAnmaZcIf7iAHklH+c3nvVqttdiAP47PR+wI
-         j//fdCft7LLkFDW+zN4DwQWDMsa3HvPKYYmssTQtXEmYw1GUwoKmI5fiDte8d3OCj0mU
-         XQPg==
-X-Gm-Message-State: AOAM531RBSdh9hPZ0MJF4IBC1NCfPJ6EhP/5/C9RRH12Fjj5ieois0IU
-	cZrOSWGAndMAktioXdd2cQkKkyghjopsHRo/6D4=
-X-Google-Smtp-Source: ABdhPJwljXGPzviEDrSSaO1/WuHiVvxSt62ou/27tpQCBDLKgChWk3p4DeRsci5AnJ0EbqZUNDpWbfC5cjs1c9innm0=
-X-Received: by 2002:ac2:5e23:: with SMTP id o3mr1768821lfg.159.1606320016109;
- Wed, 25 Nov 2020 08:00:16 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:message-id:date:subject
+         :from:to;
+        bh=oWU5xdvAgHO+cO+LPUq+3kYapd9VlgYn32Y1pL6h0BI=;
+        b=SUdccYYEZe4qXGvOnDHY+NIIOtupeWiNByLkbN3btnkkrbmWYw6S6yXJwdO++DxpzV
+         POCVCgYxPW+e2Hw2A2l7Nz5TjBcAX/B1BZD19DSe/EkaVpJGuJoDQ4vn2yEDGuaLySnY
+         3z+xq/2eEnX5kyC7TYQfEQFVHttJCuYyFlfkry+xOdQUseWSpIQASBwNmpUYLsPGPPMO
+         ftVNqOGDGAxxD7KfGnzuGRfHLGnisKIR71pfy6sM8eQK9z2eIbEqEwuBSfYgYYLCVZNn
+         UMbJalXP0NC1f4HQgukaBQCDrkYZ7vOUfPVaRBa5Rpt2qKnBwp5oVsRn0gjHBYhVMdjN
+         74dw==
+X-Gm-Message-State: AOAM533pwJxkQZmS/fLFIEVDrrXfK9wiXf5sXmWzZ5SV+gIhWaPPsCPb
+	Me/2H4IpitTARCQ9NaP2vo38639clC7EYxj5R21u
 MIME-Version: 1.0
-From: kumson kingston <kumsonkington@gmail.com>
-Date: Wed, 25 Nov 2020 08:00:16 -0800
-Message-ID: <CAKGseovuR4XHacR1Kh6TsCTO4J5phUamNE5kqe8XVhFXUrNmOw@mail.gmail.com>
-Subject: Request For Partnership.
-To: undisclosed-recipients:;
-Message-ID-Hash: WZ5ZJX3TV53AW474M5PJMAUBY6PXLQ6R
-X-Message-ID-Hash: WZ5ZJX3TV53AW474M5PJMAUBY6PXLQ6R
-X-MailFrom: kumsonkington@gmail.com
+X-Received: by 2002:a05:6102:514:: with SMTP id l20mt3192357vsa.54.1606326439257;
+ Wed, 25 Nov 2020 09:47:19 -0800 (PST)
+X-No-Auto-Attachment: 1
+Message-ID: <000000000000ce6c5605b4f204d8@google.com>
+Date: Wed, 25 Nov 2020 17:47:21 +0000
+Subject: May I humbly solicit your confidence in this transaction!
+From: rrose102martins@gmail.com
+To: linux-nvdimm@lists.01.org
+Message-ID-Hash: FSGYROAT4LELOXFRGU5KR6OVGCBEXMHS
+X-Message-ID-Hash: FSGYROAT4LELOXFRGU5KR6OVGCBEXMHS
+X-MailFrom: 3p5i-Xw8JDNYJJGK6TSUE2JLAFK8E2AD.4GEDAFMP-FN5AEEDAKLK.ST.GJ8@trix.bounces.google.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: kumsonkingston@gmail.com
+Reply-To: rrose102martins@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WZ5ZJX3TV53AW474M5PJMAUBY6PXLQ6R/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FSGYROAT4LELOXFRGU5KR6OVGCBEXMHS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"; delsp="yes"
 Content-Transfer-Encoding: 7bit
 
-  Hello A Request For Partnership.
-I am particularly happy dealing with a person of your caliber who knows
-what international business is all about. This business is purely based on
-trust and it's 100% risk free business and I understand your willingness to
-assist me in actualizing this deal. As I told you in my first email, all I
-need from you is a confirmation that you can handle this deal in question,
-and then all the details will be given to you as we progress. My name is
-Mr. Kumson Kingston., the Vault Manager with a Private Storage Firm. Having
-worked with this storage company for the past 18 Years with dedication and
-having nothing to write home about. Hence I have to package this deal for
-our betterment.
- There is this UNCLAIMED Trunk Boxes Deposited in our Company's Vault for
-the past 15 years ago, and nobody has ever shown up for the claims and
-collection till date. Having made inquiry and investigation why these Trunk
-Boxes has not been claimed by their depositors/Owners I discovered they are
-late/dead for the past 10 year ago, no forwarding contact addresses of this
-depositors/Owners, as every effort to locate any  surviving relatives or
-close family members of his proof abortive.
- Just few Months ago, the Management and board of directors resolved to
-dispose All Unclaimed Trunk Boxes that has exceeded the period of 6year
-without it depositor coming for claims and collection be dislodged from the
-Vault and disposed, So as to create space to accommodate incoming Boxes.
-Actually, Many Boxes were dislodged from our Vault for disposal but being
-the Vault Manager, I decided to checkmate the contents of these boxes.
-After scanning these few Boxes electronically, I discovered wonders, their
-contents to be fiscal cash running into Millions of United States of
-American Dollars in $100 bills.
-May it interest you, to note that none of the staff or management of our
-company know anything relating to this development till date, I'm
-contacting you believing that you could afford me the assistance and help I
-need to legally secure and claim these Trunk Boxes from our company Vault
-for further delivery to your doorstep or any country of your designation.
-While upon completion of the clams and delivery to your doorstep I'll later
-join you in your country to Disburse/Share the proceeds of the Trunk Boxes
-50% / 50% with you.
-Should you need to peruse copies of the deposit Documents covering these
-Boxes issued to the late depositor by the management of our Firm, I will
-gladly and not hesitate to present them to your perusal and study. Should
-this interest you to partner with me, then Kindly forward your full contact
-Address, direct Telephone, Cell Phone numbers known to me. I guarantee you
-that, if only you give me a chance and cooperate with me within the next
-ten (10) working days from today the Trunk Boxes will be released and we
-process it onward delivery to your doorstep in your country. I know how to
-handle this and immediately after the completion of this transaction I will
-personally destroy and delete every information leading to the completion
-of this transaction. This is to assure you that I will not leave any traces.
-Best Regards.
-Kumson Kingston
+I've invited you to fill out the following form:
+Untitled form
+
+To fill it out, visit:
+https://docs.google.com/forms/d/e/1FAIpQLSc9JaaoeFb2fmJkwjQrJup-uzIbb0ZSfvmBqgZSIJg0eP0Sbw/viewform?vc=0&amp;c=0&amp;w=1&amp;flr=0&amp;usp=mail_form_link
+
+
+
+
+ From Mrs. Dorathy Gaby
+Abidjan- Cote D&#39;Ivoire
+
+May I humbly solicit your confidence in this transaction, as being utterly
+confidential and top secret. But I am assuring you that you shall be very
+happy at the end of the day. I decided to contact you due to the urgency of
+this transaction, as I wish to repose my trust and confidence on your
+discreteness and ability in transaction of this nature. Let me start by
+introducing my self properly to you, my name is Mrs. Dorathy Gaby, I am
+the regional Bank Manager of BOA Bank Abidjan-Cote D&#39; Ivoire. I came to
+know about you in my Private Search for a reliable and reputable foreigner
+to handle this Confidential Transaction.
+
+As the regional Bank Manager of BOA BANK; it is my duty to send a financial
+report to my head office at the end of each year. On the course of the 2012
+year report, We discovered an excess profit of Fifteen Million Us Dollars ,
+[ $ 15,000,000.00 ] which we have kept in SUSPENSE ACCOUNT without any
+beneficiary.
+
+As an officer of the bank I can not be directly connected to this Fund for
+Security Reasons, that is why I am contacting you for us to work together
+to get the said Fund into your bank account for INVESTMENT in your Country.
+
+The percentage Ratio is thus: 40% for you , 60 % for me and my colleagues .
+
+Note: There are practically no risks involved in this transaction as it is
+100% risk free and will be legally bonded, it will be bank to bank
+transfer, all I need from you is to stand as the next of kin / Beneficiary
+to the original depositor of this fund who made the deposit with Kumasi
+branch so that my Head office can order the transfer to your designated
+bank account. If you accept this offer to work with me, if you find this
+proposal suitable for you, kindly reply for full details Via email:
+
+dorathygaby3@yahoo.co.jp,
+
+I will appreciate it very much, If this proposal is acceptable by you, do
+not make undue advantage of the trust I have bestowed on you, and I assure
+you that we shall achieve it successfully.
+
+Best regards,
+Mrs. Dorathy Gaby.
+
+Google Forms: Create and analyze surveys.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
