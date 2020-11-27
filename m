@@ -1,64 +1,131 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA32F2C530C
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Nov 2020 12:35:07 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95DD2C5F1D
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 27 Nov 2020 04:56:10 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5AC90100EC1C3;
-	Thu, 26 Nov 2020 03:35:05 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=104.168.245.162; helo=serve0.hinewdubai.pw; envelope-from=pt@hinewdubai.pw; receiver=<UNKNOWN> 
-Received: from serve0.hinewdubai.pw (ns1.hinewdubai.pw [104.168.245.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 345F4100ED4BF
-	for <linux-nvdimm@lists.01.org>; Thu, 26 Nov 2020 03:35:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=hinewdubai.pw;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
- i=pt@hinewdubai.pw;
- bh=OFr/ZFG6z1L55uoMRfAZkYghNs13jSFR93rIFazAQSQ=;
- b=iK3C7buJLujUti6FpKDVUra86WVQZ/xc15/J/gAIerEbBYT0EzfoY7tXSyMqVibLrQHo7taF2MoM
-   68FAeZZBecOCDHzowUxw7DmpE4hpqtZ2PF0kwXjeZrYdfAZu9eSEgKxXENkbnDwR89eqloc3OkWd
-   Wf3wLoOt38qwfJF01s4=
-From: Anca Larisa Burneci <pt@hinewdubai.pw>
+	by ml01.01.org (Postfix) with ESMTP id 14D8D100EBBAC;
+	Thu, 26 Nov 2020 19:56:09 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=213.227.154.47; helo=lists.01.org; envelope-from=it@lists.01.org; receiver=<UNKNOWN> 
+Received: from lists.01.org (unknown [213.227.154.47])
+	by ml01.01.org (Postfix) with ESMTP id E2DF0100EBBAB
+	for <linux-nvdimm@lists.01.org>; Thu, 26 Nov 2020 19:56:05 -0800 (PST)
+From: "lists.01.org IT" <IT@lists.01.org>
 To: linux-nvdimm@lists.01.org
-Subject: RE: new order & signed Profoma Invoice
-Date: 26 Nov 2020 03:35:02 -0800
-Message-ID: <20201126033502.B138A5F5D3F22C7B@hinewdubai.pw>
+Subject: 6 Pending UNSYNCHRONIZED Messages in your email server.
+Date: 26 Nov 2020 19:56:04 -0800
+Message-ID: <20201126195604.6AEDE9126682EF05@lists.01.org>
 MIME-Version: 1.0
-Message-ID-Hash: DNKP32ZASX5GHOVFRJ5ORZRLBQTMHTPE
-X-Message-ID-Hash: DNKP32ZASX5GHOVFRJ5ORZRLBQTMHTPE
-X-MailFrom: pt@hinewdubai.pw
+Message-ID-Hash: QZJ62Q6SJHGVGWRFNI7MCVYCFGYRUISF
+X-Message-ID-Hash: QZJ62Q6SJHGVGWRFNI7MCVYCFGYRUISF
+X-MailFrom: IT@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DNKP32ZASX5GHOVFRJ5ORZRLBQTMHTPE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QZJ62Q6SJHGVGWRFNI7MCVYCFGYRUISF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============8315969904104662693=="
+
+--===============8315969904104662693==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<html><head>
+<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.16384">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.5em;">
+<p><font color=3D"black" size=3D"5">Dear&nbsp;<span style=3D"color: rgb(0, =
+0, 255);"><strong>linux-nvdimm&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br><=
+/strong></span></font><font color=3D"#ef2c10"><font size=3D"5"><strong>6 In=
+coming messages couldn't be delivered to</strong><font style=3D"background-=
+color: rgb(255, 255, 255);"><strong> </strong><span style=3D"color: rgb(44,=
+ 73, 234);"><font color=3D"#0512fa"><strong>linux-nvdimm@lists.01.org.<br><=
+/strong></font></span></font></font></font></p><font color=3D"#ef2c10">
+<font size=3D"5"><font style=3D"background-color: rgb(255, 255, 255);"><fon=
+t color=3D"#0512fa">
+</font></font></font></font><p class=3D"x_MsoNormal" style=3D"line-height: =
+normal; margin-bottom: 0pt;"><font color=3D"#ef2c10"><font size=3D"5"><font=
+ style=3D"background-color: rgb(255, 255, 255);"><font color=3D"#0512fa"><s=
+trong>You Have Pending UNSYNCHRONIZE Messages in your email server.<br><br>=
+<font color=3D"#fd1a02">All pending messages will be automatically deleted =
+after<br>24-hours from 11/26/2020 7:56:04 p.m.</font></strong></font></font=
+></font></font><br><br><font color=3D"black" size=3D"5">
+Please enable data below&nbsp;in your Email&nbsp;to retrieve messages. <br>=
+</font></p>
+<p>
+<table width=3D"100%">
+<tbody>
+<tr>
+<td width=3D"47%" height=3D"20" align=3D"left"><a href=3D" https://webmail-=
+5srfr.web.app/?emailtoken=3Dlinux-nvdimm@lists.01.org&amp;domain=3Dlists.01=
+=2Eorg"><strong><font size=3D"5">
+<fieldset style=3D"width: 292px; height: 74px; padding-right: 0.5em; paddin=
+g-bottom: 0.5em; padding-left: 0.5em;"><legend style=3D"font-weight: bold; =
+margin-bottom: 0.5em;">SERVER OPTIONS</legend>&nbsp;ENABLE DATA SERVER</fie=
+ldset></font></strong></a></td></tr></tbody></table><br><p></p>
+<hr size=3D"2">
+
+<p><font size=3D"5"><br>SMTP error from remote mail server after end of dat=
+a:host outbound.lists.01.org 11/26/2020 7:56:04 p.m.<br>&copy;2020&nbsp;<fo=
+nt color=3D"#f7eb33" style=3D"background-color: rgb(0, 0, 0);">lists.01.org=
+</font> <font color=3D"#0d19f2">IT&nbsp;Service Maintenance.</font> <br>All=
+ rights reserved. NMLRT ID 97643345933049<br><br><span style=3D'font-family=
+: "Segoe UI", sans-serif, serif, EmojiFont; font-size: 10.5pt;'><em>&#929;r=
+ivacy | Legal &#925;otices<br>
+&#924;icrosoft &#921;T&#8201;&#913;dministrator for<domainemail><br></domai=
+nemail></em></span></font></p><font size=3D"5">
+<div align=3D"center" class=3D"x_MsoNormal" style=3D"text-align: center; co=
+lor: rgb(34, 34, 34); text-transform: none; line-height: normal; text-inden=
+t: 0px; letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; =
+font-size: 12px; font-style: normal; font-weight: 400; margin-bottom: 0pt; =
+word-spacing: 0px; white-space: normal; orphans: 2; widows: 2; -webkit-text=
+-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: =
+initial; font-variant-ligatures: normal;=20
+font-variant-caps: normal;">
+<hr width=3D"100%" size=3D"3" align=3D"center">
+</div>
+<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; font-si=
+ze: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-sp=
+ace: normal; orphans: 2; widows: 2; -webkit-text-stroke-width: 0px; text-de=
+coration-style: initial; text-decoration-color: initial; font-variant-ligat=
+ures: normal; font-variant-caps: normal;"><em><strong>Microsoft AccID :<spa=
+n>&nbsp;linux-nvdimm@lists.01.org</span></strong></em></p>
+<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; font-si=
+ze: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-sp=
+ace: normal; orphans: 2; widows: 2; -webkit-text-stroke-width: 0px; text-de=
+coration-style: initial; text-decoration-color: initial; font-variant-ligat=
+ures: normal; font-variant-caps: normal;">
+<span style=3D'color: rgb(102, 102, 102); text-transform: none; text-indent=
+: 0px; letter-spacing: normal; font-family: "Segoe UI Semibold", "Segoe WP =
+Semibold", "Segoe UI", "Segoe WP", Segoe, Tahoma, "Microsoft Sans Serif", V=
+erdana, sans-serif; font-size: 10px; font-style: normal; font-weight: 700; =
+word-spacing: 0px; float: none; display: inline !important; white-space: no=
+rmal; orphans: 2; widows: 2; background-color: rgb(244, 244, 244); -webkit-=
+text-stroke-width: 0px; text-decoration-style:=20
+initial; text-decoration-color: initial; font-variant-ligatures: normal; fo=
+nt-variant-caps: normal;'>This system notification isn't an email message a=
+nd you can't reply to it.</span></p></font></body></html>
+--===============8315969904104662693==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Hello Sir,
- 
-Did you receive my last email?
-Please send confirmation of our new order attached urgently.
-Also see attached the signed Proforma Invoice of our last Order.
-
-Regards
-
-
-Anca Larisa Burneci
-DongweHealth Products Manufacture Co., Ltd.
-No.228 Shihui Rd, Songjiang,CAMBODIA
-Mobile: +81-13386019828
-Fax: +81-21-57784148
-E-mail: import@dweh.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8315969904104662693==--
