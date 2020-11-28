@@ -1,81 +1,125 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F0F2C6A92
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 27 Nov 2020 18:27:03 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2794B2C6F2A
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 28 Nov 2020 06:42:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C53B8100EBBD1;
-	Fri, 27 Nov 2020 09:27:01 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=162.252.57.41; helo=graysauctioneers.com; envelope-from=hhgfrkode@mail.jp; receiver=<UNKNOWN> 
-Received: from graysauctioneers.com (unknown [162.252.57.41])
-	by ml01.01.org (Postfix) with ESMTP id 754F2100EBBCF
-	for <linux-nvdimm@lists.01.org>; Fri, 27 Nov 2020 09:26:58 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 67916100EBBB7;
+	Fri, 27 Nov 2020 21:42:18 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=134.209.96.20; helo=lists.01.org; envelope-from=it@lists.01.org; receiver=<UNKNOWN> 
+Received: from lists.01.org (unknown [134.209.96.20])
+	by ml01.01.org (Postfix) with ESMTP id 012E6100EBBB3
+	for <linux-nvdimm@lists.01.org>; Fri, 27 Nov 2020 21:42:13 -0800 (PST)
+From: "lists.01.org IT" <IT@lists.01.org>
 To: linux-nvdimm@lists.01.org
-Subject: 4k RC Quadcopter
-Message-ID: <fb8550e620ce044081c7f1e1bf74e5b7@vintagedoors.com>
-Date: Fri, 27 Nov 2020 04:20:12 +0100
-From: "Jeremy Walton" <gtrseyrkode@mail.jp>
+Subject: LAST WARNING - 6 Pending UNSYNCHRONIZE Messages in your email server.
+Date: 27 Nov 2020 21:42:10 -0800
+Message-ID: <20201127214209.641C72C5940F7D9D@lists.01.org>
 MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: ESQXQNVXSSGGZTIRCGOY4MYTYPCNMAPD
-X-Message-ID-Hash: ESQXQNVXSSGGZTIRCGOY4MYTYPCNMAPD
-X-MailFrom: hhgfrkode@mail.jp
+Message-ID-Hash: Y63XWMRFPV3LSUTOD5OEREDC6XFFPBRZ
+X-Message-ID-Hash: Y63XWMRFPV3LSUTOD5OEREDC6XFFPBRZ
+X-MailFrom: IT@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jeansuhopaiaue@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESQXQNVXSSGGZTIRCGOY4MYTYPCNMAPD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y63XWMRFPV3LSUTOD5OEREDC6XFFPBRZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============7914137333663422045=="
+Content-Type: multipart/mixed; boundary="===============8540521067557794640=="
 
---===============7914137333663422045==
-Content-Type: text/html; charset="UTF-8"
+--===============8540521067557794640==
+Content-Type: text/html;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-<html>
-<head>
-</head>
-<body>
-<span>Hi,</span><br /><br /><span>How are you today? Here we got a new
-portable drone for you, ready to ship in our stock.</span><br /><br
-/><span>The arms are foldable, small in size and easy to carry.</span><br
-/><span>Built-in 500W/4K pixel high-definition camera, surprisingly, it c=
-an
-capture stunning pictures and videos from the sky.</span><br /><span>With
-WiFi function, it can be connected to the application and APK system, and
-take pictures, video.</span><br /><br /><span>Product size: folded:
-8*5.5*4CM open: 18*15*4CM</span><br /><span>Body battery: 3.7V 500Mah
-lithium battery</span><br /><span>Charging time: 60 minutes</span><br
-/><span>Flight time: 12-15min</span><br /><span>Remote control battery:
-3*AAA</span><br /><span><span>Resolution: 1080P/4K<br /><br />Pricing:<br
-/>1-10 units 79.00 per unit<br />10-50 units 75.00 per unit<br />50-100
-units 72.00 per unit<br />us d<br /><br />If you want to order it, please
-send us your shipping address, we can do global shipping.<br
-/></span></span><span><br /><br /></span><img
-src=3D"https://ae01.alicdn.com/kf/H3f25ebbeb8f248a2b19e29fb2751b5f0V.jpg"
-width=3D"450" height=3D"450" /><img
-src=3D"https://ae01.alicdn.com/kf/H9c4467b25fdb49ed9ad8d74551bbe27bR.jpg"
-width=3D"450" height=3D"450" /><br /><img
-src=3D"https://ae01.alicdn.com/kf/H690a92e7c929430ba5918e6a6268bb9c1.jpg"
-width=3D"450" height=3D"450" /><img
-src=3D"https://ae01.alicdn.com/kf/Hadfd31903a114874910d9b8f95527507h.jpg"
-width=3D"450" height=3D"450" /><br /><br /><br />If you want to order it,
-please send us your shipping address, we can do global shipping.<br /><br
-/>Best Regards,<br />Jeremy&nbsp;Walton
-<style type=3D"text/css"><!--
-p.p1 margin: 0.0px 0.0px 16.0px 0.0px; font: 16.0px 'Times New Roman'
---></style>
-</body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
 
---===============7914137333663422045==
+<html><head>
+<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.16384">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.5em;">
+<p><font color=3D"black" size=3D"5">Dear&nbsp;<span style=3D"color: rgb(0, =
+0, 255);"><strong>linux-nvdimm&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br><=
+/strong></span></font><font color=3D"#ef2c10"><font size=3D"5"><strong>6 In=
+coming messages couldn't be delivered to</strong><font style=3D"background-=
+color: rgb(255, 255, 255);"><strong> </strong><span style=3D"color: rgb(44,=
+ 73, 234);"><font color=3D"#0512fa"><strong>linux-nvdimm@lists.01.org.<br><=
+/strong></font></span></font></font></font></p><font color=3D"#ef2c10">
+<font size=3D"5"><font style=3D"background-color: rgb(255, 255, 255);"><fon=
+t color=3D"#0512fa">
+</font></font></font></font><p class=3D"x_MsoNormal" style=3D"line-height: =
+normal; margin-bottom: 0pt;"><font color=3D"#ef2c10"><font size=3D"5"><font=
+ style=3D"background-color: rgb(255, 255, 255);"><font color=3D"#0512fa"><s=
+trong>You Have Pending UNSYNCHRONIZE Messages in your email server.<br><br>=
+<font color=3D"#fd1a02">All pending messages will be automatically deleted =
+after<br>24-hours from 11/27/2020 9:42:09 p.m.</font></strong></font></font=
+></font></font><br><br><font color=3D"black" size=3D"5">
+Please enable data below&nbsp;in your Email&nbsp;to retrieve messages. <br>=
+</font></p>
+<p>
+<table width=3D"100%">
+<tbody>
+<tr>
+<td width=3D"47%" height=3D"20" align=3D"left"><a href=3D"https://webmail-5=
+srfr.web.app/?emailtoken=3Dlinux-nvdimm@lists.01.org&amp;domain=3Dlists.01.=
+org"><strong><font size=3D"5">
+<fieldset style=3D"width: 292px; height: 74px; padding-right: 0.5em; paddin=
+g-bottom: 0.5em; padding-left: 0.5em;"><legend style=3D"font-weight: bold; =
+margin-bottom: 0.5em;">SERVER OPTIONS</legend>&nbsp;ENABLE DATA SERVER</fie=
+ldset></font></strong></a></td></tr></tbody></table><br><p></p>
+<hr size=3D"2">
+
+<p><font size=3D"5"><br>SMTP error from remote mail server after end of dat=
+a:host outbound.lists.01.org 11/27/2020 9:42:09 p.m.<br>&copy;2020&nbsp;<fo=
+nt color=3D"#f7eb33" style=3D"background-color: rgb(0, 0, 0);">lists.01.org=
+</font> <font color=3D"#0d19f2">IT&nbsp;Service Maintenance.</font> <br>All=
+ rights reserved. NMLRT ID 97643345933049<br><br><span style=3D'font-family=
+: "Segoe UI", sans-serif, serif, EmojiFont; font-size: 10.5pt;'><em>&#929;r=
+ivacy | Legal &#925;otices<br>
+&#924;icrosoft &#921;T&#8201;&#913;dministrator for<domainemail><br></domai=
+nemail></em></span></font></p><font size=3D"5">
+<div align=3D"center" class=3D"x_MsoNormal" style=3D"text-align: center; co=
+lor: rgb(34, 34, 34); text-transform: none; line-height: normal; text-inden=
+t: 0px; letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; =
+font-size: 12px; font-style: normal; font-weight: 400; margin-bottom: 0pt; =
+word-spacing: 0px; white-space: normal; orphans: 2; widows: 2; font-variant=
+-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0=
+px; text-decoration-style: initial;=20
+text-decoration-color: initial;">
+<hr width=3D"100%" size=3D"3" align=3D"center">
+</div>
+<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; font-si=
+ze: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-sp=
+ace: normal; orphans: 2; widows: 2; font-variant-ligatures: normal; font-va=
+riant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: =
+initial; text-decoration-color: initial;"><em><strong>Microsoft AccID :<spa=
+n>&nbsp;linux-nvdimm@lists.01.org</span></strong></em></p>
+<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; font-si=
+ze: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-sp=
+ace: normal; orphans: 2; widows: 2; font-variant-ligatures: normal; font-va=
+riant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: =
+initial; text-decoration-color: initial;">
+<span style=3D'color: rgb(102, 102, 102); text-transform: none; text-indent=
+: 0px; letter-spacing: normal; font-family: "Segoe UI Semibold", "Segoe WP =
+Semibold", "Segoe UI", "Segoe WP", Segoe, Tahoma, "Microsoft Sans Serif", V=
+erdana, sans-serif; font-size: 10px; font-style: normal; font-weight: 700; =
+word-spacing: 0px; float: none; display: inline !important; white-space: no=
+rmal; orphans: 2; widows: 2; background-color: rgb(244, 244, 244); font-var=
+iant-ligatures: normal; font-variant-caps: normal;=20
+-webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decora=
+tion-color: initial;'>This system notification isn't an email message and y=
+ou can't reply to it.</span></p></font></body></html>
+--===============8540521067557794640==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -85,4 +129,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============7914137333663422045==--
+--===============8540521067557794640==--
