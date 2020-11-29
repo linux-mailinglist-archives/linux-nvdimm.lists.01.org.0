@@ -1,102 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB94D2C7785
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 29 Nov 2020 05:36:48 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6938C2C784E
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 29 Nov 2020 08:08:00 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 57986100EBBCA;
-	Sat, 28 Nov 2020 20:36:46 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::c42; helo=mail-oo1-xc42.google.com; envelope-from=enbyamy@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-oo1-xc42.google.com (mail-oo1-xc42.google.com [IPv6:2607:f8b0:4864:20::c42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C2D3E100EBBAC
-	for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:43 -0800 (PST)
-Received: by mail-oo1-xc42.google.com with SMTP id f8so1969701oou.0
-        for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=EAojnF4t5DRg2ANKGYyPD+m7P2SzoKfdrt8RRTLUrjc=;
-        b=i937HvJCOE5kRkQVkNmOI1nqD+BtqUVKfm5rxTmdUXbOXHdgZhYMhBw7uxmWPZ6Iah
-         wUr3KvvWpfziaVHX3Cj7DE7nTgGKXZlHgEzwnISt8be7m66WNjuePgVx4lJuA+L2/UO+
-         yIOAruGI/UnyItFfYzWg14NDeebg3nBmflyZfVE0HV7bi72ocFYiqj8iNydnCS3F5o3g
-         BV3OrixKnMla4Wa61fiAcHxrkzCapPFh9DUZhCungqcTuzFPzZYCX/pYAlsyyBjYptk4
-         fjzPS+q+1FPlICGC7zuP9HtqPbC4NAXagLovl1McAQ50KC7whmgNstBLNcB05OL59/f9
-         oJ4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=EAojnF4t5DRg2ANKGYyPD+m7P2SzoKfdrt8RRTLUrjc=;
-        b=kiDLN51qI3y38yi8xcLMwqTqdhcSVHEVZnq/mSsuwwoqfZ+Qash+QejrpSJjWixVYl
-         EWDCCPwgq1ZcStNgHq2wwZmNNmHNmRn+xYc+vBXBjdGh39BMng1xWLdCuvfWcCCzdmRs
-         XGZBrZuCZUtEiearOg6UcCHnWfQCa4tHj6usOkSgYomNIlRANWHyZlMB2OFhEk4ttkjo
-         h5MfEWTNkkIZKIPcdUJdEYVVzksie07F3e+BBxI5zpeSm0NQ+4M3pmcNjgbClv7cCYi1
-         L53TqSjZWM1UVcWCk7v/mVIXXuvmD3dNSMRaALoNoFn5r2+RtOdS7BsVJvVL3Ggl+azy
-         Y8kQ==
-X-Gm-Message-State: AOAM531nxZX+MBInzXoYb2IIylM31+2jfyfMgdmUuhThqtMdsyA6wqkk
-	mi5fnhy4erlmyErc4sffN2lsDpjmaDWqQgGX8WM=
-X-Google-Smtp-Source: ABdhPJyK3VgPYV3WHp6k8LdcP+3Vb/uyGiAuqsVI5MeqbR5ow0ZRhcZG9DKyGDv0+0/kaFFBTsAUSJgwiysbTBuIK04=
-X-Received: by 2002:a4a:4e87:: with SMTP id r129mr11050293ooa.4.1606624602474;
- Sat, 28 Nov 2020 20:36:42 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id AAEB8100ED49C;
+	Sat, 28 Nov 2020 23:07:58 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.209; helo=tfra.com; envelope-from=muakbd@pcrh.com; receiver=<UNKNOWN> 
+Received: from tfra.com (unknown [223.73.128.209])
+	by ml01.01.org (Postfix) with ESMTP id B275D100ED482
+	for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 23:07:55 -0800 (PST)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sun, 29 Nov 2020 15:05:27 +0800
+Message-ID: 53430674-8d1c-488f-8e22-b88c9efa0d00
 MIME-Version: 1.0
-From: Amy Parker <enbyamy@gmail.com>
-Date: Sat, 28 Nov 2020 20:36:32 -0800
-Message-ID: <CAE1WUT5HT4oZkWw87ADw53AOSygkZKEzF00joe+ZXq=mKH-fiw@mail.gmail.com>
-Subject: [RFC PATCH 3/3] fs: dax.c: correct terminology used in DAX bit definitions
-To: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
-Message-ID-Hash: UTXMDNADRKMTWR3AEFNZ6332SADNTRPR
-X-Message-ID-Hash: UTXMDNADRKMTWR3AEFNZ6332SADNTRPR
-X-MailFrom: enbyamy@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>
+Sender: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E4=BA=8E=E9=A6=99=E6=B8=AF=E7=89=A9?=
+ =?utf-8?Q?=E6=B5=81=EF=BC=9A=E4=B8=AD=E6=B8=AF=E8=B4=A7=E8=BF=90=EF?=
+ =?utf-8?Q?=BC=8C=E4=B8=AD=E6=B8=AF=E5=BF=AB=E9=80=92?= <muakbd@pcrh.com>
+From: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E4=BA=8E=E9=A6=99=E6=B8=AF=E7=89=A9?=
+ =?utf-8?Q?=E6=B5=81=EF=BC=9A=E4=B8=AD=E6=B8=AF=E8=B4=A7=E8=BF=90=EF?=
+ =?utf-8?Q?=BC=8C=E4=B8=AD=E6=B8=AF=E5=BF=AB=E9=80=92?= <pjas@pcrh.com>
+To: linux-nvdimm@lists.01.org
+Date: 29 Nov 2020 15:05:27 +0800
+Subject: =?utf-8?B?5LiT5rOo5LqO6aaZ5riv54mp5rWB77ya5Lit5riv6LSn6L+Q?=
+ =?utf-8?B?77yM5Lit5riv5b+r6YCS?=
+Message-ID-Hash: XDUTPAHGPLI5UE4CSBV5URBCO4FQMCIW
+X-Message-ID-Hash: XDUTPAHGPLI5UE4CSBV5URBCO4FQMCIW
+X-MailFrom: muakbd@pcrh.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UTXMDNADRKMTWR3AEFNZ6332SADNTRPR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XDUTPAHGPLI5UE4CSBV5URBCO4FQMCIW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-DAX_ZERO_ENTRY is no longer the bit for zero entries - XA_ZERO_ENTRY is.
-The documentation above should be accurate to the definitions used accordingly.
-
-Signed-off-by: Amy Parker <enbyamy@gmail.com>
----
- fs/dax.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/fs/dax.c b/fs/dax.c
-index c2bdccef3140..ec23a4f9edd5 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -66,13 +66,13 @@ fs_initcall(init_dax_wait_table);
-
- /*
-  * DAX pagecache entries use XArray value entries so they can't be mistaken
-- * for pages.  We use one bit for locking, one bit for the entry size (PMD)
-- * and two more to tell us if the entry is a zero page or an empty entry that
-- * is just used for locking.  In total four special bits.
-+ * for pages.  We use one bit for locking, one bit for the entry size (PMD),
-+ * and one to tell if the entry is an empty entry just for locking. We use
-+ * XArray's ZERO_ENTRY to tell us if the entry is a zero page.
-  *
-- * If the PMD bit isn't set the entry has size PAGE_SIZE, and if the ZERO_PAGE
-- * and EMPTY bits aren't set the entry is a normal DAX entry with a filesystem
-- * block allocation.
-+ * If the PMD bit isn't set the entry has size PAGE_SIZE, and if the EMPTY
-+ * and ZERO_ENTRY bits aren't set the entry is a normal DAX entry with a
-+ * filesystem block allocation.
-  */
- #define DAX_SHIFT    (4)
- #define DAX_LOCKED    (1UL << 0)
--- 
-2.29.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQombmJzcDvkuK3muK/nur/mlaPotKflpKnlpKnlj5Hovabov5DovpPmk43kvZzmtYHn
+qIsNCjHjgIHor6bov7DotKflhrXvvIjlk4HlkI3vvJvnrrHmlbDvvJvljIXoo4XlsLrlr7jvvJvm
+nZDnp6/vvJvmr5vph43vvIkNCjLjgIHnj6DkuInop5LlhajljLrkuIrpl6jmj5DotKfvvIjkuqbl
+j6/pgInmi6noh6rpgIHmiJHlj7jku5PlupPvvIkNCjPjgIHmoLnmja7mg4XlhrXoo4XovabjgIHp
+hY3ovb0NCjTjgIHmt7HlnLPlj6PlsrjmiqXlhbPllYbmo4DvvIjlhajnlLHmiJHlj7jotJ/otKPv
+vIkNCjXjgIHmtbflhbPmn6XpqozovabovobjgIHotKfnianjgIHlrqHmoLjjgIHmlL7ooYwNCjbj
+gIHotKfnianliLDnianmtYHlhazlj7jpppnmuK/ku5PlupPvvIzotKfkuLvmiJblp5TmiZjkurrk
+u5PlupPmn6XjgIHpqozotKcNCjfjgIHnoa7orqTmlK/ku5jov5DotLnvvIjpppnmuK/mlLbotKfk
+urrkuqblj6/liLDku5jmuK/luIHvvIkNCjjjgIHpppnmuK/mtL7pgIHvvIzlh4bml7blhaXmtbfo
+v5Dku5PjgIHlm73pmYXlv6vpgJLku5PjgIHnqbrov5Dku5PnrYnmjIflrprlnLDngrkNCjnjgIHn
+rb7mlLbvvIznoa7orqTmlLbotKfmg4XlhrUNCiZuYnNwOw0KDQrkuK3muK/otKfov5DmnInpmZDl
+hazlj7gNCuiBlOezu+S6uu+8mkphY2sNCk1vYmlsZSZuYnNwO++8mis4Ni0xMzY0Mjk4MDkzNe+8
+iOW+ruS/oeWQjOWPt++8iQ0KRS1tYWlsJm5ic3A777yaJm5ic3A7d3VsaXU1NnNhbGVzMDFAaG90
+bWFpbC5jb20NCummmSZuYnNwO+a4r++8muiRtea2jOS4ieWPt+i0p+afnOeggeWktOeJqea1geS4
+reW/gyZuYnNwO0HluqflnLDkuIsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlz
+dHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxl
+YXZlQGxpc3RzLjAxLm9yZwo=
