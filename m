@@ -2,131 +2,92 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2794B2C6F2A
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 28 Nov 2020 06:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB142C7782
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 29 Nov 2020 05:36:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 67916100EBBB7;
-	Fri, 27 Nov 2020 21:42:18 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=134.209.96.20; helo=lists.01.org; envelope-from=it@lists.01.org; receiver=<UNKNOWN> 
-Received: from lists.01.org (unknown [134.209.96.20])
-	by ml01.01.org (Postfix) with ESMTP id 012E6100EBBB3
-	for <linux-nvdimm@lists.01.org>; Fri, 27 Nov 2020 21:42:13 -0800 (PST)
-From: "lists.01.org IT" <IT@lists.01.org>
-To: linux-nvdimm@lists.01.org
-Subject: LAST WARNING - 6 Pending UNSYNCHRONIZE Messages in your email server.
-Date: 27 Nov 2020 21:42:10 -0800
-Message-ID: <20201127214209.641C72C5940F7D9D@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTP id 076CD100EC1E7;
+	Sat, 28 Nov 2020 20:36:42 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::22c; helo=mail-oi1-x22c.google.com; envelope-from=enbyamy@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 45892100EC1E6
+	for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:39 -0800 (PST)
+Received: by mail-oi1-x22c.google.com with SMTP id w15so10514730oie.13
+        for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=qSqgo0diyYMJnfVubSHu3iSrO3muNitTzdW7zZJSstQ=;
+        b=kA3r44LVTktioEzHeiRWWGwvEf0M1uIP0nJuH79y7vofVPbZWcxbCgP/gmSxe0j6sv
+         vufcbAz3I85uEHvcENyNBibPfiDskvZN1CZzKuUaPR328682T2PqdBQxociWg1ApzkRE
+         N2OHNua41q29TDmrnVVhqVoP3a4vPLr9D2r1a/Q3jS8ocl5h9PIbbif/FTVUiqcVfjhs
+         4AIC8JelpZ+I3LVCDM3ua+gAXGVcf2keOAbfI7JuXV6TIYUgWvbh7hu8bWUPILwHATzX
+         W/O5YlkKUVWYzSh3R5yUcFogYmBdrDeswwzbqvvhFwNBXLZ0bKUdqbXEgX9t1A7G7369
+         Q/iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=qSqgo0diyYMJnfVubSHu3iSrO3muNitTzdW7zZJSstQ=;
+        b=MDenjjJiPIOeTZu5XR8ucsNM8Si85kzsdPmsC5OhtYiwXGJhccE7RILK5A1ACB+6gz
+         XMqpWypKC+5vNAFkQN4B08hXfhY9bjD0YmtX9tOWvNU1Xqp0gXeWJyKCSyle8yR76ZZA
+         Yi7LwYQWn/aYeuEAC7sIXaBHPd7va98fhr3i88pvz7L8w8ke3DIiC8cd2Xoa90mHqheR
+         gUYlelJ0ZwA+J/hc2wUIC5HDRO6g42d7wS2AQb6sBeK9jrgNyfKhY6Y7fWcefaE3b77S
+         TH9s6XY3scgiJdBatFeoHb1OPl3C50GI8mlbjRWN4RYKpxQN2D47WHwroIi7DXC97ClB
+         RmiA==
+X-Gm-Message-State: AOAM5328/PdBYtzc3eIwlLBabPb8wiGxEMgjGBlHYMnBWnuGseZHHcOl
+	n0j2ewKi5S1JAavC1BFfBeNQZNrTTLolRmfJy0Y=
+X-Google-Smtp-Source: ABdhPJwI3MDqaIvldfOztxCm4put73JY3SkoxT3AVGSEax90AoUZKDzuYGnT4bif/+FGWuSsNnY5biAOoaQAFlmOKE8=
+X-Received: by 2002:a05:6808:3b1:: with SMTP id n17mr10712069oie.139.1606624597578;
+ Sat, 28 Nov 2020 20:36:37 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: Y63XWMRFPV3LSUTOD5OEREDC6XFFPBRZ
-X-Message-ID-Hash: Y63XWMRFPV3LSUTOD5OEREDC6XFFPBRZ
-X-MailFrom: IT@lists.01.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+From: Amy Parker <enbyamy@gmail.com>
+Date: Sat, 28 Nov 2020 20:36:27 -0800
+Message-ID: <CAE1WUT4XUmTz89cFf3eT4OFXRwgxwdre21KnAMJKcQ_iqzicQw@mail.gmail.com>
+Subject: [PATCH 0/3] Migrate zero page DAX bit from DAX_ZERO_PAGE to XA_ZERO_ENTRY
+To: dan.j.williams@intel.com, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
+Message-ID-Hash: R6QXL54SC4UQZI5GXL32SD4ZMY4XI3LG
+X-Message-ID-Hash: R6QXL54SC4UQZI5GXL32SD4ZMY4XI3LG
+X-MailFrom: enbyamy@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y63XWMRFPV3LSUTOD5OEREDC6XFFPBRZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R6QXL54SC4UQZI5GXL32SD4ZMY4XI3LG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============8540521067557794640=="
-
---===============8540521067557794640==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
-w3.org/TR/html4/loose.dtd">
-
-<html><head>
-<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.16384">
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body style=3D"margin: 0.5em;">
-<p><font color=3D"black" size=3D"5">Dear&nbsp;<span style=3D"color: rgb(0, =
-0, 255);"><strong>linux-nvdimm&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<br><=
-/strong></span></font><font color=3D"#ef2c10"><font size=3D"5"><strong>6 In=
-coming messages couldn't be delivered to</strong><font style=3D"background-=
-color: rgb(255, 255, 255);"><strong> </strong><span style=3D"color: rgb(44,=
- 73, 234);"><font color=3D"#0512fa"><strong>linux-nvdimm@lists.01.org.<br><=
-/strong></font></span></font></font></font></p><font color=3D"#ef2c10">
-<font size=3D"5"><font style=3D"background-color: rgb(255, 255, 255);"><fon=
-t color=3D"#0512fa">
-</font></font></font></font><p class=3D"x_MsoNormal" style=3D"line-height: =
-normal; margin-bottom: 0pt;"><font color=3D"#ef2c10"><font size=3D"5"><font=
- style=3D"background-color: rgb(255, 255, 255);"><font color=3D"#0512fa"><s=
-trong>You Have Pending UNSYNCHRONIZE Messages in your email server.<br><br>=
-<font color=3D"#fd1a02">All pending messages will be automatically deleted =
-after<br>24-hours from 11/27/2020 9:42:09 p.m.</font></strong></font></font=
-></font></font><br><br><font color=3D"black" size=3D"5">
-Please enable data below&nbsp;in your Email&nbsp;to retrieve messages. <br>=
-</font></p>
-<p>
-<table width=3D"100%">
-<tbody>
-<tr>
-<td width=3D"47%" height=3D"20" align=3D"left"><a href=3D"https://webmail-5=
-srfr.web.app/?emailtoken=3Dlinux-nvdimm@lists.01.org&amp;domain=3Dlists.01.=
-org"><strong><font size=3D"5">
-<fieldset style=3D"width: 292px; height: 74px; padding-right: 0.5em; paddin=
-g-bottom: 0.5em; padding-left: 0.5em;"><legend style=3D"font-weight: bold; =
-margin-bottom: 0.5em;">SERVER OPTIONS</legend>&nbsp;ENABLE DATA SERVER</fie=
-ldset></font></strong></a></td></tr></tbody></table><br><p></p>
-<hr size=3D"2">
-
-<p><font size=3D"5"><br>SMTP error from remote mail server after end of dat=
-a:host outbound.lists.01.org 11/27/2020 9:42:09 p.m.<br>&copy;2020&nbsp;<fo=
-nt color=3D"#f7eb33" style=3D"background-color: rgb(0, 0, 0);">lists.01.org=
-</font> <font color=3D"#0d19f2">IT&nbsp;Service Maintenance.</font> <br>All=
- rights reserved. NMLRT ID 97643345933049<br><br><span style=3D'font-family=
-: "Segoe UI", sans-serif, serif, EmojiFont; font-size: 10.5pt;'><em>&#929;r=
-ivacy | Legal &#925;otices<br>
-&#924;icrosoft &#921;T&#8201;&#913;dministrator for<domainemail><br></domai=
-nemail></em></span></font></p><font size=3D"5">
-<div align=3D"center" class=3D"x_MsoNormal" style=3D"text-align: center; co=
-lor: rgb(34, 34, 34); text-transform: none; line-height: normal; text-inden=
-t: 0px; letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; =
-font-size: 12px; font-style: normal; font-weight: 400; margin-bottom: 0pt; =
-word-spacing: 0px; white-space: normal; orphans: 2; widows: 2; font-variant=
--ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0=
-px; text-decoration-style: initial;=20
-text-decoration-color: initial;">
-<hr width=3D"100%" size=3D"3" align=3D"center">
-</div>
-<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
- letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; font-si=
-ze: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-sp=
-ace: normal; orphans: 2; widows: 2; font-variant-ligatures: normal; font-va=
-riant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: =
-initial; text-decoration-color: initial;"><em><strong>Microsoft AccID :<spa=
-n>&nbsp;linux-nvdimm@lists.01.org</span></strong></em></p>
-<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
- letter-spacing: normal; font-family: Helvetica, Arial, sans-serif; font-si=
-ze: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-sp=
-ace: normal; orphans: 2; widows: 2; font-variant-ligatures: normal; font-va=
-riant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: =
-initial; text-decoration-color: initial;">
-<span style=3D'color: rgb(102, 102, 102); text-transform: none; text-indent=
-: 0px; letter-spacing: normal; font-family: "Segoe UI Semibold", "Segoe WP =
-Semibold", "Segoe UI", "Segoe WP", Segoe, Tahoma, "Microsoft Sans Serif", V=
-erdana, sans-serif; font-size: 10px; font-style: normal; font-weight: 700; =
-word-spacing: 0px; float: none; display: inline !important; white-space: no=
-rmal; orphans: 2; widows: 2; background-color: rgb(244, 244, 244); font-var=
-iant-ligatures: normal; font-variant-caps: normal;=20
--webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decora=
-tion-color: initial;'>This system notification isn't an email message and y=
-ou can't reply to it.</span></p></font></body></html>
---===============8540521067557794640==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+This patchset changes the representation in the NVDIMM DAX driver for a hole
+in a file. It was previously represented by DAX_ZERO_PAGE, which was set as
+1UL << 2.
+
+Patch 1 migrates to XArray's XA_ZERO_ENTRY and registers the new
+definition for XA_ZERO_PMD_ENTRY, which is used in dax_pmd_load_hole() to
+represent whether a file is a PMD entry or a zero entry. Patch 2 shifts
+the bit for DAX_EMPTY down from 1UL << 3 to 1UL << 2, as DAX_ZERO_ENTRY no
+longer exists. Patch 3 corrects the terminology used above the definitions
+for the DAX bits.
+
+I tested this under xfstests with XFS+DAX for a 20 GiB NVDIMM and did not
+observe any regressions.
+
+Amy Parker (3):
+ fs: dax.c: move fs hole signifier from DAX_ZERO_PAGE to XA_ZERO_ENTRY
+ fs: dax.c: move down bit DAX_EMPTY
+ fs: dax.c: correct terminology used in DAX bit definitions
+
+ fs/dax.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+
+--
+2.29.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============8540521067557794640==--
