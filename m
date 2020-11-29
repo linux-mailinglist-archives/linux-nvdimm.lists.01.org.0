@@ -1,60 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB142C7782
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 29 Nov 2020 05:36:44 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A592C7783
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 29 Nov 2020 05:36:45 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 076CD100EC1E7;
-	Sat, 28 Nov 2020 20:36:42 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::22c; helo=mail-oi1-x22c.google.com; envelope-from=enbyamy@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+	by ml01.01.org (Postfix) with ESMTP id 264E8100EC1F6;
+	Sat, 28 Nov 2020 20:36:43 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com; envelope-from=enbyamy@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 45892100EC1E6
-	for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:39 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id w15so10514730oie.13
-        for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:39 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 1EF2C100EC1E6
+	for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:40 -0800 (PST)
+Received: by mail-ot1-x341.google.com with SMTP id n12so8299041otk.0
+        for <linux-nvdimm@lists.01.org>; Sat, 28 Nov 2020 20:36:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=qSqgo0diyYMJnfVubSHu3iSrO3muNitTzdW7zZJSstQ=;
-        b=kA3r44LVTktioEzHeiRWWGwvEf0M1uIP0nJuH79y7vofVPbZWcxbCgP/gmSxe0j6sv
-         vufcbAz3I85uEHvcENyNBibPfiDskvZN1CZzKuUaPR328682T2PqdBQxociWg1ApzkRE
-         N2OHNua41q29TDmrnVVhqVoP3a4vPLr9D2r1a/Q3jS8ocl5h9PIbbif/FTVUiqcVfjhs
-         4AIC8JelpZ+I3LVCDM3ua+gAXGVcf2keOAbfI7JuXV6TIYUgWvbh7hu8bWUPILwHATzX
-         W/O5YlkKUVWYzSh3R5yUcFogYmBdrDeswwzbqvvhFwNBXLZ0bKUdqbXEgX9t1A7G7369
-         Q/iQ==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=q086GncpPt5RZ5GGX1HkBX2M6Dm58Is22dESYRZ6G14=;
+        b=GKb6KyglO2akYr94KQz9x9N9j9MmxWh3b3TolI1AKHUlD/+MP2xXoE8cw3rgtvFg+p
+         wbhx97+fIC2JSiuKI5IOjMD+I6h1RoaVP2a3fSDGC4rz1UYMIg8TFeWlBH3KelMsrBIj
+         C7U5GbKRKKGT452n2aqevAyQrXq9UZ2L9AdujGw+c/bFSYOFwmkaYT2Q3nZIaLzsGPlC
+         S4ZvmqlFEYQROEeo/IMhlpdUAITwrGCqhOObYLZZapqjF+cSw6hB5qAMAB4sAEEGPfXF
+         vaG7euhsSvAEnvSyYUxDrcmrAJNeb6zT+BBzjmnZCJG4a91nMkoaoFQ0YgFhvFYYZm4P
+         bQeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=qSqgo0diyYMJnfVubSHu3iSrO3muNitTzdW7zZJSstQ=;
-        b=MDenjjJiPIOeTZu5XR8ucsNM8Si85kzsdPmsC5OhtYiwXGJhccE7RILK5A1ACB+6gz
-         XMqpWypKC+5vNAFkQN4B08hXfhY9bjD0YmtX9tOWvNU1Xqp0gXeWJyKCSyle8yR76ZZA
-         Yi7LwYQWn/aYeuEAC7sIXaBHPd7va98fhr3i88pvz7L8w8ke3DIiC8cd2Xoa90mHqheR
-         gUYlelJ0ZwA+J/hc2wUIC5HDRO6g42d7wS2AQb6sBeK9jrgNyfKhY6Y7fWcefaE3b77S
-         TH9s6XY3scgiJdBatFeoHb1OPl3C50GI8mlbjRWN4RYKpxQN2D47WHwroIi7DXC97ClB
-         RmiA==
-X-Gm-Message-State: AOAM5328/PdBYtzc3eIwlLBabPb8wiGxEMgjGBlHYMnBWnuGseZHHcOl
-	n0j2ewKi5S1JAavC1BFfBeNQZNrTTLolRmfJy0Y=
-X-Google-Smtp-Source: ABdhPJwI3MDqaIvldfOztxCm4put73JY3SkoxT3AVGSEax90AoUZKDzuYGnT4bif/+FGWuSsNnY5biAOoaQAFlmOKE8=
-X-Received: by 2002:a05:6808:3b1:: with SMTP id n17mr10712069oie.139.1606624597578;
- Sat, 28 Nov 2020 20:36:37 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=q086GncpPt5RZ5GGX1HkBX2M6Dm58Is22dESYRZ6G14=;
+        b=Hb7EBMaU8YAgFmzeGPcT35a7VlWMxl9Qhb3gDWXzTUzMO6w08a/0+e6LOslxGnLAMW
+         dP02sCYfd7P6BXk6Qy0Fy55Xu8prre6WjKaKJEQZcdbycB1X5WldhKQk0cjC8LxY+qQL
+         4+n3Sctte++vEGQcQz/YtuxQ/x3IirsrCrDpRwF2zRyEJLI0Gee8Rza1ivWIyPUoUZUG
+         DNtOT8lk/kDzs6T9+rQ0Vbm7er/Q8Sfyqgz5q3Vib656/Y2onjoxAh4ipWT/Fx4DvL/m
+         5LOkZJXT9ZcDDkvm6BDCTy8/y7cHMpjnLUWXk0liTmYc8Cf9PRPLcECenGLkquJnGX4U
+         ohPw==
+X-Gm-Message-State: AOAM533w7yC4s4PfN+diQOsF+Vs1B7zZVVUcyq34oV/wMaqj0rz1/lTR
+	aO28bu4NCS9bYEweQHoncxpG2zjWB2h2gOzflds=
+X-Google-Smtp-Source: ABdhPJxvcLhJ4FJtXq+ZvQXqChF8Ekt+OsSPE4XGv6LMM0bnoc9AeEaH9ZTveYnFgh6A2fhDN7D0b5KaXE1cBV93ioc=
+X-Received: by 2002:a9d:6a81:: with SMTP id l1mr11388742otq.254.1606624599312;
+ Sat, 28 Nov 2020 20:36:39 -0800 (PST)
 MIME-Version: 1.0
 From: Amy Parker <enbyamy@gmail.com>
-Date: Sat, 28 Nov 2020 20:36:27 -0800
-Message-ID: <CAE1WUT4XUmTz89cFf3eT4OFXRwgxwdre21KnAMJKcQ_iqzicQw@mail.gmail.com>
-Subject: [PATCH 0/3] Migrate zero page DAX bit from DAX_ZERO_PAGE to XA_ZERO_ENTRY
-To: dan.j.williams@intel.com, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
-Message-ID-Hash: R6QXL54SC4UQZI5GXL32SD4ZMY4XI3LG
-X-Message-ID-Hash: R6QXL54SC4UQZI5GXL32SD4ZMY4XI3LG
+Date: Sat, 28 Nov 2020 20:36:29 -0800
+Message-ID: <CAE1WUT7ke9TR_H+et5_BUg93OYcDF0LD2ku+Cto59PhP6nz8qg@mail.gmail.com>
+Subject: [RFC PATCH 1/3] fs: dax.c: move fs hole signifier from DAX_ZERO_PAGE
+ to XA_ZERO_ENTRY
+To: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
+Message-ID-Hash: SHPDEYRYKX76ZFA2EXO2GFCPGBGJLLBJ
+X-Message-ID-Hash: SHPDEYRYKX76ZFA2EXO2GFCPGBGJLLBJ
 X-MailFrom: enbyamy@gmail.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R6QXL54SC4UQZI5GXL32SD4ZMY4XI3LG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SHPDEYRYKX76ZFA2EXO2GFCPGBGJLLBJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -63,30 +64,73 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-This patchset changes the representation in the NVDIMM DAX driver for a hole
-in a file. It was previously represented by DAX_ZERO_PAGE, which was set as
-1UL << 2.
+DAX uses the DAX_ZERO_PAGE bit to represent holes in files. It could also use
+a single entry, such as XArray's XA_ZERO_ENTRY. This distinguishes zero pages
+and allows us to shift DAX_EMPTY down (see patch 2/3).
 
-Patch 1 migrates to XArray's XA_ZERO_ENTRY and registers the new
-definition for XA_ZERO_PMD_ENTRY, which is used in dax_pmd_load_hole() to
-represent whether a file is a PMD entry or a zero entry. Patch 2 shifts
-the bit for DAX_EMPTY down from 1UL << 3 to 1UL << 2, as DAX_ZERO_ENTRY no
-longer exists. Patch 3 corrects the terminology used above the definitions
-for the DAX bits.
+Signed-off-by: Amy Parker <enbyamy@gmail.com>
+---
+ fs/dax.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-I tested this under xfstests with XFS+DAX for a 20 GiB NVDIMM and did not
-observe any regressions.
+diff --git a/fs/dax.c b/fs/dax.c
+index 5b47834f2e1b..fa8ca1a71bbd 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -77,9 +77,14 @@ fs_initcall(init_dax_wait_table);
+ #define DAX_SHIFT    (4)
+ #define DAX_LOCKED    (1UL << 0)
+ #define DAX_PMD        (1UL << 1)
+-#define DAX_ZERO_PAGE    (1UL << 2)
+ #define DAX_EMPTY    (1UL << 3)
 
-Amy Parker (3):
- fs: dax.c: move fs hole signifier from DAX_ZERO_PAGE to XA_ZERO_ENTRY
- fs: dax.c: move down bit DAX_EMPTY
- fs: dax.c: correct terminology used in DAX bit definitions
++/*
++ * A zero entry, XA_ZERO_ENTRY, is used to represent a zero page. This
++ * definition helps with checking if an entry is a PMD size.
++ */
++#define XA_ZERO_PMD_ENTRY DAX_PMD | (unsigned long)XA_ZERO_ENTRY
++
+ static unsigned long dax_to_pfn(void *entry)
+ {
+     return xa_to_value(entry) >> DAX_SHIFT;
+@@ -114,7 +119,7 @@ static bool dax_is_pte_entry(void *entry)
 
- fs/dax.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ static int dax_is_zero_entry(void *entry)
+ {
+-    return xa_to_value(entry) & DAX_ZERO_PAGE;
++    return xa_to_value(entry) & (unsigned long)XA_ZERO_ENTRY;
+ }
 
+ static int dax_is_empty_entry(void *entry)
+@@ -738,7 +743,7 @@ static void *dax_insert_entry(struct xa_state *xas,
+     if (dirty)
+         __mark_inode_dirty(mapping->host, I_DIRTY_PAGES);
 
---
+-    if (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE)) {
++    if (dax_is_zero_entry(entry) && !(flags & (unsigned long)XA_ZERO_ENTRY)) {
+         unsigned long index = xas->xa_index;
+         /* we are replacing a zero page with block mapping */
+         if (dax_is_pmd_entry(entry))
+@@ -1047,7 +1052,7 @@ static vm_fault_t dax_load_hole(struct xa_state *xas,
+     vm_fault_t ret;
+
+     *entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn,
+-            DAX_ZERO_PAGE, false);
++            XA_ZERO_ENTRY, false);
+
+     ret = vmf_insert_mixed(vmf->vma, vaddr, pfn);
+     trace_dax_load_hole(inode, vmf, ret);
+@@ -1434,7 +1439,7 @@ static vm_fault_t dax_pmd_load_hole(struct
+xa_state *xas, struct vm_fault *vmf,
+
+     pfn = page_to_pfn_t(zero_page);
+     *entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn,
+-            DAX_PMD | DAX_ZERO_PAGE, false);
++            XA_ZERO_PMD_ENTRY, false);
+
+     if (arch_needs_pgtable_deposit()) {
+         pgtable = pte_alloc_one(vma->vm_mm);
+-- 
 2.29.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
