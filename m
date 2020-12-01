@@ -1,49 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3894A2C9524
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 03:24:24 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F052C985B
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 08:46:32 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 582F1100EC1C3;
-	Mon, 30 Nov 2020 18:24:22 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EE949100EF26F;
+	Mon, 30 Nov 2020 23:46:30 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 57E2D100ED4BF
-	for <linux-nvdimm@lists.01.org>; Mon, 30 Nov 2020 18:24:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pgfrNp213PUqGJpsyhnVpIsJf+6NbYjx7aBpXnxJ518=; b=SyEnPcyYwWC9XFUMx9ImmuzGNH
-	M6FVqe1DAzcUTh6aJ/7iDt7VVZrElY0TNucZLpWskIOwqJ6lp69e9c3k2xNp3yzXKq7e4DrRRZXlD
-	AvcFu8F2iTwKb9gZdEt+qP6WCwbC+B269Xt/xd2CdFWLXiKFG954nPrSXCYp/UaXuLSOqLEUHVayk
-	q0ydwJ2uiySMemCQJw7nvK576n5/6DQVg6MjAOOnrvZTDNwulgQ7gWda2U6vSJ9Mb2DtJleSVSyAg
-	ip0W7/3Yma1+3z2SB9ggdGPHQMq78MgmZj4TJOcsyLKrmrSwlkwGbRFrsgHNbZqVAH5RO/q3Dk6uY
-	lL7jNOAw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kjvKu-0001qU-Q9; Tue, 01 Dec 2020 02:24:12 +0000
-Date: Tue, 1 Dec 2020 02:24:12 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: mapcount corruption regression
-Message-ID: <20201201022412.GG4327@casper.infradead.org>
-References: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id B94AE100EF26A
+	for <linux-nvdimm@lists.01.org>; Mon, 30 Nov 2020 23:46:28 -0800 (PST)
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 62E742085B;
+	Tue,  1 Dec 2020 07:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1606808788;
+	bh=MgLQDbTy3aCbEeiL0HnUPOiNwFMQ7MI57tXGDl4DqW4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=q8R2M21oZpkfefVz1ANQzhU+PrLWO4cZhuNkJXPyhDdmohr1vql8mVy/JXaFpGWcW
+	 UTF73iF18cf6zIyNc43340fLu/teBW+26o3UYtZxrjm/NQiBP5PNgBT8+Z/OxfnRrb
+	 0Gxkufd9Bazh9G6G+Jju0uExv/LRNHtd+2HY4o9U=
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v13 00/10] mm: introduce memfd_secret system call to create "secret" memory areas
+Date: Tue,  1 Dec 2020 09:45:49 +0200
+Message-Id: <20201201074559.27742-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
-Message-ID-Hash: H3EYRNFE2V7KD6PY2MKXFWGYSZTX5MNR
-X-Message-ID-Hash: H3EYRNFE2V7KD6PY2MKXFWGYSZTX5MNR
-X-MailFrom: willy@infradead.org
+Message-ID-Hash: XUJ72DHO2E46KZXOO2FD5VPPPL3M7C5D
+X-Message-ID-Hash: XUJ72DHO2E46KZXOO2FD5VPPPL3M7C5D
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Shutemov, Kirill" <kirill.shutemov@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Vlastimil Babka <vbabka@suse.cz>
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <
+ tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/H3EYRNFE2V7KD6PY2MKXFWGYSZTX5MNR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XUJ72DHO2E46KZXOO2FD5VPPPL3M7C5D/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,72 +51,151 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 30, 2020 at 05:20:25PM -0800, Dan Williams wrote:
-> Kirill, Willy, compound page experts,
-> 
-> I am seeking some debug ideas about the following splat:
-> 
-> BUG: Bad page state in process lt-pmem-ns  pfn:121a12
-> page:0000000051ef73f7 refcount:0 mapcount:-1024
-> mapping:0000000000000000 index:0x0 pfn:0x121a12
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-Mapcount of -1024 is the signature of:
+Hi,
 
-#define PG_guard        0x00000400
+@Andrew, this is based on v5.10-rc2-mmotm-2020-11-07-21-40, I can rebase on
+current mmotm if you prefer.
 
-(the bits are inverted, so this turns into 0xfffffbff which is reported
-as -1024)
+This is an implementation of "secret" mappings backed by a file descriptor.
 
-I assume you have debug_pagealloc enabled?
+The file descriptor backing secret memory mappings is created using a
+dedicated memfd_secret system call The desired protection mode for the
+memory is configured using flags parameter of the system call. The mmap()
+of the file descriptor created with memfd_secret() will create a "secret"
+memory mapping. The pages in that mapping will be marked as not present in
+the direct map and will be present only in the page table of the owning mm.
 
-> flags: 0x2ffff800000000()
-> raw: 002ffff800000000 dead000000000100 0000000000000000 0000000000000000
-> raw: 0000000000000000 ffff8a6914886b48 00000000fffffbff 0000000000000000
-> page dumped because: nonzero mapcount
-> [..]
-> CPU: 26 PID: 6127 Comm: lt-pmem-ns Tainted: G           OE     5.10.0-rc4+ #450
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-> Call Trace:
->  dump_stack+0x8b/0xb0
->  bad_page.cold+0x63/0x94
->  free_pcp_prepare+0x224/0x270
->  free_unref_page+0x18/0xd0
->  pud_free_pmd_page+0x146/0x160
->  ioremap_pud_range+0xe3/0x350
->  ioremap_page_range+0x108/0x160
->  __ioremap_caller.constprop.0+0x174/0x2b0
->  ? memremap+0x7a/0x110
->  memremap+0x7a/0x110
->  devm_memremap+0x53/0xa0
->  pmem_attach_disk+0x4ed/0x530 [nd_pmem]
-> 
-> It triggers on v5.10-rc4 not on v5.9, but the bisect comes up with an
-> ambiguous result. I've run the bisect 3 times and landed on:
-> 
-> 032c7ed95817 Merge tag 'arm64-upstream' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
-> 
-> ...which does not touch anything near _mapcount. I suspect there is
-> something unique about the build that lines up the corruption to
-> happen or not happen.
-> 
-> The test is a simple namespace creation test that results in an
-> memremap() / ioremap() over several gigabytes of memory capacity. The
-> -1024 was interesting because that's the GUP_PIN_COUNTING_BIAS, but
-> that's the _refcount, I did not see any questionable changes to how
-> _mapcount is manipulated post v5.9. Problem should be reproducible by
-> running:
-> 
-> make -j TESTS="pmem-ns" check
-> 
-> ...in qemu-kvm with some virtual pmem defined:
-> 
-> -object memory-backend-file,id=mem1,share,mem-path=${mem}1,size=$((mem_size+label_size))
-> -device nvdimm,memdev=mem1,id=nv1,label-size=${label_size}
-> 
-> ...where ${mem}1 is a 128GB sparse file $mem_size is 127GB and
-> $label_size is 128KB.
-> 
+Although normally Linux userspace mappings are protected from other users,
+such secret mappings are useful for environments where a hostile tenant is
+trying to trick the kernel into giving them access to other tenants
+mappings.
+
+Additionally, in the future the secret mappings may be used as a mean to
+protect guest memory in a virtual machine host.
+
+For demonstration of secret memory usage we've created a userspace library
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jejb/secret-memory-preloader.git
+
+that does two things: the first is act as a preloader for openssl to
+redirect all the OPENSSL_malloc calls to secret memory meaning any secret
+keys get automatically protected this way and the other thing it does is
+expose the API to the user who needs it. We anticipate that a lot of the
+use cases would be like the openssl one: many toolkits that deal with
+secret keys already have special handling for the memory to try to give
+them greater protection, so this would simply be pluggable into the
+toolkits without any need for user application modification.
+
+Hiding secret memory mappings behind an anonymous file allows (ab)use of
+the page cache for tracking pages allocated for the "secret" mappings as
+well as using address_space_operations for e.g. page migration callbacks.
+
+The anonymous file may be also used implicitly, like hugetlb files, to
+implement mmap(MAP_SECRET) and use the secret memory areas with "native" mm
+ABIs in the future.
+
+To limit fragmentation of the direct map to splitting only PUD-size pages,
+I've added an amortizing cache of PMD-size pages to each file descriptor
+that is used as an allocation pool for the secret memory areas.
+
+As the memory allocated by secretmem becomes unmovable, we use CMA to back
+large page caches so that page allocator won't be surprised by failing attempt
+to migrate these pages.
+
+v13:
+* Added Reviewed-by, thanks Catalin and David
+* s/mod_node_page_state/mod_lruvec_page_state/ as Shakeel suggested
+
+v12: https://lore.kernel.org/lkml/20201125092208.12544-1-rppt@kernel.org
+* Add detection of whether set_direct_map has actual effect on arm64 and bail
+  out of CMA allocation for secretmem and the memfd_secret() syscall if pages
+  would not be removed from the direct map
+
+v11: https://lore.kernel.org/lkml/20201124092556.12009-1-rppt@kernel.org
+* Drop support for uncached mappings
+
+v10: https://lore.kernel.org/lkml/20201123095432.5860-1-rppt@kernel.org
+* Drop changes to arm64 compatibility layer
+* Add Roman's Ack for memcg accounting
+
+v9: https://lore.kernel.org/lkml/20201117162932.13649-1-rppt@kernel.org
+* Fix build with and without CONFIG_MEMCG
+* Update memcg accounting to avoid copying memcg_data, per Roman comments
+* Fix issues in secretmem_fault(), thanks Matthew
+* Do not wire up syscall in arm64 compatibility layer
+
+Older history:
+v8: https://lore.kernel.org/lkml/20201110151444.20662-1-rppt@kernel.org
+v7: https://lore.kernel.org/lkml/20201026083752.13267-1-rppt@kernel.org
+v6: https://lore.kernel.org/lkml/20200924132904.1391-1-rppt@kernel.org
+v5: https://lore.kernel.org/lkml/20200916073539.3552-1-rppt@kernel.org
+v4: https://lore.kernel.org/lkml/20200818141554.13945-1-rppt@kernel.org
+v3: https://lore.kernel.org/lkml/20200804095035.18778-1-rppt@kernel.org
+v2: https://lore.kernel.org/lkml/20200727162935.31714-1-rppt@kernel.org
+v1: https://lore.kernel.org/lkml/20200720092435.17469-1-rppt@kernel.org
+
+Mike Rapoport (10):
+  mm: add definition of PMD_PAGE_ORDER
+  mmap: make mlock_future_check() global
+  set_memory: allow set_direct_map_*_noflush() for multiple pages
+  set_memory: allow querying whether set_direct_map_*() is actually enabled
+  mm: introduce memfd_secret system call to create "secret" memory areas
+  secretmem: use PMD-size pages to amortize direct map fragmentation
+  secretmem: add memcg accounting
+  PM: hibernate: disable when there are active secretmem users
+  arch, mm: wire up memfd_secret system call were relevant
+  secretmem: test: add basic selftest for memfd_secret(2)
+
+ arch/arm64/include/asm/Kbuild             |   1 -
+ arch/arm64/include/asm/cacheflush.h       |   6 -
+ arch/arm64/include/asm/set_memory.h       |  17 +
+ arch/arm64/include/uapi/asm/unistd.h      |   1 +
+ arch/arm64/kernel/machine_kexec.c         |   1 +
+ arch/arm64/mm/mmu.c                       |   6 +-
+ arch/arm64/mm/pageattr.c                  |  23 +-
+ arch/riscv/include/asm/set_memory.h       |   4 +-
+ arch/riscv/include/asm/unistd.h           |   1 +
+ arch/riscv/mm/pageattr.c                  |   8 +-
+ arch/x86/Kconfig                          |   2 +-
+ arch/x86/entry/syscalls/syscall_32.tbl    |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl    |   1 +
+ arch/x86/include/asm/set_memory.h         |   4 +-
+ arch/x86/mm/pat/set_memory.c              |   8 +-
+ fs/dax.c                                  |  11 +-
+ include/linux/pgtable.h                   |   3 +
+ include/linux/secretmem.h                 |  30 ++
+ include/linux/set_memory.h                |  16 +-
+ include/linux/syscalls.h                  |   1 +
+ include/uapi/asm-generic/unistd.h         |   6 +-
+ include/uapi/linux/magic.h                |   1 +
+ kernel/power/hibernate.c                  |   5 +-
+ kernel/power/snapshot.c                   |   4 +-
+ kernel/sys_ni.c                           |   2 +
+ mm/Kconfig                                |   5 +
+ mm/Makefile                               |   1 +
+ mm/filemap.c                              |   3 +-
+ mm/gup.c                                  |  10 +
+ mm/internal.h                             |   3 +
+ mm/mmap.c                                 |   5 +-
+ mm/secretmem.c                            | 439 ++++++++++++++++++++++
+ mm/vmalloc.c                              |   5 +-
+ scripts/checksyscalls.sh                  |   4 +
+ tools/testing/selftests/vm/.gitignore     |   1 +
+ tools/testing/selftests/vm/Makefile       |   3 +-
+ tools/testing/selftests/vm/memfd_secret.c | 298 +++++++++++++++
+ tools/testing/selftests/vm/run_vmtests    |  17 +
+ 38 files changed, 906 insertions(+), 51 deletions(-)
+ create mode 100644 arch/arm64/include/asm/set_memory.h
+ create mode 100644 include/linux/secretmem.h
+ create mode 100644 mm/secretmem.c
+ create mode 100644 tools/testing/selftests/vm/memfd_secret.c
+
+
+base-commit: 9f8ce377d420db12b19d6a4f636fecbd88a725a5
+-- 
+2.28.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
