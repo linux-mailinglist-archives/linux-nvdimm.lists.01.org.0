@@ -1,50 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B81A2C986D
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 08:48:13 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EDC2CA270
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 13:18:57 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 42E7D100EC1DF;
-	Mon, 30 Nov 2020 23:48:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id E9CC0100ED497;
+	Tue,  1 Dec 2020 04:18:54 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C9CE7100EC1DD
-	for <linux-nvdimm@lists.01.org>; Mon, 30 Nov 2020 23:48:09 -0800 (PST)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 01796221FF;
-	Tue,  1 Dec 2020 07:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1606808889;
-	bh=GcYHmVpON//HgfC+Q9fSTKhraRbGw/gcP2/N7E5anYQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2DDqgccT0jZwLRscJlvFl5QvWdyP0mHDT2bXYy/Xk9neO3YeTNauBZVOaggC4Gyl
-	 ro/QaTazJ+EKjNwJeJfYvwksJtYpFUjW6YKPCvqfgskXQTXFPr0IjaRVWtIq7zsM6j
-	 VKQgRnng4ethePj4KMvLVYuGaDImnh7tBOjqI/OY=
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v13 10/10] secretmem: test: add basic selftest for memfd_secret(2)
-Date: Tue,  1 Dec 2020 09:45:59 +0200
-Message-Id: <20201201074559.27742-11-rppt@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201201074559.27742-1-rppt@kernel.org>
-References: <20201201074559.27742-1-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id AC452100EF264
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Dec 2020 04:18:52 -0800 (PST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0B1C42NB187405;
+	Tue, 1 Dec 2020 07:18:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=WldaJ6r7cz1uGhPcT+6RdE+DzhSCbQJDfLs4Sx4eDQw=;
+ b=X2Vi2Fy4aM1eIz4SPNPUF1jhpxOtmInIuYFAQrjAzrHlzZBPvThAzlkZvfaSMNz3I+3f
+ ve/Fbyq8irliUG0Ohv0jxszWbQKxp8IajK1TMmKexwByGqTR7BP+d1ZU3+c/LjN0fkV+
+ f5AWpSZ9YpmYw2thuwsQlMLeLPDYLb173HHD9HyWFBvznHuJfF9ff3k1b9sN7LTITuId
+ cdX2ZXeg3ubRZdYfv4VRs5MZ0TakRlCx8HWPDN9zSWCL5Qw32XKtV5ugJ7pWJIAqNbAh
+ VXj8BZ1951gOiclM9MClEks0YG2Nk7BYOoG5HQA0V8Lk1+lfADLz5CYs0u+4Zdrje6OA kA==
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 355jaaxeje-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Dec 2020 07:18:51 -0500
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B1CDg82004709;
+	Tue, 1 Dec 2020 12:18:49 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04ams.nl.ibm.com with ESMTP id 353e6833yc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Dec 2020 12:18:49 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0B1CIi6B4981502
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 1 Dec 2020 12:18:44 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A71B511C04C;
+	Tue,  1 Dec 2020 12:18:44 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DF41811C052;
+	Tue,  1 Dec 2020 12:18:43 +0000 (GMT)
+Received: from lep8c.aus.stglabs.ibm.com (unknown [9.40.192.207])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue,  1 Dec 2020 12:18:43 +0000 (GMT)
+Subject: [RFC PATCH] powerpc/papr_scm: Implement scm async flush
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: ellerman@au1.ibm.com
+Date: Tue, 01 Dec 2020 06:18:43 -0600
+Message-ID: 
+ <160682501436.2579014.14501834468510806255.stgit@lep8c.aus.stglabs.ibm.com>
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-Message-ID-Hash: 74CUECN3EIUJTGXZXCF72YIYQHA6A4QH
-X-Message-ID-Hash: 74CUECN3EIUJTGXZXCF72YIYQHA6A4QH
-X-MailFrom: rppt@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <
- tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-12-01_04:2020-11-30,2020-12-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 clxscore=1015 adultscore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012010079
+Message-ID-Hash: VCB7KR6PTIHSS25THDNTGS5WNZDVTY7X
+X-Message-ID-Hash: VCB7KR6PTIHSS25THDNTGS5WNZDVTY7X
+X-MailFrom: sbhat@linux.ibm.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: aneesh.kumar@linux.ibm.com, linux-nvdimm@lists.01.org, linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/74CUECN3EIUJTGXZXCF72YIYQHA6A4QH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3QBFSAA6DRLDH7F5UL66ZMBT454M5CGD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,385 +82,143 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Tha patch implements SCM async-flush hcall and sets the
+ND_REGION_ASYNC capability when the platform device tree
+has "ibm,async-flush-required" set.
 
-The test verifies that file descriptor created with memfd_secret does
-not allow read/write operations, that secret memory mappings respect
-RLIMIT_MEMLOCK and that remote accesses with process_vm_read() and
-ptrace() to the secret memory fail.
+The below demonstration shows the map_sync behavior when
+ibm,async-flush-required is present in device tree.
+(https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c)
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+The pmem0 is from nvdimm without async-flush-required,
+and pmem1 is from nvdimm with async-flush-required, mounted as
+/dev/pmem0 on /mnt1 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+/dev/pmem1 on /mnt2 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+
+#./mapsync /mnt1/newfile    ----> Without async-flush-required
+#./mapsync /mnt2/newfile    ----> With async-flush-required
+Failed to mmap  with Operation not supported
+
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 ---
- tools/testing/selftests/vm/.gitignore     |   1 +
- tools/testing/selftests/vm/Makefile       |   3 +-
- tools/testing/selftests/vm/memfd_secret.c | 298 ++++++++++++++++++++++
- tools/testing/selftests/vm/run_vmtests    |  17 ++
- 4 files changed, 318 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/vm/memfd_secret.c
+The HCALL semantics are in review, not final.
 
-diff --git a/tools/testing/selftests/vm/.gitignore b/tools/testing/selftests/vm/.gitignore
-index 9a35c3f6a557..c8deddc81e7a 100644
---- a/tools/testing/selftests/vm/.gitignore
-+++ b/tools/testing/selftests/vm/.gitignore
-@@ -21,4 +21,5 @@ va_128TBswitch
- map_fixed_noreplace
- write_to_hugetlbfs
- hmm-tests
-+memfd_secret
- local_config.*
-diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
-index 62fb15f286ee..9ab98946fbf2 100644
---- a/tools/testing/selftests/vm/Makefile
-+++ b/tools/testing/selftests/vm/Makefile
-@@ -34,6 +34,7 @@ TEST_GEN_FILES += khugepaged
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
-+TEST_GEN_FILES += memfd_secret
- TEST_GEN_FILES += mlock-random-test
- TEST_GEN_FILES += mlock2-tests
- TEST_GEN_FILES += mremap_dontunmap
-@@ -129,7 +130,7 @@ warn_32bit_failure:
- endif
- endif
+ Documentation/powerpc/papr_hcalls.rst     |   14 ++++++++++
+ arch/powerpc/include/asm/hvcall.h         |    3 +-
+ arch/powerpc/platforms/pseries/papr_scm.c |   39 +++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
+index 48fcf1255a33..cc310814f24c 100644
+--- a/Documentation/powerpc/papr_hcalls.rst
++++ b/Documentation/powerpc/papr_hcalls.rst
+@@ -275,6 +275,20 @@ Health Bitmap Flags:
+ Given a DRC Index collect the performance statistics for NVDIMM and copy them
+ to the resultBuffer.
  
--$(OUTPUT)/mlock-random-test: LDLIBS += -lcap
-+$(OUTPUT)/mlock-random-test $(OUTPUT)/memfd_secret: LDLIBS += -lcap
++**H_SCM_ASYNC_FLUSH**
++
++| Input: *drcIndex*
++| Out: *continue-token*
++| Return Value: *H_SUCCESS, H_Parameter, H_P2, H_BUSY*
++
++Given a DRC Index Flush the data to backend NVDIMM device.
++
++The hcall returns H_BUSY when the flush takes longer time and the hcall needs
++to be issued multiple times in order to be completely serviced. The
++*continue-token* from the output to be passed in the argument list in
++subsequent hcalls to the hypervisor until the hcall is completely serviced
++at which point H_SUCCESS is returned by the hypervisor.
++
+ References
+ ==========
+ .. [1] "Power Architecture Platform Reference"
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index c1fbccb04390..4a13074bc782 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -306,7 +306,8 @@
+ #define H_SCM_HEALTH            0x400
+ #define H_SCM_PERFORMANCE_STATS 0x418
+ #define H_RPT_INVALIDATE	0x448
+-#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
++#define H_SCM_ASYNC_FLUSH	0x4A0
++#define MAX_HCALL_OPCODE	H_SCM_ASYNC_FLUSH
  
- $(OUTPUT)/gup_test: ../../../../mm/gup_test.h
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 835163f54244..1f8c5153cb3d 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -93,6 +93,7 @@ struct papr_scm_priv {
+ 	uint64_t block_size;
+ 	int metadata_size;
+ 	bool is_volatile;
++	bool async_flush_required;
  
-diff --git a/tools/testing/selftests/vm/memfd_secret.c b/tools/testing/selftests/vm/memfd_secret.c
-new file mode 100644
-index 000000000000..79578dfd13e6
---- /dev/null
-+++ b/tools/testing/selftests/vm/memfd_secret.c
-@@ -0,0 +1,298 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright IBM Corporation, 2020
-+ *
-+ * Author: Mike Rapoport <rppt@linux.ibm.com>
-+ */
-+
-+#define _GNU_SOURCE
-+#include <sys/uio.h>
-+#include <sys/mman.h>
-+#include <sys/wait.h>
-+#include <sys/types.h>
-+#include <sys/ptrace.h>
-+#include <sys/syscall.h>
-+#include <sys/resource.h>
-+#include <sys/capability.h>
-+
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <errno.h>
-+#include <stdio.h>
-+
-+#include "../kselftest.h"
-+
-+#define fail(fmt, ...) ksft_test_result_fail(fmt, ##__VA_ARGS__)
-+#define pass(fmt, ...) ksft_test_result_pass(fmt, ##__VA_ARGS__)
-+#define skip(fmt, ...) ksft_test_result_skip(fmt, ##__VA_ARGS__)
-+
-+#ifdef __NR_memfd_secret
-+
-+#include <linux/secretmem.h>
-+
-+#define PATTERN	0x55
-+
-+static const int prot = PROT_READ | PROT_WRITE;
-+static const int mode = MAP_SHARED;
-+
-+static unsigned long page_size;
-+static unsigned long mlock_limit_cur;
-+static unsigned long mlock_limit_max;
-+
-+static int memfd_secret(unsigned long flags)
+ 	uint64_t bound_addr;
+ 
+@@ -117,6 +118,38 @@ struct papr_scm_priv {
+ 	size_t stat_buffer_len;
+ };
+ 
++static int papr_scm_pmem_flush(struct nd_region *nd_region, struct bio *bio)
 +{
-+	return syscall(__NR_memfd_secret, flags);
-+}
++	unsigned long ret[PLPAR_HCALL_BUFSIZE];
++	struct papr_scm_priv *p = nd_region_provider_data(nd_region);
++	int64_t rc;
++	uint64_t token = 0;
 +
-+static void test_file_apis(int fd)
-+{
-+	char buf[64];
++	do {
++		rc = plpar_hcall(H_SCM_ASYNC_FLUSH, ret, p->drc_index, token);
 +
-+	if ((read(fd, buf, sizeof(buf)) >= 0) ||
-+	    (write(fd, buf, sizeof(buf)) >= 0) ||
-+	    (pread(fd, buf, sizeof(buf), 0) >= 0) ||
-+	    (pwrite(fd, buf, sizeof(buf), 0) >= 0))
-+		fail("unexpected file IO\n");
++		/* Check if we are stalled for some time */
++		token = ret[0];
++		if (H_IS_LONG_BUSY(rc)) {
++			msleep(get_longbusy_msecs(rc));
++			rc = H_BUSY;
++		} else if (rc == H_BUSY) {
++			cond_resched();
++		}
++
++	} while (rc == H_BUSY);
++
++	if (rc)
++		dev_err(&p->pdev->dev, "flush error: %lld\n", rc);
 +	else
-+		pass("file IO is blocked as expected\n");
++		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete\n",
++			p->drc_index);
++
++	dev_dbg(&p->pdev->dev, "Flush call complete\n");
++
++	return rc;
 +}
 +
-+static void test_mlock_limit(int fd)
-+{
-+	size_t len;
-+	char *mem;
-+
-+	len = mlock_limit_cur;
-+	mem = mmap(NULL, len, prot, mode, fd, 0);
-+	if (mem == MAP_FAILED) {
-+		fail("unable to mmap secret memory\n");
-+		return;
-+	}
-+	munmap(mem, len);
-+
-+	len = mlock_limit_max * 2;
-+	mem = mmap(NULL, len, prot, mode, fd, 0);
-+	if (mem != MAP_FAILED) {
-+		fail("unexpected mlock limit violation\n");
-+		munmap(mem, len);
-+		return;
-+	}
-+
-+	pass("mlock limit is respected\n");
-+}
-+
-+static void try_process_vm_read(int fd, int pipefd[2])
-+{
-+	struct iovec liov, riov;
-+	char buf[64];
-+	char *mem;
-+
-+	if (read(pipefd[0], &mem, sizeof(mem)) < 0) {
-+		fail("pipe write: %s\n", strerror(errno));
-+		exit(KSFT_FAIL);
-+	}
-+
-+	liov.iov_len = riov.iov_len = sizeof(buf);
-+	liov.iov_base = buf;
-+	riov.iov_base = mem;
-+
-+	if (process_vm_readv(getppid(), &liov, 1, &riov, 1, 0) < 0) {
-+		if (errno == ENOSYS)
-+			exit(KSFT_SKIP);
-+		exit(KSFT_PASS);
-+	}
-+
-+	exit(KSFT_FAIL);
-+}
-+
-+static void try_ptrace(int fd, int pipefd[2])
-+{
-+	pid_t ppid = getppid();
-+	int status;
-+	char *mem;
-+	long ret;
-+
-+	if (read(pipefd[0], &mem, sizeof(mem)) < 0) {
-+		perror("pipe write");
-+		exit(KSFT_FAIL);
-+	}
-+
-+	ret = ptrace(PTRACE_ATTACH, ppid, 0, 0);
-+	if (ret) {
-+		perror("ptrace_attach");
-+		exit(KSFT_FAIL);
-+	}
-+
-+	ret = waitpid(ppid, &status, WUNTRACED);
-+	if ((ret != ppid) || !(WIFSTOPPED(status))) {
-+		fprintf(stderr, "weird waitppid result %ld stat %x\n",
-+			ret, status);
-+		exit(KSFT_FAIL);
-+	}
-+
-+	if (ptrace(PTRACE_PEEKDATA, ppid, mem, 0))
-+		exit(KSFT_PASS);
-+
-+	exit(KSFT_FAIL);
-+}
-+
-+static void check_child_status(pid_t pid, const char *name)
-+{
-+	int status;
-+
-+	waitpid(pid, &status, 0);
-+
-+	if (WIFEXITED(status) && WEXITSTATUS(status) == KSFT_SKIP) {
-+		skip("%s is not supported\n", name);
-+		return;
-+	}
-+
-+	if ((WIFEXITED(status) && WEXITSTATUS(status) == KSFT_PASS) ||
-+	    WIFSIGNALED(status)) {
-+		pass("%s is blocked as expected\n", name);
-+		return;
-+	}
-+
-+	fail("%s: unexpected memory access\n", name);
-+}
-+
-+static void test_remote_access(int fd, const char *name,
-+			       void (*func)(int fd, int pipefd[2]))
-+{
-+	int pipefd[2];
-+	pid_t pid;
-+	char *mem;
-+
-+	if (pipe(pipefd)) {
-+		fail("pipe failed: %s\n", strerror(errno));
-+		return;
-+	}
-+
-+	pid = fork();
-+	if (pid < 0) {
-+		fail("fork failed: %s\n", strerror(errno));
-+		return;
-+	}
-+
-+	if (pid == 0) {
-+		func(fd, pipefd);
-+		return;
-+	}
-+
-+	mem = mmap(NULL, page_size, prot, mode, fd, 0);
-+	if (mem == MAP_FAILED) {
-+		fail("Unable to mmap secret memory\n");
-+		return;
-+	}
-+
-+	ftruncate(fd, page_size);
-+	memset(mem, PATTERN, page_size);
-+
-+	if (write(pipefd[1], &mem, sizeof(mem)) < 0) {
-+		fail("pipe write: %s\n", strerror(errno));
-+		return;
-+	}
-+
-+	check_child_status(pid, name);
-+}
-+
-+static void test_process_vm_read(int fd)
-+{
-+	test_remote_access(fd, "process_vm_read", try_process_vm_read);
-+}
-+
-+static void test_ptrace(int fd)
-+{
-+	test_remote_access(fd, "ptrace", try_ptrace);
-+}
-+
-+static int set_cap_limits(rlim_t max)
-+{
-+	struct rlimit new;
-+	cap_t cap = cap_init();
-+
-+	new.rlim_cur = max;
-+	new.rlim_max = max;
-+	if (setrlimit(RLIMIT_MEMLOCK, &new)) {
-+		perror("setrlimit() returns error");
-+		return -1;
-+	}
-+
-+	/* drop capabilities including CAP_IPC_LOCK */
-+	if (cap_set_proc(cap)) {
-+		perror("cap_set_proc() returns error");
-+		return -2;
-+	}
-+
-+	return 0;
-+}
-+
-+static void prepare(void)
-+{
-+	struct rlimit rlim;
-+
-+	page_size = sysconf(_SC_PAGE_SIZE);
-+	if (!page_size)
-+		ksft_exit_fail_msg("Failed to get page size %s\n",
-+				   strerror(errno));
-+
-+	if (getrlimit(RLIMIT_MEMLOCK, &rlim))
-+		ksft_exit_fail_msg("Unable to detect mlock limit: %s\n",
-+				   strerror(errno));
-+
-+	mlock_limit_cur = rlim.rlim_cur;
-+	mlock_limit_max = rlim.rlim_max;
-+
-+	printf("page_size: %ld, mlock.soft: %ld, mlock.hard: %ld\n",
-+	       page_size, mlock_limit_cur, mlock_limit_max);
-+
-+	if (page_size > mlock_limit_cur)
-+		mlock_limit_cur = page_size;
-+	if (page_size > mlock_limit_max)
-+		mlock_limit_max = page_size;
-+
-+	if (set_cap_limits(mlock_limit_max))
-+		ksft_exit_fail_msg("Unable to set mlock limit: %s\n",
-+				   strerror(errno));
-+}
-+
-+#define NUM_TESTS 4
-+
-+int main(int argc, char *argv[])
-+{
-+	int fd;
-+
-+	prepare();
-+
-+	ksft_print_header();
-+	ksft_set_plan(NUM_TESTS);
-+
-+	fd = memfd_secret(0);
-+	if (fd < 0) {
-+		if (errno == ENOSYS)
-+			ksft_exit_skip("memfd_secret is not supported\n");
-+		else
-+			ksft_exit_fail_msg("memfd_secret failed: %s\n",
-+					   strerror(errno));
-+	}
-+
-+	test_mlock_limit(fd);
-+	test_file_apis(fd);
-+	test_process_vm_read(fd);
-+	test_ptrace(fd);
-+
-+	close(fd);
-+
-+	ksft_exit(!ksft_get_fail_cnt());
-+}
-+
-+#else /* __NR_memfd_secret */
-+
-+int main(int argc, char *argv[])
-+{
-+	printf("skip: skipping memfd_secret test (missing __NR_memfd_secret)\n");
-+	return KSFT_SKIP;
-+}
-+
-+#endif /* __NR_memfd_secret */
-diff --git a/tools/testing/selftests/vm/run_vmtests b/tools/testing/selftests/vm/run_vmtests
-index e953f3cd9664..95a67382f132 100755
---- a/tools/testing/selftests/vm/run_vmtests
-+++ b/tools/testing/selftests/vm/run_vmtests
-@@ -346,4 +346,21 @@ else
- 	exitcode=1
- fi
+ static LIST_HEAD(papr_nd_regions);
+ static DEFINE_MUTEX(papr_ndr_lock);
  
-+echo "running memfd_secret test"
-+echo "------------------------------------"
-+./memfd_secret
-+ret_val=$?
+@@ -943,6 +976,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	ndr_desc.num_mappings = 1;
+ 	ndr_desc.nd_set = &p->nd_set;
+ 
++	if (p->async_flush_required) {
++		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
++		ndr_desc.flush = papr_scm_pmem_flush;
++	}
 +
-+if [ $ret_val -eq 0 ]; then
-+	echo "[PASS]"
-+elif [ $ret_val -eq $ksft_skip ]; then
-+	echo "[SKIP]"
-+	exitcode=$ksft_skip
-+else
-+	echo "[FAIL]"
-+	exitcode=1
-+fi
-+
-+exit $exitcode
-+
- exit $exitcode
--- 
-2.28.0
+ 	if (p->is_volatile)
+ 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+ 	else {
+@@ -1088,6 +1126,7 @@ static int papr_scm_probe(struct platform_device *pdev)
+ 	p->block_size = block_size;
+ 	p->blocks = blocks;
+ 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
++	p->async_flush_required = of_property_read_bool(dn, "ibm,async-flush-required");
+ 
+ 	/* We just need to ensure that set cookies are unique across */
+ 	uuid_parse(uuid_str, (uuid_t *) uuid);
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
