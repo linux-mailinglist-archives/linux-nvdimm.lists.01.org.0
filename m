@@ -1,65 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC8E2CA352
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 14:02:25 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C33172CA453
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 14:54:05 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 95150100EC1D3;
-	Tue,  1 Dec 2020 05:02:23 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com; envelope-from=pankaj.gupta.linux@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 28CBF100EC1E4;
+	Tue,  1 Dec 2020 05:54:04 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.32; helo=szxga06-in.huawei.com; envelope-from=wanghai38@huawei.com; receiver=<UNKNOWN> 
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CD234100EC1C9
-	for <linux-nvdimm@lists.01.org>; Tue,  1 Dec 2020 05:02:20 -0800 (PST)
-Received: by mail-il1-x144.google.com with SMTP id b8so1544450ila.13
-        for <linux-nvdimm@lists.01.org>; Tue, 01 Dec 2020 05:02:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GujISGwhlbmPBHTK++whZ1M7hVGM+4rvkVOJDvu+Tpw=;
-        b=ZbPk4tHwP3WguKetrkTHklUy3UcrKSyWgK6Uym2IZE3wBAOwdVH5c/IDdmwjZPuuqm
-         3fBZ1XS0IiiaE//0AYRql3RFisscyQgiDg3DEC725uSg82KNi8qLfcIY1mvrrp0em8t0
-         cxqPnFLueiusSfO/++oRYAXbjidQLywBD922gkvVqYDTx9GKI06POfQJ55if1kit6p9l
-         cg0MpVzrpdbtvktESIAkHgYo8wSaE+CQbZcaXpPVaoXZGPd0UtmUXya+z7CZOP0Jcy7S
-         /Gr2+bDlQj6GL3O6CRxPAO5tEP7e/pd5kFNcYys5eFtWBBHnhM55CGW1MYspSPy7xfnQ
-         RBKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GujISGwhlbmPBHTK++whZ1M7hVGM+4rvkVOJDvu+Tpw=;
-        b=gpHGMhceACwzhM3Zhq7fR4uVR5qwfl9IatSN7D4/r8Gc7iV2gXobIiI2vKn/IM43kz
-         m+usMbd285ZQsrbDGYUm0prj7487dTg9oMzD6j3FJIQr5iiuMRQKBicuc6700Q8e1zFt
-         3WMww+pmbiaAMv6pRfJkaY0LpXYPxitG6tpMgHx79pAUtfa633XPfkF6PFUVRWJuBYQL
-         n6iuPpjwtGT2swTOEEjnaDXoxkVY5ENuPGlW13U2GwJoTzFmZe3JzmRX6H8jCZY+0utu
-         iCMIleRymPzxCTgC/9Ec60joRraHsvbNITXs+RypYab83ar/OBqPwwJi0qzrQOrAhQjl
-         b/+Q==
-X-Gm-Message-State: AOAM532sC0aSDf09R8Vbi/aNvEuKxXqWy7t8Qcd3POKvA3qzyWtl1Fw8
-	3xwvnrf13rHc/sK71DHnzqj9tQkunV5lmBkL2QI=
-X-Google-Smtp-Source: ABdhPJxpbyyKEZVcWXZZ5bWcz5/0zeLgENsm2YN9RmeGEPYwjqWjjZ85QRhCQWvD9e7ZGl2BamxNDQpt1lIwTNgMtII=
-X-Received: by 2002:a92:d40d:: with SMTP id q13mr2324683ilm.253.1606827739426;
- Tue, 01 Dec 2020 05:02:19 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id E80F1100EC1E1
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Dec 2020 05:53:59 -0800 (PST)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Clk8S1HdBzhkcj;
+	Tue,  1 Dec 2020 21:53:28 +0800 (CST)
+Received: from huawei.com (10.175.113.133) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Tue, 1 Dec 2020
+ 21:53:46 +0800
+From: Wang Hai <wanghai38@huawei.com>
+To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
+	<dave.jiang@intel.com>
+Subject: [PATCH] dax: fix memory leak when rmmod dax.ko
+Date: Tue, 1 Dec 2020 21:59:29 +0800
+Message-ID: <20201201135929.66530-1-wanghai38@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <160682501436.2579014.14501834468510806255.stgit@lep8c.aus.stglabs.ibm.com>
- <CAM9Jb+iPV470063QYq145znYW8CmqjNgdL=q6=3JXUJJt+z5gw@mail.gmail.com> <20035bbc-a1e0-82fd-105d-999e1afff029@linux.ibm.com>
-In-Reply-To: <20035bbc-a1e0-82fd-105d-999e1afff029@linux.ibm.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Tue, 1 Dec 2020 14:02:08 +0100
-Message-ID: <CAM9Jb+gS6z603kLwgB62zrHNpLOqW6FAEtDcbwiG5mGRzvZUVg@mail.gmail.com>
-Subject: Re: [RFC PATCH] powerpc/papr_scm: Implement scm async flush
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID-Hash: S6R3HT5J4RMP6GTEQRE5Y3EISQD3LZZX
-X-Message-ID-Hash: S6R3HT5J4RMP6GTEQRE5Y3EISQD3LZZX
-X-MailFrom: pankaj.gupta.linux@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Shivaprasad G Bhat <sbhat@linux.ibm.com>, ellerman@au1.ibm.com, linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+X-Originating-IP: [10.175.113.133]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: ANKNOEY3G6N7BUHR2NUZFBKED24RGCEI
+X-Message-ID-Hash: ANKNOEY3G6N7BUHR2NUZFBKED24RGCEI
+X-MailFrom: wanghai38@huawei.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/S6R3HT5J4RMP6GTEQRE5Y3EISQD3LZZX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ANKNOEY3G6N7BUHR2NUZFBKED24RGCEI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,31 +47,52 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-> >> Tha patch implements SCM async-flush hcall and sets the
-> >> ND_REGION_ASYNC capability when the platform device tree
-> >> has "ibm,async-flush-required" set.
-> >
-> > So, you are reusing the existing ND_REGION_ASYNC flag for the
-> > hypercall based async flush with device tree discovery?
-> >
-> > Out of curiosity, does virtio based flush work in ppc? Was just thinking
-> > if we can reuse virtio based flush present in virtio-pmem? Or anything
-> > else we are trying to achieve here?
-> >
->
->
-> Not with PAPR based pmem driver papr_scm.ko. The devices there are
-> considered platform device and we use hypercalls to configure the
-> device. On similar fashion we are now using hypercall to flush the host
-> based caches.
+When I repeatedly modprobe and rmmod dax.ko, kmemleak report a
+memory leak as follows:
 
-o.k. Thanks for answering.
+unreferenced object 0xffff9a5588c05088 (size 8):
+  comm "modprobe", pid 261, jiffies 4294693644 (age 42.063s)
+...
+  backtrace:
+    [<00000000e007ced0>] kstrdup+0x35/0x70
+    [<000000002ae73897>] kstrdup_const+0x3d/0x50
+    [<000000002b00c9c3>] kvasprintf_const+0xbc/0xf0
+    [<000000008023282f>] kobject_set_name_vargs+0x3b/0xd0
+    [<00000000d2cbaa4e>] kobject_set_name+0x62/0x90
+    [<00000000202e7a22>] bus_register+0x7f/0x2b0
+    [<000000000b77792c>] 0xffffffffc02840f7
+    [<000000002d5be5ac>] 0xffffffffc02840b4
+    [<00000000dcafb7cd>] do_one_initcall+0x58/0x240
+    [<00000000049fe480>] do_init_module+0x56/0x1e2
+    [<0000000022671491>] load_module+0x2517/0x2840
+    [<000000001a2201cb>] __do_sys_finit_module+0x9c/0xe0
+    [<000000003eb304e7>] do_syscall_64+0x33/0x40
+    [<0000000051c5fd06>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-Best regards,
-Pankaj
+When rmmod dax is executed, dax_bus_exit() is missing. This patch
+can fix this bug.
 
->
-> -aneesh
+Fixes: 9567da0b408a ("device-dax: Introduce bus + driver model")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+---
+ drivers/dax/super.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index edc279be3e59..cadbd0a1a1ef 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -752,6 +752,7 @@ static int __init dax_core_init(void)
+ 
+ static void __exit dax_core_exit(void)
+ {
++	dax_bus_exit();
+ 	unregister_chrdev_region(dax_devt, MINORMASK+1);
+ 	ida_destroy(&dax_minor_ida);
+ 	dax_fs_exit();
+-- 
+2.17.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
