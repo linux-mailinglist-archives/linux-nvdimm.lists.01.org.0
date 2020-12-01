@@ -2,63 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0452C94D4
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 02:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3894A2C9524
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Dec 2020 03:24:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5731A100ED4BA;
-	Mon, 30 Nov 2020 17:48:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::533; helo=mail-ed1-x533.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 582F1100EC1C3;
+	Mon, 30 Nov 2020 18:24:22 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 307B8100ED4AC
-	for <linux-nvdimm@lists.01.org>; Mon, 30 Nov 2020 17:48:12 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id l5so577802edq.11
-        for <linux-nvdimm@lists.01.org>; Mon, 30 Nov 2020 17:48:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=M+5BnXN0m77zeqbV9n5TCbwnpu1hY0RqzGtMEds/qCk=;
-        b=rWNSLZccHLQMDZM511qECtn11KzmY9V1pm3NFzbNx9FNIAvMfbJZ5PhH7y7RJpOQFh
-         NkY3FA5HR5Hf5mnziwzJM9svdIja4C0kx6z3oxGLOS+IWW7J2arI2VO2kc+FMAzkt1h2
-         n3Fu6rpF2T9mB3i+lPu0V5lqbvqCIRttoYP6vG3JP3T1bZe9839Cf9PCkUMZa/6GKJLR
-         11hBNNHNXJjNQ6JpUlNcuCZpCATMj4pAhtQHYEEhiz06MWPMl+cm1R7IUOpdNJnRcS7M
-         ji5eScauaoh3xBsM9+ys81gjfuZGq+OdTLnNHeiZB9TB+mVemzSANEyYFu7dJH/1++BW
-         tZJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=M+5BnXN0m77zeqbV9n5TCbwnpu1hY0RqzGtMEds/qCk=;
-        b=CZrR7E751+yCsoFN1iNNaGLMmwdJKg3L+zAJtMt4EbkrWO5o3cJNcdwcw1vTu3UBYn
-         wQ1aCKorxu/UedC9tsI1xDxwHXUbOUoZuXoqtmLvHIOUEf+PJ74f3oKpDG3R0WFfz9Id
-         CGF3EcTUwQGBZo68vSo0rOmGzuMfk1YZGqWQZ4uNgQepnKsldt1dEWdaleOgeR6pP/90
-         IlHucPp8UlHvWRORPUwUwI+uzNYLj3JidXxWInFAM6Yk71a2xRvi3m2aCIoGBOEhNxir
-         VGK7Oei8BV6QCb17HlmcvFn/9PqIYTSqCg1PinNxglgl5PGAf3w8lkJXPuWkDZCdWgwI
-         c4Rw==
-X-Gm-Message-State: AOAM533YKGQxCFRuCav6mnAbynwxNYvYUr4j6Y+8AgQKWhxc+9KHwSNl
-	5NiBhIADiMH/suDZ8e5ANjBmjbRIFWyyNN/CnGy04w==
-X-Google-Smtp-Source: ABdhPJyE+VpI66Bcq/qfk08x/yZj1ODh2sqzTbdACmS4BeDJH4RaasYLVZ8GxiVk5NOYT/7J2KzzyDhHSnpV/Yf3Gmo=
-X-Received: by 2002:a50:e0ce:: with SMTP id j14mr697382edl.18.1606787185958;
- Mon, 30 Nov 2020 17:46:25 -0800 (PST)
-MIME-Version: 1.0
-References: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
-In-Reply-To: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 30 Nov 2020 17:46:22 -0800
-Message-ID: <CAPcyv4i0ek7znehtJD25VHNsGeKNVdxjL+S1y3M-uqiQOyF0-A@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 57E2D100ED4BF
+	for <linux-nvdimm@lists.01.org>; Mon, 30 Nov 2020 18:24:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=pgfrNp213PUqGJpsyhnVpIsJf+6NbYjx7aBpXnxJ518=; b=SyEnPcyYwWC9XFUMx9ImmuzGNH
+	M6FVqe1DAzcUTh6aJ/7iDt7VVZrElY0TNucZLpWskIOwqJ6lp69e9c3k2xNp3yzXKq7e4DrRRZXlD
+	AvcFu8F2iTwKb9gZdEt+qP6WCwbC+B269Xt/xd2CdFWLXiKFG954nPrSXCYp/UaXuLSOqLEUHVayk
+	q0ydwJ2uiySMemCQJw7nvK576n5/6DQVg6MjAOOnrvZTDNwulgQ7gWda2U6vSJ9Mb2DtJleSVSyAg
+	ip0W7/3Yma1+3z2SB9ggdGPHQMq78MgmZj4TJOcsyLKrmrSwlkwGbRFrsgHNbZqVAH5RO/q3Dk6uY
+	lL7jNOAw==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1kjvKu-0001qU-Q9; Tue, 01 Dec 2020 02:24:12 +0000
+Date: Tue, 1 Dec 2020 02:24:12 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Dan Williams <dan.j.williams@intel.com>
 Subject: Re: mapcount corruption regression
-To: "Shutemov, Kirill" <kirill.shutemov@intel.com>, Matthew Wilcox <willy@infradead.org>
-Message-ID-Hash: GCFRIIIU4RTMAUX63V6W2UTJ3DIV6XYO
-X-Message-ID-Hash: GCFRIIIU4RTMAUX63V6W2UTJ3DIV6XYO
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Yi Zhang <yi.zhang@redhat.com>
+Message-ID: <20201201022412.GG4327@casper.infradead.org>
+References: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
+Message-ID-Hash: H3EYRNFE2V7KD6PY2MKXFWGYSZTX5MNR
+X-Message-ID-Hash: H3EYRNFE2V7KD6PY2MKXFWGYSZTX5MNR
+X-MailFrom: willy@infradead.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Shutemov, Kirill" <kirill.shutemov@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Vlastimil Babka <vbabka@suse.cz>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GCFRIIIU4RTMAUX63V6W2UTJ3DIV6XYO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/H3EYRNFE2V7KD6PY2MKXFWGYSZTX5MNR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,17 +52,72 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 30, 2020 at 5:20 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
+On Mon, Nov 30, 2020 at 05:20:25PM -0800, Dan Williams wrote:
 > Kirill, Willy, compound page experts,
->
+> 
 > I am seeking some debug ideas about the following splat:
->
+> 
 > BUG: Bad page state in process lt-pmem-ns  pfn:121a12
+> page:0000000051ef73f7 refcount:0 mapcount:-1024
+> mapping:0000000000000000 index:0x0 pfn:0x121a12
 
-Looks to be a similar signature that Yi Zhang is seeing:
+Mapcount of -1024 is the signature of:
 
-http://lore.kernel.org/r/51e938d1-aff7-0fa4-1a79-f77ac8bb2f8b@redhat.com
+#define PG_guard        0x00000400
+
+(the bits are inverted, so this turns into 0xfffffbff which is reported
+as -1024)
+
+I assume you have debug_pagealloc enabled?
+
+> flags: 0x2ffff800000000()
+> raw: 002ffff800000000 dead000000000100 0000000000000000 0000000000000000
+> raw: 0000000000000000 ffff8a6914886b48 00000000fffffbff 0000000000000000
+> page dumped because: nonzero mapcount
+> [..]
+> CPU: 26 PID: 6127 Comm: lt-pmem-ns Tainted: G           OE     5.10.0-rc4+ #450
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+> Call Trace:
+>  dump_stack+0x8b/0xb0
+>  bad_page.cold+0x63/0x94
+>  free_pcp_prepare+0x224/0x270
+>  free_unref_page+0x18/0xd0
+>  pud_free_pmd_page+0x146/0x160
+>  ioremap_pud_range+0xe3/0x350
+>  ioremap_page_range+0x108/0x160
+>  __ioremap_caller.constprop.0+0x174/0x2b0
+>  ? memremap+0x7a/0x110
+>  memremap+0x7a/0x110
+>  devm_memremap+0x53/0xa0
+>  pmem_attach_disk+0x4ed/0x530 [nd_pmem]
+> 
+> It triggers on v5.10-rc4 not on v5.9, but the bisect comes up with an
+> ambiguous result. I've run the bisect 3 times and landed on:
+> 
+> 032c7ed95817 Merge tag 'arm64-upstream' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
+> 
+> ...which does not touch anything near _mapcount. I suspect there is
+> something unique about the build that lines up the corruption to
+> happen or not happen.
+> 
+> The test is a simple namespace creation test that results in an
+> memremap() / ioremap() over several gigabytes of memory capacity. The
+> -1024 was interesting because that's the GUP_PIN_COUNTING_BIAS, but
+> that's the _refcount, I did not see any questionable changes to how
+> _mapcount is manipulated post v5.9. Problem should be reproducible by
+> running:
+> 
+> make -j TESTS="pmem-ns" check
+> 
+> ...in qemu-kvm with some virtual pmem defined:
+> 
+> -object memory-backend-file,id=mem1,share,mem-path=${mem}1,size=$((mem_size+label_size))
+> -device nvdimm,memdev=mem1,id=nv1,label-size=${label_size}
+> 
+> ...where ${mem}1 is a 128GB sparse file $mem_size is 127GB and
+> $label_size is 128KB.
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
