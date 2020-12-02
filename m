@@ -2,108 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2702CC475
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Dec 2020 19:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1CB2CC850
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Dec 2020 21:52:27 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C3146100EBB6B;
-	Wed,  2 Dec 2020 10:01:15 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=204.191.154.188; helo=ale.deltatee.com; envelope-from=logang@deltatee.com; receiver=<UNKNOWN> 
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 517E3100EC1CB
-	for <linux-nvdimm@lists.01.org>; Wed,  2 Dec 2020 10:01:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:MIME-Version:Date:
-	Message-ID:From:References:Cc:To:content-disposition;
-	bh=PNgBCQ8XfFmn9D3DM+iYXdqG+oFaCFQKqsKGuaozXnM=; b=I/z1+NEbS5rhAEcJyNoJdYZjKX
-	GF2BGYAtWOziMnVigqzE1eUHMglwIZi+OmM1AakjZs+Hsd+bzWcf+PlXB/NIrTjj2GlCUoWYRDZcR
-	zPrHxLOH3/uzMbPUwi8F4aVw+xFx1S2W8X9T3V8IPnUoy56PN4haxXE8+yqphc/TCQmKcb8g8ZBDB
-	dFrTJvFFcAG2SkWwRdgs6sezejN5wBuhZoRuXG/ncxXX65UP6Ef8E3zQkSlkTF4IEVKC8dcAdHVlK
-	+xQADBoG7nV0lmFg7pnNxU24eHo65/Fy8AJIsfGoESJY8P6Q+68xlKurQ45l25yeVq2/CtZ28awXH
-	iDej8pIw==;
-Received: from s01060023bee90a7d.cg.shawcable.net ([24.64.145.4] helo=[192.168.0.10])
-	by ale.deltatee.com with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	(Exim 4.92)
-	(envelope-from <logang@deltatee.com>)
-	id 1kkWRD-0003mr-EY; Wed, 02 Dec 2020 11:01:12 -0700
-To: Christoph Hellwig <hch@lst.de>, Ralph Campbell <rcampbell@nvidia.com>
-References: <20201106005147.20113-1-rcampbell@nvidia.com>
- <20201106005147.20113-4-rcampbell@nvidia.com> <20201106080322.GE31341@lst.de>
- <a7b8b90c-09b7-2009-0784-908b61f61ef2@nvidia.com>
- <20201109091415.GC28918@lst.de>
- <bbf1f0df-85f3-5887-050e-beb2aad750f2@nvidia.com>
- <20201202101426.GC7597@lst.de>
-From: Logan Gunthorpe <logang@deltatee.com>
-Message-ID: <7229bb21-7bf7-4989-e7cf-210834190693@deltatee.com>
-Date: Wed, 2 Dec 2020 11:01:06 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+	by ml01.01.org (Postfix) with ESMTP id 739C5100EBB81;
+	Wed,  2 Dec 2020 12:52:25 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=43.226.33.19; helo=help.wwdjal.xyz; envelope-from=admin@help.wwdjal.xyz; receiver=<UNKNOWN> 
+Received: from help.wwdjal.xyz (unknown [43.226.33.19])
+	by ml01.01.org (Postfix) with ESMTP id 1DCAA100EBB7E
+	for <linux-nvdimm@lists.01.org>; Wed,  2 Dec 2020 12:52:17 -0800 (PST)
+Sender: admin@help.wwdjal.xyz
+Message-ID: <8BD70D0600F36818B101EC279E0D4E7A@qps>
+From: =?gb2312?B?QW1hem9u7pm/zaW1qWCl06W5o7oyMDIwMTIwMzcwMw==?= <admin@annazon.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?gb2312?B?QW1hem9updel6aWkpeCkztfUhNO4/NDC1E+2qKTyveKz/Q==?=
+	=?gb2312?B?pKSkv6S3pN6kt6S/o6G3rLrFo7oyNDc5NjQyNTM1?=
+	=?gb2312?B?MjM=?=
+Date: Thu, 3 Dec 2020 04:51:58 +0800
 MIME-Version: 1.0
-In-Reply-To: <20201202101426.GC7597@lst.de>
-Content-Language: en-US
-X-SA-Exim-Connect-IP: 24.64.145.4
-X-SA-Exim-Rcpt-To: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, dan.j.williams@intel.com, akpm@linux-foundation.org, shuah@kernel.org, bskeggs@redhat.com, yang.shi@linux.alibaba.com, kirill.shutemov@linux.intel.com, ziy@nvidia.com, bharata@linux.ibm.com, jgg@nvidia.com, apopple@nvidia.com, jhubbard@nvidia.com, jglisse@redhat.com, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, nouveau@lists.freedesktop.org, linux-mm@kvack.org, rcampbell@nvidia.com, hch@lst.de
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-	MYRULES_FREE,NICE_REPLY_A autolearn=no autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 3/6] mm: support THP migration to device private memory
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
-Message-ID-Hash: IZBV3OW3R25QBDCCUGB6ITZ4URJ7VCZY
-X-Message-ID-Hash: IZBV3OW3R25QBDCCUGB6ITZ4URJ7VCZY
-X-MailFrom: logang@deltatee.com
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
+Message-ID-Hash: BRCL5PXCEWES35G67SQGBUKSOIMQ43LS
+X-Message-ID-Hash: BRCL5PXCEWES35G67SQGBUKSOIMQ43LS
+X-MailFrom: admin@help.wwdjal.xyz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, nouveau@lists.freedesktop.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Jerome Glisse <jglisse@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Bharata B Rao <bharata@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Yang Shi <yang.shi@linux.alibaba.com>, Ben Skeggs <bskeggs@redhat.com>, Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IZBV3OW3R25QBDCCUGB6ITZ4URJ7VCZY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BRCL5PXCEWES35G67SQGBUKSOIMQ43LS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============0445788446400015971=="
+
+This is a multi-part message in MIME format.
+
+--===============0445788446400015971==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+DQoNCiANCg0Kpa+l7KW4pcOlyKWrqWClycfpiPOkzrj80MKhote3vNOkyqTJpMukxKStpN6kt6TG
+oaLS1M/CpM7K1u2YpPKktLRf1Uqkr6TApLWkpKGjpaKlq6WmpfOlyKW1qWCl06W5pKuk6UFtYXpv
+bsfpiPOk8rncwO2kuaTrpdqpYKW4pMuloqWvpbuluaS3pMahorj80MKkt6TGpK+kwKS1pKShoyAN
+Cg0KDQqk3qS/oaJBbWF6b26l16XppaSl4Mba6WekrL1Lwcukt6S/pOmhoiCkqryxpK6x459vwc8g
+pOQgpdel6aWkpeA/pdOlx6Wq0oq3xe59IKTKpMmkzqXXpemlpKXgu+GGVMzYteSkzqS0wPvTw6Ss
+pMekraTKpK+kyqTqpN6kuaGjKNb3pMql16XppaSl4LvhhlTM2LXkpPK0X9VKpLmk66TLpM8gpLOk
+waTppPKlr6XqpcOlr6S3pMakr6TApLWkpCmho9TnpOGky6Sqyta+QaStpM6zzKTopO2kt6SvpKru
+iqSk1sKkt6TepLkgDQoNCg0KvkC+QaS3pMal16XppaSl4LvhhlTM2LXkpPKkqphTpLek36SkpL+k
+wKStpL+kpIj2us+kz6GiobhBbWF6b26l16XppaSl4LvhhlTH6YjzpM653MDtobml2qlgpbiky6TG
+obi74YZU2Vm48aTyvkC+QaS5pOuhuSCk8qWvpeqlw6WvpLekxqSvpMCktaSkoaMgDQoNCg0KDQog
+ICANCiAgILvhhlTH6YjzpM653MDtpdqpYKW4pMe0X9VKICAgIA0KICANCg0KIA0KDQqkyqSqoaI3
+MpVy6WfS1MTapMuktLRf1UqkrKTKpKSI9rrPoaLVXKTLyeqkt9RVpLSktqSkpN6ku6TzoaKkqr/N
+mJSkzrCyyKukzp7poaKloqWrpaal86XIpM7A+9PD1sbP3qTypLWku6TGpKSkv6TApK2k3qS5pM6k
+x6Gi0+ik4aS0wcuz0KSvpMCktaSkoaMgDQoNCg0KpaKlq6WmpfOlyKTLtcflaKTORaXhqWCl66Wi
+pcml7KW5pMuloqWvpbuluaTHpK2kyqSkiPa6zw0KpKqGlqSkus+k76S7o7ogQW1hem9upauluaW/
+pd6pYKW1qWCl06W5oaMgDQoNCg0KDQpBbWF6b26ltalgpdOluaTypLTA+9PDpKSkv6TApK2hoqSi
+pOqkrKTIpKaktKS2pKSk3qS3pL+hoyANCg0KIA0KDQogIEFtYXpvbi5jby5qcCAgpauluaW/pd6p
+YKW1qWCl06W5ICAgDQogDQogIA==
+
+--===============0445788446400015971==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-On 2020-12-02 3:14 a.m., Christoph Hellwig wrote:>>
-MEMORY_DEVICE_PCI_P2PDMA:
->> Struct pages are created in pci_p2pdma_add_resource() and represent device
->> memory accessible by PCIe bar address space. Memory is allocated with
->> pci_alloc_p2pmem() based on a byte length but the gen_pool_alloc_owner()
->> call will allocate memory in a minimum of PAGE_SIZE units.
->> Reference counting is +1 per *allocation* on the pgmap->ref reference count.
->> Note that this is not +1 per page which is what put_page() expects. So
->> currently, a get_page()/put_page() works OK because the page reference count
->> only goes 1->2 and 2->1. If it went to zero, the pgmap->ref reference count
->> would be incorrect if the allocation size was greater than one page.
->>
->> I see pci_alloc_p2pmem() is called by nvme_alloc_sq_cmds() and
->> pci_p2pmem_alloc_sgl() to create a command queue and a struct scatterlist *.
->> Looks like sg_page(sg) returns the ZONE_DEVICE struct page of the scatterlist.
->> There are a huge number of places sg_page() is called so it is hard to tell
->> whether or not get_page()/put_page() is ever called on MEMORY_DEVICE_PCI_P2PDMA
->> pages.
-> 
-> Nothing should call get_page/put_page on them, as they are not treated
-> as refcountable memory.  More importantly nothing is allowed to keep
-> a reference longer than the time of the I/O.
-
-Yes, right now this is safe, as Christoph notes there are no places
-where these should be got/put.
-
-But eventually we'll need to change how pci_alloc_p2pmem() works to take
-references on the actual pages and allow freeing individual pages,
-similar to what you suggest. This is one of the issues Jason pointed out
-in my last RFC to try to pass these pages through GUP.
-
-Logan
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============0445788446400015971==--
