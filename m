@@ -1,67 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77A02CB7B9
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Dec 2020 09:50:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1DC2CBA3F
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Dec 2020 11:14:37 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F1104100EBBC6;
-	Wed,  2 Dec 2020 00:50:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9C858100EBBC7;
+	Wed,  2 Dec 2020 02:14:35 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=<UNKNOWN> 
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 21E22100EBBC5
-	for <linux-nvdimm@lists.01.org>; Wed,  2 Dec 2020 00:50:02 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id 7so2544906ejm.0
-        for <linux-nvdimm@lists.01.org>; Wed, 02 Dec 2020 00:50:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lGQxU4smDX12ciBTdGM0u5QnLY7pZDLRsh2d6WxdLj4=;
-        b=iR1FDnQLqeGi9h3b4ydgVKH+wqFxdW3ToSn0JbeVWoBc9csAWHNmVQGElBwr1oLvpz
-         asmJiulvDDNswro3F7DGewO0s6QqElhrUhY4bCwqMbkcXc8xhK8dykM4qrpsVVfefac3
-         afaC5haErcVCGTkM5YYzvUR6myyhwbho7qd4IE6XS03zJFNfU/9G+r2TFPMYyQyx3nvD
-         9Zx+o7ie1lJ9+fWPNDMBGFwpeOqpq0S1uQ8xVXNIWGBa8I00YjYe45yJQ0mXbh1p6I10
-         jcUnce/DjcatGjJirhK5cswDAbDle8Fi/sLe+J4RBNdehhrnCokv3oI8vBJe+Wk6mQr1
-         fa6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lGQxU4smDX12ciBTdGM0u5QnLY7pZDLRsh2d6WxdLj4=;
-        b=R2Pb/c10Yv2x0f7Tf0fPNoNmE374yoyN+DfQmiUOmgUsJIL9/vs/Kq7q47FKmmw/5B
-         E96reTTJo0dHqK2x93xJ2MxVkdFzkW0o/C273qtlYl3nijFTaHtMpR2HPgXMvC7vDq1c
-         unoh7W5i0ZQqWIzUychvqBJ7MVYENyc3zvx5QXGA2V2wfKhI1Z1pXJINC1SoRA43J1KF
-         gdLPhEDFgXTIZmOoqiJtpk2DfdrcRfHRhaLvk4LSfJ6hNe3k+Y3IQy2hh45HKd3CKYHa
-         667EpryGfiEYAnbNVkAUOW1aC2TZu2jIwcvH50YGkC3A2vSZaB7rjP1Z7ZG9UJvvCMMr
-         I9Lg==
-X-Gm-Message-State: AOAM530StFBOBT+o6xqqW+7coHoM6kDWVUVPEJFmv6eBy2UlSqGkvVQ0
-	XcBiSDlx9cSF8lT2M+6WZQncR8atMfukCA0bvzPAQg==
-X-Google-Smtp-Source: ABdhPJwhZcZHLPK/OTQxaZiCfcGmM8ZvtDS5GjOo3YE6HIDLyrPWM6ofYoH4ZaI5fu462fSc4leThNOXk1bFo/2g54g=
-X-Received: by 2002:a17:906:edb2:: with SMTP id sa18mr1273603ejb.264.1606899001140;
- Wed, 02 Dec 2020 00:50:01 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id D690D100EBBC6
+	for <linux-nvdimm@lists.01.org>; Wed,  2 Dec 2020 02:14:32 -0800 (PST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 2A56B67373; Wed,  2 Dec 2020 11:14:27 +0100 (CET)
+Date: Wed, 2 Dec 2020 11:14:26 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Ralph Campbell <rcampbell@nvidia.com>
+Subject: Re: [PATCH v3 3/6] mm: support THP migration to device private
+ memory
+Message-ID: <20201202101426.GC7597@lst.de>
+References: <20201106005147.20113-1-rcampbell@nvidia.com> <20201106005147.20113-4-rcampbell@nvidia.com> <20201106080322.GE31341@lst.de> <a7b8b90c-09b7-2009-0784-908b61f61ef2@nvidia.com> <20201109091415.GC28918@lst.de> <bbf1f0df-85f3-5887-050e-beb2aad750f2@nvidia.com>
 MIME-Version: 1.0
-References: <CAPcyv4isen63tJ7q02rvVuu_Rm6QPdT0Bu-P_HJ2zePMySFNNg@mail.gmail.com>
- <20201201022412.GG4327@casper.infradead.org> <CAPcyv4j7wtjOSg8vL5q0PPjWdaknY-PC7m9x-Q1R_YL5dhE+bQ@mail.gmail.com>
- <20201201204900.GC11935@casper.infradead.org> <CAPcyv4jNVroYmirzKw_=CsEixOEACdL3M1Wc4xjd_TFv3h+o8Q@mail.gmail.com>
- <20201202034308.GD11935@casper.infradead.org> <CAPcyv4jk2-6hRZAC+=-wuXwFyYK9uKiRX=pVc0Q0UeB9yc=y1w@mail.gmail.com>
-In-Reply-To: <CAPcyv4jk2-6hRZAC+=-wuXwFyYK9uKiRX=pVc0Q0UeB9yc=y1w@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 2 Dec 2020 00:49:57 -0800
-Message-ID: <CAPcyv4hxuzn9k-W_+iBsa=evL-FGijWyaxkyFLohUTqCCoJAig@mail.gmail.com>
-Subject: Re: mapcount corruption regression
-To: Matthew Wilcox <willy@infradead.org>
-Message-ID-Hash: NUTRFBHQSXAEATNUUX7IEGGFG62CJUQH
-X-Message-ID-Hash: NUTRFBHQSXAEATNUUX7IEGGFG62CJUQH
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Shutemov, Kirill" <kirill.shutemov@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Vlastimil Babka <vbabka@suse.cz>, Yi Zhang <yi.zhang@redhat.com>
+Content-Disposition: inline
+In-Reply-To: <bbf1f0df-85f3-5887-050e-beb2aad750f2@nvidia.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Message-ID-Hash: 3IM37YW4XF654JN7ONRXQ7KV7PNF5B7N
+X-Message-ID-Hash: 3IM37YW4XF654JN7ONRXQ7KV7PNF5B7N
+X-MailFrom: hch@lst.de
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org, nouveau@lists.freedesktop.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Jerome Glisse <jglisse@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Bharata B Rao <bharata@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Yang Shi <yang.shi@linux.alibaba.com>, Ben Skeggs <bskeggs@redhat.com>, Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Logan Gunthorpe <logang@deltatee.com>, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NUTRFBHQSXAEATNUUX7IEGGFG62CJUQH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3IM37YW4XF654JN7ONRXQ7KV7PNF5B7N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,100 +44,82 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 1, 2020 at 9:07 PM Dan Williams <dan.j.williams@intel.com> wrote:
+[adding a few of the usual suspects]
+
+On Wed, Nov 11, 2020 at 03:38:42PM -0800, Ralph Campbell wrote:
+> There are 4 types of ZONE_DEVICE struct pages:
+> MEMORY_DEVICE_PRIVATE, MEMORY_DEVICE_FS_DAX, MEMORY_DEVICE_GENERIC, and
+> MEMORY_DEVICE_PCI_P2PDMA.
 >
-> On Tue, Dec 1, 2020 at 7:43 PM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > On Tue, Dec 01, 2020 at 06:28:45PM -0800, Dan Williams wrote:
-> > > On Tue, Dec 1, 2020 at 12:49 PM Matthew Wilcox <willy@infradead.org> wrote:
-> > > >
-> > > > On Tue, Dec 01, 2020 at 12:42:39PM -0800, Dan Williams wrote:
-> > > > > On Mon, Nov 30, 2020 at 6:24 PM Matthew Wilcox <willy@infradead.org> wrote:
-> > > > > >
-> > > > > > On Mon, Nov 30, 2020 at 05:20:25PM -0800, Dan Williams wrote:
-> > > > > > > Kirill, Willy, compound page experts,
-> > > > > > >
-> > > > > > > I am seeking some debug ideas about the following splat:
-> > > > > > >
-> > > > > > > BUG: Bad page state in process lt-pmem-ns  pfn:121a12
-> > > > > > > page:0000000051ef73f7 refcount:0 mapcount:-1024
-> > > > > > > mapping:0000000000000000 index:0x0 pfn:0x121a12
-> > > > > >
-> > > > > > Mapcount of -1024 is the signature of:
-> > > > > >
-> > > > > > #define PG_guard        0x00000400
-> > > > >
-> > > > > Oh, thanks for that. I overlooked how mapcount is overloaded. Although
-> > > > > in v5.10-rc4 that value is:
-> > > > >
-> > > > > #define PG_table        0x00000400
-> > > >
-> > > > Ah, I was looking at -next, where Roman renumbered it.
-> > > >
-> > > > I know UML had a problem where it was not clearing PG_table, but you
-> > > > seem to be running on bare metal.  SuperH did too, but again, you're
-> > > > not using SuperH.
-> > > >
-> > > > > >
-> > > > > > (the bits are inverted, so this turns into 0xfffffbff which is reported
-> > > > > > as -1024)
-> > > > > >
-> > > > > > I assume you have debug_pagealloc enabled?
-> > > > >
-> > > > > Added it, but no extra spew. I'll dig a bit more on how PG_table is
-> > > > > not being cleared in this case.
-> > > >
-> > > > I only asked about debug_pagealloc because that sets PG_guard.  Since
-> > > > the problem is actually PG_table, it's not relevant.
-> > >
-> > > As a shot in the dark I reverted:
-> > >
-> > >     b2b29d6d0119 mm: account PMD tables like PTE tables
-> > >
-> > > ...and the test passed.
-> >
-> > That's not really surprising ... you're still freeing PMD tables without
-> > calling the destructor, which means that you're leaking ptlocks on
-> > configs that can't embed the ptlock in the struct page.
+> Currently, memremap_pages() allocates struct pages for a physical address range
+> with a page_ref_count(page) of one and increments the pgmap->ref per CPU
+> reference count by the number of pages created since each ZONE_DEVICE struct
+> page has a pointer to the pgmap.
 >
-> Ok, so potentially this new tracking is highlighting a long standing
-> bug that was previously silent. That would explain the ambiguous
-> bisect results.
+> The struct pages are not freed until memunmap_pages() is called which
+> calls put_page() which calls put_dev_pagemap() which releases a reference to
+> pgmap->ref. memunmap_pages() blocks waiting for pgmap->ref reference count
+> to be zero. As far as I can tell, the put_page() in memunmap_pages() has to
+> be the *last* put_page() (see MEMORY_DEVICE_PCI_P2PDMA).
+> My RFC [1] breaks this put_page() -> put_dev_pagemap() connection so that
+> the struct page reference count can go to zero and back to non-zero without
+> changing the pgmap->ref reference count.
 >
-> > I suppose it shows that you're leaking a PMD table rather than a PTE
-> > table, so that might help track it down.  Checking for PG_table in
-> > free_unref_page() and calling show_stack() will probably help more.
+> Q1: Is that safe? Is there some code that depends on put_page() dropping
+> the pgmap->ref reference count as part of memunmap_pages()?
+> My testing of [1] seems OK but I'm sure there are lots of cases I didn't test.
+
+It should be safe, but the audit you've done is important to make sure
+we do not miss anything important.
+
+> MEMORY_DEVICE_PCI_P2PDMA:
+> Struct pages are created in pci_p2pdma_add_resource() and represent device
+> memory accessible by PCIe bar address space. Memory is allocated with
+> pci_alloc_p2pmem() based on a byte length but the gen_pool_alloc_owner()
+> call will allocate memory in a minimum of PAGE_SIZE units.
+> Reference counting is +1 per *allocation* on the pgmap->ref reference count.
+> Note that this is not +1 per page which is what put_page() expects. So
+> currently, a get_page()/put_page() works OK because the page reference count
+> only goes 1->2 and 2->1. If it went to zero, the pgmap->ref reference count
+> would be incorrect if the allocation size was greater than one page.
 >
-> Will do.
+> I see pci_alloc_p2pmem() is called by nvme_alloc_sq_cmds() and
+> pci_p2pmem_alloc_sgl() to create a command queue and a struct scatterlist *.
+> Looks like sg_page(sg) returns the ZONE_DEVICE struct page of the scatterlist.
+> There are a huge number of places sg_page() is called so it is hard to tell
+> whether or not get_page()/put_page() is ever called on MEMORY_DEVICE_PCI_P2PDMA
+> pages.
 
-Thanks for the pointers Willy this fix below tests ok and looks
-correct to me given the history:
+Nothing should call get_page/put_page on them, as they are not treated
+as refcountable memory.  More importantly nothing is allowed to keep
+a reference longer than the time of the I/O.
 
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index dfd82f51ba66..7ed99314dcdf 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -829,6 +829,7 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
-        }
+> pci_p2pmem_virt_to_bus() will return the physical address and I guess
+> pfn_to_page(physaddr >> PAGE_SHIFT) could return the struct page.
+>
+> Since there is a clear allocation/free, pci_alloc_p2pmem() can probably be
+> modified to increment/decrement the MEMORY_DEVICE_PCI_P2PDMA struct page
+> reference count. Or maybe just leave it at one like it is now.
 
-        free_page((unsigned long)pmd_sv);
-+       pgtable_pmd_page_dtor(virt_to_page(pmd));
-        free_page((unsigned long)pmd);
+And yes, doing that is probably a sensible safe guard.
 
-        return 1;
+> MEMORY_DEVICE_FS_DAX:
+> Struct pages are created in pmem_attach_disk() and virtio_fs_setup_dax() with
+> an initial reference count of one.
+> The problem I see is that there are 3 states that are important:
+> a) memory is free and not allocated to any file (page_ref_count() == 0).
+> b) memory is allocated to a file and in the page cache (page_ref_count() == 1).
+> c) some gup() or I/O has a reference even after calling unmap_mapping_pages()
+>    (page_ref_count() > 1). ext4_break_layouts() basically waits until the
+>    page_ref_count() == 1 with put_page() calling wake_up_var(&page->_refcount)
+>    to wake up ext4_break_layouts().
+> The current code doesn't seem to distinguish (a) and (b). If we want to use
+> the 0->1 reference count to signal (c), then the page cache would have hold
+> entries with a page_ref_count() == 0 which doesn't match the general page cache
 
-In 2013 Kirill noticed that he missed a pmd page table free site:
-
-    c283610e44ec x86, mm: do not leak page->ptl for pmd page tables
-
-In 2018 Toshi added a new pmd page table free site without the destructor:
-
-    28ee90fe6048 x86/mm: implement free pmd/pte page interfaces
-
-In 2020 Willy adds PG_table accounting that flags the missing
-pgtable_pmd_page_dtor()
-
-Yi, I would appreciate a confirmation that the fix works for you.
+I think the sensible model here is to grab a reference when it is
+added to the page cache.  That is exactly how normal system memory pages
+work.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
