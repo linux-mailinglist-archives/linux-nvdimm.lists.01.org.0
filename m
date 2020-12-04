@@ -1,128 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58DF2CE90C
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Dec 2020 08:57:54 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDFE2CEE49
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Dec 2020 13:44:16 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0923F100ED4A7;
-	Thu,  3 Dec 2020 23:57:53 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=<UNKNOWN> 
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	by ml01.01.org (Postfix) with ESMTP id DEBEC100EBBCB;
+	Fri,  4 Dec 2020 04:44:14 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D34C5100ED48D
-	for <linux-nvdimm@lists.01.org>; Thu,  3 Dec 2020 23:57:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-	s=badeba3b8450; t=1607068659;
-	bh=oemqXrMm5ZA9WV2JKRp24uD1gUqLC5EAInCCwRnwXJ8=;
-	h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-	b=L2WucgpAoT79v6BnPT1xAsozyWDqdSYb/uLq+zBBpgkPUFZENClMZI/jelizHjyUu
-	 g8hi2P8YNlkPGprWZfce7LV+w8UW/WgOVEjfSkfQahvohu3ALaRHzsZQERTlkfr1+j
-	 y3WZOjtI9FyxZiZiM5WMklDCdO/c8EjDjQLBKZnw=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.139.88]) by mail.gmx.com (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MacSe-1kA6C907II-00c8Fi; Fri, 04
- Dec 2020 08:57:39 +0100
+	by ml01.01.org (Postfix) with ESMTPS id 11E6F100EC1C6
+	for <linux-nvdimm@lists.01.org>; Fri,  4 Dec 2020 04:44:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=AjuAPGM7G2kMm64bUja2RitkEu1uv3g7PuJ6UiGCjec=; b=OS2MyK0IhBUnWYTsQkbN6XDe+a
+	0RzYNlc12iI9h+rXilNNpWO0YuA0DMEXsNw5zXxeuMb5hODEavmO3BLe/dC0zNpt9L7IMIfHz0Tyl
+	rWmUHxvmiShEPwvMnxZ3XMKlNBSJ+kCEQsmkPNb7+lisRzXeBaOR2fHJXykN5paMkmKKc9AxMSC6W
+	/9lZVSSqDxcq6ArODbGnmHKB7KdbJmX7KDQjdxig0V4JuXy4U1z7RuD24XhjgVGFfi/7IY4W1CwXy
+	HGdY8vXvgnKkeI4XlZ+DMGG9+Vv71fRwMJJFuQs3IOSQI33bDaMpChMBRl3RPRkDXoKE3ROVoi7pg
+	uYuZGdIA==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1klARO-000262-Tg; Fri, 04 Dec 2020 12:44:02 +0000
+Date: Fri, 4 Dec 2020 12:44:02 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Helge Deller <deller@gmx.de>
 Subject: Re: PATCH] fs/dax: fix compile problem on parisc and mips
-To: Matthew Wilcox <willy@infradead.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>
+Message-ID: <20201204124402.GN11935@casper.infradead.org>
 References: <fb91b40d258414b0fdce2c380752e48daa6a70d6.camel@HansenPartnership.com>
  <20201204034843.GM11935@casper.infradead.org>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
- c2TFWAS8k6RLkk41ZUU8ENX8+qZx/Q==
-Message-ID: <0f0ac7be-0108-0648-a4db-2f37db1c8114@gmx.de>
-Date: Fri, 4 Dec 2020 08:57:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ <0f0ac7be-0108-0648-a4db-2f37db1c8114@gmx.de>
 MIME-Version: 1.0
-In-Reply-To: <20201204034843.GM11935@casper.infradead.org>
-Content-Language: en-US
-X-Provags-ID: V03:K1:/hxfIae2B21GojlBi9A18tnKp9h6lJC9yIvJMLSQUogtkGiVwGj
- u9I3sXY6GRWR0gyyfFGMNpHbOVlPkHzz3KbKhM2T+LBQmW/sLDAqs3lTkzABiHuS49Ri2my
- gUl3+Lry74+8zT6gjsogYI5qt5HwaRMZbN69itEZYSC2fL4tIqOj3/HaikSUq0z3tzWZt+c
- 5Cgzl9msZaeHCUAN9PnfA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:t8z+aoWvId4=:rJw790E0HUf1kGcVeJJKJW
- 7vcwAOaSQt9V9LOgOWPOsuCFHiuX8Fv9Nv1q60H8A+TDgApEQYKeHtl3DaTW/o86qT7bKqs9h
- 6J+3Wilz7cjaTW9gDafKlRMitgJOmprz4LN5a5AXC+XkDwoldPY3DY7RQ5CpXrLk0wSU4NTtl
- 5JBtajx8xZ+ojiAS9dHE9xXmDg/IUDd0TARaxUW3qEoHpCGu3VVH2N2VCcEmykya1yUjwCNnk
- kwA1Wrla25YknoCS/9REIcEiDUJoT+bTBvdchHpQZgOQcwaz9LDJDI6+O4eGAAFiF4QRpAI2c
- ELOpuM139QrtlYypb313cxlNigRDhbl4EuJeDQuyOeEeNq+K7kB71CMdIKOq/ggt3O16vsKlE
- CaMAIEBh/r9Fwg3KqlOXSSQqdFMqOCIgfzgbQChAgga6TFOKX1KTQd0h8cm1iULxamFsi4l7M
- CPVyd5cmLepf43BpOW04rGOiUzNbmSW/pO0ytYK2VFpGsRsluiyA6SAoOSv9gzLe+c+z/99xc
- Mq0BwyC9F8sZGbIw44aQuer5tqO6fllGrdvUw+W6RCwq29wEE1G6mucnoK1P+Lizx+RY0yElL
- SrUQYXGBU8FO/MlG/3SYYBSWWA+HKYyZ6Zx7Bwv+lvawE8fq/GY+e5AcgC+RuZq+WtziM4yJ8
- gnVtFUXlBUMg/cTbLftWVRApz9tXG8lmhzOp4YtyHMXOkxDCP6s8TThfwH+/uFJZOwWEWoAN3
- jsAQwgBSvdQL6fZVyT2/tu+AoMW72vTjp9HNlZCm3dbInmJGA6wBnUtIiHMDJ1nRHmoV4iQgU
- JohbHa4rIqrP1LEgMyyBHNvH4JDmv8T3g91UjIXPWcfPsKgiv/IBqgf181if5hWUlUhs2BRVR
- w2nbT8SM8spO8hQ168iQ==
-Message-ID-Hash: WLSGKTAULTNZMX5PUG2Q3SGOBJA5MYI6
-X-Message-ID-Hash: WLSGKTAULTNZMX5PUG2Q3SGOBJA5MYI6
-X-MailFrom: deller@gmx.de
+Content-Disposition: inline
+In-Reply-To: <0f0ac7be-0108-0648-a4db-2f37db1c8114@gmx.de>
+Message-ID-Hash: PNJR3D65KMOMGY42YYCVGNFR4IOKB64Y
+X-Message-ID-Hash: PNJR3D65KMOMGY42YYCVGNFR4IOKB64Y
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>, Parisc List <linux-parisc@vger.kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
+CC: James Bottomley <James.Bottomley@hansenpartnership.com>, Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>, Parisc List <linux-parisc@vger.kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WLSGKTAULTNZMX5PUG2Q3SGOBJA5MYI6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PNJR3D65KMOMGY42YYCVGNFR4IOKB64Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -131,29 +54,60 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 12/4/20 4:48 AM, Matthew Wilcox wrote:
-> On Thu, Dec 03, 2020 at 04:33:10PM -0800, James Bottomley wrote:
->> These platforms define PMD_ORDER in asm/pgtable.h
->
-> I think that's the real problem, though.
->
-> #define PGD_ORDER       1 /* Number of pages per pgd */
-> #define PMD_ORDER       1 /* Number of pages per pmd */
-> #define PGD_ALLOC_ORDER (2 + 1) /* first pgd contains pmd */
-> #else
-> #define PGD_ORDER       1 /* Number of pages per pgd */
-> #define PGD_ALLOC_ORDER (PGD_ORDER + 1)
->
-> That should clearly be PMD_ALLOC_ORDER, not PMD_ORDER.  Or even
-> PAGES_PER_PMD like the comment calls it, because I really think
-> that doing an order-3 (8 pages) allocation for the PGD is wrong.
+On Fri, Dec 04, 2020 at 08:57:37AM +0100, Helge Deller wrote:
+> On 12/4/20 4:48 AM, Matthew Wilcox wrote:
+> > On Thu, Dec 03, 2020 at 04:33:10PM -0800, James Bottomley wrote:
+> >> These platforms define PMD_ORDER in asm/pgtable.h
+> >
+> > I think that's the real problem, though.
+> >
+> > #define PGD_ORDER       1 /* Number of pages per pgd */
+> > #define PMD_ORDER       1 /* Number of pages per pmd */
+> > #define PGD_ALLOC_ORDER (2 + 1) /* first pgd contains pmd */
+> > #else
+> > #define PGD_ORDER       1 /* Number of pages per pgd */
+> > #define PGD_ALLOC_ORDER (PGD_ORDER + 1)
+> >
+> > That should clearly be PMD_ALLOC_ORDER, not PMD_ORDER.  Or even
+> > PAGES_PER_PMD like the comment calls it, because I really think
+> > that doing an order-3 (8 pages) allocation for the PGD is wrong.
+> 
+> We need a spinlock to protect parallel accesses to the PGD,
+> search for pgd_spinlock().
+> This spinlock is stored behind the memory used for the PGD, which
+> is why we allocate more memory (and waste 3 pages).
 
-We need a spinlock to protect parallel accesses to the PGD,
-search for pgd_spinlock().
-This spinlock is stored behind the memory used for the PGD, which
-is why we allocate more memory (and waste 3 pages).
+There are better places to store it than that!  For example, storing it
+in the struct page, like many architectures do for split ptlocks.
+You'll have to skip the _pt_pad_1 so it doesn't get confused with
+being a compound_head, but soemthing like this:
 
-Helge
+		struct {	/* PA-RISC PGD */
+			unsigned long _pa_pad_1;	/* compound_head */
+#if ALLOC_SPLIT_PA_PTLOCKS
+			spinlock_t *pa_ptl;
+#else
+			spinlock_t pa_ptl;
+#endif
+		};
+
+inside struct page (linux/mm_types.h) should do the trick.  You'll
+still need to allocate them separately if various debugging options
+are enabled (see the ALLOC_SPLIT_PTLOCKS for details), but usually
+this will save you a lot of memory.
+
+You could also fill in pt_mm like x86 does for its pgds, and then use
+mm->page_table_lock to protect whatever the PGD lock currently protects.
+Maybe page_table_lock is sometimes held when calling ptep_set_wrprotect()
+and sometimes isn't; then this wouldn't work.
+
+Also, could you fix the comments?  They don't match the code:
+
+ #define PGD_ORDER      1 /* Number of pages per pgd */
+
+should be
+
+ #define PGD_ALLOC_ORDER      1 /* 2 pages (8KiB) per pgd */
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
