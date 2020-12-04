@@ -2,46 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5452CE2CC
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Dec 2020 00:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6932CE477
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Dec 2020 01:33:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1ECCA100EC1E3;
-	Thu,  3 Dec 2020 15:39:22 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 9AB3E100EC1F0;
+	Thu,  3 Dec 2020 16:33:15 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:fcd0:100:8a00::2; helo=bedivere.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN> 
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 135C1100EC1E1
-	for <linux-nvdimm@lists.01.org>; Thu,  3 Dec 2020 15:39:19 -0800 (PST)
-Date: Thu, 3 Dec 2020 15:39:16 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1607038759;
-	bh=zDBJmA1njD9c5R9U97XtgqdT27wAv2IVLfk1nPS0FJM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mS6E8T6sd+XV4qfkYaIC7AzHKw/6zG99ExlvCv9CM2GiRif+p2YkZqPRApdyQ8W6k
-	 4GQb78gRhspuJjIgU7TpCoScNXnKT9kg7Cb/IBT70e6ZKsRZ74kZc1jLZ9uATm4O+j
-	 kPi+AoMzreC1GgZnwmGefOwVW3qrUNdYbrXPS6vE=
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v14 09/10] arch, mm: wire up memfd_secret system call
- were relevant
-Message-Id: <20201203153916.91f0f80dcb8a0fa81fc341fa@linux-foundation.org>
-In-Reply-To: <20201203062949.5484-10-rppt@kernel.org>
-References: <20201203062949.5484-1-rppt@kernel.org>
-	<20201203062949.5484-10-rppt@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Message-ID-Hash: ZQGUJTAMHHTLC2GSNVI3OK7GT37HPOSB
-X-Message-ID-Hash: ZQGUJTAMHHTLC2GSNVI3OK7GT37HPOSB
-X-MailFrom: akpm@linux-foundation.org
+	by ml01.01.org (Postfix) with ESMTPS id B0EC1100EC1EF
+	for <linux-nvdimm@lists.01.org>; Thu,  3 Dec 2020 16:33:12 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 71BAD1280B16;
+	Thu,  3 Dec 2020 16:33:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1607041991;
+	bh=hJcWfWJUTBo7/PTPqGVoNCucwByYpr0pl4ltez5onkk=;
+	h=Message-ID:Subject:From:To:Date:From;
+	b=CSFgW4d1X70kdF2brsNqqLXcUxS4rkPpXl0fG35lGg8Er8RLuGkNR7f53VpM6STF+
+	 CaBI3xpSYkQpwyvzfojTpkdXl5UFu01ZmFqPYjvYenKuZHPHXr/6MojFZYz/jZ2Wqj
+	 tu6JMqZUf8Ir49z9n0V+JKoQTR3PB/fQ7Xgk7sK4=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Ea-2EOobf9qW; Thu,  3 Dec 2020 16:33:11 -0800 (PST)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::527])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 090011280AF1;
+	Thu,  3 Dec 2020 16:33:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1607041991;
+	bh=hJcWfWJUTBo7/PTPqGVoNCucwByYpr0pl4ltez5onkk=;
+	h=Message-ID:Subject:From:To:Date:From;
+	b=CSFgW4d1X70kdF2brsNqqLXcUxS4rkPpXl0fG35lGg8Er8RLuGkNR7f53VpM6STF+
+	 CaBI3xpSYkQpwyvzfojTpkdXl5UFu01ZmFqPYjvYenKuZHPHXr/6MojFZYz/jZ2Wqj
+	 tu6JMqZUf8Ir49z9n0V+JKoQTR3PB/fQ7Xgk7sK4=
+Message-ID: <fb91b40d258414b0fdce2c380752e48daa6a70d6.camel@HansenPartnership.com>
+Subject: PATCH] fs/dax: fix compile problem on parisc and mips
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>, Parisc List
+	 <linux-parisc@vger.kernel.org>
+Date: Thu, 03 Dec 2020 16:33:10 -0800
+User-Agent: Evolution 3.34.4 
+MIME-Version: 1.0
+Message-ID-Hash: ZRHCETVOZCBQBAMCX5NDC6KNJWUEXE35
+X-Message-ID-Hash: ZRHCETVOZCBQBAMCX5NDC6KNJWUEXE35
+X-MailFrom: James.Bottomley@HansenPartnership.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <wil
- l@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Palmer Dabbelt <palmerdabbelt@google.com>
+CC: Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZQGUJTAMHHTLC2GSNVI3OK7GT37HPOSB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZRHCETVOZCBQBAMCX5NDC6KNJWUEXE35/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,28 +64,87 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu,  3 Dec 2020 08:29:48 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+These platforms define PMD_ORDER in asm/pgtable.h
 
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Wire up memfd_secret system call on architectures that define
-> ARCH_HAS_SET_DIRECT_MAP, namely arm64, risc-v and x86.
-> 
-> ...
->
-> --- a/include/uapi/asm-generic/unistd.h
-> +++ b/include/uapi/asm-generic/unistd.h
-> @@ -861,9 +861,13 @@ __SYSCALL(__NR_faccessat2, sys_faccessat2)
->  __SYSCALL(__NR_process_madvise, sys_process_madvise)
->  #define __NR_watch_mount 441
->  __SYSCALL(__NR_watch_mount, sys_watch_mount)
-> +#ifdef __ARCH_WANT_MEMFD_SECRET
-> +#define __NR_memfd_secret 442
-> +__SYSCALL(__NR_memfd_secret, sys_memfd_secret)
-> +#endif
+This means that as soon as dax.c included asm/pgtable.h in commit
+11cf9d863dcb ("fs/dax: Deposit pagetable even when installing zero
+page") we clash with PMD_ORDER introduced by cfc93c6c6c96 ("dax:
+Convert dax_insert_pfn_mkwrite to XArray") and we get this problem:
 
-Why do we add the ifdef?  Can't we simply define the syscall on all
-architectures and let sys_ni do its thing?
+/home/jejb/git/linux-build/fs/dax.c:53: warning: "PMD_ORDER" redefined
+   53 | #define PMD_ORDER (PMD_SHIFT - PAGE_SHIFT)
+      |
+In file included from /home/jejb/git/linux-build/include/linux/pgtable.h:6,
+                 from /home/jejb/git/linux-build/include/linux/mm.h:33,
+                 from /home/jejb/git/linux-build/include/linux/bvec.h:14,
+                 from /home/jejb/git/linux-build/include/linux/blk_types.h:10,
+                 from /home/jejb/git/linux-build/include/linux/genhd.h:19,
+                 from /home/jejb/git/linux-build/include/linux/blkdev.h:8,
+                 from /home/jejb/git/linux-build/fs/dax.c:10:
+/home/jejb/git/linux-build/arch/parisc/include/asm/pgtable.h:124: note: this is the location of the previous definition
+  124 | #define PMD_ORDER 1 /* Number of pages per pmd */
+      |
+make[2]: *** Deleting file 'fs/dax.o'
+
+Fix by renaming dax's PMD_ORDER to DAX_PMD_ORDER
+
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+---
+ fs/dax.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/fs/dax.c b/fs/dax.c
+index 5b47834f2e1b..4d3b0db5c321 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -50,7 +50,7 @@ static inline unsigned int pe_order(enum page_entry_size pe_size)
+ #define PG_PMD_NR	(PMD_SIZE >> PAGE_SHIFT)
+ 
+ /* The order of a PMD entry */
+-#define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
++#define DAX_PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
+ 
+ static wait_queue_head_t wait_table[DAX_WAIT_TABLE_ENTRIES];
+ 
+@@ -98,7 +98,7 @@ static bool dax_is_locked(void *entry)
+ static unsigned int dax_entry_order(void *entry)
+ {
+ 	if (xa_to_value(entry) & DAX_PMD)
+-		return PMD_ORDER;
++		return DAX_PMD_ORDER;
+ 	return 0;
+ }
+ 
+@@ -1471,7 +1471,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct address_space *mapping = vma->vm_file->f_mapping;
+-	XA_STATE_ORDER(xas, &mapping->i_pages, vmf->pgoff, PMD_ORDER);
++	XA_STATE_ORDER(xas, &mapping->i_pages, vmf->pgoff, DAX_PMD_ORDER);
+ 	unsigned long pmd_addr = vmf->address & PMD_MASK;
+ 	bool write = vmf->flags & FAULT_FLAG_WRITE;
+ 	bool sync;
+@@ -1530,7 +1530,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ 	 * entry is already in the array, for instance), it will return
+ 	 * VM_FAULT_FALLBACK.
+ 	 */
+-	entry = grab_mapping_entry(&xas, mapping, PMD_ORDER);
++	entry = grab_mapping_entry(&xas, mapping, DAX_PMD_ORDER);
+ 	if (xa_is_internal(entry)) {
+ 		result = xa_to_internal(entry);
+ 		goto fallback;
+@@ -1696,7 +1696,7 @@ dax_insert_pfn_mkwrite(struct vm_fault *vmf, pfn_t pfn, unsigned int order)
+ 	if (order == 0)
+ 		ret = vmf_insert_mixed_mkwrite(vmf->vma, vmf->address, pfn);
+ #ifdef CONFIG_FS_DAX_PMD
+-	else if (order == PMD_ORDER)
++	else if (order == DAX_PMD_ORDER)
+ 		ret = vmf_insert_pfn_pmd(vmf, pfn, FAULT_FLAG_WRITE);
+ #endif
+ 	else
+-- 
+2.29.2
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
