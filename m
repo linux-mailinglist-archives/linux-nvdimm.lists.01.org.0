@@ -1,129 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030D82CFB2C
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  5 Dec 2020 12:46:06 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200672CFB2D
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  5 Dec 2020 12:48:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D7AD6100EBBCE;
-	Sat,  5 Dec 2020 03:46:04 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=41.33.103.117; helo=mail.matinal-eg.com; envelope-from=kailashsingh@teco.co.in; receiver=<UNKNOWN> 
-Received: from mail.matinal-eg.com (unknown [41.33.103.117])
-	(using TLSv1.1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5BCDB100EBBC3;
+	Sat,  5 Dec 2020 03:48:01 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=zhangqilong3@huawei.com; receiver=<UNKNOWN> 
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8279C100EBBC3;
-	Sat,  5 Dec 2020 03:46:02 -0800 (PST)
-Message-ID: <2594145765-3836@mail.matinal-eg.com>
-X-Footer: bWF0aW5hbC1lZy5jb20=
-Received: from User1 ([193.56.28.239])
-	(authenticated user admin@matinal-eg.com)
-	by mail.matinal-eg.com (Kerio Connect 9.2.0) with ESMTPA;
-	Sat, 5 Dec 2020 03:45:47 -0800
-From: "Be Lee Yan"<kailashsingh@teco.co.in>
-Subject: Supply Order
-Date: Sat, 5 Dec 2020 03:45:55 -0800
+	by ml01.01.org (Postfix) with ESMTPS id A35AD100EBBC1
+	for <linux-nvdimm@lists.01.org>; Sat,  5 Dec 2020 03:47:54 -0800 (PST)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Cp78x6dXPz78jB
+	for <linux-nvdimm@lists.01.org>; Sat,  5 Dec 2020 19:47:13 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Sat, 5 Dec 2020
+ 19:47:40 +0800
+From: Zhang Qilong <zhangqilong3@huawei.com>
+To: <dan.j.williams@intel.com>, <dave.jiang@intel.com>, <ira.weiny@intel.com>
+Subject: [PATCH] libnvdimm/label: Return -ENXIO for no slot in __blk_label_update
+Date: Sat, 5 Dec 2020 19:50:56 +0800
+Message-ID: <20201205115056.2076523-1-zhangqilong3@huawei.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID-Hash: IEJYUPU66HMME3YFICREA7GEOMWH2HOL
-X-Message-ID-Hash: IEJYUPU66HMME3YFICREA7GEOMWH2HOL
-X-MailFrom: kailashsingh@teco.co.in
+X-Originating-IP: [10.175.127.227]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: 63LIJ474BVDWYNP3VCK4N6YSHNRUUUBH
+X-Message-ID-Hash: 63LIJ474BVDWYNP3VCK4N6YSHNRUUUBH
+X-MailFrom: zhangqilong3@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: purchase.donqbugroup@aol.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IEJYUPU66HMME3YFICREA7GEOMWH2HOL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/63LIJ474BVDWYNP3VCK4N6YSHNRUUUBH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4626225580859807882=="
-
---===============4626225580859807882==
-Content-Type: text/html;
-	charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY bgcolor=#FFFFFF leftmargin=5 topmargin=5 rightmargin=5 bottommargin=5>
-<FONT size=2 color=#000000 face="Arial">
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Hello!</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic"> </FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">We wish to place a new Order.</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Can you have someone in sales contact us in return mail.</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Kindly advise your ETD if order is sent to you early next week. I will have to forward our PO and specifications immediately to place a trial order.please </FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic"> </FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic"> Awaiting your feedback to proceed.</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic"> </FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Best Regards,</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">B Lee Yan,</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Sales Director</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Head Office</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Address: Centreville Asterium Bldg. D, 372, Hangang-daero,</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Yongsan-gu, Seoul, Republic of Korea</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">Tel: + 82-2-438-4213</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">&nbsp;</FONT></DIV>
-<DIV>
-<FONT size=3 color=#000080 face="Arial Baltic">https://www.dbgroup.co.kr/</FONT></DIV>
-</FONT>
-</BODY></HTML>
-
---===============4626225580859807882==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Forget to set error code when nd_label_alloc_slot failed, and we
+add it to avoid overwritten error code.
+
+Fixes: 0ba1c634892b3 ("libnvdimm: write blk label set")
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+---
+ drivers/nvdimm/label.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 47a4828b8b31..05c1f186a6be 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -999,8 +999,10 @@ static int __blk_label_update(struct nd_region *nd_region,
+ 		if (is_old_resource(res, old_res_list, old_num_resources))
+ 			continue; /* carry-over */
+ 		slot = nd_label_alloc_slot(ndd);
+-		if (slot == UINT_MAX)
++		if (slot == UINT_MAX) {
++			rc = -ENXIO;
+ 			goto abort;
++		}
+ 		dev_dbg(ndd->dev, "allocated: %d\n", slot);
+ 
+ 		nd_label = to_label(ndd, slot);
+-- 
+2.25.4
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============4626225580859807882==--
