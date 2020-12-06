@@ -1,43 +1,91 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200672CFB2D
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  5 Dec 2020 12:48:03 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53B02D035D
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  6 Dec 2020 12:30:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5BCDB100EBBC3;
-	Sat,  5 Dec 2020 03:48:01 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=zhangqilong3@huawei.com; receiver=<UNKNOWN> 
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	by ml01.01.org (Postfix) with ESMTP id CDDED100EC1CC;
+	Sun,  6 Dec 2020 03:30:17 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A35AD100EBBC1
-	for <linux-nvdimm@lists.01.org>; Sat,  5 Dec 2020 03:47:54 -0800 (PST)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Cp78x6dXPz78jB
-	for <linux-nvdimm@lists.01.org>; Sat,  5 Dec 2020 19:47:13 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Sat, 5 Dec 2020
- 19:47:40 +0800
-From: Zhang Qilong <zhangqilong3@huawei.com>
-To: <dan.j.williams@intel.com>, <dave.jiang@intel.com>, <ira.weiny@intel.com>
-Subject: [PATCH] libnvdimm/label: Return -ENXIO for no slot in __blk_label_update
-Date: Sat, 5 Dec 2020 19:50:56 +0800
-Message-ID: <20201205115056.2076523-1-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.25.4
+	by ml01.01.org (Postfix) with ESMTPS id B5188100ED49E
+	for <linux-nvdimm@lists.01.org>; Sun,  6 Dec 2020 03:30:15 -0800 (PST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0B6B2ZE7100701;
+	Sun, 6 Dec 2020 06:29:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=sTdeJYkg7s4jW58KjlXSO7YK0Uj/BAuS89bh+WjYExs=;
+ b=Rp75CbhEeYCx5VHn/zmMQm/6S+m39d3Usre2min80jBkGcuIUAFLlD1U/x+1W8OWJjzt
+ fIMqDyMisdQYl1mM9UyniGF2F3wozFBhPxC8o45xaq4jdyxerJ/476m3OKpNWyqX75Ot
+ ZzHIhjFleohS0jG/BTw5yXvXzCYd99hKPpieya0mzuihgbkU/MAWYg+oHQUWV/VR679y
+ Kd89sxaBExZT7E3BQljYIuSDAN6L4oWyttmbEubp0O3I6HjC9jWAiHlf70CcFuUqDoNe
+ FV1XlQNsQrd7V/hGnlvfLCY1r7+QZ+WUan1OAetcBZbmpiv0Bnk27tfchh/UmmiiMr/D dw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 358rby5k22-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 06 Dec 2020 06:29:52 -0500
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0B6BP7Pa153868;
+	Sun, 6 Dec 2020 06:29:52 -0500
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 358rby5k1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 06 Dec 2020 06:29:51 -0500
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B6BRVQk019021;
+	Sun, 6 Dec 2020 11:29:50 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03fra.de.ibm.com with ESMTP id 3581u8hkbt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 06 Dec 2020 11:29:49 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0B6BSWTZ56295740
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 6 Dec 2020 11:28:32 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A4D9A404D;
+	Sun,  6 Dec 2020 11:28:32 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C1635A4040;
+	Sun,  6 Dec 2020 11:28:28 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.145.50.18])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Sun,  6 Dec 2020 11:28:28 +0000 (GMT)
+Date: Sun, 6 Dec 2020 13:28:26 +0200
+From: Mike Rapoport <rppt@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v14 04/10] set_memory: allow querying whether
+ set_direct_map_*() is actually enabled
+Message-ID: <20201206112826.GB123287@linux.ibm.com>
+References: <20201203062949.5484-1-rppt@kernel.org>
+ <20201203062949.5484-5-rppt@kernel.org>
+ <20201203153610.724f40f26ca1620247bc6b09@linux-foundation.org>
 MIME-Version: 1.0
-X-Originating-IP: [10.175.127.227]
-X-CFilter-Loop: Reflected
-Message-ID-Hash: 63LIJ474BVDWYNP3VCK4N6YSHNRUUUBH
-X-Message-ID-Hash: 63LIJ474BVDWYNP3VCK4N6YSHNRUUUBH
-X-MailFrom: zhangqilong3@huawei.com
+Content-Disposition: inline
+In-Reply-To: <20201203153610.724f40f26ca1620247bc6b09@linux-foundation.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
+ definitions=2020-12-06_06:2020-12-04,2020-12-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=1
+ impostorscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 clxscore=1015
+ phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012060066
+Message-ID-Hash: DIMQQN2TUXZRV36XLN6UCCWY3FDOSKW6
+X-Message-ID-Hash: DIMQQN2TUXZRV36XLN6UCCWY3FDOSKW6
+X-MailFrom: rppt@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org
+CC: Mike Rapoport <rppt@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@k
+ ernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/63LIJ474BVDWYNP3VCK4N6YSHNRUUUBH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DIMQQN2TUXZRV36XLN6UCCWY3FDOSKW6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -46,33 +94,52 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Forget to set error code when nd_label_alloc_slot failed, and we
-add it to avoid overwritten error code.
+On Thu, Dec 03, 2020 at 03:36:10PM -0800, Andrew Morton wrote:
+> On Thu,  3 Dec 2020 08:29:43 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > On arm64, set_direct_map_*() functions may return 0 without actually
+> > changing the linear map. This behaviour can be controlled using kernel
+> > parameters, so we need a way to determine at runtime whether calls to
+> > set_direct_map_invalid_noflush() and set_direct_map_default_noflush() have
+> > any effect.
+> > 
+> > Extend set_memory API with can_set_direct_map() function that allows
+> > checking if calling set_direct_map_*() will actually change the page table,
+> > replace several occurrences of open coded checks in arm64 with the new
+> > function and provide a generic stub for architectures that always modify
+> > page tables upon calls to set_direct_map APIs.
+> > 
+> > ...
+> >
+> > --- a/arch/arm64/mm/mmu.c
+> > +++ b/arch/arm64/mm/mmu.c
+> > @@ -22,6 +22,7 @@
+> >  #include <linux/io.h>
+> >  #include <linux/mm.h>
+> >  #include <linux/vmalloc.h>
+> > +#include <linux/set_memory.h>
+> >  
+> >  #include <asm/barrier.h>
+> >  #include <asm/cputype.h>
+> > @@ -477,7 +478,7 @@ static void __init map_mem(pgd_t *pgdp)
+> >  	int flags = 0;
+> >  	u64 i;
+> >  
+> > -	if (rodata_full || debug_pagealloc_enabled())
+> > +	if (can_set_direct_map())
+> >  		flags = NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
+> 
+> Changes in -next turned this into
+> 
+> 	if (can_set_direct_map() || crash_mem_map)
 
-Fixes: 0ba1c634892b3 ("libnvdimm: write blk label set")
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- drivers/nvdimm/label.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Thanks for updating!
 
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 47a4828b8b31..05c1f186a6be 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -999,8 +999,10 @@ static int __blk_label_update(struct nd_region *nd_region,
- 		if (is_old_resource(res, old_res_list, old_num_resources))
- 			continue; /* carry-over */
- 		slot = nd_label_alloc_slot(ndd);
--		if (slot == UINT_MAX)
-+		if (slot == UINT_MAX) {
-+			rc = -ENXIO;
- 			goto abort;
-+		}
- 		dev_dbg(ndd->dev, "allocated: %d\n", slot);
- 
- 		nd_label = to_label(ndd, slot);
 -- 
-2.25.4
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
