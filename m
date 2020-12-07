@@ -1,35 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D965A2D1A46
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  7 Dec 2020 21:10:38 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655CA2D1B4A
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  7 Dec 2020 21:52:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 619F6100EBB8D;
-	Mon,  7 Dec 2020 12:10:37 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=202.173.110.59; helo=user202173110059.ucatv.ne.jp; envelope-from=palmfph@m0093317.ppops.net; receiver=<UNKNOWN> 
-Received: from user202173110059.ucatv.ne.jp (user202173110059.ucatv.ne.jp [202.173.110.59])
-	by ml01.01.org (Postfix) with ESMTP id 2451E100EBB92;
-	Mon,  7 Dec 2020 12:10:34 -0800 (PST)
-Received: from KYQEPUDA.m0093317.ppops.net (KYQEPUDA.m0093317.ppops.net [88.168.26.210])
-        by KYQEPUDA.m0093317.ppops.net with ESMTP
- id vMe6EqxlevYJv.264; Tue, 8 Dec 2020 05:10:33 +0900
+	by ml01.01.org (Postfix) with ESMTP id 9861B100EBB8D;
+	Mon,  7 Dec 2020 12:52:24 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=85.35.32.245; helo=host-85-35-32-245.business.telecomitalia.it; envelope-from=unsafexk48@r3.us-east-1.aws.in.socketlabs.com; receiver=<UNKNOWN> 
+Received: from host-85-35-32-245.business.telecomitalia.it (host-85-35-32-245.business.telecomitalia.it [85.35.32.245])
+	by ml01.01.org (Postfix) with ESMTP id 00F49100EBB82
+	for <linux-nvdimm@lists.01.org>; Mon,  7 Dec 2020 12:52:20 -0800 (PST)
+Received: from [53.135.194.131] (account unsafexk48@r3.us-east-1.aws.in.socketlabs.com HELO EIXIBID.r3.us-east-1.aws.in.socketlabs.com)
+	by host-85-35-32-245.business.telecomitalia.it (Exim 4.89)
+	with ESMTPA id BE3FD093E2 for linux-nvdimm@lists.01.org; Mon, 7 Dec 2020 21:52:20 +0100
+Subject: New Invoice is Ready to View
+From: Paychex <NoReplyNecessary@paychex.com>
 To: linux-nvdimm@lists.01.org
-Subject: Paychex Online Reports System Notification
-Message-ID: <e8988b929e05638ac1b@m0093317.ppops.net>
-Date: Tue, 8 Dec 2020 05:10:33 +0900
-From: <mystaffingprobilling@paychex.com>
 MIME-Version: 1.0
-Message-ID-Hash: JTRCQLLZYMPMAC6W6FK7ATAXY5TRXC2M
-X-Message-ID-Hash: JTRCQLLZYMPMAC6W6FK7ATAXY5TRXC2M
-X-MailFrom: palmfph@m0093317.ppops.net
+Message-ID: <179659.24918.gz@cyjpw.hpkvdrkrq.us>
+X-Priority: 3
+Date: Mon, 7 Dec 2020 21:52:20 +0100
+Message-ID-Hash: UKR73DVTDVNDYPIENLFK5Y4NKD2GQ6WV
+X-Message-ID-Hash: UKR73DVTDVNDYPIENLFK5Y4NKD2GQ6WV
+X-MailFrom: unsafexk48@r3.us-east-1.aws.in.socketlabs.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JTRCQLLZYMPMAC6W6FK7ATAXY5TRXC2M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UKR73DVTDVNDYPIENLFK5Y4NKD2GQ6WV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
