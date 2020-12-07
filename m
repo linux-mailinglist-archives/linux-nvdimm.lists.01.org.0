@@ -2,106 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3BE2D1776
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  7 Dec 2020 18:25:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1062D1891
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  7 Dec 2020 19:33:31 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8896F100EBB82;
-	Mon,  7 Dec 2020 09:25:06 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=185.32.126.140; helo=syntanindia.com; envelope-from=rekmeyfalenop@netzero.net; receiver=<UNKNOWN> 
-Received: from syntanindia.com (unknown [185.32.126.140])
-	by ml01.01.org (Postfix) with ESMTP id 8A9A4100EBB84
-	for <linux-nvdimm@lists.01.org>; Mon,  7 Dec 2020 09:25:03 -0800 (PST)
-To: linux-nvdimm@lists.01.org
-Subject: pro drone
-Message-ID: <fee517095ade3dd56d22df69c897f37f@electronicsforu.com>
-Date: Mon, 07 Dec 2020 11:10:22 +0100
-From: "Jerry Foster" <rekmeayalenop@netzero.net>
-MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: WKYMXOL35IQ4B3GXAXHY4HDRKN22OK2H
-X-Message-ID-Hash: WKYMXOL35IQ4B3GXAXHY4HDRKN22OK2H
-X-MailFrom: rekmeyfalenop@netzero.net
+	by ml01.01.org (Postfix) with ESMTP id 60A15100EBB86;
+	Mon,  7 Dec 2020 10:33:29 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=160.251.3.105; helo=ayacm.com; envelope-from=jc@ayacm.com; receiver=<UNKNOWN> 
+Received: from ayacm.com (v160-251-3-105.busz.static.cnode.io [160.251.3.105])
+	by ml01.01.org (Postfix) with ESMTP id 4C434100EBB85
+	for <linux-nvdimm@lists.01.org>; Mon,  7 Dec 2020 10:33:27 -0800 (PST)
+Message-ID: <5F886AC2E28C200C3F01305ADDB183E0@ayacm.com>
+From: =?utf-8?B?44CQ77y177yj77yz44Kr44O844OJ44CR5qCq5byP5Lya56S+?= <account_post@www.ucscard.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?77yc6YeN6KaB77ye44CQVUNT44Kr44O844OJ44CR44GU5Yip55So56K66KqN44Gu44GK6aGY?=
+	=?utf-8?B?44GE?=
+Date: Tue, 8 Dec 2020 03:33:14 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: NBO3JZZAV6QPMELAJEDCMSQK4G2DUQIG
+X-Message-ID-Hash: NBO3JZZAV6QPMELAJEDCMSQK4G2DUQIG
+X-MailFrom: jc@ayacm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jerry@rcdrone.xyz
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WKYMXOL35IQ4B3GXAXHY4HDRKN22OK2H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NBO3JZZAV6QPMELAJEDCMSQK4G2DUQIG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0564753848590014505=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============0564753848590014505==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-<p>Hi,<br /><br />I hope this email finds you well.<br />I am emailing yo=
-u
-today to let you know in our warehouse, we have one new GPS drone, ready =
-to
-send to worldwide customers.&nbsp;<br /><br />Some key features:</p>
-<p>Frequency: 5G<br />FPV image transmission: 5G WiFi, 1000m<br />Stable
-two-axis mechanical universal joint<br />Channel: 6CH<br />Battery: 11.1V
-2350mAh&nbsp;<br />Flight time: 25-30 minutes<br />Remote control distanc=
-e:
-about 1000m<br />Picture: 5700*4275<br />Video: 3840 * 1080<br
-/>Quadrilateral size:<br />Product folding size (CM): 17*11.5*6.7CM<br
-/>Product development size (CM): 26*26*6.7CM</p>
-<p>-7 wind resistance<br />-GPS positioning mode can provide more accurat=
-e
-flight.<br />-With 5G wifi function, can be connected to APP, APK system =
-to
-take photos/videos, real-time image transmission through the phone
-camera<br />-5G wifi fpv distance can reach 1000m.<br />-Follow me: The
-aircraft will control the mobile phone and follow the direction of the
-operator.<br />-Height hold mode function, can provide stable flight.<br
-/>-With automatic return function. When the aircraft loses the controller
-signal, the aircraft will return to the take-off point according to the G=
-PS
-trajectory.<br />-Using 11.1V 2350mAh battery, the flight time is up to
-25-30 minutes.<br /><br />Here is the price details:<br />1-10 units:
-279.00 per unit<br />10-50 units 269.00 per unit<br />50-100 units 259.00
-per unit<br />u s d<br /><br /></p>
-<p>If you would like to place an order, we need to know your shipping
-address and get the shipment ready for you.<br /><br /></p>
-<p><img
-src=3D"https://ae01.alicdn.com/kf/Hd1fdd86298494f8494753f8fdc769bdb0.jpg"
-alt=3D"" width=3D"450" height=3D"681" /><img
-src=3D"https://ae01.alicdn.com/kf/Hf6b39ac702104ea7873f11bd5eda18d6Z.jpg"
-alt=3D"" width=3D"450" height=3D"617" /></p>
-<p><img
-src=3D"https://ae01.alicdn.com/kf/H2cc8f7cdcac84151b16643a49333d3a4U.jpg"
-alt=3D"" width=3D"450" height=3D"681" /><img
-src=3D"https://ae01.alicdn.com/kf/H9079541fd1bc447fbf39ecc6b2bd94dbs.jpg"
-alt=3D"" width=3D"450" height=3D"651" /></p>
-<p><img
-src=3D"https://ae01.alicdn.com/kf/H0fc4d3fed6384eee9d90adb5b778839fO.jpg"
-alt=3D"" width=3D"450" height=3D"539" /><img
-src=3D"https://ae01.alicdn.com/kf/Hd376ef04bb5242c9a2b58ea1bc67a7540.jpg"
-alt=3D"" width=3D"450" height=3D"946" /></p>
-<p>&nbsp;<br />If you would like to place an order, we need to know your
-shipping address and get the shipment ready for you.<br /><br />Thanks,<b=
-r
-/>Jerry Foster</p>
-</body>
-</html>
-
---===============0564753848590014505==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============0564753848590014505==--
+44CQVUNT44Kr44O844OJ44CR5Yip55So44GE44Gf44Gg44GN44CB44GC44KK44GM44Go44GG44GU
+44GW44GE44G+44GZ44CCDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTliKnnlKjj
+gYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrlj5blvJXj
+gYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHjgqvjg7zj
+g4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgIHjgZTp
+gKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCuOBpOOBjeOBvuOBl+OBpuOB
+r+OAgeS7peS4i+OBuOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWIqeeUqOei
+uuiqjeOBq+OBlOWNlOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0KIOOBiuWuouanmOOB
+q+OBr+OBlOi/t+aDkeOAgeOBlOW/g+mFjeOCkuOBiuaOm+OBkeOBl+OAgeiqoOOBq+eUs+OBl+io
+s+OBlOOBluOBhOOBvuOBm+OCk+OAgg0K5L2V5Y2S44GU55CG6Kej44GE44Gf44Gg44GN44Gf44GP
+44GK6aGY44GE55Sz44GX44GC44GS44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHj
+garjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozj
+govjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXj
+gYTjgIINCuKWoOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOCiQ0KaHR0cHM6Ly93d3cudWNzY2Fy
+ZC5jby5qcC5odW1hb28uY29tLw0KDQrlvIrnpL7jga/jgIHjgqTjg7Pjgr/jg7zjg43jg4Pjg4jk
+uIrjga7kuI3mraPooYzngrrjga7pmLLmraLjg7vmipHliLbjga7oprPngrnjgYvjgonjgrXjgqTj
+g4jjgajjgZfjgabjga7kv6HpoLzmgKfjg7vmraPlvZPmgKfjgpLpq5jjgoHjgovjgZ/jgoHjgIEN
+CuWkp+WkieOBiuaJi+aVsOOBp+OBr+OBlOOBluOBhOOBvuOBmeOBjOOAgeS4i+iomO+8te+8su+8
+rOOBi+OCieODreOCsOOCpOODs+OBhOOBn+OBoOOBjeOAgQ0KaHR0cHM6Ly93d3cudWNzY2FyZC5j
+by5qcC5odW1hb28uY29tLw0K44GU5LiN5L6/44Go44GU5b+D6YWN44KS44GK44GL44GR44GX44G+
+44GX44Gm6Kqg44Gr55Sz44GX6Kiz44GU44GW44GE44G+44Gb44KT44GM44CBDQrkvZXjgajjgZ7j
+gZTnkIbop6Pos5zjgorjgZ/jgY/jgYrpoZjjgYTnlLPjgZfjgYLjgZLjgb7jgZnjgIINCuOAgC0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KDQrlgIvkurrmg4XloLHjgavp
+lqLjgZnjgovjgYrllY/jgYTlkIjjgo/jgZvjga/jgIHkuIvoqJjjga7jgYrlrqLjgZXjgb7nm7jo
+q4flrqTjgb7jgafjgYrpoZjjgYTjgZfjgb7jgZnjgIINCuOAkjQ5Mi04Njg244CA5oSb55+l55yM
+56iy5rKi5biC5aSp5rGg5LqU5Y+N55Sw55S6MeeVquWcsA0K5qCq5byP5Lya56S+77y177yj77yz
+44CA44GK5a6i44GV44G+55u46KuH5a6kDQpURUzvvJowNTg3LTMwLTUxMDDvvIjljYjliY055pmC
+772e5Y2I5b6MNeaZgjMw5YiG77yJDQrjgIAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
+bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1
+bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5v
+cmcK
