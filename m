@@ -2,50 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362432D3110
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Dec 2020 18:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9932D3111
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Dec 2020 18:30:43 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 674BB100EB825;
-	Tue,  8 Dec 2020 09:30:40 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+	by ml01.01.org (Postfix) with ESMTP id 80923100EB82A;
+	Tue,  8 Dec 2020 09:30:41 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4395E100EB824
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 09:30:38 -0800 (PST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HNtD2191701;
-	Tue, 8 Dec 2020 17:30:25 GMT
+	by ml01.01.org (Postfix) with ESMTPS id 181E2100EB824
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 09:30:39 -0800 (PST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HPJGv071146;
+	Tue, 8 Dec 2020 17:30:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2020-01-29;
- bh=S4Dp0+htpEglgK/1Ic/K1B8geFHI1bZ/iiN4YE5pPk0=;
- b=Hbdf1PR23+K2cH7wMRqBuAjYHhoUQPjPnQ5OhQa9p/yQgNaqk5+wdFq5pg1xMAzcZaJD
- 7L3Jm4ePyJVmsFqpdFugX9C3n9ewkm8aEJKahhwqIDL7Zi9gwKte1TsMbVXd80e0MTWN
- yNz5YIM5fexkUw1ZStxPWMO/qaxFm7Qx+s55UFK0ZhgO3DrP4If4p3KlhjJhe3c4Eg/b
- VjUU23WiE3xnoWw1C1IeeF5UV8QJWW28UQ481ylhbx9n073N9i8WkJbenFn7dTESATXn
- pVFiXTGK4hSBdMy8ng2InZ3B+9FxrzaEneRlinywNiue+J8XPPhy6lOkTpTd0gp+zOD9 lg==
+ bh=Bf0H8+1g681aJKDQDVv1pLRfSYGx+OJmLGnIVAZhDVs=;
+ b=qIJEWKbVS9VEgPtIFLmUjJARzDDpPJLwN2LmUNdaUUX0/F0WZgJ/CmLlhEJN2bORg/1k
+ lxx91sUyyBk1EP6HZ3qrQ/Ga9QBtgVGVbTnYNF7w0i/OXzmYDRxs3cru+/k2Tt5M8Dji
+ IhV7Zs6uZl01cvvhGv66oFf30EFoPKHT+sG8WLoIGk/n9hO43dQjjw1W5iiAI8CzK8v7
+ VtHMbLppXMZnm+a1iktp62jSGr7sFnntZVBz1scEpLDunXl21hvTnifdhI7SnVS5MrI3
+ XF1w9WuCfr+cCloxrkknStJxKv1/3aboKnae2nZ64QsOyrhXrwu7mmmMJd832ngVUUnE Ug==
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2130.oracle.com with ESMTP id 3581mquyyb-1
+	by aserp2120.oracle.com with ESMTP id 35825m41jj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 08 Dec 2020 17:30:24 +0000
+	Tue, 08 Dec 2020 17:30:27 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HOVZR195439;
-	Tue, 8 Dec 2020 17:30:24 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by aserp3020.oracle.com with ESMTP id 358m3y2f4e-1
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HOV52195372;
+	Tue, 8 Dec 2020 17:30:27 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+	by aserp3020.oracle.com with ESMTP id 358m3y2f72-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 08 Dec 2020 17:30:24 +0000
+	Tue, 08 Dec 2020 17:30:27 +0000
 Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B8HUMgc031509;
-	Tue, 8 Dec 2020 17:30:22 GMT
+	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B8HUPhV026020;
+	Tue, 8 Dec 2020 17:30:25 GMT
 Received: from paddy.uk.oracle.com (/10.175.194.215)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 08 Dec 2020 09:30:22 -0800
+	with ESMTP ; Tue, 08 Dec 2020 09:30:25 -0800
 From: Joao Martins <joao.m.martins@oracle.com>
 To: linux-mm@kvack.org
-Subject: [PATCH RFC 2/9] sparse-vmemmap: Consolidate arguments in vmemmap section populate
-Date: Tue,  8 Dec 2020 17:28:53 +0000
-Message-Id: <20201208172901.17384-3-joao.m.martins@oracle.com>
+Subject: [PATCH RFC 3/9] sparse-vmemmap: Reuse vmemmap areas for a given mhp_params::align
+Date: Tue,  8 Dec 2020 17:28:54 +0000
+Message-Id: <20201208172901.17384-4-joao.m.martins@oracle.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20201208172901.17384-1-joao.m.martins@oracle.com>
 References: <20201208172901.17384-1-joao.m.martins@oracle.com>
@@ -55,20 +55,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwa
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2012080107
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 mlxlogscore=999
- clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080107
-Message-ID-Hash: K54KT4ICJ5CXDRIQFBLHPHY223U23QZY
-X-Message-ID-Hash: K54KT4ICJ5CXDRIQFBLHPHY223U23QZY
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 adultscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
+ spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2012080107
+Message-ID-Hash: GD64C2LZCIQFRLETYZSBGNH7424F6OLK
+X-Message-ID-Hash: GD64C2LZCIQFRLETYZSBGNH7424F6OLK
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Joao Martins <joao.m.martins@oracle.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K54KT4ICJ5CXDRIQFBLHPHY223U23QZY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GD64C2LZCIQFRLETYZSBGNH7424F6OLK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -78,167 +78,283 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Replace vmem_altmap with an vmem_context argument. That let us
-express how the vmemmap is gonna be initialized e.g. passing
-flags and a page size for reusing pages upon initializing the
-vmemmap.
+Introduce a new flag, MEMHP_REUSE_VMEMMAP, which signals that that
+struct pages are onlined with a given alignment, and should reuse the
+tail pages vmemmap areas. On that circunstamce we reuse the PFN backing
+only the tail pages subsections, while letting the head page PFN remain
+different. This presumes that the backing page structs are compound
+pages, such as the case for compound pagemaps (i.e. ZONE_DEVICE with
+PGMAP_COMPOUND set)
+
+On 2M compound pagemaps, it lets us save 6 pages out of the 8 necessary
+PFNs necessary to describe the subsection's 32K struct pages we are
+onlining. On a 1G compound pagemap it let us save 4096 pages.
+
+Sections are 128M (or bigger/smaller), and such when initializing a
+compound memory map where we are initializing compound struct pages, we
+need to preserve the tail page to be reused across the rest of the areas
+for pagesizes which bigger than a section.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- include/linux/memory_hotplug.h |  6 +++++-
+I wonder, rather than separating vmem_context and mhp_params, that
+one would just pick the latter. Albeit  semantically the ctx aren't
+necessarily paramters, context passed from multiple sections onlining
+(i.e. multiple calls to populate_section_memmap). Also provided that
+this is internal state, which isn't passed to external modules, except
+ @align and @flags for page size and requesting whether to reuse tail
+page areas.
+---
+ include/linux/memory_hotplug.h | 10 ++++
  include/linux/mm.h             |  2 +-
- mm/memory_hotplug.c            |  3 ++-
- mm/sparse-vmemmap.c            |  6 +++++-
- mm/sparse.c                    | 16 ++++++++--------
- 5 files changed, 21 insertions(+), 12 deletions(-)
+ mm/memory_hotplug.c            | 12 ++++-
+ mm/memremap.c                  |  3 ++
+ mm/sparse-vmemmap.c            | 93 ++++++++++++++++++++++++++++------
+ 5 files changed, 103 insertions(+), 17 deletions(-)
 
 diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 551093b74596..73f8bcbb58a4 100644
+index 73f8bcbb58a4..e15bb82805a3 100644
 --- a/include/linux/memory_hotplug.h
 +++ b/include/linux/memory_hotplug.h
-@@ -81,6 +81,10 @@ struct mhp_params {
- 	pgprot_t pgprot;
- };
+@@ -70,6 +70,10 @@ typedef int __bitwise mhp_t;
+  */
+ #define MEMHP_MERGE_RESOURCE	((__force mhp_t)BIT(0))
  
-+struct vmem_context {
-+	struct vmem_altmap *altmap;
-+};
++/*
++ */
++#define MEMHP_REUSE_VMEMMAP	((__force mhp_t)BIT(1))
 +
  /*
-  * Zone resizing functions
-  *
-@@ -353,7 +357,7 @@ extern void remove_pfn_range_from_zone(struct zone *zone,
- 				       unsigned long nr_pages);
- extern bool is_memblock_offlined(struct memory_block *mem);
- extern int sparse_add_section(int nid, unsigned long pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap);
-+		unsigned long nr_pages, struct vmem_context *ctx);
- extern void sparse_remove_section(struct mem_section *ms,
- 		unsigned long pfn, unsigned long nr_pages,
- 		unsigned long map_offset, struct vmem_altmap *altmap);
+  * Extended parameters for memory hotplug:
+  * altmap: alternative allocator for memmap array (optional)
+@@ -79,10 +83,16 @@ typedef int __bitwise mhp_t;
+ struct mhp_params {
+ 	struct vmem_altmap *altmap;
+ 	pgprot_t pgprot;
++	unsigned int align;
++	mhp_t flags;
+ };
+ 
+ struct vmem_context {
+ 	struct vmem_altmap *altmap;
++	mhp_t flags;
++	unsigned int align;
++	void *block;
++	unsigned long block_page;
+ };
+ 
+ /*
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index db6ae4d3fb4e..2eb44318bb2d 100644
+index 2eb44318bb2d..8b0155441835 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -3000,7 +3000,7 @@ static inline void print_vma_addr(char *prefix, unsigned long rip)
- 
- void *sparse_buffer_alloc(unsigned long size);
- struct page * __populate_section_memmap(unsigned long pfn,
--		unsigned long nr_pages, int nid, struct vmem_altmap *altmap);
-+		unsigned long nr_pages, int nid, struct vmem_context *ctx);
- pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
- p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
+@@ -3006,7 +3006,7 @@ p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
  pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
+ pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
+ pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+-			    struct vmem_altmap *altmap);
++			    struct vmem_altmap *altmap, void *block);
+ void *vmemmap_alloc_block(unsigned long size, int node);
+ struct vmem_altmap;
+ void *vmemmap_alloc_block_buf(unsigned long size, int node,
 diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 63b2e46b6555..f8870c53fe5e 100644
+index f8870c53fe5e..56121dfcc44b 100644
 --- a/mm/memory_hotplug.c
 +++ b/mm/memory_hotplug.c
-@@ -313,6 +313,7 @@ int __ref __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+@@ -300,6 +300,14 @@ static int check_hotplug_memory_addressable(unsigned long pfn,
+ 	return 0;
+ }
+ 
++static void vmem_context_init(struct vmem_context *ctx, struct mhp_params *params)
++{
++	memset(ctx, 0, sizeof(*ctx));
++	ctx->align = params->align;
++	ctx->altmap = params->altmap;
++	ctx->flags = params->flags;
++}
++
+ /*
+  * Reasonably generic function for adding memory.  It is
+  * expected that archs that support memory hotplug will
+@@ -313,7 +321,7 @@ int __ref __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
  	unsigned long cur_nr_pages;
  	int err;
  	struct vmem_altmap *altmap = params->altmap;
-+	struct vmem_context ctx = { .altmap = params->altmap };
+-	struct vmem_context ctx = { .altmap = params->altmap };
++	struct vmem_context ctx;
  
  	if (WARN_ON_ONCE(!params->pgprot.pgprot))
  		return -EINVAL;
-@@ -341,7 +342,7 @@ int __ref __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+@@ -338,6 +346,8 @@ int __ref __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+ 	if (err)
+ 		return err;
+ 
++	vmem_context_init(&ctx, params);
++
+ 	for (; pfn < end_pfn; pfn += cur_nr_pages) {
  		/* Select all remaining pages up to the next section boundary */
  		cur_nr_pages = min(end_pfn - pfn,
- 				   SECTION_ALIGN_UP(pfn + 1) - pfn);
--		err = sparse_add_section(nid, pfn, cur_nr_pages, altmap);
-+		err = sparse_add_section(nid, pfn, cur_nr_pages, &ctx);
- 		if (err)
- 			break;
- 		cond_resched();
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 287a24b7a65a..ecfa74848ac6 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -253,6 +253,9 @@ static int pagemap_range(struct dev_pagemap *pgmap, struct mhp_params *params,
+ 			goto err_kasan;
+ 		}
+ 
++		if (pgmap->flags & PGMAP_COMPOUND)
++			params->align = pgmap->align;
++
+ 		error = arch_add_memory(nid, range->start, range_len(range),
+ 					params);
+ 	}
 diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 16183d85a7d5..bcda68ba1381 100644
+index bcda68ba1381..1679f36473ac 100644
 --- a/mm/sparse-vmemmap.c
 +++ b/mm/sparse-vmemmap.c
-@@ -249,15 +249,19 @@ int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
+@@ -141,16 +141,20 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
  }
  
+ pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
+-				       struct vmem_altmap *altmap)
++				       struct vmem_altmap *altmap, void *block)
+ {
+ 	pte_t *pte = pte_offset_kernel(pmd, addr);
+ 	if (pte_none(*pte)) {
+ 		pte_t entry;
+-		void *p;
+-
+-		p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+-		if (!p)
+-			return NULL;
++		void *p = block;
++
++		if (!block) {
++			p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
++			if (!p)
++				return NULL;
++		} else {
++			get_page(virt_to_page(block));
++		}
+ 		entry = pfn_pte(__pa(p) >> PAGE_SHIFT, PAGE_KERNEL);
+ 		set_pte_at(&init_mm, addr, pte, entry);
+ 	}
+@@ -216,8 +220,10 @@ pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
+ 	return pgd;
+ }
+ 
+-int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
+-					 int node, struct vmem_altmap *altmap)
++static void *__meminit __vmemmap_populate_basepages(unsigned long start,
++					   unsigned long end, int node,
++					   struct vmem_altmap *altmap,
++					   void *block)
+ {
+ 	unsigned long addr = start;
+ 	pgd_t *pgd;
+@@ -229,38 +235,95 @@ int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
+ 	for (; addr < end; addr += PAGE_SIZE) {
+ 		pgd = vmemmap_pgd_populate(addr, node);
+ 		if (!pgd)
+-			return -ENOMEM;
++			return NULL;
+ 		p4d = vmemmap_p4d_populate(pgd, addr, node);
+ 		if (!p4d)
+-			return -ENOMEM;
++			return NULL;
+ 		pud = vmemmap_pud_populate(p4d, addr, node);
+ 		if (!pud)
+-			return -ENOMEM;
++			return NULL;
+ 		pmd = vmemmap_pmd_populate(pud, addr, node);
+ 		if (!pmd)
+-			return -ENOMEM;
+-		pte = vmemmap_pte_populate(pmd, addr, node, altmap);
++			return NULL;
++		pte = vmemmap_pte_populate(pmd, addr, node, altmap, block);
+ 		if (!pte)
+-			return -ENOMEM;
++			return NULL;
+ 		vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
+ 	}
+ 
++	return __va(__pfn_to_phys(pte_pfn(*pte)));
++}
++
++int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
++					 int node, struct vmem_altmap *altmap)
++{
++	if (!__vmemmap_populate_basepages(start, end, node, altmap, NULL))
++		return -ENOMEM;
+ 	return 0;
+ }
+ 
++static struct page * __meminit vmemmap_populate_reuse(unsigned long start,
++					unsigned long end, int node,
++					struct vmem_context *ctx)
++{
++	unsigned long size, addr = start;
++	unsigned long psize = PHYS_PFN(ctx->align) * sizeof(struct page);
++
++	size = min(psize, end - start);
++
++	for (; addr < end; addr += size) {
++		unsigned long head = addr + PAGE_SIZE;
++		unsigned long tail = addr;
++		unsigned long last = addr + size;
++		void *area;
++
++		if (ctx->block_page &&
++		    IS_ALIGNED((addr - ctx->block_page), psize))
++			ctx->block = NULL;
++
++		area  = ctx->block;
++		if (!area) {
++			if (!__vmemmap_populate_basepages(addr, head, node,
++							  ctx->altmap, NULL))
++				return NULL;
++
++			tail = head + PAGE_SIZE;
++			area = __vmemmap_populate_basepages(head, tail, node,
++							    ctx->altmap, NULL);
++			if (!area)
++				return NULL;
++
++			ctx->block = area;
++			ctx->block_page = addr;
++		}
++
++		if (!__vmemmap_populate_basepages(tail, last, node,
++						  ctx->altmap, area))
++			return NULL;
++	}
++
++	return (struct page*) start;
++}
++
  struct page * __meminit __populate_section_memmap(unsigned long pfn,
--		unsigned long nr_pages, int nid, struct vmem_altmap *altmap)
-+		unsigned long nr_pages, int nid, struct vmem_context *ctx)
+ 		unsigned long nr_pages, int nid, struct vmem_context *ctx)
  {
  	unsigned long start = (unsigned long) pfn_to_page(pfn);
  	unsigned long end = start + nr_pages * sizeof(struct page);
-+	struct vmem_altmap *altmap = NULL;
+ 	struct vmem_altmap *altmap = NULL;
++	int flags = 0;
  
  	if (WARN_ON_ONCE(!IS_ALIGNED(pfn, PAGES_PER_SUBSECTION) ||
  		!IS_ALIGNED(nr_pages, PAGES_PER_SUBSECTION)))
  		return NULL;
  
-+	if (ctx)
-+		altmap = ctx->altmap;
+-	if (ctx)
++	if (ctx) {
+ 		altmap = ctx->altmap;
++		flags = ctx->flags;
++	}
 +
++	if (flags & MEMHP_REUSE_VMEMMAP)
++		return vmemmap_populate_reuse(start, end, nid, ctx);
+ 
  	if (vmemmap_populate(start, end, nid, altmap))
  		return NULL;
- 
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 7bd23f9d6cef..47ca494398a7 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -443,7 +443,7 @@ static unsigned long __init section_map_size(void)
- }
- 
- struct page __init *__populate_section_memmap(unsigned long pfn,
--		unsigned long nr_pages, int nid, struct vmem_altmap *altmap)
-+		unsigned long nr_pages, int nid, struct vmem_context *ctx)
- {
- 	unsigned long size = section_map_size();
- 	struct page *map = sparse_buffer_alloc(size);
-@@ -648,9 +648,9 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
- static struct page * __meminit populate_section_memmap(unsigned long pfn,
--		unsigned long nr_pages, int nid, struct vmem_altmap *altmap)
-+		unsigned long nr_pages, int nid, struct vmem_context *ctx)
- {
--	return __populate_section_memmap(pfn, nr_pages, nid, altmap);
-+	return __populate_section_memmap(pfn, nr_pages, nid, ctx);
- }
- 
- static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
-@@ -842,7 +842,7 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
- }
- 
- static struct page * __meminit section_activate(int nid, unsigned long pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap)
-+		unsigned long nr_pages, struct vmem_context *ctx)
- {
- 	struct mem_section *ms = __pfn_to_section(pfn);
- 	struct mem_section_usage *usage = NULL;
-@@ -874,9 +874,9 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
- 	if (nr_pages < PAGES_PER_SECTION && early_section(ms))
- 		return pfn_to_page(pfn);
- 
--	memmap = populate_section_memmap(pfn, nr_pages, nid, altmap);
-+	memmap = populate_section_memmap(pfn, nr_pages, nid, ctx);
- 	if (!memmap) {
--		section_deactivate(pfn, nr_pages, altmap);
-+		section_deactivate(pfn, nr_pages, ctx->altmap);
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
-@@ -902,7 +902,7 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
-  * * -ENOMEM	- Out of memory.
-  */
- int __meminit sparse_add_section(int nid, unsigned long start_pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap)
-+		unsigned long nr_pages, struct vmem_context *ctx)
- {
- 	unsigned long section_nr = pfn_to_section_nr(start_pfn);
- 	struct mem_section *ms;
-@@ -913,7 +913,7 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
- 	if (ret < 0)
- 		return ret;
- 
--	memmap = section_activate(nid, start_pfn, nr_pages, altmap);
-+	memmap = section_activate(nid, start_pfn, nr_pages, ctx);
- 	if (IS_ERR(memmap))
- 		return PTR_ERR(memmap);
- 
 -- 
 2.17.1
 _______________________________________________
