@@ -1,74 +1,72 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB1F2D3117
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Dec 2020 18:30:58 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D47822D311E
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Dec 2020 18:32:34 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 64494100EB832;
-	Tue,  8 Dec 2020 09:30:57 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+	by ml01.01.org (Postfix) with ESMTP id 9B0CF100EB832;
+	Tue,  8 Dec 2020 09:32:33 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.79; helo=aserp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BB965100EB82B
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 09:30:55 -0800 (PST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HPIw8071095;
-	Tue, 8 Dec 2020 17:30:48 GMT
+	by ml01.01.org (Postfix) with ESMTPS id 74198100EB827
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 09:32:31 -0800 (PST)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HPMUw083135;
+	Tue, 8 Dec 2020 17:32:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2020-01-29;
- bh=OgxmGknp7SIfBNCz26KqSEuDI8RgB3Wqg5tc6ikM2Ro=;
- b=ADzxl0fZ05pr6/BLynk4EXG8TkYwAgHt7DSXfhPur9jg+O1o5ANUon5eX4eZpboaNaep
- xUdrpNXfmjB4iT+Zdm8Gk7Lo6LMQtUO2ObM0ksjKh8DosMFLXBbpkOeQe2hl78TBTp9w
- C+GWcrV9LXeybcYRU2N7v+zLMHPrCrZAvpXehwEivy+CDbWNCUaIQTwUCVSiSy/oCM4F
- dQRi8wy3fLqXPpwqV542KdRoRCm7FVLDLqLtEwUqdnhN/+Ktix3K8CTyB8YUyTnbNWP9
- upAgE25EkWkwL7AKdsFC7L31ma3UnVJXcsIpNPHYTdADfLRBesw/ARWXnuVZbonUgeFO rw==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by aserp2120.oracle.com with ESMTP id 35825m41mg-1
+ subject : date : message-id; s=corp-2020-01-29;
+ bh=WoY4HOqMj06rCLo4dIjKOPfVIQ3qLKDAu362zSgScJI=;
+ b=sWoU+UY5s7EsXk511arHMDL3g7cz5f8K/A0OPTZpR/bdAV1JdyxP/k9GLMajtu+uA3S4
+ 2iZb+uxAVoCXLu7rvUfX6rm1ZM8+8Rx+y670qxH++4dzWi5kO4IzFRSrkRyx8GUQdnX2
+ QFfPH8NOcZU1NoxuSC80Eki1Y5HDBZfcDQEvJjLjm56UXAngjbsGXIv2Fx11ZCQ2hE3R
+ IrXO/NPmgRVkDNYxKHQ2jWaVYjpErgqY46Xp5jj/+n2sPykDEKUuniBOMGu8pxJ16V3O
+ 8l5XaFevJFtGZA5wGQN+LKMUCTYsZurXC+EBnzEVeRg935OxwdY/HgSIF0I37e4H45jS lA==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by aserp2130.oracle.com with ESMTP id 357yqbv4pu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 08 Dec 2020 17:30:48 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HOmpk060825;
-	Tue, 8 Dec 2020 17:30:48 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-	by aserp3030.oracle.com with ESMTP id 358ksnwgke-1
+	Tue, 08 Dec 2020 17:32:22 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B8HOVjl195412;
+	Tue, 8 Dec 2020 17:30:22 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+	by aserp3020.oracle.com with ESMTP id 358m3y2f2s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 08 Dec 2020 17:30:47 +0000
+	Tue, 08 Dec 2020 17:30:22 +0000
 Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B8HUl8x012509;
-	Tue, 8 Dec 2020 17:30:47 GMT
+	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B8HUFxA025859;
+	Tue, 8 Dec 2020 17:30:16 GMT
 Received: from paddy.uk.oracle.com (/10.175.194.215)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 08 Dec 2020 09:30:46 -0800
+	with ESMTP ; Tue, 08 Dec 2020 09:30:14 -0800
 From: Joao Martins <joao.m.martins@oracle.com>
 To: linux-mm@kvack.org
-Subject: [PATCH RFC 9/9] mm: Add follow_devmap_page() for devdax vmas
-Date: Tue,  8 Dec 2020 17:29:01 +0000
-Message-Id: <20201208172901.17384-11-joao.m.martins@oracle.com>
+Subject: [PATCH RFC 0/9] mm, sparse-vmemmap: Introduce compound pagemaps
+Date: Tue,  8 Dec 2020 17:28:51 +0000
+Message-Id: <20201208172901.17384-1-joao.m.martins@oracle.com>
 X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20201208172901.17384-1-joao.m.martins@oracle.com>
-References: <20201208172901.17384-1-joao.m.martins@oracle.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=1
- bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012080107
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
  definitions=main-2012080107
-Message-ID-Hash: KUKNSVAS7PAGSOED2BCWDGOAOQJUMBEL
-X-Message-ID-Hash: KUKNSVAS7PAGSOED2BCWDGOAOQJUMBEL
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012080107
+Message-ID-Hash: DMBQM5TVUOWCJKHA4TTUJYRJJHGG5NS4
+X-Message-ID-Hash: DMBQM5TVUOWCJKHA4TTUJYRJJHGG5NS4
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Joao Martins <joao.m.martins@oracle.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KUKNSVAS7PAGSOED2BCWDGOAOQJUMBEL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DMBQM5TVUOWCJKHA4TTUJYRJJHGG5NS4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -78,326 +76,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Similar to follow_hugetlb_page() add a follow_devmap_page which rather
-than calling follow_page() per 4K page in a PMD/PUD it does so for the
-entire PMD, where we lock the pmd/pud, get all pages , unlock.
+Hey,
 
-While doing so, we only change the refcount once when PGMAP_COMPOUND is
-passed in.
+This small series, attempts at minimizing 'struct page' overhead by
+pursuing a similar approach as Muchun Song series "Free some vmemmap
+pages of hugetlb page"[0] but applied to devmap/ZONE_DEVICE. 
 
-This let us improve {pin,get}_user_pages{,_longterm}() considerably:
+[0] https://lore.kernel.org/linux-mm/20201130151838.11208-1-songmuchun@bytedance.com/
 
-$ gup_benchmark -f /dev/dax0.2 -m 16384 -r 10 -S [-U,-b,-L] -n 512 -w
+The link above describes it quite nicely, but the idea is to reuse tail
+page vmemmap areas, particular the area which only describes tail pages.
+So a vmemmap page describes 64 struct pages, and the first page for a given
+ZONE_DEVICE vmemmap would contain the head page and 63 tail pages. The second
+vmemmap page would contain only tail pages, and that's what gets reused across
+the rest of the subsection/section. The bigger the page size, the bigger the
+savings (2M hpage -> save 6 vmemmap pages; 1G hpage -> save 4094 vmemmap pages).
 
-(<test>) [before] -> [after]
-(get_user_pages 2M pages) ~150k us -> ~8.9k us
-(pin_user_pages 2M pages) ~192k us -> ~9k us
-(pin_user_pages_longterm 2M pages) ~200k us -> ~19k us
+In terms of savings, per 1Tb of memory, the struct page cost would go down
+with compound pagemap:
 
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
----
-I've special-cased this to device-dax vmas given its similar page size
-guarantees as hugetlbfs, but I feel this is a bit wrong. I am
-replicating follow_hugetlb_page() as RFC ought to seek feedback whether
-this should be generalized if no fundamental issues exist. In such case,
-should I be changing follow_page_mask() to take either an array of pages
-or a function pointer and opaque arguments which would let caller pick
-its structure?
----
- include/linux/huge_mm.h |   4 +
- include/linux/mm.h      |   2 +
- mm/gup.c                |  22 ++++-
- mm/huge_memory.c        | 202 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 227 insertions(+), 3 deletions(-)
+* with 2M pages we lose 4G instead of 16G (0.39% instead of 1.5% of total memory)
+* with 1G pages we lose 8MB instead of 16G (0.0007% instead of 1.5% of total memory)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 0365aa97f8e7..da87ecea19e6 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -293,6 +293,10 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
- 		pmd_t *pmd, int flags, struct dev_pagemap **pgmap);
- struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
- 		pud_t *pud, int flags, struct dev_pagemap **pgmap);
-+long follow_devmap_page(struct mm_struct *mm, struct vm_area_struct *vma,
-+			struct page **pages, struct vm_area_struct **vmas,
-+			unsigned long *position, unsigned long *nr_pages,
-+			long i, unsigned int flags, int *locked);
- 
- extern vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf, pmd_t orig_pmd);
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 8b0155441835..466c88679628 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1164,6 +1164,8 @@ static inline void get_page(struct page *page)
- 	page_ref_inc(page);
- }
- 
-+__maybe_unused struct page *try_grab_compound_head(struct page *page, int refs,
-+						   unsigned int flags);
- bool __must_check try_grab_page(struct page *page, unsigned int flags);
- 
- static inline __must_check bool try_get_page(struct page *page)
-diff --git a/mm/gup.c b/mm/gup.c
-index 3a9a7229f418..50effb9cc349 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -78,7 +78,7 @@ static inline struct page *try_get_compound_head(struct page *page, int refs)
-  * considered failure, and furthermore, a likely bug in the caller, so a warning
-  * is also emitted.
-  */
--static __maybe_unused struct page *try_grab_compound_head(struct page *page,
-+__maybe_unused struct page *try_grab_compound_head(struct page *page,
- 							  int refs,
- 							  unsigned int flags)
- {
-@@ -880,8 +880,8 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
-  * does not include FOLL_NOWAIT, the mmap_lock may be released.  If it
-  * is, *@locked will be set to 0 and -EBUSY returned.
-  */
--static int faultin_page(struct vm_area_struct *vma,
--		unsigned long address, unsigned int *flags, int *locked)
-+int faultin_page(struct vm_area_struct *vma,
-+		 unsigned long address, unsigned int *flags, int *locked)
- {
- 	unsigned int fault_flags = 0;
- 	vm_fault_t ret;
-@@ -1103,6 +1103,22 @@ static long __get_user_pages(struct mm_struct *mm,
- 				}
- 				continue;
- 			}
-+			if (vma_is_dax(vma)) {
-+				i = follow_devmap_page(mm, vma, pages, vmas,
-+						       &start, &nr_pages, i,
-+						       gup_flags, locked);
-+				if (locked && *locked == 0) {
-+					/*
-+					 * We've got a VM_FAULT_RETRY
-+					 * and we've lost mmap_lock.
-+					 * We must stop here.
-+					 */
-+					BUG_ON(gup_flags & FOLL_NOWAIT);
-+					BUG_ON(ret != 0);
-+					goto out;
-+				}
-+				continue;
-+			}
- 		}
- retry:
- 		/*
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ec2bb93f7431..20bfbf211dc3 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1168,6 +1168,208 @@ struct page *follow_devmap_pud(struct vm_area_struct *vma, unsigned long addr,
- 	return page;
- }
- 
-+long follow_devmap_page(struct mm_struct *mm, struct vm_area_struct *vma,
-+			struct page **pages, struct vm_area_struct **vmas,
-+			unsigned long *position, unsigned long *nr_pages,
-+			long i, unsigned int flags, int *locked)
-+{
-+	unsigned long pfn_offset;
-+	unsigned long vaddr = *position;
-+	unsigned long remainder = *nr_pages;
-+	unsigned long align = vma_kernel_pagesize(vma);
-+	unsigned long align_nr_pages = align >> PAGE_SHIFT;
-+	unsigned long mask = ~(align-1);
-+	unsigned long nr_pages_hpage = 0;
-+	struct dev_pagemap *pgmap = NULL;
-+	int err = -EFAULT;
-+
-+	if (align == PAGE_SIZE)
-+		return i;
-+
-+	while (vaddr < vma->vm_end && remainder) {
-+		pte_t *pte;
-+		spinlock_t *ptl = NULL;
-+		int absent;
-+		struct page *page;
-+
-+		/*
-+		 * If we have a pending SIGKILL, don't keep faulting pages and
-+		 * potentially allocating memory.
-+		 */
-+		if (fatal_signal_pending(current)) {
-+			remainder = 0;
-+			break;
-+		}
-+
-+		/*
-+		 * Some archs (sparc64, sh*) have multiple pte_ts to
-+		 * each hugepage.  We have to make sure we get the
-+		 * first, for the page indexing below to work.
-+		 *
-+		 * Note that page table lock is not held when pte is null.
-+		 */
-+		pte = huge_pte_offset(mm, vaddr & mask, align);
-+		if (pte) {
-+			if (align == PMD_SIZE)
-+				ptl = pmd_lockptr(mm, (pmd_t *) pte);
-+			else if (align == PUD_SIZE)
-+				ptl = pud_lockptr(mm, (pud_t *) pte);
-+			spin_lock(ptl);
-+		}
-+		absent = !pte || pte_none(ptep_get(pte));
-+
-+		if (absent && (flags & FOLL_DUMP)) {
-+			if (pte)
-+				spin_unlock(ptl);
-+			remainder = 0;
-+			break;
-+		}
-+
-+		if (absent ||
-+		    ((flags & FOLL_WRITE) &&
-+		      !pte_write(ptep_get(pte)))) {
-+			vm_fault_t ret;
-+			unsigned int fault_flags = 0;
-+
-+			if (pte)
-+				spin_unlock(ptl);
-+			if (flags & FOLL_WRITE)
-+				fault_flags |= FAULT_FLAG_WRITE;
-+			if (locked)
-+				fault_flags |= FAULT_FLAG_ALLOW_RETRY |
-+					FAULT_FLAG_KILLABLE;
-+			if (flags & FOLL_NOWAIT)
-+				fault_flags |= FAULT_FLAG_ALLOW_RETRY |
-+					FAULT_FLAG_RETRY_NOWAIT;
-+			if (flags & FOLL_TRIED) {
-+				/*
-+				 * Note: FAULT_FLAG_ALLOW_RETRY and
-+				 * FAULT_FLAG_TRIED can co-exist
-+				 */
-+				fault_flags |= FAULT_FLAG_TRIED;
-+			}
-+			ret = handle_mm_fault(vma, vaddr, flags, NULL);
-+			if (ret & VM_FAULT_ERROR) {
-+				err = vm_fault_to_errno(ret, flags);
-+				remainder = 0;
-+				break;
-+			}
-+			if (ret & VM_FAULT_RETRY) {
-+				if (locked &&
-+				    !(fault_flags & FAULT_FLAG_RETRY_NOWAIT))
-+					*locked = 0;
-+				*nr_pages = 0;
-+				/*
-+				 * VM_FAULT_RETRY must not return an
-+				 * error, it will return zero
-+				 * instead.
-+				 *
-+				 * No need to update "position" as the
-+				 * caller will not check it after
-+				 * *nr_pages is set to 0.
-+				 */
-+				return i;
-+			}
-+			continue;
-+		}
-+
-+		pfn_offset = (vaddr & ~mask) >> PAGE_SHIFT;
-+		page = pte_page(ptep_get(pte));
-+
-+		pgmap = get_dev_pagemap(page_to_pfn(page), pgmap);
-+		if (!pgmap) {
-+			spin_unlock(ptl);
-+			remainder = 0;
-+			err = -EFAULT;
-+			break;
-+		}
-+
-+		/*
-+		 * If subpage information not requested, update counters
-+		 * and skip the same_page loop below.
-+		 */
-+		if (!pages && !vmas && !pfn_offset &&
-+		    (vaddr + align < vma->vm_end) &&
-+		    (remainder >= (align_nr_pages))) {
-+			vaddr += align;
-+			remainder -= align_nr_pages;
-+			i += align_nr_pages;
-+			spin_unlock(ptl);
-+			continue;
-+		}
-+
-+		nr_pages_hpage = 0;
-+
-+same_page:
-+		if (pages) {
-+			pages[i] = mem_map_offset(page, pfn_offset);
-+
-+			/*
-+			 * try_grab_page() should always succeed here, because:
-+			 * a) we hold the ptl lock, and b) we've just checked
-+			 * that the huge page is present in the page tables.
-+			 */
-+			if (!(pgmap->flags & PGMAP_COMPOUND) &&
-+			    WARN_ON_ONCE(!try_grab_page(pages[i], flags))) {
-+				spin_unlock(ptl);
-+				remainder = 0;
-+				err = -ENOMEM;
-+				break;
-+			}
-+
-+		}
-+
-+		if (vmas)
-+			vmas[i] = vma;
-+
-+		vaddr += PAGE_SIZE;
-+		++pfn_offset;
-+		--remainder;
-+		++i;
-+		nr_pages_hpage++;
-+		if (vaddr < vma->vm_end && remainder &&
-+				pfn_offset < align_nr_pages) {
-+			/*
-+			 * We use pfn_offset to avoid touching the pageframes
-+			 * of this compound page.
-+			 */
-+			goto same_page;
-+		} else {
-+			/*
-+			 * try_grab_compound_head() should always succeed here,
-+			 * because: a) we hold the ptl lock, and b) we've just
-+			 * checked that the huge page is present in the page
-+			 * tables. If the huge page is present, then the tail
-+			 * pages must also be present. The ptl prevents the
-+			 * head page and tail pages from being rearranged in
-+			 * any way. So this page must be available at this
-+			 * point, unless the page refcount overflowed:
-+			 */
-+			if ((pgmap->flags & PGMAP_COMPOUND) &&
-+			    WARN_ON_ONCE(!try_grab_compound_head(pages[i-1],
-+								 nr_pages_hpage,
-+								 flags))) {
-+				put_dev_pagemap(pgmap);
-+				spin_unlock(ptl);
-+				remainder = 0;
-+				err = -ENOMEM;
-+				break;
-+			}
-+			put_dev_pagemap(pgmap);
-+		}
-+		spin_unlock(ptl);
-+	}
-+	*nr_pages = remainder;
-+	/*
-+	 * setting position is actually required only if remainder is
-+	 * not zero but it's faster not to add a "if (remainder)"
-+	 * branch.
-+	 */
-+	*position = vaddr;
-+
-+	return i ? i : err;
-+}
-+
- int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		  pud_t *dst_pud, pud_t *src_pud, unsigned long addr,
- 		  struct vm_area_struct *vma)
+Along the way I've extended it past 'struct page' overhead *trying* to address a
+few performance issues we knew about for pmem, specifically on the
+{pin,get}_user_pages* function family with device-dax vmas which are really
+slow even of the fast variants. THP is great on -fast variants but all except
+hugetlbfs perform rather poorly on non-fast gup.
+
+So to summarize what the series does:
+
+Patches 1-5: Much like Muchun series, we reuse tail page areas across a given
+page size (namely @align was referred by remaining memremap/dax code) and
+enabling of memremap to initialize the ZONE_DEVICE pages as compound pages or a
+given @align order. The main difference though, is that contrary to the hugetlbfs
+series, there's no vmemmap for the area, because we are onlining it. IOW no
+freeing of pages of already initialized vmemmap like the case for hugetlbfs,
+which simplifies the logic (besides not being arch-specific). After these,
+there's quite visible region bootstrap of pmem memmap given that we would
+initialize fewer struct pages depending on the page size.
+
+    NVDIMM namespace bootstrap improves from ~750ms to ~190ms/<=1ms on emulated NVDIMMs
+    with 2M and 1G respectivally. The net gain in improvement is similarly observed
+    in proportion when running on actual NVDIMMs.
+
+Patch 6 - 8: Optimize grabbing/release a page refcount changes given that we
+are working with compound pages i.e. we do 1 increment/decrement to the head
+page for a given set of N subpages compared as opposed to N individual writes.
+{get,pin}_user_pages_fast() for zone_device with compound pagemap consequently
+improves considerably, and unpin_user_pages() improves as well when passed a
+set of consecutive pages:
+
+                                           before          after
+    (get_user_pages_fast 1G;2M page size) ~75k  us -> ~3.2k ; ~5.2k us
+    (pin_user_pages_fast 1G;2M page size) ~125k us -> ~3.4k ; ~5.5k us
+
+The RDMA patch (patch 8/9) is to demonstrate the improvement for an existing
+user. For unpin_user_pages() we have an additional test to demonstrate the
+improvement.  The test performs MR reg/unreg continuously and measuring its
+rate for a given period. So essentially ib_mem_get and ib_mem_release being
+stress tested which at the end of day means: pin_user_pages_longterm() and
+unpin_user_pages() for a scatterlist:
+
+    Before:
+    159 rounds in 5.027 sec: 31617.923 usec / round (device-dax)
+    466 rounds in 5.009 sec: 10748.456 usec / round (hugetlbfs)
+	        
+    After:
+    305 rounds in 5.010 sec: 16426.047 usec / round (device-dax)
+    1073 rounds in 5.004 sec: 4663.622 usec / round (hugetlbfs)
+
+Patch 9: Improves {pin,get}_user_pages() and its longterm counterpart. It
+is very experimental, and I imported most of follow_hugetlb_page(), except
+that we do the same trick as gup-fast. In doing the patch I feel this batching
+should live in follow_page_mask() and having that being changed to return a set
+of pages/something-else when walking over PMD/PUDs for THP / devmap pages. This
+patch then brings the previous test of mr reg/unreg (above) on parity
+between device-dax and hugetlbfs.
+
+Some of the patches are a little fresh/WIP (specially patch 3 and 9) and we are
+still running tests. Hence the RFC, asking for comments and general direction
+of the work before continuing.
+
+Patches apply on top of linux-next tag next-20201208 (commit a9e26cb5f261).
+
+Comments and suggestions very much appreciated!
+
+Thanks,
+	Joao
+
+Joao Martins (9):
+  memremap: add ZONE_DEVICE support for compound pages
+  sparse-vmemmap: Consolidate arguments in vmemmap section populate
+  sparse-vmemmap: Reuse vmemmap areas for a given page size
+  mm/page_alloc: Reuse tail struct pages for compound pagemaps
+  device-dax: Compound pagemap support
+  mm/gup: Grab head page refcount once for group of subpages
+  mm/gup: Decrement head page once for group of subpages
+  RDMA/umem: batch page unpin in __ib_mem_release()
+  mm: Add follow_devmap_page() for devdax vmas
+
+ drivers/dax/device.c           |  54 ++++++---
+ drivers/infiniband/core/umem.c |  25 +++-
+ include/linux/huge_mm.h        |   4 +
+ include/linux/memory_hotplug.h |  16 ++-
+ include/linux/memremap.h       |   2 +
+ include/linux/mm.h             |   6 +-
+ mm/gup.c                       | 130 ++++++++++++++++-----
+ mm/huge_memory.c               | 202 +++++++++++++++++++++++++++++++++
+ mm/memory_hotplug.c            |  13 ++-
+ mm/memremap.c                  |  13 ++-
+ mm/page_alloc.c                |  28 ++++-
+ mm/sparse-vmemmap.c            |  97 +++++++++++++---
+ mm/sparse.c                    |  16 +--
+ 13 files changed, 531 insertions(+), 75 deletions(-)
+
 -- 
 2.17.1
 _______________________________________________
