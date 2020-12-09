@@ -2,51 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59172D3B7E
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 07:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0AA2D3CDB
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 09:05:59 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4E4E0100EC1F3;
-	Tue,  8 Dec 2020 22:34:12 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id AE61D100EB84C;
+	Wed,  9 Dec 2020 00:05:57 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+e0880fbf4cc9d17ed03f+6317+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CE59F100EC1F3
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 22:34:09 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id EDD5B100EBBB9
+	for <linux-nvdimm@lists.01.org>; Wed,  9 Dec 2020 00:05:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+CpRBRSCNa0eicUgRiha4jJ2Xs6QCN3aamgew32OI0A=; b=Vny5zMI3uLth9IyKowG/frEUBr
-	Y0KpowoLqfAO8EGLmna1WvkVLwyEZehA/IjWDslQ2YZNaxCgMD4+OawdkO9Ie1bOXEcaB0G07NAWB
-	XOu6OF8v+LHOlzkkLxB+o7EGuV60XTyqOaK4Le2azuuNivmj7E6WNRX7cwQ5UzyCDBLrKSGB6oq6r
-	8iGcm1RnUA+VOoSnvS4ZDgzToUvBlcAceDLjSZMDcaRKly7Wvk9Az4cj+u46Uj6aw3eIp7cc8MSee
-	doJVPvU5aqt1NxIvCdydn0Bz9Tmcmrhw+JoaLFmxSe9UXVd+sn+aWd62y75UyHutlkMKBCkd+aLsm
-	leoSHe3g==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kmt2s-0006QH-Ns; Wed, 09 Dec 2020 06:33:50 +0000
-Date: Wed, 9 Dec 2020 06:33:50 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [PATCH RFC 1/9] memremap: add ZONE_DEVICE support for compound
- pages
-Message-ID: <20201209063350.GO7338@casper.infradead.org>
+	bh=4hfTv8EUe0KsPWmE2eRd4b2JnwYY+QPsnZBZ4Qx1KNs=; b=LlzutYCflnlSNZasF4C5o5YnzV
+	xfQEjDBfr7n1d8JcX6HcuELmy0Pktq2arxGfWtnZvjaNuXebwhXC4U74OwkNl+r9AqglHmf9BM5ul
+	lwcE/FI4gVsmvMVsTWfN388NoGSDYz4fP1stYwhMVyCPSPNOdn7vhmUuEatamxBttLu16IDA82vg/
+	vq6o1uFcG8zP6nFljjB/SoOwNp9ZQ7/0EQMc27R7hoJCqVby7kNdA2gi2HEzBy03OvzfzDVWr6XOj
+	IZIGPQTM/hFcPYSR3j+GZ8TL2l/GRsUQOOoD0avQDxPIJldmrXM4Wh0SLjjC5LMlQeZoKPxYsI78O
+	DspufR7g==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1kmuTj-0003sX-ET; Wed, 09 Dec 2020 08:05:39 +0000
+Date: Wed, 9 Dec 2020 08:05:39 +0000
+From: Christoph Hellwig <hch@infradead.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH RFC 9/9] mm: Add follow_devmap_page() for devdax vmas
+Message-ID: <20201209080539.GA12507@infradead.org>
 References: <20201208172901.17384-1-joao.m.martins@oracle.com>
- <20201208172901.17384-2-joao.m.martins@oracle.com>
- <7249cfd2-c178-2e6a-6b03-307a05f11785@nvidia.com>
+ <20201208172901.17384-11-joao.m.martins@oracle.com>
+ <20201208195754.GR5487@ziepe.ca>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <7249cfd2-c178-2e6a-6b03-307a05f11785@nvidia.com>
-Message-ID-Hash: KD553V6XKD55GSPUA2JNVNA2SBCONHAL
-X-Message-ID-Hash: KD553V6XKD55GSPUA2JNVNA2SBCONHAL
-X-MailFrom: willy@infradead.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Joao Martins <joao.m.martins@oracle.com>, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+In-Reply-To: <20201208195754.GR5487@ziepe.ca>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: QAKSKWWI35BQUBG4GAN6VT73O3BB6IC7
+X-Message-ID-Hash: QAKSKWWI35BQUBG4GAN6VT73O3BB6IC7
+X-MailFrom: BATV+e0880fbf4cc9d17ed03f+6317+infradead.org+hch@casper.srs.infradead.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Joao Martins <joao.m.martins@oracle.com>, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KD553V6XKD55GSPUA2JNVNA2SBCONHAL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QAKSKWWI35BQUBG4GAN6VT73O3BB6IC7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,56 +54,37 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 08, 2020 at 09:59:19PM -0800, John Hubbard wrote:
-> On 12/8/20 9:28 AM, Joao Martins wrote:
-> > Add a new flag for struct dev_pagemap which designates that a a pagemap
+On Tue, Dec 08, 2020 at 03:57:54PM -0400, Jason Gunthorpe wrote:
+> What we've talked about is changing the calling convention across all
+> of this to something like:
 > 
-> a a
+> struct gup_output {
+>    struct page **cur;
+>    struct page **end;
+>    unsigned long vaddr;
+>    [..]
+> }
 > 
-> > is described as a set of compound pages or in other words, that how
-> > pages are grouped together in the page tables are reflected in how we
-> > describe struct pages. This means that rather than initializing
-> > individual struct pages, we also initialize these struct pages, as
+> And making the manipulator like you saw for GUP common:
 > 
-> Let's not say "rather than x, we also do y", because it's self-contradictory.
-> I think you want to just leave out the "also", like this:
+> gup_output_single_page()
+> gup_output_pages()
 > 
-> "This means that rather than initializing> individual struct pages, we
-> initialize these struct pages ..."
+> Then putting this eveywhere. This is the pattern that we ended up with
+> in hmm_range_fault, and it seems to be working quite well.
 > 
-> Is that right?
+> fast/slow should be much more symmetric in code than they are today,
+> IMHO.. I think those differences mainly exist because it used to be
+> siloed in arch code. Some of the differences might be bugs, we've seen
+> that a few times at least..
 
-I'd phrase it as:
+something like this:
 
-Add a new flag for struct dev_pagemap which specifies that a pagemap is
-composed of a set of compound pages instead of individual pages.  When
-these pages are initialised, most are initialised as tail pages
-instead of order-0 pages.
+http://git.infradead.org/users/hch/misc.git/commitdiff/c3d019802dbde5a4cc4160e7ec8ccba479b19f97
 
-> > For certain ZONE_DEVICE users, like device-dax, which have a fixed page
-> > size, this creates an opportunity to optimize GUP and GUP-fast walkers,
-> > thus playing the same tricks as hugetlb pages.
+from this old and not fully working series:
 
-Rather than "playing the same tricks", how about "are treated the same
-way as THP or hugetlb pages"?
-
-> > +	if (pgmap->flags & PGMAP_COMPOUND)
-> > +		percpu_ref_get_many(pgmap->ref, (pfn_end(pgmap, range_id)
-> > +			- pfn_first(pgmap, range_id)) / PHYS_PFN(pgmap->align));
-> 
-> Is there some reason that we cannot use range_len(), instead of pfn_end() minus
-> pfn_first()? (Yes, this more about the pre-existing code than about your change.)
-> 
-> And if not, then why are the nearby range_len() uses OK? I realize that range_len()
-> is simpler and skips a case, but it's not clear that it's required here. But I'm
-> new to this area so be warned. :)
-> 
-> Also, dividing by PHYS_PFN() feels quite misleading: that function does what you
-> happen to want, but is not named accordingly. Can you use or create something
-> more accurately named? Like "number of pages in this large page"?
-
-We have compound_nr(), but that takes a struct page as an argument.
-We also have HPAGE_NR_PAGES.  I'm not quite clear what you want.
+http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/gup-bvec
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
