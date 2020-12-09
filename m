@@ -2,146 +2,260 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027592D39B1
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 05:43:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAEB2D3A13
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 06:06:58 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 41C93100EBB96;
-	Tue,  8 Dec 2020 20:43:57 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::643; helo=mail-ej1-x643.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 98493100EB849;
+	Tue,  8 Dec 2020 21:06:56 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.228.121.65; helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN> 
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com [216.228.121.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 04FFA100EC1F6
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 20:43:54 -0800 (PST)
-Received: by mail-ej1-x643.google.com with SMTP id a16so197058ejj.5
-        for <linux-nvdimm@lists.01.org>; Tue, 08 Dec 2020 20:43:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FUrmxEO3EocQCKBqXbu/B7dSx4PYVYZQ47UYqUANeRs=;
-        b=lxQSr0ZvyGH7ZxNH0yVKwuB/dvBR7YHjknj+/jVPzPBnyMT+P8vmRYFE+fb1T7YHnn
-         42eWfv02nUF6QlzlqqzdZmGWAJSVX9t6RAvw12wgBQHadrK+yJxZkh4eb7wt5KEqxRgh
-         iWpHwkRl92j3SMHDjsWs/YgswLRO1LvRav1WalqiXkCuXSGlBYjWSeszQiD97JfuE+NG
-         zHThTsnYUtaC4HWYLPOfUEfiDgadKRTPi2Y/mSZNM2YRymCcAsteY1dEYQpiO5X/Ww/7
-         7jOQViTeqbd22j9dtssBQ89nwpCH9p3p1UnudqnudDa9n/V3YL8thTD96kuy6DyEOCb+
-         M5Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FUrmxEO3EocQCKBqXbu/B7dSx4PYVYZQ47UYqUANeRs=;
-        b=uM+WDEUvq+oYcRLOOzDWM91elN+r/AOpK9pe+MeKHHfT2ZqWxS/dFS86G0P/WJSjDE
-         CTKBwyEDJ5lE2sOmKXEP1+pxWdzVWUixEIcv/NBlm3GNduWYNbujbV3JM9hYPgwT7lEu
-         c9jNk3kX/bxJl7jE1JHP7i2nlcataCmlwZcxr+r1fgA68DrRK3lnGs+xPH0ODaSvpjlG
-         jHQr87SpcpC/KMVkqFQhETBvann6jyJLfxq6RUqLS7CjJBXyT3wLC3/sBBIwbOiSZbSs
-         IuOGDm0qe6EdJmdtMGwMz1WU1GpAr2iBtiQ9shLs1PzSpvi/vkiOklamS7Kv8kJa0E/N
-         vJfw==
-X-Gm-Message-State: AOAM530pKZz/1nqSDvrG3mZc96J4Ta5LE84jCMS6Af1iwg2UGk5d6c20
-	3Wn4BEJ8efyyWk0QBA0at0NinHGSlquYBoJV/FzX1g==
-X-Google-Smtp-Source: ABdhPJzYbTraD4idxG5ZzM47YKKfO5xV04/SVh2kbWiRas2FAbzSANABL3asY3bHLW8fNryKqlaqMfJG2Myi7VX50NU=
-X-Received: by 2002:a17:906:a29a:: with SMTP id i26mr537717ejz.45.1607489033347;
- Tue, 08 Dec 2020 20:43:53 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 45FA2100EB845
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 21:06:53 -0800 (PST)
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+	id <B5fd05b6c0000>; Tue, 08 Dec 2020 21:06:52 -0800
+Received: from [10.2.60.96] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 9 Dec
+ 2020 05:06:51 +0000
+Subject: Re: [PATCH RFC 7/9] mm/gup: Decrement head page once for group of
+ subpages
+To: Jason Gunthorpe <jgg@ziepe.ca>, Joao Martins <joao.m.martins@oracle.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>
+References: <20201208172901.17384-1-joao.m.martins@oracle.com>
+ <20201208172901.17384-9-joao.m.martins@oracle.com>
+ <20201208193446.GP5487@ziepe.ca>
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <08d33a4e-5722-6a0a-cca4-9c476afcc228@nvidia.com>
+Date: Tue, 8 Dec 2020 21:06:50 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
+ Thunderbird/84.0
 MIME-Version: 1.0
-References: <20201006010013.848302-1-santosh@fossix.org> <CAPcyv4jEpw2Yvj1eVNaW6z7D=pf31w1cQXuF9ymqxckhxANeCQ@mail.gmail.com>
- <50842a9b-2ff8-2623-fe00-7c91e9405131@linux.ibm.com>
-In-Reply-To: <50842a9b-2ff8-2623-fe00-7c91e9405131@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 8 Dec 2020 20:43:51 -0800
-Message-ID: <CAPcyv4isaiWqBPGymyAmbrAhH31C96wUsrRq5Oeuv7F=ko_hsg@mail.gmail.com>
-Subject: Re: [PATCH RFC v3] testing/nvdimm: Add test module for non-nfit platforms
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID-Hash: JSQSR2DVQLWVY6UL7P2ISV63BJUCD2M4
-X-Message-ID-Hash: JSQSR2DVQLWVY6UL7P2ISV63BJUCD2M4
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+In-Reply-To: <20201208193446.GP5487@ziepe.ca>
+Content-Language: en-US
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+	t=1607490412; bh=fIDknUUudGSVbW2H+BlrofsyqRmzGu1N36B+onQkKnk=;
+	h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
+	 MIME-Version:In-Reply-To:Content-Type:Content-Language:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+	b=j4qEA+ZWLpk/UQ0qOcDL05DjJ5CIZmPgZ92i3SdY3xE+2ktKJZchsQwEeIn1xxAhY
+	 JJ9UfrA3XNHDpEveBVF3HigkA2RjcFW4NjjuMiob7njZOHqA3oRFDv1/M9ojkDx+nn
+	 6SeJL9XPkuzFSL7peB7vHN/hIWf9dEr8EQA7XPXb+xLgEEyoe0I7Q1mz6IhpuIwizG
+	 i84+WQja6hG13koHtBHZcR9yQrV2WMoowVI5xeTPcRuXihxQy0cbIHOJ7F2/6PEDbE
+	 kErkA5frRs+RBMlaWRipAsQ52dbMauKMju84XVzAsnWspwUfnbpdkK5zSWIl4OOi/o
+	 YN9XjJbMVqQXg==
+Message-ID-Hash: EIQ4B7ZWZDDELFHODMZRBF3WNW34JZGY
+X-Message-ID-Hash: EIQ4B7ZWZDDELFHODMZRBF3WNW34JZGY
+X-MailFrom: jhubbard@nvidia.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>, Andrew@ml01.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JSQSR2DVQLWVY6UL7P2ISV63BJUCD2M4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EIQ4B7ZWZDDELFHODMZRBF3WNW34JZGY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 8, 2020 at 8:17 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 12/8/20 3:30 AM, Dan Williams wrote:
-> > On Mon, Oct 5, 2020 at 6:01 PM Santosh Sivaraj <santosh@fossix.org> wrote:
-> >
->
-> ...
->
-> >> +static int ndtest_blk_do_io(struct nd_blk_region *ndbr, resource_size_t dpa,
-> >> +               void *iobuf, u64 len, int rw)
-> >> +{
-> >> +       struct ndtest_dimm *dimm = ndbr->blk_provider_data;
-> >> +       struct ndtest_blk_mmio *mmio = dimm->mmio;
-> >> +       struct nd_region *nd_region = &ndbr->nd_region;
-> >> +       unsigned int lane;
-> >> +
-> >> +       lane = nd_region_acquire_lane(nd_region);
-> >> +
-> >> +       if (rw)
-> >> +               memcpy(mmio->base + dpa, iobuf, len);
-> >> +       else {
-> >> +               memcpy(iobuf, mmio->base + dpa, len);
-> >> +               arch_invalidate_pmem(mmio->base + dpa, len);
-> >> +       }
-> >> +
-> >> +       nd_region_release_lane(nd_region, lane);
-> >> +
-> >> +       return 0;
-> >> +}
-> >> +
-> >> +static int ndtest_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
-> >> +                                   struct device *dev)
-> >> +{
-> >> +       struct nd_blk_region *ndbr = to_nd_blk_region(dev);
-> >> +       struct nvdimm *nvdimm;
-> >> +       struct ndtest_dimm *p;
-> >> +       struct ndtest_blk_mmio *mmio;
-> >> +
-> >> +       nvdimm = nd_blk_region_to_dimm(ndbr);
-> >> +       p = nvdimm_provider_data(nvdimm);
-> >> +
-> >> +       nd_blk_region_set_provider_data(ndbr, p);
-> >> +       p->region = to_nd_region(dev);
-> >> +
-> >> +       mmio = devm_kzalloc(dev, sizeof(struct ndtest_blk_mmio), GFP_KERNEL);
-> >> +       if (!mmio)
-> >> +               return -ENOMEM;
-> >> +
-> >> +       mmio->base = devm_nvdimm_memremap(dev, p->address, 12,
-> >> +                                        nd_blk_memremap_flags(ndbr));
-> >> +       if (!mmio->base) {
-> >> +               dev_err(dev, "%s failed to map blk dimm\n", nvdimm_name(nvdimm));
-> >> +               return -ENOMEM;
-> >> +       }
-> >> +
-> >> +       p->mmio = mmio;
-> >> +
-> >> +       return 0;
-> >> +}
-> >
-> > Are there any ppc nvdimm that will use BLK mode? As far as I know
-> > BLK-mode is only an abandoned mechanism in the ACPI specification, not
-> > anything that has made it into a shipping implementation. I'd prefer
-> > to not extend it if it's not necessary.
-> >
-> That is correct. There is no BLK mode/type usage in ppc64. But IIUC, we
-> also had difficulty in isolating the BLK test to ACPI systems. The test
-> code had dependencies and splitting that out was making it complex.
+On 12/8/20 11:34 AM, Jason Gunthorpe wrote:
+> On Tue, Dec 08, 2020 at 05:28:59PM +0000, Joao Martins wrote:
+>> Rather than decrementing the ref count one by one, we
+>> walk the page array and checking which belong to the same
+>> compound_head. Later on we decrement the calculated amount
+>> of references in a single write to the head page.
+>>
+>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+>>   mm/gup.c | 41 ++++++++++++++++++++++++++++++++---------
+>>   1 file changed, 32 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 194e6981eb03..3a9a7229f418 100644
+>> +++ b/mm/gup.c
+>> @@ -212,6 +212,18 @@ static bool __unpin_devmap_managed_user_page(struct page *page)
+>>   }
+>>   #endif /* CONFIG_DEV_PAGEMAP_OPS */
+>>   
+>> +static int record_refs(struct page **pages, int npages)
+>> +{
+>> +	struct page *head = compound_head(pages[0]);
+>> +	int refs = 1, index;
+>> +
+>> +	for (index = 1; index < npages; index++, refs++)
+>> +		if (compound_head(pages[index]) != head)
+>> +			break;
+>> +
+>> +	return refs;
+>> +}
+>> +
+>>   /**
+>>    * unpin_user_page() - release a dma-pinned page
+>>    * @page:            pointer to page to be released
+>> @@ -221,9 +233,9 @@ static bool __unpin_devmap_managed_user_page(struct page *page)
+>>    * that such pages can be separately tracked and uniquely handled. In
+>>    * particular, interactions with RDMA and filesystems need special handling.
+>>    */
+>> -void unpin_user_page(struct page *page)
+>> +static void __unpin_user_page(struct page *page, int refs)
+> 
+> Refs should be unsigned everywhere.
 
-I wouldn't be opposed to an "if (nfit_test)" gate for the BLK tests.
-Whatever is easiest for you because I'm just thrilled to be able to
-regression test the ppc infrastructure, i.e. no need to spend extra
-effort making the tests perfect.
+That's fine (although, see my comments in the previous patch for
+pitfalls). But it should be a preparatory patch, in order to avoid
+clouding up this one and your others as well.
+
+
+> 
+> I suggest using clear language 'page' here should always be a compound
+> head called 'head' (or do we have another common variable name for
+> this?)
+> 
+
+Agreed. Matthew's struct folio upgrade will allow us to really make
+things clear in a typesafe way, but meanwhile, it's probably good to use
+one of the following patterns:
+
+page = compound_head(page); // at the very beginning of a routine
+
+or
+
+do_things_to_this_single_page(page);
+
+head = compound_head(page);
+do_things_to_this_compound_page(head);
+
+
+> 'refs' is number of tail pages within the compound, so 'ntails' or
+> something
+> 
+
+I think it's OK to leave it as "refs", because within gup.c, refs has
+a very particular meaning. But if you change to ntails or something, I'd
+want to see a complete change: no leftovers of refs that are really ntails.
+
+So far I'd rather leave it as refs, but it's not a big deal either way.
+
+>>   {
+>> -	int refs = 1;
+>> +	int orig_refs = refs;
+>>   
+>>   	page = compound_head(page);
+> 
+> Caller should always do this
+> 
+>> @@ -237,14 +249,19 @@ void unpin_user_page(struct page *page)
+>>   		return;
+>>   
+>>   	if (hpage_pincount_available(page))
+>> -		hpage_pincount_sub(page, 1);
+>> +		hpage_pincount_sub(page, refs);
+
+Maybe a nice touch would be to pass in orig_refs, because there
+is no intention to use a possibly modified refs. So:
+
+		hpage_pincount_sub(page, orig_refs);
+
+...obviously a fine point, I realize. :)
+
+>>   	else
+>> -		refs = GUP_PIN_COUNTING_BIAS;
+>> +		refs *= GUP_PIN_COUNTING_BIAS;
+>>   
+>>   	if (page_ref_sub_and_test(page, refs))
+>>   		__put_page(page);
+>>   
+>> -	mod_node_page_state(page_pgdat(page), NR_FOLL_PIN_RELEASED, 1);
+>> +	mod_node_page_state(page_pgdat(page), NR_FOLL_PIN_RELEASED, orig_refs);
+>> +}
+> 
+> And really this should be placed directly after
+> try_grab_compound_head() and be given a similar name
+> 'unpin_compound_head()'. Even better would be to split the FOLL_PIN
+> part into a function so there was a clear logical pairing.
+> 
+> And reviewing it like that I want to ask if this unpin sequence is in
+> the right order.. I would expect it to be the reverse order of the get
+> 
+> John?
+> 
+> Is it safe to call mod_node_page_state() after releasing the refcount?
+> This could race with hot-unplugging the struct pages so I think it is
+> wrong.
+
+Yes, I think you are right! I wasn't in a hot unplug state of mind when I
+thought about the ordering there, but I should have been. :)
+
+> 
+>> +void unpin_user_page(struct page *page)
+>> +{
+>> +	__unpin_user_page(page, 1);
+> 
+> Thus this is
+> 
+> 	__unpin_user_page(compound_head(page), 1);
+> 
+>> @@ -274,6 +291,7 @@ void unpin_user_pages_dirty_lock(struct page **pages, unsigned long npages,
+>>   				 bool make_dirty)
+>>   {
+>>   	unsigned long index;
+>> +	int refs = 1;
+>>   
+>>   	/*
+>>   	 * TODO: this can be optimized for huge pages: if a series of pages is
+
+I think you can delete this TODO block now, and the one in unpin_user_pages_dirty_lock(),
+as a result of these changes.
+
+>> @@ -286,8 +304,9 @@ void unpin_user_pages_dirty_lock(struct page **pages, unsigned long npages,
+>>   		return;
+>>   	}
+>>   
+>> -	for (index = 0; index < npages; index++) {
+>> +	for (index = 0; index < npages; index += refs) {
+>>   		struct page *page = compound_head(pages[index]);
+>> +
+> 
+> I think this is really hard to read, it should end up as some:
+> 
+> for_each_compond_head(page_list, page_list_len, &head, &ntails) {
+>         		if (!PageDirty(head))
+> 			set_page_dirty_lock(head, ntails);
+> 		unpin_user_page(head, ntails);
+> }
+> 
+> And maybe you open code that iteration, but that basic idea to find a
+> compound_head and ntails should be computational work performed.
+> 
+> No reason not to fix set_page_dirty_lock() too while you are here.
+
+Eh? What's wrong with set_page_dirty_lock() ?
+
+> 
+> Also, this patch and the next can be completely independent of the
+> rest of the series, it is valuable regardless of the other tricks. You
+> can split them and progress them independently.
+> 
+> .. and I was just talking about this with Daniel Jordan and some other
+> people at your company :)
+> 
+> Thanks,
+> Jason
+> 
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
