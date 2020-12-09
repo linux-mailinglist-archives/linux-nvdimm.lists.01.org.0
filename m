@@ -1,51 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0AA2D3CDB
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 09:05:59 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A45A2D3EE9
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 10:39:13 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AE61D100EB84C;
-	Wed,  9 Dec 2020 00:05:57 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+e0880fbf4cc9d17ed03f+6317+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id BC3A8100EC1D7;
+	Wed,  9 Dec 2020 01:39:10 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EDD5B100EBBB9
-	for <linux-nvdimm@lists.01.org>; Wed,  9 Dec 2020 00:05:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4hfTv8EUe0KsPWmE2eRd4b2JnwYY+QPsnZBZ4Qx1KNs=; b=LlzutYCflnlSNZasF4C5o5YnzV
-	xfQEjDBfr7n1d8JcX6HcuELmy0Pktq2arxGfWtnZvjaNuXebwhXC4U74OwkNl+r9AqglHmf9BM5ul
-	lwcE/FI4gVsmvMVsTWfN388NoGSDYz4fP1stYwhMVyCPSPNOdn7vhmUuEatamxBttLu16IDA82vg/
-	vq6o1uFcG8zP6nFljjB/SoOwNp9ZQ7/0EQMc27R7hoJCqVby7kNdA2gi2HEzBy03OvzfzDVWr6XOj
-	IZIGPQTM/hFcPYSR3j+GZ8TL2l/GRsUQOOoD0avQDxPIJldmrXM4Wh0SLjjC5LMlQeZoKPxYsI78O
-	DspufR7g==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kmuTj-0003sX-ET; Wed, 09 Dec 2020 08:05:39 +0000
-Date: Wed, 9 Dec 2020 08:05:39 +0000
-From: Christoph Hellwig <hch@infradead.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH RFC 9/9] mm: Add follow_devmap_page() for devdax vmas
-Message-ID: <20201209080539.GA12507@infradead.org>
+	by ml01.01.org (Postfix) with ESMTPS id 0E0EE100EF24F
+	for <linux-nvdimm@lists.01.org>; Wed,  9 Dec 2020 01:39:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1607506744;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=62CVn8KHlXPzOpNMJKaf07SHFbrMhmdZjfzPAXyPBAY=;
+	b=P9WzFYZIWLS9132BU5VRpgM9Yhhp+G3tWtZt/4Qy+cLTtZ9yNyLwCf0yd+APHiyT5YB13C
+	sq/jLfMf/QdsqbjOq4/SGxuUSzyEojnyU3c42sdsoiLAedPUr5zVHqO+9h97ES+mauyaSf
+	0CwBqDqOcpvy1zNIMnHV8ur0fHrEYWQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-403-RK281QjPOfeFZWLjYFZrug-1; Wed, 09 Dec 2020 04:39:02 -0500
+X-MC-Unique: RK281QjPOfeFZWLjYFZrug-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CDB9081CBF5;
+	Wed,  9 Dec 2020 09:38:59 +0000 (UTC)
+Received: from [10.36.114.167] (ovpn-114-167.ams2.redhat.com [10.36.114.167])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8349A60BF1;
+	Wed,  9 Dec 2020 09:38:57 +0000 (UTC)
+Subject: Re: [PATCH RFC 0/9] mm, sparse-vmemmap: Introduce compound pagemaps
+To: Joao Martins <joao.m.martins@oracle.com>, linux-mm@kvack.org
 References: <20201208172901.17384-1-joao.m.martins@oracle.com>
- <20201208172901.17384-11-joao.m.martins@oracle.com>
- <20201208195754.GR5487@ziepe.ca>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Message-ID: <3d6923af-2684-cbdc-928c-2d849cc2062b@redhat.com>
+Date: Wed, 9 Dec 2020 10:38:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201208195754.GR5487@ziepe.ca>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: QAKSKWWI35BQUBG4GAN6VT73O3BB6IC7
-X-Message-ID-Hash: QAKSKWWI35BQUBG4GAN6VT73O3BB6IC7
-X-MailFrom: BATV+e0880fbf4cc9d17ed03f+6317+infradead.org+hch@casper.srs.infradead.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Joao Martins <joao.m.martins@oracle.com>, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+In-Reply-To: <20201208172901.17384-1-joao.m.martins@oracle.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Message-ID-Hash: BVRCC6BH5IGPNPISE4VZP6MNGUQJMTPC
+X-Message-ID-Hash: BVRCC6BH5IGPNPISE4VZP6MNGUQJMTPC
+X-MailFrom: david@redhat.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QAKSKWWI35BQUBG4GAN6VT73O3BB6IC7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BVRCC6BH5IGPNPISE4VZP6MNGUQJMTPC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,37 +70,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 08, 2020 at 03:57:54PM -0400, Jason Gunthorpe wrote:
-> What we've talked about is changing the calling convention across all
-> of this to something like:
+On 08.12.20 18:28, Joao Martins wrote:
+> Hey,
 > 
-> struct gup_output {
->    struct page **cur;
->    struct page **end;
->    unsigned long vaddr;
->    [..]
-> }
+> This small series, attempts at minimizing 'struct page' overhead by
+> pursuing a similar approach as Muchun Song series "Free some vmemmap
+> pages of hugetlb page"[0] but applied to devmap/ZONE_DEVICE. 
 > 
-> And making the manipulator like you saw for GUP common:
+> [0] https://lore.kernel.org/linux-mm/20201130151838.11208-1-songmuchun@bytedance.com/
 > 
-> gup_output_single_page()
-> gup_output_pages()
+> The link above describes it quite nicely, but the idea is to reuse tail
+> page vmemmap areas, particular the area which only describes tail pages.
+> So a vmemmap page describes 64 struct pages, and the first page for a given
+> ZONE_DEVICE vmemmap would contain the head page and 63 tail pages. The second
+> vmemmap page would contain only tail pages, and that's what gets reused across
+> the rest of the subsection/section. The bigger the page size, the bigger the
+> savings (2M hpage -> save 6 vmemmap pages; 1G hpage -> save 4094 vmemmap pages).
 > 
-> Then putting this eveywhere. This is the pattern that we ended up with
-> in hmm_range_fault, and it seems to be working quite well.
+> In terms of savings, per 1Tb of memory, the struct page cost would go down
+> with compound pagemap:
 > 
-> fast/slow should be much more symmetric in code than they are today,
-> IMHO.. I think those differences mainly exist because it used to be
-> siloed in arch code. Some of the differences might be bugs, we've seen
-> that a few times at least..
+> * with 2M pages we lose 4G instead of 16G (0.39% instead of 1.5% of total memory)
+> * with 1G pages we lose 8MB instead of 16G (0.0007% instead of 1.5% of total memory)
+> 
 
-something like this:
+That's the dream :)
 
-http://git.infradead.org/users/hch/misc.git/commitdiff/c3d019802dbde5a4cc4160e7ec8ccba479b19f97
+> Along the way I've extended it past 'struct page' overhead *trying* to address a
+> few performance issues we knew about for pmem, specifically on the
+> {pin,get}_user_pages* function family with device-dax vmas which are really
+> slow even of the fast variants. THP is great on -fast variants but all except
+> hugetlbfs perform rather poorly on non-fast gup.
+> 
+> So to summarize what the series does:
+> 
+> Patches 1-5: Much like Muchun series, we reuse tail page areas across a given
+> page size (namely @align was referred by remaining memremap/dax code) and
+> enabling of memremap to initialize the ZONE_DEVICE pages as compound pages or a
+> given @align order. The main difference though, is that contrary to the hugetlbfs
+> series, there's no vmemmap for the area, because we are onlining it.
 
-from this old and not fully working series:
+Yeah, I'd argue that this case is a lot easier to handle. When the buddy
+is involved, things get more complicated.
 
-http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/gup-bvec
+-- 
+Thanks,
+
+David / dhildenb
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
