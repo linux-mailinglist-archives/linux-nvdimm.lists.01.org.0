@@ -1,175 +1,203 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529C12D3779
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 01:20:26 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5EC2D3895
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 03:09:56 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 87AD0100EC1C3;
-	Tue,  8 Dec 2020 16:20:24 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=jane.chu@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 97341100EB847;
+	Tue,  8 Dec 2020 18:09:54 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7D8F2100ED4BB
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 16:20:19 -0800 (PST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B90K9s1089528;
-	Wed, 9 Dec 2020 00:20:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=j9tnf+gfvO0ufEAxyR2ChrMzeMfCfvBzgaDibcY+CaU=;
- b=V59sG+JuU9qhlZGI4BrF+NZFGTuf2DN/TCwM+V9zgfZquAwj/dXwdVc1g/sa0VmKlCFx
- FKcaB67peR6VHvJWPQLtRU0tzMmU6+/QTC+CkgLY6PQL8tErdV/9r7obH4URwYvEgLAT
- LaBup94W+8KIr478PcpKv8np6/ljmh8hkwi8WgtMs7kywWTO4/9aE2HB9Jmhzh/X89+T
- 4X2TbJKlZYMZF+JG3SySr92Q0uPSjjtsbiKzipjLV82uZUs9l7AhSKAS47okcj/nr7gd
- qb2BDReOFYaGpiPf5kNOMq4tKTf4ZjvJwIqz3JoNc9hSWhSWKSoix50Xkk29HfID3EBV aQ==
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by userp2130.oracle.com with ESMTP id 3581mqwmft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 09 Dec 2020 00:20:09 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B90Atqn053706;
-	Wed, 9 Dec 2020 00:20:09 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-	by userp3020.oracle.com with ESMTP id 358kytquy8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 09 Dec 2020 00:20:09 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B90K86n021037;
-	Wed, 9 Dec 2020 00:20:08 GMT
-Received: from [10.159.230.58] (/10.159.230.58)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 08 Dec 2020 16:20:08 -0800
-Subject: Re: [ndctl PATCH V2 0/8] fix serverl issues reported by Coverity
-To: Zhiqiang Liu <liuzhiqiang26@huawei.com>,
-        "Verma, Vishal L" <vishal.l.verma@intel.com>
-References: <3211fe8a-33fb-37ca-e192-ad1f116f4acd@huawei.com>
-From: Jane Chu <jane.chu@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <c8a8a260-34c6-dbfc-1f19-25c23d01cb45@oracle.com>
-Date: Tue, 8 Dec 2020 16:20:06 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+	by ml01.01.org (Postfix) with ESMTPS id 7BE15100EB846
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 18:09:52 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id j13so39958pjz.3
+        for <linux-nvdimm@lists.01.org>; Tue, 08 Dec 2020 18:09:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=UBQIONZ0hiRZEX45td2zbbDAEz5jWMsRaPeE5x/dG9Y=;
+        b=l2c5a5zJYWODtRE69w8EPO4BXm9EHC2Rmhyxiesti8IgoNWActdU1SKkXw3s4sv01z
+         dz9T5pNOm3k84ZqdYmg6Tg83TxXKAC8aqN9RZx3xYSYnU4IKrez8s/rUsvLJHPQ6LajF
+         xDipXDqa1fT5VAgEAswDEH+pdRXDce+Gp4F0yvBVPps7BjDnCW7bEbqCl6xZ7PKu56iw
+         LsCn8OXq01O6LpCGCzslOECo+OuOLNY8TgfdAlxD+EiEYvfyYIWn7w7d0zpHiElPOcTH
+         vH7cghaoPr/ylfBPOMughhur8+9kMYz3UBLX6R273RcJdNWeLrlGiU8HTWzCCTx2IGVX
+         w1lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=UBQIONZ0hiRZEX45td2zbbDAEz5jWMsRaPeE5x/dG9Y=;
+        b=OYkDhmoO/bRISb+4mKNvFuewVky//8gXkNhDXtPVnOmTVqHveQXjpscZUT+3kjjcpQ
+         YD4hH/jJLiLoObFzu0+z4fWBhx9Q3YnFtrlt0o5QF+65t5Z2IY522KOdAXI/nKcQyNQy
+         Dodadfy7OHRIoxrKhzXuoX/gLv/yBVKcIbXoCu39jnqFA7VQ7EXyYQqG7sUl1cw3HKtc
+         r3ZvYcKyML+8Qp7CwMJ+M+trWLC//B/DCXlh0g71Xfwqg86chzim446KU7G8MqJSyndl
+         xzcT39ic+SFRI9pyHRAJEBMmMnyQ95jpYBdlAtgq06wG7UP481qufHzqauMyH9Fw6rOG
+         n1rQ==
+X-Gm-Message-State: AOAM531BEfUK34x8FjyHrG/ZtmqCb+S9fYG7SmigAeEGfKmzaYj96N3q
+	d4vU7zOC67yJprR9xNxofCTBoQ==
+X-Google-Smtp-Source: ABdhPJzyQH7xhvlufl1pTIVH8zBoyexXgZ+QOG48g0KnyyyC3prNuE6s8H2uLXbwNniXmiGvhQEzTw==
+X-Received: by 2002:a17:90b:243:: with SMTP id fz3mr106743pjb.41.1607479791731;
+        Tue, 08 Dec 2020 18:09:51 -0800 (PST)
+Received: from localhost ([103.21.79.4])
+        by smtp.gmail.com with ESMTPSA id w73sm118425pfd.203.2020.12.08.18.09.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Dec 2020 18:09:51 -0800 (PST)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [ndctl RFC v4 1/3] libndctl: test enablement for non-nfit devices
+In-Reply-To: <CAPcyv4gP-jg1ckg-34fAHmSqhPkr1Q2QOyr9vxe2abJpVrcdkQ@mail.gmail.com>
+References: <20201108121723.2089939-1-santosh@fossix.org>
+ <20201108122016.2090891-1-santosh@fossix.org>
+ <CAPcyv4gP-jg1ckg-34fAHmSqhPkr1Q2QOyr9vxe2abJpVrcdkQ@mail.gmail.com>
+Date: Wed, 09 Dec 2020 07:39:48 +0530
+Message-ID: <87zh2n4tn7.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <3211fe8a-33fb-37ca-e192-ad1f116f4acd@huawei.com>
-Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012080152
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012090000
-Message-ID-Hash: JHZCNMYRGL3KLF75UJEML7ZPKJCJSCSX
-X-Message-ID-Hash: JHZCNMYRGL3KLF75UJEML7ZPKJCJSCSX
-X-MailFrom: jane.chu@oracle.com
+Message-ID-Hash: 4DCE6KCGUGXS3AVR4LNTOFUHFDEYCZ5H
+X-Message-ID-Hash: 4DCE6KCGUGXS3AVR4LNTOFUHFDEYCZ5H
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, linfeilong <linfeilong@huawei.com>
+CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JHZCNMYRGL3KLF75UJEML7ZPKJCJSCSX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4DCE6KCGUGXS3AVR4LNTOFUHFDEYCZ5H/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi,
+Dan Williams <dan.j.williams@intel.com> writes:
 
-I actually just ran into the NULL deref issue that is fixed here.
+> On Sun, Nov 8, 2020 at 4:21 AM Santosh Sivaraj <santosh@fossix.org> wrote:
+>>
+>> Don't fail is nfit module is missing, this will happen in
+>> platforms that don't have ACPI support. Add attributes to
+>> PAPR dimm family that are independent of platforms like the
+>> test dimms.
+>>
+>> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+>> ---
+>>  ndctl/lib/libndctl.c | 52 ++++++++++++++++++++++++++++++++++++++++++++
+>>  test/core.c          |  6 +++++
+>>  2 files changed, 58 insertions(+)
+>>
+>> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+>> index ad521d3..d1f8e4e 100644
+>> --- a/ndctl/lib/libndctl.c
+>> +++ b/ndctl/lib/libndctl.c
+>> @@ -1655,6 +1655,54 @@ static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
+>>  static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
+>>  static struct kmod_module *to_module(struct ndctl_ctx *ctx, const char *alias);
+>>
+>> +static void populate_dimm_attributes(struct ndctl_dimm *dimm,
+>> +                                    const char *dimm_base)
+>> +{
+>> +       char buf[SYSFS_ATTR_SIZE];
+>> +       struct ndctl_ctx *ctx = dimm->bus->ctx;
+>> +       char *path = calloc(1, strlen(dimm_base) + 100);
+>> +
+>> +       sprintf(path, "%s/phys_id", dimm_base);
+>> +       if (sysfs_read_attr(ctx, path, buf) < 0)
+>> +               goto err_read;
+>> +       dimm->phys_id = strtoul(buf, NULL, 0);
+>> +
+>> +       sprintf(path, "%s/handle", dimm_base);
+>> +       if (sysfs_read_attr(ctx, path, buf) < 0)
+>> +               goto err_read;
+>> +       dimm->handle = strtoul(buf, NULL, 0);
+>> +
+>> +       sprintf(path, "%s/vendor", dimm_base);
+>> +       if (sysfs_read_attr(ctx, path, buf) == 0)
+>> +               dimm->vendor_id = strtoul(buf, NULL, 0);
+>> +
+>> +       sprintf(path, "%s/id", dimm_base);
+>> +       if (sysfs_read_attr(ctx, path, buf) == 0) {
+>> +               unsigned int b[9];
+>> +
+>> +               dimm->unique_id = strdup(buf);
+>> +               if (!dimm->unique_id)
+>> +                       goto err_read;
+>> +               if (sscanf(dimm->unique_id, "%02x%02x-%02x-%02x%02x-%02x%02x%02x%02x",
+>> +                                       &b[0], &b[1], &b[2], &b[3], &b[4],
+>> +                                       &b[5], &b[6], &b[7], &b[8]) == 9) {
+>> +                       dimm->manufacturing_date = b[3] << 8 | b[4];
+>> +                       dimm->manufacturing_location = b[2];
+>> +               }
+>> +       }
+>> +       sprintf(path, "%s/subsystem_vendor", dimm_base);
+>> +       if (sysfs_read_attr(ctx, path, buf) == 0)
+>> +               dimm->subsystem_vendor_id = strtoul(buf, NULL, 0);
+>> +
+>> +
+>> +       sprintf(path, "%s/dirty_shutdown", dimm_base);
+>> +       if (sysfs_read_attr(ctx, path, buf) == 0)
+>> +               dimm->dirty_shutdown = strtoll(buf, NULL, 0);
+>
+> These are fairly similar to the nfit ones... how about refactoring
+> this into a routine that takes a bus prefix and shares it between
+> "nfit" and "papr"...
+>
+> We might also consider unifying them into a standard set of attributes
+> that both the nfit-bus-provider and the papr-bus-provider export. I.e.
+> that nfit was wrong to place them under nfit/ and they should have
+> went somewhere generic from the beginning. The nfit compatibility can
+> be done with symlinks to the new common location.
+>
+>> +
+>> +err_read:
+>> +       free(path);
+>> +}
+>> +
+>>  static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+>>  {
+>>         int rc = -ENODEV;
+>> @@ -1685,6 +1733,10 @@ static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+>>                 rc = 0;
+>>         }
+>>
+>> +       /* add the available dimm attributes, the platform can override or add
+>> +        * additional attributes later */
+>> +       populate_dimm_attributes(dimm, dimm_base);
+>> +
+>>         free(path);
+>>         return rc;
+>>  }
+>> diff --git a/test/core.c b/test/core.c
+>> index 5118d86..0fd1011 100644
+>> --- a/test/core.c
+>> +++ b/test/core.c
+>> @@ -195,6 +195,12 @@ retry:
+>>
+>>                 path = kmod_module_get_path(*mod);
+>>                 if (!path) {
+>> +                       /* For non-nfit platforms it's ok if nfit module is
+>> +                        * missing */
+>> +                       if (strcmp(name, "nfit") == 0 ||
+>> +                           strcmp(name, "nd_e820") == 0)
+>> +                               continue;
+>
+> This breaks the safety it afforded on nfit platforms. Instead I think
+> this needs a couple changes:
+>
+> - rename nfit_test_init to ndctl_test_init
+> - add a parameter for whether the test is initializing for
+> nfit_test.ko or ndtest.ko.
 
-Bu I have a question for the experts:
-what might cause libndctl to run into the NULL deref like below ?
+Thanks for review Dan. I will make changes accordingly and send newer version
+without -ENOCOMMITMESSAGE error.
 
-Program terminated with signal 11, Segmentation fault.
-#0  ndctl_pfn_get_bus (pfn=pfn@entry=0x0) at libndctl.c:5540
-5540            return pfn->region->bus;
+Since I posted this only for the comments on the approach I took, I think I got
+how to proceed in terms on ndctl changes atleast. I will send a v5 soon enough.
 
-(gdb) print pfn
-$1 = (struct ndctl_pfn *) 0x0
-(gdb) frame 4
-#4  0x000000000040ca70 in setup_namespace (region=region@entry=0x109d910,
-     ndns=ndns@entry=0x10a7d40, p=p@entry=0x7ffd8ff73b90) at namespace.c:570
-570                     try(ndctl_dax, set_uuid, dax, uuid);
-(gdb) info locals
-__rc = <optimized out>
-dax = 0x0
-
-What I did was to let 2 threads run "create-namespace all" in a tight 
-loop, and 2 other threads run "destroy-namespace all" in a tight loop,
-while chasing an year old issue that randomly resurfaces -
-"nd_region region1: allocation underrun: 0x0 of 0x40000000 bytes"
-
-In addition, there are kmemleaks,
-# cat /sys/kernel/debug/kmemleak
-[..]
-unreferenced object 0xffff976bd46f6240 (size 64):
-   comm "ndctl", pid 23556, jiffies 4299514316 (age 5406.733s)
-   hex dump (first 32 bytes):
-     00 00 00 00 00 00 00 00 00 00 20 c3 37 00 00 00  .......... .7...
-     ff ff ff 7f 38 00 00 00 00 00 00 00 00 00 00 00  ....8...........
-   backtrace:
-     [<00000000064003cf>] __kmalloc_track_caller+0x136/0x379
-     [<00000000d85e3c52>] krealloc+0x67/0x92
-     [<00000000d7d3ba8a>] __alloc_dev_dax_range+0x73/0x25c
-     [<0000000027d58626>] devm_create_dev_dax+0x27d/0x416
-     [<00000000434abd43>] __dax_pmem_probe+0x1c9/0x1000 [dax_pmem_core]
-     [<0000000083726c1c>] dax_pmem_probe+0x10/0x1f [dax_pmem]
-     [<00000000b5f2319c>] nvdimm_bus_probe+0x9d/0x340 [libnvdimm]
-     [<00000000c055e544>] really_probe+0x230/0x48d
-     [<000000006cabd38e>] driver_probe_device+0x122/0x13b
-     [<0000000029c7b95a>] device_driver_attach+0x5b/0x60
-     [<0000000053e5659b>] bind_store+0xb7/0xc3
-     [<00000000d3bdaadc>] drv_attr_store+0x27/0x31
-     [<00000000949069c5>] sysfs_kf_write+0x4a/0x57
-     [<000000004a8b5adf>] kernfs_fop_write+0x150/0x1e5
-     [<00000000bded60f0>] __vfs_write+0x1b/0x34
-     [<00000000b92900f0>] vfs_write+0xd8/0x1d1
-
-
-thanks,
--jane
-
-
-On 11/24/2020 5:00 PM, Zhiqiang Liu wrote:
-> Changes: V1->V2
-> - add one empty line in 1/8 patch as suggested by Jeff Moyer <jmoyer@redhat.com>.
-> 
-> 
-> Recently, we use Coverity to analysis the ndctl package.
-> Several issues should be resolved to make Coverity happy.
-> 
-> Zhiqiang Liu (8):
->    namespace: check whether pfn|dax|btt is NULL in setup_namespace
->    lib/libndctl: fix memory leakage problem in add_bus
->    libdaxctl: fix memory leakage in add_dax_region()
->    dimm: fix potential fd leakage in dimm_action()
->    util/help: check whether strdup returns NULL in exec_man_konqueror
->    lib/inject: check whether cmd is created successfully
->    libndctl: check whether ndctl_btt_get_namespace returns NULL in
->      callers
->    namespace: check whether seed is NULL in validate_namespace_options
-> 
->   daxctl/lib/libdaxctl.c |  3 +++
->   ndctl/dimm.c           | 12 +++++++-----
->   ndctl/lib/inject.c     |  8 ++++++++
->   ndctl/lib/libndctl.c   |  1 +
->   ndctl/namespace.c      | 23 ++++++++++++++++++-----
->   test/libndctl.c        | 16 +++++++++++-----
->   test/parent-uuid.c     |  2 +-
->   util/help.c            |  8 +++++++-
->   util/json.c            |  3 +++
->   9 files changed, 59 insertions(+), 17 deletions(-)
-> 
+Thanks,
+Santosh
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
