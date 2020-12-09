@@ -1,86 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75BEB2D3986
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 05:17:46 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0C02D39AE
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 05:40:27 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A60FB100EC1DE;
-	Tue,  8 Dec 2020 20:17:44 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by ml01.01.org (Postfix) with ESMTP id BFD96100EC1F3;
+	Tue,  8 Dec 2020 20:40:25 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.228.121.65; helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN> 
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com [216.228.121.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E9113100EF275
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 20:17:42 -0800 (PST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0B944F8X192137;
-	Tue, 8 Dec 2020 23:17:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Vw7yOwYIDmlZUm0TaZ9ypdpSY/2h5srsFNIEmRkhsJM=;
- b=qtDN8JxGAhZbB9+XHo+IXKFlEnwB7cR9pJVISeaWcva5HNigkYN5WjSvA9ZoEWdbG7f1
- c3ofSvnyl13gICpR+JoKKKg8m+JKdDUkVXOhRw/GpBZnJGALE7gA9+HbiXEwdwvCI+Ne
- ZofUSpiwWuAbzCs2G2Vf0bslllBTdVNA+QvQ3u/Sa6xSBm2RJ7OoFbbZF38bAykl7Y7d
- S1K5bQs7bJGZxzXyCip/OJiCUizTaFiBo4yrCWCDLGtZb6JeVIND7INL2IciuMajtL0F
- lQBnzYA/2E6qrZeBbz0Rfq7a9NiDFILEtY892vRJ++w7537RCkSvqwbdToQH1UgMgf5i 2w==
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 35ageht39b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Dec 2020 23:17:40 -0500
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0B94CBij018156;
-	Wed, 9 Dec 2020 04:17:38 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma04fra.de.ibm.com with ESMTP id 3581u8253f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Dec 2020 04:17:38 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0B94HZqI31129918
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Dec 2020 04:17:35 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 29F074203F;
-	Wed,  9 Dec 2020 04:17:35 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CDD8842047;
-	Wed,  9 Dec 2020 04:17:32 +0000 (GMT)
-Received: from [9.199.38.90] (unknown [9.199.38.90])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed,  9 Dec 2020 04:17:32 +0000 (GMT)
-Subject: Re: [PATCH RFC v3] testing/nvdimm: Add test module for non-nfit
- platforms
-To: Dan Williams <dan.j.williams@intel.com>,
-        Santosh Sivaraj <santosh@fossix.org>
-References: <20201006010013.848302-1-santosh@fossix.org>
- <CAPcyv4jEpw2Yvj1eVNaW6z7D=pf31w1cQXuF9ymqxckhxANeCQ@mail.gmail.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <50842a9b-2ff8-2623-fe00-7c91e9405131@linux.ibm.com>
-Date: Wed, 9 Dec 2020 09:47:31 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+	by ml01.01.org (Postfix) with ESMTPS id 9A5F6100EC1DE
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 20:40:23 -0800 (PST)
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+	id <B5fd055360000>; Tue, 08 Dec 2020 20:40:22 -0800
+Received: from [10.2.60.96] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 9 Dec
+ 2020 04:40:20 +0000
+Subject: Re: [PATCH RFC 6/9] mm/gup: Grab head page refcount once for group of
+ subpages
+To: Joao Martins <joao.m.martins@oracle.com>, <linux-mm@kvack.org>
+References: <20201208172901.17384-1-joao.m.martins@oracle.com>
+ <20201208172901.17384-8-joao.m.martins@oracle.com>
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <6f729802-1e93-3036-3dba-be35e06af579@nvidia.com>
+Date: Tue, 8 Dec 2020 20:40:19 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
+ Thunderbird/84.0
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4jEpw2Yvj1eVNaW6z7D=pf31w1cQXuF9ymqxckhxANeCQ@mail.gmail.com>
+In-Reply-To: <20201208172901.17384-8-joao.m.martins@oracle.com>
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2020-12-09_03:2020-12-08,2020-12-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
- mlxlogscore=999 clxscore=1011 spamscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012090027
-Message-ID-Hash: DWA6Q4ZRVD62WWCC3X45R7KPOXDY4A6L
-X-Message-ID-Hash: DWA6Q4ZRVD62WWCC3X45R7KPOXDY4A6L
-X-MailFrom: aneesh.kumar@linux.ibm.com
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+	t=1607488822; bh=AvI+l2qvOZX8UUwCkWE7d1jqYBiHrEPru3IISbGvrx0=;
+	h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
+	 MIME-Version:In-Reply-To:Content-Type:Content-Language:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+	b=sLa5D3M0K1cQo3Jy4y8NsmrgyMQ/P6n54SKhU58y2saRyuO2iv+kPeabHixg8LEF5
+	 9LUJXfxXKFS/a0GTxyqUjkgstIqZe5SekplQd4DUPs5P+sfmSML2Vp2QktY3I2flZj
+	 4M9CxcDqRwzjWXpqVgs2faSYzAl3sy2hZGooHgLW67nxbp1tOjhp1uii9rh7xBBOIx
+	 5Fdj/uYq73Cgii1GRpGAcll8mkNFsi2WKBkih02h64/vL6c59EXSVlV3kHvLq+6BBE
+	 qpwv8CWSlTcLFvYXUSSvukhaysMCX852NumjqKVmFNWGDujRf5yl8Mxapn+h5Pl1YP
+	 1AcKv2c6oplPQ==
+Message-ID-Hash: LL6WDTPGEZN4NSMJIZCKWQRIPTMUPU5B
+X-Message-ID-Hash: LL6WDTPGEZN4NSMJIZCKWQRIPTMUPU5B
+X-MailFrom: jhubbard@nvidia.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+CC: linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>,
+	"Jason Gunthorpe  <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song" <songmuchun@bytedance.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>, Andrew@ml01.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DWA6Q4ZRVD62WWCC3X45R7KPOXDY4A6L/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LL6WDTPGEZN4NSMJIZCKWQRIPTMUPU5B/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -89,75 +65,177 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On 12/8/20 3:30 AM, Dan Williams wrote:
-> On Mon, Oct 5, 2020 at 6:01 PM Santosh Sivaraj <santosh@fossix.org> wrote:
->
-
-...
-
->> +static int ndtest_blk_do_io(struct nd_blk_region *ndbr, resource_size_t dpa,
->> +               void *iobuf, u64 len, int rw)
->> +{
->> +       struct ndtest_dimm *dimm = ndbr->blk_provider_data;
->> +       struct ndtest_blk_mmio *mmio = dimm->mmio;
->> +       struct nd_region *nd_region = &ndbr->nd_region;
->> +       unsigned int lane;
->> +
->> +       lane = nd_region_acquire_lane(nd_region);
->> +
->> +       if (rw)
->> +               memcpy(mmio->base + dpa, iobuf, len);
->> +       else {
->> +               memcpy(iobuf, mmio->base + dpa, len);
->> +               arch_invalidate_pmem(mmio->base + dpa, len);
->> +       }
->> +
->> +       nd_region_release_lane(nd_region, lane);
->> +
->> +       return 0;
->> +}
->> +
->> +static int ndtest_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
->> +                                   struct device *dev)
->> +{
->> +       struct nd_blk_region *ndbr = to_nd_blk_region(dev);
->> +       struct nvdimm *nvdimm;
->> +       struct ndtest_dimm *p;
->> +       struct ndtest_blk_mmio *mmio;
->> +
->> +       nvdimm = nd_blk_region_to_dimm(ndbr);
->> +       p = nvdimm_provider_data(nvdimm);
->> +
->> +       nd_blk_region_set_provider_data(ndbr, p);
->> +       p->region = to_nd_region(dev);
->> +
->> +       mmio = devm_kzalloc(dev, sizeof(struct ndtest_blk_mmio), GFP_KERNEL);
->> +       if (!mmio)
->> +               return -ENOMEM;
->> +
->> +       mmio->base = devm_nvdimm_memremap(dev, p->address, 12,
->> +                                        nd_blk_memremap_flags(ndbr));
->> +       if (!mmio->base) {
->> +               dev_err(dev, "%s failed to map blk dimm\n", nvdimm_name(nvdimm));
->> +               return -ENOMEM;
->> +       }
->> +
->> +       p->mmio = mmio;
->> +
->> +       return 0;
->> +}
+On 12/8/20 9:28 AM, Joao Martins wrote:
+> Much like hugetlbfs or THPs, we treat device pagemaps with
+> compound pages like the rest of GUP handling of compound pages.
 > 
-> Are there any ppc nvdimm that will use BLK mode? As far as I know
-> BLK-mode is only an abandoned mechanism in the ACPI specification, not
-> anything that has made it into a shipping implementation. I'd prefer
-> to not extend it if it's not necessary.
+> Rather than incrementing the refcount every 4K, we record
+> all sub pages and increment by @refs amount *once*.
 > 
-That is correct. There is no BLK mode/type usage in ppc64. But IIUC, we 
-also had difficulty in isolating the BLK test to ACPI systems. The test 
-code had dependencies and splitting that out was making it complex.
+> Performance measured by gup_benchmark improves considerably
+> get_user_pages_fast() and pin_user_pages_fast():
+> 
+>   $ gup_benchmark -f /dev/dax0.2 -m 16384 -r 10 -S [-u,-a] -n 512 -w
+
+"gup_test", now that you're in linux-next, actually.
+
+(Maybe I'll retrofit that test with getopt_long(), those options are
+getting more elaborate.)
+
+> 
+> (get_user_pages_fast 2M pages) ~75k us -> ~3.6k us
+> (pin_user_pages_fast 2M pages) ~125k us -> ~3.8k us
+
+That is a beautiful result! I'm very motivated to see if this patchset
+can make it in, in some form.
+
+> 
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> ---
+>   mm/gup.c | 67 ++++++++++++++++++++++++++++++++++++++++++--------------
+>   1 file changed, 51 insertions(+), 16 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 98eb8e6d2609..194e6981eb03 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2250,22 +2250,68 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+>   }
+>   #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
+>   
+> +
+> +static int record_subpages(struct page *page, unsigned long addr,
+> +			   unsigned long end, struct page **pages)
+> +{
+> +	int nr;
+> +
+> +	for (nr = 0; addr != end; addr += PAGE_SIZE)
+> +		pages[nr++] = page++;
+> +
+> +	return nr;
+> +}
+> +
+>   #if defined(CONFIG_ARCH_HAS_PTE_DEVMAP) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
+> -static int __gup_device_huge(unsigned long pfn, unsigned long addr,
+> -			     unsigned long end, unsigned int flags,
+> -			     struct page **pages, int *nr)
+> +static int __gup_device_compound_huge(struct dev_pagemap *pgmap,
+> +				      struct page *head, unsigned long sz,
+
+If this variable survives (I see Jason requested a reorg of this math stuff,
+and I also like that idea), then I'd like a slightly better name for "sz".
+
+I was going to suggest one, but then realized that I can't understand how this
+works. See below...
+
+> +				      unsigned long addr, unsigned long end,
+> +				      unsigned int flags, struct page **pages)
+> +{
+> +	struct page *page;
+> +	int refs;
+> +
+> +	if (!(pgmap->flags & PGMAP_COMPOUND))
+> +		return -1;
+
+btw, I'm unhappy with returning -1 here and assigning it later to a refs variable.
+(And that will show up even more clearly as an issue if you attempt to make
+refs unsigned everywhere!)
+
+I'm not going to suggest anything because there are a lot of ways to structure
+these routines, and I don't want to overly constrain you. Just please don't assign
+negative values to any refs variables.
+
+> +
+> +	page = head + ((addr & (sz-1)) >> PAGE_SHIFT);
+
+If you pass in PMD_SHIFT or PUD_SHIFT for, that's a number-of-bits, isn't it?
+Not a size. And if it's not a size, then sz - 1 doesn't work, does it? If it
+does work, then better naming might help. I'm probably missing a really
+obvious math trick here.
 
 
--aneesh
+thanks,
+-- 
+John Hubbard
+NVIDIA
+
+> +	refs = record_subpages(page, addr, end, pages);
+> +
+> +	SetPageReferenced(page);
+> +	head = try_grab_compound_head(head, refs, flags);
+> +	if (!head) {
+> +		ClearPageReferenced(page);
+> +		return 0;
+> +	}
+> +
+> +	return refs;
+> +}
+> +
+> +static int __gup_device_huge(unsigned long pfn, unsigned long sz,
+> +			     unsigned long addr, unsigned long end,
+> +			     unsigned int flags, struct page **pages, int *nr)
+>   {
+>   	int nr_start = *nr;
+>   	struct dev_pagemap *pgmap = NULL;
+>   
+>   	do {
+>   		struct page *page = pfn_to_page(pfn);
+> +		int refs;
+>   
+>   		pgmap = get_dev_pagemap(pfn, pgmap);
+>   		if (unlikely(!pgmap)) {
+>   			undo_dev_pagemap(nr, nr_start, flags, pages);
+>   			return 0;
+>   		}
+> +
+> +		refs = __gup_device_compound_huge(pgmap, page, sz, addr, end,
+> +						  flags, pages + *nr);
+> +		if (refs >= 0) {
+> +			*nr += refs;
+> +			put_dev_pagemap(pgmap);
+> +			return refs ? 1 : 0;
+> +		}
+> +
+>   		SetPageReferenced(page);
+>   		pages[*nr] = page;
+>   		if (unlikely(!try_grab_page(page, flags))) {
+> @@ -2289,7 +2335,7 @@ static int __gup_device_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>   	int nr_start = *nr;
+>   
+>   	fault_pfn = pmd_pfn(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> -	if (!__gup_device_huge(fault_pfn, addr, end, flags, pages, nr))
+> +	if (!__gup_device_huge(fault_pfn, PMD_SHIFT, addr, end, flags, pages, nr))
+>   		return 0;
+>   
+>   	if (unlikely(pmd_val(orig) != pmd_val(*pmdp))) {
+> @@ -2307,7 +2353,7 @@ static int __gup_device_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
+>   	int nr_start = *nr;
+>   
+>   	fault_pfn = pud_pfn(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+> -	if (!__gup_device_huge(fault_pfn, addr, end, flags, pages, nr))
+> +	if (!__gup_device_huge(fault_pfn, PUD_SHIFT, addr, end, flags, pages, nr))
+>   		return 0;
+>   
+>   	if (unlikely(pud_val(orig) != pud_val(*pudp))) {
+> @@ -2334,17 +2380,6 @@ static int __gup_device_huge_pud(pud_t pud, pud_t *pudp, unsigned long addr,
+>   }
+>   #endif
+>   
+> -static int record_subpages(struct page *page, unsigned long addr,
+> -			   unsigned long end, struct page **pages)
+> -{
+> -	int nr;
+> -
+> -	for (nr = 0; addr != end; addr += PAGE_SIZE)
+> -		pages[nr++] = page++;
+> -
+> -	return nr;
+> -}
+> -
+>   #ifdef CONFIG_ARCH_HAS_HUGEPD
+>   static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
+>   				      unsigned long sz)
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
