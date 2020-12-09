@@ -1,241 +1,147 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0C02D39AE
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 05:40:27 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027592D39B1
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 05:43:59 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BFD96100EC1F3;
-	Tue,  8 Dec 2020 20:40:25 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.228.121.65; helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN> 
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com [216.228.121.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 41C93100EBB96;
+	Tue,  8 Dec 2020 20:43:57 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::643; helo=mail-ej1-x643.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9A5F6100EC1DE
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 20:40:23 -0800 (PST)
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-	id <B5fd055360000>; Tue, 08 Dec 2020 20:40:22 -0800
-Received: from [10.2.60.96] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 9 Dec
- 2020 04:40:20 +0000
-Subject: Re: [PATCH RFC 6/9] mm/gup: Grab head page refcount once for group of
- subpages
-To: Joao Martins <joao.m.martins@oracle.com>, <linux-mm@kvack.org>
-References: <20201208172901.17384-1-joao.m.martins@oracle.com>
- <20201208172901.17384-8-joao.m.martins@oracle.com>
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <6f729802-1e93-3036-3dba-be35e06af579@nvidia.com>
-Date: Tue, 8 Dec 2020 20:40:19 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101
- Thunderbird/84.0
+	by ml01.01.org (Postfix) with ESMTPS id 04FFA100EC1F6
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Dec 2020 20:43:54 -0800 (PST)
+Received: by mail-ej1-x643.google.com with SMTP id a16so197058ejj.5
+        for <linux-nvdimm@lists.01.org>; Tue, 08 Dec 2020 20:43:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FUrmxEO3EocQCKBqXbu/B7dSx4PYVYZQ47UYqUANeRs=;
+        b=lxQSr0ZvyGH7ZxNH0yVKwuB/dvBR7YHjknj+/jVPzPBnyMT+P8vmRYFE+fb1T7YHnn
+         42eWfv02nUF6QlzlqqzdZmGWAJSVX9t6RAvw12wgBQHadrK+yJxZkh4eb7wt5KEqxRgh
+         iWpHwkRl92j3SMHDjsWs/YgswLRO1LvRav1WalqiXkCuXSGlBYjWSeszQiD97JfuE+NG
+         zHThTsnYUtaC4HWYLPOfUEfiDgadKRTPi2Y/mSZNM2YRymCcAsteY1dEYQpiO5X/Ww/7
+         7jOQViTeqbd22j9dtssBQ89nwpCH9p3p1UnudqnudDa9n/V3YL8thTD96kuy6DyEOCb+
+         M5Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FUrmxEO3EocQCKBqXbu/B7dSx4PYVYZQ47UYqUANeRs=;
+        b=uM+WDEUvq+oYcRLOOzDWM91elN+r/AOpK9pe+MeKHHfT2ZqWxS/dFS86G0P/WJSjDE
+         CTKBwyEDJ5lE2sOmKXEP1+pxWdzVWUixEIcv/NBlm3GNduWYNbujbV3JM9hYPgwT7lEu
+         c9jNk3kX/bxJl7jE1JHP7i2nlcataCmlwZcxr+r1fgA68DrRK3lnGs+xPH0ODaSvpjlG
+         jHQr87SpcpC/KMVkqFQhETBvann6jyJLfxq6RUqLS7CjJBXyT3wLC3/sBBIwbOiSZbSs
+         IuOGDm0qe6EdJmdtMGwMz1WU1GpAr2iBtiQ9shLs1PzSpvi/vkiOklamS7Kv8kJa0E/N
+         vJfw==
+X-Gm-Message-State: AOAM530pKZz/1nqSDvrG3mZc96J4Ta5LE84jCMS6Af1iwg2UGk5d6c20
+	3Wn4BEJ8efyyWk0QBA0at0NinHGSlquYBoJV/FzX1g==
+X-Google-Smtp-Source: ABdhPJzYbTraD4idxG5ZzM47YKKfO5xV04/SVh2kbWiRas2FAbzSANABL3asY3bHLW8fNryKqlaqMfJG2Myi7VX50NU=
+X-Received: by 2002:a17:906:a29a:: with SMTP id i26mr537717ejz.45.1607489033347;
+ Tue, 08 Dec 2020 20:43:53 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201208172901.17384-8-joao.m.martins@oracle.com>
-Content-Language: en-US
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-	t=1607488822; bh=AvI+l2qvOZX8UUwCkWE7d1jqYBiHrEPru3IISbGvrx0=;
-	h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
-	 MIME-Version:In-Reply-To:Content-Type:Content-Language:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-	b=sLa5D3M0K1cQo3Jy4y8NsmrgyMQ/P6n54SKhU58y2saRyuO2iv+kPeabHixg8LEF5
-	 9LUJXfxXKFS/a0GTxyqUjkgstIqZe5SekplQd4DUPs5P+sfmSML2Vp2QktY3I2flZj
-	 4M9CxcDqRwzjWXpqVgs2faSYzAl3sy2hZGooHgLW67nxbp1tOjhp1uii9rh7xBBOIx
-	 5Fdj/uYq73Cgii1GRpGAcll8mkNFsi2WKBkih02h64/vL6c59EXSVlV3kHvLq+6BBE
-	 qpwv8CWSlTcLFvYXUSSvukhaysMCX852NumjqKVmFNWGDujRf5yl8Mxapn+h5Pl1YP
-	 1AcKv2c6oplPQ==
-Message-ID-Hash: LL6WDTPGEZN4NSMJIZCKWQRIPTMUPU5B
-X-Message-ID-Hash: LL6WDTPGEZN4NSMJIZCKWQRIPTMUPU5B
-X-MailFrom: jhubbard@nvidia.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>,
-	"Jason Gunthorpe  <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song" <songmuchun@bytedance.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>, Andrew@ml01.01.org
+References: <20201006010013.848302-1-santosh@fossix.org> <CAPcyv4jEpw2Yvj1eVNaW6z7D=pf31w1cQXuF9ymqxckhxANeCQ@mail.gmail.com>
+ <50842a9b-2ff8-2623-fe00-7c91e9405131@linux.ibm.com>
+In-Reply-To: <50842a9b-2ff8-2623-fe00-7c91e9405131@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 8 Dec 2020 20:43:51 -0800
+Message-ID: <CAPcyv4isaiWqBPGymyAmbrAhH31C96wUsrRq5Oeuv7F=ko_hsg@mail.gmail.com>
+Subject: Re: [PATCH RFC v3] testing/nvdimm: Add test module for non-nfit platforms
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: JSQSR2DVQLWVY6UL7P2ISV63BJUCD2M4
+X-Message-ID-Hash: JSQSR2DVQLWVY6UL7P2ISV63BJUCD2M4
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LL6WDTPGEZN4NSMJIZCKWQRIPTMUPU5B/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JSQSR2DVQLWVY6UL7P2ISV63BJUCD2M4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 12/8/20 9:28 AM, Joao Martins wrote:
-> Much like hugetlbfs or THPs, we treat device pagemaps with
-> compound pages like the rest of GUP handling of compound pages.
-> 
-> Rather than incrementing the refcount every 4K, we record
-> all sub pages and increment by @refs amount *once*.
-> 
-> Performance measured by gup_benchmark improves considerably
-> get_user_pages_fast() and pin_user_pages_fast():
-> 
->   $ gup_benchmark -f /dev/dax0.2 -m 16384 -r 10 -S [-u,-a] -n 512 -w
+On Tue, Dec 8, 2020 at 8:17 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 12/8/20 3:30 AM, Dan Williams wrote:
+> > On Mon, Oct 5, 2020 at 6:01 PM Santosh Sivaraj <santosh@fossix.org> wrote:
+> >
+>
+> ...
+>
+> >> +static int ndtest_blk_do_io(struct nd_blk_region *ndbr, resource_size_t dpa,
+> >> +               void *iobuf, u64 len, int rw)
+> >> +{
+> >> +       struct ndtest_dimm *dimm = ndbr->blk_provider_data;
+> >> +       struct ndtest_blk_mmio *mmio = dimm->mmio;
+> >> +       struct nd_region *nd_region = &ndbr->nd_region;
+> >> +       unsigned int lane;
+> >> +
+> >> +       lane = nd_region_acquire_lane(nd_region);
+> >> +
+> >> +       if (rw)
+> >> +               memcpy(mmio->base + dpa, iobuf, len);
+> >> +       else {
+> >> +               memcpy(iobuf, mmio->base + dpa, len);
+> >> +               arch_invalidate_pmem(mmio->base + dpa, len);
+> >> +       }
+> >> +
+> >> +       nd_region_release_lane(nd_region, lane);
+> >> +
+> >> +       return 0;
+> >> +}
+> >> +
+> >> +static int ndtest_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
+> >> +                                   struct device *dev)
+> >> +{
+> >> +       struct nd_blk_region *ndbr = to_nd_blk_region(dev);
+> >> +       struct nvdimm *nvdimm;
+> >> +       struct ndtest_dimm *p;
+> >> +       struct ndtest_blk_mmio *mmio;
+> >> +
+> >> +       nvdimm = nd_blk_region_to_dimm(ndbr);
+> >> +       p = nvdimm_provider_data(nvdimm);
+> >> +
+> >> +       nd_blk_region_set_provider_data(ndbr, p);
+> >> +       p->region = to_nd_region(dev);
+> >> +
+> >> +       mmio = devm_kzalloc(dev, sizeof(struct ndtest_blk_mmio), GFP_KERNEL);
+> >> +       if (!mmio)
+> >> +               return -ENOMEM;
+> >> +
+> >> +       mmio->base = devm_nvdimm_memremap(dev, p->address, 12,
+> >> +                                        nd_blk_memremap_flags(ndbr));
+> >> +       if (!mmio->base) {
+> >> +               dev_err(dev, "%s failed to map blk dimm\n", nvdimm_name(nvdimm));
+> >> +               return -ENOMEM;
+> >> +       }
+> >> +
+> >> +       p->mmio = mmio;
+> >> +
+> >> +       return 0;
+> >> +}
+> >
+> > Are there any ppc nvdimm that will use BLK mode? As far as I know
+> > BLK-mode is only an abandoned mechanism in the ACPI specification, not
+> > anything that has made it into a shipping implementation. I'd prefer
+> > to not extend it if it's not necessary.
+> >
+> That is correct. There is no BLK mode/type usage in ppc64. But IIUC, we
+> also had difficulty in isolating the BLK test to ACPI systems. The test
+> code had dependencies and splitting that out was making it complex.
 
-"gup_test", now that you're in linux-next, actually.
-
-(Maybe I'll retrofit that test with getopt_long(), those options are
-getting more elaborate.)
-
-> 
-> (get_user_pages_fast 2M pages) ~75k us -> ~3.6k us
-> (pin_user_pages_fast 2M pages) ~125k us -> ~3.8k us
-
-That is a beautiful result! I'm very motivated to see if this patchset
-can make it in, in some form.
-
-> 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
->   mm/gup.c | 67 ++++++++++++++++++++++++++++++++++++++++++--------------
->   1 file changed, 51 insertions(+), 16 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 98eb8e6d2609..194e6981eb03 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2250,22 +2250,68 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
->   }
->   #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
->   
-> +
-> +static int record_subpages(struct page *page, unsigned long addr,
-> +			   unsigned long end, struct page **pages)
-> +{
-> +	int nr;
-> +
-> +	for (nr = 0; addr != end; addr += PAGE_SIZE)
-> +		pages[nr++] = page++;
-> +
-> +	return nr;
-> +}
-> +
->   #if defined(CONFIG_ARCH_HAS_PTE_DEVMAP) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
-> -static int __gup_device_huge(unsigned long pfn, unsigned long addr,
-> -			     unsigned long end, unsigned int flags,
-> -			     struct page **pages, int *nr)
-> +static int __gup_device_compound_huge(struct dev_pagemap *pgmap,
-> +				      struct page *head, unsigned long sz,
-
-If this variable survives (I see Jason requested a reorg of this math stuff,
-and I also like that idea), then I'd like a slightly better name for "sz".
-
-I was going to suggest one, but then realized that I can't understand how this
-works. See below...
-
-> +				      unsigned long addr, unsigned long end,
-> +				      unsigned int flags, struct page **pages)
-> +{
-> +	struct page *page;
-> +	int refs;
-> +
-> +	if (!(pgmap->flags & PGMAP_COMPOUND))
-> +		return -1;
-
-btw, I'm unhappy with returning -1 here and assigning it later to a refs variable.
-(And that will show up even more clearly as an issue if you attempt to make
-refs unsigned everywhere!)
-
-I'm not going to suggest anything because there are a lot of ways to structure
-these routines, and I don't want to overly constrain you. Just please don't assign
-negative values to any refs variables.
-
-> +
-> +	page = head + ((addr & (sz-1)) >> PAGE_SHIFT);
-
-If you pass in PMD_SHIFT or PUD_SHIFT for, that's a number-of-bits, isn't it?
-Not a size. And if it's not a size, then sz - 1 doesn't work, does it? If it
-does work, then better naming might help. I'm probably missing a really
-obvious math trick here.
-
-
-thanks,
--- 
-John Hubbard
-NVIDIA
-
-> +	refs = record_subpages(page, addr, end, pages);
-> +
-> +	SetPageReferenced(page);
-> +	head = try_grab_compound_head(head, refs, flags);
-> +	if (!head) {
-> +		ClearPageReferenced(page);
-> +		return 0;
-> +	}
-> +
-> +	return refs;
-> +}
-> +
-> +static int __gup_device_huge(unsigned long pfn, unsigned long sz,
-> +			     unsigned long addr, unsigned long end,
-> +			     unsigned int flags, struct page **pages, int *nr)
->   {
->   	int nr_start = *nr;
->   	struct dev_pagemap *pgmap = NULL;
->   
->   	do {
->   		struct page *page = pfn_to_page(pfn);
-> +		int refs;
->   
->   		pgmap = get_dev_pagemap(pfn, pgmap);
->   		if (unlikely(!pgmap)) {
->   			undo_dev_pagemap(nr, nr_start, flags, pages);
->   			return 0;
->   		}
-> +
-> +		refs = __gup_device_compound_huge(pgmap, page, sz, addr, end,
-> +						  flags, pages + *nr);
-> +		if (refs >= 0) {
-> +			*nr += refs;
-> +			put_dev_pagemap(pgmap);
-> +			return refs ? 1 : 0;
-> +		}
-> +
->   		SetPageReferenced(page);
->   		pages[*nr] = page;
->   		if (unlikely(!try_grab_page(page, flags))) {
-> @@ -2289,7 +2335,7 @@ static int __gup_device_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
->   	int nr_start = *nr;
->   
->   	fault_pfn = pmd_pfn(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> -	if (!__gup_device_huge(fault_pfn, addr, end, flags, pages, nr))
-> +	if (!__gup_device_huge(fault_pfn, PMD_SHIFT, addr, end, flags, pages, nr))
->   		return 0;
->   
->   	if (unlikely(pmd_val(orig) != pmd_val(*pmdp))) {
-> @@ -2307,7 +2353,7 @@ static int __gup_device_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
->   	int nr_start = *nr;
->   
->   	fault_pfn = pud_pfn(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
-> -	if (!__gup_device_huge(fault_pfn, addr, end, flags, pages, nr))
-> +	if (!__gup_device_huge(fault_pfn, PUD_SHIFT, addr, end, flags, pages, nr))
->   		return 0;
->   
->   	if (unlikely(pud_val(orig) != pud_val(*pudp))) {
-> @@ -2334,17 +2380,6 @@ static int __gup_device_huge_pud(pud_t pud, pud_t *pudp, unsigned long addr,
->   }
->   #endif
->   
-> -static int record_subpages(struct page *page, unsigned long addr,
-> -			   unsigned long end, struct page **pages)
-> -{
-> -	int nr;
-> -
-> -	for (nr = 0; addr != end; addr += PAGE_SIZE)
-> -		pages[nr++] = page++;
-> -
-> -	return nr;
-> -}
-> -
->   #ifdef CONFIG_ARCH_HAS_HUGEPD
->   static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
->   				      unsigned long sz)
-> 
+I wouldn't be opposed to an "if (nfit_test)" gate for the BLK tests.
+Whatever is easiest for you because I'm just thrilled to be able to
+regression test the ppc infrastructure, i.e. no need to spend extra
+effort making the tests perfect.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
