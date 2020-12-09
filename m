@@ -2,79 +2,78 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C422D42F5
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 14:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AAD2D437D
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Dec 2020 14:44:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1FD8E100ED48A;
-	Wed,  9 Dec 2020 05:15:18 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+	by ml01.01.org (Postfix) with ESMTP id 84A1D100ED48A;
+	Wed,  9 Dec 2020 05:44:23 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.79; helo=aserp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B6B54100EF267
-	for <linux-nvdimm@lists.01.org>; Wed,  9 Dec 2020 05:15:15 -0800 (PST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9D5oc2114034;
-	Wed, 9 Dec 2020 13:15:06 GMT
+	by ml01.01.org (Postfix) with ESMTPS id 1BA12100EF25B
+	for <linux-nvdimm@lists.01.org>; Wed,  9 Dec 2020 05:44:21 -0800 (PST)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9DZQL0133650;
+	Wed, 9 Dec 2020 13:44:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=NWaom0xZP/1UFy9l2mi3VdX5cDPSEsodfhXlxrxIV0Y=;
- b=GL7Zhtnttflz1wF8gKT5nTq8T62Ha5HljH7v/IliPR2yDWqUnNQ/r6/LwlpiqoKZgnMt
- 4yt7JSRLG5gXLS3Vxy21HkziiNuaP3h36xEK5Hnm+9jLwbAhlzYrWE3Lw1H64d5udxcF
- ofohYK2tw6ceiAgjgSjmtGX02cQmnifjvLxHPcKTu9ABA+aY+UZcvglsbnvXOcrM7ZJ1
- OF+4te4/wWc5Hf3bSNyp5C0jZAEJ5aQdAvHwbDM8JUyLeFujE4scUYQ8lxifQIpuFamn
- lqRtvZTRfuZsEb0JfFD/YGP1RgGUYTQYtaI3xaFxPFtga8lk/oLo6zMvHiAjPgnnH35I 7g==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by aserp2120.oracle.com with ESMTP id 35825m82aq-1
+ bh=FKPr7xuS/aXGQgwrrFvvv6kJwDeAGSzRoMLdp5F6FuA=;
+ b=dsBJsw/etrVgPA5bQr+RWQmkzfMS/3Y/vA4ax120m8+J6/vlOltYA0IpTQCMRgtvHBct
+ Lq7EYJZ4n9svk3QvnJPOoP9bkoHf78rJX7/U2/kHzDOFRpoIAs/tWe69uMuuFAkrk8Nc
+ MgQIEXAzp/5iEah74bWyQuGie8X0QZiI8k3BGW3jCHljQ9Gw4BjTKOmx2tZO6jPP10qp
+ XBiNGHZTaueP79Ia6Z9Gtst86fURwBO4M5eVxC92MpywwZrE7JO3iJ2Pw9n/XeUCI9//
+ wvB0s7PSvm/yLc/8fLq3GPah0m4dHO243DWVtTtR59mj7QIe5vAeX7t5zQcmNZcGlInb rQ==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by aserp2130.oracle.com with ESMTP id 357yqc0930-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 09 Dec 2020 13:15:06 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9D4pnK071484;
-	Wed, 9 Dec 2020 13:13:05 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-	by aserp3030.oracle.com with ESMTP id 358ksq36p2-1
+	Wed, 09 Dec 2020 13:44:13 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0B9DaXOJ074275;
+	Wed, 9 Dec 2020 13:44:12 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+	by aserp3020.oracle.com with ESMTP id 358m409xra-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 09 Dec 2020 13:13:05 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0B9DD1nf022654;
-	Wed, 9 Dec 2020 13:13:02 GMT
+	Wed, 09 Dec 2020 13:44:12 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0B9DiBdh016104;
+	Wed, 9 Dec 2020 13:44:11 GMT
 Received: from [10.175.160.66] (/10.175.160.66)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Wed, 09 Dec 2020 05:13:01 -0800
-Subject: Re: [PATCH RFC 1/9] memremap: add ZONE_DEVICE support for compound
- pages
-To: Matthew Wilcox <willy@infradead.org>, John Hubbard <jhubbard@nvidia.com>
+	with ESMTP ; Wed, 09 Dec 2020 05:44:11 -0800
+Subject: Re: [PATCH RFC 6/9] mm/gup: Grab head page refcount once for group of
+ subpages
+To: John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org
 References: <20201208172901.17384-1-joao.m.martins@oracle.com>
- <20201208172901.17384-2-joao.m.martins@oracle.com>
- <7249cfd2-c178-2e6a-6b03-307a05f11785@nvidia.com>
- <20201209063350.GO7338@casper.infradead.org>
+ <20201208172901.17384-8-joao.m.martins@oracle.com>
+ <6f729802-1e93-3036-3dba-be35e06af579@nvidia.com>
 From: Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <8df7f242-9044-a3a2-0788-69328d5909a1@oracle.com>
-Date: Wed, 9 Dec 2020 13:12:57 +0000
+Message-ID: <f7c315ce-4636-69ed-d897-6ef2e612b8ae@oracle.com>
+Date: Wed, 9 Dec 2020 13:44:06 +0000
 MIME-Version: 1.0
-In-Reply-To: <20201209063350.GO7338@casper.infradead.org>
+In-Reply-To: <6f729802-1e93-3036-3dba-be35e06af579@nvidia.com>
 Content-Language: en-US
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=1
- bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012090093
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=1 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012090093
-Message-ID-Hash: FWXARRCKHK5K2EZM6ME5KBTTQJTRZWQV
-X-Message-ID-Hash: FWXARRCKHK5K2EZM6ME5KBTTQJTRZWQV
+ definitions=main-2012090097
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9829 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 mlxlogscore=999
+ clxscore=1015 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012090097
+Message-ID-Hash: JCYLV45KIG3ARAKNHX4UDMSEWKXLPK7M
+X-Message-ID-Hash: JCYLV45KIG3ARAKNHX4UDMSEWKXLPK7M
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+CC: linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FWXARRCKHK5K2EZM6ME5KBTTQJTRZWQV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JCYLV45KIG3ARAKNHX4UDMSEWKXLPK7M/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -83,72 +82,115 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 12/9/20 6:33 AM, Matthew Wilcox wrote:
-> On Tue, Dec 08, 2020 at 09:59:19PM -0800, John Hubbard wrote:
->> On 12/8/20 9:28 AM, Joao Martins wrote:
->>> Add a new flag for struct dev_pagemap which designates that a a pagemap
+On 12/9/20 4:40 AM, John Hubbard wrote:
+> On 12/8/20 9:28 AM, Joao Martins wrote:
+>> Much like hugetlbfs or THPs, we treat device pagemaps with
+>> compound pages like the rest of GUP handling of compound pages.
 >>
->> a a
+>> Rather than incrementing the refcount every 4K, we record
+>> all sub pages and increment by @refs amount *once*.
 >>
-Ugh. Yeah will fix.
+>> Performance measured by gup_benchmark improves considerably
+>> get_user_pages_fast() and pin_user_pages_fast():
+>>
+>>   $ gup_benchmark -f /dev/dax0.2 -m 16384 -r 10 -S [-u,-a] -n 512 -w
+> 
+> "gup_test", now that you're in linux-next, actually.
+> 
+> (Maybe I'll retrofit that test with getopt_long(), those options are
+> getting more elaborate.)
+> 
+:)
 
->>> is described as a set of compound pages or in other words, that how
->>> pages are grouped together in the page tables are reflected in how we
->>> describe struct pages. This means that rather than initializing
->>> individual struct pages, we also initialize these struct pages, as
 >>
->> Let's not say "rather than x, we also do y", because it's self-contradictory.
->> I think you want to just leave out the "also", like this:
->>
->> "This means that rather than initializing> individual struct pages, we
->> initialize these struct pages ..."
->>
->> Is that right?
+>> (get_user_pages_fast 2M pages) ~75k us -> ~3.6k us
+>> (pin_user_pages_fast 2M pages) ~125k us -> ~3.8k us
 > 
-Nop, my previous text was broken.
+> That is a beautiful result! I'm very motivated to see if this patchset
+> can make it in, in some form.
+> 
+Cool!
 
-> I'd phrase it as:
-> 
-> Add a new flag for struct dev_pagemap which specifies that a pagemap is
-> composed of a set of compound pages instead of individual pages.  When
-> these pages are initialised, most are initialised as tail pages
-> instead of order-0 pages.
-> 
-Thanks, I will use this instead.
-
->>> For certain ZONE_DEVICE users, like device-dax, which have a fixed page
->>> size, this creates an opportunity to optimize GUP and GUP-fast walkers,
->>> thus playing the same tricks as hugetlb pages.
-> 
-> Rather than "playing the same tricks", how about "are treated the same
-> way as THP or hugetlb pages"?
-> 
->>> +	if (pgmap->flags & PGMAP_COMPOUND)
->>> +		percpu_ref_get_many(pgmap->ref, (pfn_end(pgmap, range_id)
->>> +			- pfn_first(pgmap, range_id)) / PHYS_PFN(pgmap->align));
 >>
->> Is there some reason that we cannot use range_len(), instead of pfn_end() minus
->> pfn_first()? (Yes, this more about the pre-existing code than about your change.)
+>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+>> ---
+>>   mm/gup.c | 67 ++++++++++++++++++++++++++++++++++++++++++--------------
+>>   1 file changed, 51 insertions(+), 16 deletions(-)
 >>
-Indeed one could use range_len() / pgmap->align and it would work. But (...)
-
->> And if not, then why are the nearby range_len() uses OK? I realize that range_len()
->> is simpler and skips a case, but it's not clear that it's required here. But I'm
->> new to this area so be warned. :)
->>
-My use of pfns to calculate the nr of pages was to remain consistent with the rest of the
-code in the function taking references in the pgmap->ref. The usages one sees ofrange_len
-are are when the hotplug takes place which work at addresses and not PFNs.
-
->> Also, dividing by PHYS_PFN() feels quite misleading: that function does what you
->> happen to want, but is not named accordingly. Can you use or create something
->> more accurately named? Like "number of pages in this large page"?
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 98eb8e6d2609..194e6981eb03 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -2250,22 +2250,68 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+>>   }
+>>   #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
+>>   
+>> +
+>> +static int record_subpages(struct page *page, unsigned long addr,
+>> +			   unsigned long end, struct page **pages)
+>> +{
+>> +	int nr;
+>> +
+>> +	for (nr = 0; addr != end; addr += PAGE_SIZE)
+>> +		pages[nr++] = page++;
+>> +
+>> +	return nr;
+>> +}
+>> +
+>>   #if defined(CONFIG_ARCH_HAS_PTE_DEVMAP) && defined(CONFIG_TRANSPARENT_HUGEPAGE)
+>> -static int __gup_device_huge(unsigned long pfn, unsigned long addr,
+>> -			     unsigned long end, unsigned int flags,
+>> -			     struct page **pages, int *nr)
+>> +static int __gup_device_compound_huge(struct dev_pagemap *pgmap,
+>> +				      struct page *head, unsigned long sz,
 > 
-> We have compound_nr(), but that takes a struct page as an argument.
-> We also have HPAGE_NR_PAGES.  I'm not quite clear what you want.
+> If this variable survives (I see Jason requested a reorg of this math stuff,
+> and I also like that idea), then I'd like a slightly better name for "sz".
 > 
-If possible I would rather keep the pfns as with the rest of the code. Another alternative
-is like a range_nr_pages helper but I am not sure it's worth the trouble for one caller.
+Yeap.
+
+> I was going to suggest one, but then realized that I can't understand how this
+> works. See below...
+> 
+>> +				      unsigned long addr, unsigned long end,
+>> +				      unsigned int flags, struct page **pages)
+>> +{
+>> +	struct page *page;
+>> +	int refs;
+>> +
+>> +	if (!(pgmap->flags & PGMAP_COMPOUND))
+>> +		return -1;
+> 
+> btw, I'm unhappy with returning -1 here and assigning it later to a refs variable.
+> (And that will show up even more clearly as an issue if you attempt to make
+> refs unsigned everywhere!)
+> 
+Yes true.
+
+The usage of @refs = -1 (therefore an int) was to differentiate when we are not in a
+PGMAP_COMPOUND pgmap (and so for logic to keep as today).
+
+Notice that in the PGMAP_COMPOUND case if we fail to grab the head compound page we return 0.
+
+> I'm not going to suggest anything because there are a lot of ways to structure
+> these routines, and I don't want to overly constrain you. Just please don't assign
+> negative values to any refs variables.
+> 
+OK.
+
+TBH I'm a little afraid this can turn into further complexity if I have to keep the
+non-compound pgmap around. But I will see how I can adjust this.
+
+>> +
+>> +	page = head + ((addr & (sz-1)) >> PAGE_SHIFT);
+> 
+> If you pass in PMD_SHIFT or PUD_SHIFT for, that's a number-of-bits, isn't it?
+> Not a size. And if it's not a size, then sz - 1 doesn't work, does it? If it
+> does work, then better naming might help. I'm probably missing a really
+> obvious math trick here.
+
+You're right. That was a mistake on my end, indeed. But the mistake wouldn't change the
+logic, as the PageReference bit only applies to the head page.
 
 	Joao
 _______________________________________________
