@@ -2,49 +2,43 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713642D4EAE
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Dec 2020 00:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B2C2D5879
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Dec 2020 11:45:37 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 40D15100EBBD0;
-	Wed,  9 Dec 2020 15:21:49 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	by ml01.01.org (Postfix) with ESMTP id 6E9B3100EBBA1;
+	Thu, 10 Dec 2020 02:45:35 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C9833100ED487
-	for <linux-nvdimm@lists.01.org>; Wed,  9 Dec 2020 15:21:46 -0800 (PST)
-IronPort-SDR: pSRtXqrYQfa4ka3n7fcm2qakC/GyjKKkR3UltM2ZhHqe9jGiJOKm47x/b1RXHUjv47x1+bc2nV
- XH+dACO4nvRg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9830"; a="161214160"
-X-IronPort-AV: E=Sophos;i="5.78,407,1599548400";
-   d="scan'208";a="161214160"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2020 15:21:46 -0800
-IronPort-SDR: z3TQJyE6SZCxUKC4AGV4MyZme/aDEDXV4j9ZilO23OZ77arAmGdLzFh8BmEtRseAW27qslJnY4
- hm/WD/WhNgBw==
-X-IronPort-AV: E=Sophos;i="5.78,407,1599548400";
-   d="scan'208";a="364348073"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2020 15:21:45 -0800
-Date: Wed, 9 Dec 2020 15:21:45 -0800
-From: Ira Weiny <ira.weiny@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id BB6AC100ED48C
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Dec 2020 02:45:32 -0800 (PST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id 0E3FEAF31;
+	Thu, 10 Dec 2020 10:39:00 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 302351E0F6A; Thu, 10 Dec 2020 10:22:40 +0100 (CET)
+Date: Thu, 10 Dec 2020 10:22:40 +0100
+From: Jan Kara <jack@suse.cz>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Subject: Re: [PATCH] mm/up: combine put_compound_head() and unpin_user_page()
-Message-ID: <20201209232145.GQ1563847@iweiny-DESK2.sc.intel.com>
+Message-ID: <20201210092240.GA24151@quack2.suse.cz>
 References: <0-v1-6730d4ee0d32+40e6-gup_combine_put_jgg@nvidia.com>
 MIME-Version: 1.0
 Content-Disposition: inline
 In-Reply-To: <0-v1-6730d4ee0d32+40e6-gup_combine_put_jgg@nvidia.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: T4GWT6TUGRBJOSGJ6RQGWRIQYNS2O7I5
-X-Message-ID-Hash: T4GWT6TUGRBJOSGJ6RQGWRIQYNS2O7I5
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: C7LANAIE4FBXXCVFOS7MJ3XAKNZ7LXVI
+X-Message-ID-Hash: C7LANAIE4FBXXCVFOS7MJ3XAKNZ7LXVI
+X-MailFrom: jack@suse.cz
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Andrew Morton <akpm@linux-foundation.org>, John Hubbard <jhubbard@nvidia.com>, Joao Martins <joao.m.martins@oracle.com>, linux-mm <linux-mm@kvack.org>, Jonathan Corbet <corbet@lwn.net>, Dave Chinner <david@fromorbit.com>, Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-nvdimm@lists.01.org, Michal Hocko <mhocko@suse.com>, Mike Kravetz <mike.kravetz@oracle.com>, Shuah Khan <shuah@kernel.org>, Muchun Song <songmuchun@bytedance.com>, Vlastimil Babka <vbabka@suse.cz>, Matthew Wilcox <willy@infradead.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/T4GWT6TUGRBJOSGJ6RQGWRIQYNS2O7I5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C7LANAIE4FBXXCVFOS7MJ3XAKNZ7LXVI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,7 +47,7 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 09, 2020 at 03:13:57PM -0400, Jason Gunthorpe wrote:
+On Wed 09-12-20 15:13:57, Jason Gunthorpe wrote:
 > These functions accomplish the same thing but have different
 > implementations.
 > 
@@ -74,7 +68,11 @@ On Wed, Dec 09, 2020 at 03:13:57PM -0400, Jason Gunthorpe wrote:
 > Fixes: 1970dc6f5226 ("mm/gup: /proc/vmstat: pin_user_pages (FOLL_PIN) reporting")
 > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Nice cleanup. The patch looks good to me. You can add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
 
 > ---
 >  mm/gup.c | 103 +++++++++++++------------------------------------------
@@ -227,6 +225,9 @@ Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 > -- 
 > 2.29.2
 > 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
