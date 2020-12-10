@@ -1,80 +1,83 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374DF2D5ED3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Dec 2020 16:01:42 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4947A2D6027
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Dec 2020 16:43:52 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 432D7100EC1E8;
-	Thu, 10 Dec 2020 07:01:40 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+	by ml01.01.org (Postfix) with ESMTP id 61427100EB84D;
+	Thu, 10 Dec 2020 07:43:50 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.79; helo=aserp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B848B100EE8C7
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Dec 2020 07:01:37 -0800 (PST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BAExYrr095140;
-	Thu, 10 Dec 2020 15:01:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- cc : references : message-id : date : mime-version : in-reply-to :
+	by ml01.01.org (Postfix) with ESMTPS id 58DB3100EC1D6
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Dec 2020 07:43:47 -0800 (PST)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BAFZOwP169583;
+	Thu, 10 Dec 2020 15:43:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=FYmEKQ2U2EKm52wTBJ8CEB8mol99E9bx4UF+alX7+h8=;
- b=Xz7Yc02LOfd5RZJ1eFNLI/u0iokDCqe2wM07ZPoWbpLS0XXofIMa60lY8Uc0t7qwqglh
- tnK/bc/4uftSUkC13pTc5KR5+TiUcrNum1HfaQrif69CrvsDWS/ydlyA62bSEhEugXLt
- JHp/nFkaRMOpLEpRoFxIw3syufz9Qx7a1dU5a/9Cq3jeYMkGzyCQYSOUnyIts0i12WDS
- ntNld2xLsUjeR53lvqk3mQ+r7XcCVpmKaOvwKeMg6ZFq939memurdinVfJCagbAkMUQp
- DC0UJOtpUzcp6LscZqXxr/zc5tGEECKIo8dsmoye86EraRkG3Wqvszb1/KyYc6S+2hvW bg==
+ bh=kVIKnPtJaLqjBpJs3IPG0Ef+Ab1GmoQambLDfBkb+QM=;
+ b=OWojDtxhMF4ArgnCZq83u0+Fcl/BmmwTJvrCen4fgko1CC/5y0smRSG+ktrW2cSdhA5v
+ FMaFOtSh0dVyWvWvnmE/ICCoCHXfBudU6JY2BPuss4TVkNyPzCoLPvqdnZ2ZOc+W1vaL
+ QZvjIlDhbpu2u4HLTWX9d0/DQb/Su0ZzhzEhMSSlNQqXlQf1rNlO++5IL4xe+sgVLBS5
+ SwmXLB1bQCXFIhSwKFs7i4xc3Q3oQ8A9XBZ5HaTWfZucN2IHv4jWfoyp/slqJdxM80dJ
+ Mf+un8k3PA4NkYkBh144sZjlLvCGVtrZDH90mSgPDDmfjqzwaNB+mttLvl+LdlIu1eTx EQ==
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by aserp2120.oracle.com with ESMTP id 35825mdu6w-1
+	by aserp2130.oracle.com with ESMTP id 357yqc64w5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 10 Dec 2020 15:01:35 +0000
+	Thu, 10 Dec 2020 15:43:33 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BAF0dPX008717;
-	Thu, 10 Dec 2020 15:01:34 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by aserp3020.oracle.com with ESMTP id 358m41sm68-1
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BAFacEV142085;
+	Thu, 10 Dec 2020 15:43:33 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+	by aserp3020.oracle.com with ESMTP id 358m41u3mh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Dec 2020 15:01:34 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BAF1Xld026338;
-	Thu, 10 Dec 2020 15:01:34 GMT
+	Thu, 10 Dec 2020 15:43:33 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BAFhQLL016251;
+	Thu, 10 Dec 2020 15:43:26 GMT
 Received: from [10.175.193.63] (/10.175.193.63)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Thu, 10 Dec 2020 07:01:33 -0800
-Subject: Re: [PATCH ndctl v2 10/10] daxctl/test: Add tests for dynamic dax
- regions
+	with ESMTP ; Thu, 10 Dec 2020 07:43:26 -0800
+Subject: Re: [PATCH RFC 6/9] mm/gup: Grab head page refcount once for group of
+ subpages
+To: Matthew Wilcox <willy@infradead.org>
+References: <20201208172901.17384-1-joao.m.martins@oracle.com>
+ <20201208172901.17384-8-joao.m.martins@oracle.com>
+ <20201208194905.GQ5487@ziepe.ca>
+ <b7f5fe44-f2f5-aea6-57b3-7e14a9ef624d@oracle.com>
+ <20201209151505.GV5487@ziepe.ca>
+ <a035661f-a979-c68b-d149-ef3892a5a1ea@oracle.com>
+ <20201209162438.GW5487@ziepe.ca> <20201209181406.GQ7338@casper.infradead.org>
 From: Joao Martins <joao.m.martins@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>
-References: <20200713160837.13774-1-joao.m.martins@oracle.com>
- <20200713160837.13774-11-joao.m.martins@oracle.com>
- <5cf76b3d-21db-daf9-dc1d-d38714a9a7c2@oracle.com>
-Message-ID: <42e0711f-b26b-65af-4f12-efb28b07a096@oracle.com>
-Date: Thu, 10 Dec 2020 15:01:30 +0000
+Message-ID: <996c74e8-fa86-bb91-6e95-b4b7efac7c05@oracle.com>
+Date: Thu, 10 Dec 2020 15:43:22 +0000
 MIME-Version: 1.0
-In-Reply-To: <5cf76b3d-21db-daf9-dc1d-d38714a9a7c2@oracle.com>
+In-Reply-To: <20201209181406.GQ7338@casper.infradead.org>
 Content-Language: en-US
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9830 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 adultscore=0
- bulkscore=0 phishscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
+ bulkscore=0 phishscore=0 suspectscore=1 mlxscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012100095
+ definitions=main-2012100099
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9830 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501 mlxscore=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012100095
-Message-ID-Hash: HCSREUGYM4PXB3FFSICSB6QUDKWUEIKA
-X-Message-ID-Hash: HCSREUGYM4PXB3FFSICSB6QUDKWUEIKA
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 mlxlogscore=999
+ clxscore=1015 malwarescore=0 bulkscore=0 phishscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012100099
+Message-ID-Hash: QGMWCDOZXPP54ZIUQVITZH3HY2EF3NBW
+X-Message-ID-Hash: QGMWCDOZXPP54ZIUQVITZH3HY2EF3NBW
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org
+CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HCSREUGYM4PXB3FFSICSB6QUDKWUEIKA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QGMWCDOZXPP54ZIUQVITZH3HY2EF3NBW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -83,196 +86,49 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 7/21/20 5:49 PM, Joao Martins wrote:
-> On 7/13/20 5:08 PM, Joao Martins wrote:
->> Add a couple tests which exercise the new sysfs based
->> interface for Soft-Reserved regions (by EFI/HMAT, or
->> efi_fake_mem).
->>
->> The tests exercise the daxctl orchestration surrounding
->> for creating/disabling/destroying/reconfiguring devices.
->> Furthermore it exercises dax region space allocation
->> code paths particularly:
->>
->>  1) zeroing out and reconfiguring a dax device from
->>  its current size to be max available and back to initial
->>  size
->>
->>  2) creates devices from holes in the beginning,
->>  middle of the region.
->>
->>  3) reconfigures devices in a interleaving fashion
->>
->>  4) test adjust of the region towards beginning and end
->>
->> The tests assume you pass a valid efi_fake_mem parameter
->> marked as EFI_MEMORY_SP e.g.
->>
->> 	efi_fake_mem=112G@16G:0x40000
->>
->> Naturally it bails out from the test if hmem device driver
->> isn't loaded or builtin. If hmem regions are found, only
->> region 0 is used, and the others remain untouched.
->>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> 
-> Following your suggestion[0], I added a couple more validations
-> to this test suite, covering the mappings. So on top of this patch
-> I added the following snip below the scissors mark. Mainly, I check
-> that the size calculated by mappingNNNN is the same as advertised by
-> the sysfs size attribute, thus looping through all the mappings.
-> 
-> Perhaps it would be enough to have just such validation in setup_dev()
-> to catch the bug in [0]. But I went ahead and also validated the test
-> cases where a certain amount of mappings are meant to be created.
-> 
-> My only worry is the last piece in daxctl_test_adjust() where we might
-> be tying too much on how a kernel version picks space from the region;
-> should this logic change in an unforeseeable future (e.g. allowing space
-> at the beginning to be adjusted). Otherwise, if this no concern, let me
-> know and I can resend a v3 with the adjustment below.
-> 
 
-Ping?
 
-> ----->8------
-> Subject: Validate @size versus mappingX sizes
+On 12/9/20 6:14 PM, Matthew Wilcox wrote:
+> On Wed, Dec 09, 2020 at 12:24:38PM -0400, Jason Gunthorpe wrote:
+>> On Wed, Dec 09, 2020 at 04:02:05PM +0000, Joao Martins wrote:
+>>
+>>> Today (without the series) struct pages are not represented the way they
+>>> are expressed in the page tables, which is what I am hoping to fix in this
+>>> series thus initializing these as compound pages of a given order. But me
+>>> introducing PGMAP_COMPOUND was to conservatively keep both old (non-compound)
+>>> and new (compound pages) co-exist.
+>>
+>> Oooh, that I didn't know.. That is kind of horrible to have a PMD
+>> pointing at an order 0 page only in this one special case.
 > 
-> [0]
-> https://lore.kernel.org/linux-nvdimm/CAPcyv4hFS7JS9s7cUY=2Ru2kUTRsesxwX1PGnnc_tudJjoDUGw@mail.gmail.com/
+> Uh, yes.  I'm surprised it hasn't caused more problems.
 > 
-> ---
+There was 1 or 2 problems in the KVM MMU related to zone device pages.
+
+See commit e851265a816f ("KVM: x86/mmu: Use huge pages for DAX-backed files")
+which eventually lead to commit db5432165e9b5 ("KVM: x86/mmu: Walk host page
+tables to find THP mappings") to be less amenable to metadata changes.
+
+>> Still, I think it would be easier to teach record_subpages() that a
+>> PMD doesn't necessarily point to a high order page, eg do something
+>> like I suggested for the SGL where it extracts the page order and
+>> iterates over the contiguous range of pfns.
 > 
->  test/daxctl-create.sh | 64 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 63 insertions(+), 1 deletion(-)
-> 
-> diff --git a/test/daxctl-create.sh b/test/daxctl-create.sh
-> index 0d35112b4119..8dbc00fc574f 100755
-> --- a/test/daxctl-create.sh
-> +++ b/test/daxctl-create.sh
-> @@ -46,8 +46,16 @@ find_testdev()
-> 
->  setup_dev()
->  {
-> +	local rc=1
-> +	local nmaps=0
->  	test -n "$testdev"
-> 
-> +	nmaps=$(daxctl_get_nr_mappings "$testdev")
-> +	if [[ $nmaps == 0 ]]; then
-> +		printf "Device is idle"
-> +		exit "$rc"
-> +	fi
-> +
->  	"$DAXCTL" disable-device "$testdev"
->  	"$DAXCTL" reconfigure-device -s 0 "$testdev"
->  	available=$("$DAXCTL" list -r 0 | jq -er '.[0].available_size | .//""')
-> @@ -110,6 +118,47 @@ daxctl_get_mode()
->  	"$DAXCTL" list -d "$1" | jq -er '.[].mode'
->  }
-> 
-> +daxctl_get_size_by_mapping()
-> +{
-> +	local size=0
-> +	local _start=0
-> +	local _end=0
-> +
-> +	_start=$(cat $1/start)
-> +	_end=$(cat $1/end)
-> +	((size=size + _end - _start + 1))
-> +	echo $size
-> +}
-> +
-> +daxctl_get_nr_mappings()
-> +{
-> +	local i=0
-> +	local _size=0
-> +	local devsize=0
-> +	local path=""
-> +
-> +	path=$(readlink -f /sys/bus/dax/devices/"$1"/)
-> +	until ! [ -d $path/mapping$i ]
-> +	do
-> +		_size=$(daxctl_get_size_by_mapping "$path/mapping$i")
-> +		if [[ $msize == 0 ]]; then
-> +			i=0
-> +			break
-> +		fi
-> +		((devsize=devsize + _size))
-> +		((i=i + 1))
-> +	done
-> +
-> +	# Return number of mappings if the sizes between size field
-> +	# and the one computed by mappingNNN are the same
-> +	_size=$("$DAXCTL" list -d $1 | jq -er '.[0].size | .//""')
-> +	if [[ ! $_size == $devsize ]]; then
-> +		echo 0
-> +	else
-> +		echo $i
-> +	fi
-> +}
-> +
->  daxctl_test_multi()
->  {
->  	local daxdev
-> @@ -139,6 +188,7 @@ daxctl_test_multi()
->  	new_size=$(expr $size \* 2)
->  	daxdev_4=$("$DAXCTL" create-device -r 0 -s $new_size | jq -er '.[].chardev')
->  	test -n $daxdev_4
-> +	test $(daxctl_get_nr_mappings $daxdev_4) -eq 2
-> 
->  	fail_if_available
-> 
-> @@ -173,6 +223,9 @@ daxctl_test_multi_reconfig()
->  		"$DAXCTL" reconfigure-device -s $i "$daxdev_1"
->  	done
-> 
-> +	test $(daxctl_get_nr_mappings $testdev) -eq $((ncfgs / 2))
-> +	test $(daxctl_get_nr_mappings $daxdev_1) -eq $((ncfgs / 2))
-> +
->  	fail_if_available
-> 
->  	"$DAXCTL" disable-device "$daxdev_1" && "$DAXCTL" destroy-device "$daxdev_1"
-> @@ -191,7 +244,8 @@ daxctl_test_adjust()
->  	start=$(expr $size + $size)
->  	for i in $(seq 1 1 $ncfgs)
->  	do
-> -		daxdev=$("$DAXCTL" create-device -r 0 -s $size)
-> +		daxdev=$("$DAXCTL" create-device -r 0 -s $size | jq -er '.[].chardev')
-> +		test $(daxctl_get_nr_mappings $daxdev) -eq 1
->  	done
-> 
->  	daxdev=$(daxctl_get_dev "dax0.1")
-> @@ -202,10 +256,17 @@ daxctl_test_adjust()
->  	daxdev=$(daxctl_get_dev "dax0.2")
->  	"$DAXCTL" disable-device "$daxdev"
->  	"$DAXCTL" reconfigure-device -s $(expr $size \* 2) "$daxdev"
-> +	# Allocates space at the beginning: expect two mappings as
-> +	# as don't adjust the mappingX region. This is because we
-> +	# preserve the relative page_offset of existing allocations
-> +	test $(daxctl_get_nr_mappings $daxdev) -eq 2
-> 
->  	daxdev=$(daxctl_get_dev "dax0.3")
->  	"$DAXCTL" disable-device "$daxdev"
->  	"$DAXCTL" reconfigure-device -s $(expr $size \* 2) "$daxdev"
-> +	# Adjusts space at the end, expect one mapping because we are
-> +	# able to extend existing region range.
-> +	test $(daxctl_get_nr_mappings $daxdev) -eq 1
-> 
->  	fail_if_available
-> 
-> @@ -232,6 +293,7 @@ daxctl_test1()
->  	daxdev=$("$DAXCTL" create-device -r 0 | jq -er '.[].chardev')
-> 
->  	test -n "$daxdev"
-> +	test $(daxctl_get_nr_mappings $daxdev) -eq 1
->  	fail_if_available
-> 
->  	"$DAXCTL" disable-device "$daxdev" && "$DAXCTL" destroy-device "$daxdev"
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-> 
+> But we also see good performance improvements from doing all reference
+> counts on the head page instead of spread throughout the pages, so we
+> really want compound pages.
+
+Going further than just refcounts and borrowing your (or someone else?)
+idea, perhaps also a FOLL_HEAD gup flag that would let us only work with
+head pages (or folios). Which would consequently let us pin/grab bigger
+swathes of memory e.g. 1G (in 2M head pages) or 512G (in 1G head pages)
+with just 1 page for storing the struct pages[*]. Albeit I suspect the
+numbers would have to justify it.
+
+	Joao
+
+[*] One page happens to be what's used for RDMA/umem and vdpa as callers
+of pin_user_pages*()
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
