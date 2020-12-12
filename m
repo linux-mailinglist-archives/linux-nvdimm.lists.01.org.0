@@ -1,52 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C622D81B6
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 11 Dec 2020 23:14:47 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75912D8481
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 12 Dec 2020 05:38:27 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 48526100EB329;
-	Fri, 11 Dec 2020 14:14:45 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=luto@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 22F15100EB323
-	for <linux-nvdimm@lists.01.org>; Fri, 11 Dec 2020 14:14:43 -0800 (PST)
-X-Gm-Message-State: AOAM5335SICCXXS6xt91J+dA+jeyJ1zVR7leyEBCPlk1ZgnOdPVud/g2
-	c3Darz0f86UUcV9gIj9Kg9rhmSSOd/E0zHFV1fUNqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1607724882;
-	bh=70LTUMehFh83IHad/vkXff9wd8DJwarU76xfxtWTpbY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jPAdTjcAVpZyDFTaPihJOsnveXonsw5iOC6B7KbDZDjzqZNwbm7CsmLDH3yR0AMID
-	 SNfPGfnjQ3iWvMryER3GLaa8smv8iVvQy2GhAyVriM92szYovmcCUtjEsGsqB+wLEu
-	 7R/8evzBvMtqXX/2o39B34SfiJoMfQ9d2yPn0icWzRf3+6zFxZ2pNb/c6qokJB+How
-	 9HXBSycFcdAQzwnvNh3IDX4+qV7Qgi8aIYQK+QaOB/Jj0HXGnIYfXkI3qp+mFM3IOV
-	 v2A5PmGBQtslguW0eYDMFhwLH/Gqey8aJRD7LMfwaHCIDkWMKrpYuCoQlC3FRomXfL
-	 wiJq08Nve+OvA==
-X-Google-Smtp-Source: ABdhPJwyiUgo4QSzbgQvODMi2EdGDgMycwa95HkgOC2v3m4y50nPJcH7R/4+bPCwIYyM+uNouuOpofy5wtqF2/93N+Q=
-X-Received: by 2002:a5d:4905:: with SMTP id x5mr825454wrq.75.1607724880704;
- Fri, 11 Dec 2020 14:14:40 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id A7514100EB340;
+	Fri, 11 Dec 2020 20:38:24 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=93.153.101.20; helo=mail.renocar.cz; envelope-from=info@renocar.cz; receiver=<UNKNOWN> 
+Received: from mail.renocar.cz (mail.renocar.cz [93.153.101.20])
+	by ml01.01.org (Postfix) with ESMTP id 4E89A100EB84F;
+	Fri, 11 Dec 2020 20:38:18 -0800 (PST)
+Received: from User ([52.166.115.12]) by mail.renocar.cz with Microsoft SMTPSVC(8.5.9600.16384);
+	 Sat, 12 Dec 2020 05:37:36 +0100
+From: "COCA-COLA"<info@renocar.cz>
+Subject: COCA-COLA LOTTERY ORGANIZATION
+Date: Sat, 12 Dec 2020 03:37:35 -0800
 MIME-Version: 1.0
-References: <20201106232908.364581-6-ira.weiny@intel.com> <20201124060956.1405768-1-ira.weiny@intel.com>
-In-Reply-To: <20201124060956.1405768-1-ira.weiny@intel.com>
-From: Andy Lutomirski <luto@kernel.org>
-Date: Fri, 11 Dec 2020 14:14:28 -0800
-X-Gmail-Original-Message-ID: <CALCETrUHwZPic89oExMMe-WyDY8-O3W68NcZvse3=PGW+iW5=w@mail.gmail.com>
-Message-ID: <CALCETrUHwZPic89oExMMe-WyDY8-O3W68NcZvse3=PGW+iW5=w@mail.gmail.com>
-Subject: Re: [PATCH V3.1] entry: Pass irqentry_state_t by reference
-To: Weiny Ira <ira.weiny@intel.com>
-Message-ID-Hash: RFSSFYZ4376ZTMCEPVWDT4JMI5A5OZQJ
-X-Message-ID-Hash: RFSSFYZ4376ZTMCEPVWDT4JMI5A5OZQJ
-X-MailFrom: luto@kernel.org
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <RENDC1wOXD0a9JKNwna0000135c@mail.renocar.cz>
+X-OriginalArrivalTime: 12 Dec 2020 04:37:36.0212 (UTC) FILETIME=[83D2C140:01D6D040]
+Message-ID-Hash: RF6U2HZYKJ4GLANCWLV2JW6ZFRKUUYS5
+X-Message-ID-Hash: RF6U2HZYKJ4GLANCWLV2JW6ZFRKUUYS5
+X-MailFrom: info@renocar.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux-MM <linux-mm@kvack.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: liamfinchus11@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RFSSFYZ4376ZTMCEPVWDT4JMI5A5OZQJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RF6U2HZYKJ4GLANCWLV2JW6ZFRKUUYS5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,93 +41,46 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 23, 2020 at 10:10 PM <ira.weiny@intel.com> wrote:
->
-> From: Ira Weiny <ira.weiny@intel.com>
->
-> Currently struct irqentry_state_t only contains a single bool value
-> which makes passing it by value is reasonable.  However, future patches
-> add information to this struct.  This includes the PKRS thread state,
-> included in this series, as well as information to store kmap reference
-> tracking and PKS global state outside this series.  In total, we
-> anticipate 2 new 32 bit fields and an integer field to be added to the
-> struct beyond the existing bool value.
->
-> Adding information to irqentry_state_t makes passing by value less
-> efficient.  Therefore, change the entry/exit calls to pass irq_state by
-> reference in preparation for the changes which follow.
->
-> While at it, make the code easier to follow by changing all the usage
-> sites to consistently use the variable name 'irq_state'.
+COCA-COLA LOTTERY ORGANIZATION
+TICKET FREE/ONLINE E-MAIL ADDRESS WINNINGS DEPARTMENT.
 
-After contemplating this for a bit, I think this isn't really the
-right approach.  It *works*, but we've mostly just created a bit of an
-unfortunate situation.  Our stack, on a (possibly nested) entry looks
-like:
+Greetings Winner,
 
-previous frame (or empty if we came from usermode)
----
-SS
-RSP
-FLAGS
-CS
-RIP
-rest of pt_regs
+If you are the correct owner of this email address? If yes then be glad
+this day as the result of the Coca-Cola lotto online e-mail address
+free-ticket winning draws of January, 2020 held in United States of
+America has just been released and we are glad to announce to you that
+your email address won you the sweepstakes in the first category and you
+are entitled to claim the sum of Three Million Five Hundred Thousand
+United States Dollars(US$3,500,000.00). Your email address was entered
+for the online draw on this ticket No: 546-373-66773 and won on this
+Lucky No: (14)-(8)-(5)-(19)-(28)-(12)-(30).
 
-C frame
+On how to receive your won prize of US$3.5M. (Three Million Five Hundred
+Thousand United States Dollars Only) to enable Mr. Liam Finch ascertain
+you as the rightful winner and receiver of the US$3.5 million dollars
+US, MAKE SURE you include the below listed information in your contact
+email to him.
 
-irqentry_state_t (maybe -- the compiler is within its rights to play
-almost arbitrary games here)
+Your complete official names, country of origin and country of
+residence/work, contact telephone and mobile numbers, address, amount
+won, free ticket and lucky numbers, date of draw. OPTIONAL: - [Sex, age,
+occupation and job title].
 
-more C stuff
+Just in case you are thinking of how you won without entering then know
+again that this very draw of the Coca-Cola Lottery Organization in which
+you have emerged as a winner was a free ticket online email address
+draws were thousands of email addresses was collected from almost all
+world wide websites and used for the online draws/sweepstakes and during
+winners selection your email address came out among the first ten which
+won you the lottery in the first winnings category and entitles you to
+claim the US$3,500,000.00 dollars
 
-
-So what we've accomplished is having two distinct arch register
-regions, one called pt_regs and the other stuck in irqentry_state_t.
-This is annoying because it means that, if we want to access this
-thing without passing a pointer around or access it at all from outer
-frames, we need to do something terrible with the unwinder, and we
-don't want to go there.
-
-So I propose a somewhat different solution: lay out the stack like this.
-
-SS
-RSP
-FLAGS
-CS
-RIP
-rest of pt_regs
-PKS
-^^^^^^^^ extended_pt_regs points here
-
-C frame
-more C stuff
-...
-
-IOW we have:
-
-struct extended_pt_regs {
-  bool rcu_whatever;
-  other generic fields here;
-  struct arch_extended_pt_regs arch_regs;
-  struct pt_regs regs;
-};
-
-and arch_extended_pt_regs has unsigned long pks;
-
-and instead of passing a pointer to irqentry_state_t to the generic
-entry/exit code, we just pass a pt_regs pointer.  And we have a little
-accessor like:
-
-struct extended_pt_regs *extended_regs(struct pt_regs *) { return
-container_of(...); }
-
-And we tell eBPF that extended_pt_regs is NOT ABI, and we will change
-it whenever we feel like just to keep you on your toes, thank you very
-much.
-
-Does this seem reasonable?  You get to drop patch 7 and instead modify
-the show_regs() stuff to just display one extra register.
+Yours Faithfully,
+Mr. Liam Finch
+COCA-COLA LOTTERY ORGANIZATION.
+Online Winning Notification Department
+Tel: +1-289-937-0972
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
