@@ -1,134 +1,196 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317422D9558
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 14 Dec 2020 10:35:22 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9A92D9667
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 14 Dec 2020 11:39:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 472DD100EF261;
-	Mon, 14 Dec 2020 01:35:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::745; helo=mail-qk1-x745.google.com; envelope-from=30thxxxajdjy10hh0ddhboeiiovw6c08b.2ecb8dkn-dl38ccb8iji.qr.eh6@trix.bounces.google.com; receiver=<UNKNOWN> 
-Received: from mail-qk1-x745.google.com (mail-qk1-x745.google.com [IPv6:2607:f8b0:4864:20::745])
+	by ml01.01.org (Postfix) with ESMTP id E4E59100EF264;
+	Mon, 14 Dec 2020 02:39:26 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8A461100EF24F
-	for <linux-nvdimm@lists.01.org>; Mon, 14 Dec 2020 01:35:16 -0800 (PST)
-Received: by mail-qk1-x745.google.com with SMTP id o65so8620028qkc.21
-        for <linux-nvdimm@lists.01.org>; Mon, 14 Dec 2020 01:35:16 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 27FC0100EF24F
+	for <linux-nvdimm@lists.01.org>; Mon, 14 Dec 2020 02:39:24 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id bj5so8422450plb.4
+        for <linux-nvdimm@lists.01.org>; Mon, 14 Dec 2020 02:39:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:message-id:date:subject:from:to;
-        bh=/bS0ojio6FQ073ZN2oj5uNhqMSV6PqVuSYpTlba+vEA=;
-        b=aq1GfVDB/gSvgxWdB01ELjcimSSylCGc3MTFkeTeZtq2KYAwH9TANf42w81EkwZ4JU
-         xZJHwUvO1gtN2gTV3/AOp7H4pCoh/BG0GMhginRnsFKS3KN4bdJoROhYsKWQgOcLDoa6
-         6QhpEVE/Ts00ZNddNdH6SU5x+njeNkwkt+1vFZkT85/54WD200EHGwimmZH9uGWGlZew
-         XAFn+jWx+Gluwm0pVXGfjJ9250xmmZKyp184q3cffJP1llMhcLSXB3WvoGZtFsSS8RqI
-         /PhlDaKc4pj+g4dt4vrQN9VeBMTiD6w+aiw98H7dujHPf1JlK07INKXmCK5Br3Vov6I+
-         LXlQ==
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DQB/PleexOKrdVCSi3B8OPHhpneIwhJ61de0qzJ96N8=;
+        b=bACoKyJGXoi1vamsFPLNbZYqKi/IFz6DXprG2qZLD9muT3JROLrpUmedNnmV3NCk/S
+         Smde+DO3YlDJp2h04pcP0oQJ+0eYEMVFXBz+3g44i6nX+xJTNSrXo1ebieVaggTcBge9
+         lz8qN23bEHsma7sXO2V8BXSB3fLkwj7S9QyRXv+KaM5ZLrnvwTq/oHrvp8yVFxTQ/s22
+         g47suYKpzKWogZIuTHVxWgyohx4hkf/NDCfMRe8NVHlQM21SM5NSU0oI/CFrgJ0XM/Z3
+         LUXtYQo3kREn4NzUjB5kr2TmQ8c0reXTre7KCA8pzsipaTU2VTsQ4SisxhHWfQE3J7OY
+         yhhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:message-id:date:subject
-         :from:to;
-        bh=/bS0ojio6FQ073ZN2oj5uNhqMSV6PqVuSYpTlba+vEA=;
-        b=N1XwaiX50xaggII/uJygm22ShYsZGeeov02DJMeTZ1/ZppXActPZWib4ZNhiAa31p1
-         KEuPgKzCOLwtCcMERUYNfVf11de33UjkbKPoJUAkx5n631nesIiFxSOcHRx/Wueew8Nl
-         Bste/aoJnvUcsRpmfxiVfecoXlb2VOmXZcyPAwEo02DSWoqtLGypmHZDSca0AZcwW/mm
-         HW/hm4Vz0Beuk6/bEu6H3KcB3UMuIJ+0pi4NEkTTvxCU6Ns7ErgIMcEpJxK2Oncp2lvj
-         mYwZUUY7dg2SktchyfJIgGJt6tYoE7UWkv5x5l9rwLDHK7M3eB4hzbI2AGik9uuN3YBP
-         tAyw==
-X-Gm-Message-State: AOAM530OBH80cgQBcQmfpKUf8YODSK6A6oq/XhRG++6jU1tHYX80hUYh
-	sdgvfHAf+n/00Lovpfjpq20OpkJHE7AWjHTkBHlT
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DQB/PleexOKrdVCSi3B8OPHhpneIwhJ61de0qzJ96N8=;
+        b=Y1c9lCK5eM3kRNXXeFu3GKuEJ6kBoUnVvtO86aNV7WnhwELkMAwq06n+qBgoWdGQMJ
+         aCGDizfYjj/QfyBAOZ2DvMHxbTQrJLlho4c0DCn2HluOKb7JqGKjOtHURsPHZSfO9DbF
+         fc/ugl4bCCdcmmLeSTuvhJRE/CYAsfAJ5zmaOMRXlODBR0DWXC3Sy+QA+ZtOPUguIj0m
+         hfD68Z83D+lxR3aqje3hWOWjDte5PvbD4fMYqMdWe2Br7D0J18Tn43hnmGoBqIf6YSdt
+         D20vKb+/dLbu0uR3yHCDyp3InVmDYXnPHhy5X+lnHGWQwp8CPzWkdGSvxq7zFowM2Go7
+         O94g==
+X-Gm-Message-State: AOAM532ZOMzF0qzcUftZfT80JksA8HqDynxJUR+ApW1pSw/U+ek8hZjn
+	aCaV6xIhEF5v6SSwep7r2kKtX6g6zoHhJQ==
+X-Google-Smtp-Source: ABdhPJwqLCjo2AHOfrCqX4zwIs87LZxQ2M8EUzH8zoWsa9F73iaSYtrLhNwQzhGF96t61pjOz95EnQ==
+X-Received: by 2002:a17:90a:1b29:: with SMTP id q38mr24664856pjq.223.1607942362419;
+        Mon, 14 Dec 2020 02:39:22 -0800 (PST)
+Received: from santosiv.in.ibm.com.com ([103.21.79.4])
+        by smtp.gmail.com with ESMTPSA id p1sm20735926pfb.208.2020.12.14.02.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Dec 2020 02:39:21 -0800 (PST)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+	Harish Sriram <harish@linux.ibm.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Cc: Santosh Sivaraj <santosh@fossix.org>
+Subject: [RFC v5 0/7] PMEM device emulation without nfit depenency
+Date: Mon, 14 Dec 2020 16:08:52 +0530
+Message-Id: <20201214103859.2409175-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Received: by 2002:ac8:5a90:: with SMTP id c16mt29636214qtc.331.1607938513483;
- Mon, 14 Dec 2020 01:35:13 -0800 (PST)
-X-No-Auto-Attachment: 1
-Message-ID: <000000000000ead01805b6695bb8@google.com>
-Date: Mon, 14 Dec 2020 09:35:14 +0000
-Subject: US Federal Reserve Bank Corporate Office.           
-From: barrannrlyossy56@gmail.com
-To: linux-nvdimm@lists.01.org
-Message-ID-Hash: SI4DZ6KUOWPWHII7OZBFWMJXXZ2BP5FE
-X-Message-ID-Hash: SI4DZ6KUOWPWHII7OZBFWMJXXZ2BP5FE
-X-MailFrom: 30THXXxAJDJY10HH0DDHBOEIIOVW6C08B.2ECB8DKN-DL38CCB8IJI.QR.EH6@trix.bounces.google.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Message-ID-Hash: VYLZABI4M4XGXJEAKYMY475EXSW43FTA
+X-Message-ID-Hash: VYLZABI4M4XGXJEAKYMY475EXSW43FTA
+X-MailFrom: santosh@fossix.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: barrannrlyossy56@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SI4DZ6KUOWPWHII7OZBFWMJXXZ2BP5FE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VYLZABI4M4XGXJEAKYMY475EXSW43FTA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"; delsp="yes"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-SSd2ZSBpbnZpdGVkIHlvdSB0byBmaWxsIG91dCB0aGUgZm9sbG93aW5nIGZvcm06DQpVbnRpdGxl
-ZCBmb3JtDQoNClRvIGZpbGwgaXQgb3V0LCB2aXNpdDoNCmh0dHBzOi8vZG9jcy5nb29nbGUuY29t
-L2Zvcm1zL2QvZS8xRkFJcFFMU2R3RDBQc3hiNGdKMEdVcFU0SGZhUTVIdkNtV2FjS18yd0VtbldU
-OHZTdzdpRDJDQS92aWV3Zm9ybT92Yz0wJmFtcDtjPTAmYW1wO3c9MSZhbXA7ZmxyPTAmYW1wO3Vz
-cD1tYWlsX2Zvcm1fbGluaw0KDQogICAgICAgICAgICAgICAgVVMgRmVkZXJhbCBSZXNlcnZlIEJh
-bmsgQ29ycG9yYXRlIE9mZmljZS4NCiAgICAgICAgICAgICAgIDMzIExpYmVydHkgU3QgTmV3IFlv
-cmsgTlkgMTAwNDUsIFVuaXRlZCBTdGF0ZXMuDQogICAgICAgICAgICAgIE91ciBSZWY6IFVTIEZS
-Qi9JUlUvU0ZFLzE1LjUvTlkvMDExLA0KICAgICAgICAgICAgIFVuaXRlZCBTdGF0ZXMgb2YgQW1l
-cmljYQ0KICAgICAgICAgICAgTW9uZGF5LUZyaWRheTggYS5tLi05IHAubS4NCiAgICAgICAgICAg
-RWFzdGVybiBEYXlsaWdodCBUaW1lKEVEVCkNCiAgICAgICAgICBTYXR1cmRheSBhbmQgU3VuZGF5
-OCBhLm0uLTQgcC5tLg0KICAgICAgICAgRWFzdGVybiBEYXlsaWdodCBUaW1lKEVEVCkuDQoNCg0K
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBGRURFUkFMIFJFU0VSVkUgQkFOSyBO
-RVcgWU9SSyBDSVRZwq4NCg0KICAgICAgWW91ciBwYXltZW50IGZpbGVzIGZyb20gdGhyZWUgKDMp
-IGRpZmZlcmVudCBiYW5rcywgTmF0IHdlc3QgQmFuayBvZiAgDQpMb25kb24sIENlbnRyYWwgQmFu
-ayBvZg0KDQpOaWdlcmlhIGFuZCBCYW5rIG9mIEFtZXJpY2Egd2FzIGNvbXBpbGVkIGFuZCBzdWJt
-aXR0ZWQgdG8gbXkgZGVzayB0aGlzICANCm1vcm5pbmcgZm9yIHJldmlldy4gVGhlDQoNCnRvdGFs
-IHN1bSBvd2VkIHRvIHlvdSBieSB0aGUgMyBiYW5rcyBtZW50aW9uZWQgYWJvdmUgd2FzIHN1bSB1
-cCB0byB0aGUgdHVuZSAgDQpvZiBVUyAkMTUsNTAwLDAwMC4wMA0KDQooRmlmdGVlbiBNaWxsaW9u
-IEZpdmUgSHVuZHJlZCBUaG91c2FuZCBVbml0ZWQgU3RhdGVzIERvbGxhcnMpLk5vdyB0aGUgZnVu
-ZCAgDQpoYXMgYmVlbiB0b3RhbGx5IGxvZGdlZA0KDQppbiBvbmUgcGFydGljdWxhciBFc2Nyb3cg
-YWNjb3VudCAobm9uIGRlZHVjdGlibGUpIGhlcmUgaW4gdGhlIEZlZGVyYWwgIA0KUmVzZXJ2ZSBC
-YW5rIE5ldyBZb3JrIG9uDQoNCnlvdXIgbmFtZSwgd2hpbGUgd2FpdGluZyBmb3IgYWNjcmVkaXRh
-dGlvbiB0byB5b3VyIHBlcnNvbmFsIGJhbmsgYWNjb3VudCBpbiAgDQphbnkgcGFydCBvZiB0aGUN
-Cg0Kd29ybGQuIE1lYW53aGlsZSwgYWZ0ZXIgZHVlIHNjcnV0aW55IGFuZCB2ZXJpZmljYXRpb24s
-IEkgY29uZmlybWVkIHRoYXQgeW91ICANCmhhdmUgZnVsZmlsbGVkIGFsbCB0aGUNCg0KbmVjZXNz
-YXJ5IG9ibGlnYXRpb25zIHRoYXQgd2lsbCBlbmFibGUgdGhlIHJlbGVhc2Ugb2YgeW91ciBwYXlt
-ZW50IHRvIHlvdS4gIA0KQnV0IHlldCB5b3VyIHBheW1lbnQNCg0Kd2FzIG5vdCByZWxlYXNlZCB0
-byB5b3UgZHVlIHRvIG9uZSBmbGltc3kgZXhjdXNlcyBvciB0aGUgb3RoZXIgZnJvbSB0aGUgIA0K
-QmFuayBvZmZpY2lhbHMgaW4gY2hhcmdlDQoNCm9mIHlvdXIgcGF5bWVudCwgYmVjYXVzZSB0aGV5
-IGhhZCB0aGUgaW50ZW50aW9uIG9mIGRpdmVydGluZyB5b3VyIGZ1bmRzIHRvICANCnRoZWlyIHBy
-aXZhdGUgYWNjb3VudHMNCg0KaW4gb3JkZXIgdG8gc2F0aXNmeSB0aGVpciBzZWxmaXNoIGludGVy
-ZXN0LiBZb3UgYXJlIGhvd2V2ZXIgbHVja3kgdGhhdCB3ZSAgDQp0aGUgbWFuYWdlbWVudCBvZiB0
-aGUgVVMNCg0KRmVkZXJhbCBSZXNlcnZlIEJhbmsgZGV0ZWN0ZWQgdGhlaXIgZXZpbCBwbGFucyBh
-bmQgdGhlcmVmb3JlIGNhbGwgZm9yIHRoZSAgDQpzdWJtaXNzaW9uIG9mIHlvdXINCg0KcGF5bWVu
-dCBmaWxlIHRvIHVzIHNvIHdlIGNhbiBwZXJzb25hbGx5IGhhbmRsZSB0aGUgcGF5bWVudCBhc3Np
-Z25tZW50IHRvICANCmVuc3VyZSB0aGF0IHlvdSByZWNlaXZlDQoNCnlvdXIgZnVuZHMgYWNjb3Jk
-aW5nbHkuIE5vdywgYWxsIG1vZGFsaXRpZXMgcmVnYXJkaW5nIHlvdXIgZnVuZCByZWxlYXNlIGhh
-cyAgDQpiZWVuIHB1dCBpbiBwbGFjZSBoZXJlDQoNCmluIHRoZSBSZXNlcnZlIEJhbmsgb2YgQW1l
-cmljYSwgdGh1cywgeW91ciBmdW5kcyBoYXMgYmVlbiBtYWRlIHJlYWR5IGZvciAgDQp0cmFuc2Zl
-ciBpbiBvdXINCg0Kc29waGlzdGljYXRlZCBtYWNybyB0cmFuc2ZlciBzeXN0ZW0sIHdoYXQgd2Ug
-bmVlZCBmcm9tIHlvdSBub3cgaXMgdG8gIA0KcHJvdmlkZSB0byB1cyB0aGUgYmFuaw0KDQphY2Nv
-dW50IG9mIHlvdXIgY2hvaWNlIHdoaWNoIHlvdSB3YW50IHVzIHRvIHRyYW5zZmVyIHlvdXIgZnVu
-ZHMgc28gd2UgY2FuICANCmV4cGVkaXRlIGFjdGlvbiBmb3IgdGhlDQoNCmFjY3JlZGl0YXRpb24g
-b2YgeW91ciBmdW5kcyBpbnRvIHlvdXIgYWNjb3VudCBpbW1lZGlhdGVseS4NCg0KICAgICAgQmVs
-b3cgYXJlIHRoZSBpbmZvcm1hdGlvbiBuZWVkZWQgZm9yIG5vdyBmb3IgeW91ciB0cmFuc2Zlci4N
-CjEuUGVyc29uYWwgRGV0YWlsczoNCkZ1bGwgTmFtZTotLQ0KQ3VycmVudCBIb21lIEFkZHJlc3M6
-LS0NCkFnZS9HZW5kZXI6LS0NCk9jY3VwYXRpb246LS0NCkRpcmVjdCBNb2JpbGUgTnVtYmVyOi0t
-DQpQYXNzcG9ydCBDb3B5LCBJRCBjYXJkIG9yIERMOg0KMi4gQmFua2luZyBEZXRhaWxzOg0KQmFu
-ayBOYW1lOi0tDQpCYW5rIEFkZHJlc3M6LS0NCkFjY291bnQgTmFtZTotLQ0KQWNjb3VudCBOdW1i
-ZXI6LS0NClJvdXRpbmcgTnVtYmVyOi0tDQpTd2lmdCBDb2RlOi0tDQogICBOb3RlOiBJZiB5b3Ug
-cHJlZmVyIHRvIHJlY2VpdmUgeW91ciBmdW5kcyBpbiBmb3JtIG9mIGEgVmlzYSBDYXJkLCB3ZSAg
-DQpjb3VsZCBsb2FkIGFuZCBzaGlwIHlvdXINCg0KVmlzYSBDYXJkIHRvIHlvdXIgYWRkcmVzcyB3
-aGljaCB3aWxsIHBlcm1pdCB5b3UgYSBkYWlseSB3aXRoZHJhd2FsIGxpbWl0IG9mICANClVTJDUw
-MDAgb3Igd3JpdGUgYQ0KDQpkcmFmdCBjaGVjayB3aGljaCBjYW4gYmUgZGVwb3NpdGVkIGluIGFu
-eSBiYW5rIGFuZCBzZW5kIHRvIHlvdS4gSW4gIA0KYW50aWNpcGF0aW5nIGZvciB5b3VyIHVyZ2Vu
-dA0KDQpjb29wZXJhdGlvbg0KLg0KICBZb3VycyBzaW5jZXJlbHksIE1yLiBKb2huIEMuIFdpbGxp
-YW1zLg0KQ2hhaXIgT2YgdGhlIEZlZGVyYWwgUmVzZXJ2ZSBCYW5rIE5ldyBZb3JrDQpDb250YWN0
-IEVtYWlsOmZyYmFtZXJpY2FAMTI2LmNvbQ0KVGV4dCBhbmQgY2FsbCBQaG9uZSBObzogKzEgKDMz
-MikgMzMzLTkyMDMNCkNvLWNoaWVmIE9wZXJhdGluZyBPZmZpY2VyIEZlZGVyYWwgUmVzZXJ2ZSBC
-YW5rwq4NCkNvcnBvcmF0ZSBPZmZpY2UsIE5ZLCBOZXcgWW9yaywNCkZlZGVyYWwgUmVzZXJ2ZSBC
-YW5rLA0KICBOLkEuIE1lbWJlciBGRElDLsKpIDIwMTggRmVkZXJhbCBSZXNlcnZlIEJhbmsgQ29y
-cG9yYXRpb24uDQpBbGwgcmlnaHRzIHJlc2VydmVkLkFSNzI3NjgvREQ2QTY2Lg0KDQpHb29nbGUg
-Rm9ybXM6IENyZWF0ZSBhbmQgYW5hbHl6ZSBzdXJ2ZXlzLg0KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
-aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
-bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+The current test module cannot be used for testing platforms (make check)
+that do not have support for NFIT. In order to get the ndctl tests working,
+we need a module which can emulate NVDIMM devices without relying on
+ACPI/NFIT.
+
+The emulated PMEM device is made part of the PAPR family.
+
+Corresponding changes for ndctl is also required, to add attributes needed
+for the test, which will be sent as a reply to this patch.
+
+The following is the test result, run on a x86 guest:
+
+PASS: libndctl                                                                         
+PASS: dsm-fail                                                                         
+PASS: dpa-alloc                                                                        
+PASS: parent-uuid                                                                      
+PASS: multi-pmem                                                                       
+PASS: create.sh                                                                        
+FAIL: clear.sh                                                                         
+FAIL: pmem-errors.sh                                                                   
+FAIL: daxdev-errors.sh                                                                 
+PASS: multi-dax.sh                                                                     
+PASS: btt-check.sh                                                                     
+FAIL: label-compat.sh                      
+PASS: blk-exhaust.sh                       
+PASS: sector-mode.sh                       
+FAIL: inject-error.sh                      
+SKIP: btt-errors.sh                        
+PASS: hugetlb                              
+PASS: btt-pad-compat.sh                                                                
+SKIP: firmware-update.sh                                                               
+FAIL: ack-shutdown-count-set                                                           
+PASS: rescan-partitions.sh                                                             
+FAIL: inject-smart.sh                      
+FAIL: monitor.sh                           
+PASS: max_available_extent_ns.sh                                                       
+FAIL: pfn-meta-errors.sh                                                               
+PASS: track-uuid.sh                        
+============================================================================
+Testsuite summary for ndctl 70.10.g7ecd11c                                              
+============================================================================
+# TOTAL: 26                                
+# PASS:  15                                
+# SKIP:  2                                 
+# XFAIL: 0                                 
+# FAIL:  9                                 
+# XPASS: 0                                 
+# ERROR: 0
+
+The following is the test result from a PowerPC 64 guest.
+
+PASS: libndctl
+PASS: dsm-fail
+PASS: dpa-alloc
+PASS: parent-uuid
+PASS: multi-pmem
+PASS: create.sh
+FAIL: clear.sh
+FAIL: pmem-errors.sh
+FAIL: daxdev-errors.sh
+PASS: multi-dax.sh
+PASS: btt-check.sh
+FAIL: label-compat.sh
+PASS: blk-exhaust.sh
+PASS: sector-mode.sh
+FAIL: inject-error.sh                       
+SKIP: btt-errors.sh
+SKIP: hugetlb
+PASS: btt-pad-compat.sh
+SKIP: firmware-update.sh
+FAIL: ack-shutdown-count-set
+PASS: rescan-partitions.sh
+FAIL: inject-smart.sh
+FAIL: monitor.sh
+PASS: max_available_extent_ns.sh
+FAIL: pfn-meta-errors.sh
+PASS: track-uuid.sh
+============================================================================  
+Testsuite summary for ndctl 70.git94a00679
+============================================================================
+# TOTAL: 26
+# PASS:  14
+# SKIP:  3
+# XFAIL: 0
+# FAIL:  9
+# XPASS: 0                                  
+# ERROR: 0
+
+Error injection tests and SMART are not yet implemented.
+
+Changes from V4:
+- Split the driver patches into smaller chunks for ease of review
+- [ndctl] Adding dimm attributes for nfit and papr, make it into one function [Dan]
+- [ndctl] If nfit modules are missing, check for acpi support before failing, slightly
+  different approach   than what Dan commented.
+
+Santosh Sivaraj (7):
+  testing/nvdimm: Add test module for non-nfit platforms
+  ndtest: Add compatability string to treat it as PAPR family
+  ndtest: Add dimms to the two buses
+  ndtest: Add dimm attributes
+  ndtest: Add regions and mappings to the test buses
+  ndtest: Add nvdimm control functions
+  ndtest: Add papr health related flags
+
+ tools/testing/nvdimm/config_check.c |    3 +-
+ tools/testing/nvdimm/test/Kbuild    |    6 +-
+ tools/testing/nvdimm/test/ndtest.c  | 1138 +++++++++++++++++++++++++++
+ tools/testing/nvdimm/test/ndtest.h  |  109 +++
+ 4 files changed, 1254 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/nvdimm/test/ndtest.c
+ create mode 100644 tools/testing/nvdimm/test/ndtest.h
+
+-- 
+2.26.2
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
