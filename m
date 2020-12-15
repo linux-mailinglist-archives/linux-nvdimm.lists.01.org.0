@@ -2,285 +2,108 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1A82DB568
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Dec 2020 21:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E978C2DB6ED
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Dec 2020 00:10:41 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4100D100EF267;
-	Tue, 15 Dec 2020 12:51:21 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EE931100EF25F
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Dec 2020 12:51:18 -0800 (PST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BFKoaa6193672;
-	Tue, 15 Dec 2020 20:51:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=U0/8Fm7pFqF1iyihP7LVzM2ebGbwYrgJDkT5uPW9pmw=;
- b=zdpNoBKbaLTc7cSst7dYZzIoCPEd1K6ZEtCm9AjC4scJCHgKpSMIQGvCqKTR9hmIcK+/
- /LfKA9PWqPsfF5NXxFDESf4IsWC66RQY88+lyUiQ9+cnVCt1EOFdl7kOwmsvp7w6ou0G
- kdUO8tWt7P06dRorSw0ndFfSqa2l87Cws+fe3L5hcW8JW5fK7tCxIjCeSPbUmlwKQvKA
- +PzSShFT0KxnY8TaF+DorxJKyFB3+/gOSP/nhYIJ7uZLgxIcWu5JL+oldbWAbEmSp9qh
- l9AMmnNmy2LkclfMskdvzA5/IZ9LQ/AMKxFPr2Le/krVOvHz5su+5lQyqEJHPan5I3QP SA==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2130.oracle.com with ESMTP id 35cn9rcrsy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 15 Dec 2020 20:51:08 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BFKp1jK046319;
-	Tue, 15 Dec 2020 20:51:07 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-	by aserp3020.oracle.com with ESMTP id 35e6eqys6x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Dec 2020 20:51:07 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0BFKp4g2021214;
-	Tue, 15 Dec 2020 20:51:04 GMT
-Received: from localhost (/67.169.218.210)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 15 Dec 2020 12:51:04 -0800
-Date: Tue, 15 Dec 2020 12:51:02 -0800
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [RFC PATCH v3 8/9] md: Implement ->corrupted_range()
-Message-ID: <20201215205102.GB6918@magnolia>
-References: <20201215121414.253660-1-ruansy.fnst@cn.fujitsu.com>
- <20201215121414.253660-9-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id 3D723100EF265;
+	Tue, 15 Dec 2020 15:10:40 -0800 (PST)
+Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.249; helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
+Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au [211.29.132.249])
+	by ml01.01.org (Postfix) with ESMTP id 5B335100EF264
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Dec 2020 15:10:37 -0800 (PST)
+Received: from dread.disaster.area (pa49-179-6-140.pa.nsw.optusnet.com.au [49.179.6.140])
+	by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 1941F3C3F8B;
+	Wed, 16 Dec 2020 10:10:29 +1100 (AEDT)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+	(envelope-from <david@fromorbit.com>)
+	id 1kpJSY-004N5L-QJ; Wed, 16 Dec 2020 10:10:22 +1100
+Date: Wed, 16 Dec 2020 10:10:22 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Jane Chu <jane.chu@oracle.com>
+Subject: Re: [RFC PATCH v2 0/6] fsdax: introduce fs query to support reflink
+Message-ID: <20201215231022.GL632069@dread.disaster.area>
+References: <20201123004116.2453-1-ruansy.fnst@cn.fujitsu.com>
+ <89ab4ec4-e4f0-7c17-6982-4f55bb40f574@oracle.com>
+ <bb699996-ddc8-8f3a-dc8f-2422bf990b06@cn.fujitsu.com>
+ <3b35604c-57e2-8cb5-da69-53508c998540@oracle.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201215121414.253660-9-ruansy.fnst@cn.fujitsu.com>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 phishscore=0
- bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012150140
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012150140
-Message-ID-Hash: JJOBVW5NCMUNKBSEWWBB6S4KD2AHXD4X
-X-Message-ID-Hash: JJOBVW5NCMUNKBSEWWBB6S4KD2AHXD4X
-X-MailFrom: darrick.wong@oracle.com
+In-Reply-To: <3b35604c-57e2-8cb5-da69-53508c998540@oracle.com>
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.3 cv=YKPhNiOx c=1 sm=1 tr=0 cx=a_idp_d
+	a=uDU3YIYVKEaHT0eX+MXYOQ==:117 a=uDU3YIYVKEaHT0eX+MXYOQ==:17
+	a=IkcTkHD0fZMA:10 a=zTNgK-yGK50A:10 a=7-415B0cAAAA:8
+	a=1WtExyGbPUdzLH7rxhUA:9 a=QEXdDO2ut3YA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+Message-ID-Hash: 34J5MQMRELT47Q2BNBMUEGX4BMDQGJQD
+X-Message-ID-Hash: 34J5MQMRELT47Q2BNBMUEGX4BMDQGJQD
+X-MailFrom: david@fromorbit.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com, Theodore Ts'o <tytso@mit.edu>
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JJOBVW5NCMUNKBSEWWBB6S4KD2AHXD4X/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/34J5MQMRELT47Q2BNBMUEGX4BMDQGJQD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, Dec 15, 2020 at 08:14:13PM +0800, Shiyang Ruan wrote:
-> With the support of ->rmap(), it is possible to obtain the superblock on
-> a mapped device.
-> 
-> If a pmem device is used as one target of mapped device, we cannot
-> obtain its superblock directly.  With the help of SYSFS, the mapped
-> device can be found on the target devices.  So, we iterate the
-> bdev->bd_holder_disks to obtain its mapped device.
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-> ---
->  drivers/md/dm.c       | 66 +++++++++++++++++++++++++++++++++++++++++++
->  drivers/nvdimm/pmem.c |  9 ++++--
->  fs/block_dev.c        | 21 ++++++++++++++
->  include/linux/genhd.h |  7 +++++
->  4 files changed, 100 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-> index 4e0cbfe3f14d..9da1f9322735 100644
-> --- a/drivers/md/dm.c
-> +++ b/drivers/md/dm.c
-> @@ -507,6 +507,71 @@ static int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
->  #define dm_blk_report_zones		NULL
->  #endif /* CONFIG_BLK_DEV_ZONED */
->  
-> +struct dm_blk_corrupt {
-> +	struct block_device *bdev;
-> +	sector_t offset;
-> +};
-> +
-> +static int dm_blk_corrupt_fn(struct dm_target *ti, struct dm_dev *dev,
-> +				sector_t start, sector_t len, void *data)
-> +{
-> +	struct dm_blk_corrupt *bc = data;
-> +
-> +	return bc->bdev == (void *)dev->bdev &&
-> +			(start <= bc->offset && bc->offset < start + len);
-> +}
-> +
-> +static int dm_blk_corrupted_range(struct gendisk *disk,
-> +				  struct block_device *target_bdev,
-> +				  loff_t target_offset, size_t len, void *data)
-> +{
-> +	struct mapped_device *md = disk->private_data;
-> +	struct block_device *md_bdev = md->bdev;
-> +	struct dm_table *map;
-> +	struct dm_target *ti;
-> +	struct super_block *sb;
-> +	int srcu_idx, i, rc = 0;
-> +	bool found = false;
-> +	sector_t disk_sec, target_sec = to_sector(target_offset);
-> +
-> +	map = dm_get_live_table(md, &srcu_idx);
-> +	if (!map)
-> +		return -ENODEV;
-> +
-> +	for (i = 0; i < dm_table_get_num_targets(map); i++) {
-> +		ti = dm_table_get_target(map, i);
-> +		if (ti->type->iterate_devices && ti->type->rmap) {
-> +			struct dm_blk_corrupt bc = {target_bdev, target_sec};
-> +
-> +			found = ti->type->iterate_devices(ti, dm_blk_corrupt_fn, &bc);
-> +			if (!found)
-> +				continue;
-> +			disk_sec = ti->type->rmap(ti, target_sec);
-
-What happens if the dm device has multiple reverse mappings because the
-physical storage is being shared at multiple LBAs?  (e.g. a
-deduplication target)
-
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (!found) {
-> +		rc = -ENODEV;
-> +		goto out;
-> +	}
-> +
-> +	sb = get_super(md_bdev);
-> +	if (!sb) {
-> +		rc = bd_disk_holder_corrupted_range(md_bdev, to_bytes(disk_sec), len, data);
-> +		goto out;
-> +	} else if (sb->s_op->corrupted_range) {
-> +		loff_t off = to_bytes(disk_sec - get_start_sect(md_bdev));
-> +
-> +		rc = sb->s_op->corrupted_range(sb, md_bdev, off, len, data);
-
-This "call bd_disk_holder_corrupted_range or sb->s_op->corrupted_range"
-logic appears twice; should it be refactored into a common helper?
-
-Or, should the superblock dispatch part move to
-bd_disk_holder_corrupted_range?
-
-> +	}
-> +	drop_super(sb);
-> +
-> +out:
-> +	dm_put_live_table(md, srcu_idx);
-> +	return rc;
-> +}
-> +
->  static int dm_prepare_ioctl(struct mapped_device *md, int *srcu_idx,
->  			    struct block_device **bdev)
->  {
-> @@ -3084,6 +3149,7 @@ static const struct block_device_operations dm_blk_dops = {
->  	.getgeo = dm_blk_getgeo,
->  	.report_zones = dm_blk_report_zones,
->  	.pr_ops = &dm_pr_ops,
-> +	.corrupted_range = dm_blk_corrupted_range,
->  	.owner = THIS_MODULE
->  };
->  
-> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-> index 4688bff19c20..e8cfaf860149 100644
-> --- a/drivers/nvdimm/pmem.c
-> +++ b/drivers/nvdimm/pmem.c
-> @@ -267,11 +267,14 @@ static int pmem_corrupted_range(struct gendisk *disk, struct block_device *bdev,
->  
->  	bdev_offset = (disk_sector - get_start_sect(bdev)) << SECTOR_SHIFT;
->  	sb = get_super(bdev);
-> -	if (sb && sb->s_op->corrupted_range) {
-> +	if (!sb) {
-> +		rc = bd_disk_holder_corrupted_range(bdev, bdev_offset, len, data);
-> +		goto out;
-> +	} else if (sb->s_op->corrupted_range)
->  		rc = sb->s_op->corrupted_range(sb, bdev, bdev_offset, len, data);
-> -		drop_super(sb);
-
-This is out of scope for this patch(set) but do you think that the scsi
-disk driver should intercept media errors from sense data and call
-->corrupted_range too?  ISTR Ted muttering that one of his employers had
-a patchset to do more with sense data than the upstream kernel currently
-does...
-
-> -	}
-> +	drop_super(sb);
->  
-> +out:
->  	bdput(bdev);
->  	return rc;
->  }
-> diff --git a/fs/block_dev.c b/fs/block_dev.c
-> index 9e84b1928b94..d3e6bddb8041 100644
-> --- a/fs/block_dev.c
-> +++ b/fs/block_dev.c
-> @@ -1171,6 +1171,27 @@ struct bd_holder_disk {
->  	int			refcnt;
->  };
->  
-> +int bd_disk_holder_corrupted_range(struct block_device *bdev, loff_t off, size_t len, void *data)
-> +{
-> +	struct bd_holder_disk *holder;
-> +	struct gendisk *disk;
-> +	int rc = 0;
-> +
-> +	if (list_empty(&(bdev->bd_holder_disks)))
-> +		return -ENODEV;
-> +
-> +	list_for_each_entry(holder, &bdev->bd_holder_disks, list) {
-> +		disk = holder->disk;
-> +		if (disk->fops->corrupted_range) {
-> +			rc = disk->fops->corrupted_range(disk, bdev, off, len, data);
-> +			if (rc != -ENODEV)
-> +				break;
-> +		}
-> +	}
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_GPL(bd_disk_holder_corrupted_range);
-> +
->  static struct bd_holder_disk *bd_find_holder_disk(struct block_device *bdev,
->  						  struct gendisk *disk)
->  {
-> diff --git a/include/linux/genhd.h b/include/linux/genhd.h
-> index ed06209008b8..fba247b852fa 100644
-> --- a/include/linux/genhd.h
-> +++ b/include/linux/genhd.h
-> @@ -382,9 +382,16 @@ int blkdev_ioctl(struct block_device *, fmode_t, unsigned, unsigned long);
->  long compat_blkdev_ioctl(struct file *, unsigned, unsigned long);
->  
->  #ifdef CONFIG_SYSFS
-> +int bd_disk_holder_corrupted_range(struct block_device *bdev, loff_t off,
-> +				   size_t len, void *data);
->  int bd_link_disk_holder(struct block_device *bdev, struct gendisk *disk);
->  void bd_unlink_disk_holder(struct block_device *bdev, struct gendisk *disk);
->  #else
-> +int bd_disk_holder_corrupted_range(struct block_device *bdev, loff_t off,
-> +				   size_t len, void *data)
-> +{
-> +	return 0;
-> +}
->  static inline int bd_link_disk_holder(struct block_device *bdev,
->  				      struct gendisk *disk)
->  {
-> -- 
-> 2.29.2
-> 
-> 
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gVHVlLCBEZWMgMTUsIDIwMjAgYXQgMTE6MDU6MDdBTSAtMDgwMCwgSmFuZSBDaHUgd3JvdGU6
+DQo+IE9uIDEyLzE1LzIwMjAgMzo1OCBBTSwgUnVhbiBTaGl5YW5nIHdyb3RlOg0KPiA+IEhpIEph
+bmUNCj4gPiANCj4gPiBPbiAyMDIwLzEyLzE1IOS4iuWNiDQ6NTgsIEphbmUgQ2h1IHdyb3RlOg0K
+PiA+ID4gSGksIFNoaXlhbmcsDQo+ID4gPiANCj4gPiA+IE9uIDExLzIyLzIwMjAgNDo0MSBQTSwg
+U2hpeWFuZyBSdWFuIHdyb3RlOg0KPiA+ID4gPiBUaGlzIHBhdGNoc2V0IGlzIGEgdHJ5IHRvIHJl
+c29sdmUgdGhlIHByb2JsZW0gb2YgdHJhY2tpbmcgc2hhcmVkIHBhZ2UNCj4gPiA+ID4gZm9yIGZz
+ZGF4Lg0KPiA+ID4gPiANCj4gPiA+ID4gQ2hhbmdlIGZyb20gdjE6DQo+ID4gPiA+IMKgwqAgLSBJ
+bnRvcmR1Y2UgLT5ibG9ja19sb3N0KCkgZm9yIGJsb2NrIGRldmljZQ0KPiA+ID4gPiDCoMKgIC0g
+U3VwcG9ydCBtYXBwZWQgZGV2aWNlDQo+ID4gPiA+IMKgwqAgLSBBZGQgJ25vdCBhdmFpbGFibGUn
+IHdhcm5pbmcgZm9yIHJlYWx0aW1lIGRldmljZSBpbiBYRlMNCj4gPiA+ID4gwqDCoCAtIFJlYmFz
+ZWQgdG8gdjUuMTAtcmMxDQo+ID4gPiA+IA0KPiA+ID4gPiBUaGlzIHBhdGNoc2V0IG1vdmVzIG93
+bmVyIHRyYWNraW5nIGZyb20gZGF4X2Fzc29jYWl0ZV9lbnRyeSgpIHRvIHBtZW0NCj4gPiA+ID4g
+ZGV2aWNlLCBieSBpbnRyb2R1Y2luZyBhbiBpbnRlcmZhY2UgLT5tZW1vcnlfZmFpbHVyZSgpIG9m
+IHN0cnVjdA0KPiA+ID4gPiBwYWdlbWFwLsKgIFRoZSBpbnRlcmZhY2UgaXMgY2FsbGVkIGJ5IG1l
+bW9yeV9mYWlsdXJlKCkgaW4gbW0sIGFuZA0KPiA+ID4gPiBpbXBsZW1lbnRlZCBieSBwbWVtIGRl
+dmljZS7CoCBUaGVuIHBtZW0gZGV2aWNlIGNhbGxzIGl0cyAtPmJsb2NrX2xvc3QoKQ0KPiA+ID4g
+PiB0byBmaW5kIHRoZSBmaWxlc3lzdGVtIHdoaWNoIHRoZSBkYW1hZ2VkIHBhZ2UgbG9jYXRlZCBp
+biwgYW5kIGNhbGwNCj4gPiA+ID4gLT5zdG9yYWdlX2xvc3QoKSB0byB0cmFjayBmaWxlcyBvciBt
+ZXRhZGF0YSBhc3NvY2FpdGVkIHdpdGggdGhpcyBwYWdlLg0KPiA+ID4gPiBGaW5hbGx5IHdlIGFy
+ZSBhYmxlIHRvIHRyeSB0byBmaXggdGhlIGRhbWFnZWQgZGF0YSBpbiBmaWxlc3lzdGVtIGFuZCBk
+bw0KPiA+ID4gDQo+ID4gPiBEb2VzIHRoYXQgbWVhbiBjbGVhcmluZyBwb2lzb24/IGlmIHNvLCB3
+b3VsZCB5b3UgbWluZCB0byBlbGFib3JhdGUNCj4gPiA+IHNwZWNpZmljYWxseSB3aGljaCBjaGFu
+Z2UgZG9lcyB0aGF0Pw0KPiA+IA0KPiA+IFJlY292ZXJpbmcgZGF0YSBmb3IgZmlsZXN5c3RlbSAo
+b3IgcG1lbSBkZXZpY2UpIGhhcyBub3QgYmVlbiBkb25lIGluDQo+ID4gdGhpcyBwYXRjaHNldC4u
+LsKgIEkganVzdCB0cmlnZ2VyZWQgdGhlIGhhbmRsZXIgZm9yIHRoZSBmaWxlcyBzaGFyaW5nIHRo
+ZQ0KPiA+IGNvcnJ1cHRlZCBwYWdlIGhlcmUuDQo+IA0KPiBUaGFua3MhIFRoYXQgY29uZmlybXMg
+bXkgdW5kZXJzdGFuZGluZy4NCj4gDQo+IFdpdGggdGhlIGZyYW1ld29yayBwcm92aWRlZCBieSB0
+aGUgcGF0Y2hzZXQsIGhvdyBkbyB5b3UgZW52aXNpb24gaXQgdG8NCj4gZWFzZS9zaW1wbGlmeSBw
+b2lzb24gcmVjb3ZlcnkgZnJvbSB0aGUgdXNlcidzIHBlcnNwZWN0aXZlPw0KDQpBdCB0aGUgbW9t
+ZW50LCBJJ2Qgc2F5IG5vIGNoYW5nZSB3aGF0LXNvLWV2ZXIuIFRIZSBiZWhhdmlvdXIgaXMNCm5l
+Y2Vzc2FyeSBzbyB0aGF0IHdlIGNhbiBraWxsIHdoYXRldmVyIHVzZXIgYXBwbGljYXRpb24gbWFw
+cw0KbXVsdGlwbHktc2hhcmVkIHBoeXNpY2FsIGJsb2NrcyBpZiB0aGVyZSdzIGEgbWVtb3J5IGVy
+cm9yLiBUSGUNCnJlY292ZXJ5IG1ldGhvZCBmcm9tIHRoYXQgaXMgdW5jaGFuZ2VkLiBUaGUgb25s
+eSBhZHZhbnRhZ2UgbWF5IGJlDQp0aGF0IHRoZSBmaWxlc3lzdGVtIChpZiBybWFwIGVuYWJsZWQp
+IGNhbiB0ZWxsIHlvdSB0aGUgZXhhY3QgZmlsZQ0KYW5kIG9mZnNldCBpbnRvIHRoZSBmaWxlIHdo
+ZXJlIGRhdGEgd2FzIGNvcnJ1cHRlZC4NCg0KSG93ZXZlciwgaXQgY2FuIGJlIHdvcnNlLCB0b286
+IGl0IG1heSBhbHNvIG5vdyBjb21wbGV0ZWx5IHNodXQgZG93bg0KdGhlIGZpbGVzeXN0ZW0gaWYg
+dGhlIGZpbGVzeXN0ZW0gZGlzY292ZXJzIHRoZSBlcnJvciBpcyBpbiBtZXRhZGF0YQ0KcmF0aGVy
+IHRoYW4gdXNlciBkYXRhLiBUaGF0J3MgbXVjaCBtb3JlIGNvbXBsZXggdG8gcmVjb3ZlciBmcm9t
+LCBhbmQNCnJpZ2h0IG5vdyB3aWxsIHJlcXVpcmUgZG93bnRpbWUgdG8gdGFrZSB0aGUgZmlsZXN5
+c3RlbSBvZmZsaW5lIGFuZA0KcnVuIGZzY2sgdG8gY29ycmVjdCB0aGUgZXJyb3IuIFRoYXQgbWF5
+IHRyYXNoIHdoYXRldmVyIHRoZSBtZXRhZGF0YQ0KdGhhdCBjYW4ndCBiZSByZWNvdmVyZWQgcG9p
+bnRzIHRvLCBzbyB5b3Ugc3RpbGwgaGF2ZSBhIHVlc3IgZGF0YQ0KcmVjb3ZlcnkgcHJvY2VzcyB0
+byBwZXJmb3JtIGFmdGVyIHRoaXMuLi4NCg0KPiBBbmQgaG93IGRvZXMgaXQgaGVscCBpbiBkZWFs
+aW5nIHdpdGggcGFnZSBmYXVsdHMgdXBvbiBwb2lzb25lZA0KPiBkYXggcGFnZT8NCg0KSXQgZG9l
+c24ndC4gSWYgdGhlIHBhZ2UgaXMgcG9pc29uZWQsIHRoZSBzYW1lIGJlaGF2aW91ciB3aWxsIG9j
+Y3VyDQphcyBkb2VzIG5vdy4gVGhpcyBpcyBzaW1wbHkgZXJyb3IgcmVwb3J0aW5nIGluZnJhc3Ry
+dWN0dXJlLCBub3QNCmVycm9yIGhhbmRsaW5nLg0KDQpGdXR1cmUgd29yayBtaWdodCBjaGFuZ2Ug
+aG93IHdlIGNvcnJlY3QgdGhlIGZhdWx0cyBmb3VuZCBpbiB0aGUNCnN0b3JhZ2UsIGJ1dCBJIHRo
+aW5rIHRoZSB1c2VyIHZpc2libGUgYmVoYXZpb3VyIGlzIGdvaW5nIHRvIGJlICJraWxsDQphcHBz
+IG1hcHBpbmcgY29ycnVwdGVkIGRhdGEiIGZvciBhIGxvbmcgdGltZSB5ZXQuLi4uDQoNCkNoZWVy
+cywNCg0KRGF2ZS4NCi0tIA0KRGF2ZSBDaGlubmVyDQpkYXZpZEBmcm9tb3JiaXQuY29tCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBt
+YWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBz
+ZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
