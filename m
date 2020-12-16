@@ -2,150 +2,153 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D252D2DB958
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Dec 2020 03:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 228B42DB99F
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Dec 2020 04:25:53 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3BA58100EF271;
-	Tue, 15 Dec 2020 18:46:46 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7915A100EF27E;
+	Tue, 15 Dec 2020 19:25:51 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A574E100EF270
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Dec 2020 18:46:43 -0800 (PST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG2iQFr060031;
-	Wed, 16 Dec 2020 02:46:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=WkCjasEHHy7py54Y2YmM8Hp8LCLtjfYuzvd3sPD2fgI=;
- b=HRPBZ1n1r4YYFJMqvwxqxobnCC8pPSyTiY3O8BBNihRVerUQAh1Dwe+MuK9XM63QVbTh
- E5LAPvc0G3eYYWwd4sAFBxJ7gg6m8G/ccfxjKGbWAZNfL/jaUw0i6bNG4xlqZWRPW8+N
- 63XClUkN4jj4VGs6nZpKvvCpBTheMtzJvQHQzc5zmJ7Xtv5GtjM8L+A4q4P/NMmDimBM
- zKCXUSpwfATQfYo0KVaFdLu9kdqr7cqPGCL0wUpSlBHqbEhu8FlIFuJYVStg0nvPv5BZ
- E43zhimIo8Zvw1NkLsSaGch9+Q1wEabNEnmiKsHLvRciyi6W+R6bWWyIhHIEXZb0Zji7 fA==
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by userp2130.oracle.com with ESMTP id 35cn9rds72-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 16 Dec 2020 02:46:27 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BG2jAV8015913;
-	Wed, 16 Dec 2020 02:46:27 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-	by userp3020.oracle.com with ESMTP id 35e6js2byy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Dec 2020 02:46:27 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BG2kJYw003814;
-	Wed, 16 Dec 2020 02:46:20 GMT
-Received: from localhost (/67.169.218.210)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 15 Dec 2020 18:46:19 -0800
-Date: Tue, 15 Dec 2020 18:46:18 -0800
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: [RFC PATCH v2 0/6] fsdax: introduce fs query to support reflink
-Message-ID: <20201216024618.GC6918@magnolia>
-References: <20201123004116.2453-1-ruansy.fnst@cn.fujitsu.com>
- <89ab4ec4-e4f0-7c17-6982-4f55bb40f574@oracle.com>
- <bb699996-ddc8-8f3a-dc8f-2422bf990b06@cn.fujitsu.com>
- <3b35604c-57e2-8cb5-da69-53508c998540@oracle.com>
- <20201215231022.GL632069@dread.disaster.area>
+	by ml01.01.org (Postfix) with ESMTPS id E58C7100EF276
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Dec 2020 19:25:47 -0800 (PST)
+Received: by mail-ed1-x544.google.com with SMTP id h16so23285034edt.7
+        for <linux-nvdimm@lists.01.org>; Tue, 15 Dec 2020 19:25:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aV0VMsCAAbHW0OQUQVPhX7/WAD32LhwHgB381fVnNLg=;
+        b=pHpfXQyVS8ySvXJLNvSG5OeUG0QczldZl80AJ8F6AVagKHXhVQ7ikthSjIXLxKZZlK
+         lr5soGBZ7HXNOfOdbNk+q1r4exivVE/Znlkn5aGcI3qUCQmDxrB6ohq0IoQ6w5exrqQT
+         X4mkYaitrMOKoMmFlHS2ITw7IkXz7FpjN32ooB2TxPe18+VyAulD85XQgFtqFhPoiLox
+         Ft1OZNUHAkgoiW9B8K37eS94LZIfErjZQz+/pvAIJl+nOw9MXftjeRRoz8tt5BKbzDvj
+         wuz0RAZkithHuEANIQVyM7RdkaUN0rjL4uaZZY4UBU0HbKI5+bOsXfVC1o0uzWIMsaJI
+         2Wqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aV0VMsCAAbHW0OQUQVPhX7/WAD32LhwHgB381fVnNLg=;
+        b=B+RiIgJaBr/sLQiRHZTJ+Bxppu7KURC5EwuF3tdf/8H9jGQMnaQhjsTY7z+zrrm54h
+         7Y7y72H+ZXyyiki+XUxv/QhgTpncLS7BpeqybkoPPSHiOMXxMXnuV8/ijI7bqBeb66QS
+         T2Z9rwYfLDW3shzVt7C7aCPhRsFA3P856KWo9WPjo1k0UroH4yyIueAxFKo5m+Of/8yj
+         OuQDzKYlSRW1bBm9qAZ49WugoBTm1mytm1/0nIZt3Q43C+jd0Jpi/rof0NJHNqMTdQKU
+         RK19IKTguiBt0EENoncA8OnxqjvsUbJoeCw+zSjk4LZUtsNWt36oJLL1aqONqyPbaBmr
+         doSw==
+X-Gm-Message-State: AOAM5314NtXhZaJ5iGO0EAlGqTn+VjtxF0bAJoa5Il1rNet4FVD9VmrI
+	EUP7T0BscNomsAUChWAFlIYbtcm77oEmwPeJIROTPg==
+X-Google-Smtp-Source: ABdhPJwwEqTb83v9JB+goZ0g0EolCMP6GStwslh2uQZybqmImj7VsjXVVheuP/39Q8PZDrO+LcgyHoUPn0TsQc2CoD8=
+X-Received: by 2002:aa7:c2d8:: with SMTP id m24mr17347237edp.300.1608089144734;
+ Tue, 15 Dec 2020 19:25:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201215231022.GL632069@dread.disaster.area>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 bulkscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2012160014
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9836 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012160014
-Message-ID-Hash: VLW5N5CDA23NGALGVGLZ5B7TS3ZBAQP5
-X-Message-ID-Hash: VLW5N5CDA23NGALGVGLZ5B7TS3ZBAQP5
-X-MailFrom: darrick.wong@oracle.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+References: <160697689204.605323.17629854984697045602.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <160697689204.605323.17629854984697045602.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 15 Dec 2020 19:25:33 -0800
+Message-ID: <CAPcyv4i8MZu-Xoj4BM4Ar_rfyix67-g0hVcpZWvvgykEg7tFaQ@mail.gmail.com>
+Subject: Re: [PATCH] x86/mm: Fix leak of pmd ptlock
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
+Message-ID-Hash: 37SDJJMD2ZEFHTZHPOCVWMSXAHMC7J44
+X-Message-ID-Hash: 37SDJJMD2ZEFHTZHPOCVWMSXAHMC7J44
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: stable <stable@vger.kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Yi Zhang <yi.zhang@redhat.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VLW5N5CDA23NGALGVGLZ5B7TS3ZBAQP5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/37SDJJMD2ZEFHTZHPOCVWMSXAHMC7J44/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCBEZWMgMTYsIDIwMjAgYXQgMTA6MTA6MjJBTSArMTEwMCwgRGF2ZSBDaGlubmVyIHdy
-b3RlOg0KPiBPbiBUdWUsIERlYyAxNSwgMjAyMCBhdCAxMTowNTowN0FNIC0wODAwLCBKYW5lIENo
-dSB3cm90ZToNCj4gPiBPbiAxMi8xNS8yMDIwIDM6NTggQU0sIFJ1YW4gU2hpeWFuZyB3cm90ZToN
-Cj4gPiA+IEhpIEphbmUNCj4gPiA+IA0KPiA+ID4gT24gMjAyMC8xMi8xNSDkuIrljYg0OjU4LCBK
-YW5lIENodSB3cm90ZToNCj4gPiA+ID4gSGksIFNoaXlhbmcsDQo+ID4gPiA+IA0KPiA+ID4gPiBP
-biAxMS8yMi8yMDIwIDQ6NDEgUE0sIFNoaXlhbmcgUnVhbiB3cm90ZToNCj4gPiA+ID4gPiBUaGlz
-IHBhdGNoc2V0IGlzIGEgdHJ5IHRvIHJlc29sdmUgdGhlIHByb2JsZW0gb2YgdHJhY2tpbmcgc2hh
-cmVkIHBhZ2UNCj4gPiA+ID4gPiBmb3IgZnNkYXguDQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gQ2hh
-bmdlIGZyb20gdjE6DQo+ID4gPiA+ID4gwqDCoCAtIEludG9yZHVjZSAtPmJsb2NrX2xvc3QoKSBm
-b3IgYmxvY2sgZGV2aWNlDQo+ID4gPiA+ID4gwqDCoCAtIFN1cHBvcnQgbWFwcGVkIGRldmljZQ0K
-PiA+ID4gPiA+IMKgwqAgLSBBZGQgJ25vdCBhdmFpbGFibGUnIHdhcm5pbmcgZm9yIHJlYWx0aW1l
-IGRldmljZSBpbiBYRlMNCj4gPiA+ID4gPiDCoMKgIC0gUmViYXNlZCB0byB2NS4xMC1yYzENCj4g
-PiA+ID4gPiANCj4gPiA+ID4gPiBUaGlzIHBhdGNoc2V0IG1vdmVzIG93bmVyIHRyYWNraW5nIGZy
-b20gZGF4X2Fzc29jYWl0ZV9lbnRyeSgpIHRvIHBtZW0NCj4gPiA+ID4gPiBkZXZpY2UsIGJ5IGlu
-dHJvZHVjaW5nIGFuIGludGVyZmFjZSAtPm1lbW9yeV9mYWlsdXJlKCkgb2Ygc3RydWN0DQo+ID4g
-PiA+ID4gcGFnZW1hcC7CoCBUaGUgaW50ZXJmYWNlIGlzIGNhbGxlZCBieSBtZW1vcnlfZmFpbHVy
-ZSgpIGluIG1tLCBhbmQNCj4gPiA+ID4gPiBpbXBsZW1lbnRlZCBieSBwbWVtIGRldmljZS7CoCBU
-aGVuIHBtZW0gZGV2aWNlIGNhbGxzIGl0cyAtPmJsb2NrX2xvc3QoKQ0KPiA+ID4gPiA+IHRvIGZp
-bmQgdGhlIGZpbGVzeXN0ZW0gd2hpY2ggdGhlIGRhbWFnZWQgcGFnZSBsb2NhdGVkIGluLCBhbmQg
-Y2FsbA0KPiA+ID4gPiA+IC0+c3RvcmFnZV9sb3N0KCkgdG8gdHJhY2sgZmlsZXMgb3IgbWV0YWRh
-dGEgYXNzb2NhaXRlZCB3aXRoIHRoaXMgcGFnZS4NCj4gPiA+ID4gPiBGaW5hbGx5IHdlIGFyZSBh
-YmxlIHRvIHRyeSB0byBmaXggdGhlIGRhbWFnZWQgZGF0YSBpbiBmaWxlc3lzdGVtIGFuZCBkbw0K
-PiA+ID4gPiANCj4gPiA+ID4gRG9lcyB0aGF0IG1lYW4gY2xlYXJpbmcgcG9pc29uPyBpZiBzbywg
-d291bGQgeW91IG1pbmQgdG8gZWxhYm9yYXRlDQo+ID4gPiA+IHNwZWNpZmljYWxseSB3aGljaCBj
-aGFuZ2UgZG9lcyB0aGF0Pw0KPiA+ID4gDQo+ID4gPiBSZWNvdmVyaW5nIGRhdGEgZm9yIGZpbGVz
-eXN0ZW0gKG9yIHBtZW0gZGV2aWNlKSBoYXMgbm90IGJlZW4gZG9uZSBpbg0KPiA+ID4gdGhpcyBw
-YXRjaHNldC4uLsKgIEkganVzdCB0cmlnZ2VyZWQgdGhlIGhhbmRsZXIgZm9yIHRoZSBmaWxlcyBz
-aGFyaW5nIHRoZQ0KPiA+ID4gY29ycnVwdGVkIHBhZ2UgaGVyZS4NCj4gPiANCj4gPiBUaGFua3Mh
-IFRoYXQgY29uZmlybXMgbXkgdW5kZXJzdGFuZGluZy4NCj4gPiANCj4gPiBXaXRoIHRoZSBmcmFt
-ZXdvcmsgcHJvdmlkZWQgYnkgdGhlIHBhdGNoc2V0LCBob3cgZG8geW91IGVudmlzaW9uIGl0IHRv
-DQo+ID4gZWFzZS9zaW1wbGlmeSBwb2lzb24gcmVjb3ZlcnkgZnJvbSB0aGUgdXNlcidzIHBlcnNw
-ZWN0aXZlPw0KPiANCj4gQXQgdGhlIG1vbWVudCwgSSdkIHNheSBubyBjaGFuZ2Ugd2hhdC1zby1l
-dmVyLiBUSGUgYmVoYXZpb3VyIGlzDQo+IG5lY2Vzc2FyeSBzbyB0aGF0IHdlIGNhbiBraWxsIHdo
-YXRldmVyIHVzZXIgYXBwbGljYXRpb24gbWFwcw0KPiBtdWx0aXBseS1zaGFyZWQgcGh5c2ljYWwg
-YmxvY2tzIGlmIHRoZXJlJ3MgYSBtZW1vcnkgZXJyb3IuIFRIZQ0KPiByZWNvdmVyeSBtZXRob2Qg
-ZnJvbSB0aGF0IGlzIHVuY2hhbmdlZC4gVGhlIG9ubHkgYWR2YW50YWdlIG1heSBiZQ0KPiB0aGF0
-IHRoZSBmaWxlc3lzdGVtIChpZiBybWFwIGVuYWJsZWQpIGNhbiB0ZWxsIHlvdSB0aGUgZXhhY3Qg
-ZmlsZQ0KPiBhbmQgb2Zmc2V0IGludG8gdGhlIGZpbGUgd2hlcmUgZGF0YSB3YXMgY29ycnVwdGVk
-Lg0KPiANCj4gSG93ZXZlciwgaXQgY2FuIGJlIHdvcnNlLCB0b286IGl0IG1heSBhbHNvIG5vdyBj
-b21wbGV0ZWx5IHNodXQgZG93bg0KPiB0aGUgZmlsZXN5c3RlbSBpZiB0aGUgZmlsZXN5c3RlbSBk
-aXNjb3ZlcnMgdGhlIGVycm9yIGlzIGluIG1ldGFkYXRhDQo+IHJhdGhlciB0aGFuIHVzZXIgZGF0
-YS4gVGhhdCdzIG11Y2ggbW9yZSBjb21wbGV4IHRvIHJlY292ZXIgZnJvbSwgYW5kDQo+IHJpZ2h0
-IG5vdyB3aWxsIHJlcXVpcmUgZG93bnRpbWUgdG8gdGFrZSB0aGUgZmlsZXN5c3RlbSBvZmZsaW5l
-IGFuZA0KPiBydW4gZnNjayB0byBjb3JyZWN0IHRoZSBlcnJvci4gVGhhdCBtYXkgdHJhc2ggd2hh
-dGV2ZXIgdGhlIG1ldGFkYXRhDQo+IHRoYXQgY2FuJ3QgYmUgcmVjb3ZlcmVkIHBvaW50cyB0bywg
-c28geW91IHN0aWxsIGhhdmUgYSB1ZXNyIGRhdGENCj4gcmVjb3ZlcnkgcHJvY2VzcyB0byBwZXJm
-b3JtIGFmdGVyIHRoaXMuLi4NCg0KLi4udGhvdWdoIGZvciB0aGUgZnV0dXJlIGZ1dHVyZSBJJ2Qg
-bGlrZSB0byBieXBhc3MgdGhlIGRlZmF1bHQgYmVoYXZpb3JzDQppZiB0aGVyZSdzIHNvbWVib2R5
-IHdhdGNoaW5nIHRoZSBzYiBub3RpZmljYXRpb24gdGhhdCB3aWxsIGFsc28ga2ljayBvZmYNCnRo
-ZSBhcHByb3ByaWF0ZSByZXBhaXIgYWN0aXZpdGllcy4gIFRoZSB4ZnMgYXV0by1yZXBhaXIgcGFy
-dHMgYXJlIGNvbWluZw0KYWxvbmcgbmljZWx5LiAgRHVubm8gYWJvdXQgdXNlcnNwYWNlLCB0aG91
-Z2ggSSBmaWd1cmUgaWYgd2UgY2FuIGRvDQp1c2Vyc3BhY2UgcGFnZSBmYXVsdHMgdGhlbiBzb21l
-IHBlb3BsZSBjb3VsZCBwcm9iYWJseSBkbyBhdXRvcmVwYWlyDQp0b28uDQoNCi0tRA0KDQo+ID4g
-QW5kIGhvdyBkb2VzIGl0IGhlbHAgaW4gZGVhbGluZyB3aXRoIHBhZ2UgZmF1bHRzIHVwb24gcG9p
-c29uZWQNCj4gPiBkYXggcGFnZT8NCj4gDQo+IEl0IGRvZXNuJ3QuIElmIHRoZSBwYWdlIGlzIHBv
-aXNvbmVkLCB0aGUgc2FtZSBiZWhhdmlvdXIgd2lsbCBvY2N1cg0KPiBhcyBkb2VzIG5vdy4gVGhp
-cyBpcyBzaW1wbHkgZXJyb3IgcmVwb3J0aW5nIGluZnJhc3RydWN0dXJlLCBub3QNCj4gZXJyb3Ig
-aGFuZGxpbmcuDQo+IA0KPiBGdXR1cmUgd29yayBtaWdodCBjaGFuZ2UgaG93IHdlIGNvcnJlY3Qg
-dGhlIGZhdWx0cyBmb3VuZCBpbiB0aGUNCj4gc3RvcmFnZSwgYnV0IEkgdGhpbmsgdGhlIHVzZXIg
-dmlzaWJsZSBiZWhhdmlvdXIgaXMgZ29pbmcgdG8gYmUgImtpbGwNCj4gYXBwcyBtYXBwaW5nIGNv
-cnJ1cHRlZCBkYXRhIiBmb3IgYSBsb25nIHRpbWUgeWV0Li4uLg0KPiANCj4gQ2hlZXJzLA0KPiAN
-Cj4gRGF2ZS4NCj4gLS0gDQo+IERhdmUgQ2hpbm5lcg0KPiBkYXZpZEBmcm9tb3JiaXQuY29tCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGlt
-bSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmli
-ZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Might I tempt an x86/mm maintainer to ack this, or a x86-tip
+maintainer to apply it outright?
+
+On Wed, Dec 2, 2020 at 10:28 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> Commit 28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
+> introduced a new location where a pmd was released, but neglected to run
+> the pmd page destructor. In fact, this happened previously for a
+> different pmd release path and was fixed by commit:
+>
+> c283610e44ec ("x86, mm: do not leak page->ptl for pmd page tables").
+>
+> This issue was hidden until recently because the failure mode is silent,
+> but commit:
+>
+> b2b29d6d0119 ("mm: account PMD tables like PTE tables")
+>
+> ...turns the failure mode into this signature:
+>
+>  BUG: Bad page state in process lt-pmem-ns  pfn:15943d
+>  page:000000007262ed7b refcount:0 mapcount:-1024 mapping:0000000000000000 index:0x0 pfn:0x15943d
+>  flags: 0xaffff800000000()
+>  raw: 00affff800000000 dead000000000100 0000000000000000 0000000000000000
+>  raw: 0000000000000000 ffff913a029bcc08 00000000fffffbff 0000000000000000
+>  page dumped because: nonzero mapcount
+>  [..]
+>   dump_stack+0x8b/0xb0
+>   bad_page.cold+0x63/0x94
+>   free_pcp_prepare+0x224/0x270
+>   free_unref_page+0x18/0xd0
+>   pud_free_pmd_page+0x146/0x160
+>   ioremap_pud_range+0xe3/0x350
+>   ioremap_page_range+0x108/0x160
+>   __ioremap_caller.constprop.0+0x174/0x2b0
+>   ? memremap+0x7a/0x110
+>   memremap+0x7a/0x110
+>   devm_memremap+0x53/0xa0
+>   pmem_attach_disk+0x4ed/0x530 [nd_pmem]
+>   ? __devm_release_region+0x52/0x80
+>   nvdimm_bus_probe+0x85/0x210 [libnvdimm]
+>
+> Given this is a repeat occurrence it seemed prudent to look for other
+> places where this destructor might be missing and whether a better
+> helper is needed. try_to_free_pmd_page() looks like a candidate, but
+> testing with setting up and tearing down pmd mappings via the dax unit
+> tests is thus far not triggering the failure. As for a better helper
+> pmd_free() is close, but it is a messy fit due to requiring an @mm arg.
+> Also, ___pmd_free_tlb() wants to call paravirt_tlb_remove_table()
+> instead of free_page(), so open-coded pgtable_pmd_page_dtor() seems the
+> best way forward for now.
+>
+> Fixes: 28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
+> Cc: <stable@vger.kernel.org>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Co-debugged-by: Matthew Wilcox <willy@infradead.org>
+> Tested-by: Yi Zhang <yi.zhang@redhat.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  arch/x86/mm/pgtable.c |    2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+> index dfd82f51ba66..f6a9e2e36642 100644
+> --- a/arch/x86/mm/pgtable.c
+> +++ b/arch/x86/mm/pgtable.c
+> @@ -829,6 +829,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+>         }
+>
+>         free_page((unsigned long)pmd_sv);
+> +
+> +       pgtable_pmd_page_dtor(virt_to_page(pmd));
+>         free_page((unsigned long)pmd);
+>
+>         return 1;
+>
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
