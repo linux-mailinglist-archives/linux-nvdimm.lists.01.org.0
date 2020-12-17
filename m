@@ -2,63 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A5B2DDAF9
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 22:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDAB2DDB78
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 23:35:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A9B2A100EB852;
-	Thu, 17 Dec 2020 13:49:26 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 25016100EBB7E;
+	Thu, 17 Dec 2020 14:35:19 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.79; helo=aserp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A14F4100EBB96
-	for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 13:49:24 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id lt17so251358ejb.3
-        for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 13:49:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4cZn0/VDIP8GuviNxwhziCIcMwTUnEGXU1Czf1LyLZ0=;
-        b=kCArAph5EJpFqMvdN6tKtStdOo19rKqUKa9IxW5p0saZdwtA0uSMgEURq7Jpa8QKv5
-         dW2djHch1dT5Wxq3MghYB94RUP+nQFvCIHAuwAUI3oYGVdJJhGjYJ2/TI5mPbmZ4CQZm
-         xb03ERR8QRpeoTVQxS+WTaS066+yNPVG0mbBhlJFAc+GvttyVEoNDbngyziUMtD1M/wF
-         NDDDWbAOKepGu+g6M9uWvgshzz/uokz/B8YoK/88DBCLQDQSgpLEXG9q7/rET2FQ1bWG
-         mD8VJwnLcWKksVoNPbAqVre4LfJfo69oU8b00FXmjCl82cTxp2DUxsKW3RBfde1c88pV
-         J/Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4cZn0/VDIP8GuviNxwhziCIcMwTUnEGXU1Czf1LyLZ0=;
-        b=MiV+7VInSKXzrfSeuprmwHDmGjKLDViwJ7K+A7cqlzcTcDByo1UhNlqSLT/pmeahqn
-         ymjwaufKTQhumm9PBtxQAqf5toILPmfibg2ZKaN871vV2cKXSa3wNvTNl1NmlwlxHoNv
-         2AjzFILX+YPWhqMubN2fWGbF6TDH0pozeLBpHHxHP6cNZlzuCoF4bV5W6ceGBDkWDWKB
-         UD+oy9R+Y2pNIIsLClNhXpDH3sgm0wErLt9KFcxAHgdSTGAZI8oEVdKW9+a3+JpTs7UW
-         Do8/3R5gYhcFVjpXvk1jeURqnkV0HR5LdFuCpBVnQ+OOxQzZ8V9j0E3N3KPoT1t2N9LY
-         //XA==
-X-Gm-Message-State: AOAM533FINlOyor8UYo0aXCwkSwKrUue4LRrxd24oDB5fPXlsO5IWiKh
-	G6Y7vz5dbtNLTPW+mUvDntvAXR1dZu2CiFcCdwwTCg==
-X-Google-Smtp-Source: ABdhPJwHnoPTmwaKTlKlW0KQTQMxXtV8C/5O6HNYiljCloUk6q7XDy83A/EPUyLdZemvaQVbJmVyjA8hnnz/4KoNMe0=
-X-Received: by 2002:a17:906:2707:: with SMTP id z7mr1078927ejc.418.1608241761522;
- Thu, 17 Dec 2020 13:49:21 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 7A8A5100ED4B7
+	for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 14:35:14 -0800 (PST)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHMNlhh138563;
+	Thu, 17 Dec 2020 22:35:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=Rj9JexLQvCq04VdywbMjg/pDy339pdcvwh3h1VS2XJk=;
+ b=q7u+TFNC9C6A3Ev2o074el7vk5+7DkDIuH7INufTPS2OwTHn2BUkbFpf17dNL/2SClzJ
+ 8SqKsmuQZs/TsKwtcOBa8XFs/LFrYe170ntiGA8QCLm3sWWmec2fp5Pu4MJpq0faLJkD
+ XVZHonDI+2XPcmJdVHx7mM/KjZ9d4kRwGUnrB1aV63RJ/jjR7mhFJ9wmIEhdBN5y4UyP
+ TUcdGbX2b5QdeMBvuBuxRYkndZ6+jp7+JajKq6u0HvTpAPd4Z9hjeOODNEuCOUBABlpo
+ LgAupZgSKLxxrWvKa74j4Sx12Y9qw9Ui0MV77NuF1X+nuoBvSzQzdZutkvdrCAvUGwv+ PA==
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+	by aserp2130.oracle.com with ESMTP id 35ckcbr13f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 17 Dec 2020 22:35:03 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 0BHMKNf4031276;
+	Thu, 17 Dec 2020 22:35:02 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+	by userp3030.oracle.com with ESMTP id 35d7t123qf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Dec 2020 22:35:02 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0BHMYx29017874;
+	Thu, 17 Dec 2020 22:34:59 GMT
+Received: from [10.175.218.25] (/10.175.218.25)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Thu, 17 Dec 2020 14:34:59 -0800
+Subject: Re: [PATCH RFC 7/9] mm/gup: Decrement head page once for group of
+ subpages
+To: Jason Gunthorpe <jgg@ziepe.ca>
+References: <20201208172901.17384-1-joao.m.martins@oracle.com>
+ <20201208172901.17384-9-joao.m.martins@oracle.com>
+ <20201208193446.GP5487@ziepe.ca>
+ <cf5585f0-1352-e3ab-9dbf-0185ad0a1b31@oracle.com>
+ <20201217200530.GK5487@ziepe.ca>
+From: Joao Martins <joao.m.martins@oracle.com>
+Message-ID: <7c8078df-1151-3668-5cee-80c976df1ff6@oracle.com>
+Date: Thu, 17 Dec 2020 22:34:54 +0000
 MIME-Version: 1.0
-References: <20201120092057.2144-1-thunder.leizhen@huawei.com> <7ccddd02-e2e6-ec48-43b8-10700285e61c@huawei.com>
-In-Reply-To: <7ccddd02-e2e6-ec48-43b8-10700285e61c@huawei.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 17 Dec 2020 13:49:11 -0800
-Message-ID: <CAPcyv4hLoqYpLxQhPhGA2XxJPOc6VkonjrHSbyEQa2Y=voF8hg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] device-dax: delete a redundancy check in dev_dax_validate_align()
-To: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID-Hash: 5ATQ4GQ262KU7V74RDBDDHLSIEDKFPL3
-X-Message-ID-Hash: 5ATQ4GQ262KU7V74RDBDDHLSIEDKFPL3
-X-MailFrom: dan.j.williams@intel.com
+In-Reply-To: <20201217200530.GK5487@ziepe.ca>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012170146
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9838 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2012170146
+Message-ID-Hash: CYD4PGXMWLKSVF7FAHUQ7GZGYBOORJCL
+X-Message-ID-Hash: CYD4PGXMWLKSVF7FAHUQ7GZGYBOORJCL
+X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, linux-kernel <linux-kernel@vger.kernel.org>
+CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, Matthew Wilcox <willy@infradead.org>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Daniel Jordan <daniel.m.jordan@oracle.com>, John Hubbard <jhubbard@nvidia.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5ATQ4GQ262KU7V74RDBDDHLSIEDKFPL3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CYD4PGXMWLKSVF7FAHUQ7GZGYBOORJCL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,23 +84,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 20, 2020 at 1:27 AM Leizhen (ThunderTown)
-<thunder.leizhen@huawei.com> wrote:
->
->
->
-> On 2020/11/20 17:20, Zhen Lei wrote:
-> > After we have done the alignment check for the length of each range, the
-> > alignment check for dev_dax_size(dev_dax) is no longer needed, because it
-> > get the sum of the length of each range.
->
-> For example:
-> x/M + y/M = (x + y)/M
-> If x/M is a integer and y/M is also a integer, then (x + y)/M must be a integer.
->
+On 12/17/20 8:05 PM, Jason Gunthorpe wrote:
+> On Thu, Dec 17, 2020 at 07:05:37PM +0000, Joao Martins wrote:
+>>> No reason not to fix set_page_dirty_lock() too while you are here.
+>>
+>> The wack of atomics you mentioned earlier you referred to, I suppose it
+>> ends being account_page_dirtied(). See partial diff at the end.
+> 
+> Well, even just eliminating the lock_page, page_mapping, PageDirty,
+> etc is already a big win.
+> 
+> If mapping->a_ops->set_page_dirty() needs to be called multiple times
+> on the head page I'd probably just suggest:
+> 
+>   while (ntails--)
+>         rc |= (*spd)(head);
+> 
+> At least as a start.
+> 
+/me nods
 
-True... I was going to say that the different error messages might be
-useful, but those are debug statements anyways, so I'll apply this.
+> If you have workloads that have page_mapping != NULL then look at
+> another series to optimze that. Looks a bit large though given the
+> number of places implementing set_page_dirty
+> 
+Yes. I don't have a particular workload, was just wondering what you had in
+mind, as at a glance, changing all the places without messing filesystems looks like
+the subject of a separate series.
+
+> I think the current reality is calling set_page_dirty on an actual
+> file system is busted anyhow, so I think mapping is generally going to
+> be NULL here?
+
+Perhaps -- I'll have to check.
+
+	Joao
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
