@@ -1,67 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F412DC9AE
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 00:42:19 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE852DCA05
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 01:38:45 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CFC69100EC1CC;
-	Wed, 16 Dec 2020 15:42:17 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 79BFE100EBB62;
+	Wed, 16 Dec 2020 16:38:43 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A6042100ED4AE
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Dec 2020 15:42:14 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id 6so20620239ejz.5
-        for <linux-nvdimm@lists.01.org>; Wed, 16 Dec 2020 15:42:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=v/05tMjv8rIWg07T4Boer6EyDeh8xYvFZqT68MBwTfg=;
-        b=sl/KdGMSnUSakkm2gmhcZEKK7c9zu6KwMMSW9X67ZTO/PU6G8QOuQ28uYLOvz1mEot
-         oCLlOhM4TrjW8/rsA3iSMIcoWZvofdYHGDMpzZBdI0ntnwAv/MhEi2FLOZ4Tx7xlS2K1
-         +At8mCjIVv91G6Cu8dRap76wZmk8bP/XGQO5xrd/2PAU1l6feHB+Y8Y0Ak9SKNf7Nu4O
-         j9b/AWZKZEqHtuI9w7PStpejEj9Q4EPI5eKlFjGdHbDOPLnq0pUMCONcqQnPRjQ/K0sD
-         2MlBkDrSXUDD/q/L4Mhk3AdkPrjR1YFZWHAB2ddEnZwogOOahjbtxWgAwd9D9bQWBUHQ
-         IMZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=v/05tMjv8rIWg07T4Boer6EyDeh8xYvFZqT68MBwTfg=;
-        b=uBCWplFOWf8gP23MJOvN6p49Dox8hgjGZa+95MyqBoFs8opLfu3+DdHmwPFH6IpX1A
-         gPpMEV+hGDFOTw7fm1gTSPsenSTyuDXkbwo+qBcQMbjp3yeWy3Vnfp6sYElOM0jswHX8
-         oblB6euMHCqXIzXg8cmNKmjY3t9LfEMQPcqppyVvL4A4ZetfA5VN+0c0dcB1FDcXe4cV
-         LRy+EPg8yKWQPsu3WfTK8+ISS2uDATvyHnAQM7jH7dUFx6Oj244BslBiaSRwvxGMSCVa
-         zqt3EitzUWphznadhyvPTfXGvA7fIciOwuWuQTlEeV2G1+lHWtOcbgT7+RnD3JtWLrD+
-         ybZQ==
-X-Gm-Message-State: AOAM532eKFv9sgXCwyz7Ej6cnUZ7Lb+SfPxT2on3Y9/PKVA/pD1aDwXA
-	0uSKOVKPudib4PPVR8oi7vq5+HF/bI9TkGFFl+QagQ==
-X-Google-Smtp-Source: ABdhPJxrkTIHpPliv0QkBp2LrmgCrG+cAc81DrGdhVHseVlpgJMzcjDSh1/YxxmV9BYYlFR+C5W77E9z2GorkASXyN8=
-X-Received: by 2002:a17:907:c15:: with SMTP id ga21mr33432781ejc.472.1608162132604;
- Wed, 16 Dec 2020 15:42:12 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id BEA27100EBBD9
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Dec 2020 16:38:41 -0800 (PST)
+IronPort-SDR: CQXYeiAoERI3/iCLVYZk75qc2mIVV/uRafXsB9YUTg5jbfxBnUiJyFjj1GWioICdHK8ozxeb97
+ RTN8emK6Ghzw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9837"; a="162905082"
+X-IronPort-AV: E=Sophos;i="5.78,425,1599548400";
+   d="scan'208";a="162905082"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 16:38:36 -0800
+IronPort-SDR: NimDuO3JSSCaVpcE48OB6QWQniCI0fiXPNzekJI5l7NmE3AKdZihNJaKV633ov9z2pi3EL+dvK
+ tZn+LkRliH4A==
+X-IronPort-AV: E=Sophos;i="5.78,425,1599548400";
+   d="scan'208";a="369434314"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2020 16:38:36 -0800
+Date: Wed, 16 Dec 2020 16:38:36 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH V3.1] entry: Pass irqentry_state_t by reference
+Message-ID: <20201217003835.GZ1563847@iweiny-DESK2.sc.intel.com>
+References: <20201106232908.364581-6-ira.weiny@intel.com>
+ <20201124060956.1405768-1-ira.weiny@intel.com>
+ <CALCETrUHwZPic89oExMMe-WyDY8-O3W68NcZvse3=PGW+iW5=w@mail.gmail.com>
+ <20201216013202.GY1563847@iweiny-DESK2.sc.intel.com>
+ <CALCETrWoh5BYnU16adT7i6tsQ77PGaLN_qyZnCy-WfO3UJoykw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200716184707.23018-1-joao.m.martins@oracle.com>
- <988f8189-b20c-d569-91f0-cf31033cf9d7@oracle.com> <9db17315af1440b805c4fed2338969e7fe3155ec.camel@intel.com>
- <1ba4fc06-a13a-ce2b-2f53-95a913ac3a8e@oracle.com> <CAPcyv4jiS07bGi+YRsMjAt37DCNwioTd8cd=LXKxOg-ARTM87g@mail.gmail.com>
- <01b3c6f8-901e-c9c8-6e98-88366d4ecbdd@oracle.com>
-In-Reply-To: <01b3c6f8-901e-c9c8-6e98-88366d4ecbdd@oracle.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 16 Dec 2020 15:42:00 -0800
-Message-ID: <CAPcyv4jQ9ee-o3t_Wy_4K-Nm5Lj6wJKv1pdjvtYQG6eJ3ejUrQ@mail.gmail.com>
-Subject: Re: [PATCH ndctl v1 0/8] daxctl: Add device align and range mapping allocation
-To: Joao Martins <joao.m.martins@oracle.com>
-Message-ID-Hash: Z3MKCI7HYJPJTUDJEAC5ER6CHOJMRPZW
-X-Message-ID-Hash: Z3MKCI7HYJPJTUDJEAC5ER6CHOJMRPZW
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <CALCETrWoh5BYnU16adT7i6tsQ77PGaLN_qyZnCy-WfO3UJoykw@mail.gmail.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: TRK44RITM7JTP5HKMEKPTHMNOFYYWF7V
+X-Message-ID-Hash: TRK44RITM7JTP5HKMEKPTHMNOFYYWF7V
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux-MM <linux-mm@kvack.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z3MKCI7HYJPJTUDJEAC5ER6CHOJMRPZW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TRK44RITM7JTP5HKMEKPTHMNOFYYWF7V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,81 +57,96 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 16, 2020 at 2:54 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->
-> On 12/16/20 10:31 PM, Dan Williams wrote:
-> > On Wed, Dec 16, 2020 at 1:51 PM Joao Martins <joao.m.martins@oracle.com> wrote:
-> >>
-> >> On 12/16/20 6:42 PM, Verma, Vishal L wrote:
-> >>> On Wed, 2020-12-16 at 11:39 +0000, Joao Martins wrote:
-> >>>> On 7/16/20 7:46 PM, Joao Martins wrote:
-> >>>>> Hey,
-> >>>>>
-> >>>>> This series builds on top of this one[0] and does the following improvements
-> >>>>> to the Soft-Reserved subdivision:
-> >>>>>
-> >>>>>  1) Support for {create,reconfigure}-device for selecting @align (hugepage size).
-> >>>>>  Here we add a '-a|--align 4K|2M|1G' option to the existing commands;
-> >>>>>
-> >>>>>  2) Listing improvements for device alignment and mappings;
-> >>>>>  Note: Perhaps it is better to hide the mappings by default, and only
-> >>>>>        print with -v|--verbose. This would align with ndctl, as the mappings
-> >>>>>        info can be quite large.
-> >>>>>
-> >>>>>  3) Allow creating devices from selecting ranges. This allows to keep the
-> >>>>>    same GPA->HPA mapping as before we kexec the hypervisor with running guests:
-> >>>>>
-> >>>>>    daxctl list -d dax0.1 > /var/log/dax0.1.json
-> >>>>>    kexec -d -l bzImage
-> >>>>>    systemctl kexec
-> >>>>>    daxctl create -u --restore /var/log/dax0.1.json
-> >>>>>
-> >>>>>    The JSON was what I though it would be easier for an user, given that it is
-> >>>>>    the data format daxctl outputs. Alternatives could be adding multiple:
-> >>>>>     --mapping <pgoff>:<start>-<end>
-> >>>>>
-> >>>>>    But that could end up in a gigantic line and a little more
-> >>>>>    unmanageable I think.
-> >>>>>
-> >>>>> This series requires this series[0] on top of Dan's patches[1]:
-> >>>>>
-> >>>>>  [0] https://lore.kernel.org/linux-nvdimm/20200716172913.19658-1-joao.m.martins@oracle.com/
-> >>>>>  [1] https://lore.kernel.org/linux-nvdimm/159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com/
-> >>>>>
-> >>>>> The only TODO here is docs and improving tests to validate mappings, and test
-> >>>>> the restore path.
-> >>>>>
-> >>>>> Suggestions/comments are welcome.
-> >>>>>
-> >>>> There's a couple of issues in this series regarding daxctl-reconfigure options and
-> >>>> breakage of ndctl with kernels (<5.10) that do not supply a device @align upon testing
-> >>>> with NVDIMMs. Plus it is missing daxctl-create.sh unit test for @align.
-> >>>>
-> >>>> I will fix those and respin, and probably take out the last patch as it's more RFC-ish and
-> >>>> in need of feedback.
-> >>>
-> >>> Sounds good. Any objections to releasing v70 with the initial support,
-> >>> and then adding this series on for the next one? I'm thinking I'll do a
-> >>> much quicker v72 release say in early January with this and anything
-> >>> else that missed v71.
-> >>
-> >> If we're able to wait until tomorrow, I could respin these first four patches with the
-> >> fixes and include the align support in the initial set. Otherwise, I am also good if you
-> >> prefer defering it to v72.
-> >>
+On Tue, Dec 15, 2020 at 06:09:02PM -0800, Andy Lutomirski wrote:
+> On Tue, Dec 15, 2020 at 5:32 PM Ira Weiny <ira.weiny@intel.com> wrote:
 > >
-> > Does this change the JSON output? Might be nice to keep that all in
-> > one update rather than invalidate some testing with the old format
-> > betweem v71 and v72.
+> > On Fri, Dec 11, 2020 at 02:14:28PM -0800, Andy Lutomirski wrote:
+> > > On Mon, Nov 23, 2020 at 10:10 PM <ira.weiny@intel.com> wrote:
+> 
+> > > IOW we have:
+> > >
+> > > struct extended_pt_regs {
+> > >   bool rcu_whatever;
+> > >   other generic fields here;
+> > >   struct arch_extended_pt_regs arch_regs;
+> > >   struct pt_regs regs;
+> > > };
+> > >
+> > > and arch_extended_pt_regs has unsigned long pks;
+> > >
+> > > and instead of passing a pointer to irqentry_state_t to the generic
+> > > entry/exit code, we just pass a pt_regs pointer.  And we have a little
+> > > accessor like:
+> > >
+> > > struct extended_pt_regs *extended_regs(struct pt_regs *) { return
+> > > container_of(...); }
+> > >
+> > > And we tell eBPF that extended_pt_regs is NOT ABI, and we will change
+> > > it whenever we feel like just to keep you on your toes, thank you very
+> > > much.
+> > >
+> > > Does this seem reasonable?
 > >
-> Ugh, sent the v2 too early before seeing this.
->
-> The only change to the output is on daxctl when listing devices for 5.10+.
-> It starts displaying an "align" key/value.
+> > Conceptually yes.  But I'm failing to see how this implementation can be made
+> > generic for the generic fields.  The pks fields, assuming they stay x86
+> > specific, would be reasonable to add in PUSH_AND_CLEAR_REGS.  But the
+> > rcu/lockdep field is generic.  Wouldn't we have to modify every architecture to
+> > add space for the rcu/lockdep bool?
+> >
+> > If not, where is a generic place that could be done?  Basically I'm missing how
+> > the effective stack structure can look like this:
+> >
+> > > struct extended_pt_regs {
+> > >   bool rcu_whatever;
+> > >   other generic fields here;
+> > >   struct arch_extended_pt_regs arch_regs;
+> > >   struct pt_regs regs;
+> > > };
+> >
+> > It seems more reasonable to make it look like:
+> >
+> > #ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> > struct extended_pt_regs {
+> >         unsigned long pkrs;
+> >         struct pt_regs regs;
+> > };
+> > #endif
+> >
+> > And leave the rcu/lockdep bool passed by value as before (still in C).
+> 
+> We could certainly do this,
 
-No worries. Vishal and I chatted and it looks to me like your
-improvements to the provisioning flow are worthwhile to sneak into the
-v71 release if you want to include those changes as well.
+I'm going to start with this basic support.  Because I have 0 experience in
+most of these architectures.
+
+> but we could also allocate some generic
+> space.  PUSH_AND_CLEAR_REGS would get an extra instruction like:
+> 
+> subq %rsp, $GENERIC_PTREGS_SIZE
+> 
+> or however this should be written.  That field would be defined in
+> asm-offsets.c.  And yes, all the generic-entry architectures would
+> need to get onboard.
+
+What do you mean by 'generic-entry' architectures?  I thought they all used the
+generic entry code?
+
+Regardless I would need to start another thread on this topic with any of those
+architecture maintainers to see what the work load would be for this.  I don't
+think I can do it on my own.
+
+FWIW I think it is a bit unfair to hold up the PKS support in x86 for making
+these generic fields part of the stack frame.  So perhaps that could be made a
+follow on to the PKS series?
+
+> 
+> If we wanted to be fancy, we could split the generic area into
+> initialize-to-zero and uninitialized for debugging purposes, but that
+> might be more complication than is worthwhile.
+
+Ok, agreed, but this is step 3 or 4 at the earliest.
+
+Ira
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
