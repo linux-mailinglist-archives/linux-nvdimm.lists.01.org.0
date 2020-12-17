@@ -1,69 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B592F2DCCEE
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 08:23:51 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3020A2DCD7E
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 09:18:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2933C100EB823;
-	Wed, 16 Dec 2020 23:23:50 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	by ml01.01.org (Postfix) with ESMTP id 65AAD100EB82A;
+	Thu, 17 Dec 2020 00:18:26 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3CD36100ED487
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Dec 2020 23:23:48 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2so18477456pfq.5
-        for <linux-nvdimm@lists.01.org>; Wed, 16 Dec 2020 23:23:48 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 73158100EBBBB
+	for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 00:18:22 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id p22so27646932edu.11
+        for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 00:18:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=s8DTCLK1NObwq6A7yxCnWPlaLLhoDrNKlWzzd7f7Tzg=;
-        b=YC3e7+XFY6jIESsbm+DNv6W8ymMnHpqnkzZEBi6bDMOCiRZbMDDIY9+Yf2N3j+wHFa
-         7NrmYncT/bEyBshM3Z0L2F8N8MnNazQx/XCN3LFJDkIN+e6B0Oew/LGuSNBEPiDaudeW
-         2zS4H3E6fwg0c+Y7+tnkv2uNFpFSaDayDpWS6vTnpYqNlsVPlv1h3RZtlqKTXbOsyQUX
-         7XX3Np6ucOR84NZ2Vfb20WL1Rk7fZwZhA+e/lpLnSc7oMKTC4RMUhKsOGeI8YAucyPQa
-         g6pNr4gfv2VJ0Mrcig0WC18dgkeQ1ovGGFh5DecipzKdj202xDZ5JS53ymWzP+agDZFz
-         qgsg==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CYGS8pWyE8q2JUKHyneJ8EPZ/SE2JIJ/gm+Of5ZmpdA=;
+        b=KnYEVX+VktLSlpv0q2Ihl4osG3Y16MDlg9Wuw+38riJa0bmrqz24zHlZVm7pCJUb4n
+         EdZ7sbmpHpFiW2ByuV/4hjFuLV3+UgC7lANMn/tZyqm4ugy/pwd81uPs2WWpwN9b+8ag
+         NDWCYTsqf7nsgvIOLwSBWZ6frS7ccW6T0FFuZ2UV2DBX2gN4ctCrHlNCL7/cK/VHZIzH
+         FDgkmnPa1k7Q3C9pRYMSQ3yZv576a+SatTPX7GubMKMi7uvGyAriXjAYgyEMOCYOiH5E
+         YDpUM1Gk9bcjQrtpXgzvI6V6OeZkSaqia77r6Xcmj01NGq5ugHc39uA0XWabYsKxProu
+         fK1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=s8DTCLK1NObwq6A7yxCnWPlaLLhoDrNKlWzzd7f7Tzg=;
-        b=rvn73DLyLe4To2K+6BEV903zTaOQkA/8pZiQlttGbdkfNY3JiUSiRbd9jkfdxz3BEf
-         XWMGrX18bgw4aw8r57BYb4hR8ieXMQXA/sAUaAlJbioFWzboRKDk+MJ6mYEjUlYdmlaZ
-         iAkylWFDMMa/7i09s6A+pIR+TujHEfhyolY8dDsKch25oCm5qToFFj/VAjUlKczKtJCK
-         QTo63bX4ZA2s6HWTbltEbvySDNpUuIhW4LN+73id2xKvODoFaCkQ1a3TtotBSAwsfWp3
-         32nhukgwXVRtRumCE76TjJp6A3QD5F+lYyYiPhzn18tLcL87oNd8j2YYvuN33KqCXXq5
-         Uh4g==
-X-Gm-Message-State: AOAM5311AdMXqKFQe9jJPhkGl9SrzGh0jizBXkrbfgJh35wf2Be/f9Vh
-	2FHFwiXMls2++RNMC5yzcai0nA==
-X-Google-Smtp-Source: ABdhPJwtyh1kh0p/aYSEfQj6H3dAY6mC7maviVFDOhZFYrjW0g/nCJt0bSQpgXdyFfH/36wsuZIZ3w==
-X-Received: by 2002:a62:1617:0:b029:1a3:c265:a50c with SMTP id 23-20020a6216170000b02901a3c265a50cmr8123120pfw.77.1608189827425;
-        Wed, 16 Dec 2020 23:23:47 -0800 (PST)
-Received: from localhost ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id y6sm4475630pjl.0.2020.12.16.23.23.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Dec 2020 23:23:46 -0800 (PST)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [RFC v5 0/7] PMEM device emulation without nfit depenency
-In-Reply-To: <CAPcyv4iDGN8Z=uXHrgo8Zs=Br6xbsmZsJ6VAcQVZXd=d9Nkoew@mail.gmail.com>
-References: <20201214103859.2409175-1-santosh@fossix.org>
- <CAPcyv4iDGN8Z=uXHrgo8Zs=Br6xbsmZsJ6VAcQVZXd=d9Nkoew@mail.gmail.com>
-Date: Thu, 17 Dec 2020 12:53:44 +0530
-Message-ID: <87o8is520v.fsf@santosiv.in.ibm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CYGS8pWyE8q2JUKHyneJ8EPZ/SE2JIJ/gm+Of5ZmpdA=;
+        b=Z9Uz5Q1BEZGoADEK7+7UpoP6fV0Jgq3J6nN9XvKX+O/6zG+hhoK3Rixl+qCbORmham
+         cAKwHMb/0XbWSxN1zkhzg5j9a+qW/TaQoMLm7y2u/hQ0ODMLyam/MqdzB36htgIpQBIU
+         j9TT1iPBnCadAH22gHJhoomGyuNXpDJKFdi2TM2MPCISdeOTOt7u8or5SbIv7OvQrW8d
+         +tNNry227xKjdzQCOxYCPv2sGggjyK1JBzMPbFvdFz/3sXyJ7ijMeuN7/+Ok7rHJrYRD
+         m3ySv2esb0DOimtavjJApeCbXjXiVsx+QGnAfJeBQsnGmoIebUqqc8e1YcN6twGihyGC
+         W6FQ==
+X-Gm-Message-State: AOAM5303o2XvjDf/KIvpbUVrxTGxWgR4aJpUzM0K7TC4z74ztXEr4xYp
+	0mkSKy4v5FgH6KzZ6M+aGprmClTVIu3qzcoWXHuiwg==
+X-Google-Smtp-Source: ABdhPJyGioclYMHY6ezf9R4xao0pTrcrXwdZI225qUl/0lIJZmchrLhbZcwl+CwTmxPFWz0CHulgo5bWPHS/wHFh7Eg=
+X-Received: by 2002:aa7:c2d8:: with SMTP id m24mr22619527edp.300.1608193100666;
+ Thu, 17 Dec 2020 00:18:20 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: LVI2MSPFF2TXP6A5UWTV5H7ZTVXDCAVP
-X-Message-ID-Hash: LVI2MSPFF2TXP6A5UWTV5H7ZTVXDCAVP
-X-MailFrom: santosh@fossix.org
+References: <3211fe8a-33fb-37ca-e192-ad1f116f4acd@huawei.com> <c8a8a260-34c6-dbfc-1f19-25c23d01cb45@oracle.com>
+In-Reply-To: <c8a8a260-34c6-dbfc-1f19-25c23d01cb45@oracle.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 17 Dec 2020 00:18:08 -0800
+Message-ID: <CAPcyv4i1rY53QeAm2nhwv9_yP1hhw33qBTrMdrepxcVQOrDDqg@mail.gmail.com>
+Subject: Re: [ndctl PATCH V2 0/8] fix serverl issues reported by Coverity
+To: Jane Chu <jane.chu@oracle.com>
+Message-ID-Hash: JCLYSH37I672C2TSYZZDCJ4DZ7M55U2E
+X-Message-ID-Hash: JCLYSH37I672C2TSYZZDCJ4DZ7M55U2E
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+CC: Zhiqiang Liu <liuzhiqiang26@huawei.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, linfeilong <linfeilong@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LVI2MSPFF2TXP6A5UWTV5H7ZTVXDCAVP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JCLYSH37I672C2TSYZZDCJ4DZ7M55U2E/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -72,124 +67,103 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Tue, Dec 8, 2020 at 4:20 PM Jane Chu <jane.chu@oracle.com> wrote:
+>
+> Hi,
+>
+> I actually just ran into the NULL deref issue that is fixed here.
+>
+> Bu I have a question for the experts:
+> what might cause libndctl to run into the NULL deref like below ?
+>
+> Program terminated with signal 11, Segmentation fault.
+> #0  ndctl_pfn_get_bus (pfn=pfn@entry=0x0) at libndctl.c:5540
+> 5540            return pfn->region->bus;
+>
+> (gdb) print pfn
+> $1 = (struct ndctl_pfn *) 0x0
+> (gdb) frame 4
+> #4  0x000000000040ca70 in setup_namespace (region=region@entry=0x109d910,
+>      ndns=ndns@entry=0x10a7d40, p=p@entry=0x7ffd8ff73b90) at namespace.c:570
+> 570                     try(ndctl_dax, set_uuid, dax, uuid);
+> (gdb) info locals
+> __rc = <optimized out>
+> dax = 0x0
+>
+> What I did was to let 2 threads run "create-namespace all" in a tight
+> loop, and 2 other threads run "destroy-namespace all" in a tight loop,
 
-> Typically RFC means "not ready to apply, still seeking fundamental
-> approach feedback". Should I be looking to consider this for
-> v5.11-rc1, or is this still RFC / should wait for v5.12?
+This will definitely cause libndctl to get confused the expectation is
+that only one ndctl instance is operating on one region at a time.
+What likely happened is TOCTOU in ndctl_region_get_pfn_seed() where
+the seed device name is destroyed by the time it tries to convert it
+to an ndctl object. The reason libndctl does not perform its own
+locking is to keep the library stateless and allow locking to imposed
+from a higher level. Two ndctl instances must not be allowed to
+operate in the same region otherwise the 2 libndctl instances will get
+out of sync.
 
-I would like this to go in, after your comments to the previously RFC, I guess
-this has moved beyond the RFC tag. I will re-send the series without the RFC
-tag. Meanwhile I will continue to work on getting both modules to co-exist and
-be exercised in the same build apart from getting SMART and error injection
-tests.
+This is no different than 2 fdisk processes running at the same time,
+they are going to invalidate each other's view of the cached partition
+state. The fix is not for fdisk to implement locking internally
+instead it requires the admin to arrange for only one fdisk to run
+against one disk at a time.
+
+> while chasing an year old issue that randomly resurfaces -
+> "nd_region region1: allocation underrun: 0x0 of 0x40000000 bytes"
+
+It would be interesting to get more data on the sequence of
+allocations that lead up to this event, and a dump of the resource
+tree when this happens:
+
+for (i = 0; i < nd_region->ndr_mappings; i++)
+    ndd = to_ndd(&nd_region->mapping[i]);
+    for_each_dpa_resource(...)
+        nd_dbg_dpa(...)
+
 
 >
-> On Mon, Dec 14, 2020 at 2:39 AM Santosh Sivaraj <santosh@fossix.org> wrote:
->>
->> The current test module cannot be used for testing platforms (make check)
->> that do not have support for NFIT. In order to get the ndctl tests working,
->> we need a module which can emulate NVDIMM devices without relying on
->> ACPI/NFIT.
->>
->> The emulated PMEM device is made part of the PAPR family.
->>
->> Corresponding changes for ndctl is also required, to add attributes needed
->> for the test, which will be sent as a reply to this patch.
->>
->> The following is the test result, run on a x86 guest:
->>
->> PASS: libndctl
->> PASS: dsm-fail
->> PASS: dpa-alloc
->> PASS: parent-uuid
->> PASS: multi-pmem
->> PASS: create.sh
->> FAIL: clear.sh
->> FAIL: pmem-errors.sh
->> FAIL: daxdev-errors.sh
->> PASS: multi-dax.sh
->> PASS: btt-check.sh
->> FAIL: label-compat.sh
->> PASS: blk-exhaust.sh
->> PASS: sector-mode.sh
->> FAIL: inject-error.sh
->> SKIP: btt-errors.sh
->> PASS: hugetlb
->> PASS: btt-pad-compat.sh
->> SKIP: firmware-update.sh
->> FAIL: ack-shutdown-count-set
->> PASS: rescan-partitions.sh
->> FAIL: inject-smart.sh
->> FAIL: monitor.sh
->> PASS: max_available_extent_ns.sh
->> FAIL: pfn-meta-errors.sh
->> PASS: track-uuid.sh
->> ============================================================================
->> Testsuite summary for ndctl 70.10.g7ecd11c
->> ============================================================================
->> # TOTAL: 26
->> # PASS:  15
->> # SKIP:  2
->> # XFAIL: 0
->> # FAIL:  9
->> # XPASS: 0
->> # ERROR: 0
->>
->> The following is the test result from a PowerPC 64 guest.
->>
->> PASS: libndctl
->> PASS: dsm-fail
->> PASS: dpa-alloc
->> PASS: parent-uuid
->> PASS: multi-pmem
->> PASS: create.sh
->> FAIL: clear.sh
->> FAIL: pmem-errors.sh
->> FAIL: daxdev-errors.sh
->> PASS: multi-dax.sh
->> PASS: btt-check.sh
->> FAIL: label-compat.sh
->> PASS: blk-exhaust.sh
->> PASS: sector-mode.sh
->> FAIL: inject-error.sh
->> SKIP: btt-errors.sh
->> SKIP: hugetlb
->> PASS: btt-pad-compat.sh
->> SKIP: firmware-update.sh
->> FAIL: ack-shutdown-count-set
->> PASS: rescan-partitions.sh
->> FAIL: inject-smart.sh
->> FAIL: monitor.sh
->> PASS: max_available_extent_ns.sh
->> FAIL: pfn-meta-errors.sh
->> PASS: track-uuid.sh
->> ============================================================================
->> Testsuite summary for ndctl 70.git94a00679
->> ============================================================================
->> # TOTAL: 26
->> # PASS:  14
->> # SKIP:  3
->> # XFAIL: 0
->> # FAIL:  9
->> # XPASS: 0
->> # ERROR: 0
->
-> With these run reports are you trying to demonstrate the improvement,
-> or the future work?
+> In addition, there are kmemleaks,
+> # cat /sys/kernel/debug/kmemleak
+> [..]
+> unreferenced object 0xffff976bd46f6240 (size 64):
+>    comm "ndctl", pid 23556, jiffies 4299514316 (age 5406.733s)
+>    hex dump (first 32 bytes):
+>      00 00 00 00 00 00 00 00 00 00 20 c3 37 00 00 00  .......... .7...
+>      ff ff ff 7f 38 00 00 00 00 00 00 00 00 00 00 00  ....8...........
+>    backtrace:
+>      [<00000000064003cf>] __kmalloc_track_caller+0x136/0x379
+>      [<00000000d85e3c52>] krealloc+0x67/0x92
+>      [<00000000d7d3ba8a>] __alloc_dev_dax_range+0x73/0x25c
+>      [<0000000027d58626>] devm_create_dev_dax+0x27d/0x416
+>      [<00000000434abd43>] __dax_pmem_probe+0x1c9/0x1000 [dax_pmem_core]
+>      [<0000000083726c1c>] dax_pmem_probe+0x10/0x1f [dax_pmem]
+>      [<00000000b5f2319c>] nvdimm_bus_probe+0x9d/0x340 [libnvdimm]
+>      [<00000000c055e544>] really_probe+0x230/0x48d
+>      [<000000006cabd38e>] driver_probe_device+0x122/0x13b
+>      [<0000000029c7b95a>] device_driver_attach+0x5b/0x60
+>      [<0000000053e5659b>] bind_store+0xb7/0xc3
+>      [<00000000d3bdaadc>] drv_attr_store+0x27/0x31
+>      [<00000000949069c5>] sysfs_kf_write+0x4a/0x57
+>      [<000000004a8b5adf>] kernfs_fop_write+0x150/0x1e5
+>      [<00000000bded60f0>] __vfs_write+0x1b/0x34
+>      [<00000000b92900f0>] vfs_write+0xd8/0x1d1
 
-This shows what work still needs to be done. As of now there is SMART and error
-injection which I am working on right now.
->
-> I think it's sufficient to say that no tests ran with nfit_test
-> previously, but now 26 pass. Extra interesting would be to determine
-> if any current papr regression fixes in the tree would have been
-> caught by an ndtest run.
+Hmm... maybe this?
 
-So far there is are no regressions caught.
-
-Thanks,
-Santosh
+diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
+index 27513d311242..506549235e03 100644
+--- a/drivers/dax/bus.c
++++ b/drivers/dax/bus.c
+@@ -1393,6 +1393,7 @@ struct dev_dax *devm_create_dev_dax(struct
+dev_dax_data *data)
+ err_pgmap:
+        free_dev_dax_ranges(dev_dax);
+ err_range:
++       kfree(dev_dax->ranges);
+        free_dev_dax_id(dev_dax);
+ err_id:
+        kfree(dev_dax);
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
