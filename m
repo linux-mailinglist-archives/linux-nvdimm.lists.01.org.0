@@ -1,60 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265962DD204
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 14:19:50 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA34B2DD342
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Dec 2020 15:51:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 84D57100EBB8F;
-	Thu, 17 Dec 2020 05:19:48 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by ml01.01.org (Postfix) with ESMTP id 0CBF8100EB827;
+	Thu, 17 Dec 2020 06:51:01 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1B599100EBB67
-	for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 05:19:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ki9FXUcA/jS53jop1ttnv7UISCrAaFpfQpHTD7Zfflc=; b=L8h4Yi/u8flONjvNDbffLQl69p
-	AVHTgDEHkjVbzg1ZBlYJikolD2maAnDufsFyn3T0vrw42EF45cq7xWNAAR3TqrmyPYtIq4P8mcrRA
-	u7JZLPBNfub/3RPbtAYDLcKM3Vf6OSBtfpuLF2M5d6hZziKU8BSV/1dssN7ZQoMd7x9WSRSgSzcVI
-	faug25WQmxTZnjjjcQ1koe4iwrWpbYSJ2D4qk+sp9Wf0NI2CPs82tcFwT7kaTEKuqKEXh61xjXOvl
-	yzmSxmiqX6OLALXHsYIXlQUaTeMcaVyGhIMeiTqozXX1r3Q2nMjXP7+f6SXui8dE+xztrdQU6TAlf
-	DtE4PMnA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kptBm-0005SF-PQ; Thu, 17 Dec 2020 13:19:26 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id F157B300446;
-	Thu, 17 Dec 2020 14:19:24 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E5DF3202395D6; Thu, 17 Dec 2020 14:19:24 +0100 (CET)
-Date: Thu, 17 Dec 2020 14:19:24 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH V3.1] entry: Pass irqentry_state_t by reference
-Message-ID: <20201217131924.GW3040@hirez.programming.kicks-ass.net>
-References: <20201106232908.364581-6-ira.weiny@intel.com>
- <20201124060956.1405768-1-ira.weiny@intel.com>
- <CALCETrUHwZPic89oExMMe-WyDY8-O3W68NcZvse3=PGW+iW5=w@mail.gmail.com>
- <878s9wshsa.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTPS id E3810100ED4A6
+	for <linux-nvdimm@lists.01.org>; Thu, 17 Dec 2020 06:50:57 -0800 (PST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1608216656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VA4CgUr+mddzE5W5XW9xxSKHdRVWkhVu9Ou7VaYBRBs=;
+	b=x8YQjbsn8YubrCEDl0qhTSqp7psA5Cd6Hcsqd6nPGmOKkR4V3QV6au+wuNiZ7qXnSqXxrh
+	pHl+HVLKuH/NQrLPX+SBnCxVKjKz4KY9NGvsbLDIguCeKiwS0WVyMaaieLw2qaowM92I+v
+	AOu83+LgNoQtBcOH4v4HANgrFaxI66gNG0k0wizSwWzdOkg1aXgLEoo8LJ5Abil4dSH97g
+	LlvLd6o+i/ALJXAtSNNYH+yIhVe2vxmfXVuuIlY1jBObQ37+MdgawY4Cp01Gj58Mt9CyAy
+	JklATQ+uU8bAY28yrrUKjmnYeC6hjxb0UQqdPzcYoYDMWKALZ6gJQN1y4PCu6A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1608216656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VA4CgUr+mddzE5W5XW9xxSKHdRVWkhVu9Ou7VaYBRBs=;
+	b=zuop8u3nFEivs4Yrh4v+upsEEA6+NJTeUPgODNyRqWXHhC8ikax+nyK5d9aFM+tUmTqDLA
+	kfxhlxbeOeHvM0Bw==
+To: ira.weiny@intel.com, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH V3 04/10] x86/pks: Preserve the PKRS MSR on context switch
+In-Reply-To: <20201106232908.364581-5-ira.weiny@intel.com>
+References: <20201106232908.364581-1-ira.weiny@intel.com> <20201106232908.364581-5-ira.weiny@intel.com>
+Date: Thu, 17 Dec 2020 15:50:55 +0100
+Message-ID: <871rfoscz4.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <878s9wshsa.fsf@nanos.tec.linutronix.de>
-Message-ID-Hash: OIETYDQD377OZ2UQWTLUM3MYTNBQS7BQ
-X-Message-ID-Hash: OIETYDQD377OZ2UQWTLUM3MYTNBQS7BQ
-X-MailFrom: peterz@infradead.org
+Message-ID-Hash: MB2P4EKSCRT2MCXWJKBJRCK7KFXHTA6N
+X-Message-ID-Hash: MB2P4EKSCRT2MCXWJKBJRCK7KFXHTA6N
+X-MailFrom: tglx@linutronix.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux-MM <linux-mm@kvack.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+CC: Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OIETYDQD377OZ2UQWTLUM3MYTNBQS7BQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MB2P4EKSCRT2MCXWJKBJRCK7KFXHTA6N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -63,77 +58,105 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 17, 2020 at 02:07:01PM +0100, Thomas Gleixner wrote:
-> On Fri, Dec 11 2020 at 14:14, Andy Lutomirski wrote:
-> > On Mon, Nov 23, 2020 at 10:10 PM <ira.weiny@intel.com> wrote:
-> > After contemplating this for a bit, I think this isn't really the
-> > right approach.  It *works*, but we've mostly just created a bit of an
-> > unfortunate situation.  Our stack, on a (possibly nested) entry looks
-> > like:
-> >
-> > previous frame (or empty if we came from usermode)
-> > ---
-> > SS
-> > RSP
-> > FLAGS
-> > CS
-> > RIP
-> > rest of pt_regs
-> >
-> > C frame
-> >
-> > irqentry_state_t (maybe -- the compiler is within its rights to play
-> > almost arbitrary games here)
-> >
-> > more C stuff
-> >
-> > So what we've accomplished is having two distinct arch register
-> > regions, one called pt_regs and the other stuck in irqentry_state_t.
-> > This is annoying because it means that, if we want to access this
-> > thing without passing a pointer around or access it at all from outer
-> > frames, we need to do something terrible with the unwinder, and we
-> > don't want to go there.
-> >
-> > So I propose a somewhat different solution: lay out the stack like this.
-> >
-> > SS
-> > RSP
-> > FLAGS
-> > CS
-> > RIP
-> > rest of pt_regs
-> > PKS
-> > ^^^^^^^^ extended_pt_regs points here
-> >
-> > C frame
-> > more C stuff
-> > ...
-> >
-> > IOW we have:
-> >
-> > struct extended_pt_regs {
-> >   bool rcu_whatever;
-> >   other generic fields here;
-> >   struct arch_extended_pt_regs arch_regs;
-> >   struct pt_regs regs;
-> > };
-> >
-> > and arch_extended_pt_regs has unsigned long pks;
-> >
-> > and instead of passing a pointer to irqentry_state_t to the generic
-> > entry/exit code, we just pass a pt_regs pointer.
-> 
-> While I agree vs. PKS which is architecture specific state and needed in
-> other places e.g. #PF, I'm not convinced that sticking the existing
-> state into the same area buys us anything more than an indirect access.
-> 
-> Peter?
+On Fri, Nov 06 2020 at 15:29, ira weiny wrote:
+> --- a/arch/x86/kernel/process.c
+> +++ b/arch/x86/kernel/process.c
+> @@ -43,6 +43,7 @@
+>  #include <asm/io_bitmap.h>
+>  #include <asm/proto.h>
+>  #include <asm/frame.h>
+> +#include <asm/pkeys_common.h>
+>  
+>  #include "process.h"
+>  
+> @@ -187,6 +188,27 @@ int copy_thread(unsigned long clone_flags, unsigned long sp, unsigned long arg,
+>  	return ret;
+>  }
+>  
+> +#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> +DECLARE_PER_CPU(u32, pkrs_cache);
+> +static inline void pks_init_task(struct task_struct *tsk)
 
-Agreed; that immediately solves the confusion Ira had as well. While
-extending pt_regs sounds scary, I think we've isolated our pt_regs
-implementation from actual ABI pretty well, but of course, that would
-need an audit. We don't want to leak this into signals for example.
+First of all. I asked several times now not to glue stuff onto a
+function without a newline inbetween. It's unreadable.
 
+But what's worse is that the declaration of pkrs_cache which is global
+is in a C file and not in a header. And pkrs_cache is not even used in
+this file. So what?
+
+> +{
+> +	/* New tasks get the most restrictive PKRS value */
+> +	tsk->thread.saved_pkrs = INIT_PKRS_VALUE;
+> +}
+> +static inline void pks_sched_in(void)
+
+Newline between functions. It's fine for stubs, but not for a real implementation.
+
+> diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+> index d1dfe743e79f..76a62419c446 100644
+> --- a/arch/x86/mm/pkeys.c
+> +++ b/arch/x86/mm/pkeys.c
+> @@ -231,3 +231,34 @@ u32 update_pkey_val(u32 pk_reg, int pkey, unsigned int flags)
+>  
+>  	return pk_reg;
+>  }
+> +
+> +DEFINE_PER_CPU(u32, pkrs_cache);
+
+Again, why is this global?
+
+> +void write_pkrs(u32 new_pkrs)
+> +{
+> +	u32 *pkrs;
+> +
+> +	if (!static_cpu_has(X86_FEATURE_PKS))
+> +		return;
+> +
+> +	pkrs = get_cpu_ptr(&pkrs_cache);
+
+So this is called from various places including schedule and also from
+the low level entry/exit code. Why do we need to have an extra
+preempt_disable/enable() there via get/put_cpu_ptr()?
+
+Just because performance in those code paths does not matter?
+
+> +	if (*pkrs != new_pkrs) {
+> +		*pkrs = new_pkrs;
+> +		wrmsrl(MSR_IA32_PKRS, new_pkrs);
+> +	}
+> +	put_cpu_ptr(pkrs);
+
+Now back to the context switch:
+
+> @@ -644,6 +668,8 @@ void __switch_to_xtra(struct task_struct *prev_p, struct task_struct *next_p)
+>
+>	 if ((tifp ^ tifn) & _TIF_SLD)
+>		 switch_to_sld(tifn);
+> +
+> +	pks_sched_in();
+>  }
+
+How is this supposed to work? 
+
+switch_to() {
+   ....
+   switch_to_extra() {
+      ....
+      if (unlikely(next_tif & _TIF_WORK_CTXSW_NEXT ||
+	           prev_tif & _TIF_WORK_CTXSW_PREV))
+	   __switch_to_xtra(prev, next);
+
+I.e. __switch_to_xtra() is only invoked when the above condition is
+true, which is not guaranteed at all.
+
+While I have to admit that I dropped the ball on the update for the
+entry patch, I'm not too sorry about it anymore when looking at this.
+
+Are you still sure that this is ready for merging?
+
+Thanks,
+
+        tglx
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
