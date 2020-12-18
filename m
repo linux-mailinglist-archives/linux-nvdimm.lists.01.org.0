@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6B92DE340
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Dec 2020 14:24:27 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859F22DE601
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Dec 2020 16:04:43 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B7A6B100EBB74;
-	Fri, 18 Dec 2020 05:24:25 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=89.37.101.58; helo=benefitof.net; envelope-from=ptemseyalenod@verizon.net; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id D047C100EB334;
+	Fri, 18 Dec 2020 07:04:41 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=89.37.101.58; helo=benefitof.net; envelope-from=ptemedyalenod@verizon.net; receiver=<UNKNOWN> 
 Received: from benefitof.net (unknown [89.37.101.58])
-	by ml01.01.org (Postfix) with ESMTP id 00DB6100EBB73
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Dec 2020 05:24:23 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id EFB14100ED48D
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Dec 2020 07:04:38 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: drone with battery: 11.1V 2350mAh
-Message-ID: <4de73ee0c760abba16d15ebdd6894114@wilton.com>
-Date: Fri, 18 Dec 2020 13:12:15 +0100
-From: "Jay" <ptemedyalenod@verizon.net>
+Subject: drone flight distance 1km
+Message-ID: <43d9a890894cd1dd12fa8388868d75f2@wilton.com>
+Date: Fri, 18 Dec 2020 13:14:03 +0100
+From: "Jay" <ptemeayalenod@verizon.net>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: 3CE3WYE5PQSMTCM5XP2FAMDPO6W4IDU4
-X-Message-ID-Hash: 3CE3WYE5PQSMTCM5XP2FAMDPO6W4IDU4
-X-MailFrom: ptemseyalenod@verizon.net
+Message-ID-Hash: IWYJAQ5STSWQR4WOUK6W7TI4IH2KIWEC
+X-Message-ID-Hash: IWYJAQ5STSWQR4WOUK6W7TI4IH2KIWEC
+X-MailFrom: ptemedyalenod@verizon.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: jeanhudpro@hotmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3CE3WYE5PQSMTCM5XP2FAMDPO6W4IDU4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IWYJAQ5STSWQR4WOUK6W7TI4IH2KIWEC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1248634732634806856=="
+Content-Type: multipart/mixed; boundary="===============0337731531405465797=="
 
---===============1248634732634806856==
+--===============0337731531405465797==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -87,7 +87,7 @@ shipping, we will manage the shipment fast for you.<br /><br />Thanks,<br
 </body>
 </html>
 
---===============1248634732634806856==
+--===============0337731531405465797==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -97,4 +97,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============1248634732634806856==--
+--===============0337731531405465797==--
