@@ -1,69 +1,95 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E7C2E09A8
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Dec 2020 12:27:34 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5202E0FA3
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Dec 2020 22:09:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9A045100EBB75;
-	Tue, 22 Dec 2020 03:27:32 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=156.247.12.180; helo=vpass.ne.jp; envelope-from=vlt@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (unknown [156.247.12.180])
-	by ml01.01.org (Postfix) with ESMTP id 9362F100EBB6C
-	for <linux-nvdimm@lists.01.org>; Tue, 22 Dec 2020 03:27:30 -0800 (PST)
-Sender: vlt@vpass.ne.jp
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
-To: linux-nvdimm <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?77yc6YeN6KaB77ye44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip55So56K66KqN44Gu44GK?=
-	=?utf-8?B?6aGY44GE?=
-Date: Tue, 22 Dec 2020 19:27:23 +0800
-Message-ID: <0099bfb1e903$7332acd4$a233654f$@vpass.ne.jp>
+	by ml01.01.org (Postfix) with ESMTP id 5550A100EF24A;
+	Tue, 22 Dec 2020 13:09:28 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=<UNKNOWN> 
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 066C3100EE8C6;
+	Tue, 22 Dec 2020 13:09:21 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.78,440,1599516000";
+   d="scan'208";a="368372272"
+Received: from 173.121.68.85.rev.sfr.net (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Dec 2020 22:09:19 +0100
+Date: Tue, 22 Dec 2020 22:09:18 +0100 (CET)
+From: Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To: Dan Williams <dan.j.williams@intel.com>,
+    Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+    Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+    Len Brown <lenb@kernel.org>, linux-nvdimm@lists.01.org
+Subject: [PATCH] ACPI: NFIT: fix flexible_array.cocci warnings
+Message-ID: <alpine.DEB.2.22.394.2012222207060.2723@hadrien>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-X-Mailer: Microsoft Outlook 16.0
-Message-ID-Hash: X23UP56DEBA5GO3N7JDWXZWDEB4OECZA
-X-Message-ID-Hash: X23UP56DEBA5GO3N7JDWXZWDEB4OECZA
-X-MailFrom: vlt@vpass.ne.jp
+Message-ID-Hash: LYZ3435XBRL6PI3U4UJPAEHV5NYAPKRJ
+X-Message-ID-Hash: LYZ3435XBRL6PI3U4UJPAEHV5NYAPKRJ
+X-MailFrom: julia.lawall@inria.fr
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-acpi@vger.kernel.org, Denis Efremov <efremov@linux.com>, kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X23UP56DEBA5GO3N7JDWXZWDEB4OECZA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LYZ3435XBRL6PI3U4UJPAEHV5NYAPKRJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IA0KDQogDQogDQoNCiANCg0KIA0KIA0KDQogDQoNCiANCg0KDQrmnKzjgYTjgaTjgoLlvIrnpL7j
-gqvjg7zjg4njgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorjgYzjgajjgYbjgZTjgZbjgYTj
-gb7jgZnjgIINCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip55So44Gu5oCl5aKX44Gr5Ly0
-44GE44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW44K344K544OG44Og44CN44KS
-5bCO5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvjg7zjg4njga7jgZTliKnnlKjj
-gavlr77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPjgabjgYrjgorjgb7jgZnjgIIN
-Cg0K44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS
-56K66KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX
-44Gf44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So
-44KS5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm
-44GE44Gf44Gg44GN44G+44GX44Gf44CCDQoNCuOBpOOBjeOBvuOBl+OBpuOBr+OAgeS7peS4i+OB
-uOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWIqeeUqOeiuuiqjeOBq+OBlOWN
-lOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0K44GU5Zue562U44KS44GE44Gf44Gg44GR
-44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So5Yi26ZmQ44GM57aZ57aa44GV44KM
-44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB5LqI44KB44GU5LqG5om/5LiL44GV
-44GE44CCDQoNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKWoCDjgZTliKnnlKjnorroqo3jga/jgZPj
-gaHjgonilIHilIHilIHilIHilIHilIHilIFodHRwOi8vd3d3LnNtYmMtY2FyZC1qcC5jbG91ZOKU
-geKUgeKUgeKUgeKUgeKUgeKUgeKWoCDms6jmhI/kuovpoIXilIHilIHilIHilIHilIHilIHilIHi
-gLvjgqvjg7zjg4njga7lgIvkurrmg4XloLHjgavjgojjgaPjgabjga/pm7voqbHjgafpgKPntaHj
-gZnjgovloLTlkIjjgoLjgZTjgZbjgYTjgb7jgZnjgILigLvmraPnorrjgarmg4XloLHjga/lv4Xj
-gZroqJjlhaXjgZfjgabjgY/jgaDjgZXjgYTjgILilIHilIHilIHilIHilIHilIHilIHilqDnmbro
-oYzogIXilIHilIHilIHilIHilIHilIHilIENCuS4ieS6leS9j+WPi+OCq+ODvOODieagquW8j+S8
-muekvg0K44CAaHR0cDovL3NtYmMtY2FyZC5jb20NCuOAkjEwNS04MDExIOadseS6rOmDvea4r+WM
-uua1t+WyuDHkuIHnm64y55WqMjDlj7cg5rGQ55WZ44OT44Or44OH44Kj44Oz44KwDQoNCg0KIA0K
-Q29weXJpZ2h0IMKpIFN1bWl0b21vIE1pdHN1aSBCYW5raW5nIENvcnBvcmF0aW9uLkFsbCBSaWdo
-dHMgUmVzZXJ2ZWQuDQogDQoNCg0KDQoNCiANCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZk
-aW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52
-ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+From: kernel test robot <lkp@intel.com>
+
+Zero-length and one-element arrays are deprecated, see
+Documentation/process/deprecated.rst
+Flexible-array members should be used instead.
+
+Generated by: scripts/coccinelle/misc/flexible_array.cocci
+
+Fixes: 7b36c1398fb6 ("coccinelle: misc: add flexible_array.cocci script")
+CC: Denis Efremov <efremov@linux.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Julia Lawall <julia.lawall@inria.fr>
+---
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   148842c98a24e508aecb929718818fbf4c2a6ff3
+commit: 7b36c1398fb63f9c38cc83dc75f143d2e5995062 coccinelle: misc: add flexible_array.cocci script
+:::::: branch date: 20 hours ago
+:::::: commit date: 2 months ago
+
+ core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2268,7 +2268,7 @@ struct nfit_set_info {
+ 		u64 region_offset;
+ 		u32 serial_number;
+ 		u32 pad;
+-	} mapping[0];
++	} mapping[];
+ };
+
+ struct nfit_set_info2 {
+@@ -2279,7 +2279,7 @@ struct nfit_set_info2 {
+ 		u16 manufacturing_date;
+ 		u8  manufacturing_location;
+ 		u8  reserved[31];
+-	} mapping[0];
++	} mapping[];
+ };
+
+ static size_t sizeof_nfit_set_info(int num_mappings)
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
