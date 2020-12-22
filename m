@@ -2,50 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04202E0559
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Dec 2020 05:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C812E055A
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Dec 2020 05:25:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D97CB100EBB63;
-	Mon, 21 Dec 2020 20:25:33 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by ml01.01.org (Postfix) with ESMTP id F3E8F100EBB6B;
+	Mon, 21 Dec 2020 20:25:36 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 463E5100EBBDB
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Dec 2020 20:25:32 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id j1so6781774pld.3
-        for <linux-nvdimm@lists.01.org>; Mon, 21 Dec 2020 20:25:32 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 823D2100EBB6A
+	for <linux-nvdimm@lists.01.org>; Mon, 21 Dec 2020 20:25:35 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id n3so785993pjm.1
+        for <linux-nvdimm@lists.01.org>; Mon, 21 Dec 2020 20:25:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fossix-org.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=QrT0//FOQGYcrCSNZT5D5cD7tPEwG+7cOGTSWL9COig=;
-        b=inrh0UdU+3gKyoD2FpMW+xvFYU9bGNfyZ1rnDFLvBDSbsskbWFhxPPxBw4HDtD92oW
-         q4zZG/Wx0kJGdwKjey7usMUIYNqbFAEtdv7vKDyslktsK7n3bRXE0taD02z4DW4hayFf
-         3iqIfOdThD8vng4awhly+Twnt7JHp+i7d7IV23R99JaSaOL1XpnmVxGhOBDkO5xP8Yrf
-         jN7kYB/UgunlzoQlTgdmZrqxR1265IRReTJC/o5FAS6ikY82oVYNOSLLRo5mGYZIW21w
-         hUSt6jUQdecNg/skUvXvRPbPeOLWAp3cOtSP55P8HvtNIlrD6maTBVtjvvREd2ZASIrf
-         YvQA==
+        bh=Qif9YpZbuur+TzIS1r6mFTZdfN6fJGqphVoft1K34yU=;
+        b=s96vyqYO1JbiVbJq+SyLTyilfhCHiWwxj8C4DtCRon49h8CAWDRC16g+7eFFiDdVnv
+         /99+amlpLqRDBrL5Gg2zpn08tI88DQPqFUCDHH7lBUnv3skopEHhuDeDWv66ILWJmm9G
+         WtkUja+xA5qcGR1W8wlps3d4KYDtTlbcTMUguJRpSbtv+ajXqpoGl+itzWBurcocNmK1
+         nRpzfRNr2whcohIaDC4YinXa/Mwacc3e4e17a8QMkFZ3EmwhzHzkSBDZhbSCt54G6gyM
+         1GMHqTdgLndIO1zXe6nZ/RFcITWN7vJxNJ0CPdChoPvQS6syf3EDqssTs/Vq2TzHOKwu
+         Uedw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QrT0//FOQGYcrCSNZT5D5cD7tPEwG+7cOGTSWL9COig=;
-        b=lUDmzDupU7l4/EPe0pOUhubr2cqQg2dzU0Jxxp1xSg/yREZCX4YYylCWHQrPLMjTEb
-         U9pjekqhehErkFCELLvQUj83RFNzME5BbdlbCpBcNKGAy1e/Ptn/LEInYw654rfqkU4+
-         lPbzCc8nKqMDw6aQbTbjjVnvWlzihDvPLX4DUSa8ib8ltebHm2DxLO2ZK1pYDl1QUAQe
-         DJ/U76Zrj8zDHOjEho+mBWNGbusONU2Ekz3j6cDL3p8O2g6GSOXzpmQAJAO4kRM4lWsm
-         5BR/0XJn7jExWWrjhgwgtXfGQzt31klL5s3s/tZXaPOQw2TUEzZNedNYKs5EkHm0ysSj
-         Ghig==
-X-Gm-Message-State: AOAM531tEGcHoWuiNVP4Gvf9SpFGYpKs2TeNO1cEX2MmO9v6z+0r5/JG
-	OVabJ/55XTZ5GrlQcA/mwFbFiFFQB2q42w==
-X-Google-Smtp-Source: ABdhPJwxyW1zTT5p1ZLeVhCCVr6+eTPWyznoy0Ugd2DD1R0Au3KcAm5JFUBkxs4xD+Aq9KB5BhtQZg==
-X-Received: by 2002:a17:90a:1bc7:: with SMTP id r7mr20913199pjr.33.1608611131482;
-        Mon, 21 Dec 2020 20:25:31 -0800 (PST)
+        bh=Qif9YpZbuur+TzIS1r6mFTZdfN6fJGqphVoft1K34yU=;
+        b=L97Lzrj55Y7B4LD6GplG9oB9AXu0yO8udmVfakYXuNOVeQslUfiOE2sku+p0EG1q2a
+         e6WBrcSTWTIG74ECVIYhC/oh8lvv6x5vVFUrKuRRic4MJnTxvXYFXMLD8i4DnBZlF5wE
+         R91F+0yjkHYIopOBquyZfiZQGtGZjTQNJkwICeN+wHA6njhrVg9qzDdktUPD5ZXxLDKj
+         pveqKt9U1y7giqOH845JV3NEU6JqkutQq/unztYiSzoiSsG9KZlBkK3QUQ7+Lufm3whX
+         zBKRKoKIJQflSEgoH5G7DRLjmfunPhGIS1khWcUBvZWBCj9tXQIF0BousWZl8pbN7ZRp
+         p9Cw==
+X-Gm-Message-State: AOAM532oMUkVahAelgBRigYkQ7pWA0ZRloXepMyiwZc+wsy6Av//lKtK
+	SXF+nnlQlgtvYzvTtUS9KRe6JIvvehnGsg==
+X-Google-Smtp-Source: ABdhPJwxKN9bF/5jT//uzSJskXCLsl7L2QdydH+mdzz372Q1tfZwahBCG6tOqZO34+Tmi/dRXlkh5w==
+X-Received: by 2002:a17:902:8a88:b029:dc:f3:6db2 with SMTP id p8-20020a1709028a88b02900dc00f36db2mr14415512plo.2.1608611134933;
+        Mon, 21 Dec 2020 20:25:34 -0800 (PST)
 Received: from santosiv.in.ibm.com.com ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id z13sm17765992pjt.45.2020.12.21.20.25.28
+        by smtp.gmail.com with ESMTPSA id z13sm17765992pjt.45.2020.12.21.20.25.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Dec 2020 20:25:31 -0800 (PST)
+        Mon, 21 Dec 2020 20:25:34 -0800 (PST)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
 	Vishal Verma <vishal.l.verma@intel.com>,
@@ -54,21 +54,22 @@ To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
 	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
 	Harish Sriram <harish@linux.ibm.com>
 Cc: Santosh Sivaraj <santosh@fossix.org>
-Subject: [ndctl 1/5] libndctl: test enablement for non-nfit devices
-Date: Tue, 22 Dec 2020 09:55:12 +0530
-Message-Id: <20201222042516.2984348-1-santosh@fossix.org>
+Subject: [ndctl 2/5] test: Don't skip tests if nfit modules are missing
+Date: Tue, 22 Dec 2020 09:55:13 +0530
+Message-Id: <20201222042516.2984348-2-santosh@fossix.org>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201222042240.2983755-1-santosh@fossix.org>
+In-Reply-To: <20201222042516.2984348-1-santosh@fossix.org>
 References: <20201222042240.2983755-1-santosh@fossix.org>
+ <20201222042516.2984348-1-santosh@fossix.org>
 MIME-Version: 1.0
-Message-ID-Hash: EXZBKAAE4HFDY2GCK2X22MMWR3DAYIK3
-X-Message-ID-Hash: EXZBKAAE4HFDY2GCK2X22MMWR3DAYIK3
+Message-ID-Hash: 3GTD6PVBSLMW4R6U52WDYX7T3PSWWFRO
+X-Message-ID-Hash: 3GTD6PVBSLMW4R6U52WDYX7T3PSWWFRO
 X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EXZBKAAE4HFDY2GCK2X22MMWR3DAYIK3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3GTD6PVBSLMW4R6U52WDYX7T3PSWWFRO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -77,213 +78,190 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Unify adding dimms for papr and nfit families, this will help in adding
-all attributes needed for the unit tests too. We don't fail adding a dimm
-if some of the dimm attributes are missing, so this will work fine on PAPR
-platforms where most dimm attributes are provided.
+For NFIT to be available ACPI is a must, so don't fail when nfit modules
+are missing on a platform that doesn't support ACPI.
 
 Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
- ndctl/lib/libndctl.c | 103 ++++++++++++++++---------------------------
- 1 file changed, 38 insertions(+), 65 deletions(-)
+ test.h                        |  2 +-
+ test/ack-shutdown-count-set.c |  2 +-
+ test/blk_namespaces.c         |  2 +-
+ test/core.c                   | 15 +++++++++++++--
+ test/dpa-alloc.c              |  2 +-
+ test/dsm-fail.c               |  2 +-
+ test/libndctl.c               |  2 +-
+ test/multi-pmem.c             |  2 +-
+ test/parent-uuid.c            |  2 +-
+ test/pmem_namespaces.c        |  2 +-
+ 10 files changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
-index ad521d3..5f09628 100644
---- a/ndctl/lib/libndctl.c
-+++ b/ndctl/lib/libndctl.c
-@@ -1655,41 +1655,9 @@ static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
- static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
- static struct kmod_module *to_module(struct ndctl_ctx *ctx, const char *alias);
+diff --git a/test.h b/test.h
+index 3f6212e..94d8936 100644
+--- a/test.h
++++ b/test.h
+@@ -30,7 +30,7 @@ void builtin_xaction_namespace_reset(void);
  
--static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
--{
--	int rc = -ENODEV;
--	char buf[SYSFS_ATTR_SIZE];
--	struct ndctl_ctx *ctx = dimm->bus->ctx;
--	char *path = calloc(1, strlen(dimm_base) + 100);
--	const char * const devname = ndctl_dimm_get_devname(dimm);
--
--	dbg(ctx, "%s: Probing of_pmem dimm at %s\n", devname, dimm_base);
--
--	if (!path)
--		return -ENOMEM;
--
--	/* construct path to the papr compatible dimm flags file */
--	sprintf(path, "%s/papr/flags", dimm_base);
--
--	if (ndctl_bus_is_papr_scm(dimm->bus) &&
--	    sysfs_read_attr(ctx, path, buf) == 0) {
--
--		dbg(ctx, "%s: Adding papr-scm dimm flags:\"%s\"\n", devname, buf);
--		dimm->cmd_family = NVDIMM_FAMILY_PAPR;
--
--		/* Parse dimm flags */
--		parse_papr_flags(dimm, buf);
--
--		/* Allocate monitor mode fd */
--		dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
--		rc = 0;
--	}
--
--	free(path);
--	return rc;
--}
--
--static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
-+static int populate_dimm_attributes(struct ndctl_dimm *dimm,
-+				    const char *dimm_base,
-+				    const char *bus_prefix)
+ struct kmod_ctx;
+ struct kmod_module;
+-int nfit_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
++int ndctl_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
+ 		struct ndctl_ctx *nd_ctx, int log_level,
+ 		struct ndctl_test *test);
+ 
+diff --git a/test/ack-shutdown-count-set.c b/test/ack-shutdown-count-set.c
+index 742e976..6315a94 100644
+--- a/test/ack-shutdown-count-set.c
++++ b/test/ack-shutdown-count-set.c
+@@ -99,7 +99,7 @@ static int test_ack_shutdown_count_set(int loglevel, struct ndctl_test *test,
+ 	int result = EXIT_FAILURE, err;
+ 
+ 	ndctl_set_log_priority(ctx, loglevel);
+-	err = nfit_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
++	err = ndctl_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
+ 	if (err < 0) {
+ 		result = 77;
+ 		ndctl_test_skip(test);
+diff --git a/test/blk_namespaces.c b/test/blk_namespaces.c
+index 437fcad..dfb0332 100644
+--- a/test/blk_namespaces.c
++++ b/test/blk_namespaces.c
+@@ -240,7 +240,7 @@ int test_blk_namespaces(int log_level, struct ndctl_test *test,
+ 
+ 	if (!bus) {
+ 		fprintf(stderr, "ACPI.NFIT unavailable falling back to nfit_test\n");
+-		rc = nfit_test_init(&kmod_ctx, &mod, NULL, log_level, test);
++		rc = ndctl_test_init(&kmod_ctx, &mod, NULL, log_level, test);
+ 		ndctl_invalidate(ctx);
+ 		bus = ndctl_bus_get_by_provider(ctx, "nfit_test.0");
+ 		if (rc < 0 || !bus) {
+diff --git a/test/core.c b/test/core.c
+index 5118d86..974bbc4 100644
+--- a/test/core.c
++++ b/test/core.c
+@@ -21,6 +21,7 @@
+ #include <util/log.h>
+ #include <util/sysfs.h>
+ #include <ndctl/libndctl.h>
++#include <ndctl/ndctl.h>
+ #include <ccan/array_size/array_size.h>
+ 
+ #define KVER_STRLEN 20
+@@ -116,11 +117,11 @@ int ndctl_test_get_skipped(struct ndctl_test *test)
+ 	return test->skip;
+ }
+ 
+-int nfit_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
++int ndctl_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
+ 		struct ndctl_ctx *nd_ctx, int log_level,
+ 		struct ndctl_test *test)
  {
- 	int i, rc = -1;
- 	char buf[SYSFS_ATTR_SIZE];
-@@ -1703,7 +1671,7 @@ static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
- 	 * 'unique_id' may not be available on older kernels, so don't
- 	 * fail if the read fails.
- 	 */
--	sprintf(path, "%s/nfit/id", dimm_base);
-+	sprintf(path, "%s/%s/id", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0) {
- 		unsigned int b[9];
+-	int rc;
++	int rc, family = NVDIMM_FAMILY_INTEL;
+ 	unsigned int i;
+ 	const char *name;
+ 	struct ndctl_bus *bus;
+@@ -138,6 +139,11 @@ int nfit_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
+ 		"nd_pmem",
+ 	};
  
-@@ -1718,68 +1686,74 @@ static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
- 		}
- 	}
- 
--	sprintf(path, "%s/nfit/handle", dimm_base);
-+	sprintf(path, "%s/%s/handle", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) < 0)
- 		goto err_read;
- 	dimm->handle = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/phys_id", dimm_base);
-+	sprintf(path, "%s/%s/phys_id", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) < 0)
- 		goto err_read;
- 	dimm->phys_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/serial", dimm_base);
-+	sprintf(path, "%s/%s/serial", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->serial = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/vendor", dimm_base);
-+	sprintf(path, "%s/%s/vendor", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->vendor_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/device", dimm_base);
-+	sprintf(path, "%s/%s/device", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->device_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/rev_id", dimm_base);
-+	sprintf(path, "%s/%s/rev_id", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->revision_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/dirty_shutdown", dimm_base);
-+	sprintf(path, "%s/%s/dirty_shutdown", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->dirty_shutdown = strtoll(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/subsystem_vendor", dimm_base);
-+	sprintf(path, "%s/%s/subsystem_vendor", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->subsystem_vendor_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/subsystem_device", dimm_base);
-+	sprintf(path, "%s/%s/subsystem_device", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->subsystem_device_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/subsystem_rev_id", dimm_base);
-+	sprintf(path, "%s/%s/subsystem_rev_id", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->subsystem_revision_id = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/family", dimm_base);
-+	sprintf(path, "%s/%s/family", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->cmd_family = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/dsm_mask", dimm_base);
-+	sprintf(path, "%s/%s/dsm_mask", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->nfit_dsm_mask = strtoul(buf, NULL, 0);
- 
--	sprintf(path, "%s/nfit/format", dimm_base);
-+	sprintf(path, "%s/%s/format", dimm_base, bus_prefix);
- 	if (sysfs_read_attr(ctx, path, buf) == 0)
- 		dimm->format[0] = strtoul(buf, NULL, 0);
- 	for (i = 1; i < dimm->formats; i++) {
--		sprintf(path, "%s/nfit/format%d", dimm_base, i);
-+		sprintf(path, "%s/%s/format%d", dimm_base, bus_prefix, i);
- 		if (sysfs_read_attr(ctx, path, buf) == 0)
- 			dimm->format[i] = strtoul(buf, NULL, 0);
- 	}
- 
--	sprintf(path, "%s/nfit/flags", dimm_base);
--	if (sysfs_read_attr(ctx, path, buf) == 0)
--		parse_nfit_mem_flags(dimm, buf);
-+	sprintf(path, "%s/%s/flags", dimm_base, bus_prefix);
-+	if (sysfs_read_attr(ctx, path, buf) == 0) {
-+		if (ndctl_bus_has_nfit(dimm->bus))
-+			parse_nfit_mem_flags(dimm, buf);
-+		else if (ndctl_bus_is_papr_scm(dimm->bus)) {
-+			dimm->cmd_family = NVDIMM_FAMILY_PAPR;
-+			parse_papr_flags(dimm, buf);
-+		}
++	if (access("/sys/bus/acpi", F_OK) == 0) {
++		if (errno == ENOENT)
++			family = NVDIMM_FAMILY_PAPR;
 +	}
++
+ 	log_init(&log_ctx, "test/init", "NDCTL_TEST");
+ 	log_ctx.log_priority = log_level;
  
- 	dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
- 	rc = 0;
-@@ -1801,7 +1775,8 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
- 	if (!path)
- 		return NULL;
+@@ -195,6 +201,11 @@ retry:
  
--	sprintf(path, "%s/nfit/formats", dimm_base);
-+	sprintf(path, "%s/%s/formats", dimm_base,
-+		ndctl_bus_has_nfit(bus) ? "nfit" : "papr");
- 	if (sysfs_read_attr(ctx, path, buf) < 0)
- 		formats = 1;
- 	else
-@@ -1875,13 +1850,12 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
- 	else
- 		dimm->fwa_result = fwa_result_to_result(buf);
+ 		path = kmod_module_get_path(*mod);
+ 		if (!path) {
++			if (family == NVDIMM_FAMILY_INTEL &&
++			    (strcmp(name, "nfit") == 0 ||
++			     strcmp(name, "nd_e820") == 0))
++				continue;
++
+ 			log_err(&log_ctx, "%s.ko: failed to get path\n", name);
+ 			break;
+ 		}
+diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
+index b757b9a..10af189 100644
+--- a/test/dpa-alloc.c
++++ b/test/dpa-alloc.c
+@@ -299,7 +299,7 @@ int test_dpa_alloc(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ctx)
+ 		return 77;
  
-+	dimm->formats = formats;
- 	/* Check if the given dimm supports nfit */
- 	if (ndctl_bus_has_nfit(bus)) {
--		dimm->formats = formats;
--		rc = add_nfit_dimm(dimm, dimm_base);
--	} else if (ndctl_bus_has_of_node(bus)) {
--		rc = add_papr_dimm(dimm, dimm_base);
--	}
-+		rc = populate_dimm_attributes(dimm, dimm_base, "nfit");
-+	} else if (ndctl_bus_has_of_node(bus))
-+		rc = populate_dimm_attributes(dimm, dimm_base, "papr");
+ 	ndctl_set_log_priority(ctx, loglevel);
+-	err = nfit_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
++	err = ndctl_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
+ 	if (err < 0) {
+ 		ndctl_test_skip(test);
+ 		fprintf(stderr, "nfit_test unavailable skipping tests\n");
+diff --git a/test/dsm-fail.c b/test/dsm-fail.c
+index b2c51db..1d03470 100644
+--- a/test/dsm-fail.c
++++ b/test/dsm-fail.c
+@@ -356,7 +356,7 @@ int test_dsm_fail(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ctx)
+ 	int result = EXIT_FAILURE, err;
  
- 	if (rc == -ENODEV) {
- 		/* Unprobed dimm with no family */
-@@ -2540,13 +2514,12 @@ static void *add_region(void *parent, int id, const char *region_base)
- 		goto err_read;
- 	region->num_mappings = strtoul(buf, NULL, 0);
+ 	ndctl_set_log_priority(ctx, loglevel);
+-	err = nfit_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
++	err = ndctl_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
+ 	if (err < 0) {
+ 		result = 77;
+ 		ndctl_test_skip(test);
+diff --git a/test/libndctl.c b/test/libndctl.c
+index 994e0fa..5043ae0 100644
+--- a/test/libndctl.c
++++ b/test/libndctl.c
+@@ -2696,7 +2696,7 @@ int test_libndctl(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ctx)
+ 	daxctl_set_log_priority(daxctl_ctx, loglevel);
+ 	ndctl_set_private_data(ctx, test);
  
--	sprintf(path, "%s/nfit/range_index", region_base);
--	if (ndctl_bus_has_nfit(bus)) {
--		if (sysfs_read_attr(ctx, path, buf) < 0)
--			goto err_read;
--		region->range_index = strtoul(buf, NULL, 0);
--	} else
-+	sprintf(path, "%s/%s/range_index", region_base,
-+		ndctl_bus_has_nfit(bus) ? "nfit": "papr");
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
- 		region->range_index = -1;
-+	else
-+		region->range_index = strtoul(buf, NULL, 0);
+-	err = nfit_test_init(&kmod_ctx, &mod, ctx, loglevel, test);
++	err = ndctl_test_init(&kmod_ctx, &mod, ctx, loglevel, test);
+ 	if (err < 0) {
+ 		ndctl_test_skip(test);
+ 		fprintf(stderr, "nfit_test unavailable skipping tests\n");
+diff --git a/test/multi-pmem.c b/test/multi-pmem.c
+index cb7cd40..111aa28 100644
+--- a/test/multi-pmem.c
++++ b/test/multi-pmem.c
+@@ -259,7 +259,7 @@ int test_multi_pmem(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ctx
  
- 	sprintf(path, "%s/read_only", region_base);
- 	if (sysfs_read_attr(ctx, path, buf) < 0)
+ 	ndctl_set_log_priority(ctx, loglevel);
+ 
+-	err = nfit_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
++	err = ndctl_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
+ 	if (err < 0) {
+ 		result = 77;
+ 		ndctl_test_skip(test);
+diff --git a/test/parent-uuid.c b/test/parent-uuid.c
+index f41ca2c..1e5a503 100644
+--- a/test/parent-uuid.c
++++ b/test/parent-uuid.c
+@@ -230,7 +230,7 @@ int test_parent_uuid(int loglevel, struct ndctl_test *test, struct ndctl_ctx *ct
+ 		return 77;
+ 
+ 	ndctl_set_log_priority(ctx, loglevel);
+-	err = nfit_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
++	err = ndctl_test_init(&kmod_ctx, &mod, NULL, loglevel, test);
+ 	if (err < 0) {
+ 		ndctl_test_skip(test);
+ 		fprintf(stderr, "nfit_test unavailable skipping tests\n");
+diff --git a/test/pmem_namespaces.c b/test/pmem_namespaces.c
+index eac56ce..afa79a2 100644
+--- a/test/pmem_namespaces.c
++++ b/test/pmem_namespaces.c
+@@ -203,7 +203,7 @@ int test_pmem_namespaces(int log_level, struct ndctl_test *test,
+ 
+ 	if (!bus) {
+ 		fprintf(stderr, "ACPI.NFIT unavailable falling back to nfit_test\n");
+-		rc = nfit_test_init(&kmod_ctx, &mod, NULL, log_level, test);
++		rc = ndctl_test_init(&kmod_ctx, &mod, NULL, log_level, test);
+ 		ndctl_invalidate(ctx);
+ 		bus = ndctl_bus_get_by_provider(ctx, "nfit_test.0");
+ 		if (rc < 0 || !bus) {
 -- 
 2.26.2
 _______________________________________________
