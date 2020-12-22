@@ -1,74 +1,69 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560BA2E0962
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Dec 2020 12:12:23 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E7C2E09A8
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Dec 2020 12:27:34 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7BB67100EBB6C;
-	Tue, 22 Dec 2020 03:12:21 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=85.233.160.19; helo=smtp.hosts.co.uk; envelope-from=antlists@youngman.org.uk; receiver=<UNKNOWN> 
-Received: from smtp.hosts.co.uk (smtp.hosts.co.uk [85.233.160.19])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B37D9100EC1E7
-	for <linux-nvdimm@lists.01.org>; Tue, 22 Dec 2020 03:12:17 -0800 (PST)
-Received: from host86-149-69-253.range86-149.btcentralplus.com ([86.149.69.253] helo=[192.168.1.65])
-	by smtp.hosts.co.uk with esmtpa (Exim)
-	(envelope-from <antlists@youngman.org.uk>)
-	id 1krfaQ-000BhF-5h; Tue, 22 Dec 2020 11:12:14 +0000
-Subject: Re: [RFC PATCH] badblocks: Improvement badblocks_set() for handling
- multiple ranges
-To: Coly Li <colyli@suse.de>, axboe@kernel.dk, dan.j.williams@intel.com,
- vishal.l.verma@intel.com
-References: <20201203171535.67715-1-colyli@suse.de>
- <3f4bf4c4-1f1f-b1a6-5d91-2dbe02f61e67@youngman.org.uk>
- <c50e7c65-d7bf-e957-d8eb-efed6c24f089@suse.de>
-From: antlists <antlists@youngman.org.uk>
-Message-ID: <3233b821-4674-b45a-cad4-4943401eff3d@youngman.org.uk>
-Date: Tue, 22 Dec 2020 11:12:14 +0000
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	by ml01.01.org (Postfix) with ESMTP id 9A045100EBB75;
+	Tue, 22 Dec 2020 03:27:32 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=156.247.12.180; helo=vpass.ne.jp; envelope-from=vlt@vpass.ne.jp; receiver=<UNKNOWN> 
+Received: from vpass.ne.jp (unknown [156.247.12.180])
+	by ml01.01.org (Postfix) with ESMTP id 9362F100EBB6C
+	for <linux-nvdimm@lists.01.org>; Tue, 22 Dec 2020 03:27:30 -0800 (PST)
+Sender: vlt@vpass.ne.jp
+From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
+To: linux-nvdimm <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?77yc6YeN6KaB77ye44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip55So56K66KqN44Gu44GK?=
+	=?utf-8?B?6aGY44GE?=
+Date: Tue, 22 Dec 2020 19:27:23 +0800
+Message-ID: <0099bfb1e903$7332acd4$a233654f$@vpass.ne.jp>
 MIME-Version: 1.0
-In-Reply-To: <c50e7c65-d7bf-e957-d8eb-efed6c24f089@suse.de>
-Content-Language: en-GB
-Message-ID-Hash: C4QJSFCVTMXPIULAKBRAAJMJCV5MCD2Q
-X-Message-ID-Hash: C4QJSFCVTMXPIULAKBRAAJMJCV5MCD2Q
-X-MailFrom: antlists@youngman.org.uk
+X-Mailer: Microsoft Outlook 16.0
+Message-ID-Hash: X23UP56DEBA5GO3N7JDWXZWDEB4OECZA
+X-Message-ID-Hash: X23UP56DEBA5GO3N7JDWXZWDEB4OECZA
+X-MailFrom: vlt@vpass.ne.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, linux-nvdimm@lists.01.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C4QJSFCVTMXPIULAKBRAAJMJCV5MCD2Q/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X23UP56DEBA5GO3N7JDWXZWDEB4OECZA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 20/12/2020 09:46, Coly Li wrote:
-> Currently blocks/badblocks.c is used by md raid and nvdimm code, and the
-> badblocks table is irrelevant to any of these two subsystems.
-
-Good to know.
-> 
-> If there will be better code for similar or better functionality, it
-> should be cool. For me, if the reporting bug is fixed, no difference in
-> my view:-)
-> 
-Hopefully that will improve the badblocks handling in md. Sounds like 
-that could in part be the problems we've been seeing.
-
-If I integrate dm-integrity into md, badblocks should be mutually 
-exclusive with it, but because dm-integrity is both a performance and 
-disk-space hit, people might well not want to enable it.
-
-Cheers,
-Wol
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+IA0KDQogDQogDQoNCiANCg0KIA0KIA0KDQogDQoNCiANCg0KDQrmnKzjgYTjgaTjgoLlvIrnpL7j
+gqvjg7zjg4njgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorjgYzjgajjgYbjgZTjgZbjgYTj
+gb7jgZnjgIINCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip55So44Gu5oCl5aKX44Gr5Ly0
+44GE44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW44K344K544OG44Og44CN44KS
+5bCO5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvjg7zjg4njga7jgZTliKnnlKjj
+gavlr77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPjgabjgYrjgorjgb7jgZnjgIIN
+Cg0K44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS
+56K66KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX
+44Gf44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So
+44KS5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm
+44GE44Gf44Gg44GN44G+44GX44Gf44CCDQoNCuOBpOOBjeOBvuOBl+OBpuOBr+OAgeS7peS4i+OB
+uOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWIqeeUqOeiuuiqjeOBq+OBlOWN
+lOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0K44GU5Zue562U44KS44GE44Gf44Gg44GR
+44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So5Yi26ZmQ44GM57aZ57aa44GV44KM
+44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB5LqI44KB44GU5LqG5om/5LiL44GV
+44GE44CCDQoNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKWoCDjgZTliKnnlKjnorroqo3jga/jgZPj
+gaHjgonilIHilIHilIHilIHilIHilIHilIFodHRwOi8vd3d3LnNtYmMtY2FyZC1qcC5jbG91ZOKU
+geKUgeKUgeKUgeKUgeKUgeKUgeKWoCDms6jmhI/kuovpoIXilIHilIHilIHilIHilIHilIHilIHi
+gLvjgqvjg7zjg4njga7lgIvkurrmg4XloLHjgavjgojjgaPjgabjga/pm7voqbHjgafpgKPntaHj
+gZnjgovloLTlkIjjgoLjgZTjgZbjgYTjgb7jgZnjgILigLvmraPnorrjgarmg4XloLHjga/lv4Xj
+gZroqJjlhaXjgZfjgabjgY/jgaDjgZXjgYTjgILilIHilIHilIHilIHilIHilIHilIHilqDnmbro
+oYzogIXilIHilIHilIHilIHilIHilIHilIENCuS4ieS6leS9j+WPi+OCq+ODvOODieagquW8j+S8
+muekvg0K44CAaHR0cDovL3NtYmMtY2FyZC5jb20NCuOAkjEwNS04MDExIOadseS6rOmDvea4r+WM
+uua1t+WyuDHkuIHnm64y55WqMjDlj7cg5rGQ55WZ44OT44Or44OH44Kj44Oz44KwDQoNCg0KIA0K
+Q29weXJpZ2h0IMKpIFN1bWl0b21vIE1pdHN1aSBCYW5raW5nIENvcnBvcmF0aW9uLkFsbCBSaWdo
+dHMgUmVzZXJ2ZWQuDQogDQoNCg0KDQoNCiANCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZk
+aW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52
+ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
