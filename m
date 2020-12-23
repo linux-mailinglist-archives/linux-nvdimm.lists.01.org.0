@@ -2,246 +2,131 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0402E218C
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Dec 2020 21:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F094F2E22D8
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Dec 2020 00:42:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AC775100ED4BC;
-	Wed, 23 Dec 2020 12:39:34 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN> 
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 01062100ED4B7
-	for <linux-nvdimm@lists.01.org>; Wed, 23 Dec 2020 12:39:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=mYnRVo2UaFr9zFPBGbjYJ7pTSAghDBkk6o+o1KQqW4w=; b=cjqdwDP8RqHsTe+zifoiAzBU0d
-	Ky2JbKMUtKBrHLrjNU1VXOaev6TvR5D6fwmKI6QJWvZ4hbyql+HVBJj/vkD0+kzodZisZgvoz8GVG
-	YofQpVLSqy11/eIe1zff3Jk6LiYz+yKWDVXNhRDHrz9v33W/kOAyPtypLf/39FPtSA2qg/I7yONil
-	uHJmMMwsbxdXhjxUm54wv5MgbJ84o+NNUrAy58nzfedugeu3QE5VrjIymodu+jOQHiSb8EOpoJ565
-	cRV4FlWyEcnmZNFe48iCIuSTFtBZBcojTMkv98L96ls/Wb/84p6a/lMGfhN9WZxpoQesY8wB23Op4
-	NtWjnlyQ==;
-Received: from [2601:1c0:6280:3f0::64ea]
-	by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1ksAun-0000oa-A7; Wed, 23 Dec 2020 20:39:21 +0000
-Subject: Re: [PATCH V3 08/10] x86/pks: Add PKS kernel API
-To: ira.weiny@intel.com, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>
-References: <20201106232908.364581-1-ira.weiny@intel.com>
- <20201106232908.364581-9-ira.weiny@intel.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <092ec873-b023-4cd1-6301-30a2bcd3b54a@infradead.org>
-Date: Wed, 23 Dec 2020 12:39:12 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+	by ml01.01.org (Postfix) with ESMTP id 10BE1100EF256;
+	Wed, 23 Dec 2020 15:42:29 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=52.161.149.207; helo=mailbox.com; envelope-from=no-reply@mailbox.com; receiver=<UNKNOWN> 
+Received: from mailbox.com (unknown [52.161.149.207])
+	by ml01.01.org (Postfix) with ESMTP id 8F0F2100EF24A
+	for <linux-nvdimm@lists.01.org>; Wed, 23 Dec 2020 15:30:41 -0800 (PST)
+From: lists.01.org<no-reply@mailbox.com>
+To: linux-nvdimm@lists.01.org
+Subject: (5) messages are pending!!
+Date: 23 Dec 2020 23:30:41 +0000
+Message-ID: <20201223233041.DE46F2218B9EC9C5@mailbox.com>
 MIME-Version: 1.0
-In-Reply-To: <20201106232908.364581-9-ira.weiny@intel.com>
-Content-Language: en-US
-Message-ID-Hash: EEQL5NSNBUD5UAZ3KAJDP65WNJZQR3V3
-X-Message-ID-Hash: EEQL5NSNBUD5UAZ3KAJDP65WNJZQR3V3
-X-MailFrom: rdunlap@infradead.org
+Message-ID-Hash: KLFJITY6MZEALVVU3S47O5BKXGOBZULO
+X-Message-ID-Hash: KLFJITY6MZEALVVU3S47O5BKXGOBZULO
+X-MailFrom: no-reply@mailbox.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EEQL5NSNBUD5UAZ3KAJDP65WNJZQR3V3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KLFJITY6MZEALVVU3S47O5BKXGOBZULO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6227144962120782804=="
+
+--===============6227144962120782804==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<p style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, san=
+s-serif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow=
+: none !important; box-shadow: none !important; border-radius: 0px !importa=
+nt;">Dear&nbsp;linux-nvdimm<br style=3D"text-shadow: none !important; box-s=
+hadow: none !important; border-radius: 0px !important;"><br style=3D"text-s=
+hadow: none !important; box-shadow: none !important; border-radius: 0px !im=
+portant;">You have some incoming messages that are placed on hold.</p><div =
+style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-s=
+erif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow: n=
+one !important; box-shadow: none !important; border-radius: 0px !important;=
+"><br style=3D"text-shadow: none !important; box-shadow: none !important; b=
+order-radius: 0px !important;"></div><div style=3D"color: rgb(51, 51, 51); =
+font-family: &quot;Noto Sans&quot;, sans-serif; font-size: 12px; background=
+-color: rgb(255, 255, 255); text-shadow: none !important; box-shadow: none =
+!important; border-radius: 0px !important;">Kindly&nbsp;RE-ACTIVATE&nbsp;yo=
+ur&nbsp;linux-nvdimm@lists.01.org account below to access incoming messages=
+=2E<br style=3D"text-shadow: none !important; box-shadow: none !important; =
+border-radius: 0px !important;"><br style=3D"text-shadow: none !important; =
+box-shadow: none !important; border-radius: 0px !important;"><table cellspa=
+cing=3D"0" cellpadding=3D"0" align=3D"left" border=3D"0" style=3D"border-ra=
+dius: 0px; font-family: inherit; font-stretch: inherit; text-shadow: none !=
+important; box-shadow: none !important;"><tbody style=3D"text-shadow: none =
+!important; box-shadow: none !important; border-radius: 0px;"><tr style=3D"=
+text-shadow: none !important; box-shadow: none !important; border-radius: 0=
+px;"><td bgcolor=3D"#ffe86c" height=3D"30" valign=3D"middle" align=3D"cente=
+r" style=3D"text-shadow: none !important; box-shadow: none !important; bord=
+er-radius: 3px; border-width: 1px; border-style: solid; border-color: rgb(2=
+32, 180, 99);"><table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" bg=
+color=3D"transparent" border=3D"0" style=3D"text-shadow: none !important; b=
+ox-shadow: none !important; border-radius: 0px; font-family: helvetica, ari=
+al, sans-serif; text-align: left; font-stretch: inherit;"><tbody style=3D"t=
+ext-shadow: none !important; box-shadow: none !important; border-radius: 0p=
+x;"><tr style=3D"text-shadow: none !important; box-shadow: none !important;=
+ border-radius: 0px;"><td width=3D"13" style=3D"text-shadow: none !importan=
+t; box-shadow: none !important; border-radius: 0px;"><table cellspacing=3D"=
+0" cellpadding=3D"1" width=3D"13" border=3D"0" style=3D"text-shadow: none !=
+important; box-shadow: none !important; border-radius: 0px; font-family: in=
+herit; font-stretch: inherit;"><tbody style=3D"text-shadow: none !important=
+; box-shadow: none !important; border-radius: 0px;"><tr style=3D"text-shado=
+w: none !important; box-shadow: none !important; border-radius: 0px;"><td s=
+tyle=3D"text-shadow: none !important; box-shadow: none !important; border-r=
+adius: 0px;"><br style=3D"text-shadow: none !important; box-shadow: none !i=
+mportant; border-radius: 0px !important;"></td></tr></tbody></table></td><t=
+d style=3D"text-shadow: none !important; box-shadow: none !important; borde=
+r-radius: 0px;"><span style=3D"text-shadow: none !important; box-shadow: no=
+ne !important; border-radius: 0px; border-width: 0px; font-size: 13px; font=
+-family: inherit; vertical-align: baseline; white-space: nowrap; font-weigh=
+t: bold; color: rgb(0, 0, 0); padding: 0px; margin: 0px; display: block; fo=
+nt-stretch: inherit;"><span style=3D"text-shadow: none !important; box-shad=
+ow: none !important; border-radius: 0px; border-width: 0px; font-family: in=
+herit; vertical-align: inherit; padding: 0px; margin: 0px; font-stretch: in=
+herit;"><a href=3D"https://tattered-cooked-purpose.glitch.me/#linux-nvdimm@=
+lists.01.org" rel=3D"noreferrer" target=3D"_blank" style=3D"text-shadow: no=
+ne !important; box-shadow: none !important; border-radius: 0px; color: rgb(=
+0, 0, 204); outline: none medium;">RE-ACTIVATE ACCOUNT HERE</a></span></spa=
+n></td><td width=3D"13" style=3D"text-shadow: none !important; box-shadow: =
+none !important; border-radius: 0px;"><table cellspacing=3D"0" cellpadding=
+=3D"1" width=3D"13" border=3D"0" style=3D"text-shadow: none !important; box=
+-shadow: none !important; border-radius: 0px; font-family: inherit; font-st=
+retch: inherit;"><tbody style=3D"text-shadow: none !important; box-shadow: =
+none !important; border-radius: 0px;"><tr style=3D"text-shadow: none !impor=
+tant; box-shadow: none !important; border-radius: 0px;"><td style=3D"text-s=
+hadow: none !important; box-shadow: none !important; border-radius: 0px;">&=
+nbsp;</td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody>=
+</table><br style=3D"text-shadow: none !important; box-shadow: none !import=
+ant; border-radius: 0px !important;"><br style=3D"text-shadow: none !import=
+ant; box-shadow: none !important; border-radius: 0px !important;"></div><di=
+v style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans=
+-serif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow:=
+ none !important; box-shadow: none !important; border-radius: 0px !importan=
+t;"><br style=3D"text-shadow: none !important; box-shadow: none !important;=
+ border-radius: 0px !important;"></div><div style=3D"color: rgb(51, 51, 51)=
+; font-family: &quot;Noto Sans&quot;, sans-serif; font-size: 12px; backgrou=
+nd-color: rgb(255, 255, 255); text-shadow: none !important; box-shadow: non=
+e !important; border-radius: 0px !important;">Administrator Team.</div><div=
+ style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-=
+serif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow: =
+none !important; box-shadow: none !important; border-radius: 0px !important=
+;"><br style=3D"text-shadow: none !important; box-shadow: none !important; =
+border-radius: 0px !important;">lists.01.org Admin. All Rights Reserved 202=
+0.</div>
+--===============6227144962120782804==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On 11/6/20 3:29 PM, ira.weiny@intel.com wrote:
-> From: Fenghua Yu <fenghua.yu@intel.com>
-> 
-> PKS allows kernel users to define domains of page mappings which have
-> additional protections beyond the paging protections.
-> 
-> Add an API to allocate, use, and free a protection key which identifies
-> such a domain.  Export 5 new symbols pks_key_alloc(), pks_mknoaccess(),
-> pks_mkread(), pks_mkrdwr(), and pks_key_free().  Add 2 new macros;
-> PAGE_KERNEL_PKEY(key) and _PAGE_PKEY(pkey).
-> 
-> Update the protection key documentation to cover pkeys on supervisor
-> pages.
-> 
-> Co-developed-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-> 
-> ---
-> ---
->  Documentation/core-api/protection-keys.rst | 102 +++++++++++++---
->  arch/x86/include/asm/pgtable_types.h       |  12 ++
->  arch/x86/include/asm/pkeys.h               |  11 ++
->  arch/x86/include/asm/pkeys_common.h        |   4 +
->  arch/x86/mm/pkeys.c                        | 128 +++++++++++++++++++++
->  include/linux/pgtable.h                    |   4 +
->  include/linux/pkeys.h                      |  24 ++++
->  7 files changed, 267 insertions(+), 18 deletions(-)
-> 
-> diff --git a/Documentation/core-api/protection-keys.rst b/Documentation/core-api/protection-keys.rst
-> index ec575e72d0b2..c4e6c480562f 100644
-> --- a/Documentation/core-api/protection-keys.rst
-> +++ b/Documentation/core-api/protection-keys.rst
-> @@ -4,25 +4,33 @@
->  Memory Protection Keys
->  ======================
->  
-> -Memory Protection Keys for Userspace (PKU aka PKEYs) is a feature
-> -which is found on Intel's Skylake (and later) "Scalable Processor"
-> -Server CPUs. It will be available in future non-server Intel parts
-> -and future AMD processors.
-> -
-> -For anyone wishing to test or use this feature, it is available in
-> -Amazon's EC2 C5 instances and is known to work there using an Ubuntu
-> -17.04 image.
-> -
->  Memory Protection Keys provides a mechanism for enforcing page-based
-
-                          provide
-
->  protections, but without requiring modification of the page tables
-> -when an application changes protection domains.  It works by
-> -dedicating 4 previously ignored bits in each page table entry to a
-> -"protection key", giving 16 possible keys.
-> +when an application changes protection domains.
-> +
-> +PKeys Userspace (PKU) is a feature which is found on Intel's Skylake "Scalable
-> +Processor" Server CPUs and later.  And It will be available in future
-
-                                          it
-
-> +non-server Intel parts and future AMD processors.
-> +
-> +Future Intel processors will support Protection Keys for Supervisor pages
-> +(PKS).
-> +
-> +For anyone wishing to test or use user space pkeys, it is available in Amazon's
-> +EC2 C5 instances and is known to work there using an Ubuntu 17.04 image.
-> +
-> +pkeys work by dedicating 4 previously Reserved bits in each page table entry to
-> +a "protection key", giving 16 possible keys.  User and Supervisor pages are
-> +treated separately.
-> +
-> +Protections for each page are controlled with per CPU registers for each type
-
-                                                 per-CPU
- 
-> +of page User and Supervisor.  Each of these 32 bit register stores two separate
-
-                                               32-bit registers
-
-
-> +bits (Access Disable and Write Disable) for each key.
->  
-> -There is also a new user-accessible register (PKRU) with two separate
-> -bits (Access Disable and Write Disable) for each key.  Being a CPU
-> -register, PKRU is inherently thread-local, potentially giving each
-> -thread a different set of protections from every other thread.
-> +For Userspace the register is user-accessible (rdpkru/wrpkru).  For
-> +Supervisor, the register (MSR_IA32_PKRS) is accessible only to the kernel.
-> +
-> +Being a CPU register, pkeys are inherently thread-local, potentially giving
-> +each thread an independent set of protections from every other thread.
->  
->  There are two new instructions (RDPKRU/WRPKRU) for reading and writing
->  to the new register.  The feature is only available in 64-bit mode,
-> @@ -30,8 +38,11 @@ even though there is theoretically space in the PAE PTEs.  These
->  permissions are enforced on data access only and have no effect on
->  instruction fetches.
->  
-> -Syscalls
-> -========
-> +For kernel space rdmsr/wrmsr are used to access the kernel MSRs.
-> +
-> +
-> +Syscalls for user space keys
-> +============================
->  
->  There are 3 system calls which directly interact with pkeys::
->  
-> @@ -98,3 +109,58 @@ with a read()::
->  The kernel will send a SIGSEGV in both cases, but si_code will be set
->  to SEGV_PKERR when violating protection keys versus SEGV_ACCERR when
->  the plain mprotect() permissions are violated.
-> +
-> +
-> +Kernel API for PKS support
-> +==========================
-> +
-> +The following interface is used to allocate, use, and free a pkey which defines
-> +a 'protection domain' within the kernel.  Setting a pkey value in a supervisor
-> +mapping adds that mapping to the protection domain.
-> +
-> +        int pks_key_alloc(const char * const pkey_user, int flags);
-> +        #define PAGE_KERNEL_PKEY(pkey)
-> +        #define _PAGE_KEY(pkey)
-> +        void pks_mk_noaccess(int pkey);
-> +        void pks_mk_readonly(int pkey);
-> +        void pks_mk_readwrite(int pkey);
-> +        void pks_key_free(int pkey);
-> +
-> +pks_key_alloc() allocates keys dynamically to allow better use of the limited
-> +key space.  'flags' alter the allocation based on the users need.  Currently
-
-                                                         user's
-or maybe                                                 users'
-
-> +they can request an exclusive key.
-> +
-> +Callers of pks_key_alloc() _must_ be prepared for it to fail and take
-> +appropriate action.  This is due mainly to the fact that PKS may not be
-> +available on all arch's.  Failure to check the return of pks_key_alloc() and
-> +using any of the rest of the API is undefined.
-> +
-> +Kernel users must set the PTE permissions in the page table entries for the
-> +mappings they want to protect.  This can be done with PAGE_KERNEL_PKEY() or
-> +_PAGE_KEY().
-> +
-> +The pks_mk*() family of calls allows kernel users the ability to change the
-> +protections for the domain identified by the pkey specified.  3 states are
-> +available pks_mk_noaccess(), pks_mk_readonly(), and pks_mk_readwrite() which
-
-   available:
-
-> +set the access to none, read, and read/write respectively.
-> +
-> +Finally, pks_key_free() allows a user to return the key to the allocator for
-> +use by others.
-> +
-> +The interface maintains pks_mk_noaccess() (Access Disabled (AD=1)) for all keys
-> +not currently allocated.  Therefore, the user can depend on access being
-> +disabled when pks_key_alloc() returns a key and the user should remove mappings
-> +from the domain (remove the pkey from the PTE) prior to calling pks_key_free().
-> +
-> +It should be noted that the underlying WRMSR(MSR_IA32_PKRS) is not serializing
-> +but still maintains ordering properties similar to WRPKRU.  Thus it is safe to
-> +immediately use a mapping when the pks_mk*() functions returns.
-
-                                                          return.
-
-> +
-> +The current SDM section on PKRS needs updating but should be the same as that
-> +of WRPKRU.  So to quote from the WRPKRU text:
-> +
-> +	WRPKRU will never execute transiently. Memory accesses
-> +	affected by PKRU register will not execute (even transiently)
-> +	until all prior executions of WRPKRU have completed execution
-> +	and updated the PKRU register.
-> +
-
-
--- 
-~Randy
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6227144962120782804==--
