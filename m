@@ -2,56 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B9D2E358D
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Dec 2020 10:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D79742E69A1
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Dec 2020 18:18:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 08879100EBBDA;
-	Mon, 28 Dec 2020 01:44:32 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=211.157.147.134; helo=lucky1.263xmail.com; envelope-from=libing@winhong.com; receiver=<UNKNOWN> 
-Received: from lucky1.263xmail.com (lucky1.263xmail.com [211.157.147.134])
+	by ml01.01.org (Postfix) with ESMTP id 0F5C4100EBB69;
+	Mon, 28 Dec 2020 09:18:02 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3E20C100EC1DF
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Dec 2020 01:44:28 -0800 (PST)
-Received: from localhost (unknown [192.168.167.235])
-	by lucky1.263xmail.com (Postfix) with ESMTP id 8DB5EC5DF5;
-	Mon, 28 Dec 2020 17:44:23 +0800 (CST)
-X-MAIL-GRAY: 0
-X-MAIL-DELIVERY: 1
-X-ADDR-CHECKED4: 1
-X-ANTISPAM-LEVEL: 2
-X-ABS-CHECKED: 0
-Received: from user (unknown [103.75.167.6])
-	by smtp.263.net (postfix) whith ESMTP id P26945T139800532363008S1609148623143079_;
-	Mon, 28 Dec 2020 17:44:24 +0800 (CST)
-X-UNIQUE-TAG: <edab535ec0a6bee27ece39f11c5e6c36>
-X-RL-SENDER: libing@winhong.com
-X-SENDER: libing@winhong.com
-X-LOGIN-NAME: libing@winhong.com
-X-FST-TO: linux-mips@oss.sgi.com
-X-SENDER-IP: 103.75.167.6
-X-ATTACHMENT-NUM: 0
-X-System-Flag: 0
-From: "COCA COLA."<libing@winhong.com>
-Subject: COCA-COLA  LOTTERY ORGANIZATION.
-Date: Mon, 28 Dec 2020 08:44:23 -0800
+	by ml01.01.org (Postfix) with ESMTPS id C1A2D100EBB67
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Dec 2020 09:17:59 -0800 (PST)
+IronPort-SDR: kYlPLc2vpiw6a6WDgkIwY5dR3UX617FCW1pnZVBrM6EUsqwr8UiBUN2kk89uJeNUQo+WzxH2L4
+ jK3KtywO/Qfw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9848"; a="261153627"
+X-IronPort-AV: E=Sophos;i="5.78,455,1599548400";
+   d="scan'208";a="261153627"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 09:17:59 -0800
+IronPort-SDR: Rt9Q8FeGS/TGGaVi1S+G65ttUmRswq+WzyoUtrLa3uXgJDHKE4MmdA2H201aGUxDrf0/73bWfX
+ UjGbRsKvyiug==
+X-IronPort-AV: E=Sophos;i="5.78,455,1599548400";
+   d="scan'208";a="418877041"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 09:17:59 -0800
+Date: Mon, 28 Dec 2020 09:17:58 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jianpeng Ma <jianpeng.ma@intel.com>
+Subject: Re: [PATCH] libnvdimm/pmem: remove unused header.
+Message-ID: <20201228171758.GO1563847@iweiny-DESK2.sc.intel.com>
+References: <20201225013546.300116-1-jianpeng.ma@intel.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: 1609148664_493444_414@263.net
-X-Message-ID-Missing: 263.net
-Message-ID-Hash: 46OXOVKVH6ADTOPRAHAFVKYOVUTRMVVQ
-X-Message-ID-Hash: 46OXOVKVH6ADTOPRAHAFVKYOVUTRMVVQ
-X-MailFrom: libing@winhong.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <20201225013546.300116-1-jianpeng.ma@intel.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: JOGWUR5IMIGZRFDKI7DCOYX3H6344HBL
+X-Message-ID-Hash: JOGWUR5IMIGZRFDKI7DCOYX3H6344HBL
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm@lists.01.org, hch@lst.de
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: contactad004@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/46OXOVKVH6ADTOPRAHAFVKYOVUTRMVVQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JOGWUR5IMIGZRFDKI7DCOYX3H6344HBL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,26 +53,39 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-COCA-COLA LOTTERY ORGANIZATION
-TICKET FREE/ONLINE E-MAIL ADDRESS WINNINGS DEPARTMENT.
+On Fri, Dec 25, 2020 at 09:35:46AM +0800, Jianpeng Ma wrote:
+> 'commit a8b456d01cd6 ("bdi: remove BDI_CAP_SYNCHRONOUS_IO")' forgot
 
-Greetings Winner,
+This information should be part of a fixes tag.
 
-If you are the correct owner of this email address? If yes then be glad this day as the result of the Coca-Cola lotto online e-mail address free-ticket winning draws of October 2020 ,held in United States of America has just been released and we are glad to announce to you that your email address won you the sweepstakes in the first category and you are entitled to claim the sum of One Million Two Hundred And Fifty Thousand United States Dollars(US$1,250,000.00). Your email address was entered for the online draw on this ticket No: 546-373-66773 and won on this Lucky No: (14)-(8)-(5)-(19)-(28)-(12)-(30).
+Other than that looks ok.
 
-On how to receive your won prize of US$1.250,000.00M. (One Million Two Hundred And Fifty Thousand United States Dollars Only) to enable Mr.James Curtise ascertain you as the rightful winner and receiver of the US$1.250,000.00M.Make sure you include the below listed information in your contact email to him.
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-Your complete official names, country of origin and country of residence/work, contact telephone and mobile numbers, amount won,lucky numbers, date of draw. OPTIONAL: - [Sex, age, occupation and job title].
-
-Just in case you are thinking of how you won without entering then know again that this very draw of the Coca-Cola Lottery Organization in which you have emerged as a winner was a free ticket online email address draws were thousands of email addresses was collected from almost all world wide websites and used for the online draws/sweepstakes and during winners selection your email address came out among the first ten which won you the lottery in the first winnings category and entitles you to claim the US$1,250,000.00 dollars.
-
-
-Yours Faithfully,
-Mr.James Curtise
-COCA-COLA  LOTTERY ORGANIZATION.
-Online Winning Notification Department.
-Tel: +1-403-607-1548
-
+> remove the related header file.
+> 
+> Signed-off-by: Jianpeng Ma <jianpeng.ma@intel.com>
+> ---
+>  drivers/nvdimm/pmem.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> index 875076b0ea6c..f33bdae626ba 100644
+> --- a/drivers/nvdimm/pmem.c
+> +++ b/drivers/nvdimm/pmem.c
+> @@ -23,7 +23,6 @@
+>  #include <linux/uio.h>
+>  #include <linux/dax.h>
+>  #include <linux/nd.h>
+> -#include <linux/backing-dev.h>
+>  #include <linux/mm.h>
+>  #include <asm/cacheflush.h>
+>  #include "pmem.h"
+> -- 
+> 2.29.2
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
