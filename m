@@ -1,167 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13D32E69CD
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Dec 2020 18:43:13 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA69D2E6A65
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Dec 2020 20:20:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 10432100EBB6C;
-	Mon, 28 Dec 2020 09:43:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DFC36100EBB63
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Dec 2020 09:43:09 -0800 (PST)
-IronPort-SDR: hdSanteGqEJfjkGY5yWSpzTkc8D3BA2iICu8c8Mpld1rmAA5ZyVi+Ke1fhJxJqmfpuykR9D668
- A7xoXhD9I+jg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9848"; a="237960342"
-X-IronPort-AV: E=Sophos;i="5.78,455,1599548400";
-   d="scan'208";a="237960342"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 09:43:08 -0800
-IronPort-SDR: F5CMZyuHAD4hnshPmL9bZfxt4ZF2jfJzT3LYS4YeeTIXxUumlDvvaC5pcGxSHLmg4wfsQznNrG
- hLTAG0bRRItQ==
-X-IronPort-AV: E=Sophos;i="5.78,455,1599548400";
-   d="scan'208";a="347068078"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2020 09:43:04 -0800
-Date: Mon, 28 Dec 2020 09:43:04 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: Tian Tao <tiantao6@hisilicon.com>
-Subject: Re: [PATCH] nvdimm: Switch to using the new API kobj_to_dev()
-Message-ID: <20201228174304.GP1563847@iweiny-DESK2.sc.intel.com>
-References: <1608867065-52320-1-git-send-email-tiantao6@hisilicon.com>
+	by ml01.01.org (Postfix) with ESMTP id ABBBA100EBB71;
+	Mon, 28 Dec 2020 11:20:31 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.177; helo=muon.com; envelope-from=gumm@muon.com; receiver=<UNKNOWN> 
+Received: from muon.com (unknown [223.73.128.177])
+	by ml01.01.org (Postfix) with ESMTP id 8CF4B100EBB6F
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Dec 2020 11:20:28 -0800 (PST)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Tue, 29 Dec 2020 03:19:42 +0800
+Message-ID: a646399a-e6ae-4009-9dac-6425eef55a9b
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1608867065-52320-1-git-send-email-tiantao6@hisilicon.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: HOLEZSRJQRXA4ES35CKLFY6WVGENJPH6
-X-Message-ID-Hash: HOLEZSRJQRXA4ES35CKLFY6WVGENJPH6
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org
+Sender: =?utf-8?Q?=E9=A6=99=E6=B8=AF=E6=90=AC=E5=AE=B6=E5=88=B0=E5=85=A7?=
+ =?utf-8?Q?=E5=9C=B0=E5=B0=88=E7=B7=9A?= <gumm@muon.com>
+From: =?utf-8?Q?=E9=A6=99=E6=B8=AF=E6=90=AC=E5=AE=B6=E5=88=B0=E5=85=A7?=
+ =?utf-8?Q?=E5=9C=B0=E5=B0=88=E7=B7=9A?= <hk13642980935@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 29 Dec 2020 03:19:42 +0800
+Subject: =?utf-8?B?6aaZ5riv5pCs5a625Yiw5YWn5Zyw5bCI57ea?=
+Message-ID-Hash: 5JG226JCTKBW4CK5CK2JPT7IMHB3B3BB
+X-Message-ID-Hash: 5JG226JCTKBW4CK5CK2JPT7IMHB3B3BB
+X-MailFrom: gumm@muon.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HOLEZSRJQRXA4ES35CKLFY6WVGENJPH6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5JG226JCTKBW4CK5CK2JPT7IMHB3B3BB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Fri, Dec 25, 2020 at 11:31:05AM +0800, Tian Tao wrote:
-> fixed the following coccicheck:
-> drivers/nvdimm//namespace_devs.c:1626:60-61: WARNING opportunity for
-> kobj_to_dev().
-> drivers/nvdimm//region_devs.c:762:60-61: WARNING opportunity for
-> kobj_to_dev().
-> 
-> since container_of(kobj, typeof(*dev), kobj) and
-> container_of(kobj, struct device, kobj) are the same, so also
-> replace container_of(kobj, typeof(*dev), kobj) with the new kobj_to_dev.
-> 
-> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
-
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-
-> ---
->  drivers/nvdimm/bus.c            | 2 +-
->  drivers/nvdimm/core.c           | 2 +-
->  drivers/nvdimm/dimm_devs.c      | 4 ++--
->  drivers/nvdimm/namespace_devs.c | 2 +-
->  drivers/nvdimm/region_devs.c    | 4 ++--
->  5 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-> index 2304c61..cf2b70b 100644
-> --- a/drivers/nvdimm/bus.c
-> +++ b/drivers/nvdimm/bus.c
-> @@ -713,7 +713,7 @@ static struct attribute *nd_numa_attributes[] = {
->  static umode_t nd_numa_attr_visible(struct kobject *kobj, struct attribute *a,
->  		int n)
->  {
-> -	struct device *dev = container_of(kobj, typeof(*dev), kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  
->  	if (!IS_ENABLED(CONFIG_NUMA))
->  		return 0;
-> diff --git a/drivers/nvdimm/core.c b/drivers/nvdimm/core.c
-> index 7de592d..431e47a 100644
-> --- a/drivers/nvdimm/core.c
-> +++ b/drivers/nvdimm/core.c
-> @@ -503,7 +503,7 @@ static DEVICE_ATTR_ADMIN_RW(activate);
->  
->  static umode_t nvdimm_bus_firmware_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, typeof(*dev), kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
->  	struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
->  	enum nvdimm_fwa_capability cap;
-> diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-> index b59032e..76ee2c3 100644
-> --- a/drivers/nvdimm/dimm_devs.c
-> +++ b/drivers/nvdimm/dimm_devs.c
-> @@ -418,7 +418,7 @@ static struct attribute *nvdimm_attributes[] = {
->  
->  static umode_t nvdimm_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, typeof(*dev), kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct nvdimm *nvdimm = to_nvdimm(dev);
->  
->  	if (a != &dev_attr_security.attr && a != &dev_attr_frozen.attr)
-> @@ -534,7 +534,7 @@ static struct attribute *nvdimm_firmware_attributes[] = {
->  
->  static umode_t nvdimm_firmware_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, typeof(*dev), kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct nvdimm_bus *nvdimm_bus = walk_to_nvdimm_bus(dev);
->  	struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
->  	struct nvdimm *nvdimm = to_nvdimm(dev);
-> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-> index 6da67f4..1d11ca7 100644
-> --- a/drivers/nvdimm/namespace_devs.c
-> +++ b/drivers/nvdimm/namespace_devs.c
-> @@ -1623,7 +1623,7 @@ static struct attribute *nd_namespace_attributes[] = {
->  static umode_t namespace_visible(struct kobject *kobj,
->  		struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, struct device, kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  
->  	if (a == &dev_attr_resource.attr && is_namespace_blk(dev))
->  		return 0;
-> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> index ef23119..92adfaf 100644
-> --- a/drivers/nvdimm/region_devs.c
-> +++ b/drivers/nvdimm/region_devs.c
-> @@ -644,7 +644,7 @@ static struct attribute *nd_region_attributes[] = {
->  
->  static umode_t region_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, typeof(*dev), kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct nd_region *nd_region = to_nd_region(dev);
->  	struct nd_interleave_set *nd_set = nd_region->nd_set;
->  	int type = nd_region_to_nstype(nd_region);
-> @@ -759,7 +759,7 @@ REGION_MAPPING(31);
->  
->  static umode_t mapping_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, struct device, kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct nd_region *nd_region = to_nd_region(dev);
->  
->  	if (n < nd_region->ndr_mappings)
-> -- 
-> 2.7.4
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQombmJzcDsNCkRlYXIgbGludXgtbnZkaW1tDQombmJzcDsNCiZuYnNwOw0KJm5ic3A7
+Jm5ic3A7Jm5ic3A76aaZ5riv5pCs5a625bCI57ea77yM5o+Q5L6b6aaZ5riv5pCs5a625Yiw5rex
+5Zyz77yM5Lit5riv5pCs5a6277yM5rex5Zyz5Yiw6aaZ5riv5b6A6L+U6YGL6Ly477yM6aaZ5riv
+5pCs5a625Yiw5YWn5Zyw562J5LiA5qKd6b6N5Lit5riv6LKo6YGL6aaZ5riv6YGL6Ly45pyN5YuZ
+44CC5qC55pOa5a6i5oi255qE6YGL6Ly45oCn6LOq77yM5oyJ5ZyL5a626KaP5a6a54K65a6i5oi2
+5ZCI55CG5ZCI5rOV55qE6KaP5YqD6YGL6Ly45rWB56iL77yM5o+Q5L6b6aaZ5riv5Yiw5YWo5ZyL
+6YGL6Ly444CB5YCJ5YSy44CB6YCy5Ye65Y+j6YCa6Zec5LiA56uZ5byP5pyN5YuZ44CCDQombmJz
+cDsNCiZuYnNwOyZuYnNwOyDmiJHlj7jmk43kvZzmtYHnqIvvvJombmJzcDsgJm5ic3A75LiA44CB
+5o6l5Zau5YWs5Y+45a6i5pyN5o6l5b6F5a6i5oi26Zu76Kmx5ZKo6Kmi77yM5LqG6Kej5a6i5oi2
+55qE6ZyA5rGCIQ0KJm5ic3A7Jm5ic3A7IOS6jOOAgeWgseWDuee2k+WuouaItuS7i+e0ueW+jO+8
+jOiLpeaJgOmcgOaQrOmBt+WutuWFt+WTgeeoruS4jeWkmu+8jOWxrOaWvOWwj+Wei+aQrOWutu+8
+jOWuouaItuiDveWPo+mgreihqOmBlOa4heaZsOeahO+8jOaOpeWWruS6uuWToeWPr+S+neaTmuWF
+rOWPuOWDueebruaomea6luWwjemhp+Wuoumbu+ipseWgseWDue+8jOmbmeaWuee2k+WNlOWVhuWP
+r+WumuS4i+WPo+mgreWNlOitsOOAgg0KJm5ic3A7IOWms+i6q+mCiueahOeJqea1geWwiOWutiZu
+YnNwOyZuYnNwOyDlpKfpmbjmiYvmqZ/vvJorODYtMTM2NDI5ODA5MzUg5qWK55SfIO+8iDI05bCP
+5pmC54ax57ea77yJJm5ic3A7Jm5ic3A7IOW+ruS/oeiZn++8mjEzNjQyOTgwOTM1Jm5ic3A7Jm5i
+c3A7IEUtTWFpbO+8mmhrMTM2NDI5ODA5MzVAaG90bWFpbC5jb20NCiZuYnNwOw0KJm5ic3A7DQom
+bmJzcDsNCjIwMjDlubQxMuaciDI55pelDQombmJzcDsNCiZuYnNwOwpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0
+IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFp
+bCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
