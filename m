@@ -1,237 +1,102 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EF82E7B3F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Dec 2020 17:59:01 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826CA2E7E00
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Dec 2020 05:49:41 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 92C81100EBBBB;
-	Wed, 30 Dec 2020 08:58:52 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 2E33C100EC1FA
-	for <linux-nvdimm@lists.01.org>; Wed, 30 Dec 2020 08:58:48 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.78,461,1599494400";
-   d="scan'208";a="103085840"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 31 Dec 2020 00:58:45 +0800
-Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
-	by cn.fujitsu.com (Postfix) with ESMTP id 896D04CE6027;
-	Thu, 31 Dec 2020 00:58:44 +0800 (CST)
-Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
- G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Thu, 31 Dec 2020 00:58:44 +0800
-Received: from irides.mr (10.167.225.141) by G08CNEXCHPEKD04.g08.fujitsu.local
- (10.167.33.209) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 31 Dec 2020 00:58:43 +0800
-From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-mm@kvack.org>
-Subject: [PATCH 10/10] fs/dax: remove useless functions
-Date: Thu, 31 Dec 2020 00:56:01 +0800
-Message-ID: <20201230165601.845024-11-ruansy.fnst@cn.fujitsu.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com>
-References: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id E6D63100EBBA2;
+	Wed, 30 Dec 2020 20:49:39 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=210.87.250.175; helo=ybironout2c.netvigator.com; envelope-from=csfb11@biznetvigator.com; receiver=<UNKNOWN> 
+Received: from ybironout2c.netvigator.com (ybironout2c.netvigator.com [210.87.250.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 19EC3100EBBBA
+	for <linux-nvdimm@lists.01.org>; Wed, 30 Dec 2020 20:49:33 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.78,463,1599494400";
+   d="pdf'?scan'208,217";a="217797928"
+Received: from unknown (HELO bz8ms10dat.wtt.netvigator.com) ([218.102.23.44])
+  by ybironout2v1.netvigator.com with ESMTP; 31 Dec 2020 12:49:31 +0800
+Date: Thu, 31 Dec 2020 12:49:31 +0800 (HKT)
+From: Benedita Bieito <csfb11@biznetvigator.com>
+Message-ID: <1441682693.183637002.1609390171054.JavaMail.zimbra@biznetvigator.com>
+In-Reply-To: <1997983835.140634986.1606806637302.JavaMail.zimbra@biznetvigator.com>
+References: <1997983835.140634986.1606806637302.JavaMail.zimbra@biznetvigator.com>
+Subject: From Mrs.Benedita Bieito
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 896D04CE6027.ABF58
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: JLBLRBYVWBPJUADNNKVNODNCLUOF42IS
-X-Message-ID-Hash: JLBLRBYVWBPJUADNNKVNODNCLUOF42IS
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+X-Originating-IP: [172.16.12.9]
+X-Mailer: Zimbra 8.7.1_GA_1670 (ZimbraWebClient - GC87 (Win)/8.7.1_GA_1670)
+Thread-Topic: From Mrs.Benedita Bieito
+Thread-Index: R2h6zIHZooeR2RBvhYlFeUD9Slq0AWleYryb
+Message-ID-Hash: BNUUHQHV4KIF5TN7AFEH5NJYG2YTK3VV
+X-Message-ID-Hash: BNUUHQHV4KIF5TN7AFEH5NJYG2YTK3VV
+X-MailFrom: csfb11@biznetvigator.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: beneditabieito230@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JLBLRBYVWBPJUADNNKVNODNCLUOF42IS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BNUUHQHV4KIF5TN7AFEH5NJYG2YTK3VV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Since owner tarcking is triggerred by pmem device, these functions are
-useless.  So remove it.
-
-Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
----
- fs/dax.c            | 112 --------------------------------------------
- include/linux/dax.h |   2 -
- 2 files changed, 114 deletions(-)
-
-diff --git a/fs/dax.c b/fs/dax.c
-index 799210cfa687..4267de360d79 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -323,48 +323,6 @@ static unsigned long dax_end_pfn(void *entry)
- 	for (pfn = dax_to_pfn(entry); \
- 			pfn < dax_end_pfn(entry); pfn++)
- 
--/*
-- * TODO: for reflink+dax we need a way to associate a single page with
-- * multiple address_space instances at different linear_page_index()
-- * offsets.
-- */
--static void dax_associate_entry(void *entry, struct address_space *mapping,
--		struct vm_area_struct *vma, unsigned long address)
--{
--	unsigned long size = dax_entry_size(entry), pfn, index;
--	int i = 0;
--
--	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
--		return;
--
--	index = linear_page_index(vma, address & ~(size - 1));
--	for_each_mapped_pfn(entry, pfn) {
--		struct page *page = pfn_to_page(pfn);
--
--		WARN_ON_ONCE(page->mapping);
--		page->mapping = mapping;
--		page->index = index + i++;
--	}
--}
--
--static void dax_disassociate_entry(void *entry, struct address_space *mapping,
--		bool trunc)
--{
--	unsigned long pfn;
--
--	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
--		return;
--
--	for_each_mapped_pfn(entry, pfn) {
--		struct page *page = pfn_to_page(pfn);
--
--		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
--		WARN_ON_ONCE(page->mapping && page->mapping != mapping);
--		page->mapping = NULL;
--		page->index = 0;
--	}
--}
--
- static struct page *dax_busy_page(void *entry)
- {
- 	unsigned long pfn;
-@@ -399,72 +357,6 @@ unsigned long dax_load_pfn(struct address_space *mapping, unsigned long index)
- 	return pfn;
- }
- 
--/*
-- * dax_lock_mapping_entry - Lock the DAX entry corresponding to a page
-- * @page: The page whose entry we want to lock
-- *
-- * Context: Process context.
-- * Return: A cookie to pass to dax_unlock_page() or 0 if the entry could
-- * not be locked.
-- */
--dax_entry_t dax_lock_page(struct page *page)
--{
--	XA_STATE(xas, NULL, 0);
--	void *entry;
--
--	/* Ensure page->mapping isn't freed while we look at it */
--	rcu_read_lock();
--	for (;;) {
--		struct address_space *mapping = READ_ONCE(page->mapping);
--
--		entry = NULL;
--		if (!mapping || !dax_mapping(mapping))
--			break;
--
--		/*
--		 * In the device-dax case there's no need to lock, a
--		 * struct dev_pagemap pin is sufficient to keep the
--		 * inode alive, and we assume we have dev_pagemap pin
--		 * otherwise we would not have a valid pfn_to_page()
--		 * translation.
--		 */
--		entry = (void *)~0UL;
--		if (S_ISCHR(mapping->host->i_mode))
--			break;
--
--		xas.xa = &mapping->i_pages;
--		xas_lock_irq(&xas);
--		if (mapping != page->mapping) {
--			xas_unlock_irq(&xas);
--			continue;
--		}
--		xas_set(&xas, page->index);
--		entry = xas_load(&xas);
--		if (dax_is_locked(entry)) {
--			rcu_read_unlock();
--			wait_entry_unlocked(&xas, entry);
--			rcu_read_lock();
--			continue;
--		}
--		dax_lock_entry(&xas, entry);
--		xas_unlock_irq(&xas);
--		break;
--	}
--	rcu_read_unlock();
--	return (dax_entry_t)entry;
--}
--
--void dax_unlock_page(struct page *page, dax_entry_t cookie)
--{
--	struct address_space *mapping = page->mapping;
--	XA_STATE(xas, &mapping->i_pages, page->index);
--
--	if (S_ISCHR(mapping->host->i_mode))
--		return;
--
--	dax_unlock_entry(&xas, (void *)cookie);
--}
--
- /*
-  * Find page cache entry at given index. If it is a DAX entry, return it
-  * with the entry locked. If the page cache doesn't contain an entry at
-@@ -543,7 +435,6 @@ static void *grab_mapping_entry(struct xa_state *xas,
- 			xas_lock_irq(xas);
- 		}
- 
--		dax_disassociate_entry(entry, mapping, false);
- 		xas_store(xas, NULL);	/* undo the PMD join */
- 		dax_wake_entry(xas, entry, true);
- 		mapping->nrexceptional--;
-@@ -680,7 +571,6 @@ static int __dax_invalidate_entry(struct address_space *mapping,
- 	    (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY) ||
- 	     xas_get_mark(&xas, PAGECACHE_TAG_TOWRITE)))
- 		goto out;
--	dax_disassociate_entry(entry, mapping, trunc);
- 	xas_store(&xas, NULL);
- 	mapping->nrexceptional--;
- 	ret = 1;
-@@ -774,8 +664,6 @@ static void *dax_insert_entry(struct xa_state *xas,
- 	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
- 		void *old;
- 
--		dax_disassociate_entry(entry, mapping, false);
--		dax_associate_entry(new_entry, mapping, vmf->vma, vmf->address);
- 		/*
- 		 * Only swap our new entry into the page cache if the current
- 		 * entry is a zero page or an empty entry.  If a normal PTE or
-diff --git a/include/linux/dax.h b/include/linux/dax.h
-index 89e56ceeffc7..c6b8dc094b26 100644
---- a/include/linux/dax.h
-+++ b/include/linux/dax.h
-@@ -151,8 +151,6 @@ int dax_writeback_mapping_range(struct address_space *mapping,
- struct page *dax_layout_busy_page(struct address_space *mapping);
- struct page *dax_layout_busy_page_range(struct address_space *mapping, loff_t start, loff_t end);
- unsigned long dax_load_pfn(struct address_space *mapping, unsigned long index);
--dax_entry_t dax_lock_page(struct page *page);
--void dax_unlock_page(struct page *page, dax_entry_t cookie);
- #else
- static inline bool bdev_dax_supported(struct block_device *bdev,
- 		int blocksize)
--- 
-2.29.2
-
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCg0KDQpIZWxsbyBEZWFyLCANCg0KDQpJIGFtIERyLiBCRU5FRElUQSBCSUVJVE8gZnJvbSBQ
+b3J0dWdhbCAoRXVyb3BlKSwgbGl2ZWQgaW4gU291dGggQWZyaWNhIGZvciAzMHllYXJzIGFuZCBj
+dXJyZW50bHkgcmVzaWRpbmcgaW4gTmV0aGVybGFuZHMsIGEgd2lkb3cgdG8gbGF0ZSBQcm9mIEVu
+Z3IuIENBU0lNSVJPIEJJRUlUTy4gSSBhbSA2NyB5ZWFycyBvbGQgYW5kIHByZXNlbnRseSBzdWZm
+ZXJpbmcgZnJvbSBMZXVrZW1pYS4gDQoNCk15IGhlYWx0aCBjb25kaXRpb24gaGFzIGdvdHRlbiB3
+b3JzZSBhbmQganVzdCB0d28gd2Vla3MgYWdvIG15IGRvY3RvciBpbmZvcm1lZCBtZSB0aGF0IG15
+IGNvbmRpdGlvbiBoYXMgcmVhY2ggYSBjcml0aWNhbCBzdGFnZSwgYW5kIHRoYXQgSSBoYXZlIGp1
+c3QgMyBtb250aHMgbGVmdC4gVGhpcyBjb25maXJtYXRpb24gZnJvbSBteSBkb2N0b3Igd2FzIGFu
+ZCBzdGlsbCBpcyBkZXZhc3RhdGluZyBuZXdzOyBpdCBpcyBoYXJkIHRvIGtub3cgdGhhdCB5b3Ug
+aGF2ZSBqdXN0IGEgbGl0dGxlIHRpbWUgbGVmdCB0byBsaXZlIGhlcmUuIA0KDQpNeSBsYXRlIGh1
+c2JhbmQgd2FzIGEgY29udHJhY3RvciBpbiBib3RoIFNvdXRoIEFmcmljYSBhbmQgTmV0aGVybGFu
+ZHMsIGhlIGRpZWQgaW4gYSBwbGFuZSBjcmFzaCBhbmQgZHVyaW5nIHRoZSBwZXJpb2Qgb2Ygb3Vy
+IG1hcnJpYWdlIHdlIGNvdWxkIG5vdCBiZWFyIGFueSBjaGlsZC4gTXkgbGF0ZSBodXNiYW5kIHdh
+cyB2ZXJ5IHdlYWx0aHkgYW5kIGFmdGVyIGhpcyBkZWF0aCwgSSBpbmhlcml0ZWQgYWxsIGhpcyBi
+dXNpbmVzc2VzIGFuZCB3ZWFsdGggYm90aCBpbiBTb3V0aCBBZnJpY2EgYW5kIE5ldGhlcmxhbmRz
+LiANCg0KQWZ0ZXIgdGhlIGRvY3RvcuKAmXMgbWVkaWNhbCBwcm9udW5jaWF0aW9uIHRoYXQgSSBo
+YXZlIGp1c3QgZmV3IG1vbnRocyB0byBsaXZlLCBJIGRlY2lkZWQgdG8gZGl2aWRlIG15IHdlYWx0
+aCB0byBjb250cmlidXRlIHRvIHlvdXIgY291bnRyeSBhbmQgQWZyaWNhIHdoZXJlIG15IGxhdGUg
+aHVzYmFuZCBhcyBhIGNvbnRyYWN0b3IgbWFkZSBsb3RzIG9mIG1vbmV5LiBJIHdhbnQgdG8gYXNz
+aXN0IHlvdSB3aXRoIHRoZSBmdW5kcyB0byBkbyBncmVhdCBjaGFyaXR5IHdvcmtzIGluIHlvdXIg
+Y291bnRyeSwgdGhpcyBpcyBteSBsYXN0IHdpc2guIEkgc2VsZWN0ZWQgeW91IGFmdGVyIHNlYXJj
+aGluZyBmZXcgd2Vic2l0ZXM7IEkgcHJheWVkIGFuZCB3YXMgbGVkIHRvIHlvdS4gSSBhbSB3aWxs
+aW5nIHRvIGRvbmF0ZSB0aGUgc3VtIG9mIEVpZ2h0IE1pbGxpb24sIEZpdmUgSHVuZHJlZCB0aG91
+c2FuZCBVbml0ZWQgU3RhdGVzIERvbGxhcnMgKFVTRCQ4LDUwMCwwMDAuMDApIHRvIHRoZSBsZXNz
+IHByaXZpbGVnZWQgdGhyb3VnaCB5b3UuIA0KDQpQbGVhc2UgSSB3YW50IHRvIHRyYW5zZmVyIHRo
+aXMgbW9uZXkgdG8geW91IGFzIEkgYW0gdHJhdmVsbGluZyB0byBTb3V0aCBBZnJpY2Egc29vbmVz
+dCB0byBoYXZlIG15IGxhd3llciBhbWVuZCBteSBXSUxMLiBJZiB5b3UgY2FuIGhhbmRsZSB0aGlz
+IGZ1bmQgYW5kIHZlcnkgc3VyZSB0byBkbyBjaGFyaXR5IHdvcmtzIG9uIG15IGJlaGFsZiB0aGVu
+IEkgd2lsbCBpbmNsdWRlIHlvdXIgbmFtZSBpbiBteSBXSUxMIHdoZW4gaW4gU291dGggQWZyaWNh
+LCBhbmQgZnJvbSB0aGVyZSBJIHdpbGwgdHJhdmVsIHRvIFBvcnR1Z2FsIHRvIG1lZXQgYSBzcGVj
+aWFsaXN0IGFzIEkgd2FudCB0byBiZSBidXJpZWQgYWxvbmdzaWRlIG15IGxhdGUgaHVzYmFuZCB3
+aGVuIEkgcGFzc2VkIG9uLiBOb3RlIHRoYXQgdGhpcyBmdW5kIGlzIGluIHRoZSBmaW5hbmNpYWwg
+aW5zdGl0dXRpb24gYW5kIHVwb24gbXkgaW5zdHJ1Y3Rpb247IEkgd2lsbCBmaWxlIGluIGFuIGFw
+cGxpY2F0aW9uIHRocm91Z2ggbXkgZmFtaWx5IGF0dG9ybmV5IGZvciB0aGUgdHJhbnNmZXIgb2Yg
+dGhlIG1vbmV5IGludG8geW91ciBhY2NvdW50IGZvciB0aGUgc2FpZCBwdXJwb3NlLiANCg0KDQoN
+Cg0KVGhlIGNoYW5nZSBvZiBvd25lcnNoaXAgd2lsbCBiZSBDb252ZXkgYW5kIEVuZG9yc2VkIGlu
+IHlvdXIgbmFtZSBiZWZvcmUgdGhlIGVudGlyZSBmdW5kcyBjYW4gYmUgcmVsZWFzZSB0byB5b3Vy
+IGRlc2lnbmF0ZWQgYmFuayBhY2NvdW50IG9mIHlvdXIgY2hvaWNlIHdpdGhpbiA0OGhycyAoMiBk
+YXlzKSB0aGUgcHJvY2VkdXJlcyBhbmQgaG93IHRvIHJlY2VpdmUgdGhlc2UgZW50aXJlIGZ1bmRz
+IGZyb20gbXkgYmFuayB3aWxsIGJlIGRpcmVjdGVkIHRvIHlvdSBhcyBzb29uIGFzIHlvdSBnZXQg
+aW4gdG91Y2ggd2l0aCBtZSBzaG9ydGx5LiANCg0KTGFzdGx5LCBJIGhvbmVzdGx5IHByYXkgdGhh
+dCB0aGlzIG1vbmV5IHdoZW4gdHJhbnNmZXJyZWQgd2lsbCBiZSB1c2VkIGZvciB0aGUgc2FpZCBw
+dXJwb3NlIGV2ZW4gdGhvdWdoIEkgbWlnaHQgYmUgbGF0ZSB0aGVuLiBJIGhhdmUgY29tZSB0byBm
+aW5kIG91dCB0aGF0IHdlYWx0aCBpcyB2YW5pdHkgYW5kIEkgbWFkZSBhIHByb21pc2UgdG8gR29k
+IHRoYXQgbXkgd2VhbHRoIHdpbGwgYmUgdXNlZCB0byBzdXBwb3J0IHRoZSBwb29yIGFuZCB0aGUg
+YXNzaXN0IHRoZSBzaWNrLiBEbyBsZXQgbWUga25vdyBpZiB5b3Ugd2lsbCBiZSBhYmxlIHRvIGhh
+bmRsZSB0aGlzIGZ1bmQgYW5kIHVzZSBpdCBmb3IgdGhlIHNhaWQgcHVycG9zZSBzbyB0aGF0IEkg
+d2lsbCBpbmZvcm0gbXkgYXR0b3JuZXkgYW5kIG15IGJhbmsgb24gbXkgZGVjaXNpb24uIFJlcGx5
+IHRvIG1lIHVzaW5nIHRoaXMgZW1haWwuIGJlbmVkaXRhYmllaXRvMjMwQGdtYWlsLmNvbSANCg0K
+R29kIGJsZXNzIHlvdSANCg0KTXJzLkJlbmVkaXRhIEJpZWl0byANCg0KX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlz
+dCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1h
+aWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
