@@ -1,109 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9702E8100
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Dec 2020 16:36:14 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AB12E82DC
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 Jan 2021 04:43:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 43D05100EC1F1;
-	Thu, 31 Dec 2020 07:36:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::b2b; helo=mail-yb1-xb2b.google.com; envelope-from=meyster.artur@careerkarma.co; receiver=<UNKNOWN> 
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5978F100EF265
-	for <linux-nvdimm@lists.01.org>; Thu, 31 Dec 2020 07:36:09 -0800 (PST)
-Received: by mail-yb1-xb2b.google.com with SMTP id k78so17625951ybf.12
-        for <linux-nvdimm@lists.01.org>; Thu, 31 Dec 2020 07:36:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=careerkarma.co; s=google;
-        h=from:mime-version:date:message-id:subject:to;
-        bh=aK08k/UWu4qZ7ZAlEApSqMUwzLpOqO/KUJy2TDxoVq0=;
-        b=UxXDlQW9FKkaEDr9LGK/iChAFraPLoTUDykhZWB6zBeEyWMcBBv1bzosawVC075kpB
-         DYUMW5S1hhop7H5f+ntY+eT9EKyL2oTs/U+6NHlQVSh32Zyk81fde50E6t0N7j2Wz4tt
-         JjTr/BsLvy/tcECw8SXSpKODYO46Qai7uhjdY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:mime-version:date:message-id:subject:to;
-        bh=aK08k/UWu4qZ7ZAlEApSqMUwzLpOqO/KUJy2TDxoVq0=;
-        b=jfRUL3Mf50Ei6WI8QTPU146y2vJzw7995hA5dPpWs8BM4ENjhJZN6aQaHHdlP4hUiY
-         UAdYMPgzjnjHwMmaZJr0oeS9/J0QE4DQLODiq7HjrRnV/J5L7ixJmCQKI5sg9Jub2NOZ
-         61TMtUuk9AMdB4aUzgBMeDoxIJ151qG+UWkTguDNSXebobY/KJJ+ClLd0zU8MNpJnlOk
-         i7NKGh8JI3i1DY4mxS8tBkdw12uK6ncTwlvdX7d3woapEnb/5m2IJraI5g/lt9fm6/yp
-         dNYgAAkn1kfFS4FvYw8CcG8gL7IGADG4lPZlzhDpWEKlGXq7Jg4djbXnLfOTkCrGjURd
-         7q3w==
-X-Gm-Message-State: AOAM533o5SnTAuAJz4FgBxsCTiF2be1yi2LcQ0ZAxbsEjvH1aBV9q6Li
-	3eY2V92aOt2YLq1MBjRGtJJ/IssokRM+fKKHoQE8MPAHKT0=
-X-Google-Smtp-Source: ABdhPJwRK02AyFdMexxqR34yMJepQdxHX9gWp6eZrXFU5+OSaQ+Ps450SsPpDcImzzOZuuLXaf4q7NvaLQGzERddS5Q=
-X-Received: by 2002:a5b:d11:: with SMTP id y17mr7713361ybp.414.1609428967908;
- Thu, 31 Dec 2020 07:36:07 -0800 (PST)
-Received: from 1036669786545 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 31 Dec 2020 07:36:07 -0800
-From: Artur Meyster <meyster.artur@careerkarma.co>
+	by ml01.01.org (Postfix) with ESMTP id 7E343100ED4A5;
+	Thu, 31 Dec 2020 19:43:26 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.60.17; helo=vpass.ne.jp; envelope-from=vsgncymsuq@vpass.ne.jp; receiver=<UNKNOWN> 
+Received: from vpass.ne.jp (unknown [116.85.60.17])
+	by ml01.01.org (Postfix) with ESMTP id AAF1C100EF26D
+	for <linux-nvdimm@lists.01.org>; Thu, 31 Dec 2020 19:43:22 -0800 (PST)
+Message-ID: <AEDAB403B9633BACDD9C59B1BD154B31@vpass.ne.jp>
+From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <info@vpass.ne.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip?=
+	=?utf-8?B?55So56K66KqN44Gu44GK6aGY44GE?=
+Date: Fri, 1 Jan 2021 11:43:18 +0800
 Mime-Version: 1.0
-Date: Thu, 31 Dec 2020 07:36:07 -0800
-Message-ID: <CADo9yaAMBy93Syq0csWiO9eyb4LnOOQuk4Whna9vq_byd-xr-g@mail.gmail.com>
-Subject: Are You Open to Collaborating on Content?
-To: linux-nvdimm@lists.01.org
-Message-ID-Hash: DXP6ZTI2AEMVBFALPF6T3VY7BLMMVBWU
-X-Message-ID-Hash: DXP6ZTI2AEMVBFALPF6T3VY7BLMMVBWU
-X-MailFrom: meyster.artur@careerkarma.co
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
+Message-ID-Hash: E25WJOPSRN35VODZ26H52ONOFU5QZFLZ
+X-Message-ID-Hash: E25WJOPSRN35VODZ26H52ONOFU5QZFLZ
+X-MailFrom: vsgncymsuq@vpass.ne.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DXP6ZTI2AEMVBFALPF6T3VY7BLMMVBWU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E25WJOPSRN35VODZ26H52ONOFU5QZFLZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hi - I was surfing lists.01.org and I really liked your content strategy.
-
-I'm the founder of BootcampRankings and Career Karma, where we are
-passionate about helping people switch careers and learn new skills. I
-think this is especially relevant now with thousands of people losing their
-jobs due to COVID.
-
-I was wondering if I can submit a high-quality original blog post (no
-cost), that's never been published anywhere else, to be featured on your
-site?
-
-*Here's a list of possible topics:*
-1) How remote work is changing tech salaries in the era of coronavirus
-2) How to Know if your current career isn't right for you
-3) What to do if you lost your job because of COVID-19
-4) The future of work: are your skills up to date?
-5) How new technologies are disrupting incumbent industries
-6) The most resilient jobs during COVID-19
-7) How to hire and retain tech talents
-8) How COVID is impacting the education industry
-9) What are the future trends for the education industry
-
-(Or you can share a topic or field you are interested in.)
-
-*And here are a few of our recent posts:*
-https://www.aithority.com/guest-authors/how-regular-people-are-breaking-into-tech-from-non-tech-jobs/
-https://thefintechtimes.com/how-elon-musks-neuralink-could-reshape-entire-economies/
-https://inkbotdesign.com/artificial-intelligence-in-design/
-
-Again, really love your work.
-
-
-Warmly,
-
-Artur Meyster
-Founder
-<https://careerkarma.com/>LinkedIn <https://www.linkedin.com/in/meyster>
-
-Click here
-<https://h1.mltrk.io/unsubscribe/bEdReVdMblVOYThhc0ZFUzlaaG45NHdPUlp0bWFZVUpnb0ttN3VSc1licytySHRjNkIrVEh0Uk9sZEwralh3MzNjeEtGcmpZNGlMcXhNVG84OU5tWXpDUzB0eXVoWVR3NFBOVVM5S3pqS3RyVzJLMzVuUURIa2FEMlJLMHg4cVEtLTVqMlIvWmN2VjZWbDBuRDd2RmR1OUE9PQ==--745ea3b7edc5d9463837c3d05647ae528e3aeff5>
-if you don't want to hear from me again.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
+iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
+iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
+ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
+q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
+o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
+iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
+j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
+gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
+gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
+44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
+5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
+m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
+iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
+uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
+44KJDQoNCuOAgGh0dHBzOi8vd3d3LnNtYmNjLmNjDQoNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKU
+geKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pag55m66KGM6ICF4pagDQrkuInkupXkvY/lj4vjgqvj
+g7zjg4nmoKrlvI/kvJrnpL4NCg0KICAgIGh0dHBzOi8vd3d3LnNtYmNjLmNjDQoNCg0K4oC75pys
+44Oh44O844Or44Gv6YCB5L+h5bCC55So44Gn44GZ44CCDQrigLvmnKzjg6Hjg7zjg6vjga/jgIxW
+cGFzc+OAjeOBq+ODoeODvOODq+OCouODieODrOOCueOCkuOBlOeZu+mMsuOBhOOBn+OBoOOBhOOB
+n+aWueOBq+OBiumAgeOCiuOBl+OBpuOBhOOBvuOBmeOAgg0K4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSBCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
+QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
+bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
