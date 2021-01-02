@@ -2,66 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374D92E85D1
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 Jan 2021 23:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A25DA2E868C
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  2 Jan 2021 07:04:50 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 11876100EBBC0;
-	Fri,  1 Jan 2021 14:30:23 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=116.85.60.17; helo=jcb.co.jp; envelope-from=lucmotx@jcb.co.jp; receiver=<UNKNOWN> 
-Received: from jcb.co.jp (unknown [116.85.60.17])
-	by ml01.01.org (Postfix) with ESMTP id 4760F100EBBBE
-	for <linux-nvdimm@lists.01.org>; Fri,  1 Jan 2021 14:30:19 -0800 (PST)
-Message-ID: <C02802243DBAC95805E9651F42A0359D@jcb.co.jp>
-From: "MyJCB" <info@jcb.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQTXlKQ0LjgJHjgZTliKnnlKjnoro=?=
-	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
-Date: Sat, 2 Jan 2021 06:30:15 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
-Message-ID-Hash: RJXF7POSU5GEC3L4XNKWNA637NIWOXGI
-X-Message-ID-Hash: RJXF7POSU5GEC3L4XNKWNA637NIWOXGI
-X-MailFrom: lucmotx@jcb.co.jp
+	by ml01.01.org (Postfix) with ESMTP id 7FCDE100ED4AC;
+	Fri,  1 Jan 2021 22:04:48 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=kath.rafael2030@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 3B1D9100EF26A
+	for <linux-nvdimm@lists.01.org>; Fri,  1 Jan 2021 22:04:45 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id b26so52016178lff.9
+        for <linux-nvdimm@lists.01.org>; Fri, 01 Jan 2021 22:04:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=07wP4+HPBVC2VHbUnFYsgWGMeRKZwcznPDaqHki/QJQ=;
+        b=AwvEUT04dRZRxQb/2mz5Sa4Wndo/K1CL1umdComqMZUZlXVWSJQB7lcofjIcuC+ze6
+         2alNCnxiPCMJPDiYt1yQ+KX0t1o1D4fbK34NcrIInky9lgUccS8ZCOHVJCVjsdOgk2rc
+         V2OE/vo+XOF+2RNidBlnvzHq8G9xlV5R9h1SlVuRPoWSfJS/J4cLMAZQwzkamgi/oU0N
+         8GfrtrxIsh/KuLLhPYul+wfUEXTNysSTB1RGEFIbj4BY61t+AwRmMIg/PrbOXDEWLTb2
+         zLEX0d0HvAJ81vDBUOn/a4C6gYrNYwYZLfJ+g943MOR9enck0Kdy17h6xbVMDpWT8keu
+         pv+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=07wP4+HPBVC2VHbUnFYsgWGMeRKZwcznPDaqHki/QJQ=;
+        b=fFneNA1fikkdc0fWFXgrI+yoeNNmvDeT/MwAZhFs0BSjHMAdoIEdx/m6qRzuBSWnsT
+         1EjkyrbXsTEc6yf9QA1xdcmhKUn1ytb9jgCU24KJUTlqrvRaF+0INc6dyMeHyXZkCQbd
+         xH3nalfr8aFLXcaisvXVeay+01KJ1oLvtXsdL/MNrMrDFTS//EmyAo5rAAW/oAg/TUR2
+         O6xOGWfVKsHl8N+0A0u1ibFozy55zCrGpIZwDYAtDSAW7I5zk1DH6hzl0FkDRqQo9Fw6
+         2/2eHnoQQ47UB9NIewCycvfXFVsCgs3rgwsdJAQyuQ1UhNF/r1XEzWRt+KjO0RT5yKR1
+         IGeg==
+X-Gm-Message-State: AOAM531vrl+hN4aCaDEiMyKqTigB8S1kKEmwGPZG197KxPozZ4c0/7Ah
+	yD1KJhE8dsV+AHsOsNr0+BmHljhkXsFyENQTzeg=
+X-Google-Smtp-Source: ABdhPJyv5+JjtiVK0j4T9nRqiANhDYU3/AjVCG+MhVVzT0KTsgGX9L+naGOo7ypYgP8i7Y8uQAGnjTRQFzJeJWShygY=
+X-Received: by 2002:a2e:9246:: with SMTP id v6mr7657089ljg.221.1609567482716;
+ Fri, 01 Jan 2021 22:04:42 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a19:6550:0:0:0:0:0 with HTTP; Fri, 1 Jan 2021 22:04:41 -0800 (PST)
+From: Grace Obia <kath.rafael2030@gmail.com>
+Date: Sat, 2 Jan 2021 06:04:41 +0000
+Message-ID: <CADP0Tkc4zsTvGOR87UFbCtG0=7=DQyM=JTEBeeB9BzCQrL_XXA@mail.gmail.com>
+Subject: Dearest in Mind,
+To: undisclosed-recipients:;
+Message-ID-Hash: XHQBNP5T6WJC4VMKFGEX42HJ2LJYXZYO
+X-Message-ID-Hash: XHQBNP5T6WJC4VMKFGEX42HJ2LJYXZYO
+X-MailFrom: kath.rafael2030@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: grace.graceobia@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RJXF7POSU5GEC3L4XNKWNA637NIWOXGI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XHQBNP5T6WJC4VMKFGEX42HJ2LJYXZYO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
-44KJDQoNCuOAgGh0dHBzOi8vd3d3LmpjYi1jby1qcC52aXANCg0K4pSB4pSB4pSB4pSB4pSB4pSB
-4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSBDQrilqDnmbrooYzogIXilqANCkpDQuOCq+ODvOOD
-ieagquW8j+S8muekvg0KDQogICAgaHR0cHM6Ly93d3cuamNiLWNvLWpwLnZpcA0KDQrigLvmnKzj
-g6Hjg7zjg6vjga/pgIHkv6HlsILnlKjjgafjgZnjgIINCuKAu+acrOODoeODvOODq+OBr+OAjE15
-SkNC44CN44Gr44Oh44O844Or44Ki44OJ44Os44K544KS44GU55m76Yyy44GE44Gf44Gg44GE44Gf
-5pa544Gr44GK6YCB44KK44GX44Gm44GE44G+44GZ44CCDQrilIHilIHilIHilIHilIHilIHilIHi
-lIHilIHilIHilIHilIHilIHilIHilIEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
-bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
-LWxlYXZlQGxpc3RzLjAxLm9yZwo=
+-- 
+
+Dearest in Mind,
+
+My name is Mrs. Katherine Rafael, a business woman an Ivorian Citizen
+and born in 1961. I have a mission for you worth $3 500, 000,00 (Three
+Million Five Hundred Thousand United State Dollars) which I intend
+using for CHARITY.
+
+I am a breast cancer woman and have told by doctor that I will die in
+no distance future, now and want to donate this money for charity
+through you by transferring this money to your account, to enable
+people in your area benefit from it.
+
+Could you be the one I will use in this noble transaction before I
+will go for my surgery?
+
+
+Mrs.Katherine Rafael
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
