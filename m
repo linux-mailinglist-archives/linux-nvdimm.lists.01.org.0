@@ -2,49 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9C12E9EBE
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 Jan 2021 21:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7052E9F65
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 Jan 2021 22:16:45 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5A229100EC1E8;
-	Mon,  4 Jan 2021 12:19:39 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7E698100ED49C;
+	Mon,  4 Jan 2021 13:16:43 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7590F100EC1E6
-	for <linux-nvdimm@lists.01.org>; Mon,  4 Jan 2021 12:19:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YBgRGjn+yLmFC+9fNHoHRFsXeCxEkKsHezqEmQ36bEQ=; b=XIYp5yjtmgky7iNoVOQb+o3wZr
-	3L/KpsgoiU4PgUF/2JfxkJRLW1hcLCYXszkagaCvEljXe9Uz+u8+jE4+N39M+0neNh8AXn+EbgqWM
-	UAxR+Arf7ji2B/OFG3Uuzpv6oLlzE/WKH4NRTf2C5ZLJ22nsjlTWilnsqIdsGcypiK9aJg4IAg5lM
-	1g4r0kbHQm4M2Ktv1xQeCRGIRJ24dRRo5PufxYiZ9vMcYqdiYxSuk/oTaFj4aJIls1KwvNY3iTP+R
-	Trby8W4LwayqM2o9OfZDsuFaS3Xmo2k+k2H9fTJbw7qxTzxk44Reo+ivVA4pG6SNp99GU0kgCtR58
-	KvCbKeJQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-	id 1kwWHJ-000VKI-Fy; Mon, 04 Jan 2021 20:17:08 +0000
-Date: Mon, 4 Jan 2021 20:16:33 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2] fs/dax: include <asm/page.h> to fix build error on ARC
-Message-ID: <20210104201633.GE22407@casper.infradead.org>
-References: <20210101042914.5313-1-rdunlap@infradead.org>
- <CAPcyv4jAiqyFg_BUHh_bJRG-BqzvOwthykijRapB_8i6VtwTmQ@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id AE089100EF24E
+	for <linux-nvdimm@lists.01.org>; Mon,  4 Jan 2021 13:16:40 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id j16so28865840edr.0
+        for <linux-nvdimm@lists.01.org>; Mon, 04 Jan 2021 13:16:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mnKfDoOx66q+e0Lit8qASXnCRcAau0LZz1jjX0h1mMI=;
+        b=x0BSXLxek3pk4fU9rjITIby4RDN/i8u1yc0iV63Y5fN9t7XNJXFugUhQOZvRBa3/fT
+         NnzRZk70xlC+v0AS8i8Q8U1oM1Q4jUN1WaIXy0yVxUmr8CigRBuTYiYiD77cw7XnRYNg
+         AQKYFOj0t8fBVjqhQiRJQ46xXdZ5qccMBRQJc6lQ2lfc8JxFlw8kWo41PnUbzJXKgKQJ
+         LMaDkFKRqU8+zMd6ddthox1+O1Z4gr702uksqYFDObKideo8vx80vIc2wbO5d9qyuZX0
+         +oXmDJyRQTooHxJc8tIjRllxlq96HkSdCfB+lJxuM8LjKp/spy01Y2gJSSlL4Xkg7pIJ
+         ni0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mnKfDoOx66q+e0Lit8qASXnCRcAau0LZz1jjX0h1mMI=;
+        b=GenW4s5KOMd/PyHwIXkLT9sqImvnuv5gaI8it7mpLNbDABCPx4MdzoHyoq9tsGfE0X
+         vXH9yvY5018VDU3T+fhMJh0n3kpvzL1O1Xjj+Vkj1Ik2KUuZpfp2GpfpIFNjYVR8P4MM
+         +EIDl8TMwl61CduQ4Ljhh2fhu9liimSDFGFZKRs9WtVfgQDiNgQUKIcWlohzZh5tp5b/
+         ov5VLNsA0LUx+VP1EtawXWv19n5VUOwbXrkhpS1AwsNJ9DHf6issc8LFMr8OGOdpgjQH
+         tAEqb8V+iDoydNFtk0dbzXLT/tg/NrcGdIRG8LlpThx+KmswOvSdmPXHTBmUZbd8d6gM
+         VBYg==
+X-Gm-Message-State: AOAM533D1G5tEPr3MglxefHRlM/rdGpLaha8Q4jW03rbuy/u5JiL/u0x
+	5lw1K5OeYQhcAzPiMd4y/5+E71NNs773A4bG/rQRcA==
+X-Google-Smtp-Source: ABdhPJzSFrzuW35He0bT4+4PgVeyKK9P6is8Ha/LA4Q6+q+RoJA0p/dFoXCcETkeECxmCu8v4jPf+Zd92V0ZF9ZMODI=
+X-Received: by 2002:aa7:cdc3:: with SMTP id h3mr17778068edw.52.1609794998256;
+ Mon, 04 Jan 2021 13:16:38 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4jAiqyFg_BUHh_bJRG-BqzvOwthykijRapB_8i6VtwTmQ@mail.gmail.com>
-Message-ID-Hash: JFNW5A73IPQSJDXSVI6QO7APEVHMBB6T
-X-Message-ID-Hash: JFNW5A73IPQSJDXSVI6QO7APEVHMBB6T
-X-MailFrom: willy@infradead.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Randy Dunlap <rdunlap@infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>, Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org, Vineet Gupta <vgupts@synopsys.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+References: <20201225013546.300116-1-jianpeng.ma@intel.com> <20201228171758.GO1563847@iweiny-DESK2.sc.intel.com>
+In-Reply-To: <20201228171758.GO1563847@iweiny-DESK2.sc.intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 4 Jan 2021 13:16:32 -0800
+Message-ID: <CAPcyv4gm-CnOAYqNYL29TUCQF04f9uCQOgF1ndRpu=_7e6T_kQ@mail.gmail.com>
+Subject: Re: [PATCH] libnvdimm/pmem: remove unused header.
+To: Ira Weiny <ira.weiny@intel.com>
+Message-ID-Hash: BQU6BS2KWU6LUBHQBENCLGNMECH27SVK
+X-Message-ID-Hash: BQU6BS2KWU6LUBHQBENCLGNMECH27SVK
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Jianpeng Ma <jianpeng.ma@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JFNW5A73IPQSJDXSVI6QO7APEVHMBB6T/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BQU6BS2KWU6LUBHQBENCLGNMECH27SVK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,33 +67,16 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 04, 2021 at 12:13:02PM -0800, Dan Williams wrote:
-> On Thu, Dec 31, 2020 at 8:29 PM Randy Dunlap <rdunlap@infradead.org> wrote:
-> > +++ lnx-511-rc1/fs/dax.c
-> > @@ -25,6 +25,7 @@
-> >  #include <linux/sizes.h>
-> >  #include <linux/mmu_notifier.h>
-> >  #include <linux/iomap.h>
-> > +#include <asm/page.h>
-> 
-> I would expect this to come from one of the linux/ includes like
-> linux/mm.h. asm/ headers are implementation linux/ headers are api.
+On Mon, Dec 28, 2020 at 9:18 AM Ira Weiny <ira.weiny@intel.com> wrote:
+>
+> On Fri, Dec 25, 2020 at 09:35:46AM +0800, Jianpeng Ma wrote:
+> > 'commit a8b456d01cd6 ("bdi: remove BDI_CAP_SYNCHRONOUS_IO")' forgot
+>
+> This information should be part of a fixes tag.
 
-It does indeed come from linux/mm.h already.  And a number of
-other random places, including linux/serial.h.  Our headers are a mess,
-but they shouldn't be made worse by adding _this_ include.  So I
-second Dan's objection here.
-
-> Once you drop that then the subject of this patch can just be "arc:
-> add a copy_user_page() implementation", and handled by the arc
-> maintainer (or I can take it with Vineet's ack).
-> 
-> >  #include <asm/pgalloc.h>
-> 
-> Yes, this one should have a linux/ api header to front it, but that's
-> a cleanup for another day.
-
-Definitely more involved.
+Oh, I was just about to comment "don't provide a Fixes tag for pure
+cleanups". Fixes is for functional issues that a backporter should
+consider.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
