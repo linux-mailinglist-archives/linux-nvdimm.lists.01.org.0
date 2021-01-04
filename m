@@ -1,66 +1,114 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30572E8A87
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  3 Jan 2021 06:09:59 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9C52E9A28
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 Jan 2021 17:12:42 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 49EDA100EF25B;
-	Sat,  2 Jan 2021 21:09:57 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=43.255.29.229; helo=qao.nfgsreyhtdf.xyz; envelope-from=eg@qao.nfgsreyhtdf.xyz; receiver=<UNKNOWN> 
-Received: from qAo.nfgsreyhtdf.xyz (unknown [43.255.29.229])
-	by ml01.01.org (Postfix) with ESMTP id 523ED100EF250
-	for <linux-nvdimm@lists.01.org>; Sat,  2 Jan 2021 21:09:52 -0800 (PST)
-Sender: eg@qAo.nfgsreyhtdf.xyz
-Message-ID: <20210103130952376843@qAo.nfgsreyhtdf.xyz>
-From: "smbc.co.jp" <smbc@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?77yc5LiJ5LqV5L2P5Y+L44Kr44O844OJ77ye44GU5Yip55So56K66KqN44Gu44GK6aGY44GE?=
-Date: Sun, 3 Jan 2021 13:09:41 +0800
+	by ml01.01.org (Postfix) with ESMTP id D2EE8100EC1DF;
+	Mon,  4 Jan 2021 08:12:39 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 7481B100EC1CD
+	for <linux-nvdimm@lists.01.org>; Mon,  4 Jan 2021 08:12:37 -0800 (PST)
+IronPort-SDR: N86Dii2MFo9YsvCAZ0hqj/AxyBfNB9eAKIll4gxGyBxHYsa5jFrvUMOOsF8Tuyuyj4QR9r4Gge
+ lI3rtsodG24Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="176192300"
+X-IronPort-AV: E=Sophos;i="5.78,474,1599548400";
+   d="scan'208";a="176192300"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 08:12:36 -0800
+IronPort-SDR: G4qPXJ/u5P7tzi0LQVR3bnnVjEt8/+JF5VfHTuJGXPNUaBkbM3EQCfJ8JGG7X1LE/P/0DsZhkr
+ CrUb9zAWHYxg==
+X-IronPort-AV: E=Sophos;i="5.78,474,1599548400";
+   d="scan'208";a="378471325"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 08:12:36 -0800
+Date: Mon, 4 Jan 2021 08:12:36 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v2] fs/dax: include <asm/page.h> to fix build error on ARC
+Message-ID: <20210104161236.GE3097896@iweiny-DESK2.sc.intel.com>
+References: <20210101042914.5313-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-X-mailer: Mmy 2
-Message-ID-Hash: NTISVE7SC3WWPYOUUCTDY6NLSPJTLTMS
-X-Message-ID-Hash: NTISVE7SC3WWPYOUUCTDY6NLSPJTLTMS
-X-MailFrom: eg@qAo.nfgsreyhtdf.xyz
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Content-Disposition: inline
+In-Reply-To: <20210101042914.5313-1-rdunlap@infradead.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: R2KR3GQCV36QCCSNKQPHEHWAT222HCII
+X-Message-ID-Hash: R2KR3GQCV36QCCSNKQPHEHWAT222HCII
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>, Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org, Vineet Gupta <vgupts@synopsys.com>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NTISVE7SC3WWPYOUUCTDY6NLSPJTLTMS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R2KR3GQCV36QCCSNKQPHEHWAT222HCII/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQrjgIAgIA0KDQoNCuacrOODoeODvOODq+OBr+ODieODoeOCpOODs+OBrumBi+eUqO+8iOODoeOD
-vOODq+mAgeWPl+S/oeOChOODm+ODvOODoOODmuODvOOCuOOBruihqOekuu+8ieOBq+mWouOCj+OC
-iw0K6YeN6KaB44Gq6YCa55+l44Go44Gq44KK44G+44GZ44CCDQoNCuOBhOOBpOOCguW8iuekvuOC
-q+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOB
-vuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPliKnnlKjjga7mgKXlopfjgavkvLTj
-gYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Poppbjgrfjgrnjg4bjg6DjgI3jgpLl
-sI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OCq+ODvOODieOBruOBlOWIqeeUqOOB
-q+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOBo+OBpuOBiuOCiuOBvuOBmeOAgg0K
-DQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTliKnnlKjjgYvjganjgYbjgYvjgpLn
-orroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrlj5blvJXjgYzjgYLjgorjgb7jgZfj
-gZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHjgqvjg7zjg4njga7jgZTliKnnlKjj
-gpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgIHjgZTpgKPntaHjgZXjgZvjgabj
-gYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
-44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
-5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHj
-garjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozj
-govjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXj
-gYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh44KJ4pagDQoNCg0K6Iez5oCl44CB
-UyBNIEIgQ+OCq+ODvOODieS8muWToeOCteODvOODk+OCueOBq+aDheWgseOCkuWGjeeZu+mMsuOB
-l+OBpuOBj+OBoOOBleOBhA0KDQoNCuKWoOeZuuihjOiAheKWoA0K5LiJ5LqV5L2P5Y+L44Kr44O8
-44OJ5qCq5byP5Lya56S+DQrjgIBodHRwczovL3d3dy5zbWJjLWNhcmQuY29tLw0K44CSMTA1LTgw
-MTEg5p2x5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLnlaoyMOWPtyDmsZDnlZnjg5Pjg6vjg4fj
-gqPjg7PjgrANCg0KDQoNCg0KQ29weXJpZ2h0IChDKSAyMDIwIFN1bWl0b21vIE1pdHN1aSBDYXJk
-IENvLiwgTHRkLg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5v
-cmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlz
-dHMuMDEub3JnCg==
+On Thu, Dec 31, 2020 at 08:29:14PM -0800, Randy Dunlap wrote:
+> fs/dax.c uses copy_user_page() but ARC does not provide that interface,
+> resulting in a build error.
+> 
+> Provide copy_user_page() in <asm/page.h> (beside copy_page()) and
+> add <asm/page.h> to fs/dax.c to fix the build error.
+> 
+> ../fs/dax.c: In function 'copy_cow_page_dax':
+> ../fs/dax.c:702:2: error: implicit declaration of function 'copy_user_page'; did you mean 'copy_to_user_page'? [-Werror=implicit-function-declaration]
+> 
+> Fixes: cccbce671582 ("filesystem-dax: convert to dax_direct_access()")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+
+Looks reasonable
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Acked-by: Vineet Gupta <vgupts@synopsys.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-nvdimm@lists.01.org
+> ---
+> v2: rebase, add more Cc:
+> 
+>  arch/arc/include/asm/page.h |    1 +
+>  fs/dax.c                    |    1 +
+>  2 files changed, 2 insertions(+)
+> 
+> --- lnx-511-rc1.orig/fs/dax.c
+> +++ lnx-511-rc1/fs/dax.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/sizes.h>
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/iomap.h>
+> +#include <asm/page.h>
+>  #include <asm/pgalloc.h>
+>  
+>  #define CREATE_TRACE_POINTS
+> --- lnx-511-rc1.orig/arch/arc/include/asm/page.h
+> +++ lnx-511-rc1/arch/arc/include/asm/page.h
+> @@ -10,6 +10,7 @@
+>  #ifndef __ASSEMBLY__
+>  
+>  #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
+> +#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+>  #define copy_page(to, from)		memcpy((to), (from), PAGE_SIZE)
+>  
+>  struct vm_area_struct;
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
