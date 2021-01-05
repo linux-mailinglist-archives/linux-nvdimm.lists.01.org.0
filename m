@@ -1,64 +1,153 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9F02EA45D
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  5 Jan 2021 05:19:03 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021762EA4A4
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  5 Jan 2021 06:07:18 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5F303100EBBB9;
-	Mon,  4 Jan 2021 20:19:02 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 526F3100EBBC0;
+	Mon,  4 Jan 2021 21:07:17 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=149.117.87.133; helo=smtprelay-out1.synopsys.com; envelope-from=vineet.gupta1@synopsys.com; receiver=<UNKNOWN> 
+Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com [149.117.87.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8C619100EBBB1
-	for <linux-nvdimm@lists.01.org>; Mon,  4 Jan 2021 20:19:00 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id ce23so39574363ejb.8
-        for <linux-nvdimm@lists.01.org>; Mon, 04 Jan 2021 20:19:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Q8gOUdE50UNp9LhAlhCoddse7EZKmhUhGDFbU73aCc4=;
-        b=QQAB3r3U7V/2S0pr/HlzDsASSQCQL5YI2Yu+LKkp2b3uUmYomjrfg0xQ/kZkvLyJQ6
-         upccUaRauLNncsDHq4Dan5ZBkaKXTJoCxVNuWo6SVKRMoKr0n82h1XgfvAGBdNfBPM3x
-         tpbv+nMXZ/yauTzmx7BYKMKDtKWHQl+RnsMxuRFL2Jxbf04JYY8nN/uKYxGMJLS/kCyt
-         15iKGTLQ6np+ytfvUZKLGX8b/FbMtjsr+qXMrCWxWeH2+cjGgV3haAtGTdB0LH492H/g
-         tnFPN+k4sObUPr8XYZaAxDMevIG02HiaO09sA8oN6jeOYaDd9pD9reN7rEjfXdWPhrcE
-         22fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Q8gOUdE50UNp9LhAlhCoddse7EZKmhUhGDFbU73aCc4=;
-        b=q9jz6uMLl7EPY6APK9ETjwjXkT7sYkdSsMnambiBYVZMmWhUXcRHYfbJV+ebvqT95F
-         I3Bvj2NtK3n3ya74e5AutLVh9XWD1xFOYuSLAfKXB/0Pk0epo6PeQJwN0WcKz17Jt7Il
-         ggUAbhKwzbfVyH9IzQiEKkyvfNFJ9lRhuBx7ILO5SWIHQvEQwsbsZf7PXzgoeMnMRfw0
-         6SckVPXX3mF7AsuOaKbRVihhAAOl+SoV4/gQdBG9mL+eVFY79Vf/C+O33sA8ed3+vXlL
-         MeC8Fk1W+NJYVbikRDxU9WJXkAPYT9EjO/ojBp86F7gz2TSzeO9G3K73oOO+OqVHPxbo
-         XajA==
-X-Gm-Message-State: AOAM530vlmJxLXgZKoOfJsbcgkoVTfHBUWmSAqrPEnoEfNc4JVhmuNBh
-	omoGnN4wOC5UFnSPcaIozofeF3ZfvcEZfr8uBEvJEyAFrNw=
-X-Google-Smtp-Source: ABdhPJwUnQsFATKp5CduacMlqRJgBHibGCWUhJq78mdMhVMEWJEhUC+nU/NhEqVFi56Uab8rCE8D+QUrCHC/kVrYF4o=
-X-Received: by 2002:a17:907:c15:: with SMTP id ga21mr69757557ejc.472.1609820338819;
- Mon, 04 Jan 2021 20:18:58 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 6CF78100EBBB9
+	for <linux-nvdimm@lists.01.org>; Mon,  4 Jan 2021 21:07:13 -0800 (PST)
+Received: from mailhost.synopsys.com (badc-mailhost1.synopsys.com [10.192.0.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 09C41C0091;
+	Tue,  5 Jan 2021 05:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+	t=1609823233; bh=Ak7v+pljvwgmkCRkPQgXYQSoEcv0eiBbTuu6sJqVb1A=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=mZ9sR8+ijE7/ZKz8n+iVlOP2ve6tE10LGnfXTVOjvYESrv4arHhve87lyGnN61uaf
+	 NLWQxgK5ySJEpKd3CoYfPvgipcy0Li0cYNuYGzj/KsWCMu23J0oXB8re9lwkCBeTen
+	 o0Bc7nxy9GXRY8R1U9sskpwWhEzD8sVaRaeQyL8M9mMDSRlvc0NcpcKCL9jLnhxK6S
+	 LjfRYgut8Jx5kCugYADwriS6PLtTYer0eBVOqKeB2nNwVLsVHSzNxQmVbUIY8S9FuB
+	 2wPpA3WIREWMgjqnv4odqTxyYMt3USnezHlNr2Om7ZH1kHa6I0Dj8dKupm5mwMc6mv
+	 2ozF8wBbyqLdw==
+Received: from o365relay-in.synopsys.com (us03-o365relay3.synopsys.com [10.4.161.139])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mailhost.synopsys.com (Postfix) with ESMTPS id 2BA90A0071;
+	Tue,  5 Jan 2021 05:07:09 +0000 (UTC)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2173.outbound.protection.outlook.com [104.47.55.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail.protection.outlook.com", Issuer "GlobalSign Organization Validation CA - SHA256 - G3" (verified OK))
+	by o365relay-in.synopsys.com (Postfix) with ESMTPS id 7DBC7800C1;
+	Tue,  5 Jan 2021 05:07:07 +0000 (UTC)
+Authentication-Results: o365relay-in.synopsys.com; dmarc=pass (p=reject dis=none) header.from=synopsys.com
+Authentication-Results: o365relay-in.synopsys.com; spf=pass smtp.mailfrom=vgupta@synopsys.com
+Authentication-Results: o365relay-in.synopsys.com;
+	dkim=pass (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.b="c/sjXhuV";
+	dkim-atps=neutral
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aBm5SAHQbxrHRXR+BmUbGtkvJAE0pd88gcdtucdjeUfiwYEugAT+LzG9QevssbrYsgPzxZKyctXELJsFqQxH0QT5cyl/HmRo3vMPjic7tGGro9cBoOJsASOTIKSxfUUf8jqe8tbcHGjLPfIJ7oVEOQYPOL6O+G5hK+slpr2veNx2VXNrFP6NNfC1fZv34SCcRa87zSVh7g6GLpnsbBKnQPIheN6Q9jfXUjL8uwGYIfUppXHdDvMJ1se8RGdv3nAVB9NQt1uoYSGBBAUYo3Uii0zh+rQwsTb3GAiepM8WPGiOiDQ2MS56CkVTHTp4arVld2KRYAafqBklo3Sl/VmcwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ak7v+pljvwgmkCRkPQgXYQSoEcv0eiBbTuu6sJqVb1A=;
+ b=JHtbK1GjP5Z2B8QZckXP+uTcnWnURBzScY8bk3zDIPX+215iH7/jXxyWLOIRXdvhtsywW1mNgGQ1LeVR1Bv0a1zVjQTmvRGQQ1iHuyyuxCMmAbmD2ymXjGUPeAaUvZmWDH1/CAUyWrcHr0zmQE7svvgP8DbnbNPwSBxIW5fvJ/y37JHHfkjDSlv4vc1avbOvRa/ZYkrXv1RHLOx+8JbPs7pBdd5K8DQyGyg9NR0BoaKufDSG4TSw3AcFIlPgQ7xQAopdQlpqS4Ebd+4LLmOE9dudOr/nDWHro8cUBrPO5e+ZCkr/JdbIbhiTB/uH0wVE70AUt61N7bhYtp8JkUnEDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
+ dkim=pass header.d=synopsys.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ak7v+pljvwgmkCRkPQgXYQSoEcv0eiBbTuu6sJqVb1A=;
+ b=c/sjXhuV1qWd/VE52o4WG3dwK+3AHQwhWLN+Eo1+S3TV2sAjgrbdVBsnCPF2Ql3MAKCuOnaKAvEM0ZAeW1J0O5WaiIJjdeGia603kENaf155ydOPugcX9XiebVfWlUdqkQ/4Biaxc9UEkE0yh1kUk/KBvTpHSxN0xzNvSXe9voU=
+Received: from BYAPR12MB3479.namprd12.prod.outlook.com (2603:10b6:a03:dc::26)
+ by BYAPR12MB3254.namprd12.prod.outlook.com (2603:10b6:a03:137::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3721.19; Tue, 5 Jan
+ 2021 05:07:05 +0000
+Received: from BYAPR12MB3479.namprd12.prod.outlook.com
+ ([fe80::c0e3:82e9:33d2:9981]) by BYAPR12MB3479.namprd12.prod.outlook.com
+ ([fe80::c0e3:82e9:33d2:9981%6]) with mapi id 15.20.3721.024; Tue, 5 Jan 2021
+ 05:07:05 +0000
+X-SNPS-Relay: synopsys.com
+From: Vineet Gupta <Vineet.Gupta1@synopsys.com>
+To: Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] arch/arc: add copy_user_page() to <asm/page.h> to fix
+ build error on ARC
+Thread-Topic: [PATCH v3] arch/arc: add copy_user_page() to <asm/page.h> to fix
+ build error on ARC
+Thread-Index: AQHW4xWINHlmzpy9lE+McOvZMOuaoKoYewsA
+Date: Tue, 5 Jan 2021 05:07:05 +0000
+Message-ID: <503084f4-b082-edc7-1d11-c3d712a5b4b5@synopsys.com>
+References: <20210105034453.12629-1-rdunlap@infradead.org>
+In-Reply-To: <20210105034453.12629-1-rdunlap@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
+authentication-results: infradead.org; dkim=none (message not signed)
+ header.d=none;infradead.org; dmarc=none action=none header.from=synopsys.com;
+x-originating-ip: [24.4.73.83]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ed38f42f-74f9-421f-acda-08d8b137bec1
+x-ms-traffictypediagnostic: BYAPR12MB3254:
+x-microsoft-antispam-prvs: 
+ <BYAPR12MB32548CA255AF3794B5146155B6D10@BYAPR12MB3254.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1107;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ GwK/kRD3rbp4yVV1AusCDLjdm/c9c3//QV2muooG8HY6gygrZRbZrmktENkOY2qsiv2et0i/gCRdl82gk2q/9sNzSsgl8GNVb7mNPxzJEk4TDEo8fLwOIRTAloDHrVDkfzVCcTCUcsPH1ncr7W80b8x5O3mUO3N56G50cKF1YrD8K+qsz9VPIiwFIWNYXS/yaL3CeoArjaEUCg0FZAdxSMO//v/NPMB7eR+oCjjnol40YaRgHcCgdsSjPiRXDgGweDQgBkUWWMqTNewQUrAUxnLWoTPMfau03cEoUPgKLcKgL8BXFCetk9WuR88/Obf1YpuZehN6zvcFuHveXbiBPsb/9BE7ouxvcWJDHJ5Y0SCpBqNKTMbftgPS0Zj9mMXUnlV5/49iiTa6s/jObGfw63obsKXhd4HUA6tyliPmn5LpHqwtSUozZmdC9jQYOr9uDwI3BPZgT6YpeOAbRavfveEuw6we4+nAb3NKQkCo6gg=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3479.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(39860400002)(376002)(366004)(346002)(136003)(31696002)(36756003)(186003)(54906003)(316002)(110136005)(26005)(6506007)(53546011)(8936002)(71200400001)(64756008)(76116006)(66946007)(66446008)(4326008)(2906002)(86362001)(2616005)(66476007)(31686004)(7416002)(478600001)(5660300002)(8676002)(6486002)(6512007)(66556008)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: 
+ =?utf-8?B?SGhHWE44ZVhBTGZxTUZtUk83eFJIZzB3WExIeHc2alprTEZvc3ZTMVFCWTJW?=
+ =?utf-8?B?Y1JuK1hreFM5L0V1a2FudER3TWlIdkFBZm5RZnBUWHY4V01ZOHBrbi9HdkRo?=
+ =?utf-8?B?THNCMHRTNWtiZS9QRm5VWnNzaUhaVmhuN0tEWWltQVFTdEg4cm43c24rNjhD?=
+ =?utf-8?B?S0taQXZnQmJDZW00N0ZwM1RCbjNsQWRvOXllOFlLL0E0dnl4R09Oc3lTVXdD?=
+ =?utf-8?B?VmNFZWlrdi9rdTRWZEN3OGQxdVMyem9xK2pRQVJoRHhKWXl6YUd6bjBzdHpT?=
+ =?utf-8?B?cW9SUkVLMFR6K1hTU2djUjBJRlMxclZGY3JUV1JYYmxjd0EwSHVZdWl5TkJO?=
+ =?utf-8?B?bFEwNWJ3a2QySFlKMFJJN1pYdWdoMDBLcG12UHRyblg5M3AxU29Zd3FmajhZ?=
+ =?utf-8?B?dW1WT2E5YTlUa2JEVDQwT21UbXM2S2wxM2pTbDZnbTNGcDB1MXNNUFZ6VnpI?=
+ =?utf-8?B?Q1hPUjB0NlFWTTNRRGsvWVlnWXBTbDVSTHFKdUsrSE1PSStZNkRQWGNtcGxz?=
+ =?utf-8?B?VkNQa2IrbzZEMUxxNlpsWHdSSk4rQzFnQ3NHRzRGeXJHd3pRY3AyVi9qYkJG?=
+ =?utf-8?B?TWpOTnFWVkJoY0p1SGZSVERVNkdjbis0anZMT0V6aUkyWEdqTFNrakdSMys3?=
+ =?utf-8?B?K0lSQTBGRFVsQmp6MkRRT09kSkhZNEQwT1pJWHZxMW15MUdteEhIYk10WTZv?=
+ =?utf-8?B?ZnhnZUFieVpOdXVqMUNGalBYQk92VjQyYndXU2thU2xJSW5WQ1hISWgvWGt4?=
+ =?utf-8?B?YmRPdGtseElVV0x0WGpNNHV3M2hVK0sxRjlqSzRvSllrUVBUeVZ6b2NrYUVj?=
+ =?utf-8?B?dVRUMzZ0dmNuZWlPNjBKT3dacUN3VGxRV0ZldHdsTEFNUHhGb2ZtYVBnTjF5?=
+ =?utf-8?B?NWZ0UEhhV0xxc0JlbldwYWVWU25aVzFqbFA4YVRXZkU1NFRWQ2ZLVE9jR0Na?=
+ =?utf-8?B?SUtKMmpuMGVVMm1wOWFJT1h5TjJkbEloZGp0WG13VGpJZ0ZRT2NFK2NWSjVi?=
+ =?utf-8?B?UW1VenpkT1NCODhiVE9mL0ZSbVBzRjFLVmVRNXJEdHhEdmhJVlkvOS9mQU1Z?=
+ =?utf-8?B?UC9VMzd5WFo1S3NiM3M3ay9aV3REVGZ4d21JVGdPcCthTS9TMmFpZUxLVit6?=
+ =?utf-8?B?Nng3L3M0akJrNFlVNVhwZjNzVVJuVXNlVTlxUlhEODZidVdMY0UvVGw3VVBR?=
+ =?utf-8?B?bXdGcVVEQ201TjZNSFZIeHlvWHdIVnBTQndaMlhsNXBzUW1wMC9yZ3AxSXAx?=
+ =?utf-8?B?QSs2WmY3NUU0QUxabzdRL2c3QzNFZ2NaNDUwcFRqdnZnRitzV2g5bGhud1pO?=
+ =?utf-8?Q?dzfE25dWElQgs=3D?=
+x-ms-exchange-transport-forked: True
+Content-ID: <895D86CCCCA3BF40998EEAF54ED487E2@namprd12.prod.outlook.com>
 MIME-Version: 1.0
-References: <160697689204.605323.17629854984697045602.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <160697689204.605323.17629854984697045602.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 4 Jan 2021 20:18:52 -0800
-Message-ID: <CAPcyv4hdrYFCO6xXv0wfM4DFCyGAeYDETJwmJVOOtsJSKwEjNA@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: Fix leak of pmd ptlock
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
-Message-ID-Hash: VYGE24COHEWUOAKVBV5RO5OBGBK3TUUD
-X-Message-ID-Hash: VYGE24COHEWUOAKVBV5RO5OBGBK3TUUD
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: stable <stable@vger.kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Yi Zhang <yi.zhang@redhat.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>
+X-OriginatorOrg: synopsys.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3479.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed38f42f-74f9-421f-acda-08d8b137bec1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jan 2021 05:07:05.3007
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hsMkOMkQf9kKkEMsyoXUfcoFerp2tLOIu2zTVfXKM4twJLPGWhL7jC8VJQ6u7pWkUwp1AdtDgdkmblOIsb/KEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB3254
+Message-ID-Hash: CRVUOANDZWRGTPRUGSLS2E5D2DOUV3RQ
+X-Message-ID-Hash: CRVUOANDZWRGTPRUGSLS2E5D2DOUV3RQ
+X-MailFrom: Vineet.Gupta1@synopsys.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: kernel test robot <lkp@intel.com>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VYGE24COHEWUOAKVBV5RO5OBGBK3TUUD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CRVUOANDZWRGTPRUGSLS2E5D2DOUV3RQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,87 +156,51 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Ping, this bug is still present on v5.11-rc2, need a resend?
+On 1/4/21 7:44 PM, Randy Dunlap wrote:
+> fs/dax.c uses copy_user_page() but ARC does not provide that interface,
+> resulting in a build error.
+> 
+> Provide copy_user_page() in <asm/page.h>.
+> 
+> ../fs/dax.c: In function 'copy_cow_page_dax':
+> ../fs/dax.c:702:2: error: implicit declaration of function 'copy_user_page'; did you mean 'copy_to_user_page'? [-Werror=implicit-function-declaration]
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> #Acked-by: Vineet Gupta <vgupta@synopsys.com> # v1
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-nvdimm@lists.01.org
+> #Reviewed-by: Ira Weiny <ira.weiny@intel.com> # v2
 
-On Wed, Dec 2, 2020 at 10:28 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> Commit 28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
-> introduced a new location where a pmd was released, but neglected to run
-> the pmd page destructor. In fact, this happened previously for a
-> different pmd release path and was fixed by commit:
->
-> c283610e44ec ("x86, mm: do not leak page->ptl for pmd page tables").
->
-> This issue was hidden until recently because the failure mode is silent,
-> but commit:
->
-> b2b29d6d0119 ("mm: account PMD tables like PTE tables")
->
-> ...turns the failure mode into this signature:
->
->  BUG: Bad page state in process lt-pmem-ns  pfn:15943d
->  page:000000007262ed7b refcount:0 mapcount:-1024 mapping:0000000000000000 index:0x0 pfn:0x15943d
->  flags: 0xaffff800000000()
->  raw: 00affff800000000 dead000000000100 0000000000000000 0000000000000000
->  raw: 0000000000000000 ffff913a029bcc08 00000000fffffbff 0000000000000000
->  page dumped because: nonzero mapcount
->  [..]
->   dump_stack+0x8b/0xb0
->   bad_page.cold+0x63/0x94
->   free_pcp_prepare+0x224/0x270
->   free_unref_page+0x18/0xd0
->   pud_free_pmd_page+0x146/0x160
->   ioremap_pud_range+0xe3/0x350
->   ioremap_page_range+0x108/0x160
->   __ioremap_caller.constprop.0+0x174/0x2b0
->   ? memremap+0x7a/0x110
->   memremap+0x7a/0x110
->   devm_memremap+0x53/0xa0
->   pmem_attach_disk+0x4ed/0x530 [nd_pmem]
->   ? __devm_release_region+0x52/0x80
->   nvdimm_bus_probe+0x85/0x210 [libnvdimm]
->
-> Given this is a repeat occurrence it seemed prudent to look for other
-> places where this destructor might be missing and whether a better
-> helper is needed. try_to_free_pmd_page() looks like a candidate, but
-> testing with setting up and tearing down pmd mappings via the dax unit
-> tests is thus far not triggering the failure. As for a better helper
-> pmd_free() is close, but it is a messy fit due to requiring an @mm arg.
-> Also, ___pmd_free_tlb() wants to call paravirt_tlb_remove_table()
-> instead of free_page(), so open-coded pgtable_pmd_page_dtor() seems the
-> best way forward for now.
->
-> Fixes: 28ee90fe6048 ("x86/mm: implement free pmd/pte page interfaces")
-> Cc: <stable@vger.kernel.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Co-debugged-by: Matthew Wilcox <willy@infradead.org>
-> Tested-by: Yi Zhang <yi.zhang@redhat.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Added to arc #for-curr.
+
+Thx,
+-Vineet
+
 > ---
->  arch/x86/mm/pgtable.c |    2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> index dfd82f51ba66..f6a9e2e36642 100644
-> --- a/arch/x86/mm/pgtable.c
-> +++ b/arch/x86/mm/pgtable.c
-> @@ -829,6 +829,8 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
->         }
->
->         free_page((unsigned long)pmd_sv);
-> +
-> +       pgtable_pmd_page_dtor(virt_to_page(pmd));
->         free_page((unsigned long)pmd);
->
->         return 1;
->
+> v2: rebase, add more Cc:
+> v3: add copy_user_page() to arch/arc/include/asm/page.h
+> 
+>   arch/arc/include/asm/page.h |    1 +
+> 
+> --- lnx-511-rc1.orig/arch/arc/include/asm/page.h
+> +++ lnx-511-rc1/arch/arc/include/asm/page.h
+> @@ -10,6 +10,7 @@
+>   #ifndef __ASSEMBLY__
+>   
+>   #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
+> +#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+>   #define copy_page(to, from)		memcpy((to), (from), PAGE_SIZE)
+>   
+>   struct vm_area_struct;
+> 
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
