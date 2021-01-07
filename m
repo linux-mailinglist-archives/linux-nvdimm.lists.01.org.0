@@ -1,136 +1,100 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A687C2ED06E
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Jan 2021 14:15:55 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB192ED311
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Jan 2021 15:54:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E9D8C100EB33B;
-	Thu,  7 Jan 2021 05:15:53 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 475E2100EB84E
-	for <linux-nvdimm@lists.01.org>; Thu,  7 Jan 2021 05:15:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1610025349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=WcMTwxKBmFx0TTx3051cBL+gyEZFsErFP3TOaLoFIRY=;
-	b=gRUxBBj+3QKi/NOiPtM0k1GcAF428e5+a2C4+YsO26c0dIx6cVYsHy5Jy8hM36UYGomR+v
-	Z3cVo3vE6srn2feskIlren4SKImvdouUJ14AQxqiNta0FWNVzvaFC8max7JePX6Or2CiJT
-	sLpVRJRex0RYSGJWzmgGLnvoaTR5f4A=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-322-7Tu4ndmSM82TvyuEKUjd5g-1; Thu, 07 Jan 2021 08:15:45 -0500
-X-MC-Unique: 7Tu4ndmSM82TvyuEKUjd5g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 51628196632C;
-	Thu,  7 Jan 2021 13:15:43 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 00A695B6AF;
-	Thu,  7 Jan 2021 13:15:42 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 107DFgOT026586;
-	Thu, 7 Jan 2021 08:15:42 -0500
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 107DFfsK026582;
-	Thu, 7 Jan 2021 08:15:41 -0500
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Thu, 7 Jan 2021 08:15:41 -0500 (EST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Steven Whitehouse <swhiteho@redhat.com>,
-        Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        Wang Jianchao <jianchao.wan9@gmail.com>,
-        "Kani, Toshi" <toshi.kani@hpe.com>,
-        "Norton, Scott J" <scott.norton@hpe.com>,
-        "Tadakamadla, Rajesh" <rajesh.tadakamadla@hpe.com>
-Subject: [RFC v2] nvfs: a filesystem for persistent memory
-Message-ID: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTP id 56020100EAB4E;
+	Thu,  7 Jan 2021 06:54:31 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=89.40.10.63; helo=pinklovesbrown.com; envelope-from=piemedypheron@target.com.au; receiver=<UNKNOWN> 
+Received: from pinklovesbrown.com (32yt.l.serverhost.name [89.40.10.63])
+	by ml01.01.org (Postfix) with ESMTP id 1FCDB100ED49E
+	for <linux-nvdimm@lists.01.org>; Thu,  7 Jan 2021 06:54:29 -0800 (PST)
+To: linux-nvdimm@lists.01.org
+Subject: projector brightness:7000 Lumens
+Message-ID: <bc4d8a31c811ad64b993d61b1cdeeccf@turbofuture.com>
+Date: Thu, 07 Jan 2021 04:52:44 +0100
+From: "Jason" <piemseypheron@target.com.au>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Message-ID-Hash: UIUDMGNNCFN5YY47M76WPSRFBBRXJY7A
-X-Message-ID-Hash: UIUDMGNNCFN5YY47M76WPSRFBBRXJY7A
-X-MailFrom: mpatocka@redhat.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: TYBJVJN5HEBDJSAY4BJ7F64CFDZOHAEM
+X-Message-ID-Hash: TYBJVJN5HEBDJSAY4BJ7F64CFDZOHAEM
+X-MailFrom: piemedypheron@target.com.au
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: bajiaongeschy@hotmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UIUDMGNNCFN5YY47M76WPSRFBBRXJY7A/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TYBJVJN5HEBDJSAY4BJ7F64CFDZOHAEM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: multipart/mixed; boundary="===============1023090782941114137=="
+
+--===============1023090782941114137==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<p>Hi,<br /><br />Hope you're having a great week.<br />I am emailing you
+today to let you know we have below&nbsp;7000 Lumens projector in our
+warehouse.</p>
+<p>Native resolution: Native 1920x1080P<br />Brightness:7000 Lumens<br
+/>Contast ratio:4000:1</p>
+<p>Digital ZOOM:80%-100%<br />Support WiFi Wireless Sync display<br />Can
+contact with all IOS phones and most Android smart phones <br />Screen
+mirroring : Support<br /><br /><span>The
+native&nbsp;</span><span><span>1920x1080p</span></span><span>&nbsp;suppor=
+t
+HD projector is perfect for watching movie and playing video games. With
+powerful 7000Lumens brightness, the HD projector produces sharp and
+colorful image that can be used under moderate room light and still
+produces clear and sharp image.<br /><br />Prices:<br />1-10 pieces 389.0=
+0
+each<br />10-50&nbsp;pieces 379.00 each<br />50-100&nbsp;pieces 369.00
+each<br />in u s d<br /><br />Would you like to order them? Just reply to
+our email with your shipping address and the shipment will be
+ready.&nbsp;</span></p>
+<p><img
+src=3D"https://ae01.alicdn.com/kf/H2117155ed95246a6aa7616ea0ca735fdI.jpg"
+width=3D"450" height=3D"450" /><img
+src=3D"https://ae01.alicdn.com/kf/H21cf92720ba949ca870440d15935ad736.jpg"
+width=3D"450" height=3D"450" /></p>
+<p><img
+src=3D"https://ae01.alicdn.com/kf/H563d5b67bed04a50bcde4669a513bd707.jpg"
+alt=3D"" width=3D"450" height=3D"450" /><img
+src=3D"https://ae01.alicdn.com/kf/H38c3623fb61f48c8a11a0da7d1e88310j.jpg?=
+width=3D1000&amp;height=3D1000&amp;hash=3D2000"
+alt=3D"" width=3D"450" height=3D"450" /></p>
+<p><img
+src=3D"https://ae01.alicdn.com/kf/H2117155ed95246a6aa7616ea0ca735fdI.jpg"
+alt=3D"" width=3D"450" height=3D"450" /><img
+src=3D"https://ae01.alicdn.com/kf/H6e10afd9b1824d13bd14d96b8e699145A.jpg"
+alt=3D"" width=3D"450" height=3D"450" /><br /><br />Would you like to ord=
+er them?
+Just reply to our email with your shipping address and the shipment will =
+be
+ready.&nbsp;<br /><br />Thanks and regards,<br />Jason Phelps<br /><br
+/></p>
+<p>&nbsp;</p>
+</body>
+</html>
+
+--===============1023090782941114137==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Hi
-
-I announce a new version of NVFS - a filesystem for persistent memory.
-	http://people.redhat.com/~mpatocka/nvfs/
-	git://leontynka.twibright.com/nvfs.git
-
-Changes since the last release:
-
-* I added a microjournal to the filesystem, it can hold up to 16 entries. 
-  Each CPU has it's own journal, so that there is no lock contention. The 
-  journal is used to provide atomicity of reaname() and extended attribute 
-  replace.
-  (note that file creation or deletion doesn't use the journal, because 
-  these operations can be deterministically cleaned up by fsck)
-
-* I created a framework that can be used to verify the filesystem driver. 
-  It logs all writes and memory barriers to a file, the entries in the 
-  file are randomly reordered (to simulate reordering in the CPU 
-  write-combining buffers), the sequence is cut at a random point (to 
-  simulate a system crash) and the result is replayed on a filesystem 
-  image.
-  With this framework, we can for example check that if a crash happens 
-  during rename(), either old file or new file will be present in a 
-  directory.
-  This framework helped to find a few bugs in sequencing the writes.
-
-* If we map an executable image, we turn off the DAX flag on the inode 
-  (because executables run 4% slower from persistent memory). There is 
-  also a switch that can turn DAX always off or always on.
-
-
-
-
-I'd like to ask about this piece of code in __kernel_read:
-	if (unlikely(!file->f_op->read_iter || file->f_op->read))
-		return warn_unsupported...
-and __kernel_write:
-	if (unlikely(!file->f_op->write_iter || file->f_op->write))
-		return warn_unsupported...
-
-- It exits with an error if both read_iter and read or write_iter and 
-write are present.
-
-I found out that on NVFS, reading a file with the read method has 10% 
-better performance than the read_iter method. The benchmark just reads the 
-same 4k page over and over again - and the cost of creating and parsing 
-the kiocb and iov_iter structures is just that high.
-
-So, I'd like to have both read and read_iter methods. Could the above 
-conditions be changed, so that they don't fail with an error if the "read" 
-or "write" method is present?
-
-Mikulas
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1023090782941114137==--
