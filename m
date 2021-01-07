@@ -1,147 +1,259 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26392ED48D
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Jan 2021 17:43:57 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD042ED70E
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Jan 2021 19:59:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 425D7100EAB56;
-	Thu,  7 Jan 2021 08:43:56 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=mingkaidong@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 641AA100EAB67;
+	Thu,  7 Jan 2021 10:59:15 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CFE55100EAB53
-	for <linux-nvdimm@lists.01.org>; Thu,  7 Jan 2021 08:43:28 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id a188so4187879pfa.11
-        for <linux-nvdimm@lists.01.org>; Thu, 07 Jan 2021 08:43:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:mime-version:subject:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=wlIZkPGKoQxUHBPSASacN9V2y3esHgkn8bU6DGmdh/U=;
-        b=AdHaxLcS2e+H/EbRu2XgBJ2Q4XhNpzAE7sZFJLuDSeU33L8QmXXbyUoms1kmMAmLDQ
-         NOomoUrvCpPmmaVU/m+hCT2xeKSdt5EHRRJLAF0rA5i4+1mJp2uvBGOISeZjQ9SKfAjS
-         rcv2CkBLhyee7O5jHF8CVBlp3ub1JvClNRww2NYHQ9+omUQENnastCI7NNuaXckA4GPs
-         vMYdvMOxO+omN3qD/1QoN38HTCPOnlUN9TQzn+eSU9YVSfOFQQO+bSNIRmg+pwiXUX4A
-         HrOcHM4/G0Mng8xc4rNTVE4N5qYSj81xm4ts5v55aTltkLhNALa4dssrt6UKfv3SUz6e
-         hf1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:mime-version:subject:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=wlIZkPGKoQxUHBPSASacN9V2y3esHgkn8bU6DGmdh/U=;
-        b=V5HKNI+D1nSI+E3aEnstzi9lNqXldogeQNBjhmFb/iQfM9svoPpuMwaphYuhjqrr94
-         nYmGGigm3kpm39dRGXv5XZ2pPnFO6BFO7/VKvhPzaIcOg6oZcjg8Ul72JpkmA4ZFgjH8
-         BI76WTqIlF2UjNEokXKc4VHOX9hh7RBzbgg0s0s901UM/8Lg8GMEniWH5FgdhsYQWo33
-         EahLcrcYVvxuvuwgeCC5mOptt8fxA6kx7/E30IKO0P/wodj3H2eCqZvCU8LXUb6znNXf
-         si7e4iUb6wbJMBnpljY++Sqh1QeSqIZwPJv3BcBBaTXbJGsbgXnBsRd6mZ5quSHNN1X+
-         Ohcg==
-X-Gm-Message-State: AOAM531Tcx9+BPOoSNuNyx+Luy3K5ZBaEfKQuZtU7hRFMGweUgGI5f90
-	FgT11EytcgK34mxeT44e7lIWbbEa29ODQ3KU4sQ=
-X-Google-Smtp-Source: ABdhPJyPiXtEd0GEQuaVCHAy2JP1TMLyh1OHWw65ZEzPXICZAme/iC9QnXymWl68ojN2928hSS4cJw==
-X-Received: by 2002:a63:4c4b:: with SMTP id m11mr2690509pgl.20.1610037808072;
-        Thu, 07 Jan 2021 08:43:28 -0800 (PST)
-Received: from [127.0.0.1] (89.208.248.183.16clouds.com. [89.208.248.183])
-        by smtp.gmail.com with ESMTPSA id mj5sm2591568pjb.20.2021.01.07.08.43.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 07 Jan 2021 08:43:27 -0800 (PST)
-From: Mingkai Dong <mingkaidong@gmail.com>
-X-Google-Original-From: Mingkai Dong <MinGKaiDong@gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.40.0.2.32\))
+	by ml01.01.org (Postfix) with ESMTPS id B934E100EAB66
+	for <linux-nvdimm@lists.01.org>; Thu,  7 Jan 2021 10:59:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1610045951;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Xi2LsUJTfR3F6Kw+mgZKWaNP6g+KrERh5YVstyYnNc=;
+	b=J9VzF6R+YaSFFTPioXNcCAlMOTRNXUZDbZ0ZhuadJu2okrsth5D+QeNOWtvH0mQ4MGlIFN
+	SQ2PGsyAti0tL39ahyiCGj6ytf9kCmcr8AzUifiGYRa6RQIUt62wazl+D1K+30oj1q1Rgz
+	/xYwkRcOB1cAFEvDCewC5WHeyY/ZNcM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-129-1dVGJka0OZeA2-GkdfYnAA-1; Thu, 07 Jan 2021 13:59:06 -0500
+X-MC-Unique: 1dVGJka0OZeA2-GkdfYnAA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7143D107ACF5;
+	Thu,  7 Jan 2021 18:59:04 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0613C19630;
+	Thu,  7 Jan 2021 18:59:03 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 107Ix3eV025400;
+	Thu, 7 Jan 2021 13:59:03 -0500
+Received: from localhost (mpatocka@localhost)
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 107Ix18i025339;
+	Thu, 7 Jan 2021 13:59:02 -0500
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date: Thu, 7 Jan 2021 13:59:01 -0500 (EST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To: Matthew Wilcox <willy@infradead.org>
 Subject: Re: Expense of read_iter
 In-Reply-To: <20210107151125.GB5270@casper.infradead.org>
-Date: Fri, 8 Jan 2021 00:43:20 +0800
-Message-Id: <17045315-CC1F-4165-B8E3-BA55DD16D46B@gmail.com>
-References: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com>
- <20210107151125.GB5270@casper.infradead.org>
-To: Matthew Wilcox <willy@infradead.org>
-X-Mailer: Apple Mail (2.3654.40.0.2.32)
-Message-ID-Hash: TUIZIO4PM7YFOLLUQFGS67DM4V4SJQNR
-X-Message-ID-Hash: TUIZIO4PM7YFOLLUQFGS67DM4V4SJQNR
-X-MailFrom: mingkaidong@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Mikulas Patocka <mpatocka@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, Theodore Ts'o <tytso@mit.edu>, Wang Jianchao <jianchao.wan9@gmail.com>, "Tadakamadla, Rajesh" <rajesh.tadakamadla@hpe.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, sunrise_l@sjtu.edu.cn
+Message-ID: <alpine.LRH.2.02.2101071110080.30654@file01.intranet.prod.int.rdu2.redhat.com>
+References: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com> <20210107151125.GB5270@casper.infradead.org>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Message-ID-Hash: HC4OHHRJ76BTHPRI35XRPQDNRGXPKGO7
+X-Message-ID-Hash: HC4OHHRJ76BTHPRI35XRPQDNRGXPKGO7
+X-MailFrom: mpatocka@redhat.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, Theodore Ts'o <tytso@mit.edu>, Wang Jianchao <jianchao.wan9@gmail.com>, "Tadakamadla, Rajesh" <rajesh.tadakamadla@hpe.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TUIZIO4PM7YFOLLUQFGS67DM4V4SJQNR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HC4OHHRJ76BTHPRI35XRPQDNRGXPKGO7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: TEXT/PLAIN; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Matthew,
-
-We have also discovered the expense of `->read_iter` in our study on Ext4-DAX.
-In single-thread 4K-reads, the `->read` version could outperform `->read_iter`
-by 41.6% in terms of throughput.
-
-According to our observation and evaluation, at least for Ext4-DAX, the cost
-also comes from the invocation of `->iomap_begin` (`ext4_iomap_begin`),
-which might not be simply avoided by adding a new iter_type.
-The slowdown is more significant when multiple threads reading different files
-concurrently, due to the scalability issue (grabbing a read lock to check the
-status of the journal) in `ext4_iomap_begin`.
-
-In our solution, we implemented the `->read` and `->write` interfaces for
-Ext4-DAX. Thus, we also think it would be good if both `->read` and `->read_iter`
-could exist.
-
-By the way, besides the implementation of `->read` and `->write`, we have
-some other optimizations for Ext4-DAX and would like to share them once our
-patches are prepared.
-
-Thanks,
-Mingkai
 
 
-> On Jan 7, 2021, at 23:11, Matthew Wilcox <willy@infradead.org> wrote:
-> 
+On Thu, 7 Jan 2021, Matthew Wilcox wrote:
+
 > On Thu, Jan 07, 2021 at 08:15:41AM -0500, Mikulas Patocka wrote:
->> I'd like to ask about this piece of code in __kernel_read:
->> 	if (unlikely(!file->f_op->read_iter || file->f_op->read))
->> 		return warn_unsupported...
->> and __kernel_write:
->> 	if (unlikely(!file->f_op->write_iter || file->f_op->write))
->> 		return warn_unsupported...
->> 
->> - It exits with an error if both read_iter and read or write_iter and 
->> write are present.
->> 
->> I found out that on NVFS, reading a file with the read method has 10% 
->> better performance than the read_iter method. The benchmark just reads the 
->> same 4k page over and over again - and the cost of creating and parsing 
->> the kiocb and iov_iter structures is just that high.
+> > I'd like to ask about this piece of code in __kernel_read:
+> > 	if (unlikely(!file->f_op->read_iter || file->f_op->read))
+> > 		return warn_unsupported...
+> > and __kernel_write:
+> > 	if (unlikely(!file->f_op->write_iter || file->f_op->write))
+> > 		return warn_unsupported...
+> > 
+> > - It exits with an error if both read_iter and read or write_iter and 
+> > write are present.
+> > 
+> > I found out that on NVFS, reading a file with the read method has 10% 
+> > better performance than the read_iter method. The benchmark just reads the 
+> > same 4k page over and over again - and the cost of creating and parsing 
+> > the kiocb and iov_iter structures is just that high.
 > 
-> Which part of it is so expensive?  Is it worth, eg adding an iov_iter
+> Which part of it is so expensive?
+
+The read_iter path is much bigger:
+vfs_read		- 0x160 bytes
+new_sync_read		- 0x160 bytes
+nvfs_rw_iter		- 0x100 bytes
+nvfs_rw_iter_locked	- 0x4a0 bytes
+iov_iter_advance	- 0x300 bytes
+
+If we go with the "read" method, there's just:
+vfs_read		- 0x160 bytes
+nvfs_read		- 0x200 bytes
+
+> Is it worth, eg adding an iov_iter
 > type that points to a single buffer instead of a single-member iov?
 > 
 > +++ b/include/linux/uio.h
 > @@ -19,6 +19,7 @@ struct kvec {
-> 
-> enum iter_type {
->        /* iter types */
+>  
+>  enum iter_type {
+>         /* iter types */
 > +       ITER_UBUF = 2,
->        ITER_IOVEC = 4,
->        ITER_KVEC = 8,
->        ITER_BVEC = 16,
+>         ITER_IOVEC = 4,
+>         ITER_KVEC = 8,
+>         ITER_BVEC = 16,
 > @@ -36,6 +36,7 @@ struct iov_iter {
->        size_t iov_offset;
->        size_t count;
->        union {
+>         size_t iov_offset;
+>         size_t count;
+>         union {
 > +               void __user *buf;
->                const struct iovec *iov;
->                const struct kvec *kvec;
->                const struct bio_vec *bvec;
+>                 const struct iovec *iov;
+>                 const struct kvec *kvec;
+>                 const struct bio_vec *bvec;
 > 
 > and then doing all the appropriate changes to make that work.
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+
+I tried this benchmark on nvfs:
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(void)
+{
+	unsigned long i;
+	unsigned long l = 1UL << 38;
+	unsigned s = 4096;
+	void *a = valloc(s);
+	if (!a) perror("malloc"), exit(1);
+	for (i = 0; i < l; i += s) {
+		if (pread(0, a, s, 0) != s) perror("read"), exit(1);
+	}
+	return 0;
+}
+
+
+Result, using the read_iter method:
+
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 3K of event 'cycles'
+# Event count (approx.): 1049885560
+#
+# Overhead  Command  Shared Object     Symbol                               
+# ........  .......  ................  .....................................
+#
+    47.32%  pread    [kernel.vmlinux]  [k] copy_user_generic_string
+     7.83%  pread    [kernel.vmlinux]  [k] current_time
+     6.57%  pread    [nvfs]            [k] nvfs_rw_iter_locked
+     5.59%  pread    [kernel.vmlinux]  [k] entry_SYSCALL_64
+     4.23%  pread    libc-2.31.so      [.] __libc_pread
+     3.51%  pread    [kernel.vmlinux]  [k] syscall_return_via_sysret
+     2.34%  pread    [kernel.vmlinux]  [k] entry_SYSCALL_64_after_hwframe
+     2.34%  pread    [kernel.vmlinux]  [k] vfs_read
+     2.34%  pread    [kernel.vmlinux]  [k] __fsnotify_parent
+     2.31%  pread    [kernel.vmlinux]  [k] new_sync_read
+     2.21%  pread    [nvfs]            [k] nvfs_bmap
+     1.89%  pread    [kernel.vmlinux]  [k] iov_iter_advance
+     1.71%  pread    [kernel.vmlinux]  [k] __x64_sys_pread64
+     1.59%  pread    [kernel.vmlinux]  [k] atime_needs_update
+     1.24%  pread    [nvfs]            [k] nvfs_rw_iter
+     0.94%  pread    [kernel.vmlinux]  [k] touch_atime
+     0.75%  pread    [kernel.vmlinux]  [k] syscall_enter_from_user_mode
+     0.72%  pread    [kernel.vmlinux]  [k] ktime_get_coarse_real_ts64
+     0.68%  pread    [kernel.vmlinux]  [k] down_read
+     0.62%  pread    [kernel.vmlinux]  [k] exit_to_user_mode_prepare
+     0.52%  pread    [kernel.vmlinux]  [k] syscall_exit_to_user_mode
+     0.49%  pread    [kernel.vmlinux]  [k] syscall_exit_to_user_mode_prepare
+     0.47%  pread    [kernel.vmlinux]  [k] __fget_light
+     0.46%  pread    [kernel.vmlinux]  [k] do_syscall_64
+     0.42%  pread    pread             [.] main
+     0.33%  pread    [kernel.vmlinux]  [k] up_read
+     0.29%  pread    [kernel.vmlinux]  [k] iov_iter_init
+     0.16%  pread    [kernel.vmlinux]  [k] __fdget
+     0.10%  pread    [kernel.vmlinux]  [k] entry_SYSCALL_64_safe_stack
+     0.03%  pread    pread             [.] pread@plt
+     0.00%  perf     [kernel.vmlinux]  [k] x86_pmu_enable_all
+
+
+#
+# (Tip: Use --symfs <dir> if your symbol files are in non-standard locations)
+#
+
+
+
+Result, using the read method:
+
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 3K of event 'cycles'
+# Event count (approx.): 1312158116
+#
+# Overhead  Command  Shared Object     Symbol                               
+# ........  .......  ................  .....................................
+#
+    60.77%  pread    [kernel.vmlinux]  [k] copy_user_generic_string
+     6.14%  pread    [kernel.vmlinux]  [k] current_time
+     3.88%  pread    [kernel.vmlinux]  [k] entry_SYSCALL_64
+     3.55%  pread    libc-2.31.so      [.] __libc_pread
+     3.04%  pread    [nvfs]            [k] nvfs_bmap
+     2.84%  pread    [kernel.vmlinux]  [k] syscall_return_via_sysret
+     2.71%  pread    [nvfs]            [k] nvfs_read
+     2.56%  pread    [kernel.vmlinux]  [k] entry_SYSCALL_64_after_hwframe
+     2.00%  pread    [kernel.vmlinux]  [k] __x64_sys_pread64
+     1.98%  pread    [kernel.vmlinux]  [k] __fsnotify_parent
+     1.77%  pread    [kernel.vmlinux]  [k] vfs_read
+     1.35%  pread    [kernel.vmlinux]  [k] atime_needs_update
+     0.94%  pread    [kernel.vmlinux]  [k] exit_to_user_mode_prepare
+     0.91%  pread    [kernel.vmlinux]  [k] __fget_light
+     0.83%  pread    [kernel.vmlinux]  [k] syscall_enter_from_user_mode
+     0.70%  pread    [kernel.vmlinux]  [k] down_read
+     0.70%  pread    [kernel.vmlinux]  [k] touch_atime
+     0.65%  pread    [kernel.vmlinux]  [k] ktime_get_coarse_real_ts64
+     0.55%  pread    [kernel.vmlinux]  [k] syscall_exit_to_user_mode
+     0.49%  pread    [kernel.vmlinux]  [k] up_read
+     0.44%  pread    [kernel.vmlinux]  [k] do_syscall_64
+     0.39%  pread    [kernel.vmlinux]  [k] syscall_exit_to_user_mode_prepare
+     0.34%  pread    pread             [.] main
+     0.26%  pread    [kernel.vmlinux]  [k] __fdget
+     0.10%  pread    pread             [.] pread@plt
+     0.10%  pread    [kernel.vmlinux]  [k] entry_SYSCALL_64_safe_stack
+     0.00%  perf     [kernel.vmlinux]  [k] x86_pmu_enable_all
+
+
+#
+# (Tip: To set sample time separation other than 100ms with --sort time use --time-quantum)
+#
+
+
+Note that if we sum the percentage of nvfs_iter_locked, new_sync_read, 
+iov_iter_advance, nvfs_rw_iter, we get 12.01%. On the other hand, in the 
+second trace, nvfs_read consumes just 2.71% - and it replaces 
+functionality of all these functions.
+
+That is the reason for that 10% degradation with read_iter.
+
+Mikulas
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
