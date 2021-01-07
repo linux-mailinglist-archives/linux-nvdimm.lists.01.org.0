@@ -2,72 +2,108 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F4F2EF039
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Jan 2021 10:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6832EF375
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Jan 2021 14:51:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 80CF8100EA2AB;
-	Fri,  8 Jan 2021 01:56:19 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=<UNKNOWN> 
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 18206100EA2AA
-	for <linux-nvdimm@lists.01.org>; Fri,  8 Jan 2021 01:56:17 -0800 (PST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 0C03967373; Fri,  8 Jan 2021 10:56:15 +0100 (CET)
-Date: Fri, 8 Jan 2021 10:56:14 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [PATCH 03/10] fs: Introduce ->corrupted_range() for superblock
-Message-ID: <20210108095614.GB5647@lst.de>
-References: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com> <20201230165601.845024-4-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id 82F29100EA2B6;
+	Fri,  8 Jan 2021 05:51:22 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=213.108.199.110; helo=fanfreak.net; envelope-from=ranmeayhearyi@99designs.com; receiver=<UNKNOWN> 
+Received: from fanfreak.net (unknown [213.108.199.110])
+	by ml01.01.org (Postfix) with ESMTP id 86260100EA2B5
+	for <linux-nvdimm@lists.01.org>; Fri,  8 Jan 2021 05:51:20 -0800 (PST)
+To: linux-nvdimm@lists.01.org
+Subject: laptop backpack
+Message-ID: <68353a62684ed0d877c665ccfa5014ee@turbofuture.com>
+Date: Thu, 07 Jan 2021 09:55:46 +0100
+From: "James" <ranmeayhearyi@99designs.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201230165601.845024-4-ruansy.fnst@cn.fujitsu.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Message-ID-Hash: IE2XBEAL27PFJFITJHWUCIUC5R2MTM7X
-X-Message-ID-Hash: IE2XBEAL27PFJFITJHWUCIUC5R2MTM7X
-X-MailFrom: hch@lst.de
+X-Mailer-Sent-By: 1
+Message-ID-Hash: 4IWTPWBQ5B3VXFZ2NZPWW3UKEVZU5XIZ
+X-Message-ID-Hash: 4IWTPWBQ5B3VXFZ2NZPWW3UKEVZU5XIZ
+X-MailFrom: ranmeayhearyi@99designs.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: northanyelso@hotmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IE2XBEAL27PFJFITJHWUCIUC5R2MTM7X/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4IWTPWBQ5B3VXFZ2NZPWW3UKEVZU5XIZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============0965014941014562700=="
+
+--===============0965014941014562700==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<p>Hi,<br /><br />I hope all is well. Just want to check with you whether
+you got our email from last week?&nbsp;</p>
+<p>I am writing to you about in our stock, we have one new travel backpac=
+k,
+ready to ship to worldwide customers.<br /><br />Prices for different ord=
+er
+volume:<br />1-10 units 95.90&nbsp;each<br />10-100 units
+85.90&nbsp;each<br />&gt;=3D 100 units&nbsp; 75.90 each<br />1000 units
++&nbsp; please contact us.<br />u&nbsp; s&nbsp; d<br /><br />You can star=
+t
+ordering it today, just respond to our email and send your address, we wi=
+ll
+do the shipping for you.</p>
+<p>More details of this travel backpack<br />Material: Polyester<br
+/>Capacity: 20-35 Litre<br />Closure Type: zipper<br />Carrying System:
+Arcuate Shoulder Strap<br />Style: Business<br />Technics: Jacquard<br
+/>Pattern Type: ThreadHandle/Strap<br />Main Material: Oxford<br />Featur=
+e:
+Water Repellent,USB Charging<br />Size:
+47cm(height)x31cm(width)x20cm(thickness)<br />Water Repellent : Yes<br
+/>Shockproof: Yes<br />Pattern Type: Solid<br />Color: Black</p>
+<p><img src=3D"https://i.ebayimg.com/images/g/4-cAAOSwQ-BdI6lQ/s-l500.jpg=
+"
+alt=3D"" width=3D"450" height=3D"448" /><img
+src=3D"https://i.ebayimg.com/images/g/HwgAAOSwdAJdI6la/s-l500.jpg" alt=3D=
+""
+width=3D"450" height=3D"448" /></p>
+<p><img src=3D"https://i.ebayimg.com/images/g/JsoAAOSwzFRdI6yF/s-l500.jpg=
+"
+width=3D"450" height=3D"410" /><img
+src=3D"https://i.ebayimg.com/images/g/hjoAAOSwi-9dI6lp/s-l500.jpg" alt=3D=
+""
+width=3D"450" height=3D"448" /></p>
+<p><img src=3D"https://i.ebayimg.com/images/g/ubMAAOSwsY1dI6yQ/s-l500.jpg=
+"
+alt=3D"" width=3D"450" height=3D"485" /><img
+src=3D"https://i.ebayimg.com/images/g/fAwAAOSwECNdI6ya/s-l500.jpg" alt=3D=
+""
+width=3D"450" height=3D"325" /></p>
+<p><img src=3D"https://i.ebayimg.com/images/g/mhQAAOSwIuVdI6yp/s-l500.jpg=
+"
+alt=3D"" width=3D"450" height=3D"433" /><img
+src=3D"https://i.ebayimg.com/images/g/9c4AAOSwIx1dI6y2/s-l500.jpg" alt=3D=
+""
+width=3D"450" height=3D"403" /></p>
+<p>&nbsp;</p>
+<p>You can start ordering it today, just respond to our email and send yo=
+ur
+address, we will do the shipping for you.<br /><br />Best Regards,<br
+/>James Hopkins</p>
+</body>
+</html>
+
+--===============0965014941014562700==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Thu, Dec 31, 2020 at 12:55:54AM +0800, Shiyang Ruan wrote:
-> Memory failure occurs in fsdax mode will finally be handled in
-> filesystem.  We introduce this interface to find out files or metadata
-> affected by the corrupted range, and try to recover the corrupted data
-> if possiable.
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-> ---
->  include/linux/fs.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 8667d0cdc71e..282e2139b23e 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -1965,6 +1965,8 @@ struct super_operations {
->  				  struct shrink_control *);
->  	long (*free_cached_objects)(struct super_block *,
->  				    struct shrink_control *);
-> +	int (*corrupted_range)(struct super_block *sb, struct block_device *bdev,
-
-This adds an overly long line.  But more importantly it must work on
-the dax device and not the block device.  I'd also structure the callback
-so that it is called on the dax device only, with the file system storing
-the super block in a private data member.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============0965014941014562700==--
