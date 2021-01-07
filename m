@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6832EF375
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Jan 2021 14:51:24 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7422EF534
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Jan 2021 16:55:05 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 82F29100EA2B6;
-	Fri,  8 Jan 2021 05:51:22 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=213.108.199.110; helo=fanfreak.net; envelope-from=ranmeayhearyi@99designs.com; receiver=<UNKNOWN> 
-Received: from fanfreak.net (unknown [213.108.199.110])
-	by ml01.01.org (Postfix) with ESMTP id 86260100EA2B5
-	for <linux-nvdimm@lists.01.org>; Fri,  8 Jan 2021 05:51:20 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 66373100F226D;
+	Fri,  8 Jan 2021 07:55:03 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=5.180.79.160; helo=fanfreak.net; envelope-from=ranmeayhearyi@liagriffith.com; receiver=<UNKNOWN> 
+Received: from fanfreak.net (unknown [5.180.79.160])
+	by ml01.01.org (Postfix) with ESMTP id 9B45E100EB357
+	for <linux-nvdimm@lists.01.org>; Fri,  8 Jan 2021 07:55:00 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: laptop backpack
-Message-ID: <68353a62684ed0d877c665ccfa5014ee@turbofuture.com>
-Date: Thu, 07 Jan 2021 09:55:46 +0100
-From: "James" <ranmeayhearyi@99designs.com>
+Subject: backpack for travel and business
+Message-ID: <673c5366785bf7350c73168c20b3acf7@turbofuture.com>
+Date: Thu, 07 Jan 2021 09:55:31 +0100
+From: "James" <ranmeayhearyi@liagriffith.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: 4IWTPWBQ5B3VXFZ2NZPWW3UKEVZU5XIZ
-X-Message-ID-Hash: 4IWTPWBQ5B3VXFZ2NZPWW3UKEVZU5XIZ
-X-MailFrom: ranmeayhearyi@99designs.com
+Message-ID-Hash: YXYTZ3BHEB275HUQGYAIYGL74WZED4AM
+X-Message-ID-Hash: YXYTZ3BHEB275HUQGYAIYGL74WZED4AM
+X-MailFrom: ranmeayhearyi@liagriffith.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: northanyelso@hotmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4IWTPWBQ5B3VXFZ2NZPWW3UKEVZU5XIZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YXYTZ3BHEB275HUQGYAIYGL74WZED4AM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0965014941014562700=="
+Content-Type: multipart/mixed; boundary="===============3156263065254147059=="
 
---===============0965014941014562700==
+--===============3156263065254147059==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -96,7 +96,7 @@ address, we will do the shipping for you.<br /><br />Best Regards,<br
 </body>
 </html>
 
---===============0965014941014562700==
+--===============3156263065254147059==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -106,4 +106,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============0965014941014562700==--
+--===============3156263065254147059==--
