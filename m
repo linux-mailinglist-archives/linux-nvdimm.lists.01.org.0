@@ -1,123 +1,103 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1DD2F0256
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  9 Jan 2021 18:37:44 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337572F0413
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  9 Jan 2021 23:20:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D0D09100ED498;
-	Sat,  9 Jan 2021 09:37:41 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=redhairer.li@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B3BE4100EF25B
-	for <linux-nvdimm@lists.01.org>; Sat,  9 Jan 2021 09:37:38 -0800 (PST)
-IronPort-SDR: ivQ/2HcOtHaggoGAZXB4PORzO2vXZeCsXIIM/skKC+G5efUitfTIAp287KBo7fZ02p7CHhhPnt
- Q45Fa7RWZCQQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9859"; a="157496709"
-X-IronPort-AV: E=Sophos;i="5.79,334,1602572400";
-   d="scan'208";a="157496709"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2021 09:37:37 -0800
-IronPort-SDR: Tm/o7rmA51qWe6JfIz2EBxK2aHl9TQ1n/tGyfSdXrDkXQ+2URPiGCM5rmBdRnZf9GwNkyyQKAd
- dYv6no4piiHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.79,334,1602572400";
-   d="scan'208";a="347676254"
-Received: from unknown (HELO localhost.itwn.intel.com) ([10.5.250.7])
-  by orsmga003.jf.intel.com with ESMTP; 09 Jan 2021 09:37:36 -0800
-From: redhairer <redhairer.li@intel.com>
-To: linux-nvdimm@lists.01.org,
-	dan.j.williams@intel.com
-Subject: [PATCH 1/1] msft: Add xlat_firmware_status for JEDEC Byte Addressable Energy Backed DSM
-Date: Sat,  9 Jan 2021 23:36:33 +0800
-Message-Id: <20210109153633.8493-1-redhairer.li@intel.com>
-X-Mailer: git-send-email 2.20.1
+	by ml01.01.org (Postfix) with ESMTP id 51D4E100ED4AE;
+	Sat,  9 Jan 2021 14:20:09 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=218.202.83.178; helo=mail.chinacoalmd.com; envelope-from=atunerrosdelsur@gmail.com; receiver=<UNKNOWN> 
+Received: from mail.chinacoalmd.com (unknown [218.202.83.178])
+	by ml01.01.org (Postfix) with ESMTP id CBE1E100EF24E;
+	Sat,  9 Jan 2021 14:20:06 -0800 (PST)
+Received: from User ([96.9.208.156])
+          by mail.chinacoalmd.com (IBM Domino Release 9.0.1FP7)
+          with ESMTP id 2021011005431127-2011149 ;
+          Sun, 10 Jan 2021 05:43:11 +0800
+From: "MRS. VERUMLEM KLEITH"<atunerrosdelsur@gmail.com>
+Subject: WINNING NOTIFICATION.
+Date: Sat, 9 Jan 2021 22:40:37 +0100
 MIME-Version: 1.0
-Message-ID-Hash: QKOU44YYSH5LRH37VJFZYX2J3DMG5UNT
-X-Message-ID-Hash: QKOU44YYSH5LRH37VJFZYX2J3DMG5UNT
-X-MailFrom: redhairer.li@intel.com
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-MIMETrack: Itemize by SMTP Server on mailserver/zmmd(Release 9.0.1FP7|August  17, 2016) at
+ 2021-01-10 05:43:11,
+	Serialize by Router on mailserver/zmmd(Release 9.0.1FP7|August  17, 2016) at
+ 2021-01-10 06:23:11,
+	Serialize complete at 2021-01-10 06:23:11
+X-TNEFEvaluated: 1
+Message-ID: <OF1D59B101.93D290D4-ON48258658.00774FA4@chinacoalmd.com>
+Message-ID-Hash: DDKV6XMX4KJ2JXNQHD7QUB2IA5PE4XMN
+X-Message-ID-Hash: DDKV6XMX4KJ2JXNQHD7QUB2IA5PE4XMN
+X-MailFrom: atunerrosdelsur@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Redhairer Li <redhairer.li@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: mike.beekens@execs.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QKOU44YYSH5LRH37VJFZYX2J3DMG5UNT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DDKV6XMX4KJ2JXNQHD7QUB2IA5PE4XMN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
 
-From: Redhairer Li <redhairer.li@intel.com>
-
-Translate the status codes of the result of JEDEC Byte Addressable Energy Backed
-DSM to generic errno style error codes.
-
-Signed-off-by: Li Redhairer <redhairer.li@intel.com>
----
- ndctl/lib/msft.c | 22 ++++++++++++++++++++++
- ndctl/lib/msft.h |  6 ++++++
- 2 files changed, 28 insertions(+)
-
-diff --git a/ndctl/lib/msft.c b/ndctl/lib/msft.c
-index 145872c..3112799 100644
---- a/ndctl/lib/msft.c
-+++ b/ndctl/lib/msft.c
-@@ -149,10 +149,32 @@ static unsigned int msft_cmd_smart_get_life_used(struct ndctl_cmd *cmd)
- 	return 100 - CMD_MSFT_SMART(cmd)->nvm_lifetime;
- }
- 
-+static int msft_cmd_xlat_firmware_status(struct ndctl_cmd *cmd)
-+{
-+	unsigned int status;
-+
-+	status = cmd->get_firmware_status(cmd) & NDN_MSFT_STATUS_MASK;
-+
-+	/* Common statuses */
-+	switch (status) {
-+	case NDN_MSFT_STATUS_SUCCESS:
-+		return 0;
-+	case NDN_MSFT_STATUS_NOTSUPP:
-+		return -EOPNOTSUPP;
-+	case NDN_MSFT_STATUS_INVALPARM:
-+		return -EINVAL;
-+	case NDN_MSFT_STATUS_I2CERR:
-+		return -EIO;
-+	}
-+
-+	return -ENOMSG;
-+}
-+
- struct ndctl_dimm_ops * const msft_dimm_ops = &(struct ndctl_dimm_ops) {
- 	.new_smart = msft_dimm_cmd_new_smart,
- 	.smart_get_flags = msft_cmd_smart_get_flags,
- 	.smart_get_health = msft_cmd_smart_get_health,
- 	.smart_get_media_temperature = msft_cmd_smart_get_media_temperature,
- 	.smart_get_life_used = msft_cmd_smart_get_life_used,
-+	.xlat_firmware_status = msft_cmd_xlat_firmware_status,
- };
-diff --git a/ndctl/lib/msft.h b/ndctl/lib/msft.h
-index 7cfd26f..978cc11 100644
---- a/ndctl/lib/msft.h
-+++ b/ndctl/lib/msft.h
-@@ -50,4 +50,10 @@ struct ndn_pkg_msft {
- 	union ndn_msft_cmd	u;
- } __attribute__((packed));
- 
-+#define NDN_MSFT_STATUS_MASK		0xffff
-+#define NDN_MSFT_STATUS_SUCCESS	0
-+#define NDN_MSFT_STATUS_NOTSUPP	1
-+#define NDN_MSFT_STATUS_INVALPARM	2
-+#define NDN_MSFT_STATUS_I2CERR		3
-+
- #endif /* __NDCTL_MSFT_H__ */
--- 
-2.27.0.windows.1
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+R29vZ2xlIEluY29ycG9yYXRpb26uLg0KQmVsZ3JhdmUgSG91c2UsDQo3NiBCdWNraW5naGFtIFBh
+bGFjZSBSb2FkLA0KTG9uZG9uIFNXMVcgOVRRLA0KVW5pdGVkIEtpbmdkb20uDQoNCkF0dGVudGlv
+bjogTHVja3kgV2lubmVyLg0KDQpHT09HTEUgV0lOTklORyBOT1RJRklDQVRJT04uDQoNCldlIHdp
+c2ggdG8gY29uZ3JhdHVsYXRlIHlvdSBmb3IgYmVpbmcgcGFydCBvZiBvdXIgbHVja3kgd2lubmVy
+cyBzZWxlY3RlZCBmb3IgdGhlIEdvb2dsZSAyMDIwIGVuZCBvZiB0aGUgeWVhciBQcm9tb3Rpb24u
+IFRoaXMgcHJvbW90aW9uIHdhcyBzZXQtdXAgdG8gZW5jb3VyYWdlIHRoZSBhY3RpdmUgdXNlIG9m
+IHRoZSBHb29nbGUgc2VhcmNoIGVuZ2luZSBhbmQgdGhlIEdvb2dsZSBhbmNpbGxhcnkgc2Vydmlj
+ZXMuIEhlbmNlIHdlIGRvIGJlbGlldmUgd2l0aCB5b3VyIHByaXplIHdpbm5pbmcsIHlvdSB3aWxs
+IGNvbnRpbnVlIHRvIGJlIGFjdGl2ZSBhbmQgcGF0cm9uaXplIHRoaXMgY29tcGFueSdzIHNlcnZp
+Y2VzLiANCg0KR29vZ2xlIGlzIG5vdyB0aGUgbGVhZGluZyBzZWFyY2ggZW5naW5lIHdvcmxkd2lk
+ZSwgYW5kIGluIGFuIGVmZm9ydCB0byBlbnN1cmUgdGhhdCBpdCByZW1haW5zIHRoZSBtb3N0IHdp
+ZGVseSB1c2VkIHNlYXJjaCBlbmdpbmUuIEFuIG9ubGluZSBlLW1haWwgYmFsbG90aW5nIHdhcyBj
+YXJyaWVkIG91dCBvbiB0aGUgMTh0aCBEZWNlbWJlciwgMjAyMCB3aXRob3V0IHlvdXIga25vd2xl
+ZGdlLiBSZXN1bHRzIHdlcmUgb2ZmaWNpYWxseSByZWxlYXNlZCB0b2RheS4gV2Ugd2lzaCB0byBm
+b3JtYWxseSBhbm5vdW5jZSB0byB5b3UgdGhhdCB5b3VyIGVtYWlsIGFkZHJlc3Mgd2FzIGF0dGFj
+aGVkIHRvIGEgbHVtcCBzdW0gb2Ygozg1MCwwMDAuMDAge0VpZ2h0IEh1bmRyZWQgYW5kIEZpZnR5
+IFRob3VzYW5kIEdyZWF0IEJyaXRpc2ggUG91bmRzIFN0ZXJsaW5nfS4NCg0KSE9XIERJRCBZT1Ug
+V0lOPw0KDQpMdWNreSB3aW5uZXJzIGRpZCBub3QgaGF2ZSB0byBwdXJjaGFzZSBhIHRpY2tldCB0
+byBwYXJ0aWNpcGF0ZSBpbiB0aGUgbG90dGVyeSBwcm9ncmFtLiBFbWFpbCBhZGRyZXNzZXMgd2Fz
+IHNlbGVjdGVkIGZyb20gIE5vcnRoIEFtZXJpY2EsIFNvdXRoIEFtZXJpY2EsIEFzaWEsIEV1cm9w
+ZSwgTWlkZGxlIEVhc3QsIGFuZCBBZnJpY2FuIHJlZ2lvbnMuIFRoaXMgcHJvbW90aW9uIHdhcyBz
+ZXQtdXAgdG8gZW5jb3VyYWdlIHRoZSBhY3RpdmUgdXNhZ2Ugb2YgdGhlIEdPT0dMRShSKSBicmFu
+ZC4gSGVuY2Ugd2UgZG8gYmVsaWV2ZSB0aGF0IHdpdGggeW91ciBwcml6ZSB3aW5uaW5nLCB5b3Ug
+d2lsbCBjb250aW51ZSB0byBiZSBhY3RpdmUgYW5kIHBhdHJvbml6ZSBHT09HTEUgc2VydmljZXMu
+DQoNClRoZXNlIGFyZSB5b3VyIHByaXplIHdpbm5pbmcgZGV0YWlscy4NClNlY3VyaXR5IENvZGUv
+QmF0Y2ggTnVtYmVyOiBHVUsvNDUzMjM0NUcNClRpY2tldCBOdW1iZXI6IEdVSy82OTkvMzMvMjAy
+MA0KV2lubmluZyBOdW1iZXI6IEdVSy84NzcvNzk4LzIwMjANCg0KSW5mb3JtYXRpb24gcmVxdWly
+ZWQgZnJvbSB5b3UgYXJlIHBhcnQgb2Ygb3VyIHByZWNhdXRpb25hcnkgbWVhc3VyZSB0byBhdm9p
+ZCBkb3VibGUgY2xhaW1zIGFuZCB1bndhcnJhbnRlZCBhYnVzZSBvZiB0aGlzIHByb2dyYW0uIFRv
+IGNsYWltIHlvdXIgd2lubmluZywgUGxlYXNlIGZpbGwgb3V0IHRoZSBpbmZvcm1hdGlvbiBiZWxv
+dzoNCg0KKDEpIFlvdXIgY29udGFjdCBhZGRyZXNzOg0KKDIpIFlvdXIgRGlyZWN0IFRlbGVwaG9u
+ZS9tb2JpbGUgbnVtYmVyczoNCigzKSBZb3VyIE5hdGlvbmFsaXR5L0NvdW50cnk6DQooNCkgWW91
+ciBGdWxsIE5hbWU6DQooNSkgU2V4Og0KKDYpIE9jY3VwYXRpb246DQooNykgQWdlOg0KDQpQbGVh
+c2UgY29udGFjdCBvdXIgQ2xhaW1zIE9mZmljZXI6DQpNUiBNSUNIQUVMIEJFRUtFTlMNCkdPT0dM
+RSBWQUxJREFUSU9OIE9GRklDRSBERVBBUlRNRU5UIChVSykuDQpFLW1haWw6IG1pa2UuYmVla2Vu
+c0BleGVjcy5jb20NCg0KVGhlIEdvb2dsZSBQcm9tb3Rpb24gQXdhcmQgVGVhbSBoYXMgZGlzY292
+ZXJlZCBhIGh1Z2UgbnVtYmVyIG9mIGRvdWJsZSBjbGFpbXMgZHVlIHRvIHdpbm5lcnMgaW5mb3Jt
+aW5nIGNsb3NlIGZyaWVuZHMsIHJlbGF0aXZlcyBhbmQgdGhpcmQgcGFydGllcyBhYm91dCB0aGVp
+ciB3aW5uaW5ncyBhbmQgYWxzbyBzaGFyaW5nIHRoZWlyIGlkZW50aWZpY2F0aW9uIG51bWJlcnMu
+IEFzIGEgcmVzdWx0IG9mIHRoaXMsIHRoZXNlIGZyaWVuZHMgdHJ5IHRvIGNsYWltIHRoZSB3aW5u
+aW5ncyBvbiBiZWhhbGYgb2YgdGhlIHJlYWwgd2lubmVycy4gVGhlIGdvb2dsZSBwcm9tb3Rpb24g
+YXdhcmQgDQpjb21taXR0ZWUgaGFzIHJlYWNoZWQgYSBkZWNpc2lvbiBmcm9tIHRoZSBoZWFkcXVh
+cnRlcnMgaW4gdGhlIFVuaXRlZCBLaW5nZG9tIHRoYXQgYW55IGRvdWJsZSBjbGFpbSBkaXNjb3Zl
+cmVkIGJ5IHRoZSBMb3R0ZXJ5IEJvYXJkIHdpbGwgcmVzdWx0IHRvIGRpc3F1YWxpZmljYXRpb24g
+b2YgdGhlIHdpbm5lci4gU28geW91IGFyZSBoZXJlYnkgc3Ryb25nbHkgYWR2aXNlZCBvbmNlIG1v
+cmUgdG8ga2VlcCB5b3VyIHdpbm5pbmdzIHN0cmljdGx5IGNvbmZpZGVudGlhbCB1bnRpbCB5b3Ug
+Y2xhaW0geW91ciBwcml6ZS4NCg0KQ29uZ3JhdHVsYXRpb25zIGZyb20gdGhlIFN0YWZmIGFuZCBN
+ZW1iZXJzIG9mIHRoZSBHb29nbGUgSW50ZXJhY3RpdmUgTG90dGVyeSBCb2FyZCBDb21taXNzaW9u
+Lg0KDQpZb3VycyBTaW5jZXJlbHksDQpNUlMuIFZFUlVNTEVNIEtMRUlUSC4NCkdPT0dMRSBaT05B
+TCBDT09SRElOQVRPUg0KTE9ORE9OLFVOSVRFRCBLSU5HRE9NLgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0t
+IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0
+byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
