@@ -2,75 +2,122 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2103E2F000E
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  9 Jan 2021 14:45:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1DD2F0256
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  9 Jan 2021 18:37:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CCAED100EC1CF;
-	Sat,  9 Jan 2021 05:45:34 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=149.202.87.13; helo=ns3018554.ip-149-202-87.eu; envelope-from=aog@server.oztiryaki.net; receiver=<UNKNOWN> 
-Received: from ns3018554.ip-149-202-87.eu (ns3018554.ip-149-202-87.eu [149.202.87.13])
+	by ml01.01.org (Postfix) with ESMTP id D0D09100ED498;
+	Sat,  9 Jan 2021 09:37:41 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=redhairer.li@intel.com; receiver=<UNKNOWN> 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F3FE1100EF275
-	for <linux-nvdimm@lists.01.org>; Sat,  9 Jan 2021 05:45:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aog.com.tr;
-	 s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Reply-To:From:Date:Subject:To:Sender:Cc:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=zWsUuRExwsZIXCcE5DC0rvjvwOG/ZB8nu5a3YalfQto=; b=VN5B35wUMucyKhTt3mOf3cdHJC
-	UaxygWm77YLCp6bzri6BNgvIJCN5CUxlW/mr0Xp8FztMwhkRxb/QLivSraxDwZeFziasqaJ9xoBdQ
-	bhgq8Nvbm8R3uNyaUo5abV6VCHbiWXtGmo2knRTPo8ypwmkRosjxyD0CHmxFnFGyfWGfDWP3bZuCX
-	6IrvD6L9CrbZUvUfyk/5yXEFskHeXQgcx7aR1nDJS/Z9priWLhx+ZWPJ/NwYvEN7qGiQpLhoM39VT
-	l+PQpk+CxZ4VOcrJwj34o4WmwVpZnr9dn7lQ2Ml2iiRWPwnxcwyd2WzRXEZuHkMH0zBMb8DOfVdCa
-	O8dD3t0g==;
-Received: from aog by server.oztiryaki.net with local (Exim 4.93)
-	(envelope-from <aog@server.oztiryaki.net>)
-	id 1kyEYZ-0001QE-Qm
-	for linux-nvdimm@lists.01.org; Sat, 09 Jan 2021 16:45:27 +0300
-To: linux-nvdimm@lists.01.org
-Subject: =?UTF-8?Q?AOG_-_=C4=B0leti=C5=9Fim_Formu?=
-X-PHP-Script: www.aog.com.tr/index.php for 84.51.56.123
-X-PHP-Originating-Script: 1021:class-phpmailer.php
-Date: Sat, 9 Jan 2021 13:45:27 +0000
-From: AOG - <info@aog.com.tr>
-Message-ID: <8771cd5975f08d406e75bce83ae48791@www.aog.com.tr>
-X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
+	by ml01.01.org (Postfix) with ESMTPS id B3BE4100EF25B
+	for <linux-nvdimm@lists.01.org>; Sat,  9 Jan 2021 09:37:38 -0800 (PST)
+IronPort-SDR: ivQ/2HcOtHaggoGAZXB4PORzO2vXZeCsXIIM/skKC+G5efUitfTIAp287KBo7fZ02p7CHhhPnt
+ Q45Fa7RWZCQQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9859"; a="157496709"
+X-IronPort-AV: E=Sophos;i="5.79,334,1602572400";
+   d="scan'208";a="157496709"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2021 09:37:37 -0800
+IronPort-SDR: Tm/o7rmA51qWe6JfIz2EBxK2aHl9TQ1n/tGyfSdXrDkXQ+2URPiGCM5rmBdRnZf9GwNkyyQKAd
+ dYv6no4piiHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,334,1602572400";
+   d="scan'208";a="347676254"
+Received: from unknown (HELO localhost.itwn.intel.com) ([10.5.250.7])
+  by orsmga003.jf.intel.com with ESMTP; 09 Jan 2021 09:37:36 -0800
+From: redhairer <redhairer.li@intel.com>
+To: linux-nvdimm@lists.01.org,
+	dan.j.williams@intel.com
+Subject: [PATCH 1/1] msft: Add xlat_firmware_status for JEDEC Byte Addressable Energy Backed DSM
+Date: Sat,  9 Jan 2021 23:36:33 +0800
+Message-Id: <20210109153633.8493-1-redhairer.li@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.oztiryaki.net
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [1021 992] / [47 12]
-X-AntiAbuse: Sender Address Domain - server.oztiryaki.net
-X-Get-Message-Sender-Via: server.oztiryaki.net: authenticated_id: aog/from_h
-X-Authenticated-Sender: server.oztiryaki.net: info@aog.com.tr
-X-Source: 
-X-Source-Args: php-fpm: pool aog_com_tr                                 
-X-Source-Dir: aog.com.tr:/public_html
-Message-ID-Hash: MD7ZTJH3U74YMWUVM5NJ7357A5ZPSFPQ
-X-Message-ID-Hash: MD7ZTJH3U74YMWUVM5NJ7357A5ZPSFPQ
-X-MailFrom: aog@server.oztiryaki.net
+Message-ID-Hash: QKOU44YYSH5LRH37VJFZYX2J3DMG5UNT
+X-Message-ID-Hash: QKOU44YYSH5LRH37VJFZYX2J3DMG5UNT
+X-MailFrom: redhairer.li@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Redhairer Li <redhairer.li@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: info@aog.com.tr
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MD7ZTJH3U74YMWUVM5NJ7357A5ZPSFPQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QKOU44YYSH5LRH37VJFZYX2J3DMG5UNT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-TWVyaGFiYWxhciwNCg0KTWVzYWrEsW7EsXogYWzEsW5txLHFn3TEsXIuIEVuIGvEsXNhIHphbWFu
-ZGEgdGFyYWbEsW7EsXphIGTDtm7DvMWfIHNhxJ9sYW5hY2FrdMSxcg0KDQpNZXNhasSxbsSxejog
-8J+UpSBUYWtlIGEgbG9vayBhdCBteSBwaG90b3MgaGVyZTogaHR0cDovL2JpdC5kby9mTW9vdiAt
-IGRvIHlvdSBsaWtlIGl0PyDwn5SlDQoNCi0tIA0KQnUgbWFpbCwgaHR0cHM6Ly93d3cuYW9nLmNv
-bS50ciBhZHJlc2luZGVuIG90b21hdGlrIG9sYXJhayBnw7ZuZGVyaWxtacWfdGlyDQpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFp
-bGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2Vu
-ZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+From: Redhairer Li <redhairer.li@intel.com>
+
+Translate the status codes of the result of JEDEC Byte Addressable Energy Backed
+DSM to generic errno style error codes.
+
+Signed-off-by: Li Redhairer <redhairer.li@intel.com>
+---
+ ndctl/lib/msft.c | 22 ++++++++++++++++++++++
+ ndctl/lib/msft.h |  6 ++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/ndctl/lib/msft.c b/ndctl/lib/msft.c
+index 145872c..3112799 100644
+--- a/ndctl/lib/msft.c
++++ b/ndctl/lib/msft.c
+@@ -149,10 +149,32 @@ static unsigned int msft_cmd_smart_get_life_used(struct ndctl_cmd *cmd)
+ 	return 100 - CMD_MSFT_SMART(cmd)->nvm_lifetime;
+ }
+ 
++static int msft_cmd_xlat_firmware_status(struct ndctl_cmd *cmd)
++{
++	unsigned int status;
++
++	status = cmd->get_firmware_status(cmd) & NDN_MSFT_STATUS_MASK;
++
++	/* Common statuses */
++	switch (status) {
++	case NDN_MSFT_STATUS_SUCCESS:
++		return 0;
++	case NDN_MSFT_STATUS_NOTSUPP:
++		return -EOPNOTSUPP;
++	case NDN_MSFT_STATUS_INVALPARM:
++		return -EINVAL;
++	case NDN_MSFT_STATUS_I2CERR:
++		return -EIO;
++	}
++
++	return -ENOMSG;
++}
++
+ struct ndctl_dimm_ops * const msft_dimm_ops = &(struct ndctl_dimm_ops) {
+ 	.new_smart = msft_dimm_cmd_new_smart,
+ 	.smart_get_flags = msft_cmd_smart_get_flags,
+ 	.smart_get_health = msft_cmd_smart_get_health,
+ 	.smart_get_media_temperature = msft_cmd_smart_get_media_temperature,
+ 	.smart_get_life_used = msft_cmd_smart_get_life_used,
++	.xlat_firmware_status = msft_cmd_xlat_firmware_status,
+ };
+diff --git a/ndctl/lib/msft.h b/ndctl/lib/msft.h
+index 7cfd26f..978cc11 100644
+--- a/ndctl/lib/msft.h
++++ b/ndctl/lib/msft.h
+@@ -50,4 +50,10 @@ struct ndn_pkg_msft {
+ 	union ndn_msft_cmd	u;
+ } __attribute__((packed));
+ 
++#define NDN_MSFT_STATUS_MASK		0xffff
++#define NDN_MSFT_STATUS_SUCCESS	0
++#define NDN_MSFT_STATUS_NOTSUPP	1
++#define NDN_MSFT_STATUS_INVALPARM	2
++#define NDN_MSFT_STATUS_I2CERR		3
++
+ #endif /* __NDCTL_MSFT_H__ */
+-- 
+2.27.0.windows.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
