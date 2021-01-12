@@ -1,44 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBCD2F2F85
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 13:57:44 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2D52F2FAB
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 13:58:08 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 879DE100EB82E;
-	Tue, 12 Jan 2021 04:57:43 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id B2674100EB831;
+	Tue, 12 Jan 2021 04:58:06 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 06FC0100EB82D
-	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 04:57:42 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 49BE223117;
-	Tue, 12 Jan 2021 12:57:40 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id 096AA100EB82E
+	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 04:58:04 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 316162311B;
+	Tue, 12 Jan 2021 12:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1610456261;
+	s=k20201202; t=1610456283;
 	bh=sssGw7VAmhQ9zYNCAgQ46mvt8+d/n+n3c7UnO0Lb+nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AE9Yd8Qhy1aRMVrVDvfq6TCi/F3YCsjIqijXRNv345W+hhyPUdTYv2VeYj9FskuL0
-	 oWabOGotxWIs/6o3+MCZkGtpwTLRqKIZ5MENdB2qvu7tnq7eID9DVYHpku6euybuDU
-	 a4r4eiGl4KWuHcll7Mt6dlz/tytksRbW5x/z26LXEsGWljlwyZlXBvkL452P+lNdJd
-	 n2rWLlFFBvgOJntroKndrNfs+/wJBZ8GDe6U57jS6aFGpV1o5Q+yod+EP0nY+amsZp
-	 A/yWRB+9d0q6dLT/ek402SSXsejM5sD0FPNQs9yoyEs5DxkZVc0rZljkWpNnVnI+LO
-	 0FpxWegUNgJjA==
+	b=YnoLO1heD023xFcmoWzZAY+JL/AQPvYLFlBfsBf3GRuUDF2rz4iGAUYY7wFhtwC0Q
+	 M9b/IYgkerPKvMcza08cB3xohXV16YVjVFzrNB8qN9BUfM6kSX00a5HX1CsBpZgLxL
+	 2KIq00T4ESgMh3KvKg1P5Zyll6e9lppVoDZ0ZZoT8XKO4zjuUTuMYBEubBO+MoFRV9
+	 Oer+iCsjZNjJnyGLoazMhsHujcJ8wf4H5qctrhZtE+gNKZruO4pNZAg6wwO5dIUuwN
+	 i+g5gbXJuFCNwJ3zmnZMJlrgn1zQI2uuD6nACVFl5n7Rgjv5CS/NLw1VcAeCqQPRvP
+	 ImUm7f1Wk8LQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 11/16] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
-Date: Tue, 12 Jan 2021 07:57:20 -0500
-Message-Id: <20210112125725.71014-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 09/13] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
+Date: Tue, 12 Jan 2021 07:57:45 -0500
+Message-Id: <20210112125749.71193-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210112125725.71014-1-sashal@kernel.org>
-References: <20210112125725.71014-1-sashal@kernel.org>
+In-Reply-To: <20210112125749.71193-1-sashal@kernel.org>
+References: <20210112125749.71193-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-Message-ID-Hash: MMDTYXNACPASMWBWVJNEPIAF52LWE73G
-X-Message-ID-Hash: MMDTYXNACPASMWBWVJNEPIAF52LWE73G
+Message-ID-Hash: CTF4F7OPJ5VCANWHETQDQJNMQCRIASMY
+X-Message-ID-Hash: CTF4F7OPJ5VCANWHETQDQJNMQCRIASMY
 X-MailFrom: sashal@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -46,7 +46,7 @@ CC: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>, Vin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MMDTYXNACPASMWBWVJNEPIAF52LWE73G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CTF4F7OPJ5VCANWHETQDQJNMQCRIASMY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
