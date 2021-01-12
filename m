@@ -1,49 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A195F2F2422
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 01:34:29 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D722F2426
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 01:34:31 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4769C100EBB9E;
-	Mon, 11 Jan 2021 16:34:28 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 5E331100EB821;
+	Mon, 11 Jan 2021 16:34:29 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7638E100EB820
-	for <linux-nvdimm@lists.01.org>; Mon, 11 Jan 2021 16:34:25 -0800 (PST)
-IronPort-SDR: Y9bA2hEz9SbmVm8SvMtIu3ZsaDusbCsyz2T86PlzgYZnR2cuuu+WLcgyHmTFEDVQwLRcxc0crv
- iTm+9ojvY/5g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="177185577"
+	by ml01.01.org (Postfix) with ESMTPS id 65913100EB82A
+	for <linux-nvdimm@lists.01.org>; Mon, 11 Jan 2021 16:34:26 -0800 (PST)
+IronPort-SDR: ecPu9cyNz8csp6lKVEtb9IgIFlf42qd6kndpG7+JOKGBvRp+WfIsU21nTLW/QFBATua/pcZxnw
+ 0MxRooAfvs2w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="177185581"
 X-IronPort-AV: E=Sophos;i="5.79,339,1602572400";
-   d="scan'208";a="177185577"
+   d="scan'208";a="177185581"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 16:34:25 -0800
-IronPort-SDR: DTgH3onCWBNNmuL4P0Y2H4ylW2IO4OBSEpoBsvh7papa74rKxEAXoxP0f/S09DQlX7l2jkAHKS
- uNAR5tkbZEyA==
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 16:34:26 -0800
+IronPort-SDR: dLFy2R7vc+QxzXFpJ3FtCNo3ojkpsrMa2mHlysSznFSzBR3bKQULQm4NX5r7m1E9HvrWSuSpbL
+ tonXzFrosXxQ==
 X-IronPort-AV: E=Sophos;i="5.79,339,1602572400";
-   d="scan'208";a="381212102"
+   d="scan'208";a="381212107"
 Received: from ecbackus-mobl1.amr.corp.intel.com (HELO omniknight.intel.com) ([10.212.212.82])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 16:34:24 -0800
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 16:34:25 -0800
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-cxl@vger.kernel.org>
-Subject: [ndctl RFC PATCH 4/5] libcxl: add accessors for retrieving 'Identify' information
-Date: Mon, 11 Jan 2021 17:34:02 -0700
-Message-Id: <20210112003403.2944568-5-vishal.l.verma@intel.com>
+Subject: [ndctl RFC PATCH 5/5] cxl/list: augment cxl-list with more data from the identify command
+Date: Mon, 11 Jan 2021 17:34:03 -0700
+Message-Id: <20210112003403.2944568-6-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210112003403.2944568-1-vishal.l.verma@intel.com>
 References: <20210112003403.2944568-1-vishal.l.verma@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: LAVQV2HSEDZS3CCUBEZ4VTDLXRTMSL4H
-X-Message-ID-Hash: LAVQV2HSEDZS3CCUBEZ4VTDLXRTMSL4H
+Message-ID-Hash: Y3FC7FCFBWCKE3YCMD2YF6VOQCVR5GWA
+X-Message-ID-Hash: Y3FC7FCFBWCKE3YCMD2YF6VOQCVR5GWA
 X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm@lists.01.org, Ben Widawsky <ben.widawsky@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LAVQV2HSEDZS3CCUBEZ4VTDLXRTMSL4H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y3FC7FCFBWCKE3YCMD2YF6VOQCVR5GWA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,137 +52,169 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add APIs to access an incomplete list of fields from the 'Identify'
-mailbox command. The fields added are fw_revision, partition_align, and
-lsa_size.
+Augment cxl-list with some more fields obtained from sending an
+'Identify' command to the device. If/when these fields are added to the
+sysfs representation of the memdev, the command submission detour can be
+removed and replaced with data from sysfs.
 
+Cc: Ben Widawsky <ben.widawsky@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- cxl/lib/private.h  | 19 +++++++++++++++++++
- cxl/lib/libcxl.c   | 44 ++++++++++++++++++++++++++++++++++++++++++++
- cxl/libcxl.h       |  3 +++
- cxl/lib/libcxl.sym |  3 +++
- 4 files changed, 69 insertions(+)
+ util/json.h |  3 ++-
+ cxl/list.c  | 29 +++++++++++++++++++++++++++--
+ util/json.c | 22 +++++++++++++++++++++-
+ 3 files changed, 50 insertions(+), 4 deletions(-)
 
-diff --git a/cxl/lib/private.h b/cxl/lib/private.h
-index c7ebfcb..19f3a37 100644
---- a/cxl/lib/private.h
-+++ b/cxl/lib/private.h
-@@ -60,6 +60,25 @@ struct cxl_cmd {
- 	int status;
- };
+diff --git a/util/json.h b/util/json.h
+index 91918c8..831f9bb 100644
+--- a/util/json.h
++++ b/util/json.h
+@@ -6,6 +6,7 @@
+ #include <stdbool.h>
+ #include <ndctl/libndctl.h>
+ #include <daxctl/libdaxctl.h>
++#include <cxl/libcxl.h>
+ #include <ccan/short_types/short_types.h>
  
-+#define CXL_CMD_IDENTIFY_FW_REV_LENGTH 0x10
-+
-+struct cxl_cmd_identify {
-+	char fw_revision[CXL_CMD_IDENTIFY_FW_REV_LENGTH];
-+	le64 total_capacity;
-+	le64 volatile_capacity;
-+	le64 persistent_capacity;
-+	le64 partition_align;
-+	le16 info_event_log_size;
-+	le16 warning_event_log_size;
-+	le16 failure_event_log_size;
-+	le16 fatal_event_log_size;
-+	le32 lsa_size;
-+	u8 poison_list_max_mer[3];
-+	le16 inject_poison_limit;
-+	u8 poison_caps;
-+	u8 qos_telemetry_caps;
-+} __packed;
-+
- static inline int check_kmod(struct kmod_ctx *kmod_ctx)
- {
- 	return kmod_ctx ? 0 : -ENXIO;
-diff --git a/cxl/lib/libcxl.c b/cxl/lib/libcxl.c
-index 02bc316..d54da95 100644
---- a/cxl/lib/libcxl.c
-+++ b/cxl/lib/libcxl.c
-@@ -13,7 +13,10 @@
- #include <sys/sysmacros.h>
- #include <uuid/uuid.h>
- #include <ccan/list/list.h>
-+#include <ccan/endian/endian.h>
-+#include <ccan/minmax/minmax.h>
- #include <ccan/array_size/array_size.h>
-+#include <ccan/short_types/short_types.h>
+ enum util_json_flags {
+@@ -57,5 +58,5 @@ struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
+ struct json_object *util_region_capabilities_to_json(struct ndctl_region *region);
+ struct cxl_memdev;
+ struct json_object *util_cxl_memdev_to_json(struct cxl_memdev *memdev,
+-		unsigned long flags);
++		struct cxl_cmd *id, unsigned long flags);
+ #endif /* __NDCTL_JSON_H__ */
+diff --git a/cxl/list.c b/cxl/list.c
+index 3d44244..7afe2b4 100644
+--- a/cxl/list.c
++++ b/cxl/list.c
+@@ -5,6 +5,7 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <limits.h>
++#include <util/log.h>
+ #include <util/json.h>
+ #include <util/filter.h>
+ #include <json-c/json.h>
+@@ -16,6 +17,7 @@ static struct {
+ 	bool memdevs;
+ 	bool idle;
+ 	bool human;
++	bool verbose;
+ } list;
  
- #include <cxl_mem.h>
- #include <util/log.h>
-@@ -624,6 +627,47 @@ CXL_EXPORT struct cxl_cmd *cxl_cmd_new_identify(struct cxl_memdev *memdev)
- 	return cxl_cmd_new_generic(memdev, CXL_MEM_COMMAND_ID_IDENTIFY);
+ static unsigned long listopts_to_flags(void)
+@@ -47,6 +49,19 @@ static int num_list_flags(void)
+ 	return list.memdevs;
  }
  
-+CXL_EXPORT int cxl_cmd_identify_get_fw_rev(struct cxl_cmd *cmd, char *fw_rev,
-+		int fw_len)
++struct cxl_cmd *memdev_identify(struct cxl_memdev *memdev)
 +{
-+	struct cxl_cmd_identify *id = (void *)cmd->send_cmd->out_payload;
++	struct cxl_cmd *id;
 +
-+	if (cmd->send_cmd->id != CXL_MEM_COMMAND_ID_IDENTIFY)
-+		return -EINVAL;
-+	if (cmd->status < 0)
-+		return cmd->status;
++	id = cxl_cmd_new_identify(memdev);
++	if (!id)
++		return NULL;
 +
-+	if (fw_len > 0)
-+		memcpy(fw_rev, id->fw_revision,
-+			min(fw_len, CXL_CMD_IDENTIFY_FW_REV_LENGTH));
-+	return 0;
++	if (cxl_cmd_submit(id) != 0)
++		return NULL;
++	return id;
 +}
 +
-+CXL_EXPORT unsigned long long cxl_cmd_identify_get_partition_align(
-+		struct cxl_cmd *cmd)
-+{
-+	struct cxl_cmd_identify *id = (void *)cmd->send_cmd->out_payload;
-+
-+	if (cmd->send_cmd->id != CXL_MEM_COMMAND_ID_IDENTIFY)
-+		return -EINVAL;
-+	if (cmd->status < 0)
-+		return cmd->status;
-+
-+	return le64_to_cpu(id->partition_align);
-+}
-+
-+CXL_EXPORT unsigned int cxl_cmd_identify_get_lsa_size(struct cxl_cmd *cmd)
-+{
-+	struct cxl_cmd_identify *id = (void *)cmd->send_cmd->out_payload;
-+
-+	if (cmd->send_cmd->id != CXL_MEM_COMMAND_ID_IDENTIFY)
-+		return -EINVAL;
-+	if (cmd->status < 0)
-+		return cmd->status;
-+
-+	return le32_to_cpu(id->lsa_size);
-+}
-+
- CXL_EXPORT struct cxl_cmd *cxl_cmd_new_raw(struct cxl_memdev *memdev)
+ int cmd_list(int argc, const char **argv, struct cxl_ctx *ctx)
  {
- 	return cxl_cmd_new_generic(memdev, CXL_MEM_COMMAND_ID_RAW);
-diff --git a/cxl/libcxl.h b/cxl/libcxl.h
-index 83888bc..caa2e76 100644
---- a/cxl/libcxl.h
-+++ b/cxl/libcxl.h
-@@ -55,6 +55,9 @@ int cxl_cmd_attach_payloads(struct cxl_cmd *cmd,
- void cxl_cmd_ref(struct cxl_cmd *cmd);
- void cxl_cmd_unref(struct cxl_cmd *cmd);
- int cxl_cmd_submit(struct cxl_cmd *cmd);
-+int cxl_cmd_identify_get_fw_rev(struct cxl_cmd *cmd, char *fw_rev, int fw_len);
-+unsigned long long cxl_cmd_identify_get_partition_align(struct cxl_cmd *cmd);
-+unsigned int cxl_cmd_identify_get_lsa_size(struct cxl_cmd *cmd);
+ 	const struct option options[] = {
+@@ -56,7 +71,9 @@ int cmd_list(int argc, const char **argv, struct cxl_ctx *ctx)
+ 			    "include CXL memory device info"),
+ 		OPT_BOOLEAN('i', "idle", &list.idle, "include idle devices"),
+ 		OPT_BOOLEAN('u', "human", &list.human,
+-				"use human friendly number formats "),
++				"use human friendly number formats"),
++		OPT_BOOLEAN('v', "verbose", &list.verbose,
++				"enable verbose output"),
+ 		OPT_END(),
+ 	};
+ 	const char * const u[] = {
+@@ -80,27 +97,35 @@ int cmd_list(int argc, const char **argv, struct cxl_ctx *ctx)
  
- #ifdef __cplusplus
- } /* extern "C" */
-diff --git a/cxl/lib/libcxl.sym b/cxl/lib/libcxl.sym
-index 3583bab..41311d9 100644
---- a/cxl/lib/libcxl.sym
-+++ b/cxl/lib/libcxl.sym
-@@ -35,4 +35,7 @@ global:
- 	cxl_cmd_ref;
- 	cxl_cmd_unref;
- 	cxl_cmd_submit;
-+	cxl_cmd_identify_get_fw_rev;
-+	cxl_cmd_identify_get_partition_align;
-+	cxl_cmd_identify_get_lsa_size;
- } LIBCXL_2;
+ 	list_flags = listopts_to_flags();
+ 
++	if (list.verbose)
++		cxl_set_log_priority(ctx, LOG_DEBUG);
++
+ 	cxl_memdev_foreach(ctx, memdev) {
+ 		struct json_object *jdev = NULL;
++		struct cxl_cmd *id;
+ 
+ 		if (!util_cxl_memdev_filter(memdev, param.memdev))
+ 			continue;
+ 
+ 		if (list.memdevs) {
++			id = memdev_identify(memdev);
+ 			if (!jdevs) {
+ 				jdevs = json_object_new_array();
+ 				if (!jdevs) {
+ 					fail("\n");
++					cxl_cmd_unref(id);
+ 					continue;
+ 				}
+ 			}
+ 
+-			jdev = util_cxl_memdev_to_json(memdev, list_flags);
++			jdev = util_cxl_memdev_to_json(memdev, id, list_flags);
+ 			if (!jdev) {
+ 				fail("\n");
++				cxl_cmd_unref(id);
+ 				continue;
+ 			}
+ 			json_object_array_add(jdevs, jdev);
++			cxl_cmd_unref(id);
+ 		}
+ 	}
+ 
+diff --git a/util/json.c b/util/json.c
+index a855571..24d4477 100644
+--- a/util/json.c
++++ b/util/json.c
+@@ -1432,10 +1432,11 @@ struct json_object *util_badblock_rec_to_json(u64 block, u64 count,
+ }
+ 
+ struct json_object *util_cxl_memdev_to_json(struct cxl_memdev *memdev,
+-		unsigned long flags)
++		struct cxl_cmd *id, unsigned long flags)
+ {
+ 	const char *devname = cxl_memdev_get_devname(memdev);
+ 	struct json_object *jdev, *jobj;
++	char fw_rev[0x10];
+ 
+ 	jdev = json_object_new_object();
+ 	if (!devname || !jdev)
+@@ -1453,5 +1454,24 @@ struct json_object *util_cxl_memdev_to_json(struct cxl_memdev *memdev,
+ 	if (jobj)
+ 		json_object_object_add(jdev, "ram_size", jobj);
+ 
++	if (!id)
++		return jdev;
++
++	if (cxl_cmd_identify_get_fw_rev(id, fw_rev, 0x10) == 0) {
++		jobj = json_object_new_string(fw_rev);
++		if (jobj)
++			json_object_object_add(jdev, "fw_revision", jobj);
++	}
++
++	jobj = util_json_object_size(cxl_cmd_identify_get_partition_align(id),
++			flags);
++	if (jobj)
++		json_object_object_add(jdev, "partition_align", jobj);
++
++	jobj = util_json_object_size(cxl_cmd_identify_get_lsa_size(id),
++			flags);
++	if (jobj)
++		json_object_object_add(jdev, "lsa_size", jobj);
++
+ 	return jdev;
+ }
 -- 
 2.29.2
 _______________________________________________
