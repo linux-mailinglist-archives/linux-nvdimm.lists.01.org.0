@@ -2,221 +2,140 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D722F2426
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 01:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224432F266D
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 03:55:45 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E331100EB821;
-	Mon, 11 Jan 2021 16:34:29 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 65913100EB82A
-	for <linux-nvdimm@lists.01.org>; Mon, 11 Jan 2021 16:34:26 -0800 (PST)
-IronPort-SDR: ecPu9cyNz8csp6lKVEtb9IgIFlf42qd6kndpG7+JOKGBvRp+WfIsU21nTLW/QFBATua/pcZxnw
- 0MxRooAfvs2w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9861"; a="177185581"
-X-IronPort-AV: E=Sophos;i="5.79,339,1602572400";
-   d="scan'208";a="177185581"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 16:34:26 -0800
-IronPort-SDR: dLFy2R7vc+QxzXFpJ3FtCNo3ojkpsrMa2mHlysSznFSzBR3bKQULQm4NX5r7m1E9HvrWSuSpbL
- tonXzFrosXxQ==
-X-IronPort-AV: E=Sophos;i="5.79,339,1602572400";
-   d="scan'208";a="381212107"
-Received: from ecbackus-mobl1.amr.corp.intel.com (HELO omniknight.intel.com) ([10.212.212.82])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2021 16:34:25 -0800
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: <linux-cxl@vger.kernel.org>
-Subject: [ndctl RFC PATCH 5/5] cxl/list: augment cxl-list with more data from the identify command
-Date: Mon, 11 Jan 2021 17:34:03 -0700
-Message-Id: <20210112003403.2944568-6-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210112003403.2944568-1-vishal.l.verma@intel.com>
-References: <20210112003403.2944568-1-vishal.l.verma@intel.com>
+	by ml01.01.org (Postfix) with ESMTP id 5E1D9100EBBBE;
+	Mon, 11 Jan 2021 18:55:43 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id 4046C100EBBA0
+	for <linux-nvdimm@lists.01.org>; Mon, 11 Jan 2021 18:55:40 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.79,340,1602518400";
+   d="scan'208";a="103383793"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 12 Jan 2021 10:55:38 +0800
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
+	by cn.fujitsu.com (Postfix) with ESMTP id C0A054CE602D;
+	Tue, 12 Jan 2021 10:55:35 +0800 (CST)
+Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
+ (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 12 Jan
+ 2021 10:55:36 +0800
+Subject: Re: [PATCH 04/10] mm, fsdax: Refactor memory-failure handler for dax
+ mapping
+To: Jan Kara <jack@suse.cz>
+References: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com>
+ <20201230165601.845024-5-ruansy.fnst@cn.fujitsu.com>
+ <20210106154132.GC29271@quack2.suse.cz>
+From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
+Message-ID: <75164044-bfdf-b2d6-dff0-d6a8d56d1f62@cn.fujitsu.com>
+Date: Tue, 12 Jan 2021 10:55:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Message-ID-Hash: Y3FC7FCFBWCKE3YCMD2YF6VOQCVR5GWA
-X-Message-ID-Hash: Y3FC7FCFBWCKE3YCMD2YF6VOQCVR5GWA
-X-MailFrom: vishal.l.verma@intel.com
+In-Reply-To: <20210106154132.GC29271@quack2.suse.cz>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.141]
+X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
+ G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
+X-yoursite-MailScanner-ID: C0A054CE602D.AADE7
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: F2RWEM4YHOLNUHMFC53HUDQYGADGQ3B6
+X-Message-ID-Hash: F2RWEM4YHOLNUHMFC53HUDQYGADGQ3B6
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, Ben Widawsky <ben.widawsky@intel.com>
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y3FC7FCFBWCKE3YCMD2YF6VOQCVR5GWA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F2RWEM4YHOLNUHMFC53HUDQYGADGQ3B6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-Augment cxl-list with some more fields obtained from sending an
-'Identify' command to the device. If/when these fields are added to the
-sysfs representation of the memdev, the command submission detour can be
-removed and replaced with data from sysfs.
-
-Cc: Ben Widawsky <ben.widawsky@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- util/json.h |  3 ++-
- cxl/list.c  | 29 +++++++++++++++++++++++++++--
- util/json.c | 22 +++++++++++++++++++++-
- 3 files changed, 50 insertions(+), 4 deletions(-)
-
-diff --git a/util/json.h b/util/json.h
-index 91918c8..831f9bb 100644
---- a/util/json.h
-+++ b/util/json.h
-@@ -6,6 +6,7 @@
- #include <stdbool.h>
- #include <ndctl/libndctl.h>
- #include <daxctl/libdaxctl.h>
-+#include <cxl/libcxl.h>
- #include <ccan/short_types/short_types.h>
- 
- enum util_json_flags {
-@@ -57,5 +58,5 @@ struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
- struct json_object *util_region_capabilities_to_json(struct ndctl_region *region);
- struct cxl_memdev;
- struct json_object *util_cxl_memdev_to_json(struct cxl_memdev *memdev,
--		unsigned long flags);
-+		struct cxl_cmd *id, unsigned long flags);
- #endif /* __NDCTL_JSON_H__ */
-diff --git a/cxl/list.c b/cxl/list.c
-index 3d44244..7afe2b4 100644
---- a/cxl/list.c
-+++ b/cxl/list.c
-@@ -5,6 +5,7 @@
- #include <stdlib.h>
- #include <unistd.h>
- #include <limits.h>
-+#include <util/log.h>
- #include <util/json.h>
- #include <util/filter.h>
- #include <json-c/json.h>
-@@ -16,6 +17,7 @@ static struct {
- 	bool memdevs;
- 	bool idle;
- 	bool human;
-+	bool verbose;
- } list;
- 
- static unsigned long listopts_to_flags(void)
-@@ -47,6 +49,19 @@ static int num_list_flags(void)
- 	return list.memdevs;
- }
- 
-+struct cxl_cmd *memdev_identify(struct cxl_memdev *memdev)
-+{
-+	struct cxl_cmd *id;
-+
-+	id = cxl_cmd_new_identify(memdev);
-+	if (!id)
-+		return NULL;
-+
-+	if (cxl_cmd_submit(id) != 0)
-+		return NULL;
-+	return id;
-+}
-+
- int cmd_list(int argc, const char **argv, struct cxl_ctx *ctx)
- {
- 	const struct option options[] = {
-@@ -56,7 +71,9 @@ int cmd_list(int argc, const char **argv, struct cxl_ctx *ctx)
- 			    "include CXL memory device info"),
- 		OPT_BOOLEAN('i', "idle", &list.idle, "include idle devices"),
- 		OPT_BOOLEAN('u', "human", &list.human,
--				"use human friendly number formats "),
-+				"use human friendly number formats"),
-+		OPT_BOOLEAN('v', "verbose", &list.verbose,
-+				"enable verbose output"),
- 		OPT_END(),
- 	};
- 	const char * const u[] = {
-@@ -80,27 +97,35 @@ int cmd_list(int argc, const char **argv, struct cxl_ctx *ctx)
- 
- 	list_flags = listopts_to_flags();
- 
-+	if (list.verbose)
-+		cxl_set_log_priority(ctx, LOG_DEBUG);
-+
- 	cxl_memdev_foreach(ctx, memdev) {
- 		struct json_object *jdev = NULL;
-+		struct cxl_cmd *id;
- 
- 		if (!util_cxl_memdev_filter(memdev, param.memdev))
- 			continue;
- 
- 		if (list.memdevs) {
-+			id = memdev_identify(memdev);
- 			if (!jdevs) {
- 				jdevs = json_object_new_array();
- 				if (!jdevs) {
- 					fail("\n");
-+					cxl_cmd_unref(id);
- 					continue;
- 				}
- 			}
- 
--			jdev = util_cxl_memdev_to_json(memdev, list_flags);
-+			jdev = util_cxl_memdev_to_json(memdev, id, list_flags);
- 			if (!jdev) {
- 				fail("\n");
-+				cxl_cmd_unref(id);
- 				continue;
- 			}
- 			json_object_array_add(jdevs, jdev);
-+			cxl_cmd_unref(id);
- 		}
- 	}
- 
-diff --git a/util/json.c b/util/json.c
-index a855571..24d4477 100644
---- a/util/json.c
-+++ b/util/json.c
-@@ -1432,10 +1432,11 @@ struct json_object *util_badblock_rec_to_json(u64 block, u64 count,
- }
- 
- struct json_object *util_cxl_memdev_to_json(struct cxl_memdev *memdev,
--		unsigned long flags)
-+		struct cxl_cmd *id, unsigned long flags)
- {
- 	const char *devname = cxl_memdev_get_devname(memdev);
- 	struct json_object *jdev, *jobj;
-+	char fw_rev[0x10];
- 
- 	jdev = json_object_new_object();
- 	if (!devname || !jdev)
-@@ -1453,5 +1454,24 @@ struct json_object *util_cxl_memdev_to_json(struct cxl_memdev *memdev,
- 	if (jobj)
- 		json_object_object_add(jdev, "ram_size", jobj);
- 
-+	if (!id)
-+		return jdev;
-+
-+	if (cxl_cmd_identify_get_fw_rev(id, fw_rev, 0x10) == 0) {
-+		jobj = json_object_new_string(fw_rev);
-+		if (jobj)
-+			json_object_object_add(jdev, "fw_revision", jobj);
-+	}
-+
-+	jobj = util_json_object_size(cxl_cmd_identify_get_partition_align(id),
-+			flags);
-+	if (jobj)
-+		json_object_object_add(jdev, "partition_align", jobj);
-+
-+	jobj = util_json_object_size(cxl_cmd_identify_get_lsa_size(id),
-+			flags);
-+	if (jobj)
-+		json_object_object_add(jdev, "lsa_size", jobj);
-+
- 	return jdev;
- }
--- 
-2.29.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCk9uIDIwMjEvMS82IOS4i+WNiDExOjQxLCBKYW4gS2FyYSB3cm90ZToNCj4gT24gVGh1IDMx
+LTEyLTIwIDAwOjU1OjU1LCBTaGl5YW5nIFJ1YW4gd3JvdGU6DQo+PiBUaGUgY3VycmVudCBtZW1v
+cnlfZmFpbHVyZV9kZXZfcGFnZW1hcCgpIGNhbiBvbmx5IGhhbmRsZSBzaW5nbGUtbWFwcGVkDQo+
+PiBkYXggcGFnZSBmb3IgZnNkYXggbW9kZS4gIFRoZSBkYXggcGFnZSBjb3VsZCBiZSBtYXBwZWQg
+YnkgbXVsdGlwbGUgZmlsZXMNCj4+IGFuZCBvZmZzZXRzIGlmIHdlIGxldCByZWZsaW5rIGZlYXR1
+cmUgJiBmc2RheCBtb2RlIHdvcmsgdG9nZXRoZXIuICBTbywNCj4+IHdlIHJlZmFjdG9yIGN1cnJl
+bnQgaW1wbGVtZW50YXRpb24gdG8gc3VwcG9ydCBoYW5kbGUgbWVtb3J5IGZhaWx1cmUgb24NCj4+
+IGVhY2ggZmlsZSBhbmQgb2Zmc2V0Lg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IFNoaXlhbmcgUnVh
+biA8cnVhbnN5LmZuc3RAY24uZnVqaXRzdS5jb20+DQo+IA0KPiBPdmVyYWxsIHRoaXMgbG9va3Mg
+T0sgdG8gbWUsIGEgZmV3IGNvbW1lbnRzIGJlbG93Lg0KPiANCj4+IC0tLQ0KPj4gICBmcy9kYXgu
+YyAgICAgICAgICAgIHwgMjEgKysrKysrKysrKysNCj4+ICAgaW5jbHVkZS9saW51eC9kYXguaCB8
+ICAxICsNCj4+ICAgaW5jbHVkZS9saW51eC9tbS5oICB8ICA5ICsrKysrDQo+PiAgIG1tL21lbW9y
+eS1mYWlsdXJlLmMgfCA5MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
+LS0tLS0NCj4+ICAgNCBmaWxlcyBjaGFuZ2VkLCAxMDAgaW5zZXJ0aW9ucygrKSwgMjIgZGVsZXRp
+b25zKC0pDQoNCi4uLg0KDQo+PiAgIA0KPj4gQEAgLTM0NSw5ICszNDgsMTIgQEAgc3RhdGljIHZv
+aWQgYWRkX3RvX2tpbGwoc3RydWN0IHRhc2tfc3RydWN0ICp0c2ssIHN0cnVjdCBwYWdlICpwLA0K
+Pj4gICAJfQ0KPj4gICANCj4+ICAgCXRrLT5hZGRyID0gcGFnZV9hZGRyZXNzX2luX3ZtYShwLCB2
+bWEpOw0KPj4gLQlpZiAoaXNfem9uZV9kZXZpY2VfcGFnZShwKSkNCj4+IC0JCXRrLT5zaXplX3No
+aWZ0ID0gZGV2X3BhZ2VtYXBfbWFwcGluZ19zaGlmdChwLCB2bWEpOw0KPj4gLQllbHNlDQo+PiAr
+CWlmIChpc196b25lX2RldmljZV9wYWdlKHApKSB7DQo+PiArCQlpZiAoaXNfZGV2aWNlX2ZzZGF4
+X3BhZ2UocCkpDQo+PiArCQkJdGstPmFkZHIgPSB2bWEtPnZtX3N0YXJ0ICsNCj4+ICsJCQkJCSgo
+cGdvZmYgLSB2bWEtPnZtX3Bnb2ZmKSA8PCBQQUdFX1NISUZUKTsNCj4gDQo+IEl0IHNlZW1zIHN0
+cmFuZ2UgdG8gdXNlICdwZ29mZicgZm9yIGRheCBwYWdlcyBhbmQgbm90IGZvciBhbnkgb3RoZXIg
+cGFnZS4NCj4gV2h5PyBJJ2QgcmF0aGVyIHBhc3MgY29ycmVjdCBwZ29mZiBmcm9tIGFsbCBjYWxs
+ZXJzIG9mIGFkZF90b19raWxsKCkgYW5kDQo+IGF2b2lkIHRoaXMgc3BlY2lhbCBjYXNpbmcuLi4N
+Cg0KQmVjYXVzZSBvbmUgZnNkYXggcGFnZSBjYW4gYmUgc2hhcmVkIGJ5IG11bHRpcGxlIHBnb2Zm
+cy4gIEkgaGF2ZSB0byBwYXNzIA0KZWFjaCBwZ29mZiBpbiBlYWNoIGl0ZXJhdGlvbiB0byBjYWxj
+dWxhdGUgdGhlIGFkZHJlc3MgaW4gdm1hIChmb3IgDQp0ay0+YWRkcikuICBPdGhlciBraW5kcyBv
+ZiBwYWdlcyBkb24ndCBuZWVkIHRoaXMuICBUaGV5IGNhbiBnZXQgdGhlaXIgDQp1bmlxdWUgYWRk
+cmVzcyBieSBjYWxsaW5nICJwYWdlX2FkZHJlc3NfaW5fdm1hKCkiLg0KDQpTbywgSSBhZGRlZCB0
+aGlzIGZzZGF4IGNhc2UgaGVyZS4gIFRoaXMgcGF0Y2hzZXQgb25seSBpbXBsZW1lbnRlZCB0aGUg
+DQpmc2RheCBjYXNlLCBvdGhlciBjYXNlcyBhbHNvIG5lZWQgdG8gYmUgYWRkZWQgaGVyZSBpZiB0
+byBiZSBpbXBsZW1lbnRlZC4NCg0KDQotLQ0KVGhhbmtzLA0KUnVhbiBTaGl5YW5nLg0KDQo+IA0K
+Pj4gKwkJdGstPnNpemVfc2hpZnQgPSBkZXZfcGFnZW1hcF9tYXBwaW5nX3NoaWZ0KHAsIHZtYSwg
+dGstPmFkZHIpOw0KPj4gKwl9IGVsc2UNCj4+ICAgCQl0ay0+c2l6ZV9zaGlmdCA9IHBhZ2Vfc2hp
+ZnQoY29tcG91bmRfaGVhZChwKSk7DQo+PiAgIA0KPj4gICAJLyoNCj4+IEBAIC00OTUsNyArNTAx
+LDcgQEAgc3RhdGljIHZvaWQgY29sbGVjdF9wcm9jc19hbm9uKHN0cnVjdCBwYWdlICpwYWdlLCBz
+dHJ1Y3QgbGlzdF9oZWFkICp0b19raWxsLA0KPj4gICAJCQlpZiAoIXBhZ2VfbWFwcGVkX2luX3Zt
+YShwYWdlLCB2bWEpKQ0KPj4gICAJCQkJY29udGludWU7DQo+PiAgIAkJCWlmICh2bWEtPnZtX21t
+ID09IHQtPm1tKQ0KPj4gLQkJCQlhZGRfdG9fa2lsbCh0LCBwYWdlLCB2bWEsIHRvX2tpbGwpOw0K
+Pj4gKwkJCQlhZGRfdG9fa2lsbCh0LCBwYWdlLCBOVUxMLCAwLCB2bWEsIHRvX2tpbGwpOw0KPj4g
+ICAJCX0NCj4+ICAgCX0NCj4+ICAgCXJlYWRfdW5sb2NrKCZ0YXNrbGlzdF9sb2NrKTsNCj4+IEBA
+IC01MDUsMjQgKzUxMSwxOSBAQCBzdGF0aWMgdm9pZCBjb2xsZWN0X3Byb2NzX2Fub24oc3RydWN0
+IHBhZ2UgKnBhZ2UsIHN0cnVjdCBsaXN0X2hlYWQgKnRvX2tpbGwsDQo+PiAgIC8qDQo+PiAgICAq
+IENvbGxlY3QgcHJvY2Vzc2VzIHdoZW4gdGhlIGVycm9yIGhpdCBhIGZpbGUgbWFwcGVkIHBhZ2Uu
+DQo+PiAgICAqLw0KPj4gLXN0YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3NfZmlsZShzdHJ1Y3QgcGFn
+ZSAqcGFnZSwgc3RydWN0IGxpc3RfaGVhZCAqdG9fa2lsbCwNCj4+IC0JCQkJaW50IGZvcmNlX2Vh
+cmx5KQ0KPj4gK3N0YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3NfZmlsZShzdHJ1Y3QgcGFnZSAqcGFn
+ZSwgc3RydWN0IGFkZHJlc3Nfc3BhY2UgKm1hcHBpbmcsDQo+PiArCQlwZ29mZl90IHBnb2ZmLCBz
+dHJ1Y3QgbGlzdF9oZWFkICp0b19raWxsLCBpbnQgZm9yY2VfZWFybHkpDQo+PiAgIHsNCj4+ICAg
+CXN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqdm1hOw0KPj4gICAJc3RydWN0IHRhc2tfc3RydWN0ICp0
+c2s7DQo+PiAtCXN0cnVjdCBhZGRyZXNzX3NwYWNlICptYXBwaW5nID0gcGFnZS0+bWFwcGluZzsN
+Cj4+IC0JcGdvZmZfdCBwZ29mZjsNCj4+ICAgDQo+PiAgIAlpX21tYXBfbG9ja19yZWFkKG1hcHBp
+bmcpOw0KPj4gICAJcmVhZF9sb2NrKCZ0YXNrbGlzdF9sb2NrKTsNCj4+IC0JcGdvZmYgPSBwYWdl
+X3RvX3Bnb2ZmKHBhZ2UpOw0KPj4gICAJZm9yX2VhY2hfcHJvY2Vzcyh0c2spIHsNCj4+ICAgCQlz
+dHJ1Y3QgdGFza19zdHJ1Y3QgKnQgPSB0YXNrX2Vhcmx5X2tpbGwodHNrLCBmb3JjZV9lYXJseSk7
+DQo+PiAtDQo+PiAgIAkJaWYgKCF0KQ0KPj4gICAJCQljb250aW51ZTsNCj4+IC0JCXZtYV9pbnRl
+cnZhbF90cmVlX2ZvcmVhY2godm1hLCAmbWFwcGluZy0+aV9tbWFwLCBwZ29mZiwNCj4+IC0JCQkJ
+ICAgICAgcGdvZmYpIHsNCj4+ICsJCXZtYV9pbnRlcnZhbF90cmVlX2ZvcmVhY2godm1hLCAmbWFw
+cGluZy0+aV9tbWFwLCBwZ29mZiwgcGdvZmYpIHsNCj4+ICAgCQkJLyoNCj4+ICAgCQkJICogU2Vu
+ZCBlYXJseSBraWxsIHNpZ25hbCB0byB0YXNrcyB3aGVyZSBhIHZtYSBjb3ZlcnMNCj4+ICAgCQkJ
+ICogdGhlIHBhZ2UgYnV0IHRoZSBjb3JydXB0ZWQgcGFnZSBpcyBub3QgbmVjZXNzYXJpbHkNCj4+
+IEBAIC01MzEsNyArNTMyLDcgQEAgc3RhdGljIHZvaWQgY29sbGVjdF9wcm9jc19maWxlKHN0cnVj
+dCBwYWdlICpwYWdlLCBzdHJ1Y3QgbGlzdF9oZWFkICp0b19raWxsLA0KPj4gICAJCQkgKiB0byBi
+ZSBpbmZvcm1lZCBvZiBhbGwgc3VjaCBkYXRhIGNvcnJ1cHRpb25zLg0KPj4gICAJCQkgKi8NCj4+
+ICAgCQkJaWYgKHZtYS0+dm1fbW0gPT0gdC0+bW0pDQo+PiAtCQkJCWFkZF90b19raWxsKHQsIHBh
+Z2UsIHZtYSwgdG9fa2lsbCk7DQo+PiArCQkJCWFkZF90b19raWxsKHQsIHBhZ2UsIG1hcHBpbmcs
+IHBnb2ZmLCB2bWEsIHRvX2tpbGwpOw0KPj4gICAJCX0NCj4+ICAgCX0NCj4+ICAgCXJlYWRfdW5s
+b2NrKCZ0YXNrbGlzdF9sb2NrKTsNCj4+IEBAIC01NTAsNyArNTUxLDggQEAgc3RhdGljIHZvaWQg
+Y29sbGVjdF9wcm9jcyhzdHJ1Y3QgcGFnZSAqcGFnZSwgc3RydWN0IGxpc3RfaGVhZCAqdG9raWxs
+LA0KPj4gICAJaWYgKFBhZ2VBbm9uKHBhZ2UpKQ0KPj4gICAJCWNvbGxlY3RfcHJvY3NfYW5vbihw
+YWdlLCB0b2tpbGwsIGZvcmNlX2Vhcmx5KTsNCj4+ICAgCWVsc2UNCj4+IC0JCWNvbGxlY3RfcHJv
+Y3NfZmlsZShwYWdlLCB0b2tpbGwsIGZvcmNlX2Vhcmx5KTsNCj4+ICsJCWNvbGxlY3RfcHJvY3Nf
+ZmlsZShwYWdlLCBwYWdlLT5tYXBwaW5nLCBwYWdlX3RvX3Bnb2ZmKHBhZ2UpLA0KPiANCj4gV2h5
+IG5vdCB1c2UgcGFnZV9tYXBwaW5nKCkgaGVscGVyIGhlcmU/IEl0IHdvdWxkIGJlIHNhZmVyIGZv
+ciBUSFBzIGlmIHRoZXkNCj4gZXZlciBnZXQgaGVyZS4uLg0KPiANCj4gCQkJCQkJCQlIb256YQ0K
+PiANCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
+dXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVu
+c3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9y
+Zwo=
