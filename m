@@ -2,43 +2,43 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDF32F2F7E
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 13:57:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBCD2F2F85
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 13:57:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6BE70100EB82D;
-	Tue, 12 Jan 2021 04:57:13 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 879DE100EB82E;
+	Tue, 12 Jan 2021 04:57:43 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B811D100EB82A
-	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 04:57:10 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C43F423125;
-	Tue, 12 Jan 2021 12:57:08 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id 06FC0100EB82D
+	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 04:57:42 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 49BE223117;
+	Tue, 12 Jan 2021 12:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1610456230;
-	bh=ZoM5RNyuCE09IxKK+DH0s/aeaGT914MTeZfuuKJGd+U=;
+	s=k20201202; t=1610456261;
+	bh=sssGw7VAmhQ9zYNCAgQ46mvt8+d/n+n3c7UnO0Lb+nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prxBZ9eVwr+fkGUEA42hJU5yTgJnJOZ2+lEwSfqlQ74B1Gd/VlzHndAwmcT+4duID
-	 CV3kRock8a0h+5On0zYp7zOzaExHnU0LFj9h3men7GoNPMtcGTSaNdttud7Z0XgLbU
-	 U3oSX0BDs/lkptpZ61nXiONcYaikF2hl4rkoJ0iQMfVoERZsceC8XhMj7dEFjUJd2x
-	 PdaA4FMkvjPf314Zn3SwShfha5JBGhPclMgbSlRPqD+QArbjJQorHzfgLldWbh5hRO
-	 BSthhOdBwx29VKXAGoBkEoIT/gJ3MPE84JGYBmEn1MvXEQudD0pw3qVRzdPw9yJRkH
-	 HaBa1xGqdRaEg==
+	b=AE9Yd8Qhy1aRMVrVDvfq6TCi/F3YCsjIqijXRNv345W+hhyPUdTYv2VeYj9FskuL0
+	 oWabOGotxWIs/6o3+MCZkGtpwTLRqKIZ5MENdB2qvu7tnq7eID9DVYHpku6euybuDU
+	 a4r4eiGl4KWuHcll7Mt6dlz/tytksRbW5x/z26LXEsGWljlwyZlXBvkL452P+lNdJd
+	 n2rWLlFFBvgOJntroKndrNfs+/wJBZ8GDe6U57jS6aFGpV1o5Q+yod+EP0nY+amsZp
+	 A/yWRB+9d0q6dLT/ek402SSXsejM5sD0FPNQs9yoyEs5DxkZVc0rZljkWpNnVnI+LO
+	 0FpxWegUNgJjA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 18/28] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
-Date: Tue, 12 Jan 2021 07:56:34 -0500
-Message-Id: <20210112125645.70739-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 11/16] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
+Date: Tue, 12 Jan 2021 07:57:20 -0500
+Message-Id: <20210112125725.71014-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210112125645.70739-1-sashal@kernel.org>
-References: <20210112125645.70739-1-sashal@kernel.org>
+In-Reply-To: <20210112125725.71014-1-sashal@kernel.org>
+References: <20210112125725.71014-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-Message-ID-Hash: LZ2DIPBSCEXJFG6N6JTHEI6SIBU4FKVR
-X-Message-ID-Hash: LZ2DIPBSCEXJFG6N6JTHEI6SIBU4FKVR
+Message-ID-Hash: MMDTYXNACPASMWBWVJNEPIAF52LWE73G
+X-Message-ID-Hash: MMDTYXNACPASMWBWVJNEPIAF52LWE73G
 X-MailFrom: sashal@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -46,7 +46,7 @@ CC: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>, Vin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LZ2DIPBSCEXJFG6N6JTHEI6SIBU4FKVR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MMDTYXNACPASMWBWVJNEPIAF52LWE73G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-index 0a32e8cfd074d..bcd1920ae75a3 100644
+index 09ddddf71cc50..a70fef79c4055 100644
 --- a/arch/arc/include/asm/page.h
 +++ b/arch/arc/include/asm/page.h
-@@ -10,6 +10,7 @@
+@@ -13,6 +13,7 @@
  #ifndef __ASSEMBLY__
  
  #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
