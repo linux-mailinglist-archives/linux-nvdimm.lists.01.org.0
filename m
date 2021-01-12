@@ -1,64 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED822F2B94
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 10:47:02 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4673C2F2BD1
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 10:53:32 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 38520100EB820;
-	Tue, 12 Jan 2021 01:47:00 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	by ml01.01.org (Postfix) with ESMTP id BF5C0100EB823;
+	Tue, 12 Jan 2021 01:53:30 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7D07E100EBBB9
-	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 01:46:56 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 07507100EB820
+	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 01:53:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1610444815;
+	s=mimecast20190719; t=1610445206;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PvyJnSq10lv34KzIUsMYXdt+Iwqvb+rfS/2QN/Oiz50=;
-	b=Gwcf7vT9zsJD2Q5agrog1msmuVsMGAW/NXj89/JZgAl0b5loUE3eyehVq01Q33X6M1tUtc
-	CjnHWhIiLKfFVK3/HaqXAXVnG3+edrX5uxI5MfTGGorTsi6aLQSBk1JWNXzlL57YEAF29A
-	BoAqCna9Pg8YAcgny3pbE/ThR5ZtbRk=
+	bh=L1OJr5pkvyOvtq5VyxsZ17t2sX3sq4TUtZVIaiGCPDk=;
+	b=G2zlMfyyFcWjMUXiErLh3yDHdWlO4ud1h1N9mG9dZ85LTJJeL6i5qezYYs6snR5+qub4Po
+	upnQAvgPs+Nzy23oI5cuEnQqyn2g+BASPX+KkVWJXBVHvhJ08CaklGqiAum/cs/dIR+Rpe
+	Bpt4ZB1hYw676xfzbbd46Ou32qVRlVo=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-365-X3MvMTgaPCm-Vt0DpjGlVA-1; Tue, 12 Jan 2021 04:46:45 -0500
-X-MC-Unique: X3MvMTgaPCm-Vt0DpjGlVA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-280-n6uSQp9IP7y6sUgC_oq6fw-1; Tue, 12 Jan 2021 04:53:21 -0500
+X-MC-Unique: n6uSQp9IP7y6sUgC_oq6fw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2C362107ACF7;
-	Tue, 12 Jan 2021 09:46:44 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 34D2B1934100;
+	Tue, 12 Jan 2021 09:53:20 +0000 (UTC)
 Received: from [10.36.115.140] (ovpn-115-140.ams2.redhat.com [10.36.115.140])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DBD8960BE2;
-	Tue, 12 Jan 2021 09:46:42 +0000 (UTC)
-Subject: Re: [PATCH v2 1/5] mm: Move pfn_to_online_page() out of line
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6A09E77714;
+	Tue, 12 Jan 2021 09:53:18 +0000 (UTC)
+Subject: Re: [PATCH v2 2/5] mm: Teach pfn_to_online_page() to consider
+ subsection validity
 To: Dan Williams <dan.j.williams@intel.com>, linux-mm@kvack.org
 References: <161044407603.1482714.16630477578392768273.stgit@dwillia2-desk3.amr.corp.intel.com>
- <161044408207.1482714.1125458890762969867.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <161044408728.1482714.9086710868634042303.stgit@dwillia2-desk3.amr.corp.intel.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat GmbH
-Message-ID: <a85a1fa0-4ad8-ee63-eab0-de73bc532431@redhat.com>
-Date: Tue, 12 Jan 2021 10:46:41 +0100
+Message-ID: <0586c562-787c-4872-4132-18a49c3ffc8e@redhat.com>
+Date: Tue, 12 Jan 2021 10:53:17 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.5.0
 MIME-Version: 1.0
-In-Reply-To: <161044408207.1482714.1125458890762969867.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <161044408728.1482714.9086710868634042303.stgit@dwillia2-desk3.amr.corp.intel.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: WEVA75UGD4ZXXQQPMDUYQEK57JLUVI3W
-X-Message-ID-Hash: WEVA75UGD4ZXXQQPMDUYQEK57JLUVI3W
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Message-ID-Hash: NI2MX3CG7N4GUCCET2GPP57PBLUFYKXF
+X-Message-ID-Hash: NI2MX3CG7N4GUCCET2GPP57PBLUFYKXF
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michal Hocko <mhocko@kernel.org>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: Qian Cai <cai@lca.pw>, Michal Hocko <mhocko@suse.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WEVA75UGD4ZXXQQPMDUYQEK57JLUVI3W/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NI2MX3CG7N4GUCCET2GPP57PBLUFYKXF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,78 +69,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 On 12.01.21 10:34, Dan Williams wrote:
-> pfn_to_online_page() is already too large to be a macro or an inline
-> function. In anticipation of further logic changes / growth, move it out
-> of line.
+> pfn_section_valid() determines pfn validity on subsection granularity.
 > 
-> No functional change, just code movement.
+> pfn_valid_within() internally uses pfn_section_valid(), but gates it
+> with early_section() to preserve the traditional behavior of pfn_valid()
+> before subsection support was added.
 > 
-> Cc: David Hildenbrand <david@redhat.com>
-> Reported-by: Michal Hocko <mhocko@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> pfn_to_online_page() wants the explicit precision that pfn_valid() does
+> not offer, so use pfn_section_valid() directly. Since
+> pfn_to_online_page() already open codes the validity of the section
+> number vs NR_MEM_SECTIONS, there's not much value to using
+> pfn_valid_within(), just use pfn_section_valid(). This loses the
+> valid_section() check that pfn_valid_within() was performing, but that
+> was already redundant with the online check.
+> 
+> Fixes: b13bc35193d9 ("mm/hotplug: invalid PFNs from pfn_to_online_page()")
+> Cc: Qian Cai <cai@lca.pw>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Reported-by: David Hildenbrand <david@redhat.com>
 > ---
->  include/linux/memory_hotplug.h |   17 +----------------
->  mm/memory_hotplug.c            |   16 ++++++++++++++++
->  2 files changed, 17 insertions(+), 16 deletions(-)
+>  mm/memory_hotplug.c |   16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
 > 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 15acce5ab106..3d99de0db2dd 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -16,22 +16,7 @@ struct resource;
->  struct vmem_altmap;
->  
->  #ifdef CONFIG_MEMORY_HOTPLUG
-> -/*
-> - * Return page for the valid pfn only if the page is online. All pfn
-> - * walkers which rely on the fully initialized page->flags and others
-> - * should use this rather than pfn_valid && pfn_to_page
-> - */
-> -#define pfn_to_online_page(pfn)					   \
-> -({								   \
-> -	struct page *___page = NULL;				   \
-> -	unsigned long ___pfn = pfn;				   \
-> -	unsigned long ___nr = pfn_to_section_nr(___pfn);	   \
-> -								   \
-> -	if (___nr < NR_MEM_SECTIONS && online_section_nr(___nr) && \
-> -	    pfn_valid_within(___pfn))				   \
-> -		___page = pfn_to_page(___pfn);			   \
-> -	___page;						   \
-> -})
-> +struct page *pfn_to_online_page(unsigned long pfn);
->  
->  /*
->   * Types for free bootmem stored in page->lru.next. These have to be in
 > diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index f9d57b9be8c7..55a69d4396e7 100644
+> index 55a69d4396e7..a845b3979bc0 100644
 > --- a/mm/memory_hotplug.c
 > +++ b/mm/memory_hotplug.c
-> @@ -300,6 +300,22 @@ static int check_hotplug_memory_addressable(unsigned long pfn,
->  	return 0;
->  }
+> @@ -308,11 +308,19 @@ static int check_hotplug_memory_addressable(unsigned long pfn,
+>  struct page *pfn_to_online_page(unsigned long pfn)
+>  {
+>  	unsigned long nr = pfn_to_section_nr(pfn);
+> +	struct mem_section *ms;
+> +
+> +	if (nr >= NR_MEM_SECTIONS)
+> +		return NULL;
+> +
+> +	ms = __nr_to_section(nr);
+> +	if (!online_section(ms))
+> +		return NULL;
+> +
+> +	if (!pfn_section_valid(ms, pfn))
+> +		return NULL;
+
+That's not sufficient for alternative implementations of pfn_valid().
+
+You still need some kind of pfn_valid(pfn) for alternative versions of
+pfn_valid(). Consider arm64 memory holes in the memmap. See their
+current (yet to be fixed/reworked) pfn_valid() implementation.
+(pfn_valid_within() is implicitly active on arm64)
+
+Actually, I think we should add something like the following, to make
+this clearer (pfn_valid_within() is confusing)
+
+#ifdef CONFIG_HAVE_ARCH_PFN_VALID
+	/* We might have to check for holes inside the memmap. */
+	if (!pfn_valid())
+		return NULL;
+#endif
+
 >  
-> +/*
-> + * Return page for the valid pfn only if the page is online. All pfn
-> + * walkers which rely on the fully initialized page->flags and others
-> + * should use this rather than pfn_valid && pfn_to_page
-> + */
-> +struct page *pfn_to_online_page(unsigned long pfn)
-> +{
-> +	unsigned long nr = pfn_to_section_nr(pfn);
-> +
-> +	if (nr < NR_MEM_SECTIONS && online_section_nr(nr) &&
-> +	    pfn_valid_within(pfn))
-> +		return pfn_to_page(pfn);
-> +	return NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(pfn_to_online_page);
-> +
->  /*
->   * Reasonably generic function for adding memory.  It is
->   * expected that archs that support memory hotplug will
+> -	if (nr < NR_MEM_SECTIONS && online_section_nr(nr) &&
+> -	    pfn_valid_within(pfn))
+> -		return pfn_to_page(pfn);
+> -	return NULL;
+> +	return pfn_to_page(pfn);
+>  }
+>  EXPORT_SYMBOL_GPL(pfn_to_online_page);
+>  
 > 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Thanks,
