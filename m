@@ -1,155 +1,104 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264F62F2F4A
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 13:45:54 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B47A2F2F71
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Jan 2021 13:56:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E687100EBB8C;
-	Tue, 12 Jan 2021 04:45:52 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 4C0B5100EBBD1
-	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 04:45:48 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.79,341,1602518400";
-   d="scan'208";a="103404320"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 12 Jan 2021 20:45:45 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id 713454CE602E;
-	Tue, 12 Jan 2021 20:45:40 +0800 (CST)
-Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
- (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 12 Jan
- 2021 20:45:40 +0800
-Subject: Re: [PATCH 08/10] md: Implement ->corrupted_range()
-To: Jan Kara <jack@suse.cz>
-References: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com>
- <20201230165601.845024-9-ruansy.fnst@cn.fujitsu.com>
- <20210106171429.GE29271@quack2.suse.cz>
-From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
-Message-ID: <fdabf9b7-33ef-db52-2697-8452a47518b7@cn.fujitsu.com>
-Date: Tue, 12 Jan 2021 20:45:38 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	by ml01.01.org (Postfix) with ESMTP id 4AE1E100EB82A;
+	Tue, 12 Jan 2021 04:56:23 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id C582E100EBB8C
+	for <linux-nvdimm@lists.01.org>; Tue, 12 Jan 2021 04:56:20 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 82C822310F;
+	Tue, 12 Jan 2021 12:56:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1610456179;
+	bh=ZfRNyTieOsoVNKe8Y2oI4EMd7ks971g+wnjHRo7dt18=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FqXxn/DgLD+d0rPjUUJBXj4JJwMU47kZnN1obfF3BpYR6vsCBDSF0CGok+z1JzXID
+	 s7/WcaVsAPP0U6fLDvLXz+x81AlDrmMeAwykwHZvViPf2S5q7FMQ3oNxTT5Wy5X2mw
+	 7it9K2GxOFAG9xRbyIOBtj6Ql9cIDBHQ2dD+C1fetuWiiDTk7/lGHyJvZnRwZ8Ym8Q
+	 W9QYhp1K96PSFdyftVb4JWN1EmupGYpYzSwsU9g3pJMJirWcJNbjYIKYsQNzxM9jEs
+	 s3E4EeI1cBgKSM807siv5f6LAQUOKBe53c/0sIvnVilNvIkT6X7FdG2G2iM9xSQJX5
+	 5jKlPx4s+lzCw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 34/51] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
+Date: Tue, 12 Jan 2021 07:55:16 -0500
+Message-Id: <20210112125534.70280-34-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210112125534.70280-1-sashal@kernel.org>
+References: <20210112125534.70280-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20210106171429.GE29271@quack2.suse.cz>
-Content-Language: en-US
-X-Originating-IP: [10.167.225.141]
-X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
-X-yoursite-MailScanner-ID: 713454CE602E.AB184
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: 3H5POC7NJJ3KGT2G2B2BNFTP6WTSUNXT
-X-Message-ID-Hash: 3H5POC7NJJ3KGT2G2B2BNFTP6WTSUNXT
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+X-stable: review
+X-Patchwork-Hint: Ignore
+Message-ID-Hash: Q7MB7XJZWISQRS2NFLKFZA3O4ENEJUXV
+X-Message-ID-Hash: Q7MB7XJZWISQRS2NFLKFZA3O4ENEJUXV
+X-MailFrom: sashal@kernel.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Randy Dunlap <rdunlap@infradead.org>, kernel test robot <lkp@intel.com>, Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, Sasha Levin <sashal@kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3H5POC7NJJ3KGT2G2B2BNFTP6WTSUNXT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Q7MB7XJZWISQRS2NFLKFZA3O4ENEJUXV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCk9uIDIwMjEvMS83IOS4iuWNiDE6MTQsIEphbiBLYXJhIHdyb3RlOg0KPiBPbiBUaHUgMzEt
-MTItMjAgMDA6NTU6NTksIFNoaXlhbmcgUnVhbiB3cm90ZToNCj4+IFdpdGggdGhlIHN1cHBvcnQg
-b2YgLT5ybWFwKCksIGl0IGlzIHBvc3NpYmxlIHRvIG9idGFpbiB0aGUgc3VwZXJibG9jayBvbg0K
-Pj4gYSBtYXBwZWQgZGV2aWNlLg0KPj4NCj4+IElmIGEgcG1lbSBkZXZpY2UgaXMgdXNlZCBhcyBv
-bmUgdGFyZ2V0IG9mIG1hcHBlZCBkZXZpY2UsIHdlIGNhbm5vdA0KPj4gb2J0YWluIGl0cyBzdXBl
-cmJsb2NrIGRpcmVjdGx5LiAgV2l0aCB0aGUgaGVscCBvZiBTWVNGUywgdGhlIG1hcHBlZA0KPj4g
-ZGV2aWNlIGNhbiBiZSBmb3VuZCBvbiB0aGUgdGFyZ2V0IGRldmljZXMuICBTbywgd2UgaXRlcmF0
-ZSB0aGUNCj4+IGJkZXYtPmJkX2hvbGRlcl9kaXNrcyB0byBvYnRhaW4gaXRzIG1hcHBlZCBkZXZp
-Y2UuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogU2hpeWFuZyBSdWFuIDxydWFuc3kuZm5zdEBjbi5m
-dWppdHN1LmNvbT4NCj4gDQo+IFRoYW5rcyBmb3IgdGhlIHBhdGNoLiBUd28gY29tbWVudHMgYmVs
-b3cuDQo+IA0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL3BtZW0uYyBiL2RyaXZlcnMv
-bnZkaW1tL3BtZW0uYw0KPj4gaW5kZXggNDY4OGJmZjE5YzIwLi45ZjlhMmYzYmY3M2IgMTAwNjQ0
-DQo+PiAtLS0gYS9kcml2ZXJzL252ZGltbS9wbWVtLmMNCj4+ICsrKyBiL2RyaXZlcnMvbnZkaW1t
-L3BtZW0uYw0KPj4gQEAgLTI1NiwyMSArMjU2LDE2IEBAIHN0YXRpYyBpbnQgcG1lbV9yd19wYWdl
-KHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIHNlY3Rvcl90IHNlY3RvciwNCj4+ICAgc3RhdGlj
-IGludCBwbWVtX2NvcnJ1cHRlZF9yYW5nZShzdHJ1Y3QgZ2VuZGlzayAqZGlzaywgc3RydWN0IGJs
-b2NrX2RldmljZSAqYmRldiwNCj4+ICAgCQkJCWxvZmZfdCBkaXNrX29mZnNldCwgc2l6ZV90IGxl
-biwgdm9pZCAqZGF0YSkNCj4+ICAgew0KPj4gLQlzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiOw0KPj4g
-ICAJbG9mZl90IGJkZXZfb2Zmc2V0Ow0KPj4gICAJc2VjdG9yX3QgZGlza19zZWN0b3IgPSBkaXNr
-X29mZnNldCA+PiBTRUNUT1JfU0hJRlQ7DQo+PiAtCWludCByYyA9IDA7DQo+PiArCWludCByYyA9
-IC1FTk9ERVY7DQo+PiAgIA0KPj4gICAJYmRldiA9IGJkZ2V0X2Rpc2tfc2VjdG9yKGRpc2ssIGRp
-c2tfc2VjdG9yKTsNCj4+ICAgCWlmICghYmRldikNCj4+IC0JCXJldHVybiAtRU5PREVWOw0KPj4g
-KwkJcmV0dXJuIHJjOw0KPj4gICANCj4+ICAgCWJkZXZfb2Zmc2V0ID0gKGRpc2tfc2VjdG9yIC0g
-Z2V0X3N0YXJ0X3NlY3QoYmRldikpIDw8IFNFQ1RPUl9TSElGVDsNCj4+IC0Jc2IgPSBnZXRfc3Vw
-ZXIoYmRldik7DQo+PiAtCWlmIChzYiAmJiBzYi0+c19vcC0+Y29ycnVwdGVkX3JhbmdlKSB7DQo+
-PiAtCQlyYyA9IHNiLT5zX29wLT5jb3JydXB0ZWRfcmFuZ2Uoc2IsIGJkZXYsIGJkZXZfb2Zmc2V0
-LCBsZW4sIGRhdGEpOw0KPj4gLQkJZHJvcF9zdXBlcihzYik7DQo+PiAtCX0NCj4+ICsJcmMgPSBi
-ZF9jb3JydXB0ZWRfcmFuZ2UoYmRldiwgYmRldl9vZmZzZXQsIGJkZXZfb2Zmc2V0LCBsZW4sIGRh
-dGEpOw0KPj4gICANCj4+ICAgCWJkcHV0KGJkZXYpOw0KPj4gICAJcmV0dXJuIHJjOw0KPiANCj4g
-VGhpcyAoYW5kIHRoZSBmcy9ibG9ja19kZXYuYyBjaGFuZ2UgYmVsb3cpIGlzIGp1c3QgcmVmaW5p
-bmcgdGhlIGZ1bmN0aW9uDQo+IHlvdSd2ZSBpbXBsZW1lbnRlZCBpbiB0aGUgcGF0Y2ggNi4gSSB0
-aGluayBpdCdzIGNvbmZ1c2luZyB0byBzcGxpdCBjaGFuZ2VzDQo+IGxpa2UgdGhpcyAtIHdoeSBu
-b3QgaW1wbGVtZW50IHRoaW5ncyBjb3JyZWN0bHkgZnJvbSB0aGUgc3RhcnQgaW4gcGF0Y2ggNj8N
-Cg0KVGhpcyBjaGFuZ2UgYWRkZWQgYSBoZWxwZXIgZnVuY3Rpb24gdG8gZmluZCB0aGUgbWQgZGV2
-aWNlcyBjcmVhdGVkIG9uIGEgDQpsb3ctbGV2ZWwgYmxvY2sgZGV2aWNlLCBzdWNoIGFzIGEgTFZN
-IG9uIC9kZXYvcG1lbTAsIGFuZCBjYWxscyANCi0+Y29ycnVwdGVkX3JhbmdlKCkgZm9yIGVhY2gg
-bWQgZGV2aWNlLiAgVGhlIG1kIHBhcnRzIHdlcmUgaW50cm9kdWNlZCANCnN0YXJ0cyBmcm9tIHBh
-dGNoIDcuICBTbywgSSBhZGQgdGhpcyBjaGFuZ2UgaW4gdGhpcyBwYXRjaC4NCg0KPiANCj4+IGRp
-ZmYgLS1naXQgYS9mcy9ibG9ja19kZXYuYyBiL2ZzL2Jsb2NrX2Rldi5jDQo+PiBpbmRleCA5ZTg0
-YjE5MjhiOTQuLjBlNTBmMGU4ZThhZiAxMDA2NDQNCj4+IC0tLSBhL2ZzL2Jsb2NrX2Rldi5jDQo+
-PiArKysgYi9mcy9ibG9ja19kZXYuYw0KPj4gQEAgLTExNzEsNiArMTE3MSwyNyBAQCBzdHJ1Y3Qg
-YmRfaG9sZGVyX2Rpc2sgew0KPj4gICAJaW50CQkJcmVmY250Ow0KPj4gICB9Ow0KPj4gICANCj4+
-ICtzdGF0aWMgaW50IGJkX2Rpc2tfaG9sZGVyX2NvcnJ1cHRlZF9yYW5nZShzdHJ1Y3QgYmxvY2tf
-ZGV2aWNlICpiZGV2LCBsb2ZmX3Qgb2ZmLA0KPj4gKwkJCQkJICBzaXplX3QgbGVuLCB2b2lkICpk
-YXRhKQ0KPj4gK3sNCj4+ICsJc3RydWN0IGJkX2hvbGRlcl9kaXNrICpob2xkZXI7DQo+PiArCXN0
-cnVjdCBnZW5kaXNrICpkaXNrOw0KPj4gKwlpbnQgcmMgPSAwOw0KPj4gKw0KPj4gKwlpZiAobGlz
-dF9lbXB0eSgmKGJkZXYtPmJkX2hvbGRlcl9kaXNrcykpKQ0KPj4gKwkJcmV0dXJuIC1FTk9ERVY7
-DQo+IA0KPiBUaGlzIHdpbGwgbm90IGNvbXBpbGUgZm9yICFDT05GSUdfU1lTRlMga2VybmVscy4g
-Tm90IHRoYXQgaXQgd291bGQgYmUNCj4gY29tbW9uIGJ1dCBzdGlsbC4gQWxzbyBJJ20gbm90IHN1
-cmUgd2hldGhlciB1c2luZyBiZF9ob2xkZXJfZGlza3MgbGlrZSB0aGlzDQo+IGlzIHJlYWxseSB0
-aGUgcmlnaHQgdGhpbmcgdG8gZG8gKHdoZW4gaXQgc2VlbXMgdG8gYmUgb25seSBhIHN5c2ZzIHRo
-aW5nKSwNCj4gYWx0aG91Z2ggYWRtaXR0ZWRseSBJJ20gbm90IGF3YXJlIG9mIGEgYmV0dGVyIHdh
-eSBvZiBnZXR0aW5nIHRoaXMNCj4gaW5mb3JtYXRpb24uDQoNCkkgZGlkIGEgbG90IG9mIHRyaWVz
-IGFuZCBmaW5hbGx5IGZvdW5kIHRoaXMgd2F5LiAgSSB0aGluayBJIHNob3VsZCBhZGQgYSANCmp1
-ZGdlbWVudCB0aGF0IHdoZXRoZXIgQ09ORklHX1NZU0ZTIGlzIHR1cm5lZCBvbi4NCg0KDQotLQ0K
-VGhhbmtzLA0KUnVhbiBTaGl5YW5nLg0KDQo+IA0KPiAJCQkJCQkJCUhvbnphDQo+IA0KPj4gKw0K
-Pj4gKwlsaXN0X2Zvcl9lYWNoX2VudHJ5KGhvbGRlciwgJmJkZXYtPmJkX2hvbGRlcl9kaXNrcywg
-bGlzdCkgew0KPj4gKwkJZGlzayA9IGhvbGRlci0+ZGlzazsNCj4+ICsJCWlmIChkaXNrLT5mb3Bz
-LT5jb3JydXB0ZWRfcmFuZ2UpIHsNCj4+ICsJCQlyYyA9IGRpc2stPmZvcHMtPmNvcnJ1cHRlZF9y
-YW5nZShkaXNrLCBiZGV2LCBvZmYsIGxlbiwgZGF0YSk7DQo+PiArCQkJaWYgKHJjICE9IC1FTk9E
-RVYpDQo+PiArCQkJCWJyZWFrOw0KPj4gKwkJfQ0KPj4gKwl9DQo+PiArCXJldHVybiByYzsNCj4+
-ICt9DQo+PiArDQo+PiAgIHN0YXRpYyBzdHJ1Y3QgYmRfaG9sZGVyX2Rpc2sgKmJkX2ZpbmRfaG9s
-ZGVyX2Rpc2soc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwNCj4+ICAgCQkJCQkJICBzdHJ1Y3Qg
-Z2VuZGlzayAqZGlzaykNCj4+ICAgew0KPj4gQEAgLTEzNzgsNiArMTM5OSwyMiBAQCB2b2lkIGJk
-X3NldF9ucl9zZWN0b3JzKHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIHNlY3Rvcl90IHNlY3Rv
-cnMpDQo+PiAgIH0NCj4+ICAgRVhQT1JUX1NZTUJPTChiZF9zZXRfbnJfc2VjdG9ycyk7DQo+PiAg
-IA0KPj4gK2ludCBiZF9jb3JydXB0ZWRfcmFuZ2Uoc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwg
-bG9mZl90IGRpc2tfb2ZmLCBsb2ZmX3QgYmRldl9vZmYsIHNpemVfdCBsZW4sIHZvaWQgKmRhdGEp
-DQo+PiArew0KPj4gKwlzdHJ1Y3Qgc3VwZXJfYmxvY2sgKnNiID0gZ2V0X3N1cGVyKGJkZXYpOw0K
-Pj4gKwlpbnQgcmMgPSAwOw0KPj4gKw0KPj4gKwlpZiAoIXNiKSB7DQo+PiArCQlyYyA9IGJkX2Rp
-c2tfaG9sZGVyX2NvcnJ1cHRlZF9yYW5nZShiZGV2LCBkaXNrX29mZiwgbGVuLCBkYXRhKTsNCj4+
-ICsJCXJldHVybiByYzsNCj4+ICsJfSBlbHNlIGlmIChzYi0+c19vcC0+Y29ycnVwdGVkX3Jhbmdl
-KQ0KPj4gKwkJcmMgPSBzYi0+c19vcC0+Y29ycnVwdGVkX3JhbmdlKHNiLCBiZGV2LCBiZGV2X29m
-ZiwgbGVuLCBkYXRhKTsNCj4+ICsJZHJvcF9zdXBlcihzYik7DQo+PiArDQo+PiArCXJldHVybiBy
-YzsNCj4+ICt9DQo+PiArRVhQT1JUX1NZTUJPTChiZF9jb3JydXB0ZWRfcmFuZ2UpOw0KPj4gKw0K
-Pj4gICBzdGF0aWMgdm9pZCBfX2Jsa2Rldl9wdXQoc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwg
-Zm1vZGVfdCBtb2RlLCBpbnQgZm9yX3BhcnQpOw0KPj4gICANCj4+ICAgaW50IGJkZXZfZGlza19j
-aGFuZ2VkKHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIGJvb2wgaW52YWxpZGF0ZSkNCj4+IGRp
-ZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2dlbmhkLmggYi9pbmNsdWRlL2xpbnV4L2dlbmhkLmgN
-Cj4+IGluZGV4IGVkMDYyMDkwMDhiOC4uNDIyOTA0NzA4MTBkIDEwMDY0NA0KPj4gLS0tIGEvaW5j
-bHVkZS9saW51eC9nZW5oZC5oDQo+PiArKysgYi9pbmNsdWRlL2xpbnV4L2dlbmhkLmgNCj4+IEBA
-IC0zNzYsNiArMzc2LDggQEAgdm9pZCByZXZhbGlkYXRlX2Rpc2tfc2l6ZShzdHJ1Y3QgZ2VuZGlz
-ayAqZGlzaywgYm9vbCB2ZXJib3NlKTsNCj4+ICAgYm9vbCBiZGV2X2NoZWNrX21lZGlhX2NoYW5n
-ZShzdHJ1Y3QgYmxvY2tfZGV2aWNlICpiZGV2KTsNCj4+ICAgaW50IF9faW52YWxpZGF0ZV9kZXZp
-Y2Uoc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwgYm9vbCBraWxsX2RpcnR5KTsNCj4+ICAgdm9p
-ZCBiZF9zZXRfbnJfc2VjdG9ycyhzdHJ1Y3QgYmxvY2tfZGV2aWNlICpiZGV2LCBzZWN0b3JfdCBz
-ZWN0b3JzKTsNCj4+ICtpbnQgYmRfY29ycnVwdGVkX3JhbmdlKHN0cnVjdCBibG9ja19kZXZpY2Ug
-KmJkZXYsIGxvZmZfdCBkaXNrX29mZiwNCj4+ICsJCSAgICAgICBsb2ZmX3QgYmRldl9vZmYsIHNp
-emVfdCBsZW4sIHZvaWQgKmRhdGEpOw0KPj4gICANCj4+ICAgLyogZm9yIGRyaXZlcnMvY2hhci9y
-YXcuYzogKi8NCj4+ICAgaW50IGJsa2Rldl9pb2N0bChzdHJ1Y3QgYmxvY2tfZGV2aWNlICosIGZt
-b2RlX3QsIHVuc2lnbmVkLCB1bnNpZ25lZCBsb25nKTsNCj4+IC0tIA0KPj4gMi4yOS4yDQo+Pg0K
-Pj4NCj4+DQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpU
-byB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4w
-MS5vcmcK
+From: Randy Dunlap <rdunlap@infradead.org>
+
+[ Upstream commit 8a48c0a3360bf2bf4f40c980d0ec216e770e58ee ]
+
+fs/dax.c uses copy_user_page() but ARC does not provide that interface,
+resulting in a build error.
+
+Provide copy_user_page() in <asm/page.h>.
+
+../fs/dax.c: In function 'copy_cow_page_dax':
+../fs/dax.c:702:2: error: implicit declaration of function 'copy_user_page'; did you mean 'copy_to_user_page'? [-Werror=implicit-function-declaration]
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: Dan Williams <dan.j.williams@intel.com>
+#Acked-by: Vineet Gupta <vgupta@synopsys.com> # v1
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-nvdimm@lists.01.org
+#Reviewed-by: Ira Weiny <ira.weiny@intel.com> # v2
+Signed-off-by: Vineet Gupta <vgupta@synopsys.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arc/include/asm/page.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
+index b0dfed0f12be0..d9c264dc25fcb 100644
+--- a/arch/arc/include/asm/page.h
++++ b/arch/arc/include/asm/page.h
+@@ -10,6 +10,7 @@
+ #ifndef __ASSEMBLY__
+ 
+ #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
++#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+ #define copy_page(to, from)		memcpy((to), (from), PAGE_SIZE)
+ 
+ struct vm_area_struct;
+-- 
+2.27.0
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
