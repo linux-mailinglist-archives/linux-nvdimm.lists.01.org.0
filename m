@@ -1,156 +1,101 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7BC2F4831
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 Jan 2021 11:05:00 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858762F5035
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 Jan 2021 17:44:46 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E5B42100EB33B;
-	Wed, 13 Jan 2021 02:04:58 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.54; helo=out30-54.freemail.mail.aliyun.com; envelope-from=zhongjiang-ali@linux.alibaba.com; receiver=<UNKNOWN> 
-Received: from out30-54.freemail.mail.aliyun.com (out30-54.freemail.mail.aliyun.com [115.124.30.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 37F11100EB345;
+	Wed, 13 Jan 2021 08:44:44 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9EA47100EB833
-	for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 02:04:52 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=zhongjiang-ali@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0ULc.JMJ_1610532286;
-Received: from L-X1DSLVDL-1420.local(mailfrom:zhongjiang-ali@linux.alibaba.com fp:SMTPD_---0ULc.JMJ_1610532286)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 13 Jan 2021 18:04:47 +0800
-Subject: Re: [PATCH 04/10] mm, fsdax: Refactor memory-failure handler for dax
- mapping
-To: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>, Jan Kara <jack@suse.cz>
-References: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com>
- <20201230165601.845024-5-ruansy.fnst@cn.fujitsu.com>
- <20210106154132.GC29271@quack2.suse.cz>
- <75164044-bfdf-b2d6-dff0-d6a8d56d1f62@cn.fujitsu.com>
-From: zhong jiang <zhongjiang-ali@linux.alibaba.com>
-Message-ID: <781f276b-afdd-091c-3dba-048e415431ab@linux.alibaba.com>
-Date: Wed, 13 Jan 2021 18:04:46 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:85.0)
- Gecko/20100101 Thunderbird/85.0
+	by ml01.01.org (Postfix) with ESMTPS id 58E03100EB344
+	for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 08:44:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1610556279;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B2nZaowcmYpAm6+Q7xTb3SoumDbJkYtkPecNpTcfdqc=;
+	b=gvmR8F0EbASo0nL0dV8lZ1GlhFmyJlkBeGGMQffQY7SY/sauHd0Ofyh1Pge1YL3vchdVmY
+	fs6YYNA9X5Rxl3krfkKAd9u5R/ITRkqRaExL3QpNQfSTeVXHixtErfW2ZP739RYzZyvBiI
+	4VPiU4tJmeBHnXHlINjuGaRhXOOdzYM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-208-n2t6kthuPH2jhsKcw9bewQ-1; Wed, 13 Jan 2021 11:44:35 -0500
+X-MC-Unique: n2t6kthuPH2jhsKcw9bewQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0654A806660;
+	Wed, 13 Jan 2021 16:44:33 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id C7E0C6062F;
+	Wed, 13 Jan 2021 16:44:32 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 10DGiWGW005756;
+	Wed, 13 Jan 2021 11:44:32 -0500
+Received: from localhost (mpatocka@localhost)
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 10DGiUmf005752;
+	Wed, 13 Jan 2021 11:44:31 -0500
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date: Wed, 13 Jan 2021 11:44:30 -0500 (EST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To: Zhongwei Cai <sunrise_l@sjtu.edu.cn>
+Subject: Re: Expense of read_iter
+In-Reply-To: <2041983017.5681521.1610459100858.JavaMail.zimbra@sjtu.edu.cn>
+Message-ID: <alpine.LRH.2.02.2101131008530.27448@file01.intranet.prod.int.rdu2.redhat.com>
+References: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com> <20210107151125.GB5270@casper.infradead.org> <17045315-CC1F-4165-B8E3-BA55DD16D46B@gmail.com> <2041983017.5681521.1610459100858.JavaMail.zimbra@sjtu.edu.cn>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-In-Reply-To: <75164044-bfdf-b2d6-dff0-d6a8d56d1f62@cn.fujitsu.com>
-Content-Language: en-US
-Message-ID-Hash: 6VBBR5O4O4FQ6NPTEF3BGCQ6C2SBEE2Z
-X-Message-ID-Hash: 6VBBR5O4O4FQ6NPTEF3BGCQ6C2SBEE2Z
-X-MailFrom: zhongjiang-ali@linux.alibaba.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Message-ID-Hash: DQJDXQAEBFTYRJLSYQMQD3UGXXHXAYC3
+X-Message-ID-Hash: DQJDXQAEBFTYRJLSYQMQD3UGXXHXAYC3
+X-MailFrom: mpatocka@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+CC: Mingkai Dong <mingkaidong@gmail.com>, Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, Theodore Ts'o <tytso@mit.edu>, Wang Jianchao <jianchao.wan9@gmail.com>, "Tadakamadla, Rajesh" <rajesh.tadakamadla@hpe.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6VBBR5O4O4FQ6NPTEF3BGCQ6C2SBEE2Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DQJDXQAEBFTYRJLSYQMQD3UGXXHXAYC3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQpPbiAyMDIxLzEvMTIgMTA6NTUg5LiK5Y2ILCBSdWFuIFNoaXlhbmcgd3JvdGU6DQo+DQo+DQo+
-IE9uIDIwMjEvMS82IOS4i+WNiDExOjQxLCBKYW4gS2FyYSB3cm90ZToNCj4+IE9uIFRodSAzMS0x
-Mi0yMCAwMDo1NTo1NSwgU2hpeWFuZyBSdWFuIHdyb3RlOg0KPj4+IFRoZSBjdXJyZW50IG1lbW9y
-eV9mYWlsdXJlX2Rldl9wYWdlbWFwKCkgY2FuIG9ubHkgaGFuZGxlIHNpbmdsZS1tYXBwZWQNCj4+
-PiBkYXggcGFnZSBmb3IgZnNkYXggbW9kZS7CoCBUaGUgZGF4IHBhZ2UgY291bGQgYmUgbWFwcGVk
-IGJ5IG11bHRpcGxlIA0KPj4+IGZpbGVzDQo+Pj4gYW5kIG9mZnNldHMgaWYgd2UgbGV0IHJlZmxp
-bmsgZmVhdHVyZSAmIGZzZGF4IG1vZGUgd29yayB0b2dldGhlci7CoCBTbywNCj4+PiB3ZSByZWZh
-Y3RvciBjdXJyZW50IGltcGxlbWVudGF0aW9uIHRvIHN1cHBvcnQgaGFuZGxlIG1lbW9yeSBmYWls
-dXJlIG9uDQo+Pj4gZWFjaCBmaWxlIGFuZCBvZmZzZXQuDQo+Pj4NCj4+PiBTaWduZWQtb2ZmLWJ5
-OiBTaGl5YW5nIFJ1YW4gPHJ1YW5zeS5mbnN0QGNuLmZ1aml0c3UuY29tPg0KPj4NCj4+IE92ZXJh
-bGwgdGhpcyBsb29rcyBPSyB0byBtZSwgYSBmZXcgY29tbWVudHMgYmVsb3cuDQo+Pg0KPj4+IC0t
-LQ0KPj4+IMKgIGZzL2RheC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDIxICsrKysrKysrKysr
-DQo+Pj4gwqAgaW5jbHVkZS9saW51eC9kYXguaCB8wqAgMSArDQo+Pj4gwqAgaW5jbHVkZS9saW51
-eC9tbS5owqAgfMKgIDkgKysrKysNCj4+PiDCoCBtbS9tZW1vcnktZmFpbHVyZS5jIHwgOTEgDQo+
-Pj4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tDQo+Pj4gwqAg
-NCBmaWxlcyBjaGFuZ2VkLCAxMDAgaW5zZXJ0aW9ucygrKSwgMjIgZGVsZXRpb25zKC0pDQo+DQo+
-IC4uLg0KPg0KPj4+IMKgIEBAIC0zNDUsOSArMzQ4LDEyIEBAIHN0YXRpYyB2b2lkIGFkZF90b19r
-aWxsKHN0cnVjdCB0YXNrX3N0cnVjdCANCj4+PiAqdHNrLCBzdHJ1Y3QgcGFnZSAqcCwNCj4+PiDC
-oMKgwqDCoMKgIH0NCj4+PiDCoCDCoMKgwqDCoMKgIHRrLT5hZGRyID0gcGFnZV9hZGRyZXNzX2lu
-X3ZtYShwLCB2bWEpOw0KPj4+IC3CoMKgwqAgaWYgKGlzX3pvbmVfZGV2aWNlX3BhZ2UocCkpDQo+
-Pj4gLcKgwqDCoMKgwqDCoMKgIHRrLT5zaXplX3NoaWZ0ID0gZGV2X3BhZ2VtYXBfbWFwcGluZ19z
-aGlmdChwLCB2bWEpOw0KPj4+IC3CoMKgwqAgZWxzZQ0KPj4+ICvCoMKgwqAgaWYgKGlzX3pvbmVf
-ZGV2aWNlX3BhZ2UocCkpIHsNCj4+PiArwqDCoMKgwqDCoMKgwqAgaWYgKGlzX2RldmljZV9mc2Rh
-eF9wYWdlKHApKQ0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRrLT5hZGRyID0gdm1hLT52
-bV9zdGFydCArDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICgo
-cGdvZmYgLSB2bWEtPnZtX3Bnb2ZmKSA8PCBQQUdFX1NISUZUKTsNCj4+DQo+PiBJdCBzZWVtcyBz
-dHJhbmdlIHRvIHVzZSAncGdvZmYnIGZvciBkYXggcGFnZXMgYW5kIG5vdCBmb3IgYW55IG90aGVy
-IA0KPj4gcGFnZS4NCj4+IFdoeT8gSSdkIHJhdGhlciBwYXNzIGNvcnJlY3QgcGdvZmYgZnJvbSBh
-bGwgY2FsbGVycyBvZiBhZGRfdG9fa2lsbCgpIGFuZA0KPj4gYXZvaWQgdGhpcyBzcGVjaWFsIGNh
-c2luZy4uLg0KPg0KPiBCZWNhdXNlIG9uZSBmc2RheCBwYWdlIGNhbiBiZSBzaGFyZWQgYnkgbXVs
-dGlwbGUgcGdvZmZzLsKgIEkgaGF2ZSB0byANCj4gcGFzcyBlYWNoIHBnb2ZmIGluIGVhY2ggaXRl
-cmF0aW9uIHRvIGNhbGN1bGF0ZSB0aGUgYWRkcmVzcyBpbiB2bWEgKGZvciANCj4gdGstPmFkZHIp
-LsKgIE90aGVyIGtpbmRzIG9mIHBhZ2VzIGRvbid0IG5lZWQgdGhpcy4gVGhleSBjYW4gZ2V0IHRo
-ZWlyIA0KPiB1bmlxdWUgYWRkcmVzcyBieSBjYWxsaW5nICJwYWdlX2FkZHJlc3NfaW5fdm1hKCki
-Lg0KPg0KSU1PLMKgwqAgYW4gZnNkYXggcGFnZSBjYW4gYmUgc2hhcmVkIGJ5IG11bHRpcGxlIGZp
-bGVzIHJhdGhlciB0aGFuIA0KbXVsdGlwbGUgcGdvZmZzIGlmIGZzIHF1ZXJ5IHN1cHBvcnQgcmVm
-bGluay7CoMKgIEJlY2F1c2UgYW4gcGFnZSBvbmx5IA0KbG9jYXRlZCBpbiBhbiBtYXBwaW5nKHBh
-Z2UtPm1hcHBpbmcgaXMgZXhjbHVzaXZlKSzCoCBoZW5jZSBpdMKgIG9ubHkgaGFzIA0KYW4gcGdv
-ZmYgb3IgaW5kZXggcG9pbnRpbmcgYXQgdGhlIG5vZGUuDQoNCiDCoG9ywqAgSSBtaXNzIHNvbWV0
-aGluZyBmb3IgdGhlIGZlYXR1cmUgP8KgIHRoYW5rcywNCg0KPiBTbywgSSBhZGRlZCB0aGlzIGZz
-ZGF4IGNhc2UgaGVyZS7CoCBUaGlzIHBhdGNoc2V0IG9ubHkgaW1wbGVtZW50ZWQgdGhlIA0KPiBm
-c2RheCBjYXNlLCBvdGhlciBjYXNlcyBhbHNvIG5lZWQgdG8gYmUgYWRkZWQgaGVyZSBpZiB0byBi
-ZSBpbXBsZW1lbnRlZC4NCj4NCj4NCj4gLS0gDQo+IFRoYW5rcywNCj4gUnVhbiBTaGl5YW5nLg0K
-Pg0KPj4NCj4+PiArwqDCoMKgwqDCoMKgwqAgdGstPnNpemVfc2hpZnQgPSBkZXZfcGFnZW1hcF9t
-YXBwaW5nX3NoaWZ0KHAsIHZtYSwgdGstPmFkZHIpOw0KPj4+ICvCoMKgwqAgfSBlbHNlDQo+Pj4g
-wqDCoMKgwqDCoMKgwqDCoMKgIHRrLT5zaXplX3NoaWZ0ID0gcGFnZV9zaGlmdChjb21wb3VuZF9o
-ZWFkKHApKTsNCj4+PiDCoCDCoMKgwqDCoMKgIC8qDQo+Pj4gQEAgLTQ5NSw3ICs1MDEsNyBAQCBz
-dGF0aWMgdm9pZCBjb2xsZWN0X3Byb2NzX2Fub24oc3RydWN0IHBhZ2UgDQo+Pj4gKnBhZ2UsIHN0
-cnVjdCBsaXN0X2hlYWQgKnRvX2tpbGwsDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-aWYgKCFwYWdlX21hcHBlZF9pbl92bWEocGFnZSwgdm1hKSkNCj4+PiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGNvbnRpbnVlOw0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGlmICh2bWEtPnZtX21tID09IHQtPm1tKQ0KPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgYWRkX3RvX2tpbGwodCwgcGFnZSwgdm1hLCB0b19raWxsKTsNCj4+PiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFkZF90b19raWxsKHQsIHBhZ2UsIE5VTEwsIDAsIHZt
-YSwgdG9fa2lsbCk7DQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+PiDCoMKgwqDCoMKgIH0N
-Cj4+PiDCoMKgwqDCoMKgIHJlYWRfdW5sb2NrKCZ0YXNrbGlzdF9sb2NrKTsNCj4+PiBAQCAtNTA1
-LDI0ICs1MTEsMTkgQEAgc3RhdGljIHZvaWQgY29sbGVjdF9wcm9jc19hbm9uKHN0cnVjdCBwYWdl
-IA0KPj4+ICpwYWdlLCBzdHJ1Y3QgbGlzdF9oZWFkICp0b19raWxsLA0KPj4+IMKgIC8qDQo+Pj4g
-wqDCoCAqIENvbGxlY3QgcHJvY2Vzc2VzIHdoZW4gdGhlIGVycm9yIGhpdCBhIGZpbGUgbWFwcGVk
-IHBhZ2UuDQo+Pj4gwqDCoCAqLw0KPj4+IC1zdGF0aWMgdm9pZCBjb2xsZWN0X3Byb2NzX2ZpbGUo
-c3RydWN0IHBhZ2UgKnBhZ2UsIHN0cnVjdCBsaXN0X2hlYWQgDQo+Pj4gKnRvX2tpbGwsDQo+Pj4g
-LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpbnQgZm9yY2VfZWFybHkpDQo+Pj4gK3N0
-YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3NfZmlsZShzdHJ1Y3QgcGFnZSAqcGFnZSwgc3RydWN0IA0K
-Pj4+IGFkZHJlc3Nfc3BhY2UgKm1hcHBpbmcsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgIHBnb2ZmX3Qg
-cGdvZmYsIHN0cnVjdCBsaXN0X2hlYWQgKnRvX2tpbGwsIGludCBmb3JjZV9lYXJseSkNCj4+PiDC
-oCB7DQo+Pj4gwqDCoMKgwqDCoCBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYTsNCj4+PiDCoMKg
-wqDCoMKgIHN0cnVjdCB0YXNrX3N0cnVjdCAqdHNrOw0KPj4+IC3CoMKgwqAgc3RydWN0IGFkZHJl
-c3Nfc3BhY2UgKm1hcHBpbmcgPSBwYWdlLT5tYXBwaW5nOw0KPj4+IC3CoMKgwqAgcGdvZmZfdCBw
-Z29mZjsNCj4+PiDCoCDCoMKgwqDCoMKgIGlfbW1hcF9sb2NrX3JlYWQobWFwcGluZyk7DQo+Pj4g
-wqDCoMKgwqDCoCByZWFkX2xvY2soJnRhc2tsaXN0X2xvY2spOw0KPj4+IC3CoMKgwqAgcGdvZmYg
-PSBwYWdlX3RvX3Bnb2ZmKHBhZ2UpOw0KPj4+IMKgwqDCoMKgwqAgZm9yX2VhY2hfcHJvY2Vzcyh0
-c2spIHsNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IHRhc2tfc3RydWN0ICp0ID0gdGFz
-a19lYXJseV9raWxsKHRzaywgZm9yY2VfZWFybHkpOw0KPj4+IC0NCj4+PiDCoMKgwqDCoMKgwqDC
-oMKgwqAgaWYgKCF0KQ0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnRpbnVlOw0K
-Pj4+IC3CoMKgwqDCoMKgwqDCoCB2bWFfaW50ZXJ2YWxfdHJlZV9mb3JlYWNoKHZtYSwgJm1hcHBp
-bmctPmlfbW1hcCwgcGdvZmYsDQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBwZ29mZikgew0KPj4+ICvCoMKgwqDCoMKgwqDCoCB2bWFfaW50ZXJ2YWxfdHJl
-ZV9mb3JlYWNoKHZtYSwgJm1hcHBpbmctPmlfbW1hcCwgcGdvZmYsIA0KPj4+IHBnb2ZmKSB7DQo+
-Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLyoNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgICogU2VuZCBlYXJseSBraWxsIHNpZ25hbCB0byB0YXNrcyB3aGVyZSBhIHZtYSBj
-b3ZlcnMNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogdGhlIHBhZ2UgYnV0IHRo
-ZSBjb3JydXB0ZWQgcGFnZSBpcyBub3QgbmVjZXNzYXJpbHkNCj4+PiBAQCAtNTMxLDcgKzUzMiw3
-IEBAIHN0YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3NfZmlsZShzdHJ1Y3QgcGFnZSANCj4+PiAqcGFn
-ZSwgc3RydWN0IGxpc3RfaGVhZCAqdG9fa2lsbCwNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgICogdG8gYmUgaW5mb3JtZWQgb2YgYWxsIHN1Y2ggZGF0YSBjb3JydXB0aW9ucy4NCj4+
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgaWYgKHZtYS0+dm1fbW0gPT0gdC0+bW0pDQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBhZGRfdG9fa2lsbCh0LCBwYWdlLCB2bWEsIHRvX2tpbGwpOw0KPj4+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYWRkX3RvX2tpbGwodCwgcGFnZSwgbWFwcGlu
-ZywgcGdvZmYsIHZtYSwgdG9fa2lsbCk7DQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+PiDC
-oMKgwqDCoMKgIH0NCj4+PiDCoMKgwqDCoMKgIHJlYWRfdW5sb2NrKCZ0YXNrbGlzdF9sb2NrKTsN
-Cj4+PiBAQCAtNTUwLDcgKzU1MSw4IEBAIHN0YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3Moc3RydWN0
-IHBhZ2UgKnBhZ2UsIA0KPj4+IHN0cnVjdCBsaXN0X2hlYWQgKnRva2lsbCwNCj4+PiDCoMKgwqDC
-oMKgIGlmIChQYWdlQW5vbihwYWdlKSkNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgY29sbGVjdF9w
-cm9jc19hbm9uKHBhZ2UsIHRva2lsbCwgZm9yY2VfZWFybHkpOw0KPj4+IMKgwqDCoMKgwqAgZWxz
-ZQ0KPj4+IC3CoMKgwqDCoMKgwqDCoCBjb2xsZWN0X3Byb2NzX2ZpbGUocGFnZSwgdG9raWxsLCBm
-b3JjZV9lYXJseSk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGNvbGxlY3RfcHJvY3NfZmlsZShwYWdl
-LCBwYWdlLT5tYXBwaW5nLCBwYWdlX3RvX3Bnb2ZmKHBhZ2UpLA0KPj4NCj4+IFdoeSBub3QgdXNl
-IHBhZ2VfbWFwcGluZygpIGhlbHBlciBoZXJlPyBJdCB3b3VsZCBiZSBzYWZlciBmb3IgVEhQcyBp
-ZiANCj4+IHRoZXkNCj4+IGV2ZXIgZ2V0IGhlcmUuLi4NCj4+DQo+PiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBIb256YQ0KPj4N
-Cj4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
-c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+
+
+On Tue, 12 Jan 2021, Zhongwei Cai wrote:
+
+> 
+> I'm working with Mingkai on optimizations for Ext4-dax.
+
+What specific patch are you working on? Please, post it somewhere.
+
+> We think that optmizing the read-iter method cannot achieve the
+> same performance as the read method for Ext4-dax. 
+> We tried Mikulas's benchmark on Ext4-dax. The overall time and perf
+> results are listed below:
+> 
+> Overall time of 2^26 4KB read.
+> 
+> Method       Time
+> read         26.782s
+> read-iter    36.477s
+
+What happens if you use this trick ( https://lkml.org/lkml/2021/1/11/1612 )
+- detect in the "read_iter" method that there is just one segment and 
+treat it like a "read" method. I think that it should improve performance 
+for your case.
+
+Mikulas
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
