@@ -2,100 +2,124 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858762F5035
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 Jan 2021 17:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 469F12F54AC
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 Jan 2021 22:52:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 37F11100EB345;
-	Wed, 13 Jan 2021 08:44:44 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 67EFC100F2243;
+	Wed, 13 Jan 2021 13:52:27 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 58E03100EB344
-	for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 08:44:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1610556279;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B2nZaowcmYpAm6+Q7xTb3SoumDbJkYtkPecNpTcfdqc=;
-	b=gvmR8F0EbASo0nL0dV8lZ1GlhFmyJlkBeGGMQffQY7SY/sauHd0Ofyh1Pge1YL3vchdVmY
-	fs6YYNA9X5Rxl3krfkKAd9u5R/ITRkqRaExL3QpNQfSTeVXHixtErfW2ZP739RYzZyvBiI
-	4VPiU4tJmeBHnXHlINjuGaRhXOOdzYM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-208-n2t6kthuPH2jhsKcw9bewQ-1; Wed, 13 Jan 2021 11:44:35 -0500
-X-MC-Unique: n2t6kthuPH2jhsKcw9bewQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0654A806660;
-	Wed, 13 Jan 2021 16:44:33 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id C7E0C6062F;
-	Wed, 13 Jan 2021 16:44:32 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 10DGiWGW005756;
-	Wed, 13 Jan 2021 11:44:32 -0500
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 10DGiUmf005752;
-	Wed, 13 Jan 2021 11:44:31 -0500
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Wed, 13 Jan 2021 11:44:30 -0500 (EST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Zhongwei Cai <sunrise_l@sjtu.edu.cn>
-Subject: Re: Expense of read_iter
-In-Reply-To: <2041983017.5681521.1610459100858.JavaMail.zimbra@sjtu.edu.cn>
-Message-ID: <alpine.LRH.2.02.2101131008530.27448@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com> <20210107151125.GB5270@casper.infradead.org> <17045315-CC1F-4165-B8E3-BA55DD16D46B@gmail.com> <2041983017.5681521.1610459100858.JavaMail.zimbra@sjtu.edu.cn>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTPS id 29A18100F2242
+	for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 13:52:25 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id p22so3552932edu.11
+        for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 13:52:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tkCEm6n1O2YDsdNDXJh8BIEgy3kecFF0HQkrvLtX2UM=;
+        b=SRVHAUkpjdzGINze2D0SPtwgt3b82Lz/3p99J6k6sZtsuYKAjn5691k8Rp8b7FUCS9
+         6Rl0wbuf5DR1iOh0Bu8H2VEZHjnIko2IpIeXpeyK7UoEOQcvVEg5ATgpU7ILN8FvrLOJ
+         tU3S5Kbj9+NbosbQygaXJCjPhAON9p+WjNYl7vNEwbEZCP9WYe8jbt/lceuyN/JtZNF5
+         +lFs1SUeHRZFbP1fqinWUwwE0BMOo8UJwXrlPxyWIiOOAWjRy+q03pNsCcP6kNzLLcBO
+         RuItbDUV2Wl4/PPqfv0rryUy9n2oc//db/8GySCvN+q/K5oHMfeMYIBqGtgHAkGv+XnY
+         d9Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tkCEm6n1O2YDsdNDXJh8BIEgy3kecFF0HQkrvLtX2UM=;
+        b=gBAba0eFkdoTLUwo19/KOeYzrzh8pCg0qBHaObhuvLmBUbo5WBOdXqRgRINYzSW3qC
+         c512muzdpdnf4AWyymd9HtM3yuTeE8BnVgHHmH//Lvvpe6TxErkXe0w1ysKr7VWbkXBg
+         AW8DvFMJyBX1WF30UhwnErTI4KJN95Vk8jD4/v6wm5UhaGOW77BPLScorB2zLQpgX+y+
+         r2TWRWxq90R3BpfaZ7t2SpshReNHQqmewwe+/IAXj7UuvkjcNXpWwfSGWUI5c0NEyi0e
+         XFAGvC+4MYs0F6sqtFg9h1mdU+h8yq+LrNR4+95D5KnERuFUSYiiwPbSqU2uY6C0jJLp
+         CG9Q==
+X-Gm-Message-State: AOAM530Vna89vuNoknx/GfJzTjZ9cPe03SLr8XcMeldNp0VI49N4Zpof
+	30h3OxDE2yy4NKxWW21+Aqry1WFMZBhmwAGXp6sbjA==
+X-Google-Smtp-Source: ABdhPJzSD6+Rzk4Z+duLWEpDKBIxKbqxC88SAUZRbhvaMudyDSDTALy3KwUquixL/d2ZtGuR3ksAPlHMa75yFMUJrmM=
+X-Received: by 2002:aa7:c3cd:: with SMTP id l13mr3362518edr.97.1610574743900;
+ Wed, 13 Jan 2021 13:52:23 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: DQJDXQAEBFTYRJLSYQMQD3UGXXHXAYC3
-X-Message-ID-Hash: DQJDXQAEBFTYRJLSYQMQD3UGXXHXAYC3
-X-MailFrom: mpatocka@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mingkai Dong <mingkaidong@gmail.com>, Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, Theodore Ts'o <tytso@mit.edu>, Wang Jianchao <jianchao.wan9@gmail.com>, "Tadakamadla, Rajesh" <rajesh.tadakamadla@hpe.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
+References: <161052331545.1805594.2356512831689786960.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <161052332755.1805594.9846390935351758277.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <230efa36-9192-fe52-b8b6-16b2feafb70b@redhat.com>
+In-Reply-To: <230efa36-9192-fe52-b8b6-16b2feafb70b@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 13 Jan 2021 13:52:14 -0800
+Message-ID: <CAPcyv4i4yGjsMf2SyixLicDjzRGes97vaSa+mF4=Y9Uagk_0jg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/6] mm: Teach pfn_to_online_page() to consider
+ subsection validity
+To: David Hildenbrand <david@redhat.com>
+Message-ID-Hash: Y2TUYZPHB4OEKZX3BDS6OGWEQ23EUTQE
+X-Message-ID-Hash: Y2TUYZPHB4OEKZX3BDS6OGWEQ23EUTQE
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linux MM <linux-mm@kvack.org>, Qian Cai <cai@lca.pw>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DQJDXQAEBFTYRJLSYQMQD3UGXXHXAYC3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y2TUYZPHB4OEKZX3BDS6OGWEQ23EUTQE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Wed, Jan 13, 2021 at 12:29 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> On 13.01.21 08:35, Dan Williams wrote:
+> > pfn_section_valid() determines pfn validity on subsection granularity
+> > where pfn_valid() may be limited to coarse section granularity.
+> > Explicitly validate subsections after pfn_valid() succeeds.
+> >
+> > Fixes: b13bc35193d9 ("mm/hotplug: invalid PFNs from pfn_to_online_page()")
+> > Cc: Qian Cai <cai@lca.pw>
+> > Cc: Michal Hocko <mhocko@suse.com>
+> > Cc: Oscar Salvador <osalvador@suse.de>
+> > Reported-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  mm/memory_hotplug.c |   24 ++++++++++++++++++++----
+> >  1 file changed, 20 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> > index 55a69d4396e7..9f37f8a68da4 100644
+> > --- a/mm/memory_hotplug.c
+> > +++ b/mm/memory_hotplug.c
+> > @@ -308,11 +308,27 @@ static int check_hotplug_memory_addressable(unsigned long pfn,
+> >  struct page *pfn_to_online_page(unsigned long pfn)
+> >  {
+> >       unsigned long nr = pfn_to_section_nr(pfn);
+> > +     struct mem_section *ms;
+> > +
+> > +     if (nr >= NR_MEM_SECTIONS)
+> > +             return NULL;
+> > +
+> > +     ms = __nr_to_section(nr);
+> > +     if (!online_section(ms))
+> > +             return NULL;
+> > +
+> > +     /*
+> > +      * Save some code text when online_section() +
+> > +      * pfn_section_valid() are sufficient.
+> > +      */
+> > +     if (IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID))
+> > +             if (!pfn_valid(pfn))
+> > +                     return NULL;
+>
+> Nit:
+>
+> if (IS_ENABLED(CONFIG_HAVE_ARCH_PFN_VALID) &&
+>     !pfn_valid(pfn))
+>
 
-
-On Tue, 12 Jan 2021, Zhongwei Cai wrote:
-
-> 
-> I'm working with Mingkai on optimizations for Ext4-dax.
-
-What specific patch are you working on? Please, post it somewhere.
-
-> We think that optmizing the read-iter method cannot achieve the
-> same performance as the read method for Ext4-dax. 
-> We tried Mikulas's benchmark on Ext4-dax. The overall time and perf
-> results are listed below:
-> 
-> Overall time of 2^26 4KB read.
-> 
-> Method       Time
-> read         26.782s
-> read-iter    36.477s
-
-What happens if you use this trick ( https://lkml.org/lkml/2021/1/11/1612 )
-- detect in the "read_iter" method that there is just one segment and 
-treat it like a "read" method. I think that it should improve performance 
-for your case.
-
-Mikulas
+Ok... I'll do a final resend "To: akpm" after the kbuild robot
+finishes chewing on this series.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
