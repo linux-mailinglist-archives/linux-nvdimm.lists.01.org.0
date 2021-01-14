@@ -1,178 +1,215 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C832F55E0
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Jan 2021 02:44:27 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D58A2F55E2
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Jan 2021 02:49:55 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6AB6E100F225D;
-	Wed, 13 Jan 2021 17:44:26 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 68608100F225C
-	for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 17:44:23 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.79,345,1602518400";
-   d="scan'208";a="103460770"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 14 Jan 2021 09:44:21 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id 6AB404CE1A08;
-	Thu, 14 Jan 2021 09:44:16 +0800 (CST)
-Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
- (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 14 Jan
- 2021 09:44:17 +0800
-Subject: Re: [PATCH 04/10] mm, fsdax: Refactor memory-failure handler for dax
- mapping
-To: zhong jiang <zhongjiang-ali@linux.alibaba.com>, Jan Kara <jack@suse.cz>
-References: <20201230165601.845024-1-ruansy.fnst@cn.fujitsu.com>
- <20201230165601.845024-5-ruansy.fnst@cn.fujitsu.com>
- <20210106154132.GC29271@quack2.suse.cz>
- <75164044-bfdf-b2d6-dff0-d6a8d56d1f62@cn.fujitsu.com>
- <781f276b-afdd-091c-3dba-048e415431ab@linux.alibaba.com>
-From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
-Message-ID: <ef29ba5c-96d7-d0bb-e405-c7472a518b32@cn.fujitsu.com>
-Date: Thu, 14 Jan 2021 09:44:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
-MIME-Version: 1.0
-In-Reply-To: <781f276b-afdd-091c-3dba-048e415431ab@linux.alibaba.com>
+	by ml01.01.org (Postfix) with ESMTP id DD757100F225E;
+	Wed, 13 Jan 2021 17:49:53 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.131.74; helo=apc01-sg2-obe.outbound.protection.outlook.com; envelope-from=naoya.horiguchi@nec.com; receiver=<UNKNOWN> 
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-eopbgr1310074.outbound.protection.outlook.com [40.107.131.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 687FE100F225D
+	for <linux-nvdimm@lists.01.org>; Wed, 13 Jan 2021 17:49:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DfbhPR1FjSaObN3CIMqC3Uc2tHWGUFsB2jY5YoFV0hISx7/ae76TSvIpdClrXdcID60isXK/wNI0IzEPfiOOOw8hwyiY7sH6KDTgDgmIcbGo5rCpfJsF2aQqo+scYyk62/TxMOn2x7EeVJEE7JLMktO+LuLQKo/Ebs2LRCbXQ15UVtHwDGxeEVH4a79QL53C3mjClhfNQ9T+odDE7txqUBmCwx5ibCjBYn9nBwPRFWxS80ZV81F5f4P7a5nG3OpyNwbbraKLGktH2WEMiBpnJJZP20OMNfF6FDFpHVQaAGjFIjsTXvBAI4sfSowEsx0XAJdCLdp5vVq8FEIW8j+BPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kM/q6TF+NCyW9DrUCtrprUHkZFAzrkt4+MOq23S903E=;
+ b=V7lUTcr/zahB3zMEXSEeUNiz6jEUMneO9u/NKp5wMdmLvoKLX99FcBakwBDjx2ZrErzZHseeiYw8ywrtS1hBuiin7+EKs4ql9jn4U38Br05bjjKAAi57d09MK8DKD4l75U0K9/pPc398mTrvAvP9fPcEScgPNvOLx+Y8lp0ZYCSH/2t3mSHrpb4pnvnbU67o8tpfG9OUFjJfOAOGXRTKxyWVVpo/LZ+J3ZKYXxQsTUKf7+0pcCnPqcjroEj3JtybBqBbyRaBNMaeJkcPnjd5MvKmztdhaSLNl1AAQGfpEfzUEO61T2bRPVVid2oWANFABRqwD72EdfrHl3BtZ/NCEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nec.com; dmarc=pass action=none header.from=nec.com; dkim=pass
+ header.d=nec.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nec.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kM/q6TF+NCyW9DrUCtrprUHkZFAzrkt4+MOq23S903E=;
+ b=ddEly2VpiCCcytnJCJQChwmWSILhqevrp+roRB/eaABm8+1mHUS31JCnx00UcsYV/sG/ZX9CZBbGi7p/Wm064MUnFFs+SUJeV27vM1jTSD7IuDUJMMhb+buzLHQjq9YjCGNYgKlnbGWQFrRYrVOVDttbYCQNf6fIiiwD0jq60Gc=
+Received: from TY1PR01MB1852.jpnprd01.prod.outlook.com (2603:1096:403:8::12)
+ by TY2PR01MB4812.jpnprd01.prod.outlook.com (2603:1096:404:10e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3742.11; Thu, 14 Jan
+ 2021 01:49:45 +0000
+Received: from TY1PR01MB1852.jpnprd01.prod.outlook.com
+ ([fe80::8453:2ddb:cf2b:d244]) by TY1PR01MB1852.jpnprd01.prod.outlook.com
+ ([fe80::8453:2ddb:cf2b:d244%7]) with mapi id 15.20.3763.010; Thu, 14 Jan 2021
+ 01:49:45 +0000
+From: =?iso-2022-jp?B?SE9SSUdVQ0hJIE5BT1lBKBskQktZOH0hIUQ+TGkbKEIp?=
+	<naoya.horiguchi@nec.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v4 4/5] mm: Fix page reference leak in soft_offline_page()
+Thread-Topic: [PATCH v4 4/5] mm: Fix page reference leak in
+ soft_offline_page()
+Thread-Index: AQHW6heInkqG7QE910OSp4LbdxOpwg==
+Date: Thu, 14 Jan 2021 01:49:45 +0000
+Message-ID: <20210114014944.GA16873@hori.linux.bs1.fc.nec.co.jp>
+References: 
+ <161058499000.1840162.702316708443239771.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <161058501210.1840162.8108917599181157327.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: 
+ <161058501210.1840162.8108917599181157327.stgit@dwillia2-desk3.amr.corp.intel.com>
+Accept-Language: ja-JP, en-US
 Content-Language: en-US
-X-Originating-IP: [10.167.225.141]
-X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
-X-yoursite-MailScanner-ID: 6AB404CE1A08.AD0C5
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: 3ANKNXYO6A6OAWHXDOI726AHRQLVOCUQ
-X-Message-ID-Hash: 3ANKNXYO6A6OAWHXDOI726AHRQLVOCUQ
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=nec.com;
+x-originating-ip: [165.225.110.205]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: db092a07-eda8-46d3-993c-08d8b82eab15
+x-ms-traffictypediagnostic: TY2PR01MB4812:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: 
+ <TY2PR01MB4812CF3BDBA3F6492896C3A7E7A80@TY2PR01MB4812.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ dIYyUlgQFBNZf8iezHkwsu4u7yx4CiAxuPGOOl1/h7VmHAS9+xGrX5gHBAqMw7IHFO0oDv0HBpxq6c9vwaHRZ43k8v8yVITyuI6/2tYs6ukuDCQy6bimd/HdLisWCGOVB7eaD9UqkkTPyA855YcJ6n8QtCbsC17868Uc+ZBc5CfCncPujH51vtIqzaZV4/Hjz9YQnwgOWa3rXsmyfVlvyEcvcCoP2Gjs88yueJuTDv413uAcAZB0EefD1InBLoy0vrizgRYH+0Tz4ccLoIhz2Hw5wTWr7fk/6+RxIrgB3KUNs+G+f9eXbEe5KXPIHH2fp8COPHs8ZFx9bSNyCbXBa/jWhFl0EybrEj8/6pe9qT47mjusJ4Zfr7tCWpNjJ6FpLa1/oZDZ2ztrobQJSgxSQg==
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY1PR01MB1852.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(396003)(366004)(39860400002)(346002)(9686003)(7416002)(6916009)(6512007)(26005)(186003)(478600001)(55236004)(64756008)(66476007)(5660300002)(66446008)(66556008)(8936002)(4326008)(33656002)(83380400001)(8676002)(6506007)(316002)(54906003)(2906002)(71200400001)(85182001)(76116006)(66946007)(86362001)(1076003)(6486002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 
+ =?iso-2022-jp?B?OE1waGcxaEREV29leUlnRHBjcnkybnV3YncwNi9BVHNjelhCU1pMVmZ2?=
+ =?iso-2022-jp?B?K1dIc1daUFFSaGtkdjVoMmZGWXRycDNFM0dBNnhGSDNpVDF1ZzJybFJE?=
+ =?iso-2022-jp?B?SlQxRWZjMjROczdtLzNyeXhLTzIzOGd4Tnc2WklBQk9EZnRJN2lMUVhT?=
+ =?iso-2022-jp?B?WkxBL1hYZklqbmpPZStWNXlUQ284N3hFT0pnSGRwbVBsdjRycmZYVmJx?=
+ =?iso-2022-jp?B?clZDL0JnQTFseHh4ZVlENzAwenhTUU5KTmNnQitxQWV1SVYzMmluYVZW?=
+ =?iso-2022-jp?B?TzdBc0pSUlVoOXRNTjRlOXFSckZWSDVqVHJkOXRGZW0yZGNycmZRZ1Ro?=
+ =?iso-2022-jp?B?SUx5Tm0yUElPUUhDcnlTTmx4VFhHbTZha3dqNEoyaG1BM3VQOHhkSEpD?=
+ =?iso-2022-jp?B?dmdIbzlQV2ZXTlViUHYzRUhHT21rNGd5YWE4RUlkTVJuakZKRVU0SnQ0?=
+ =?iso-2022-jp?B?ZmlUQnN5QS83YzdCZ2pDZjJ0YllUZFhZNERnUU1STGN6bWRHeEprWm5G?=
+ =?iso-2022-jp?B?dUlmZkVVa3V6dEdZaWxHekYwK21VcG1ybE5VZkZrRmp5YmcySUtFc3NM?=
+ =?iso-2022-jp?B?bVV1NEVua3ZHVnpTNzk3VURUM0hIckdsdDhVSDBXY2NhMUs2QXVKVzBB?=
+ =?iso-2022-jp?B?VHRycVFHY0Y0clo3bUhuNEc3bmtnclFrYUF5MVBzeFdQbTN1K1RESmhs?=
+ =?iso-2022-jp?B?dmNUb2VDd2N5NTZkQjljbmQ0Qi8yUytsYjA4Q3o0WHhGMW1DSVJHdzMy?=
+ =?iso-2022-jp?B?dWVhc0dKSW1QejZ3OGdteEMyL0pTd2UvM0VRbDlJSzFZYXVWRFlrSHlD?=
+ =?iso-2022-jp?B?by8xM1pDWTlaa3BIeDlEZ0ZSbi8wellIS08rMFFRV2FYY2pROEU1Z3ln?=
+ =?iso-2022-jp?B?ZGpiOXozRU5Pa3RBczF3cS9xcmxsUzRIVlBjUklwNFRUTGhWcTF3a29x?=
+ =?iso-2022-jp?B?ZitsTjAza3B1NEFlTEwwVDdHVCsycG5SOVFnaGpTQnQ3WkdZTVBmMFY1?=
+ =?iso-2022-jp?B?aGFHaGROeXcvbjV0cWJ3YjZVZVhqeTJVM0hnK3pidnByUWt3N3hHV0J3?=
+ =?iso-2022-jp?B?bUlIaDY5S2lzRWtBcUhNUnlSVWtGYmExdWtDaHhsUG4rbndDOVUvN0Fw?=
+ =?iso-2022-jp?B?ajYrTlNRamtXTlZYSDdQRmdzbTNrazdFVXE1ZXdwVzJRNy9rZXNBaGlR?=
+ =?iso-2022-jp?B?WGgrNVZuTTlyMUR5YktybVZNSGJTQThoS3BpMGNzd2lkOWpFREdEVW1l?=
+ =?iso-2022-jp?B?a3VTMnhmSzZFdSt1Zm5rRjJtd2R6V25DdFkwblo1WlR5RmxGTFdZdkVt?=
+ =?iso-2022-jp?B?TzRoUDVMQnFVNzVGREdiOC8yeU03M25OM2Npd252RjRjMCtCdEJGalh5?=
+ =?iso-2022-jp?B?OXpiTGp1VVVzZy91dDJHdWtOUkpqTFJGcHNuYUdJZUx1VGFqZVJCd0kz?=
+ =?iso-2022-jp?B?bU45YWRIRDlleWhiZkgrMg==?=
+Content-ID: <45AEC839EF13FB4984DA5869108D5510@jpnprd01.prod.outlook.com>
+MIME-Version: 1.0
+X-OriginatorOrg: nec.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TY1PR01MB1852.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db092a07-eda8-46d3-993c-08d8b82eab15
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jan 2021 01:49:45.0811
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e67df547-9d0d-4f4d-9161-51c6ed1f7d11
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EBbKCqF1lzsPhgStIKJQriHVRyWRdUwjrqGoU5iQbqDux/g6mo/G1rjFXz1ktl2tqTXhadoscgbDit/qmf0PvQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY2PR01MB4812
+Message-ID-Hash: SAOQVHDXLS75CD2RW62PM6WYUFAE4Q44
+X-Message-ID-Hash: SAOQVHDXLS75CD2RW62PM6WYUFAE4Q44
+X-MailFrom: naoya.horiguchi@nec.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>, "stable@vger.kernel.org" <stable@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3ANKNXYO6A6OAWHXDOI726AHRQLVOCUQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SAOQVHDXLS75CD2RW62PM6WYUFAE4Q44/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCk9uIDIwMjEvMS8xMyDkuIvljYg2OjA0LCB6aG9uZyBqaWFuZyB3cm90ZToNCj4gDQo+IE9u
-IDIwMjEvMS8xMiAxMDo1NSDkuIrljYgsIFJ1YW4gU2hpeWFuZyB3cm90ZToNCj4+DQo+Pg0KPj4g
-T24gMjAyMS8xLzYg5LiL5Y2IMTE6NDEsIEphbiBLYXJhIHdyb3RlOg0KPj4+IE9uIFRodSAzMS0x
-Mi0yMCAwMDo1NTo1NSwgU2hpeWFuZyBSdWFuIHdyb3RlOg0KPj4+PiBUaGUgY3VycmVudCBtZW1v
-cnlfZmFpbHVyZV9kZXZfcGFnZW1hcCgpIGNhbiBvbmx5IGhhbmRsZSBzaW5nbGUtbWFwcGVkDQo+
-Pj4+IGRheCBwYWdlIGZvciBmc2RheCBtb2RlLsKgIFRoZSBkYXggcGFnZSBjb3VsZCBiZSBtYXBw
-ZWQgYnkgbXVsdGlwbGUgDQo+Pj4+IGZpbGVzDQo+Pj4+IGFuZCBvZmZzZXRzIGlmIHdlIGxldCBy
-ZWZsaW5rIGZlYXR1cmUgJiBmc2RheCBtb2RlIHdvcmsgdG9nZXRoZXIuwqAgU28sDQo+Pj4+IHdl
-IHJlZmFjdG9yIGN1cnJlbnQgaW1wbGVtZW50YXRpb24gdG8gc3VwcG9ydCBoYW5kbGUgbWVtb3J5
-IGZhaWx1cmUgb24NCj4+Pj4gZWFjaCBmaWxlIGFuZCBvZmZzZXQuDQo+Pj4+DQo+Pj4+IFNpZ25l
-ZC1vZmYtYnk6IFNoaXlhbmcgUnVhbiA8cnVhbnN5LmZuc3RAY24uZnVqaXRzdS5jb20+DQo+Pj4N
-Cj4+PiBPdmVyYWxsIHRoaXMgbG9va3MgT0sgdG8gbWUsIGEgZmV3IGNvbW1lbnRzIGJlbG93Lg0K
-Pj4+DQo+Pj4+IC0tLQ0KPj4+PiDCoCBmcy9kYXguY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAy
-MSArKysrKysrKysrKw0KPj4+PiDCoCBpbmNsdWRlL2xpbnV4L2RheC5oIHzCoCAxICsNCj4+Pj4g
-wqAgaW5jbHVkZS9saW51eC9tbS5owqAgfMKgIDkgKysrKysNCj4+Pj4gwqAgbW0vbWVtb3J5LWZh
-aWx1cmUuYyB8IDkxIA0KPj4+PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0t
-LS0tLS0tLS0NCj4+Pj4gwqAgNCBmaWxlcyBjaGFuZ2VkLCAxMDAgaW5zZXJ0aW9ucygrKSwgMjIg
-ZGVsZXRpb25zKC0pDQo+Pg0KPj4gLi4uDQo+Pg0KPj4+PiDCoCBAQCAtMzQ1LDkgKzM0OCwxMiBA
-QCBzdGF0aWMgdm9pZCBhZGRfdG9fa2lsbChzdHJ1Y3QgdGFza19zdHJ1Y3QgDQo+Pj4+ICp0c2ss
-IHN0cnVjdCBwYWdlICpwLA0KPj4+PiDCoMKgwqDCoMKgIH0NCj4+Pj4gwqAgwqDCoMKgwqDCoCB0
-ay0+YWRkciA9IHBhZ2VfYWRkcmVzc19pbl92bWEocCwgdm1hKTsNCj4+Pj4gLcKgwqDCoCBpZiAo
-aXNfem9uZV9kZXZpY2VfcGFnZShwKSkNCj4+Pj4gLcKgwqDCoMKgwqDCoMKgIHRrLT5zaXplX3No
-aWZ0ID0gZGV2X3BhZ2VtYXBfbWFwcGluZ19zaGlmdChwLCB2bWEpOw0KPj4+PiAtwqDCoMKgIGVs
-c2UNCj4+Pj4gK8KgwqDCoCBpZiAoaXNfem9uZV9kZXZpY2VfcGFnZShwKSkgew0KPj4+PiArwqDC
-oMKgwqDCoMKgwqAgaWYgKGlzX2RldmljZV9mc2RheF9wYWdlKHApKQ0KPj4+PiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCB0ay0+YWRkciA9IHZtYS0+dm1fc3RhcnQgKw0KPj4+PiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKChwZ29mZiAtIHZtYS0+dm1fcGdvZmYpIDw8
-IFBBR0VfU0hJRlQpOw0KPj4+DQo+Pj4gSXQgc2VlbXMgc3RyYW5nZSB0byB1c2UgJ3Bnb2ZmJyBm
-b3IgZGF4IHBhZ2VzIGFuZCBub3QgZm9yIGFueSBvdGhlciANCj4+PiBwYWdlLg0KPj4+IFdoeT8g
-SSdkIHJhdGhlciBwYXNzIGNvcnJlY3QgcGdvZmYgZnJvbSBhbGwgY2FsbGVycyBvZiBhZGRfdG9f
-a2lsbCgpIGFuZA0KPj4+IGF2b2lkIHRoaXMgc3BlY2lhbCBjYXNpbmcuLi4NCj4+DQo+PiBCZWNh
-dXNlIG9uZSBmc2RheCBwYWdlIGNhbiBiZSBzaGFyZWQgYnkgbXVsdGlwbGUgcGdvZmZzLsKgIEkg
-aGF2ZSB0byANCj4+IHBhc3MgZWFjaCBwZ29mZiBpbiBlYWNoIGl0ZXJhdGlvbiB0byBjYWxjdWxh
-dGUgdGhlIGFkZHJlc3MgaW4gdm1hIChmb3IgDQo+PiB0ay0+YWRkcikuwqAgT3RoZXIga2luZHMg
-b2YgcGFnZXMgZG9uJ3QgbmVlZCB0aGlzLiBUaGV5IGNhbiBnZXQgdGhlaXIgDQo+PiB1bmlxdWUg
-YWRkcmVzcyBieSBjYWxsaW5nICJwYWdlX2FkZHJlc3NfaW5fdm1hKCkiLg0KPj4NCj4gSU1PLMKg
-wqAgYW4gZnNkYXggcGFnZSBjYW4gYmUgc2hhcmVkIGJ5IG11bHRpcGxlIGZpbGVzIHJhdGhlciB0
-aGFuIA0KPiBtdWx0aXBsZSBwZ29mZnMgaWYgZnMgcXVlcnkgc3VwcG9ydCByZWZsaW5rLsKgwqAg
-QmVjYXVzZSBhbiBwYWdlIG9ubHkgDQo+IGxvY2F0ZWQgaW4gYW4gbWFwcGluZyhwYWdlLT5tYXBw
-aW5nIGlzIGV4Y2x1c2l2ZSkswqAgaGVuY2UgaXTCoCBvbmx5IGhhcyANCj4gYW4gcGdvZmYgb3Ig
-aW5kZXggcG9pbnRpbmcgYXQgdGhlIG5vZGUuDQo+IA0KPiAgwqBvcsKgIEkgbWlzcyBzb21ldGhp
-bmcgZm9yIHRoZSBmZWF0dXJlID/CoCB0aGFua3MsDQoNClllcywgYSBmc2RheCBwYWdlIGlzIHNo
-YXJlZCBieSBtdWx0aXBsZSBmaWxlcyBiZWNhdXNlIG9mIHJlZmxpbmsuICBJIA0KdGhpbmsgbXkg
-ZGVzY3JpcHRpb24gb2YgJ3Bnb2ZmJyBoZXJlIGlzIG5vdCBjb3JyZWN0LiAgVGhpcyAncGdvZmYn
-IG1lYW5zIA0KdGhlIG9mZnNldCB3aXRoaW4gdGhlIGEgZmlsZS4gIChXZSB1c2Ugcm1hcCB0byBm
-aW5kIG91dCBhbGwgdGhlIHNoYXJpbmcgDQpmaWxlcyBhbmQgdGhlaXIgb2Zmc2V0cy4pICBTbywg
-SSBzYWlkIHRoYXQgImNhbiBiZSBzaGFyZWQgYnkgbXVsdGlwbGUgDQpwZ29mZnMiLiAgSXQncyBt
-eSBiYWQuDQoNCkkgdGhpbmsgSSBzaG91bGQgbmFtZSBpdCBhbm90aGVyIHdvcmQgdG8gYXZvaWQg
-bWlzdW5kZXJzdGFuZGluZ3MuDQoNCg0KLS0NClRoYW5rcywNClJ1YW4gU2hpeWFuZy4NCg0KPiAN
-Cj4+IFNvLCBJIGFkZGVkIHRoaXMgZnNkYXggY2FzZSBoZXJlLsKgIFRoaXMgcGF0Y2hzZXQgb25s
-eSBpbXBsZW1lbnRlZCB0aGUgDQo+PiBmc2RheCBjYXNlLCBvdGhlciBjYXNlcyBhbHNvIG5lZWQg
-dG8gYmUgYWRkZWQgaGVyZSBpZiB0byBiZSBpbXBsZW1lbnRlZC4NCj4+DQo+Pg0KPj4gLS0gDQo+
-PiBUaGFua3MsDQo+PiBSdWFuIFNoaXlhbmcuDQo+Pg0KPj4+DQo+Pj4+ICvCoMKgwqDCoMKgwqDC
-oCB0ay0+c2l6ZV9zaGlmdCA9IGRldl9wYWdlbWFwX21hcHBpbmdfc2hpZnQocCwgdm1hLCB0ay0+
-YWRkcik7DQo+Pj4+ICvCoMKgwqAgfSBlbHNlDQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB0ay0+
-c2l6ZV9zaGlmdCA9IHBhZ2Vfc2hpZnQoY29tcG91bmRfaGVhZChwKSk7DQo+Pj4+IMKgIMKgwqDC
-oMKgwqAgLyoNCj4+Pj4gQEAgLTQ5NSw3ICs1MDEsNyBAQCBzdGF0aWMgdm9pZCBjb2xsZWN0X3By
-b2NzX2Fub24oc3RydWN0IHBhZ2UgDQo+Pj4+ICpwYWdlLCBzdHJ1Y3QgbGlzdF9oZWFkICp0b19r
-aWxsLA0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoIXBhZ2VfbWFwcGVkX2lu
-X3ZtYShwYWdlLCB2bWEpKQ0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGNvbnRpbnVlOw0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAodm1hLT52bV9t
-bSA9PSB0LT5tbSkNCj4+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZGRfdG9f
-a2lsbCh0LCBwYWdlLCB2bWEsIHRvX2tpbGwpOw0KPj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIGFkZF90b19raWxsKHQsIHBhZ2UsIE5VTEwsIDAsIHZtYSwgdG9fa2lsbCk7DQo+
-Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB9DQo+Pj4+IMKgwqDCoMKgwqAgfQ0KPj4+PiDCoMKgwqDC
-oMKgIHJlYWRfdW5sb2NrKCZ0YXNrbGlzdF9sb2NrKTsNCj4+Pj4gQEAgLTUwNSwyNCArNTExLDE5
-IEBAIHN0YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3NfYW5vbihzdHJ1Y3QgcGFnZSANCj4+Pj4gKnBh
-Z2UsIHN0cnVjdCBsaXN0X2hlYWQgKnRvX2tpbGwsDQo+Pj4+IMKgIC8qDQo+Pj4+IMKgwqAgKiBD
-b2xsZWN0IHByb2Nlc3NlcyB3aGVuIHRoZSBlcnJvciBoaXQgYSBmaWxlIG1hcHBlZCBwYWdlLg0K
-Pj4+PiDCoMKgICovDQo+Pj4+IC1zdGF0aWMgdm9pZCBjb2xsZWN0X3Byb2NzX2ZpbGUoc3RydWN0
-IHBhZ2UgKnBhZ2UsIHN0cnVjdCBsaXN0X2hlYWQgDQo+Pj4+ICp0b19raWxsLA0KPj4+PiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGludCBmb3JjZV9lYXJseSkNCj4+Pj4gK3N0YXRp
-YyB2b2lkIGNvbGxlY3RfcHJvY3NfZmlsZShzdHJ1Y3QgcGFnZSAqcGFnZSwgc3RydWN0IA0KPj4+
-PiBhZGRyZXNzX3NwYWNlICptYXBwaW5nLA0KPj4+PiArwqDCoMKgwqDCoMKgwqAgcGdvZmZfdCBw
-Z29mZiwgc3RydWN0IGxpc3RfaGVhZCAqdG9fa2lsbCwgaW50IGZvcmNlX2Vhcmx5KQ0KPj4+PiDC
-oCB7DQo+Pj4+IMKgwqDCoMKgwqAgc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWE7DQo+Pj4+IMKg
-wqDCoMKgwqAgc3RydWN0IHRhc2tfc3RydWN0ICp0c2s7DQo+Pj4+IC3CoMKgwqAgc3RydWN0IGFk
-ZHJlc3Nfc3BhY2UgKm1hcHBpbmcgPSBwYWdlLT5tYXBwaW5nOw0KPj4+PiAtwqDCoMKgIHBnb2Zm
-X3QgcGdvZmY7DQo+Pj4+IMKgIMKgwqDCoMKgwqAgaV9tbWFwX2xvY2tfcmVhZChtYXBwaW5nKTsN
-Cj4+Pj4gwqDCoMKgwqDCoCByZWFkX2xvY2soJnRhc2tsaXN0X2xvY2spOw0KPj4+PiAtwqDCoMKg
-IHBnb2ZmID0gcGFnZV90b19wZ29mZihwYWdlKTsNCj4+Pj4gwqDCoMKgwqDCoCBmb3JfZWFjaF9w
-cm9jZXNzKHRzaykgew0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IHRhc2tfc3RydWN0
-ICp0ID0gdGFza19lYXJseV9raWxsKHRzaywgZm9yY2VfZWFybHkpOw0KPj4+PiAtDQo+Pj4+IMKg
-wqDCoMKgwqDCoMKgwqDCoCBpZiAoIXQpDQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGNvbnRpbnVlOw0KPj4+PiAtwqDCoMKgwqDCoMKgwqAgdm1hX2ludGVydmFsX3RyZWVfZm9yZWFj
-aCh2bWEsICZtYXBwaW5nLT5pX21tYXAsIHBnb2ZmLA0KPj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHBnb2ZmKSB7DQo+Pj4+ICvCoMKgwqDCoMKgwqDCoCB2
-bWFfaW50ZXJ2YWxfdHJlZV9mb3JlYWNoKHZtYSwgJm1hcHBpbmctPmlfbW1hcCwgcGdvZmYsIA0K
-Pj4+PiBwZ29mZikgew0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKg0KPj4+PiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogU2VuZCBlYXJseSBraWxsIHNpZ25hbCB0byB0
-YXNrcyB3aGVyZSBhIHZtYSBjb3ZlcnMNCj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCAqIHRoZSBwYWdlIGJ1dCB0aGUgY29ycnVwdGVkIHBhZ2UgaXMgbm90IG5lY2Vzc2FyaWx5DQo+
-Pj4+IEBAIC01MzEsNyArNTMyLDcgQEAgc3RhdGljIHZvaWQgY29sbGVjdF9wcm9jc19maWxlKHN0
-cnVjdCBwYWdlIA0KPj4+PiAqcGFnZSwgc3RydWN0IGxpc3RfaGVhZCAqdG9fa2lsbCwNCj4+Pj4g
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIHRvIGJlIGluZm9ybWVkIG9mIGFsbCBzdWNo
-IGRhdGEgY29ycnVwdGlvbnMuDQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8N
-Cj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKHZtYS0+dm1fbW0gPT0gdC0+bW0p
-DQo+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYWRkX3RvX2tpbGwodCwgcGFn
-ZSwgdm1hLCB0b19raWxsKTsNCj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBh
-ZGRfdG9fa2lsbCh0LCBwYWdlLCBtYXBwaW5nLCBwZ29mZiwgdm1hLCB0b19raWxsKTsNCj4+Pj4g
-wqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+Pj4gwqDCoMKgwqDCoCB9DQo+Pj4+IMKgwqDCoMKgwqAg
-cmVhZF91bmxvY2soJnRhc2tsaXN0X2xvY2spOw0KPj4+PiBAQCAtNTUwLDcgKzU1MSw4IEBAIHN0
-YXRpYyB2b2lkIGNvbGxlY3RfcHJvY3Moc3RydWN0IHBhZ2UgKnBhZ2UsIA0KPj4+PiBzdHJ1Y3Qg
-bGlzdF9oZWFkICp0b2tpbGwsDQo+Pj4+IMKgwqDCoMKgwqAgaWYgKFBhZ2VBbm9uKHBhZ2UpKQ0K
-Pj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgY29sbGVjdF9wcm9jc19hbm9uKHBhZ2UsIHRva2lsbCwg
-Zm9yY2VfZWFybHkpOw0KPj4+PiDCoMKgwqDCoMKgIGVsc2UNCj4+Pj4gLcKgwqDCoMKgwqDCoMKg
-IGNvbGxlY3RfcHJvY3NfZmlsZShwYWdlLCB0b2tpbGwsIGZvcmNlX2Vhcmx5KTsNCj4+Pj4gK8Kg
-wqDCoMKgwqDCoMKgIGNvbGxlY3RfcHJvY3NfZmlsZShwYWdlLCBwYWdlLT5tYXBwaW5nLCBwYWdl
-X3RvX3Bnb2ZmKHBhZ2UpLA0KPj4+DQo+Pj4gV2h5IG5vdCB1c2UgcGFnZV9tYXBwaW5nKCkgaGVs
-cGVyIGhlcmU/IEl0IHdvdWxkIGJlIHNhZmVyIGZvciBUSFBzIGlmIA0KPj4+IHRoZXkNCj4+PiBl
-dmVyIGdldCBoZXJlLi4uDQo+Pj4NCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBIb256YQ0KPj4+DQo+Pg0KPiANCj4gDQoN
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52
-ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNj
-cmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On Wed, Jan 13, 2021 at 04:43:32PM -0800, Dan Williams wrote:
+> The conversion to move pfn_to_online_page() internal to
+> soft_offline_page() missed that the get_user_pages() reference taken by
+> the madvise() path needs to be dropped when pfn_to_online_page() fails.
+> Note the direct sysfs-path to soft_offline_page() does not perform a
+> get_user_pages() lookup.
+> 
+> When soft_offline_page() is handed a pfn_valid() &&
+> !pfn_to_online_page() pfn the kernel hangs at dax-device shutdown due to
+> a leaked reference.
+> 
+> Fixes: feec24a6139d ("mm, soft-offline: convert parameter to pfn")
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+I'm OK if we don't have any other better approach, but the proposed changes
+make code a little messy, and I feel that get_user_pages() might be the
+right place to fix. Is get_user_pages() expected to return struct page with
+holding refcount for offline valid pages?  I thought that such pages are
+only used by drivers for dax-devices, but that might be wrong. Can I ask for
+a little more explanation from this perspective?
+
+Thanks,
+Naoya Horiguchi
+
+> ---
+>  mm/memory-failure.c |   20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 5a38e9eade94..78b173c7190c 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1885,6 +1885,12 @@ static int soft_offline_free_page(struct page *page)
+>  	return rc;
+>  }
+>  
+> +static void put_ref_page(struct page *page)
+> +{
+> +	if (page)
+> +		put_page(page);
+> +}
+> +
+>  /**
+>   * soft_offline_page - Soft offline a page.
+>   * @pfn: pfn to soft-offline
+> @@ -1910,20 +1916,26 @@ static int soft_offline_free_page(struct page *page)
+>  int soft_offline_page(unsigned long pfn, int flags)
+>  {
+>  	int ret;
+> -	struct page *page;
+>  	bool try_again = true;
+> +	struct page *page, *ref_page = NULL;
+> +
+> +	WARN_ON_ONCE(!pfn_valid(pfn) && (flags & MF_COUNT_INCREASED));
+>  
+>  	if (!pfn_valid(pfn))
+>  		return -ENXIO;
+> +	if (flags & MF_COUNT_INCREASED)
+> +		ref_page = pfn_to_page(pfn);
+> +
+>  	/* Only online pages can be soft-offlined (esp., not ZONE_DEVICE). */
+>  	page = pfn_to_online_page(pfn);
+> -	if (!page)
+> +	if (!page) {
+> +		put_ref_page(ref_page);
+>  		return -EIO;
+> +	}
+>  
+>  	if (PageHWPoison(page)) {
+>  		pr_info("%s: %#lx page already poisoned\n", __func__, pfn);
+> -		if (flags & MF_COUNT_INCREASED)
+> -			put_page(page);
+> +		put_ref_page(ref_page);
+>  		return 0;
+>  	}
+>  
+> 
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
