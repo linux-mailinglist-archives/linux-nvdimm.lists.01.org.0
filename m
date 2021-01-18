@@ -2,36 +2,46 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDACC2F9B94
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 Jan 2021 09:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9F32F9E8D
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 Jan 2021 12:43:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EBD39100ED4BB;
-	Mon, 18 Jan 2021 00:55:47 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=91.231.98.56; helo=hpst98-56.com; envelope-from=sanche209@financ.com; receiver=<UNKNOWN> 
-Received: from hpst98-56.com (hpst98-56.com [91.231.98.56])
+	by ml01.01.org (Postfix) with ESMTP id 12DA1100EC1FC;
+	Mon, 18 Jan 2021 03:43:27 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 15C86100ED4A3
-	for <linux-nvdimm@lists.01.org>; Mon, 18 Jan 2021 00:55:46 -0800 (PST)
-Received: from financ.com (rrcs-71-43-247-254.se.biz.rr.com [71.43.247.254])
-	by hpst98-56.com (Postfix) with ESMTPA id 8550F26A747
-	for <linux-nvdimm@lists.01.org>; Mon, 18 Jan 2021 11:03:08 +0200 (EET)
-From: Francisco<sanche209@financ.com>
-To: linux-nvdimm@lists.01.org
-Subject: Business Loan
-Date: 18 Jan 2021 03:54:26 -0500
-Message-ID: <20210118035426.80DAA183BD844F9C@financ.com>
+	by ml01.01.org (Postfix) with ESMTPS id 57161100EC1F9
+	for <linux-nvdimm@lists.01.org>; Mon, 18 Jan 2021 03:43:24 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 036412223E;
+	Mon, 18 Jan 2021 11:43:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1610970203;
+	bh=ZfRNyTieOsoVNKe8Y2oI4EMd7ks971g+wnjHRo7dt18=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LFz1164frJv8sVQS81iD6X+cJ2/nCG9T7f2pfGCe7nTgvcehmiRPaLOXpqWnmKI/E
+	 3ViuIsTAXNvBOrWQINEfl5DcyCt1VWGElV5d3fiAOXe7Cc9blb78mHmQpdaoqruN2m
+	 /GdSOHNHAJlwbj6QSSL1W9vJr5zqtS6+8T5VJQE4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10 081/152] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
+Date: Mon, 18 Jan 2021 12:34:16 +0100
+Message-Id: <20210118113356.647896767@linuxfoundation.org>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210118113352.764293297@linuxfoundation.org>
+References: <20210118113352.764293297@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Message-ID-Hash: PTCPCU4SBF4TRSEXVPSJ3IZBT5KB2Y27
-X-Message-ID-Hash: PTCPCU4SBF4TRSEXVPSJ3IZBT5KB2Y27
-X-MailFrom: sanche209@financ.com
+Message-ID-Hash: NGLHCA72G4MJ2AZ6D6UZB3CCNMWM46PW
+X-Message-ID-Hash: NGLHCA72G4MJ2AZ6D6UZB3CCNMWM46PW
+X-MailFrom: gregkh@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, kernel test robot <lkp@intel.com>, Randy Dunlap <rdunlap@infradead.org>, Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, Sasha Levin <sashal@kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: sanchez@financier.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PTCPCU4SBF4TRSEXVPSJ3IZBT5KB2Y27/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NGLHCA72G4MJ2AZ6D6UZB3CCNMWM46PW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -40,50 +50,52 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dear Sir / Madam,
+From: Randy Dunlap <rdunlap@infradead.org>
 
-We offer all kind of loans - Business Loan / Real Estate Project
--Financing
+[ Upstream commit 8a48c0a3360bf2bf4f40c980d0ec216e770e58ee ]
 
-we are comprehensive financial
-services firm committed to helping our clients improve their
-long-term financial success.
+fs/dax.c uses copy_user_page() but ARC does not provide that interface,
+resulting in a build error.
 
-Our customized programs are designed to help grow, protect, and
-conserve our client's wealth by delivering a superior level of
-personalized service.
+Provide copy_user_page() in <asm/page.h>.
 
-We're Investment/Finance firm that specialized in project funding
-& General financial service offer.Our principal function would be
-assist you in complete financing through our reputable Lending
-Institutions.
+../fs/dax.c: In function 'copy_cow_page_dax':
+../fs/dax.c:702:2: error: implicit declaration of function 'copy_user_page'; did you mean 'copy_to_user_page'? [-Werror=implicit-function-declaration]
 
-We are open to having a good business relationship with you. We
-are currently interested in funding viable businesses,
-investments or projects in the following areas of interest:
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: linux-snps-arc@lists.infradead.org
+Cc: Dan Williams <dan.j.williams@intel.com>
+#Acked-by: Vineet Gupta <vgupta@synopsys.com> # v1
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-nvdimm@lists.01.org
+#Reviewed-by: Ira Weiny <ira.weiny@intel.com> # v2
+Signed-off-by: Vineet Gupta <vgupta@synopsys.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arc/include/asm/page.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-* Starting up a Franchise
-* Business Acquisition
-* Business Expansion
-* Capital / Infrastructural Project
-* Commercial Real Estate purchase
-* Contract Execution
-* Trade Financing etc.
-* Want to be an Agent / Broker?
+diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
+index b0dfed0f12be0..d9c264dc25fcb 100644
+--- a/arch/arc/include/asm/page.h
++++ b/arch/arc/include/asm/page.h
+@@ -10,6 +10,7 @@
+ #ifndef __ASSEMBLY__
+ 
+ #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
++#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+ #define copy_page(to, from)		memcpy((to), (from), PAGE_SIZE)
+ 
+ struct vm_area_struct;
+-- 
+2.27.0
 
-- Intermediaries/Consultants/Brokers are welcome to bring their
-clients and are 100% protected.
 
-We encourage you to contact us and learn more about the loans
-service we offered.
-
-If you have any questions or want more information about this
-offer do not hesitate to contact us.
-
-We look forward to hearing from you.
-
-Regards
-Mr, Sanchez
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
