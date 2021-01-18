@@ -1,47 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038812F9E47
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 Jan 2021 12:37:22 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046EE2FA848
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 Jan 2021 19:05:53 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6C48E100EC1EC;
-	Mon, 18 Jan 2021 03:37:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 422D8100EBBBB;
+	Mon, 18 Jan 2021 10:05:51 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::329; helo=mail-ot1-x329.google.com; envelope-from=wyasare@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 15D9B100EC1E8
-	for <linux-nvdimm@lists.01.org>; Mon, 18 Jan 2021 03:37:18 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 243EB22CA1;
-	Mon, 18 Jan 2021 11:37:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1610969838;
-	bh=sssGw7VAmhQ9zYNCAgQ46mvt8+d/n+n3c7UnO0Lb+nc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0Dt5EbA3PfM95yOWXBZUXnHMBJXZ0zluXuA0/+qOWQYomQbKls79cXkt2yDbFEOx
-	 MZxRxZG9uQhGnVlxZGZl1+2+7oLnFahamXKywNV33lybLGOq+XVPL55hoQqTZOqOEP
-	 qceZwrg7MtC2WNDl/nP38Ner88U1TO3lRbBszxjg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.19 19/43] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
-Date: Mon, 18 Jan 2021 12:34:42 +0100
-Message-Id: <20210118113335.870787462@linuxfoundation.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210118113334.966227881@linuxfoundation.org>
-References: <20210118113334.966227881@linuxfoundation.org>
-User-Agent: quilt/0.66
+	by ml01.01.org (Postfix) with ESMTPS id C06B8100EBBBA
+	for <linux-nvdimm@lists.01.org>; Mon, 18 Jan 2021 10:05:48 -0800 (PST)
+Received: by mail-ot1-x329.google.com with SMTP id f6so7912473ots.9
+        for <linux-nvdimm@lists.01.org>; Mon, 18 Jan 2021 10:05:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=gFKy1zCgtAtDIB32G/oIVZ2FiTBOLfrozfdxWbg5bDE=;
+        b=f3b75IGwalDb7wGidNYd4E3nGQialyg/bAZ9aBZLgckyNsdgOhiJR7Y6ZTDEZphMyS
+         rUAuoQV6Dj7VCCcDVB4OGYLAhYC7M2AfhP13dtsN7buI3CdM/5pvoV6JeVYB1UHtN2Wk
+         wV3GENzrAV4P5HFBcWOZxlM2lB3mOKCt5+jrkpFmB3VUpSyhlg/Oc57DNKKCU2IArsUJ
+         YNxk5PZJgPJUAYvpd06rfDw5DwilRuTEYPYSRRrFmKHbJ3m/sCrEwVXd1QpkgQJDk9ei
+         8fnY5QeRxDvRtIEpmcvdywpXR2nlSc20+izMOQB39LUcHaTtEF5C9Z8+yYzKgExICkoc
+         KeNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=gFKy1zCgtAtDIB32G/oIVZ2FiTBOLfrozfdxWbg5bDE=;
+        b=ITV05QaQVejEdpT5fser+b5KYGFbf7S/yPtV7RKDtO0zsfXJ2FBseMiGySYYwr6TKz
+         JSo1sHLd9BxsAtPVgyzwquafS4rlv24W2x0Zd8w9/JcC/RjVp4Xw2ZJGBXbiki3y+7hA
+         EMfQlmBI1YOkELsYzoiHL3ph4B9KuKbIr94oCMIrhNEGMQRyWCarOzrYECx8LD/OSvfk
+         Kdd7qiKa+6g4iSogpjS2QBS3jyIEsxjlbiGzNY0jn7Rz8ORnKDp2AAFcesP9AuJrOHO2
+         RnfdMMt6KaH0suYdfcuCDvsECFyZVSyeaC7C3AK/3iKw5KzjCheIj/G8bYEbvMmyDaaY
+         cDOA==
+X-Gm-Message-State: AOAM5322w2ZsI5yeq3J147kcjrJOz8Of7pJGyBNxIFUMsqX/q0J4BFb2
+	Fsm6t5Mu9xFZv4nvf5e94r/NCnWYU7TznBsZuQ==
+X-Google-Smtp-Source: ABdhPJxR6jg8VW367FZXGfhGI+gOKwBabyXB/g93gwBNKQGIOv+t43t0ogtGGn6/FAA7HFioBPmzWlj8RF5T/FxDNK4=
+X-Received: by 2002:a05:6830:1482:: with SMTP id s2mr564790otq.296.1610993147267;
+ Mon, 18 Jan 2021 10:05:47 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: Y63STY7OYNDPFJLMCZEQR2OHNXQTPWRB
-X-Message-ID-Hash: Y63STY7OYNDPFJLMCZEQR2OHNXQTPWRB
-X-MailFrom: gregkh@linuxfoundation.org
+From: William Asare <wyasare@gmail.com>
+Date: Mon, 18 Jan 2021 19:05:35 +0100
+Message-ID: <CAA+vMpBpEJmATNmhD-tqJGYMDOh034wDDF3aS1ZXfHt=ThN4Mg@mail.gmail.com>
+Subject: Greetings
+To: undisclosed-recipients:;
+Message-ID-Hash: AUZ454CU3BEKDEI5H2YNYOZZN4Z2L57U
+X-Message-ID-Hash: AUZ454CU3BEKDEI5H2YNYOZZN4Z2L57U
+X-MailFrom: wyasare@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, kernel test robot <lkp@intel.com>, Randy Dunlap <rdunlap@infradead.org>, Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, Sasha Levin <sashal@kernel.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: wlasare100@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y63STY7OYNDPFJLMCZEQR2OHNXQTPWRB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AUZ454CU3BEKDEI5H2YNYOZZN4Z2L57U/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,52 +66,47 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Randy Dunlap <rdunlap@infradead.org>
+*FROM THE DESK OF MR.WILLIAMS.*
 
-[ Upstream commit 8a48c0a3360bf2bf4f40c980d0ec216e770e58ee ]
+*Date: 18-01-21*
 
-fs/dax.c uses copy_user_page() but ARC does not provide that interface,
-resulting in a build error.
+*Email: **wlasare100@gmail.com* <wlasare100@gmail.com>
 
-Provide copy_user_page() in <asm/page.h>.
+*Greetings:*
 
-../fs/dax.c: In function 'copy_cow_page_dax':
-../fs/dax.c:702:2: error: implicit declaration of function 'copy_user_page'; did you mean 'copy_to_user_page'? [-Werror=implicit-function-declaration]
+*My name is Mr. William Asare, I am the Ashanti Regional manager of a bank
+here in Ghana in West Africa. I am a Christian. I do not want problems but
+I just hope you can assist me. I write you this letter in good faith.*
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: Dan Williams <dan.j.williams@intel.com>
-#Acked-by: Vineet Gupta <vgupta@synopsys.com> # v1
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-nvdimm@lists.01.org
-#Reviewed-by: Ira Weiny <ira.weiny@intel.com> # v2
-Signed-off-by: Vineet Gupta <vgupta@synopsys.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arc/include/asm/page.h | 1 +
- 1 file changed, 1 insertion(+)
+*I am in control of Seven million, Eight hundred and Fifty thousand US
+dollars($7,850,000.00) and I Realized the excess profit from a contract
+that was Awarded to a foreign company here in Ghana by the World Health
+organization to supply ante-natal and Post-natal drugs to rural areas in
+Ghana and other West African countries. This said money for the Supply of
+drugs was first deposited to the Bank Where I work. With my position as the
+manager, I trade with the Money in Ghana stock market before the
+contractors withdrew the money for the said purpose. I deposited the profit
+I made on Escrow call account and I did not declare this to my head
+office.I am contacting you, to stand as the beneficiary of this fund
+because as the regional manager I don't have to be involved with this kind
+of amount. I can move this money to our offshore filtering center London
+covering the region, but can I rely trust you to hold this money for me
+until I arrive your country and pick it up you and myself deduct 50% of the
+money as your commission. If you accept my offer you can contact me only on
+my private email-address. If you do not accept you can forget to contact
+me.*
 
-diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-index 09ddddf71cc50..a70fef79c4055 100644
---- a/arch/arc/include/asm/page.h
-+++ b/arch/arc/include/asm/page.h
-@@ -13,6 +13,7 @@
- #ifndef __ASSEMBLY__
- 
- #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
-+#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
- #define copy_page(to, from)		memcpy((to), (from), PAGE_SIZE)
- 
- struct vm_area_struct;
--- 
-2.27.0
+* All I need is for you to get me a good current account in your bank where
+I can move this money.*
 
+*There are practically no risks involved, it will be a bank to bank
+transfer. I hope you understand my situation.*
 
+*Thank you and God bless.*
+
+*Yours truly,*
+
+*Williams. *
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
