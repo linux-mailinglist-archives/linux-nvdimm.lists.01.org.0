@@ -2,50 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157622FCDD6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 Jan 2021 11:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDC52FD237
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 Jan 2021 15:18:41 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 722F7100EB835;
-	Wed, 20 Jan 2021 02:30:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id A1618100EB83D;
+	Wed, 20 Jan 2021 06:18:39 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1DED6100EB82F
-	for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 02:30:09 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 43078100EB83C
+	for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 06:18:37 -0800 (PST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1611138608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TEgO1GiA+c7h1rID5iKJ8FX+fU7rvgRZ7C7qLuJdxAY=;
-	b=QHseIHGBZwT1U8a1+qwSPIYif1TxRiJNTDz4zgFPq4rwwayfaNyrfwPpFDe16HQdRc9+jW
-	MpH3YLBsd7TVu3DpRayjJDsxjweSGfbv78TwjpYzzj8hwuMzB7MXTBMJlteMHCunWLFfab
-	iX5YSThVs8TyNElXQMBoRNSbEQxcRxw=
 Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 522FCAC97;
-	Wed, 20 Jan 2021 10:30:08 +0000 (UTC)
-Date: Wed, 20 Jan 2021 11:30:07 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v4 3/5] mm: Teach pfn_to_online_page() about ZONE_DEVICE
- section collisions
-Message-ID: <20210120103007.GH9371@dhcp22.suse.cz>
-References: <161058499000.1840162.702316708443239771.stgit@dwillia2-desk3.amr.corp.intel.com>
- <161058500675.1840162.7887862152161279354.stgit@dwillia2-desk3.amr.corp.intel.com>
+	by mx2.suse.de (Postfix) with ESMTP id A2825AB7F;
+	Wed, 20 Jan 2021 14:18:35 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 642A01E0802; Wed, 20 Jan 2021 15:18:34 +0100 (CET)
+Date: Wed, 20 Jan 2021 15:18:34 +0100
+From: Jan Kara <jack@suse.cz>
+To: Dave Chinner <david@fromorbit.com>
+Subject: Re: Expense of read_iter
+Message-ID: <20210120141834.GA24063@quack2.suse.cz>
+References: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com>
+ <20210107151125.GB5270@casper.infradead.org>
+ <17045315-CC1F-4165-B8E3-BA55DD16D46B@gmail.com>
+ <2041983017.5681521.1610459100858.JavaMail.zimbra@sjtu.edu.cn>
+ <alpine.LRH.2.02.2101131008530.27448@file01.intranet.prod.int.rdu2.redhat.com>
+ <1224425872.715547.1610703643424.JavaMail.zimbra@sjtu.edu.cn>
+ <20210120044700.GA4626@dread.disaster.area>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <161058500675.1840162.7887862152161279354.stgit@dwillia2-desk3.amr.corp.intel.com>
-Message-ID-Hash: P754NNCLHCOTNGZZZFI24S2LWZBK5BM5
-X-Message-ID-Hash: P754NNCLHCOTNGZZZFI24S2LWZBK5BM5
-X-MailFrom: mhocko@suse.com
+In-Reply-To: <20210120044700.GA4626@dread.disaster.area>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: IQMQ3CHU7AUHLCE2XXW3WESY57ZSWD2Z
+X-Message-ID-Hash: IQMQ3CHU7AUHLCE2XXW3WESY57ZSWD2Z
+X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: akpm@linux-foundation.org, David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.de>, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: Zhongwei Cai <sunrise_l@sjtu.edu.cn>, Mikulas Patocka <mpatocka@redhat.com>, Theodore Ts'o <tytso@mit.edu>, Matthew Wilcox <willy@infradead.org>, David Laight <David.Laight@aculab.com>, Mingkai Dong <mingkaidong@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, Wang Jianchao <jianchao.wan9@gmail.com>, Rajesh Tadakamadla <rajesh.tadakamadla@hpe.com>, linux-kernel <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P754NNCLHCOTNGZZZFI24S2LWZBK5BM5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IQMQ3CHU7AUHLCE2XXW3WESY57ZSWD2Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,67 +53,48 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed 13-01-21 16:43:26, Dan Williams wrote:
-> While pfn_to_online_page() is able to determine pfn_valid() at
-> subsection granularity it is not able to reliably determine if a given
-> pfn is also online if the section is mixes ZONE_{NORMAL,MOVABLE} with
-> ZONE_DEVICE. This means that pfn_to_online_page() may return invalid
-> @page objects. For example with a memory map like:
+On Wed 20-01-21 15:47:00, Dave Chinner wrote:
+> On Fri, Jan 15, 2021 at 05:40:43PM +0800, Zhongwei Cai wrote:
+> > On Thu, 14 Jan 2021, Mikulas wrote:
+> > For Ext4-dax, the overhead of dax_iomap_rw is significant
+> > compared to the overhead of struct iov_iter. Although methods
+> > proposed by Mikulas can eliminate the overhead of iov_iter
+> > well, they can not be applied in Ext4-dax unless we implement an
+> > internal "read" method in Ext4-dax.
+> > 
+> > For Ext4-dax, there could be two approaches to optimizing:
+> > 1) implementing the internal "read" method without the complexity
+> > of iterators and dax_iomap_rw;
 > 
-> 100000000-1fbffffff : System RAM
->   142000000-143002e16 : Kernel code
->   143200000-143713fff : Kernel rodata
->   143800000-143b15b7f : Kernel data
->   144227000-144ffffff : Kernel bss
-> 1fc000000-2fbffffff : Persistent Memory (legacy)
->   1fc000000-2fbffffff : namespace0.0
+> Please do not go an re-invent the wheel just for ext4. If there's a
+> problem in a shared path - ext2, FUSE and XFS all use dax_iomap_rw()
+> as well, so any improvements to that path benefit all DAX users, not
+> just ext4.
 > 
-> This command:
+> > 2) optimizing how dax_iomap_rw works.
+> > Since dax_iomap_rw requires ext4_iomap_begin, which further involves
+> > the iomap structure and others (e.g., journaling status locks in Ext4),
+> > we think implementing the internal "read" method would be easier.
 > 
-> echo 0x1fc000000 > /sys/devices/system/memory/soft_offline_page
-> 
-> ...succeeds when it should fail. When it succeeds it touches
-> an uninitialized page and may crash or cause other damage (see
-> dissolve_free_huge_page()).
-> 
-> While the memory map above is contrived via the memmap=ss!nn kernel
-> command line option, the collision happens in practice on shipping
-> platforms. The memory controller resources that decode spans of
-> physical address space are a limited resource. One technique
-> platform-firmware uses to conserve those resources is to share a decoder
-> across 2 devices to keep the address range contiguous. Unfortunately the
-> unit of operation of a decoder is 64MiB while the Linux section size is
-> 128MiB. This results in situations where, without subsection hotplug
-> memory mappings with different lifetimes collide into one object that
-> can only express one lifetime.
+> Maybe it is, but it's also very selfish. The DAX iomap path was
+> written to be correct for all users, not inecessarily provide
+> optimal performance. There will be lots of things that could be done
+> to optimise it, so rather than creating a special snowflake in ext4
+> that makes DAX in ext4 much harder to maintain for non-ext4 DAX
+> developers, please work to improve the common DAX IO path and so
+> provide the same benefit to all the filesystems that use it.
 
-Thank you this is a very useful insight to have in the changelog.
+Yeah, I agree. I'm against ext4 private solution for this read problem. And
+I'm also against duplicating ->read_iter functionatily in ->read handler.
+The maintenance burden of this code duplication is IMHO just too big. We
+rather need to improve the generic code so that the fast path is faster.
+And every filesystem will benefit because this is not ext4 specific
+problem.
 
-> Update move_pfn_range_to_zone() to flag (SECTION_TAINT_ZONE_DEVICE) a
-> section that mixes ZONE_DEVICE pfns with other online pfns. With
-> SECTION_TAINT_ZONE_DEVICE to delineate, pfn_to_online_page() can fall
-> back to a slow-path check for ZONE_DEVICE pfns in an online section. In
-> the fast path online_section() for a full ZONE_DEVICE section returns
-> false.
-> 
-> Because the collision case is rare, and for simplicity, the
-> SECTION_TAINT_ZONE_DEVICE flag is never cleared once set.
-> 
-> Fixes: ba72b4c8cf60 ("mm/sparsemem: support sub-section hotplug")
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: Michal Hocko <mhocko@suse.com>
-> Reported-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-
-Acked-by: Michal Hocko <mhocko@suse.com>
-
-I do not want to bikeshed but online_device_section is quite confusing.
-device_mixed_section would sound like a better name to me.
+								Honza
 -- 
-Michal Hocko
-SUSE Labs
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
