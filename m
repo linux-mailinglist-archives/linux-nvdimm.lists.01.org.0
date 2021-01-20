@@ -1,50 +1,53 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDC52FD237
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 Jan 2021 15:18:41 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CF92FD363
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 Jan 2021 16:05:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A1618100EB83D;
-	Wed, 20 Jan 2021 06:18:39 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id B4F3E100EB83E;
+	Wed, 20 Jan 2021 07:05:28 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 43078100EB83C
-	for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 06:18:37 -0800 (PST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id A2825AB7F;
-	Wed, 20 Jan 2021 14:18:35 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id 642A01E0802; Wed, 20 Jan 2021 15:18:34 +0100 (CET)
-Date: Wed, 20 Jan 2021 15:18:34 +0100
-From: Jan Kara <jack@suse.cz>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: Expense of read_iter
-Message-ID: <20210120141834.GA24063@quack2.suse.cz>
-References: <alpine.LRH.2.02.2101061245100.30542@file01.intranet.prod.int.rdu2.redhat.com>
- <20210107151125.GB5270@casper.infradead.org>
- <17045315-CC1F-4165-B8E3-BA55DD16D46B@gmail.com>
- <2041983017.5681521.1610459100858.JavaMail.zimbra@sjtu.edu.cn>
- <alpine.LRH.2.02.2101131008530.27448@file01.intranet.prod.int.rdu2.redhat.com>
- <1224425872.715547.1610703643424.JavaMail.zimbra@sjtu.edu.cn>
- <20210120044700.GA4626@dread.disaster.area>
+	by ml01.01.org (Postfix) with ESMTPS id DE929100EB83E
+	for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 07:05:25 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7A01A23356;
+	Wed, 20 Jan 2021 15:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1611155125;
+	bh=9874V4EQF8pGhQeRtiLlHuHTZWGypK1q+CZx02TXhZM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uVer5+wzd/VviGPx62NgeNadLX736EMkLOQOVHuy+k8sx0BcR+ivCEkKsnZIoxtnT
+	 GpWkXKSHUVrX3tMi+iQiZNVYUchhp0zB4TrjPy0CuHAyWgurs4kWeeuPwxfawgBGve
+	 xWg9JGEgJG54bZgaB141RZ4cuaX9zxlmp5uYxxVFC9vITcsuqfvwAakLkytsiWOGfL
+	 pNtcU5EE62T/qNQ15LxVmcJccjD7XRVg6hOvj3C8536te+4LBKab+YM8J44PRYhLZX
+	 NgPhXfCDCBlcUFMljfwDktrV1a/D2LNFJaqimj3Xi9rVUzUTR1HHM4iQVtrs0WE0Q2
+	 /+v3XgxNylKfQ==
+Date: Wed, 20 Jan 2021 17:05:10 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v14 05/10] mm: introduce memfd_secret system call to
+ create "secret" memory areas
+Message-ID: <20210120150510.GO1106298@kernel.org>
+References: <20201203062949.5484-1-rppt@kernel.org>
+ <20201203062949.5484-6-rppt@kernel.org>
+ <20210119202213.GI2260413@casper.infradead.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210120044700.GA4626@dread.disaster.area>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: IQMQ3CHU7AUHLCE2XXW3WESY57ZSWD2Z
-X-Message-ID-Hash: IQMQ3CHU7AUHLCE2XXW3WESY57ZSWD2Z
-X-MailFrom: jack@suse.cz
+In-Reply-To: <20210119202213.GI2260413@casper.infradead.org>
+Message-ID-Hash: VZO6CAHTAEZPR4XTJ2L7327P2HKDZAUV
+X-Message-ID-Hash: VZO6CAHTAEZPR4XTJ2L7327P2HKDZAUV
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Zhongwei Cai <sunrise_l@sjtu.edu.cn>, Mikulas Patocka <mpatocka@redhat.com>, Theodore Ts'o <tytso@mit.edu>, Matthew Wilcox <willy@infradead.org>, David Laight <David.Laight@aculab.com>, Mingkai Dong <mingkaidong@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, Wang Jianchao <jianchao.wan9@gmail.com>, Rajesh Tadakamadla <rajesh.tadakamadla@hpe.com>, linux-kernel <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon
+  <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IQMQ3CHU7AUHLCE2XXW3WESY57ZSWD2Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VZO6CAHTAEZPR4XTJ2L7327P2HKDZAUV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,48 +56,89 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed 20-01-21 15:47:00, Dave Chinner wrote:
-> On Fri, Jan 15, 2021 at 05:40:43PM +0800, Zhongwei Cai wrote:
-> > On Thu, 14 Jan 2021, Mikulas wrote:
-> > For Ext4-dax, the overhead of dax_iomap_rw is significant
-> > compared to the overhead of struct iov_iter. Although methods
-> > proposed by Mikulas can eliminate the overhead of iov_iter
-> > well, they can not be applied in Ext4-dax unless we implement an
-> > internal "read" method in Ext4-dax.
-> > 
-> > For Ext4-dax, there could be two approaches to optimizing:
-> > 1) implementing the internal "read" method without the complexity
-> > of iterators and dax_iomap_rw;
+On Tue, Jan 19, 2021 at 08:22:13PM +0000, Matthew Wilcox wrote:
+> On Thu, Dec 03, 2020 at 08:29:44AM +0200, Mike Rapoport wrote:
+> > +static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+> > +{
+> > +	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+> > +	struct inode *inode = file_inode(vmf->vma->vm_file);
+> > +	pgoff_t offset = vmf->pgoff;
+> > +	vm_fault_t ret = 0;
+> > +	unsigned long addr;
+> > +	struct page *page;
+> > +	int err;
+> > +
+> > +	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+> > +		return vmf_error(-EINVAL);
+> > +
+> > +	page = find_get_page(mapping, offset);
+> > +	if (!page) {
+> > +
+> > +		page = secretmem_alloc_page(vmf->gfp_mask);
+> > +		if (!page)
+> > +			return vmf_error(-ENOMEM);
 > 
-> Please do not go an re-invent the wheel just for ext4. If there's a
-> problem in a shared path - ext2, FUSE and XFS all use dax_iomap_rw()
-> as well, so any improvements to that path benefit all DAX users, not
-> just ext4.
-> 
-> > 2) optimizing how dax_iomap_rw works.
-> > Since dax_iomap_rw requires ext4_iomap_begin, which further involves
-> > the iomap structure and others (e.g., journaling status locks in Ext4),
-> > we think implementing the internal "read" method would be easier.
-> 
-> Maybe it is, but it's also very selfish. The DAX iomap path was
-> written to be correct for all users, not inecessarily provide
-> optimal performance. There will be lots of things that could be done
-> to optimise it, so rather than creating a special snowflake in ext4
-> that makes DAX in ext4 much harder to maintain for non-ext4 DAX
-> developers, please work to improve the common DAX IO path and so
-> provide the same benefit to all the filesystems that use it.
+> Just use VM_FAULT_OOM directly.
+ 
+Ok.
 
-Yeah, I agree. I'm against ext4 private solution for this read problem. And
-I'm also against duplicating ->read_iter functionatily in ->read handler.
-The maintenance burden of this code duplication is IMHO just too big. We
-rather need to improve the generic code so that the fast path is faster.
-And every filesystem will benefit because this is not ext4 specific
-problem.
+> > +		err = add_to_page_cache(page, mapping, offset, vmf->gfp_mask);
+> > +		if (unlikely(err))
+> > +			goto err_put_page;
+> 
+> What if the error is EEXIST because somebody else raced with you to add
+> a new page to the page cache?
 
-								Honza
+Right, for -EEXIST I need a retry here, thanks.
+
+> > +		err = set_direct_map_invalid_noflush(page, 1);
+> > +		if (err)
+> > +			goto err_del_page_cache;
+> 
+> Does this work correctly if somebody else has a reference to the page
+> in the meantime?
+
+Yes, it does. If somebody else won the race that page was dropped from the
+direct map and this call would be essentially a nop. And anyway, the very
+next patch changes the way pages are removed from the direct map ;-)
+
+> > +		addr = (unsigned long)page_address(page);
+> > +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> > +
+> > +		__SetPageUptodate(page);
+> 
+> Once you've added it to the cache, somebody else can come along and try
+> to lock it.  They will set PageWaiter.  Now you call __SetPageUptodate
+> and wipe out their PageWaiter bit.  So you won't wake them up when you
+> unlock.
+> 
+> You can call __SetPageUptodate before adding it to the page cache,
+> but once it's visible to another thread, you can't do that.
+
+Will fix.
+
+> > +		ret = VM_FAULT_LOCKED;
+> > +	}
+> > +
+> > +	vmf->page = page;
+> 
+> You're supposed to return the page locked, so use find_lock_page() instead
+> of find_get_page().
+
+Ok/
+ 
+> > +	return ret;
+> > +
+> > +err_del_page_cache:
+> > +	delete_from_page_cache(page);
+> > +err_put_page:
+> > +	put_page(page);
+> > +	return vmf_error(err);
+> > +}
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
