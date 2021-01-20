@@ -1,52 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528632FDAF6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 Jan 2021 21:37:43 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5202C2FDAFA
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 Jan 2021 21:38:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D60F5100EB335;
-	Wed, 20 Jan 2021 12:37:41 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 1D9C3100EBB71;
+	Wed, 20 Jan 2021 12:38:37 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 311E1100EB334
-	for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 12:37:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wha2ICxXtgWp8RSsmCA+ALoEMK4ppTh6Oifr+i/Aq5k=; b=POzz2vX4NL2FOL5KBbnP1afVXx
-	7DUTchSw2uhr4v29pMLrprop/X/8ZeNKhQq7aAFkKjGCAaz+4r1ZagnvTwdmKGmT9i0FzNXsqZahm
-	q9E7TLVeaTjgo4hB//QCK/z3qo/IC038TH8qoDfcTrbEX4HQwU+j3xjBQbd2dBZq1M8sL4f6Bgywx
-	uWLIgA09gDv+4QyFtj2nzdZ6SX/r+mfucsyd3HnBXPOJQTMl8QIGIc+jM4N6BLZRg11soghFJAHDI
-	MBF25b/+EoBQGmRDSRBoj1XqDhYK0b2JcmyiChLejE9AC5YkNQhOshX3nQckPpNNZoG+dbrcsXsTk
-	Y0dgmP2g==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-	id 1l2KC0-00GBPk-8o; Wed, 20 Jan 2021 20:35:07 +0000
-Date: Wed, 20 Jan 2021 20:35:04 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v15 06/11] mm: introduce memfd_secret system call to
- create "secret" memory areas
-Message-ID: <20210120203504.GM2260413@casper.infradead.org>
-References: <20210120180612.1058-1-rppt@kernel.org>
- <20210120180612.1058-7-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 9398B100EBB71
+	for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 12:38:35 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id c6so20238290ede.0
+        for <linux-nvdimm@lists.01.org>; Wed, 20 Jan 2021 12:38:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=taqAFeRUQ5Sjt3EdHzAPYZnDjLEK6RrWOo7hBOLa+Sg=;
+        b=PxT/MciD/bQOrAoYDG5MJeMscifA2EBpPuvloQWYSjqCrVUuPnBmcDKHzop6AdMa5K
+         nlAPDqqhC+S4BW9l7ZucY2SAGu7e8pl9jKiMQwCsS1RVWOuOQ6CSan2sgHp1edWibmqZ
+         ciU5hfW2EQWDbCAaRowlAqeuRlEi5NSqhC3fdlD5TdgNmEZZJallLzz78JnldgXc2tuG
+         cB6dPye5VJUs6g94AdHr+YaiQDp2ufpn0KeuWNYjxzPCyJygQbmNJe5iDbXOEkTqvyOF
+         CPxKm60QcR3iglo//vxuGYP1nStSOk664Jo4ts3xLx8uqbbCNCXlGETXixT0gLv7X6Ig
+         gNMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=taqAFeRUQ5Sjt3EdHzAPYZnDjLEK6RrWOo7hBOLa+Sg=;
+        b=gEDjn3OomEOhmxkE97YiqknYh9QIHe83ZhKN1iqiCIFlHfpc9raAA/qNPrIQ3Cjzwo
+         7rpzeMutSZtDuO93Vj3ctXWMOawrVowTniDQuw17j08MPFV0sB2PScFLNglPLKhk2aX9
+         MHUZliB+fW3BGXoYyMEmuBNyCH3zMd5nP0sJN7mxijGzWGStjgUgFWTgtDKqWe7i6uZO
+         8F44KsE282cAUp7SSShNkW5A9aU9lsR0qKSlmonBfFIxjRyk8KYNcXvrgXfo3Zgk6Ys3
+         LCv7GUpSTeH0E7i3gCgGON9fEPvefwBvHk4vh7MUQ4xScPjno/dIXlQeM7lhuvKQl1tR
+         IzQQ==
+X-Gm-Message-State: AOAM532hCTU9RMRuidv/l0VLPTeufF8Gx59Fz0oZuEhcgrScBH/UJovi
+	zw9KCYtKEjl6AnW6WcVpDDMjpSZC4gL84r85zr5MBg==
+X-Google-Smtp-Source: ABdhPJyNR+rXufJ4s/zf89FiZMZJimyeH3wrtWsvAnZeKKLnx5i7oNVz0lTe4jR6VcPeG3cgx1wz9KgZyqc+4dSBP98=
+X-Received: by 2002:a05:6402:160f:: with SMTP id f15mr8613540edv.348.1611175114060;
+ Wed, 20 Jan 2021 12:38:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210120180612.1058-7-rppt@kernel.org>
-Message-ID-Hash: SIUBC3IJA2LT7U4BQL2B66ZP37Y54DP6
-X-Message-ID-Hash: SIUBC3IJA2LT7U4BQL2B66ZP37Y54DP6
-X-MailFrom: willy@infradead.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon
-  <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+References: <161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <161117153776.2853729.6944617921517514510.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <809823fb-6eb6-8ce9-c49a-d85b03897fc7@deltatee.com>
+In-Reply-To: <809823fb-6eb6-8ce9-c49a-d85b03897fc7@deltatee.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 20 Jan 2021 12:38:27 -0800
+Message-ID: <CAPcyv4j8nfFT5=0T5U7rpNnD29XpTaAmNU5fkaA1--CrmWfRUw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] cdev: Finish the cdev api with queued mode support
+To: Logan Gunthorpe <logang@deltatee.com>
+Message-ID-Hash: AVTRWWB2PX37WH2KCUCUYVT2ENYFLUXZ
+X-Message-ID-Hash: AVTRWWB2PX37WH2KCUCUYVT2ENYFLUXZ
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Greg KH <gregkh@linuxfoundation.org>, Hans Verkuil <hans.verkuil@cisco.com>, Alexandre Belloni <alexandre.belloni@free-electrons.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SIUBC3IJA2LT7U4BQL2B66ZP37Y54DP6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AVTRWWB2PX37WH2KCUCUYVT2ENYFLUXZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,47 +69,51 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 20, 2021 at 08:06:07PM +0200, Mike Rapoport wrote:
-> +static struct page *secretmem_alloc_page(gfp_t gfp)
-> +{
-> +	/*
-> +	 * FIXME: use a cache of large pages to reduce the direct map
-> +	 * fragmentation
-> +	 */
-> +	return alloc_page(gfp);
-> +}
-> +
-> +static vm_fault_t secretmem_fault(struct vm_fault *vmf)
-> +{
-> +	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
-> +	struct inode *inode = file_inode(vmf->vma->vm_file);
-> +	pgoff_t offset = vmf->pgoff;
-> +	unsigned long addr;
-> +	struct page *page;
-> +	int err;
-> +
-> +	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
-> +		return vmf_error(-EINVAL);
-> +
-> +retry:
-> +	page = find_lock_page(mapping, offset);
-> +	if (!page) {
-> +		page = secretmem_alloc_page(vmf->gfp_mask);
-> +		if (!page)
-> +			return VM_FAULT_OOM;
-> +
-> +		err = set_direct_map_invalid_noflush(page, 1);
-> +		if (err)
-> +			return vmf_error(err);
+On Wed, Jan 20, 2021 at 11:51 AM Logan Gunthorpe <logang@deltatee.com> wrote:
+>
+>
+>
+>
+> On 2021-01-20 12:38 p.m., Dan Williams wrote:
+> > ...common reference count handling scenarios were addressed, but the
+> > shutdown-synchronization problem was only mentioned as something driver
+> > developers need to be aware in the following note:
+> >
+> >     NOTE: This guarantees that associated sysfs callbacks are not running
+> >     or runnable, however any cdevs already open will remain and their fops
+> >     will still be callable even after this function returns.
+> >
+> > Remove that responsibility from driver developers with the concept of a
+> > 'queued' mode for cdevs.
+>
+> I find the queued name confusing. What's being queued?
 
-Haven't we leaked the page at this point?
+Yeah, as I mentioned to Christoph, a bit too much inspiration from
+q_usage_count. Perhaps "managed" makes more sense.
 
-> +		__SetPageUptodate(page);
-> +		err = add_to_page_cache(page, mapping, offset, vmf->gfp_mask);
+>
+> > +static const struct file_operations cdev_queued_fops = {
+> > +     .owner = THIS_MODULE,
+> > +     .open = cdev_queued_open,
+> > +     .unlocked_ioctl = cdev_queued_ioctl,
+> > +     .compat_ioctl = compat_ptr_ioctl,
+> > +     .llseek = noop_llseek,
+> > +};
+>
+> Why do we only protect these fops? I'd find it a bit confusing to have
+> ioctl protected from use after del, but not write/read/etc.
 
-At this point, doesn't the page contain data from the last person to use
-the page?  ie we've leaked data to this process?  I don't see anywhere
-that we write data to the page.
+More ops can certainly be added over time, I didn't want to go do the
+work to wrap all file_operations before getting consensus on the idea
+that the cdev core should provide managed ops at all.
+
+The other question I'm posing with cdev_operations is whether the cdev
+core should take away some of the flexibility from end drivers in
+favor of adding more type safety. For example, mandate that all ioctls
+take a pointer argument not an integer argument? The question of
+whether wrapping cdev file_operations around a new cdev_operations is
+a good idea can be deferred after finalizing a mechanism for managed
+cdev file_operations.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
