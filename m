@@ -2,65 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBD82FF144
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Jan 2021 18:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBC82FF264
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Jan 2021 18:50:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BE4E6100EB820;
-	Thu, 21 Jan 2021 09:03:05 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+	by ml01.01.org (Postfix) with ESMTP id 4C93A100EB820;
+	Thu, 21 Jan 2021 09:50:20 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D768B100ED4AC
-	for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 09:03:01 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id h16so3333635edt.7
-        for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 09:03:01 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id DECAE100EBB6C
+	for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 09:50:16 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id ox12so3886696ejb.2
+        for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 09:50:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=w+TZZsn+eqR6dTUulMdxx7PCbvr89MO/4XGUQAazVhU=;
-        b=qgklzAjQOOZAhjLACjNI3HGCva6Z/AY6d3/GYc5AKCflwmduNLQhSv2QoGHQJoNgnl
-         K8u6tzI7b8rumOkz5fPTSocWVkUsUBnPZi7aW1L4sfXlZhGcpch5Fwo3UknfdKxtMJkR
-         M+06MHL7ItA+S4Y+iigUH4JZ8V7YR0J0Po0vEsBFysyNKISgY+HGX+9ciC1mt6Z7iUNs
-         mSLj+D0iDiPcPl633WbP75IdxPQD7UDulesSYJ05L3JXRotfL3y732JvVIYenpGnH7jB
-         BhhQzOoONYtyA4jXFAzkchZFRdO4Mp89gj/5nQAWYZGybz1Wju3o43o/gdCNhSToy2NO
-         2AaQ==
+        bh=OqDGr5OXXLDXoZ+kvErdRqn2LWaoGkSZKNVGtOHo0BI=;
+        b=eVFeNLK0LrN/WxB0D4SEhXIkmQeMvag+qoGefW6ONj0khNhIHCAYmWw9sI6fc2p/Tf
+         iNvWC56d2SekCqH8W6lVW6vuLj7fDrh9atefJI9fHFKN2HbcrU+BybCJPwFsyDFpRFNK
+         aCVFjPZzn5Am8jeJnz5DbslQlxvVq2s9ENXpN8U2sPN5shejLfm8wz/+ocREFbtvzFy1
+         c+nYHU62Xh+DGpT9kdA3H7YH5d1SS4wIR6W3QDVZ9tK9wT6uvi7iMi4JW1x2KQTscaAC
+         6hIH7fPbeJwm/QeZw+nqKA6JnkG1MevMAYjn83JoB8kq1Y5klO9TM5ajhVa7bqHtLcO1
+         yNLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=w+TZZsn+eqR6dTUulMdxx7PCbvr89MO/4XGUQAazVhU=;
-        b=ZLxO07+4FtUPtfkMifGThYQjUhxhgdlN5/wI+kW4cFIUqzVuNKbwJACqrj2H1wDQ3j
-         +x5N9YRB7nWLRngIJEVb7BdUaVcHxPVl4oRrN4YCDDQGPSSz0zF+yj7iJCWnuRkScqRP
-         1RpqUlOGUymyXCXb6qJNXXNt8eDpAVydDgQocfY8+iQhB2W3r0wNT7VLAY2GivwMnThf
-         XlctClEkzVB5aO/k1QOHSjYZ8c7lnXZZK1lNLx2bqYaKzSlhfSI64cTXCiW+P6T5JpI9
-         ICxB5yBWTMPbLMtkbFrVCOKzagE3IPqI+k941S1QiHE+0LZ9iFiIT69cOnqIMVp5lYjN
-         FjdA==
-X-Gm-Message-State: AOAM531bEmVG5ePKfcFiwYMpJwTo/fGoAF3jyK2BZpCTpkbFQK4VOg3v
-	8F4Iy1pVkv/m9wZ+330FG4lu580Snk5B5+roL+1N0w==
-X-Google-Smtp-Source: ABdhPJzJLLvdtRLueXSdnMYSOmghDAPfUSB4ghbCw5HZxdtuI7Z5ogkE5CUxZQGuTLW2XdyrO5QxRQGuAFGehCsiW/k=
-X-Received: by 2002:aa7:d610:: with SMTP id c16mr72438edr.354.1611248579079;
- Thu, 21 Jan 2021 09:02:59 -0800 (PST)
+        bh=OqDGr5OXXLDXoZ+kvErdRqn2LWaoGkSZKNVGtOHo0BI=;
+        b=B9bi1OI5amscrKCdz9FNujLTfsyBNPIg1sUbUWTCr+FGq8/MWzmuFPx2CADkGfyNYY
+         S3GLtSBO2U6PxsiRosFl9LtTc+SHmL7QmwXTjlis31HfPzBedrd943aOIemhbU5pFdpk
+         eX2U6LxJnQQu/izOMqGQxsUCOrodZi7Ieo8voTZav/PnSjiKOHo0xupxfa97oWmKccBh
+         46GZbAyOC6GlG4munA6sAiMZwWmDWUJU+RszqwrW/SkTUyGsvR82GP33e1HiVP+SaAkg
+         xilqSPKlv0p1A8fVrelA72yWszXa1L2I6/RN7N+5fUAhBC5QxnY9KibFsehndy54NaqN
+         kdMw==
+X-Gm-Message-State: AOAM5310JUninuKJJwvCejVoFJNtOK4CuKCZdNmArxCAz9ZjomD1r1yh
+	eVsFLHQJ4NRaxpD8qHW6LZf/HPiFhQ9RoaS4otIqZA==
+X-Google-Smtp-Source: ABdhPJxojGLRdzZFKIOXzAri6ROiq62XZBU5dIKiIeyLRrawBjmoEiHQe3KMqw+7otHRhV8gUwsjuOh2i5mxmcctbnU=
+X-Received: by 2002:a17:906:ce49:: with SMTP id se9mr413181ejb.341.1611251415063;
+ Thu, 21 Jan 2021 09:50:15 -0800 (PST)
 MIME-Version: 1.0
 References: <161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com>
- <161117154856.2853729.1012816981381380656.stgit@dwillia2-desk3.amr.corp.intel.com>
- <YAk4MMMmmbKe6XEQ@kroah.com>
-In-Reply-To: <YAk4MMMmmbKe6XEQ@kroah.com>
+ <161117153776.2853729.6944617921517514510.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <YAk3lVeFqnv5vzA2@kroah.com>
+In-Reply-To: <YAk3lVeFqnv5vzA2@kroah.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 21 Jan 2021 09:02:53 -0800
-Message-ID: <CAPcyv4h74NjqcuUjv4zFKHAxio_bV0bngLoxP=ACw=JvMfq-UA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] libnvdimm/ioctl: Switch to cdev_register_queued()
+Date: Thu, 21 Jan 2021 09:50:09 -0800
+Message-ID: <CAPcyv4hEpdh_aGcs_73w5KmYWdvR29KB2M2-NNXsaXwxf35Hwg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] cdev: Finish the cdev api with queued mode support
 To: Greg KH <gregkh@linuxfoundation.org>
-Message-ID-Hash: 7E4UY2RVUH7W57IYTFSDUU7NEZIYK7MJ
-X-Message-ID-Hash: 7E4UY2RVUH7W57IYTFSDUU7NEZIYK7MJ
+Message-ID-Hash: HWZKEXTYSKEVNFB2PCQDHKRID6UAWFHD
+X-Message-ID-Hash: HWZKEXTYSKEVNFB2PCQDHKRID6UAWFHD
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Logan Gunthorpe <logang@deltatee.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Logan Gunthorpe <logang@deltatee.com>, Hans Verkuil <hans.verkuil@cisco.com>, Alexandre Belloni <alexandre.belloni@free-electrons.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7E4UY2RVUH7W57IYTFSDUU7NEZIYK7MJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HWZKEXTYSKEVNFB2PCQDHKRID6UAWFHD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,30 +69,30 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 21, 2021 at 12:16 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+On Thu, Jan 21, 2021 at 12:13 AM Greg KH <gregkh@linuxfoundation.org> wrote:
 >
-> On Wed, Jan 20, 2021 at 11:39:08AM -0800, Dan Williams wrote:
-> > The ioctl implementation in libnvdimm is a case study in what can be
-> > cleaned up when the cdev core handles synchronizing in-flight ioctls
-> > with device removal. Switch to cdev_register_queued() which allows for
-> > the ugly context lookup and activity tracking implementation to be
-> > dropped, among other cleanups.
+> On Wed, Jan 20, 2021 at 11:38:57AM -0800, Dan Williams wrote:
+> > -void cdev_del(struct cdev *p)
+> > +void cdev_del(struct cdev *cdev)
+> >  {
+> > -     cdev_unmap(p->dev, p->count);
+> > -     kobject_put(&p->kobj);
+> > +     cdev_unmap(cdev->dev, cdev->count);
+> > +     kobject_put(&cdev->kobj);
 >
-> I'm confused, the cdev handles the filesystem access from /dev/ which
-> handles the ioctl.  Any use of a cdev with relationship to a struct
-> device that might go away is independent, so we really should not tie
-> these together in any way.
+> After Christoph's patch series, the kobject in struct cdev does nothing,
+> so I will be removing it.  So I don't think this patch set is going to
+> do what you want :(
 
-Oh, no, there's no object lifetime ties here, that problem was already
-solved with Logan's addition of cdev_device_add(). Instead, this about
-file_operations liveness. Look at procfs and debugfs that Christoph
-pointed out have open coded the same facility. When the driver is
-unbound ongoing file operations should be flushed and blocked
-currently the cdev api is forcing every driver to open code this
-themselves.
-
-This seems a pattern that is asking to be unified as a general
-"managed fops" concept.
+The proposal in this series has nothing to do with kobject lifetime.
+Please take another look at the file_operations shutdown coordination
+problem and the fact that it's not just cdev that has a use case to
+manage file_operations this way. I believe Christoph's only objection,
+correct me if I'm wrong, is that this proposal invents a new third way
+to do this relative to procfs and debugfs. Perhaps there's a way to
+generalize this for all three, and I'm going to put some thought
+there, but at this point I think I'm failing to describe the problem
+clearly.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
