@@ -2,65 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBC82FF264
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Jan 2021 18:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3AD2FF361
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Jan 2021 19:43:50 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4C93A100EB820;
-	Thu, 21 Jan 2021 09:50:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 65212100F2242;
+	Thu, 21 Jan 2021 10:43:49 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DECAE100EBB6C
-	for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 09:50:16 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id ox12so3886696ejb.2
-        for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 09:50:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=OqDGr5OXXLDXoZ+kvErdRqn2LWaoGkSZKNVGtOHo0BI=;
-        b=eVFeNLK0LrN/WxB0D4SEhXIkmQeMvag+qoGefW6ONj0khNhIHCAYmWw9sI6fc2p/Tf
-         iNvWC56d2SekCqH8W6lVW6vuLj7fDrh9atefJI9fHFKN2HbcrU+BybCJPwFsyDFpRFNK
-         aCVFjPZzn5Am8jeJnz5DbslQlxvVq2s9ENXpN8U2sPN5shejLfm8wz/+ocREFbtvzFy1
-         c+nYHU62Xh+DGpT9kdA3H7YH5d1SS4wIR6W3QDVZ9tK9wT6uvi7iMi4JW1x2KQTscaAC
-         6hIH7fPbeJwm/QeZw+nqKA6JnkG1MevMAYjn83JoB8kq1Y5klO9TM5ajhVa7bqHtLcO1
-         yNLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=OqDGr5OXXLDXoZ+kvErdRqn2LWaoGkSZKNVGtOHo0BI=;
-        b=B9bi1OI5amscrKCdz9FNujLTfsyBNPIg1sUbUWTCr+FGq8/MWzmuFPx2CADkGfyNYY
-         S3GLtSBO2U6PxsiRosFl9LtTc+SHmL7QmwXTjlis31HfPzBedrd943aOIemhbU5pFdpk
-         eX2U6LxJnQQu/izOMqGQxsUCOrodZi7Ieo8voTZav/PnSjiKOHo0xupxfa97oWmKccBh
-         46GZbAyOC6GlG4munA6sAiMZwWmDWUJU+RszqwrW/SkTUyGsvR82GP33e1HiVP+SaAkg
-         xilqSPKlv0p1A8fVrelA72yWszXa1L2I6/RN7N+5fUAhBC5QxnY9KibFsehndy54NaqN
-         kdMw==
-X-Gm-Message-State: AOAM5310JUninuKJJwvCejVoFJNtOK4CuKCZdNmArxCAz9ZjomD1r1yh
-	eVsFLHQJ4NRaxpD8qHW6LZf/HPiFhQ9RoaS4otIqZA==
-X-Google-Smtp-Source: ABdhPJxojGLRdzZFKIOXzAri6ROiq62XZBU5dIKiIeyLRrawBjmoEiHQe3KMqw+7otHRhV8gUwsjuOh2i5mxmcctbnU=
-X-Received: by 2002:a17:906:ce49:: with SMTP id se9mr413181ejb.341.1611251415063;
- Thu, 21 Jan 2021 09:50:15 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 0D6E8100F2240
+	for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 10:43:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dXcuDwvoqNoP4NL97KSkxgI2xxt79APfMRyPL3XfbG4=; b=s8qAsrChiHJHM3e3dm+Vil913r
+	dsMYbj166wZ3MpqLY+lsTacSlh2CTq9KkKqwFaHcZpC17BHXPuzd62jFoERqLi6ERZkT0xN77hXjK
+	3C2UoQG5n/LvSXDuQRPTizobQpPuwbY+hHicZiAZ9nMcpLqRMmFUPe/JBO2P3ixS5RbGroU3k5JU3
+	/33PnsOo/KwcCYoP0jDuQJiK53heCH54L+cJZE2pkPGAbgyKKJjUb6dcZJWaLxZhfsGWUmeuXt1lp
+	KN6km+XZtR3BeZOxA2ApjF+YIdqnMOnA6Gnr05Au2mmAkwGGo8/zKvo1Qpbq7JRuqYquNWJr3EBYv
+	LPrw3nBg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1l2eve-00HOCt-9F; Thu, 21 Jan 2021 18:43:35 +0000
+Date: Thu, 21 Jan 2021 18:43:34 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/4] Remove nrexceptional tracking
+Message-ID: <20210121184334.GA4127393@casper.infradead.org>
+References: <20201026151849.24232-1-willy@infradead.org>
 MIME-Version: 1.0
-References: <161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com>
- <161117153776.2853729.6944617921517514510.stgit@dwillia2-desk3.amr.corp.intel.com>
- <YAk3lVeFqnv5vzA2@kroah.com>
-In-Reply-To: <YAk3lVeFqnv5vzA2@kroah.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 21 Jan 2021 09:50:09 -0800
-Message-ID: <CAPcyv4hEpdh_aGcs_73w5KmYWdvR29KB2M2-NNXsaXwxf35Hwg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] cdev: Finish the cdev api with queued mode support
-To: Greg KH <gregkh@linuxfoundation.org>
-Message-ID-Hash: HWZKEXTYSKEVNFB2PCQDHKRID6UAWFHD
-X-Message-ID-Hash: HWZKEXTYSKEVNFB2PCQDHKRID6UAWFHD
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Logan Gunthorpe <logang@deltatee.com>, Hans Verkuil <hans.verkuil@cisco.com>, Alexandre Belloni <alexandre.belloni@free-electrons.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Disposition: inline
+In-Reply-To: <20201026151849.24232-1-willy@infradead.org>
+Message-ID-Hash: VYOBJS5EAIJP2W3P42NYY6ILDOIKBVNL
+X-Message-ID-Hash: VYOBJS5EAIJP2W3P42NYY6ILDOIKBVNL
+X-MailFrom: willy@infradead.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HWZKEXTYSKEVNFB2PCQDHKRID6UAWFHD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VYOBJS5EAIJP2W3P42NYY6ILDOIKBVNL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,30 +52,43 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 21, 2021 at 12:13 AM Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Jan 20, 2021 at 11:38:57AM -0800, Dan Williams wrote:
-> > -void cdev_del(struct cdev *p)
-> > +void cdev_del(struct cdev *cdev)
-> >  {
-> > -     cdev_unmap(p->dev, p->count);
-> > -     kobject_put(&p->kobj);
-> > +     cdev_unmap(cdev->dev, cdev->count);
-> > +     kobject_put(&cdev->kobj);
->
-> After Christoph's patch series, the kobject in struct cdev does nothing,
-> so I will be removing it.  So I don't think this patch set is going to
-> do what you want :(
 
-The proposal in this series has nothing to do with kobject lifetime.
-Please take another look at the file_operations shutdown coordination
-problem and the fact that it's not just cdev that has a use case to
-manage file_operations this way. I believe Christoph's only objection,
-correct me if I'm wrong, is that this proposal invents a new third way
-to do this relative to procfs and debugfs. Perhaps there's a way to
-generalize this for all three, and I'm going to put some thought
-there, but at this point I think I'm failing to describe the problem
-clearly.
+Ping?  These patches still apply to next-20210121.
+
+On Mon, Oct 26, 2020 at 03:18:45PM +0000, Matthew Wilcox (Oracle) wrote:
+> We actually use nrexceptional for very little these days.  It's a minor
+> pain to keep in sync with nrpages, but the pain becomes much bigger
+> with the THP patches because we don't know how many indices a shadow
+> entry occupies.  It's easier to just remove it than keep it accurate.
+> 
+> Also, we save 8 bytes per inode which is nothing to sneeze at; on my
+> laptop, it would improve shmem_inode_cache from 22 to 23 objects per
+> 16kB, and inode_cache from 26 to 27 objects.  Combined, that saves
+> a megabyte of memory from a combined usage of 25MB for both caches.
+> Unfortunately, ext4 doesn't cross a magic boundary, so it doesn't save
+> any memory for ext4.
+> 
+> Matthew Wilcox (Oracle) (4):
+>   mm: Introduce and use mapping_empty
+>   mm: Stop accounting shadow entries
+>   dax: Account DAX entries as nrpages
+>   mm: Remove nrexceptional from inode
+> 
+>  fs/block_dev.c          |  2 +-
+>  fs/dax.c                |  8 ++++----
+>  fs/gfs2/glock.c         |  3 +--
+>  fs/inode.c              |  2 +-
+>  include/linux/fs.h      |  2 --
+>  include/linux/pagemap.h |  5 +++++
+>  mm/filemap.c            | 16 ----------------
+>  mm/swap_state.c         |  4 ----
+>  mm/truncate.c           | 19 +++----------------
+>  mm/workingset.c         |  1 -
+>  10 files changed, 15 insertions(+), 47 deletions(-)
+> 
+> -- 
+> 2.28.0
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
