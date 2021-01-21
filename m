@@ -2,70 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B482FF641
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Jan 2021 21:47:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 823972FF6FF
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Jan 2021 22:18:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2BBF4100F2255;
-	Thu, 21 Jan 2021 12:47:15 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::72a; helo=mail-qk1-x72a.google.com; envelope-from=hannes@cmpxchg.org; receiver=<UNKNOWN> 
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id D336A100F225A;
+	Thu, 21 Jan 2021 13:18:28 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 04928100F2254
-	for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 12:47:13 -0800 (PST)
-Received: by mail-qk1-x72a.google.com with SMTP id d85so3090019qkg.5
-        for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 12:47:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=/tjtwUwUvkuiNzh76iFV5D8ld1zMDjPWbiessv/dJqU=;
-        b=eUKNXJ8zM0JVfJmpFlkOcDWi/HpkA4Uw6XaHP1IH6XXbjYEGcAVUIzwoxYg8m+D38E
-         ss5ZPoXyoi9Xwb9ajsHZfgzJDT/cpYDGYmst+Wl313IwLh3AuzCyMZZ6r02R2f5DXBJH
-         10sqQ/VivdnaE4iRz4JkrV+o9J647jXPijoHbhwInhj7QHvPMu88PVFFA4W2CXTiXdnA
-         eZ23W2p996RCtZE76TjeHcgXf8I3SNkyj6M2Mrs2dO4NmIpwccXKeXM6GO9QkW9ajc4c
-         95z97HPxvBxlqlf/UkiJW153pa7YA5bV7+Loih+MO8mnKrfQO4m/r7hbHCDBfWDe6Kku
-         ym8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/tjtwUwUvkuiNzh76iFV5D8ld1zMDjPWbiessv/dJqU=;
-        b=co9EvPqxeCad1cjwK2xJtUOuHwjCdbrfm9b1q5vZyK1z/Q9XZrMLlib94e6hS5k8Ac
-         E0En17smY1ReitBpJ8Bm/uJW6AXcCSjUgq22FSdXYiwJ0pjM6WRwJ+X0QFn2a0MLWYUe
-         9fQRfjL/U/4C2KQ+SI8mY4T/7FvlmBfmDGp7i3LLRQYZ/jUk8ekDYjGSO/0pQsDtYOkZ
-         nZMNP9+QRcOdv10LbKlPokXioUWOwC6jFmz5nJ7cQo1y5ba0T5Ps6d8sbNWS4aa+EWkC
-         jsfercTt4nUhJpZr97JjqriNLFRKLVArcwLDY0AIJbEG02Cy09jVuKpQAfKtb6geCOpx
-         1gpg==
-X-Gm-Message-State: AOAM532tdP/nqBz48Df/v4ubqwbucBpygjVYk8tzTTShem3sNIlzMzPm
-	PvkJXlzRHgJY0Bo3YtBfMpWkDg==
-X-Google-Smtp-Source: ABdhPJymQ68qH/Kk5Gv0vW1cNoekc6T0599882PqygAgCoQEki5Ud+OOT6jsiKXim3g3Bq/F5NrofQ==
-X-Received: by 2002:a05:620a:15d0:: with SMTP id o16mr1792985qkm.222.1611262032268;
-        Thu, 21 Jan 2021 12:47:12 -0800 (PST)
-Received: from localhost ([2620:10d:c091:480::1:b808])
-        by smtp.gmail.com with ESMTPSA id f26sm4184194qtp.97.2021.01.21.12.47.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jan 2021 12:47:11 -0800 (PST)
-Date: Thu, 21 Jan 2021 15:47:10 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH v2 4/4] mm: Remove nrexceptional from inode
-Message-ID: <YAnoTo1BNADBjL9u@cmpxchg.org>
+	by ml01.01.org (Postfix) with ESMTPS id 035C9100F224B
+	for <linux-nvdimm@lists.01.org>; Thu, 21 Jan 2021 13:18:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Z9XQotONVTpasWnTASx1CpS6wHolZ/YHd3IpBnAnbew=; b=QAjV0AXyq8nOc6B1325pwZpqf7
+	aNR1ahgiWmXt2nWbG7fu2CiXy2UgQkm0i3zz6Xh2Mo6mXVOvCB/rdtMYOL5MfcqyoXOZVqyisJ/Tn
+	Cp4/keveTLDcEVFEzYztIPexMSS9h4Klc/IrcA7mEjMwcEPlZz6TrH+26g/NOEeA/j1dMWxlpL89b
+	hQlv0GuOQ+5Ug1JT60BIIRyBXmC2SrhMgdmnYu6XYvtN0oIJybzVgZ2MVLoFZOhG5vKHdtu9686dv
+	QKON24iMZdcZkZIGlGmBupC0tYz0cjbpr8Fj/Mr+5nMMVdy6pltZsaySBNDDmDyoCn5IOJRWJcf/K
+	cPsdB+WA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1l2hLJ-00HXfF-Lc; Thu, 21 Jan 2021 21:18:15 +0000
+Date: Thu, 21 Jan 2021 21:18:13 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Subject: Re: [PATCH v2 1/4] mm: Introduce and use mapping_empty
+Message-ID: <20210121211813.GD4127393@casper.infradead.org>
 References: <20201026151849.24232-1-willy@infradead.org>
- <20201026151849.24232-5-willy@infradead.org>
+ <20201026151849.24232-2-willy@infradead.org>
+ <YAnnN1pnZAPse5X+@cmpxchg.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201026151849.24232-5-willy@infradead.org>
-Message-ID-Hash: YBSCL7SSPSVDRIMCMHBTDFOLLW3JJLIA
-X-Message-ID-Hash: YBSCL7SSPSVDRIMCMHBTDFOLLW3JJLIA
-X-MailFrom: hannes@cmpxchg.org
+In-Reply-To: <YAnnN1pnZAPse5X+@cmpxchg.org>
+Message-ID-Hash: HHQ5IB3EOMP666B42H2J6VHCT2A5E7B5
+X-Message-ID-Hash: HHQ5IB3EOMP666B42H2J6VHCT2A5E7B5
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YBSCL7SSPSVDRIMCMHBTDFOLLW3JJLIA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HHQ5IB3EOMP666B42H2J6VHCT2A5E7B5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,14 +54,22 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 26, 2020 at 03:18:49PM +0000, Matthew Wilcox (Oracle) wrote:
-> We no longer track anything in nrexceptional, so remove it, saving 8
-> bytes per inode.
+On Thu, Jan 21, 2021 at 03:42:31PM -0500, Johannes Weiner wrote:
+> On Mon, Oct 26, 2020 at 03:18:46PM +0000, Matthew Wilcox (Oracle) wrote:
+> > Instead of checking the two counters (nrpages and nrexceptional), we
+> > can just check whether i_pages is empty.
+> > 
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Tested-by: Vishal Verma <vishal.l.verma@intel.com>
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Tested-by: Vishal Verma <vishal.l.verma@intel.com>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> 
+> Heh, I was looking for the fs/inode.c hunk here, because I remember
+> those BUG_ONs in the inode free path. Found it in the last patch - I
+> guess they escaped grep but the compiler let you know? :-)
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Heh, I forget now!  I think I did it that way on purpose, but now I
+forget what that purpose was!
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
