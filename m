@@ -1,101 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB86F300501
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Jan 2021 15:13:33 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D171300A9F
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Jan 2021 19:07:27 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5202C100ED4A9;
-	Fri, 22 Jan 2021 06:13:32 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CE482100ED4A6
-	for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 06:13:29 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D660823A77;
-	Fri, 22 Jan 2021 14:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1611324809;
-	bh=sssGw7VAmhQ9zYNCAgQ46mvt8+d/n+n3c7UnO0Lb+nc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWnxMI1Kuxyn8sFbpngjfmh0DB+XtN99+rH1b3nnBnE44VGaf2zSyOaS5bOsKtkii
-	 ZlE3MK143UltulaOQlAr79ieOWmPf1l9vxz49y7gCx7th9bY/USofc74FuKYYY0lRl
-	 capayd4uTIkAg64yCdDA6rc2zoGPALUQAxrVLkSs=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.14 15/50] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
-Date: Fri, 22 Jan 2021 15:11:56 +0100
-Message-Id: <20210122135735.820675358@linuxfoundation.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210122135735.176469491@linuxfoundation.org>
-References: <20210122135735.176469491@linuxfoundation.org>
-User-Agent: quilt/0.66
+	by ml01.01.org (Postfix) with ESMTP id 5EF42100EAB42;
+	Fri, 22 Jan 2021 10:07:25 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.67; helo=qctj.com; envelope-from=myek@qctj.com; receiver=<UNKNOWN> 
+Received: from qctj.com (unknown [223.73.35.67])
+	by ml01.01.org (Postfix) with ESMTP id 577CC100EAB41
+	for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 10:07:20 -0800 (PST)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 23 Jan 2021 02:07:31 +0800
+Message-ID: 9e2d5740-5420-40ec-8aa9-5131b1a42de5
 MIME-Version: 1.0
-Message-ID-Hash: QEI26D5ONB7ZJEBL7OMOSTG5NTAFLN3D
-X-Message-ID-Hash: QEI26D5ONB7ZJEBL7OMOSTG5NTAFLN3D
-X-MailFrom: gregkh@linuxfoundation.org
+Sender: =?utf-8?Q?=E5=A4=A7=E9=99=86=E5=87=BA=E5=8F=A3=E9=A6?=
+ =?utf-8?Q?=99=E6=B8=AF=E4=B8=93=E7=BA=BF=EF=BC=8C=E5=8F=AF=E6=8E=A5=E5?=
+ =?utf-8?Q?=8C=96=E5=A6=86=E5=93=81=EF=BC=8C=E5=8F=A3=E7=BD=A9=EF=BC=8C?=
+ =?utf-8?Q?=E6=B4=97=E5=8F=91=E6=B0=B4=EF=BC=8C=E6=B4=97=E6=89=8B=E6=B6?=
+ =?utf-8?Q?=B2=E7=AD=89?=
+ <myek@qctj.com>
+From: =?utf-8?Q?=E5=A4=A7=E9=99=86=E5=87=BA=E5=8F=A3=E9=A6=99?=
+ =?utf-8?Q?=E6=B8=AF=E4=B8=93=E7=BA=BF=EF=BC=8C=E5=8F=AF=E6=8E=A5=E5=8C?=
+ =?utf-8?Q?=96=E5=A6=86=E5=93=81=EF=BC=8C=E5=8F=A3=E7=BD=A9=EF=BC=8C=E6?=
+ =?utf-8?Q?=B4=97=E5=8F=91=E6=B0=B4=EF=BC=8C=E6=B4=97=E6=89=8B=E6=B6=B2?=
+ =?utf-8?Q?=E7=AD=89?=
+ <zueuh@qctj.com>
+To: linux-nvdimm@lists.01.org
+Date: 23 Jan 2021 02:07:31 +0800
+Subject: =?utf-8?B?5aSn6ZmG5Ye65Y+j6aaZ5riv5LiT57q/77yM5Y+v5o6l5YyW?=
+ =?utf-8?B?5aaG5ZOB77yM5Y+j572p77yM5rSX5Y+R5rC077yM5rSX5omL5ray562J?=
+ =?utf-8?B??=
+Message-ID-Hash: R2M6SFKHGJDGGPEH6MT7HUJKIOKFFJLL
+X-Message-ID-Hash: R2M6SFKHGJDGGPEH6MT7HUJKIOKFFJLL
+X-MailFrom: myek@qctj.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, kernel test robot <lkp@intel.com>, Randy Dunlap <rdunlap@infradead.org>, Vineet Gupta <vgupta@synopsys.com>, linux-snps-arc@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, Sasha Levin <sashal@kernel.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QEI26D5ONB7ZJEBL7OMOSTG5NTAFLN3D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R2M6SFKHGJDGGPEH6MT7HUJKIOKFFJLL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-From: Randy Dunlap <rdunlap@infradead.org>
-
-[ Upstream commit 8a48c0a3360bf2bf4f40c980d0ec216e770e58ee ]
-
-fs/dax.c uses copy_user_page() but ARC does not provide that interface,
-resulting in a build error.
-
-Provide copy_user_page() in <asm/page.h>.
-
-../fs/dax.c: In function 'copy_cow_page_dax':
-../fs/dax.c:702:2: error: implicit declaration of function 'copy_user_page'; did you mean 'copy_to_user_page'? [-Werror=implicit-function-declaration]
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Vineet Gupta <vgupta@synopsys.com>
-Cc: linux-snps-arc@lists.infradead.org
-Cc: Dan Williams <dan.j.williams@intel.com>
-#Acked-by: Vineet Gupta <vgupta@synopsys.com> # v1
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-nvdimm@lists.01.org
-#Reviewed-by: Ira Weiny <ira.weiny@intel.com> # v2
-Signed-off-by: Vineet Gupta <vgupta@synopsys.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arc/include/asm/page.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-index 09ddddf71cc50..a70fef79c4055 100644
---- a/arch/arc/include/asm/page.h
-+++ b/arch/arc/include/asm/page.h
-@@ -13,6 +13,7 @@
- #ifndef __ASSEMBLY__
- 
- #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
-+#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
- #define copy_page(to, from)		memcpy((to), (from), PAGE_SIZE)
- 
- struct vm_area_struct;
--- 
-2.27.0
-
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQombmJzcDvlpKfpmYblh7rlj6PpppnmuK/kuJPnur/vvIzlj6/mjqXljJblpoblk4Hv
+vIzlj6PnvanvvIzmtJflj5HmsLTvvIzmtJfmiYvmtrLnrYkNCiZuYnNwO+KWoCZuYnNwOyDlpKfp
+mYbkuIrpl6jmj5DotKfvvIzov5DovpPmiqXlhbPkuIDmnaHpvpnmnI3liqENCiZuYnNwO+KWoCZu
+YnNwOyDpppnmuK/mnInljbjotKflubPlj7DvvIzlj6/mj5Dkvpvoo4XljbjotKfvvIzmi7znrrHv
+vIzku5PlgqjmnI3liqENCiZuYnNwO+KWoCZuYnNwOyDkuZ3pvpkv5paw55WML+a4r+Wym+a0vumA
+geWFrOWPuOS7peWPiuS7k+W6kw0KJm5ic3A74pagICZuYnNwO+mmmea4r+acuuWcui/ku5PnoIHl
+pLTku5PlhaXku5PmnI3liqENCiZuYnNwOw0K6IGU57O75oiR5LusDQrogZTns7vkurrvvJpKYWNr
+DQpNb2JpbGUmbmJzcDvvvJorODYtMTM2NDI5ODA5MzUgKOW+ruS/oeWQjOWPt++8iQ0KRS1tYWls
+IDombmJzcDtoazEzNjQyOTgwOTM1QGhvdG1haWwuY29tDQombmJzcDsKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlz
+dCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1h
+aWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
