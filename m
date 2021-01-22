@@ -2,38 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9D23004E3
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Jan 2021 15:09:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7C23004EF
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Jan 2021 15:10:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D7E83100EF27B;
-	Fri, 22 Jan 2021 06:09:09 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 127EC100ED4A6;
+	Fri, 22 Jan 2021 06:10:49 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DFF32100EF264
-	for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 06:09:07 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CB78A23A5E;
-	Fri, 22 Jan 2021 14:09:06 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id 6AE74100EF27B
+	for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 06:10:46 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5364E23AA3;
+	Fri, 22 Jan 2021 14:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1611324547;
-	bh=0xLiq19uuF+LFA0yw7Rwauxqd1irVWHtnuE67K59/lY=;
+	s=korg; t=1611324646;
+	bh=zPb3uoCMpMg0zIdBDDDosH3CoWb00JMVhzJ0D614Sfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z133FksUKLkAoNSRUMI/UME1nI7iFHxqwaceIJSFVkQNlXP6WReYp3Nqp2ym+DQzL
-	 eWdDSRVtUPji/XyBkFB5e9BQU7gDPuMdc9BjwgHcPXV1ADUqVtE4n/m3xMNxLTd7Jv
-	 dGRNXxa7P5ygDjAWjMQxD2820or/OxSxdrIH/c7o=
+	b=u83cQdirnwFeD9/ilIBOM6VMOBOesrM++RGq45UGlM8dl4Cs0PsMUNWKcWWMdjIDy
+	 7HpOe+X+zuGvV+lPjHPePjD7dm1Cegb0f/hdywddkJlUkEaehyb9VI2R/rah0gndIY
+	 jK9XPJRg5YwsDCNhfyQ769+Xm8dCS+vIqahFb18A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.4 07/31] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
-Date: Fri, 22 Jan 2021 15:08:21 +0100
-Message-Id: <20210122135732.165180021@linuxfoundation.org>
+Subject: [PATCH 4.9 10/35] arch/arc: add copy_user_page() to <asm/page.h> to fix build error on ARC
+Date: Fri, 22 Jan 2021 15:10:12 +0100
+Message-Id: <20210122135732.747017067@linuxfoundation.org>
 X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210122135731.873346566@linuxfoundation.org>
-References: <20210122135731.873346566@linuxfoundation.org>
+In-Reply-To: <20210122135732.357969201@linuxfoundation.org>
+References: <20210122135732.357969201@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
-Message-ID-Hash: ZOLSFK7JUM4DTUHV7HQ6BSOEHM4FGUJE
-X-Message-ID-Hash: ZOLSFK7JUM4DTUHV7HQ6BSOEHM4FGUJE
+Message-ID-Hash: LEEABQE4XGB56MDTH3B5O7LZQB6UXYWA
+X-Message-ID-Hash: LEEABQE4XGB56MDTH3B5O7LZQB6UXYWA
 X-MailFrom: gregkh@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -41,7 +41,7 @@ CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, ker
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZOLSFK7JUM4DTUHV7HQ6BSOEHM4FGUJE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LEEABQE4XGB56MDTH3B5O7LZQB6UXYWA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -81,11 +81,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arc/include/asm/page.h b/arch/arc/include/asm/page.h
-index 8f1145ed0046f..fd2c88ef2e2b8 100644
+index ffb5f33475f19..f0f43eb709d2f 100644
 --- a/arch/arc/include/asm/page.h
 +++ b/arch/arc/include/asm/page.h
-@@ -17,6 +17,7 @@
- #define free_user_page(page, addr)	free_page(addr)
+@@ -13,6 +13,7 @@
+ #ifndef __ASSEMBLY__
  
  #define clear_page(paddr)		memset((paddr), 0, PAGE_SIZE)
 +#define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
