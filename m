@@ -1,119 +1,116 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE24300F9E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Jan 2021 23:08:18 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7913301380
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 23 Jan 2021 07:05:46 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 89A46100EAB5D;
-	Fri, 22 Jan 2021 14:08:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.191.221; helo=app2.appendleadedm.info; envelope-from=contact-linux+2dnvdimm=lists.01.org@appendleadedm.info; receiver=<UNKNOWN> 
-Received: from app2.appendleadedm.info (ip221.ip-51-83-191.eu [51.83.191.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F3142100EB82D;
+	Fri, 22 Jan 2021 22:05:44 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=palmer@dabbelt.com; receiver=<UNKNOWN> 
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1F701100EAB47
-	for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 14:08:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=appendleadedm.info;
- h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=contact@appendleadedm.info;
- bh=zN+dM5nsybfDy6nfBcRMrx8cpC8=;
- b=LZRm0nm58eMhg+P0gH9Mrto2LlnrURaawks5FODNW3TbqTWA+qP5xs1v8y/I7VHm1ifGUDSKRhrj
-   8Qa24R0zli57gibDTKt4y26FPMBWL3fxFPRPUHspBbhc27NNvqDKdfrolVvA0Amxt4Z3frIz8On5
-   iaaX2InmNC6IzKD7SdiPUHW9XXEQSDCmNrc+cagrdjLsCNX/uoGWY1rx6KmAmZgkCPnea1V+ZM4m
-   4b6qMYMgmgo9zmzkQSkXL+JiDhXT1tqsS/fKhAJMVK8Q20xdzdwQjqncYU0ro36jepP3oyXcDN7W
-   kVgdNa9f+TS6rwVmROgxH1QuzlXlhTZRPu7huQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=appendleadedm.info;
- b=DfLH/L6xGl+uIvCeCp+iSTT60OBqc+JWhMgwdPN6F9Cni1DInaVCLcf2ff383y/LoRk0V3RHytRc
-   Zcpnu3F/C9ys6xfd6C5+MX+m+Xdz+Cus90sYX0D392qUhYDM6hCS1argVOay58Ui2QTOtFaBcUMJ
-   h0LD4MgDJPOEncioKMFqaJRZwo4vcylcY8a082vgu5+7Oyj5kqWZRmsgEvKc1zauPmSpM7gCB/ik
-   qcOWpUdDt35sdpmP0zIdBgB582w4VUQmIzZbwjDfYPvmEWyLLaxh9+4L4aKaoSSp8SNFFHU2U/i+
-   yrtZN0ebC0PsugD57DLqwDr3wBgKFjU/EjRnpg==;
-Received: from appendleadedm.info (127.0.0.1) by app1.appendleadedm.info id h1d6cri19tkv for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 20:53:40 +0000 (envelope-from <contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info>)
-Message-ID: <43445dd7aa1c102bf464d82d490ef56e@appendleadedm.info>
-Date: Fri, 22 Jan 2021 20:53:40 +0000
-Subject: RE: follow up 2021
-From: Susan Taylor <contact@appendleadedm.info>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-MIME-Version: 1.0
-X-Sender: contact@appendleadedm.info
-X-Report-Abuse: Please report abuse for this campaign here:
- http://appendleadedm.info/emm/index.php/campaigns/mx4356hcf0089/report-abuse/fc852ksheaa89/rp659hnss9052
-X-Receiver: linux-nvdimm@lists.01.org
-X-Ooqx-Tracking-Did: 0
-X-Ooqx-Subscriber-Uid: rp659hnss9052
-X-Ooqx-Mailer: SwiftMailer - 5.4.x
-X-Ooqx-EBS: http://appendleadedm.info/emm/index.php/lists/block-address
-X-Ooqx-Delivery-Sid: 1
-X-Ooqx-Customer-Uid: fv107j3jh8cf0
-X-Ooqx-Customer-Gid: 0
-X-Ooqx-Campaign-Uid: mx4356hcf0089
-Precedence: bulk
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Feedback-ID: mx4356hcf0089:rp659hnss9052:fc852ksheaa89:fv107j3jh8cf0
-Message-ID-Hash: JLSCNXPV3KI2DRV6TT72BIJVHLZZIIY7
-X-Message-ID-Hash: JLSCNXPV3KI2DRV6TT72BIJVHLZZIIY7
-X-MailFrom: contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info
+	by ml01.01.org (Postfix) with ESMTPS id 417D4100EF271
+	for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 22:05:42 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id t29so5220543pfg.11
+        for <linux-nvdimm@lists.01.org>; Fri, 22 Jan 2021 22:05:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rfxqzONqLpenH9bMcTSEoRtSy4r+OTMclT611uQQPw0=;
+        b=VYOj8q7y3B1Ci/zXV0TKKQdP+Hr4DW7yRsr1E+oiVJMPmFipjS5UZ8xLl2xoHoz/6B
+         jkpCwgPiLIZPoGfOi1wN88wt16jBRvoyvro7VvrIPcH4RTJznQoHQmoB2t8HyrxAaJdZ
+         HBhFM+SE5uT3rPuNDZ63XGBOHfrbXdGCrMh+WmJzIou1s39XhI+QRXq2zuC7lcQ0WAEq
+         +J2EBBfVHpHbKs6R2YJuQHl6VFRabnTwOH35OE4IYc02CQ9CIGb17Ob6QmJQaoizK2CX
+         qmyOJqbeCl8AsonG5sk05tyhobY+J8YKqRp8zWdSTNaaYU7FnZoryWgNkEnc2zVWMeFD
+         MIhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=rfxqzONqLpenH9bMcTSEoRtSy4r+OTMclT611uQQPw0=;
+        b=FLcjLvf8ot4agsQG3wpLkXfp7H/R5ozN/4IAsA4Mqv4zxh1SqWEsEq25Xzkc6N7Of9
+         ZoBbFdHhJb0GigNAimZLo+CVLS19xnSoBmAFzdyyHbAkpHk/+qyQoKVcWDcEwCtUnE6A
+         4G3+HtnWG+TMMBCN5NwzUvqDvdfHMLJYvVQgbjbHI8tlZbi+nk28PXms4+lr1R49RbRf
+         sts9pWXo9huo/73lo6RcD7XoTEYtTJ2EhFzmZGhA4cydny8JlbDqS0Fghx2hYvUC+47J
+         2hD3ImzUc29W1it2g0iuoE+NLD1sioJiWLqeRmU9TtyHJusJgRaetNMTply++PIUj8wA
+         tYOw==
+X-Gm-Message-State: AOAM533BihaIaPb4V/qif5Q0X+2Tfhahv15dJSXBH8sKwLxhrMDjZbBm
+	beVFZdhtJybyMWky/8Uv2n557WR39yjh+9Ra
+X-Google-Smtp-Source: ABdhPJz23uPwWexptJVrp5X0oeJBb+aQPxkhO88fX4JWNnDnVCTuobkNxuBQWZrcK1ekbZ/uQmCkcQ==
+X-Received: by 2002:a62:2aca:0:b029:1bb:4349:f889 with SMTP id q193-20020a622aca0000b02901bb4349f889mr8177532pfq.26.1611375151785;
+        Fri, 22 Jan 2021 20:12:31 -0800 (PST)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
+        by smtp.gmail.com with ESMTPSA id f15sm10628173pja.24.2021.01.22.20.12.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Jan 2021 20:12:30 -0800 (PST)
+Date: Fri, 22 Jan 2021 20:12:30 -0800 (PST)
+X-Google-Original-Date: Fri, 22 Jan 2021 20:12:28 PST (-0800)
+Subject: Re: [PATCH v15 03/11] riscv/Kconfig: make direct map manipulation options depend on MMU
+In-Reply-To: <20210120180612.1058-4-rppt@kernel.org>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: rppt@kernel.org
+Message-ID: <mhng-5cbc9b30-ac9a-4748-bf12-8f0de4c89f79@palmerdabbelt-glaptop>
+Mime-Version: 1.0 (MHng)
+Message-ID-Hash: UIAGJWQGZZKD5YZAG6HR5QM27XBBHELE
+X-Message-ID-Hash: UIAGJWQGZZKD5YZAG6HR5QM27XBBHELE
+X-MailFrom: palmer@dabbelt.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, luto@kernel.org, Arnd Bergmann <arnd@arndb.de>, bp@alien8.de, catalin.marinas@arm.com, cl@linux.com, dave.hansen@linux.intel.com, david@redhat.com, elena.reshetova@intel.com, hpa@zytor.com, mingo@redhat.com, jejb@linux.ibm.com, kirill@shutemov.name, willy@infradead.org, mark.rutland@arm.com, rppt@linux.ibm.com, rppt@kernel.org, mtk.manpages@gmail.com, Paul Walmsley <paul.walmsley@sifive.com>, peterz@infradead.org, rick.p.edgecombe@intel.com, guro@fb.com, shakeelb@google.com, shuah@kernel.org, tglx@linutronix.de, tycho@tycho.ws, will@kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, lkp@intel.com
 X-Mailman-Version: 3.1.1
-Reply-To: Susan Taylor <susan.taylordata@gmail.com>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JLSCNXPV3KI2DRV6TT72BIJVHLZZIIY7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UIAGJWQGZZKD5YZAG6HR5QM27XBBHELE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Transfer-Encoding: 7bit
 
-QXJlIHlvdSBsb29raW5nIGZvciBhbnkgb2YgdGhlIGZvbGxvd2luZyBFbWFpbCBhbmQgcGhvbmUg
-bGlzdCBnYXRoZXJlZA0KZnJvbSBMaW5rZWRJbiwgRXZlbnRzIGFuZCBtYXJrZXQgcmVzZWFyY2g/
-IFBsZWFzZSBzcGVjaWZ5IHlvdXIgdGFyZ2V0DQphdWRpZW5jZSBzbyB0aGF0IHdlIGNhbiBzaGFy
-ZSBhIHNhbXBsZSB3aXRoIHlvdS4NCiogQXJjaGl0ZWN0cyBhbmQgaW50ZXJpb3IgZGVzaWduZXJz
-IGVtYWlsIGxpc3QNCiogQ0VPLCBvd25lciwgUHJlc2lkZW50IGFuZCBDT08gY29udGFjdHMNCiog
-Q0ZPLCBDb250cm9sbGVyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEZpbmFuY2UsIEFjY291bnRz
-IFBheWFibGUsDQpBY2NvdW50cyBSZWNlaXZhYmxlLCBBdWRpdCBDb250YWN0cw0KKiBDaGllZiBI
-dW1hbiBSZXNvdXJjZXMgT2ZmaWNlciwgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBIUiwgRW1wbG95
-ZWUNCkJlbmVmaXRzLCBFbXBsb3llZSBDb21tdW5pY2F0aW9ucywgRW1wbG95ZWUgQ29tcGVuc2F0
-aW9uLCBFbXBsb3llZQ0KRW5nYWdlbWVudCwgRW1wbG95ZWUgRXhwZXJpZW5jZSBhbmQgRW1wbG95
-ZWUgUmVsYXRpb25zLCBUYWxlbnQNCkFjcXVpc2l0aW9uLCBUYWxlbnQgRGV2ZWxvcG1lbnQsIFRh
-bGVudCBNYW5hZ2VtZW50LCBSZWNydWl0aW5nDQpDb250YWN0cw0KKiBDSU8sQ1RPLCBDSVNPLCBW
-UC9EaXJlY3Rvci9NYW5hZ2VyIG9mIElULCBJVCBDb21wbGlhbmNlLCBJVCBSaXNrLA0KQkksIENs
-b3VkLCBEYXRhYmFzZSBhbmQgSVQgU2VjdXJpdHkgQ29udGFjdHMNCiogQ01PLCBWUC9EaXJlY3Rv
-ci9NYW5hZ2VyIG9mIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5kDQpnZW5l
-cmF0aW9uLCBMZWFkIGdlbmVyYXRpb24sIGluc2lkZSBzYWxlcywgTWFya2V0aW5nIENvbW11bmlj
-YXRpb25zDQpjb250YWN0cyBldGMuDQoqIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVudCBD
-b250YWN0cw0KKiBDUEEgYW5kIEJvb2trZWVwZXJzIGVtYWlsIGxpc3QNCiogRGF0YSBBbmFseXRp
-Y3MgYW5kIERhdGFiYXNlIEFkbWluaXN0cmF0b3JzIGNvbnRhY3RzDQoqIERpc2FzdGVyIFJlY292
-ZXJ5IENvbnRhY3RzDQoqIEUtY29tbWVyY2Ugb3Igb25saW5lIHJldGFpbGVycyBlbWFpbCBsaXN0
-DQoqIEVkdWNhdGlvbiBpbmR1c3RyeSBleGVjdXRpdmVzIGVtYWlsIGxpc3QgLSBQcmluY2lwYWxz
-LCBEZWFuLA0KQWRtaW5zIGFuZCB0ZWFjaGVycyBmcm9tIFNjaG9vbHMsIENvbGxlZ2VzIGFuZCBV
-bml2ZXJzaXRpZXMNCiogRW5naW5lZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5kIG1lZXRpbmcg
-cGxhbm5lcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzIGFuZCBvZmZpY2UgbWFuYWdlciBDb250
-YWN0cw0KKiBHZW5lcmFsIGFuZCBjb3Jwb3JhdGUgY291bnNlbCBhcyB3ZWxsIGxlZ2FsIHByb2Zl
-c3Npb25hbHMgbGlzdA0KKiBHb3Zlcm5tZW50IGNvbnRyYWN0b3JzIGVtYWlsIGxpc3QNCiogSGVh
-bHRoICYgU2FmZXR5IENvbnRhY3RzDQoqIEhpZ2ggbmV0IHdvcnRoIGluZGl2aWR1YWxzL2ludmVz
-dG9ycyBlbWFpbCBsaXN0DQoqIEhvc3BpdGFscywgY2xpbmljcywgcHJpdmF0ZSBwcmFjdGljZXMs
-IFBoYXJtYWNldXRpY2FsIGFuZA0KYmlvdGVjaG5vbG9neSBjb21wYW554oCZcyB0b3AgZGVjaXNp
-b24gbWFrZXJzIGVtYWlsIGxpc3QNCiogSHVtYW4gQ2FwaXRhbCBNYW5hZ2VtZW50IENvbnRhY3Rz
-DQoqIEluZGl2aWR1YWwgaW5zdXJhbmNlIGFnZW50cyBsaXN0DQoqIElTVi9WQVJzIGxpc3QNCiog
-TGVhcm5pbmcgJiBEZXZlbG9wbWVudCBDb250YWN0cw0KKiBMb2dpc3RpY3MsIHNoaXBwaW5nIGFu
-ZCBzdXBwbHkgY2hhaW4gbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBNYW51ZmFjdHVyaW5nIEluZHVz
-dHJ5IGV4ZWN1dGl2ZXMgbGlzdA0KKiBOZXR3b3JrIG1hbmFnZXIsIFN1cnZlaWxsYW5jZSwgU3lz
-dGVtIEFkbWluaXN0cmF0b3IsIFRlY2huaWNhbA0KU3VwcG9ydCBDb250YWN0cw0KKiBOZXcgJiBV
-c2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QNCiogT2lsLCBHYXMgYW5kIHV0aWxpdHkgaW5kdXN0
-cnkgY29udGFjdHMNCiogUGh5c2ljaWFucywgRG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhl
-cmFwaXN0cyBlbWFpbCBsaXN0DQoqIFBsYW50IE1hbmFnZXIgQ29udGFjdHMNCiogUHJvZHVjdCBh
-bmQgcHJvamVjdCBtYW5hZ2VtZW50IGxpc3QNCiogUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQg
-Q29udGFjdHMNCiogU3BlY2lmaWMgRXZlbnQgYXR0ZW5kZWVzIGxpc3QNCiogVGVsZWNvbSBtYW5h
-Z2VycywgVk9JUCBtYW5hZ2VycywgQ2xvdWQgYXJjaGl0ZWN0LCBDbG91ZCBtYW5hZ2VycywNClN0
-b3JhZ2UgbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3Rv
-bWVyIFNlcnZpY2UgYW5kIEN1c3RvbWVyIFN1Y2Nlc3MNClN1c2FuIFRheWxvcg0KRGF0YWJhc2Ug
-Q29uc3VsdGFudA0KNDJNaWwgQjJCIGFuZCAyMTBNaWwgQjJDIE9wdC1pbiBFbWFpbCBhbmQgcGhv
-bmUgbGlzdCB3aXRoIG90aGVyIGRhdGENCmZpZWxkcw0KVW5zdWJzY3JpYmUNCmh0dHA6Ly9hcHBl
-bmRsZWFkZWRtLmluZm8vZW1tL2luZGV4LnBocC9saXN0cy9mYzg1MmtzaGVhYTg5L3Vuc3Vic2Ny
-aWJlL3JwNjU5aG5zczkwNTIvbXg0MzU2aGNmMDA4OQ0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Wed, 20 Jan 2021 10:06:04 PST (-0800), rppt@kernel.org wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> ARCH_HAS_SET_DIRECT_MAP and ARCH_HAS_SET_MEMORY configuration options have
+> no meaning when CONFIG_MMU is disabled and there is no point to enable them
+> for the nommu case.
+>
+> Add an explicit dependency on MMU for these options.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> ---
+>  arch/riscv/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index d82303dcc6b6..d35ce19ab1fa 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -25,8 +25,8 @@ config RISCV
+>  	select ARCH_HAS_KCOV
+>  	select ARCH_HAS_MMIOWB
+>  	select ARCH_HAS_PTE_SPECIAL
+> -	select ARCH_HAS_SET_DIRECT_MAP
+> -	select ARCH_HAS_SET_MEMORY
+> +	select ARCH_HAS_SET_DIRECT_MAP if MMU
+> +	select ARCH_HAS_SET_MEMORY if MMU
+>  	select ARCH_HAS_STRICT_KERNEL_RWX if MMU
+>  	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+>  	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
+
+Reviewed-by: Palmer Dabbelt <palmerdabbelt@google.com>
+Acked-by: Palmer Dabbelt <palmerdabbelt@google.com>
+
+LMK if you want this to go in via the RISC-V tree, otherwise I'm going to
+assume it's going in along with the rest of these.  FWIW I see these in other
+architectures without the MMU guard.
+
+Thanks!
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
