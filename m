@@ -1,52 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6575C302E07
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 Jan 2021 22:38:38 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E8F302F7B
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 Jan 2021 23:55:40 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D6283100EBBCE;
-	Mon, 25 Jan 2021 13:38:36 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 60BE6100EBBCD
-	for <linux-nvdimm@lists.01.org>; Mon, 25 Jan 2021 13:38:34 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A683E2083E;
-	Mon, 25 Jan 2021 21:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1611610714;
-	bh=oBbSa76JFc7v8+y55SX0g1Mr9sPSRsNOv4tmWq7xrRA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ubeXULCeE5ESYXoKbbpQZvbpm7KD3rJtLMZd3bLMpG+Yf8ZlUgaes9e13MakOokA9
-	 iEgnWl6tWG8fgiW+VJGsU1Vz4qkDtXaocuKZT5gFf6r99ZgN3QhYKOTmMnfoGOogzo
-	 zlSt15bli+VWxniwjlxtECCstKhhIQyCjc9aSnUV55QlpbsGcamdfknFZPmcXMuxob
-	 G02UJe9Qaa5X7Qu+hPXzpNUvjCDYeTaIEq+run7rkZRwSUoqDGVquo06czJpfyCKh6
-	 lYHTox8ewX/SByv9aTWjggJVW9TsgcM9496MPOix7WOWD0WDa1bKzdlfYuPxgdGr6W
-	 86DtTT5jWaIDg==
-Date: Mon, 25 Jan 2021 23:38:17 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v16 08/11] secretmem: add memcg accounting
-Message-ID: <20210125213817.GM6332@kernel.org>
-References: <20210121122723.3446-1-rppt@kernel.org>
- <20210121122723.3446-9-rppt@kernel.org>
- <20210125165451.GT827@dhcp22.suse.cz>
+	by ml01.01.org (Postfix) with ESMTP id 8AD3F100EC1E1;
+	Mon, 25 Jan 2021 14:55:38 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id B2882100ED498
+	for <linux-nvdimm@lists.01.org>; Mon, 25 Jan 2021 14:55:34 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.79,374,1602518400";
+   d="scan'208";a="103820568"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 26 Jan 2021 06:55:32 +0800
+Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
+	by cn.fujitsu.com (Postfix) with ESMTP id 7D9D04CE6031;
+	Tue, 26 Jan 2021 06:55:30 +0800 (CST)
+Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 26 Jan 2021 06:55:29 +0800
+Received: from irides.mr.mr.mr (10.167.225.141) by
+ G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
+ id 15.0.1497.2 via Frontend Transport; Tue, 26 Jan 2021 06:55:28 +0800
+From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
+	<linux-nvdimm@lists.01.org>, <linux-mm@kvack.org>
+Subject: [PATCH v2 00/10] fsdax: introduce fs query to support reflink
+Date: Tue, 26 Jan 2021 06:55:16 +0800
+Message-ID: <20210125225526.1048877-1-ruansy.fnst@cn.fujitsu.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210125165451.GT827@dhcp22.suse.cz>
-Message-ID-Hash: VONGQZ7UYDZUAQDRFK6OCJYGJRUOSBGL
-X-Message-ID-Hash: VONGQZ7UYDZUAQDRFK6OCJYGJRUOSBGL
-X-MailFrom: rppt@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
- Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+X-yoursite-MailScanner-ID: 7D9D04CE6031.AAC22
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: SGWUMYCT4MAI5LJJDAH2T6KF5TPAZ5BW
+X-Message-ID-Hash: SGWUMYCT4MAI5LJJDAH2T6KF5TPAZ5BW
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-raid@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, song@kernel.org, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VONGQZ7UYDZUAQDRFK6OCJYGJRUOSBGL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SGWUMYCT4MAI5LJJDAH2T6KF5TPAZ5BW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,60 +53,95 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 25, 2021 at 05:54:51PM +0100, Michal Hocko wrote:
-> On Thu 21-01-21 14:27:20, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > Account memory consumed by secretmem to memcg. The accounting is updated
-> > when the memory is actually allocated and freed.
-> 
-> What does this mean?
+This patchset is aimed to support shared pages tracking for fsdax.
 
-That means that the accounting is updated when secretmem does cma_alloc()
-and cma_relase().
+Change from V1:
+  - Add the old memory-failure handler back for rolling back
+  - Add callback in MD's ->rmap() to support multiple mapping of dm device
+  - Add judgement for CONFIG_SYSFS
+  - Add pfn_valid() judgement in hwpoison_filter()
+  - Rebased to v5.11-rc5
 
-> What are the lifetime rules?
+Change from RFC v3:
+  - Do not lock dax entry in memory failure handler
+  - Add a helper function for corrupted_range
+  - Add restrictions in xfs code
+  - Fix code style
+  - remove the useless association and lock in fsdax
 
-Hmm, what do you mean by lifetime rules?
+Change from RFC v2:
+  - Adjust the order of patches
+  - Divide the infrastructure and the drivers that use it
+  - Rebased to v5.10
 
-> [...]
-> 
-> > +static int secretmem_account_pages(struct page *page, gfp_t gfp, int order)
-> > +{
-> > +	int err;
-> > +
-> > +	err = memcg_kmem_charge_page(page, gfp, order);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	/*
-> > +	 * seceremem caches are unreclaimable kernel allocations, so treat
-> > +	 * them as unreclaimable slab memory for VM statistics purposes
-> > +	 */
-> > +	mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
-> > +			      PAGE_SIZE << order);
-> 
-> A lot of memcg accounted memory is not reclaimable. Why do you abuse
-> SLAB counter when this is not a slab owned memory? Why do you use the
-> kmem accounting API when __GFP_ACCOUNT should give you the same without
-> this details?
+Change from RFC v1:
+  - Introduce ->block_lost() for block device
+  - Support mapped device
+  - Add 'not available' warning for realtime device in XFS
+  - Rebased to v5.10-rc1
 
-I cannot use __GFP_ACCOUNT because cma_alloc() does not use gfp.
-Besides, kmem accounting with __GFP_ACCOUNT does not seem
-to update stats and there was an explicit request for statistics:
- 
-https://lore.kernel.org/lkml/CALo0P13aq3GsONnZrksZNU9RtfhMsZXGWhK1n=xYJWQizCd4Zw@mail.gmail.com/
+This patchset moves owner tracking from dax_assocaite_entry() to pmem
+device driver, by introducing an interface ->memory_failure() of struct
+pagemap.  This interface is called by memory_failure() in mm, and
+implemented by pmem device.  Then pmem device calls its ->corrupted_range()
+to find the filesystem which the corrupted data located in, and call
+filesystem handler to track files or metadata assocaited with this page.
+Finally we are able to try to fix the corrupted data in filesystem and do
+other necessary processing, such as killing processes who are using the
+files affected.
 
-As for (ab)using NR_SLAB_UNRECLAIMABLE_B, as it was already discussed here:
+The call trace is like this:
+memory_failure()
+ pgmap->ops->memory_failure()      => pmem_pgmap_memory_failure()
+  gendisk->fops->corrupted_range() => - pmem_corrupted_range()
+                                      - md_blk_corrupted_range()
+   sb->s_ops->currupted_range()    => xfs_fs_corrupted_range()
+    xfs_rmap_query_range()
+     xfs_currupt_helper()
+      * corrupted on metadata
+          try to recover data, call xfs_force_shutdown()
+      * corrupted on file data 
+          try to recover data, call mf_dax_mapping_kill_procs()
 
-https://lore.kernel.org/lkml/20201129172625.GD557259@kernel.org/
+The fsdax & reflink support for XFS is not contained in this patchset.
 
-I think that a dedicated stats counter would be too much at the moment and
-NR_SLAB_UNRECLAIMABLE_B is the only explicit stat for unreclaimable memory.
+(Rebased on v5.11-rc5)
+
+Shiyang Ruan (10):
+  pagemap: Introduce ->memory_failure()
+  blk: Introduce ->corrupted_range() for block device
+  fs: Introduce ->corrupted_range() for superblock
+  mm, fsdax: Refactor memory-failure handler for dax mapping
+  mm, pmem: Implement ->memory_failure() in pmem driver
+  pmem: Implement ->corrupted_range() for pmem driver
+  dm: Introduce ->rmap() to find bdev offset
+  md: Implement ->corrupted_range()
+  xfs: Implement ->corrupted_range() for XFS
+  fs/dax: Remove useless functions
+
+ block/genhd.c                 |   6 ++
+ drivers/md/dm-linear.c        |  20 ++++
+ drivers/md/dm.c               |  61 +++++++++++
+ drivers/nvdimm/pmem.c         |  44 ++++++++
+ fs/block_dev.c                |  42 +++++++-
+ fs/dax.c                      |  63 ++++-------
+ fs/xfs/xfs_fsops.c            |   5 +
+ fs/xfs/xfs_mount.h            |   1 +
+ fs/xfs/xfs_super.c            | 109 +++++++++++++++++++
+ include/linux/blkdev.h        |   2 +
+ include/linux/dax.h           |   1 +
+ include/linux/device-mapper.h |   5 +
+ include/linux/fs.h            |   2 +
+ include/linux/genhd.h         |   3 +
+ include/linux/memremap.h      |   8 ++
+ include/linux/mm.h            |   9 ++
+ mm/memory-failure.c           | 190 +++++++++++++++++++++++-----------
+ 17 files changed, 466 insertions(+), 105 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.30.0
+
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
