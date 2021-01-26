@@ -2,46 +2,45 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3269D30387F
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 Jan 2021 10:00:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935193038C5
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 Jan 2021 10:15:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 54A15100EBB8C;
-	Tue, 26 Jan 2021 01:00:19 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id CA401100EBB8F;
+	Tue, 26 Jan 2021 01:15:36 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4B507100EBB86
-	for <linux-nvdimm@lists.01.org>; Tue, 26 Jan 2021 01:00:16 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id DBEDC100EBB8D
+	for <linux-nvdimm@lists.01.org>; Tue, 26 Jan 2021 01:15:33 -0800 (PST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1611651614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1611652532; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zkv2AYFPAFtxWhWHYsYeaPluSGEX7L9fbE1dulH4ZuI=;
-	b=GhOz2w0RXQwI2+PODq5b2aw0wmG2/sHAvfuOFXRfFu5hn6slnJT04Sf+X1LOm2o3qdxim/
-	JikKF5QkQLdr6WDSRfvS9d7btR4sMzkc9Aq9OiCszZ4qwYknWGfN3kTR7NPMMKuqkDIc/Q
-	bxcYYnrayTxMggILhsJvpQJW45eKvt8=
+	bh=8+K0oyxRY1+vhNkSeXzm8M4Y2R64gVVtCdOHelIF+V8=;
+	b=kShKTVasjKcQgyk49obmmqJEv3Z3d6D+KjtCoEjGXxzkEZlE9pddLwPnfiYIY421ESnwFk
+	s121ANy6h6Uf22zm4fCv1pqav6eTOcya5rAIE9EhMH1YsS7w7Ixp5ITIzE4PQfYNNMffQz
+	Deb5a3d+IUk2PpGiCwbgFZJfGrBkuvI=
 Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 69D77AF4E;
-	Tue, 26 Jan 2021 09:00:14 +0000 (UTC)
-Date: Tue, 26 Jan 2021 10:00:13 +0100
+	by mx2.suse.de (Postfix) with ESMTP id 36ABFB293;
+	Tue, 26 Jan 2021 09:15:32 +0000 (UTC)
+Date: Tue, 26 Jan 2021 10:15:27 +0100
 From: Michal Hocko <mhocko@suse.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v16 06/11] mm: introduce memfd_secret system call to
- create "secret" memory areas
-Message-ID: <20210126090013.GF827@dhcp22.suse.cz>
+Subject: Re: [PATCH v16 08/11] secretmem: add memcg accounting
+Message-ID: <20210126091527.GG827@dhcp22.suse.cz>
 References: <20210121122723.3446-1-rppt@kernel.org>
- <20210121122723.3446-7-rppt@kernel.org>
- <20210125170122.GU827@dhcp22.suse.cz>
- <20210125213618.GL6332@kernel.org>
- <20210126071614.GX827@dhcp22.suse.cz>
- <20210126083311.GN6332@kernel.org>
+ <20210121122723.3446-9-rppt@kernel.org>
+ <20210125165451.GT827@dhcp22.suse.cz>
+ <20210125213817.GM6332@kernel.org>
+ <20210126073142.GY827@dhcp22.suse.cz>
+ <20210126085654.GO6332@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210126083311.GN6332@kernel.org>
-Message-ID-Hash: 74JYGDKEXAOCJ62BKCTK2Z6TTWSWHUIO
-X-Message-ID-Hash: 74JYGDKEXAOCJ62BKCTK2Z6TTWSWHUIO
+In-Reply-To: <20210126085654.GO6332@kernel.org>
+Message-ID-Hash: AGZDCUNWIEPRJ5HEQTGPVDYZWWEJR25V
+X-Message-ID-Hash: AGZDCUNWIEPRJ5HEQTGPVDYZWWEJR25V
 X-MailFrom: mhocko@suse.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -50,7 +49,7 @@ CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/74JYGDKEXAOCJ62BKCTK2Z6TTWSWHUIO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AGZDCUNWIEPRJ5HEQTGPVDYZWWEJR25V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,60 +58,68 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue 26-01-21 10:33:11, Mike Rapoport wrote:
-> On Tue, Jan 26, 2021 at 08:16:14AM +0100, Michal Hocko wrote:
-> > On Mon 25-01-21 23:36:18, Mike Rapoport wrote:
-> > > On Mon, Jan 25, 2021 at 06:01:22PM +0100, Michal Hocko wrote:
-> > > > On Thu 21-01-21 14:27:18, Mike Rapoport wrote:
+On Tue 26-01-21 10:56:54, Mike Rapoport wrote:
+> On Tue, Jan 26, 2021 at 08:31:42AM +0100, Michal Hocko wrote:
+> > On Mon 25-01-21 23:38:17, Mike Rapoport wrote:
+> > > On Mon, Jan 25, 2021 at 05:54:51PM +0100, Michal Hocko wrote:
+> > > > On Thu 21-01-21 14:27:20, Mike Rapoport wrote:
 > > > > > From: Mike Rapoport <rppt@linux.ibm.com>
 > > > > > 
-> > > > > Introduce "memfd_secret" system call with the ability to create memory
-> > > > > areas visible only in the context of the owning process and not mapped not
-> > > > > only to other processes but in the kernel page tables as well.
-> > > > > 
-> > > > > The user will create a file descriptor using the memfd_secret() system
-> > > > > call. The memory areas created by mmap() calls from this file descriptor
-> > > > > will be unmapped from the kernel direct map and they will be only mapped in
-> > > > > the page table of the owning mm.
-> > > > > 
-> > > > > The secret memory remains accessible in the process context using uaccess
-> > > > > primitives, but it is not accessible using direct/linear map addresses.
-> > > > > 
-> > > > > Functions in the follow_page()/get_user_page() family will refuse to return
-> > > > > a page that belongs to the secret memory area.
-> > > > > 
-> > > > > A page that was a part of the secret memory area is cleared when it is
-> > > > > freed.
-> > > > > 
-> > > > > The following example demonstrates creation of a secret mapping (error
-> > > > > handling is omitted):
-> > > > > 
-> > > > > 	fd = memfd_secret(0);
-> > > > > 	ftruncate(fd, MAP_SIZE);
-> > > > > 	ptr = mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+> > > > > Account memory consumed by secretmem to memcg. The accounting is updated
+> > > > > when the memory is actually allocated and freed.
 > > > > 
-> > > > I do not see any access control or permission model for this feature.
-> > > > Is this feature generally safe to anybody?
+> > > > What does this mean?
 > > > 
-> > > The mappings obey memlock limit. Besides, this feature should be enabled
-> > > explicitly at boot with the kernel parameter that says what is the maximal
-> > > memory size secretmem can consume.
+> > > That means that the accounting is updated when secretmem does cma_alloc()
+> > > and cma_relase().
+> > > 
+> > > > What are the lifetime rules?
+> > > 
+> > > Hmm, what do you mean by lifetime rules?
 > > 
-> > Why is such a model sufficient and future proof? I mean even when it has
-> > to be enabled by an admin it is still all or nothing approach. Mlock
-> > limit is not really useful because it is per mm rather than per user.
+> > OK, so let's start by reservation time (mmap time right?) then the
+> > instantiation time (faulting in memory). What if the calling process of
+> > the former has a different memcg context than the later. E.g. when you
+> > send your fd or inherited fd over fork will move to a different memcg.
 > > 
-> > Is there any reason why this is allowed for non-privileged processes?
-> > Maybe this has been discussed in the past but is there any reason why
-> > this cannot be done by a special device which will allow to provide at
-> > least some permission policy?
+> > What about freeing path? E.g. when you punch a hole in the middle of
+> > a mapping?
+> > 
+> > Please make sure to document all this.
 >  
-> Why this should not be allowed for non-privileged processes? This behaves
-> similarly to mlocked memory, so I don't see a reason why secretmem should
-> have different permissions model.
+> So, does something like this answer your question:
+> 
+> ---
+> The memory cgroup is charged when secremem allocates pages from CMA to
+> increase large pages pool during ->fault() processing.
 
-Because appart from the reclaim aspect it fragments the direct mapping
-IIUC. That might have an impact on all others, right?
+OK so that is when the memory is faulted in. Good that is a standard
+model we have. The memcg context of the creator of the secret memory is
+not really important. So whoever has created is not charged.
+
+> The pages are uncharged from memory cgroup when they are released back to
+> CMA at the time secretme inode is evicted.
+> ---
+
+so effectivelly when they are unmapped, right? This is similar to
+anonymous memory.
+
+As I've said it would be really great to have this life cycle documented
+properly.
+
+> > Please note that this all is a user visible stuff that will become PITA
+> > (if possible) to change later on. You should really have strong
+> > arguments in your justification here.
+> 
+> I think that adding a dedicated counter for few 2M areas per container is
+> not worth the churn. 
+
+What kind of churn you have in mind? What is the downside?
+
+> When we'll get to the point that secretmem can be used to back the entire
+> guest memory we can add a new counter and it does not seem to PITA to me.
+
+What does really prevent a larger use with this implementation?
 
 -- 
 Michal Hocko
