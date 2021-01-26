@@ -2,106 +2,143 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD36230373F
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 Jan 2021 08:17:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5EC303752
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 Jan 2021 08:31:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7402F100EBB76;
-	Mon, 25 Jan 2021 23:17:25 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=193.29.104.186; helo=[193.29.104.186]; envelope-from=janet@jyshemgde.com; receiver=<UNKNOWN> 
-Received: from [193.29.104.186] (unknown [193.29.104.186])
-	by ml01.01.org (Postfix) with ESMTP id A74CD100EBB75
-	for <linux-nvdimm@lists.01.org>; Mon, 25 Jan 2021 23:17:21 -0800 (PST)
-From: janet@jyshemgde.com
-To: linux-nvdimm@lists.01.org
-Subject: Re: REQUST FOR CATALOG AND PRICE LIST
-Date: 25 Jan 2021 23:17:19 -0800
-Message-ID: <20210125231718.9ACC60BA13E96493@jyshemgde.com>
+	by ml01.01.org (Postfix) with ESMTP id F2BBD100EBB7D;
+	Mon, 25 Jan 2021 23:31:47 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 18605100EBB7C
+	for <linux-nvdimm@lists.01.org>; Mon, 25 Jan 2021 23:31:45 -0800 (PST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1611646304; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7zMRtj92K4aLVsKF/LtuTzpzMNc9rmo/TxWykS3K0E0=;
+	b=fbzVzS60+bW4/eLvVlMg8GidpFB1jBrR7hcptqrY8DOrxY95Wqr6BYjafHEM6FDX7G5i/a
+	47NUGFfcrm6l+Of7J1sWw4Lzuue/Bl54LKMg59hi6hWCs5djiniqInQ7mh6N/vOqeVmO+1
+	dcHiiymtcGUHsS6UXafRNc9p1dmXURc=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id 3F491AE61;
+	Tue, 26 Jan 2021 07:31:44 +0000 (UTC)
+Date: Tue, 26 Jan 2021 08:31:42 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v16 08/11] secretmem: add memcg accounting
+Message-ID: <20210126073142.GY827@dhcp22.suse.cz>
+References: <20210121122723.3446-1-rppt@kernel.org>
+ <20210121122723.3446-9-rppt@kernel.org>
+ <20210125165451.GT827@dhcp22.suse.cz>
+ <20210125213817.GM6332@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: LLRRSOBUSSDXFUZ5PDIFIKIM722SIRFU
-X-Message-ID-Hash: LLRRSOBUSSDXFUZ5PDIFIKIM722SIRFU
-X-MailFrom: janet@jyshemgde.com
+Content-Disposition: inline
+In-Reply-To: <20210125213817.GM6332@kernel.org>
+Message-ID-Hash: F4MS5OSQI7R57BRVZAW33SX4JB2F7X7Z
+X-Message-ID-Hash: F4MS5OSQI7R57BRVZAW33SX4JB2F7X7Z
+X-MailFrom: mhocko@suse.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
+ Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: janet@jyshemgde.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LLRRSOBUSSDXFUZ5PDIFIKIM722SIRFU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F4MS5OSQI7R57BRVZAW33SX4JB2F7X7Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1392744583187327183=="
-
---===============1392744583187327183==
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML>
-
-<html><head><title></title>
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body style=3D"margin: 0.4em;">
-<p><strong>Good day<br>&nbsp;<br>   I represent the&nbsp;taiwan&nbsp;&nbsp;=
-company <span class=3D"x_-29091446x794364243v1x1974898403size"><font face=
-=3D"Verdana" size=3D"2">Pacific Hospital Supply Co., Ltd.</font></span><spa=
-n style=3D"font-family: Verdana, sans-serif; font-size: 10pt;"> </span>
-(<span style=3D"color: rgb(62, 62, 62); text-transform: none; text-indent: =
-0px; letter-spacing: normal; font-family: Arial, Helvetica, sans-serif; fon=
-t-size: 12px; font-style: normal; word-spacing: 0px; float: none; display: =
-inline !important; white-space: normal; orphans: 2; widows: 2; font-variant=
--ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0=
-px; text-decoration-thickness: initial; text-decoration-style: initial; tex=
-t-decoration-color: initial;"><font color=3D"#000000">
-Miaoli, Taiwan</font></span>).<br></strong></p><div style=3D"margin: 0.5em;=
-"><p><strong>We are interested&nbsp; in buying your product. Please give yo=
-ur best offer with your 2021 updated product catalog for our purchase refer=
-ence and what is your MOQ, time of <br>delivery and payment terms .?.</stro=
-ng></p></div><p><strong>&nbsp;We want to find a reliable supplier and sign =
-a contract so we can start up business cooperation</strong></p><p>&nbsp;<br=
-></p>
-<div style=3D"color: rgb(0, 0, 0); text-transform: none; text-indent: 0px; =
-letter-spacing: normal; font-family: Lato; font-size: 14px; font-style: nor=
-mal; font-weight: 400; word-spacing: 0px; white-space: normal; orphans: 2; =
-widows: 2; background-color: rgb(255, 255, 255); font-variant-ligatures: no=
-rmal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decor=
-ation-thickness: initial; text-decoration-style: initial; text-decoration-c=
-olor: initial;"><p>
-<span class=3D"x_-29091446x794364243v1size"><span style=3D"font-family: Ver=
-dana, sans-serif; font-size: 10pt;"><br></span></span></p><span style=3D"fo=
-nt-family: Verdana, sans-serif; font-size: 10pt;"><h3 class=3D"iw"><span ta=
-bindex=3D"-1" class=3D"qu" role=3D"gridcell"><span class=3D"gD" data-hoverc=
-ard-owner-id=3D"148" data-hovercard-id=3D"janet@jyshemgde.com" name=3D"jane=
-thuang" email=3D"janet@jyshemgde.com">Janet<br><span class=3D"x_-29091446x7=
-94364243v1x1974898403size">Pacific Hospital Supply Co., Ltd.</span><br>
-<span class=3D"x_-29091446x794364243v1x1974898403size">Tel: +886 2 2495 505=
-0&nbsp; Ext: 6352</span><br><span class=3D"x_-29091446x794364243v1x19748984=
-03size">Fax: +886 2 3291 7873</span><br><span class=3D"x_-29091446x79436424=
-3v1x1974898403size">email:&nbsp;<a href=3D"mailto:janet@jyshemgde.com">jane=
-t@jyshemgde.com</a></span></span></span></h3></span><p><br></p></div>
-<div id=3D"x_-29091446Zm-_Id_-Sgn1" style=3D"color: rgb(0, 0, 0); text-tran=
-sform: none; text-indent: 0px; letter-spacing: normal; font-family: Lato; f=
-ont-size: 14px; font-style: normal; font-weight: 400; word-spacing: 0px; wh=
-ite-space: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, 2=
-55); font-variant-ligatures: normal; font-variant-caps: normal; -webkit-tex=
-t-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-st=
-yle: initial; text-decoration-color: initial;">
-<p class=3D"MsoNormal" style=3D"margin: 0px;"><span style=3D"font-family: V=
-erdana, sans-serif; font-size: 10pt;"><br></span></p></div><p><span style=
-=3D"font-family: Verdana, sans-serif; font-size: 10pt;">.</span></p>
-
-
-</body></html>
---===============1392744583187327183==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Mon 25-01-21 23:38:17, Mike Rapoport wrote:
+> On Mon, Jan 25, 2021 at 05:54:51PM +0100, Michal Hocko wrote:
+> > On Thu 21-01-21 14:27:20, Mike Rapoport wrote:
+> > > From: Mike Rapoport <rppt@linux.ibm.com>
+> > > 
+> > > Account memory consumed by secretmem to memcg. The accounting is updated
+> > > when the memory is actually allocated and freed.
+> > 
+> > What does this mean?
+> 
+> That means that the accounting is updated when secretmem does cma_alloc()
+> and cma_relase().
+> 
+> > What are the lifetime rules?
+> 
+> Hmm, what do you mean by lifetime rules?
+
+OK, so let's start by reservation time (mmap time right?) then the
+instantiation time (faulting in memory). What if the calling process of
+the former has a different memcg context than the later. E.g. when you
+send your fd or inherited fd over fork will move to a different memcg.
+
+What about freeing path? E.g. when you punch a hole in the middle of
+a mapping?
+
+Please make sure to document all this.
+
+> > [...]
+> > 
+> > > +static int secretmem_account_pages(struct page *page, gfp_t gfp, int order)
+> > > +{
+> > > +	int err;
+> > > +
+> > > +	err = memcg_kmem_charge_page(page, gfp, order);
+> > > +	if (err)
+> > > +		return err;
+> > > +
+> > > +	/*
+> > > +	 * seceremem caches are unreclaimable kernel allocations, so treat
+> > > +	 * them as unreclaimable slab memory for VM statistics purposes
+> > > +	 */
+> > > +	mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B,
+> > > +			      PAGE_SIZE << order);
+> > 
+> > A lot of memcg accounted memory is not reclaimable. Why do you abuse
+> > SLAB counter when this is not a slab owned memory? Why do you use the
+> > kmem accounting API when __GFP_ACCOUNT should give you the same without
+> > this details?
+> 
+> I cannot use __GFP_ACCOUNT because cma_alloc() does not use gfp.
+
+Other people are working on this to change. But OK, I do see that this
+can be done later but it looks rather awkward.
+
+> Besides, kmem accounting with __GFP_ACCOUNT does not seem
+> to update stats and there was an explicit request for statistics:
+>  
+> https://lore.kernel.org/lkml/CALo0P13aq3GsONnZrksZNU9RtfhMsZXGWhK1n=xYJWQizCd4Zw@mail.gmail.com/
+
+charging and stats are two different things. You can still take care of
+your stats without explicitly using the charging API. But this is a mere
+detail. It just hit my eyes.
+
+> As for (ab)using NR_SLAB_UNRECLAIMABLE_B, as it was already discussed here:
+> 
+> https://lore.kernel.org/lkml/20201129172625.GD557259@kernel.org/
+
+Those arguments should be a part of the changelof.
+
+> I think that a dedicated stats counter would be too much at the moment and
+> NR_SLAB_UNRECLAIMABLE_B is the only explicit stat for unreclaimable memory.
+
+Why do you think it would be too much? If the secret memory becomes a
+prevalent memory user because it will happen to back the whole virtual
+machine then hiding it into any existing counter would be less than
+useful.
+
+Please note that this all is a user visible stuff that will become PITA
+(if possible) to change later on. You should really have strong
+arguments in your justification here.
+-- 
+Michal Hocko
+SUSE Labs
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============1392744583187327183==--
