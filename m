@@ -2,117 +2,188 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA5B3056B2
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 Jan 2021 10:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50104306373
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 Jan 2021 19:43:16 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 88523100EB321;
-	Wed, 27 Jan 2021 01:20:52 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.191.214; helo=ecow3.brandceosummit.info; envelope-from=info-linux+2dnvdimm=lists.01.org@brandceosummit.info; receiver=<UNKNOWN> 
-Received: from ecow3.brandceosummit.info (ecow4.brandceosummit.info [51.83.191.214])
+	by ml01.01.org (Postfix) with ESMTP id 8FA49100EBB9E;
+	Wed, 27 Jan 2021 10:43:14 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=67.231.153.30; helo=mx0a-00082601.pphosted.com; envelope-from=prvs=06619fcab2=guro@fb.com; receiver=<UNKNOWN> 
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BB6D5100EBB9B
-	for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 01:20:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=brandceosummit.info;
- h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=info@brandceosummit.info;
- bh=wefPiqvNIBKpdZSZdB2qed6vM9g=;
- b=tSLXKtGjfLg6DkZ4Py3O+oQpvQ2oZjGdER9g/hs7LdhBDkMEbmMbCAjKHn1a+x9UXk1swQgxkL9P
-   CDch/H7GSYEIev+Z4AHPs6Ye+k5iwmEyqxhgrmkmTbYuk3znXbC40/AbmfT3/SuJEvDt07AWofKk
-   m/pPY1w+jc8sOxh/N+A8J4UEfGWu+/zUhtwfrG4pAY5+gtiskyOm7bf+99elYG0KgDMq3PeE6Fh3
-   OQd05bw6byG/jj25fAmb1WwVu8AzYsnNZKrojq9ImvppsG8UuwcU1mtLTBOBWZnDH6y7sIgB+LwB
-   sgebHMGQZ5GXsy01YKVxdVbU44j9riwTCTL9ig==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=brandceosummit.info;
- b=kRjN5erZ0GH0pweiF/Ir2Uzbb3uIe6k8ypZTTXJDFvTcIXeN0jUzsgn2rl9FlXDXWypc3J/FTKsz
-   F9SkYKxgUGufs5AbFgVTETBSn5ls/YzqIJmkJtKisv/uVOcBAWA1HQNhrveJz2BQY7wc4gzAj76/
-   gWtWvq+gfn+U5vmmmAIgGKtrb8p/v0QQqjiIi0Jp0hSkl3ixaJrkcqNMxxtT4R4EC8EMpjQuqQ4d
-   EiwaFRj8TruUB/n5AkkNFz7aAk+KWZg8E4PjPDM4LA4Umct7duW/DZKkmm/6Zk2HH2CzJOCbxn00
-   hr1Btt5RhPFUvcIKJkw3VVMTHYO1ZRVEvqoIfw==;
-Received: from brandceosummit.info (127.0.0.1) by ecow1.brandceosummit.info id h24o75i19tku for <linux-nvdimm@lists.01.org>; Tue, 26 Jan 2021 23:53:43 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@brandceosummit.info>)
-Date: Tue, 26 Jan 2021 23:53:43 +0000
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-From: Susan Taylor <info@brandceosummit.info>
-Subject: RE: did you see this email
-Message-ID: <080eb898683a38fee2cc6b8048bbd17b@brandceosummit.info>
-X-Ybzc-Campaign-Uid: gd339gmc8ocdb
-X-Ybzc-Subscriber-Uid: tt5238ge44eaa
-X-Ybzc-Customer-Uid: yc9451v43la86
-X-Ybzc-Customer-Gid: 0
-X-Ybzc-Delivery-Sid: 1
-X-Ybzc-Tracking-Did: 0
-X-Report-Abuse: Please report abuse for this campaign here: https://brandceosummit.info/emm/index.php/campaigns/gd339gmc8ocdb/report-abuse/db949qba8of4b/tt5238ge44eaa
-Feedback-ID: gd339gmc8ocdb:tt5238ge44eaa:db949qba8of4b:yc9451v43la86
-Precedence: bulk
-X-Ybzc-EBS: https://brandceosummit.info/emm/index.php/lists/block-address
-X-Sender: info@brandceosummit.info
-X-Receiver: linux-nvdimm@lists.01.org
-X-Ybzc-Mailer: PHPMailer - 5.2.21
+	by ml01.01.org (Postfix) with ESMTPS id 51F82100ED4A6
+	for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 10:43:12 -0800 (PST)
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.16.0.43/8.16.0.43) with SMTP id 10RIWBHc028368;
+	Wed, 27 Jan 2021 10:42:23 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=facebook; bh=TjQ++rUxdLeyDl4rEaotnq3GKb60Ln8eHrnzPg+IH4A=;
+ b=kMBSDNtXc3wiSTtxKpjCyHT9XXBWokKlgMgatgtTC3Uh7Isu7I253+2H/WyLLGWf7ODb
+ QIAYv4Mt2qCNkpKy7an5H81EQXWBE8lR56s45k3uyt31UEhm52vjh7GHQm2FDxezr0ev
+ Ww5az7yUNcYEge7C6dh3jKIanCiPFZ3cRQc=
+Received: from mail.thefacebook.com ([163.114.132.120])
+	by m0001303.ppops.net with ESMTP id 36b4ws2v3k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 27 Jan 2021 10:42:23 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (100.104.98.9) by
+ o365-in.thefacebook.com (100.104.94.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Wed, 27 Jan 2021 10:42:21 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k0tuJfoXnDJuoTiomplzOB+Dkropf6WRrUlHDtjprikrSF9q9h8Bz/+qJSt48mH8irMEIC+FMvePdO85khrikioZir2qipdU6gFjk0luOFzaFhuDxe/zcMcr8wegfUrYpVBQ/iCAx96nRZs3gcwT1iyGGvAsXJuHdcySa24tH2NAm/V0DCpcrd7T2q6FsUIs8Uv/gIH+YW9TOc9bdIb1/d+goV1/T0WaiCIvLztcOtl9Jpp7ribimIFxl1jC7XbOErcYwE2/Z/CPAMx8YS4xCiVFd6QvdEg3X+0XSXqKcKUzb03tNhIBY+vi+ed8miblxTwCO98/0azuqnPclG6Olg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TjQ++rUxdLeyDl4rEaotnq3GKb60Ln8eHrnzPg+IH4A=;
+ b=USPUluPvybRnM72MvToiCDFE5K7yGrotMXf2HtgUSb0eaC6WQRTuIKNnxqlLIhF0yOckpgKgCRW/SKefQA68L/I+QnpDEOPHSEeD4CEB9wzmQUKluD4bNw+o6cab5W98FOlusa1P7bNZHGbB+I3ElSXir7FtyQyWA+vYncJ6Ul0HPjBDNcR34jJI9JsTnP43jfz//tFH9WuOcCaEB0tb8T1KPZS78qimTIPeMhSDzVMtqq1nEBhRPuwKyvivlMbq8SST0HxnZ6SRZNfOiIZDth+rHP2eI8b6alej6WvGsktFqzanv604mc8D4affHtWsr/3NcVQoYqyVrqPIL+Oveg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
+ header.d=fb.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.onmicrosoft.com;
+ s=selector2-fb-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TjQ++rUxdLeyDl4rEaotnq3GKb60Ln8eHrnzPg+IH4A=;
+ b=PauCxEW9riHHAIlvnPRyhjJtGUEQyEnYMWb7q1PDQyU0sr4NN6OmQMBN54mO6LDGKo1R7NmkOSvG6UlmEfQ8ARu2Js+aoWqJ3aDuTUNGvAq5gxWX7s/cc+zIgYxh8UKze/r/76nnSBeiLxnbJM72pE0T5V46zEJs3npwrWMr4Q8=
+Authentication-Results: suse.com; dkim=none (message not signed)
+ header.d=none;suse.com; dmarc=none action=none header.from=fb.com;
+Received: from BYAPR15MB4136.namprd15.prod.outlook.com (2603:10b6:a03:96::24)
+ by BYAPR15MB2982.namprd15.prod.outlook.com (2603:10b6:a03:f8::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.16; Wed, 27 Jan
+ 2021 18:42:20 +0000
+Received: from BYAPR15MB4136.namprd15.prod.outlook.com
+ ([fe80::53a:b2c3:8b03:12d1]) by BYAPR15MB4136.namprd15.prod.outlook.com
+ ([fe80::53a:b2c3:8b03:12d1%6]) with mapi id 15.20.3784.019; Wed, 27 Jan 2021
+ 18:42:20 +0000
+Date: Wed, 27 Jan 2021 10:42:13 -0800
+From: Roman Gushchin <guro@fb.com>
+To: Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v16 08/11] secretmem: add memcg accounting
+Message-ID: <20210127184213.GA919963@carbon.dhcp.thefacebook.com>
+References: <20210121122723.3446-1-rppt@kernel.org>
+ <20210121122723.3446-9-rppt@kernel.org>
+ <20210125165451.GT827@dhcp22.suse.cz>
+ <20210125213817.GM6332@kernel.org>
+ <20210126144838.GL308988@casper.infradead.org>
+ <20210126150555.GU827@dhcp22.suse.cz>
+Content-Disposition: inline
+In-Reply-To: <20210126150555.GU827@dhcp22.suse.cz>
+X-Originating-IP: [2620:10d:c090:400::5:f9eb]
+X-ClientProxiedBy: CO2PR04CA0056.namprd04.prod.outlook.com
+ (2603:10b6:102:1::24) To BYAPR15MB4136.namprd15.prod.outlook.com
+ (2603:10b6:a03:96::24)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from carbon.dhcp.thefacebook.com (2620:10d:c090:400::5:f9eb) by CO2PR04CA0056.namprd04.prod.outlook.com (2603:10b6:102:1::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3805.16 via Frontend Transport; Wed, 27 Jan 2021 18:42:16 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6b9e29d8-618e-46ba-7a56-08d8c2f3472a
+X-MS-TrafficTypeDiagnostic: BYAPR15MB2982:
+X-Microsoft-Antispam-PRVS: <BYAPR15MB2982726890473C2565332491BEBB9@BYAPR15MB2982.namprd15.prod.outlook.com>
+X-FB-Source: Internal
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hnNnD/yrkdgN2OEnGn/QCygDGF4pOKcNT1UoqyrNZBGPPSjupNwx5uP3Br1GThmIBvkuoTdmhtFM0tIoOrajg2U6PUdjq4/pDojFYgteWurzXdNHkajO/uL92KLW5EIPM/Uv9Hj6rJKqjRodVJHQs2+ev+S+AgyAvhfx6pcOIzTrqoxgMd+qyjCaH1IscwDVDz9XHQoPajZQtZXdrJF4INlJA7sfC8KfxjETVebuiKBIsJBak9LYd9qd2PViAHvIIm8W2U/jJBpk9UgQh8GAWgUnrTQbnMRQidbAGaVEj88u47HbrxzM5iTXxCc2gu4Q5U++xTlgYyp7HNSpkoxare6iF0WLQlYQpP0Po7vUmg1OMwXa+lv1Tt/iXrufroj2PEt/AmdYJTNY0i8xLIJX4QM5FT6xIofSAmQOZCxLmDKQQRl3rtF8lylmZXCA7CYRI5g6EMCIEEldjKXYvkLJ+yWstLUGTrFF2RWM+QxOK/k+Im1wzqUokjp43aOIDr0XBfxlW7B0fAcqymFr3aUjpRiu5d9lw3Bu6iNM/VGltiEBvj/nvjZ58iKyvLtdJE+RsqbLY1mgss01fn6qYW9zrPBy8h67dEMH6Wj9Jr0Avz0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR15MB4136.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(136003)(346002)(366004)(39860400002)(376002)(83380400001)(7696005)(86362001)(54906003)(55016002)(186003)(316002)(8676002)(7416002)(8936002)(15650500001)(66476007)(6506007)(5660300002)(66946007)(52116002)(4326008)(9686003)(66556008)(1076003)(7406005)(6916009)(478600001)(966005)(2906002)(16526019)(6666004)(33656002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?gfBSiGG+O56oJz8wXUfz9mkRnm8/2FJ/t1jXq+ByUmdwbWt7HleNsg3+xLFt?=
+ =?us-ascii?Q?Hg0hN5Vs9ttA8o3jTBC6Bqn+AKAormqZF6CYE1OqPuMEawQrNaXednwz3mcA?=
+ =?us-ascii?Q?N/86RbffTqOourzOwW6LfEKdzEvugEvHuLqHMYENysdc0We8nZ2Rp3X4WiTL?=
+ =?us-ascii?Q?qZLkuBi2ZMklFBzaNAsch+xZjQY8OKVYqTidhzYnKJq4Elo7x16qnbUMdMZU?=
+ =?us-ascii?Q?Y/0q9kHIBC0yWT+SMz/B4miZF48MvDqGQzbSCUer9UibLUPbkPnDFArSAKHE?=
+ =?us-ascii?Q?bNsC1zjwdQqgOjGwWG1PVBokcQKLRawlBi7lDKOX1igDGxO+iP1tpM5QY2cT?=
+ =?us-ascii?Q?JCe/GsVf84FVqCc/GWOsJdGqHwnWz8ftVLm2yuKZja8RNhHZ+OgS/D/Mzr9j?=
+ =?us-ascii?Q?XIGe3+l1PUSP3PEKJbmS29F4Pdc7PwcFxcGsPNwRkupwpdZBQ7E8TinXjW8M?=
+ =?us-ascii?Q?EXs2U6ZWSkFi2CQ9PzCgE+RTqGnvQj8p96JUN1C1TiyOg8siIwlvTTo2Decg?=
+ =?us-ascii?Q?zSlkr8UyMu7roJfRDzKh7nP5nhhj1zLtykHpO1/KIKt/eI8KRgW/bVf+M9kq?=
+ =?us-ascii?Q?CLH8aJW2xJwbykcBAiyo7NLp+nCpaWwAhdY50dYHwsC2CVtJwBXQNjknRlWI?=
+ =?us-ascii?Q?jOV0QZ0jvnLwpvdQ/wlcXJnotPDBQ60RLDgGS5dMLY6pelHkfrAaJBc21KJ4?=
+ =?us-ascii?Q?/MTzeaPN5u5UC45P8f7pjwHTvDxMGxxQT+y9WsTZ8dVShJSfEVO12pPW6TzA?=
+ =?us-ascii?Q?/Hqc65pbmS0tzzgO+4ZGpAVYR9gQlDV5qj0Yopwa9FnUrh30+nykprjDcAwQ?=
+ =?us-ascii?Q?/XzYuvlNN/cQqDWIw2qubfwWcNFv9KeMUsZ4mXkHyz0q9jsc1MMyOvpamRRw?=
+ =?us-ascii?Q?JUjKW4QdJeN6JwUIuy+COaYgqfefmY9/pUFYTnDUmBWtKw7BFQLsbgRipjB/?=
+ =?us-ascii?Q?IHXtQxTBdgHrWM6ysxqeyjoPHJXT9jQPLlnBI2K7kk2htCzWmB2HxhXE783j?=
+ =?us-ascii?Q?VaUDIlILvKKjS1QOnMSpzm3owJJeZ2TW9Pb4egeG2CzUHjUInbULiAK3yk4C?=
+ =?us-ascii?Q?6bFJMy8bQAr8Jfvc21JoYTseGFGwk22szvJQfG3DRF356oD1LU4=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b9e29d8-618e-46ba-7a56-08d8c2f3472a
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR15MB4136.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2021 18:42:20.1871
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9EP+7jXHooLBLtpv3a64Y0S1zsaS8d0VwwUXIWGX6fm7BldNT0Kxx+DC8Sm+952E
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR15MB2982
+X-OriginatorOrg: fb.com
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Message-ID-Hash: OIBAZ673WJEJGSTMI4KFMXJURYCVADBI
-X-Message-ID-Hash: OIBAZ673WJEJGSTMI4KFMXJURYCVADBI
-X-MailFrom: info-linux+2Dnvdimm=lists.01.org@brandceosummit.info
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
+ definitions=2021-01-27_06:2021-01-27,2021-01-27 signatures=0
+X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 suspectscore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
+ impostorscore=0 clxscore=1011 phishscore=0 priorityscore=1501 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2101270092
+X-FB-Internal: deliver
+Message-ID-Hash: OO7WLJF7VXSG737RA2ZHG3J64MZVR64J
+X-Message-ID-Hash: OO7WLJF7VXSG737RA2ZHG3J64MZVR64J
+X-MailFrom: prvs=06619fcab2=guro@fb.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tyc
+ ho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
-Reply-To: Susan Taylor <susan.taylordata@gmail.com>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OIBAZ673WJEJGSTMI4KFMXJURYCVADBI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OO7WLJF7VXSG737RA2ZHG3J64MZVR64J/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QXJlIHlvdSBsb29raW5nIGZvciBhbnkgb2YgdGhlIGZvbGxvd2luZyBFbWFpbCBhbmQgcGhvbmUg
-bGlzdCBnYXRoZXJlZA0KZnJvbSBMaW5rZWRJbiwgRXZlbnRzIGFuZCBtYXJrZXQgcmVzZWFyY2g/
-IFBsZWFzZSBzcGVjaWZ5IHlvdXIgdGFyZ2V0DQphdWRpZW5jZSBzbyB0aGF0IHdlIGNhbiBzaGFy
-ZSBhIHNhbXBsZSB3aXRoIHlvdS4NCiogQXJjaGl0ZWN0cyBhbmQgaW50ZXJpb3IgZGVzaWduZXJz
-IGVtYWlsIGxpc3QNCiogQ0VPLCBvd25lciwgUHJlc2lkZW50IGFuZCBDT08gY29udGFjdHMNCiog
-Q0ZPLCBDb250cm9sbGVyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEZpbmFuY2UsIEFjY291bnRz
-IFBheWFibGUsDQpBY2NvdW50cyBSZWNlaXZhYmxlLCBBdWRpdCBDb250YWN0cw0KKiBDaGllZiBI
-dW1hbiBSZXNvdXJjZXMgT2ZmaWNlciwgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBIUiwgRW1wbG95
-ZWUNCkJlbmVmaXRzLCBFbXBsb3llZSBDb21tdW5pY2F0aW9ucywgRW1wbG95ZWUgQ29tcGVuc2F0
-aW9uLCBFbXBsb3llZQ0KRW5nYWdlbWVudCwgRW1wbG95ZWUgRXhwZXJpZW5jZSBhbmQgRW1wbG95
-ZWUgUmVsYXRpb25zLCBUYWxlbnQNCkFjcXVpc2l0aW9uLCBUYWxlbnQgRGV2ZWxvcG1lbnQsIFRh
-bGVudCBNYW5hZ2VtZW50LCBSZWNydWl0aW5nDQpDb250YWN0cw0KKiBDSU8sQ1RPLCBDSVNPLCBW
-UC9EaXJlY3Rvci9NYW5hZ2VyIG9mIElULCBJVCBDb21wbGlhbmNlLCBJVCBSaXNrLA0KQkksIENs
-b3VkLCBEYXRhYmFzZSBhbmQgSVQgU2VjdXJpdHkgQ29udGFjdHMNCiogQ01PLCBWUC9EaXJlY3Rv
-ci9NYW5hZ2VyIG9mIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5kDQpnZW5l
-cmF0aW9uLCBMZWFkIGdlbmVyYXRpb24sIGluc2lkZSBzYWxlcywgTWFya2V0aW5nIENvbW11bmlj
-YXRpb25zDQpjb250YWN0cyBldGMuDQoqIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVudCBD
-b250YWN0cw0KKiBDUEEgYW5kIEJvb2trZWVwZXJzIGVtYWlsIGxpc3QNCiogRGF0YSBBbmFseXRp
-Y3MgYW5kIERhdGFiYXNlIEFkbWluaXN0cmF0b3JzIGNvbnRhY3RzDQoqIERpc2FzdGVyIFJlY292
-ZXJ5IENvbnRhY3RzDQoqIEUtY29tbWVyY2Ugb3Igb25saW5lIHJldGFpbGVycyBlbWFpbCBsaXN0
-DQoqIEVkdWNhdGlvbiBpbmR1c3RyeSBleGVjdXRpdmVzIGVtYWlsIGxpc3QgLSBQcmluY2lwYWxz
-LCBEZWFuLA0KQWRtaW5zIGFuZCB0ZWFjaGVycyBmcm9tIFNjaG9vbHMsIENvbGxlZ2VzIGFuZCBV
-bml2ZXJzaXRpZXMNCiogRW5naW5lZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5kIG1lZXRpbmcg
-cGxhbm5lcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzIGFuZCBvZmZpY2UgbWFuYWdlciBDb250
-YWN0cw0KKiBHZW5lcmFsIGFuZCBjb3Jwb3JhdGUgY291bnNlbCBhcyB3ZWxsIGxlZ2FsIHByb2Zl
-c3Npb25hbHMgbGlzdA0KKiBHb3Zlcm5tZW50IGNvbnRyYWN0b3JzIGVtYWlsIGxpc3QNCiogSGVh
-bHRoICYgU2FmZXR5IENvbnRhY3RzDQoqIEhpZ2ggbmV0IHdvcnRoIGluZGl2aWR1YWxzL2ludmVz
-dG9ycyBlbWFpbCBsaXN0DQoqIEhvc3BpdGFscywgY2xpbmljcywgcHJpdmF0ZSBwcmFjdGljZXMs
-IFBoYXJtYWNldXRpY2FsIGFuZA0KYmlvdGVjaG5vbG9neSBjb21wYW554oCZcyB0b3AgZGVjaXNp
-b24gbWFrZXJzIGVtYWlsIGxpc3QNCiogSHVtYW4gQ2FwaXRhbCBNYW5hZ2VtZW50IENvbnRhY3Rz
-DQoqIEluZGl2aWR1YWwgaW5zdXJhbmNlIGFnZW50cyBsaXN0DQoqIElTVi9WQVJzIGxpc3QNCiog
-TGVhcm5pbmcgJiBEZXZlbG9wbWVudCBDb250YWN0cw0KKiBMb2dpc3RpY3MsIHNoaXBwaW5nIGFu
-ZCBzdXBwbHkgY2hhaW4gbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBNYW51ZmFjdHVyaW5nIEluZHVz
-dHJ5IGV4ZWN1dGl2ZXMgbGlzdA0KKiBOZXR3b3JrIG1hbmFnZXIsIFN1cnZlaWxsYW5jZSwgU3lz
-dGVtIEFkbWluaXN0cmF0b3IsIFRlY2huaWNhbA0KU3VwcG9ydCBDb250YWN0cw0KKiBOZXcgJiBV
-c2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QNCiogT2lsLCBHYXMgYW5kIHV0aWxpdHkgaW5kdXN0
-cnkgY29udGFjdHMNCiogUGh5c2ljaWFucywgRG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhl
-cmFwaXN0cyBlbWFpbCBsaXN0DQoqIFBsYW50IE1hbmFnZXIgQ29udGFjdHMNCiogUHJvZHVjdCBh
-bmQgcHJvamVjdCBtYW5hZ2VtZW50IGxpc3QNCiogUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQg
-Q29udGFjdHMNCiogU3BlY2lmaWMgRXZlbnQgYXR0ZW5kZWVzIGxpc3QNCiogVGVsZWNvbSBtYW5h
-Z2VycywgVk9JUCBtYW5hZ2VycywgQ2xvdWQgYXJjaGl0ZWN0LCBDbG91ZCBtYW5hZ2VycywNClN0
-b3JhZ2UgbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3Rv
-bWVyIFNlcnZpY2UgYW5kIEN1c3RvbWVyIFN1Y2Nlc3MNClRoYW5rcyBhbmQgbGV0IG1lIGtub3cu
-DQpTdXNhbiBUYXlsb3INCkRhdGFiYXNlIENvbnN1bHRhbnQNCjQyTWlsIEIyQiBhbmQgMjEwTWls
-IEIyQyBPcHQtaW4gRW1haWwgYW5kIHBob25lIGxpc3Qgd2l0aCBvdGhlciBkYXRhDQpmaWVsZHMN
-CsKgDQpVbnN1YnNjcmliZQ0KaHR0cHM6Ly9icmFuZGNlb3N1bW1pdC5pbmZvL2VtbS9pbmRleC5w
-aHAvbGlzdHMvZGI5NDlxYmE4b2Y0Yi91bnN1YnNjcmliZS90dDUyMzhnZTQ0ZWFhL2dkMzM5Z21j
-OG9jZGINCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRv
-IHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAx
-Lm9yZwo=
+On Tue, Jan 26, 2021 at 04:05:55PM +0100, Michal Hocko wrote:
+> On Tue 26-01-21 14:48:38, Matthew Wilcox wrote:
+> > On Mon, Jan 25, 2021 at 11:38:17PM +0200, Mike Rapoport wrote:
+> > > I cannot use __GFP_ACCOUNT because cma_alloc() does not use gfp.
+> > > Besides, kmem accounting with __GFP_ACCOUNT does not seem
+> > > to update stats and there was an explicit request for statistics:
+> > >  
+> > > https://lore.kernel.org/lkml/CALo0P13aq3GsONnZrksZNU9RtfhMsZXGWhK1n=xYJWQizCd4Zw@mail.gmail.com/
+> > > 
+> > > As for (ab)using NR_SLAB_UNRECLAIMABLE_B, as it was already discussed here:
+> > > 
+> > > https://lore.kernel.org/lkml/20201129172625.GD557259@kernel.org/
+> > > 
+> > > I think that a dedicated stats counter would be too much at the moment and
+> > > NR_SLAB_UNRECLAIMABLE_B is the only explicit stat for unreclaimable memory.
+> > 
+> > That's not true -- Mlocked is also unreclaimable.  And doesn't this
+> > feel more like mlocked memory than unreclaimable slab?  It's also
+> > Unevictable, so could be counted there instead.
+> 
+> yes, that is indeed true, except the unreclaimable counter is tracking
+> the unevictable LRUs. These pages are not on any LRU and that can cause
+> some confusion. Maybe they shouldn't be so special and they should live
+> on unevistable LRU and get their stats automagically.
+> 
+> I definitely do agree that this would be a better fit than NR_SLAB
+> abuse. But considering that this is somehow even more special than mlock
+> then a dedicated counter sounds as even better fit.
+
+I think it depends on how large these areas will be in practice.
+If they will be measured in single or double digits MBs, a separate entry
+is hardly a good choice: because of the batching the displayed value
+will be in the noise range, plus every new vmstat item adds to the
+struct mem_cgroup size.
+
+If it will be measured in GBs, of course, a separate counter is preferred.
+So I'd suggest to go with NR_SLAB (which should have been named NR_KMEM)
+as now and conditionally switch to a separate counter later.
+
+Thanks!
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
