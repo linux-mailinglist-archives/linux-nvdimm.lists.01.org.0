@@ -1,161 +1,163 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BACC306A4E
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 02:24:39 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21B0306C4B
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 05:36:04 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9CEB8100EB353;
-	Wed, 27 Jan 2021 17:24:37 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+	by ml01.01.org (Postfix) with ESMTP id 10E75100F224E;
+	Wed, 27 Jan 2021 20:36:03 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::448; helo=mail-pf1-x448.google.com; envelope-from=email14+bncbcsy3np4xyfbb47szcaamgqeafhssqy@webtotalsolutions.com; receiver=<UNKNOWN> 
+Received: from mail-pf1-x448.google.com (mail-pf1-x448.google.com [IPv6:2607:f8b0:4864:20::448])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 923C1100EB351
-	for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 17:24:35 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id n6so4718986edt.10
-        for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 17:24:35 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 494CA100F224C
+	for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 20:36:00 -0800 (PST)
+Received: by mail-pf1-x448.google.com with SMTP id t16sf2736819pfh.22
+        for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 20:36:00 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1611808559; cv=pass;
+        d=google.com; s=arc-20160816;
+        b=Z+rViSoAI8hq8aQhUQ9IOm9iv9z145o6Wb6q16LzuXL4xIjBb1R/dcmWPqTBb6v1mm
+         gxIqBtrWG9U76qXax4Bh3/Sbd+ElW06oCUUPRubj51RagudvQ6CD1HJBEgfYG41piFIN
+         dWKjCeh9mdkfknujYuuWX9bGtMLgbpCJM2q+IVCFrdJS1LFQ6mZvlf7lAZZ8IiyeeT9u
+         9yTUqAm8jo4sEUMNY7b6+94x4sbZLoDP8Mk3yDdi1nJsJa88wIepOXYfgWegsZ7wcWJZ
+         /ozgEM0LbBXI6jZCzx+jEef8AxeHPc+LA7MybW0HU3pLy0x6Hzv+S3c5pvfOVi56Fytq
+         7fpg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :list-id:mailing-list:precedence:to:subject:message-id:date:from
+         :mime-version:sender:dkim-signature;
+        bh=81Tg4+EoPbeHSoofV3T4S9z6cZSVEVZlC5QjzvWgtzs=;
+        b=knulDmKIHU15i0wkcQQnGAz1XqYa7ZQilRTLHZ6mN+7mKIzUEhQ8uB4kDKYgD4g5gd
+         geMSVY/SLSJxEUryH8hzyJYl5i1K6dw3Tm1aEAJ1oF4JfONpPHOlbQYL1Je0SJkmlqTQ
+         K41URxeKlB7C8DJVwJf4yehB3EaK8gS3cNRzisDYvDGe8uEpKhK+006CQgPRk9sGg5u0
+         YNxgS88NtsCs6hkvXeyerpuxUrENBrZZxWvE8NWykh/7x9TIAdxx3FSHg9XedyLCVwSj
+         F3qvzKYCycrD8qz+oB8R/1Y/trdoRmbcSxQcW7Ui2618OcfUtYuhuuoBBs1fSN7Kmokh
+         yQbg==
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20161025 header.b=oclJ6hy+;
+       spf=pass (google.com: domain of lissajohnson759@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=lissajohnson759@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=om3qbY9w1F7jTEVJFiVY00oA9QG9fqgTsLAHYTklO+A=;
-        b=mk6LPN2yhkakqjefmev63Z7iZT4WdxRz463hVi572EJNbYBnUYkuHMSlg+FYORBlpW
-         9ao8OswrSNEv6TQW0/zrY2TLNm8qC0GzYCiVZadQu5oLhYbR2C5POSCX6OQJozuVZwzx
-         B4X5UA/Z85dbfLbpkjO2C2hmVArbBIPLgF4UsWctUX4MLaYU1x3XTQjzBrweE3Xspvn4
-         RHyC/8BFTCJ9mTHDS+1ydg6b236S3Yie4zDseON1VOOYgJzVfRXlhqHZqXEJJ6ueu4tq
-         9R/4QZMGtOEvmD4xEWx0IHKsfswn8Lv9YACv+RaFD7HjuwkFYKzfo86d05Kvy4Jo7DZV
-         55ZQ==
+        d=webtotalsolutions.com; s=google;
+        h=sender:mime-version:from:date:message-id:subject:to
+         :x-original-sender:x-original-authentication-results:precedence
+         :mailing-list:list-id:list-post:list-help:list-archive
+         :list-subscribe:list-unsubscribe;
+        bh=81Tg4+EoPbeHSoofV3T4S9z6cZSVEVZlC5QjzvWgtzs=;
+        b=FooAeTHvWmYaz0yMXNPVupRgDMjQh5UdlcJ7Do4kLVcFPz+9n2Zv0+MB3OBlWf5Zy5
+         0qkttYjtoMIqciLmL1pkIpcle63OhNvHxnSz60IRflxVkDzjr4wdRWZXhm7VwieTzZAl
+         oGisczOFsGvA37WeOyFhyx1+9Mxyw5kDOIul0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=om3qbY9w1F7jTEVJFiVY00oA9QG9fqgTsLAHYTklO+A=;
-        b=NzkgN8TqoOFrheiyTsRyWA8cGc9vTWO9I4ip/olGjfP1FZt66krNXfSQ7rmp0seP97
-         ipL/zl9EHEjL/+esseNfDjG3E5LWuoKyv7wXv90vDfrvpU5gAAxkv8Nldm0Lw2p8D0+K
-         YcbOvTWdoq0vIjBhoSsDrzVZKEH5F9wPPjVpQGVlBW11D2XNP4ItgWhFGaYfQwQvI9u/
-         715Kfmb7eYsnRXGaM9666qKS3OQZ+8+jQc6Cf6NmEi2dktNOdptRd99WaHETJN6CxThr
-         Aaq6P1un1QzkW5Cid+Ikwt3l4Ec7WYXP5dKfDu7gy/wpO9oeNAxopNMgoJjW0C4T2smH
-         rj+w==
-X-Gm-Message-State: AOAM531saFfXmKWgbnInGcIImGLR8WsNAYWV4OxH5H/5T5ZfF+dkGSYG
-	Lii//kYSnxPhBJvyzGKBH3w+ZguONLaAOlB0OjRWzg==
-X-Google-Smtp-Source: ABdhPJxRFmRhqsZHWZoSR1DYOymoAHqLfbLNMsCl5RLAuIyczuIDQ+Q3BqfX600oAReEpKoZhHgutzXPg1ayds5g2g0=
-X-Received: by 2002:aa7:d610:: with SMTP id c16mr11822496edr.354.1611797073879;
- Wed, 27 Jan 2021 17:24:33 -0800 (PST)
+        h=sender:x-gm-message-state:mime-version:from:date:message-id:subject
+         :to:x-original-sender:x-original-authentication-results:precedence
+         :mailing-list:list-id:x-spam-checked-in-group:list-post:list-help
+         :list-archive:list-subscribe:list-unsubscribe;
+        bh=81Tg4+EoPbeHSoofV3T4S9z6cZSVEVZlC5QjzvWgtzs=;
+        b=DUwX/gIoQY0nQbO6xl/y0P+wBlEB2Nq29oTFPkGLiw+k5CIq10SkR+eryVdT9lUVLC
+         Hd3jrHeDZJ8DZxWi75gM86nUcxxEWI2AK8xnvtUVRppp3IYYXu4PThusxtUhg5jPQyVo
+         yndIe67XiBQFgKhsvn0jcFnI9Zv7bjpK6zhV23pzd9S/Q0mUMnCH7mK4SWLE9S7EaiPi
+         9t6IfBrjwKkKTqTTWO4QqFQruNqqufjNQHpqbCGk4eO/E/S9hyL6jJwEPt7W9pooykaZ
+         itbZA/gI5GGouIiVf8dB2yit8TPP1Wk2C7ucbV6lyd9tpK4VEn00cP0NgDJ3G7VcGC3D
+         PuNg==
+Sender: email14@webtotalsolutions.com
+X-Gm-Message-State: AOAM530Wg+g/yju0pEdXye+6MhgjCaOpGqoAD1sDbwCngvKM9dpE6ELD
+	PIze1UL5g0h34rNh7MYBODSXxw==
+X-Google-Smtp-Source: ABdhPJxpJMH7O2kISK9TFA/LJdLNxTW+cdtjn8aqrGZRrkmCno2wd9WSsQ4Wfb9ZFi4jwsuB2XnOAQ==
+X-Received: by 2002:a17:90b:4905:: with SMTP id kr5mr9299381pjb.1.1611808558333;
+        Wed, 27 Jan 2021 20:35:58 -0800 (PST)
+X-BeenThere: email14@webtotalsolutions.com
+Received: by 2002:a62:3583:: with SMTP id c125ls1707362pfa.2.gmail; Wed, 27
+ Jan 2021 20:11:30 -0800 (PST)
+X-Received: by 2002:a65:5b0c:: with SMTP id y12mr14804170pgq.407.1611807090773;
+        Wed, 27 Jan 2021 20:11:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1611807090; cv=none;
+        d=google.com; s=arc-20160816;
+        b=wkkXbOtTg+z8vXdGvSkhO0hNqy69YBFm3sh9o85olNgl1+ogAiH2ut0xHfh1SiPRsn
+         qgJS34XAKpmTlhvB0TcODfurlNqzaBEKqx4HFWig+qUXOUyxqeuQnlt/nkp4I7xM5Bra
+         tX0g6VMzhc8+aBC8ZFCtCSE96MH5cGpt4kvDFmKIvnqaiJdYbfCMGesuPqXLUSgjKqcU
+         Wmb9jt3YHSAuhQPE12SBkS/iFT0zhTYrGgAwgaxep50Y3uG+EaUrZpykFTgpPOShO8CO
+         X+o3cI3C80AAby03eqc7wDyy8p8ENgW2fOZjHFv3rkrdS4iobWEJUcBDBFvEf+7QfOPu
+         TCGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=81Tg4+EoPbeHSoofV3T4S9z6cZSVEVZlC5QjzvWgtzs=;
+        b=KknH8obaBIorSVW+hMTs6ciRSdeXqh9QsEW21ALTFIkBavh29PmXCVdKA5LOgjZJ/j
+         GwVTpNJEfvdpJzS4DBP+w5ve/Gvmy3VsyHJCYYn17O4bSbTrGW5OYnhJII3G0iQPqy2M
+         OOe7FOvQCXB7FrYfmA/DiO0QjM+n0g2+2L59jsEYZ9oJsUKqisTKslKkmJm82nWkf+H5
+         6Ac6sNMDwXVcJM0yM4Sv2b/dXCH1PKWQ2xXglsgIDs1x5jqjshezd4S5zBwrnTfp9Rmh
+         uu7xQWij7FpvX/3KqfTKlv57t1J6Ueg6eSj0R6QwuP0LSLECI2n7n+6zQhu8DF1NUhXN
+         k/Sg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20161025 header.b=oclJ6hy+;
+       spf=pass (google.com: domain of lissajohnson759@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=lissajohnson759@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id u11sor2152864pgh.81.2021.01.27.20.11.30
+        for <email14@webtotalsolutions.com>
+        (Google Transport Security);
+        Wed, 27 Jan 2021 20:11:30 -0800 (PST)
+Received-SPF: pass (google.com: domain of lissajohnson759@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+X-Received: by 2002:a63:1214:: with SMTP id h20mr14217605pgl.379.1611807090335;
+ Wed, 27 Jan 2021 20:11:30 -0800 (PST)
 MIME-Version: 1.0
-References: <20201222042240.2983755-1-santosh@fossix.org> <20201222042516.2984348-1-santosh@fossix.org>
- <20201222042516.2984348-5-santosh@fossix.org>
-In-Reply-To: <20201222042516.2984348-5-santosh@fossix.org>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 27 Jan 2021 17:24:32 -0800
-Message-ID: <CAPcyv4inaEKt4s5vNGsbfidCz+biWJk6QTLyOMWB05iFreOMfA@mail.gmail.com>
-Subject: Re: [ndctl 5/5] Use page size as alignment value
-To: Santosh Sivaraj <santosh@fossix.org>
-Message-ID-Hash: LKFNDXESI6VVD64TYJDWNSO5BJJOWE2K
-X-Message-ID-Hash: LKFNDXESI6VVD64TYJDWNSO5BJJOWE2K
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
-X-Mailman-Version: 3.1.1
+From: Annu Taneja <lissajohnson759@gmail.com>
+Date: Thu, 28 Jan 2021 09:41:22 +0530
+Message-ID: <CAPhvtKz=d9Fz6T1xgt_pBHt_AK6T=3KVV_b5vF-rrOcLSAgNbQ@mail.gmail.com>
+Subject: Reminder : Native and Hybrid Mobile Application Development ...
+To: undisclosed-recipients:;
+X-Original-Sender: lissajohnson759@gmail.com
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@gmail.com header.s=20161025 header.b=oclJ6hy+;       spf=pass
+ (google.com: domain of lissajohnson759@gmail.com designates 209.85.220.41 as
+ permitted sender) smtp.mailfrom=lissajohnson759@gmail.com;       dmarc=pass
+ (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com
 Precedence: list
+Mailing-list: list email14@webtotalsolutions.com; contact email14+owners@webtotalsolutions.com
+X-Spam-Checked-In-Group: email14@webtotalsolutions.com
+X-Google-Group-Id: 1036746787170
+Message-ID-Hash: EYL4LAN4JFOOMRFFGCDDFP45GZXWHNPL
+X-Message-ID-Hash: EYL4LAN4JFOOMRFFGCDDFP45GZXWHNPL
+X-MailFrom: email14+bncBCSY3NP4XYFBB47SZCAAMGQEAFHSSQY@webtotalsolutions.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+X-Mailman-Version: 3.1.1
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LKFNDXESI6VVD64TYJDWNSO5BJJOWE2K/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EYL4LAN4JFOOMRFFGCDDFP45GZXWHNPL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Mon, Dec 21, 2020 at 8:26 PM Santosh Sivaraj <santosh@fossix.org> wrote:
->
-> The alignment sizes passed to ndctl in the tests are all hardcoded to 4k,
-> the default page size on x86. Change those to the default page size on that
-> architecture (sysconf/getconf). No functional changes otherwise.
->
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> ---
->  test/dpa-alloc.c    | 23 ++++++++++++++---------
->  test/multi-dax.sh   |  6 ++++--
->  test/sector-mode.sh |  4 +++-
->  3 files changed, 21 insertions(+), 12 deletions(-)
->
-> diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
-> index 10af189..ff6143e 100644
-> --- a/test/dpa-alloc.c
-> +++ b/test/dpa-alloc.c
-> @@ -48,12 +48,13 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->         struct ndctl_region *region, *blk_region = NULL;
->         struct ndctl_namespace *ndns;
->         struct ndctl_dimm *dimm;
-> -       unsigned long size;
-> +       unsigned long size, page_size;
->         struct ndctl_bus *bus;
->         char uuid_str[40];
->         int round;
->         int rc;
->
-> +       page_size = sysconf(_SC_PAGESIZE);
->         /* disable nfit_test.1, not used in this test */
->         bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
->         if (!bus)
-> @@ -134,11 +135,11 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->                         return rc;
->                 }
->                 ndctl_namespace_disable_invalidate(ndns);
-> -               rc = ndctl_namespace_set_size(ndns, SZ_4K);
-> +               rc = ndctl_namespace_set_size(ndns, page_size);
->                 if (rc) {
-> -                       fprintf(stderr, "failed to init %s to size: %d\n",
-> +                       fprintf(stderr, "failed to init %s to size: %lu\n",
->                                         ndctl_namespace_get_devname(ndns),
-> -                                       SZ_4K);
-> +                                       page_size);
->                         return rc;
->                 }
->                 namespaces[i].ndns = ndns;
-> @@ -160,7 +161,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->                 ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
->                 if (i % ARRAY_SIZE(namespaces) == 0)
->                         round++;
-> -               size = SZ_4K * round;
-> +               size = page_size * round;
->                 rc = ndctl_namespace_set_size(ndns, size);
->                 if (rc) {
->                         fprintf(stderr, "%s: set_size: %lx failed: %d\n",
-> @@ -176,7 +177,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->         i--;
->         round++;
->         ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
-> -       size = SZ_4K * round;
-> +       size = page_size * round;
->         rc = ndctl_namespace_set_size(ndns, size);
->         if (rc) {
->                 fprintf(stderr, "%s failed to update while labels full\n",
-> @@ -185,7 +186,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->         }
->
->         round--;
-> -       size = SZ_4K * round;
-> +       size = page_size * round;
->         rc = ndctl_namespace_set_size(ndns, size);
->         if (rc) {
->                 fprintf(stderr, "%s failed to reduce size while labels full\n",
-> @@ -279,8 +280,12 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->
->         available_slots = ndctl_dimm_get_available_labels(dimm);
->         if (available_slots != default_available_slots - 1) {
-> -               fprintf(stderr, "mishandled slot count\n");
-> -               return -ENXIO;
-> +               fprintf(stderr, "mishandled slot count (%u, %u)\n",
-> +                       available_slots, default_available_slots - 1);
-> +
-> +               /* TODO: fix it on non-acpi platforms */
-> +               if (ndctl_bus_has_nfit(bus))
-> +                       return -ENXIO;
-
-This change seems unrelated to page size fixups. Care to break it out?
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+SGVsbG8sDQoNCg0KDQpJIHVuZGVyc3RhbmQgeW91IG11c3QgYmUgcXVpdGUgYnVzeSB3aXRoIHlv
+dXIgd29yay4NCg0KDQoNCkkganVzdCB3YW50IHRvIGJlIHN1cmUgaWYgeW91J3ZlIHJlY2VpdmVk
+IG15IGxhc3QgZW1haWwuIExldCBtZSBrbm93IGlmIHlvdQ0KbmVlZCBvdXIgc2VydmljZXMuIFdl
+IGFyZSBvZmZlcmluZyB0aGUgYmVzdCBxdW90ZSBpbiB0aGUgaW5kdXN0cnkgZm9yIG91cg0KcHJl
+bWl1bSBxdWFsaXR5IHNlcnZpY2VzLg0KDQoNCg0KbG9va2luZyB0byBoZWFyIGZyb20geW91IHNv
+b24uLi4NCg0KDQoNClRoYW5rIHlvdSwNCg0KQW5udQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tDQoNCg0KDQpIaSwNCg0KQXJlIHlvdSBzdHJ1Z2dsaW5nIHdvcmtpbmcgd2l0aCBmcmVl
+bGFuY2UgZGV2ZWxvcGVycy9kZXNpZ25lcnM/DQoNCipSZWFjaGluZyBvdXQgdG9kYXkgdG8gc2Vl
+IGlmIGl0IHdvdWxkIGJlIHdvcnRoIGEgcXVpY2sgY29udmVyc2F0aW9uIGFib3V0OioNCg0Kwrcg
+ICAgICAgICAgICAgV2Vic2l0ZSBkZXNpZ24gJiBkZXZlbG9wbWVudCDigJMgbWFkZSB0byBvcmRl
+ciB3ZWJzaXRlIGZvciB5b3VyDQpidXNpbmVzcw0KDQrCtyAgICAgICAgICAgICBNb2JpbGUgYXBw
+IGRldmVsb3BtZW50IOKAkyBhbiBlZGdlIG92ZXIgeW91ciBjb21wZXRpdGlvbg0KDQrCtyAgICAg
+ICAgICAgICBPZmZzaG9yZSB3ZWIgZGVzaWduICYgZGV2ZWxvcG1lbnQgc3VwcG9ydCDigJMgY29z
+dCBhZHZhbnRhZ2UsDQp0byBidWlsZCBhZGRpdGlvbmFsIGRlbGl2ZXJ5IGNhcGFjaXR5DQoNCipQ
+cm9ncmFtbWluZyBsYW5ndWFnZXMgdGhhdCB3ZSB3b3JrIHdpdGg6Kg0KDQrCtyAgICAgICAgICAg
+ICBQSFAsIC5OZXQsIFB5dGhvbiwgQW5kcm9pZCwgaU9TDQoNCipUaGUgZnJhbWUgd2Ugc3VwcG9y
+dDoqDQoNCsK3ICAgICAgICAgTGFyYXZlbCwgU3ltZm9ueSwgQ29kZUlnbml0ZXIsIFlpaSwgQ2Fr
+ZVBIUCwgWmVuZCwgQXNwLm5ldCBNVkMNCg0KKkNNUyB3ZSBzdXBwb3J0OioNCg0KwrcgICAgICAg
+ICBXb3JkUHJlc3MsIEpvb21sYSwgTWFnZW50bywgRHJ1cGFsLCBPcGVuQ2FydCwgWmVuQ2FydCwg
+UHJlc3Rhc2hvcA0KDQpXZSBoYW5kcGljayBvdXIgcmVzb3VyY2VzIGFuZCBlbnN1cmUgdGhhdCBl
+YWNoIG9uZSBmb2xsb3dzIGluZHVzdHJ5IGJlc3QNCnByYWN0aWNlcyBhbmQgbWVldHMgaGlnaC1x
+dWFsaXR5IHN0YW5kYXJkcyB0aHJvdWdoIG91ciB3b3JrIHByb2Nlc3MuDQoNCipJZiB5b3UncmUg
+bm90IGludGVyZXN0ZWQsIEknZCBhcHByZWNpYXRlIGEgcXVpY2sgIm5vIHRoYW5rIHlvdSIgc28g
+SSBjYW4NCm5vdGUgdG8gbm90IGZvbGxvdyB1cC4qDQoNCipLaW5kIFJlZ2FyZHMsKg0KDQoqQW5u
+dSoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4
+LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1
+YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
