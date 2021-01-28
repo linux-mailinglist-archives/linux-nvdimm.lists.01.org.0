@@ -2,103 +2,108 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E89306768
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 00:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD09306A17
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 02:16:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4C5C9100EB346;
-	Wed, 27 Jan 2021 15:01:34 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a01:4f8:c0c:3a97::2; helo=antares.kleine-koenig.org; envelope-from=uwe@kleine-koenig.org; receiver=<UNKNOWN> 
-Received: from antares.kleine-koenig.org (antares.kleine-koenig.org [IPv6:2a01:4f8:c0c:3a97::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 66530100EB351;
+	Wed, 27 Jan 2021 17:16:46 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 05A8C100EB340
-	for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 15:01:29 -0800 (PST)
-Received: by antares.kleine-koenig.org (Postfix, from userid 1000)
-	id 5DB05AE0D2E; Thu, 28 Jan 2021 00:01:27 +0100 (CET)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 3/3] dax-device: Make remove callback return void
-Date: Thu, 28 Jan 2021 00:01:24 +0100
-Message-Id: <20210127230124.109522-3-uwe@kleine-koenig.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210127230124.109522-1-uwe@kleine-koenig.org>
-References: <20210127230124.109522-1-uwe@kleine-koenig.org>
+	by ml01.01.org (Postfix) with ESMTPS id DC563100EB350
+	for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 17:16:40 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id n6so4704754edt.10
+        for <linux-nvdimm@lists.01.org>; Wed, 27 Jan 2021 17:16:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aOLs2yrRfDr5WQ58XZxAH+NHveNneNx5qVNthcbKmwY=;
+        b=iFK4+8FAtc2qFewzEAbcOnRWmCzTQAI1yUi5Uvkq1cEc77KLs3+EFXrOkeljvPNO4g
+         K2U9ki5yE7R5y5aSxqr0CfxBiUbpAZQA6yGnMYJhUubs/2VxNmt76L/aHwKKVP4f18cM
+         9kc+1+tcf3q3XSWsjOw9mSQigQ3Qr92a2Wx5zGJx/8BoSIS0CZLhHPiKsKrlnYVjb/sE
+         D1S11pE9avc8XMRl+FSjvTMo5nH4hi36cJ+ZkdJu9lEOCtCbzVSixhE1O6G/5KLpDX6e
+         hOGFyi9Z72e3bnRbpnm5skxoZUK20//RyUQvXO/SjBYH7BTBwyHHDIVGhSp6x52N7onU
+         oU8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aOLs2yrRfDr5WQ58XZxAH+NHveNneNx5qVNthcbKmwY=;
+        b=sjjgIT4g20+wb5U7wZDhqXPtiv9M6kfvGPlELl1PCDN4AkLnFMaLQbejRpkXKU3UEr
+         xvlZursaZnnrkAegMcIHRJHDpDDF7TWYlUi4ekczlNsAIS4fvMF2eELTjSGJHMpq7GsR
+         ps8ozznYqCyKbmB+vSzKFt4UoSKxVw/utPNBAvtiDwtwh/KN0uxWjR5o1UnJUQAVU8pg
+         v7TbbB/FeJwmsFIPV5TQDBSNueJuZZ5VTLWaIbk0Dohz7sTMRFr8+a0R/THL9elfKWU0
+         uiHxWafCJbAWcefwMXqNNe5NIYEWV0q2TWuKNYihtJ+AmbQu3GSDBeZbmvwWqdk2vQu9
+         DSZw==
+X-Gm-Message-State: AOAM531NBFrJqeSl5YThI+R6Rgt3QAEG7yVaZ3tQ+FBw4RsNI2gLZPrf
+	6495SZIY36+7PcgiG46Tk0ctvKIeadSOinQCMwiW1w==
+X-Google-Smtp-Source: ABdhPJx9j5lObP2eENnLTb3zMiXT8iz8dx+g2wCBlNZ7JkOIZrhPXIWQt7NDk4UzSw2Rwla6JcNWkiWIPIyZfsahuJ0=
+X-Received: by 2002:a05:6402:3585:: with SMTP id y5mr11143020edc.97.1611796598664;
+ Wed, 27 Jan 2021 17:16:38 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: 2XQEKAUSREFUGXN2VKZIOSCEMLHX3DCN
-X-Message-ID-Hash: 2XQEKAUSREFUGXN2VKZIOSCEMLHX3DCN
-X-MailFrom: uwe@kleine-koenig.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20201222042240.2983755-1-santosh@fossix.org> <20201222042516.2984348-1-santosh@fossix.org>
+ <20201222042516.2984348-3-santosh@fossix.org>
+In-Reply-To: <20201222042516.2984348-3-santosh@fossix.org>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 27 Jan 2021 17:16:37 -0800
+Message-ID: <CAPcyv4jv-+gFP68RKD57+=QhT_SUWqXPJ4qFgmVZfVgNkVESCg@mail.gmail.com>
+Subject: Re: [ndctl 3/5] papr: Add support to parse save_fail flag for dimm
+To: Santosh Sivaraj <santosh@fossix.org>
+Message-ID-Hash: FKINJEZIM3QWOMUMD6YXKGLGG6B5FDAT
+X-Message-ID-Hash: FKINJEZIM3QWOMUMD6YXKGLGG6B5FDAT
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2XQEKAUSREFUGXN2VKZIOSCEMLHX3DCN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FKINJEZIM3QWOMUMD6YXKGLGG6B5FDAT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-VGhlIGRyaXZlciBjb3JlIGlnbm9yZXMgdGhlIHJldHVybiB2YWx1ZSBvZiBzdHJ1Y3QgYnVzX3R5
-cGU6OnJlbW92ZSgpDQpiZWNhdXNlIHRoZXJlIGlzIG9ubHkgbGl0dGxlIHRoYXQgY2FuIGJlIGRv
-bmUuIFRvIHNpbXBsaWZ5IHRoZSBxdWVzdCB0bw0KbWFrZSB0aGlzIGZ1bmN0aW9uIHJldHVybiB2
-b2lkLCBsZXQgc3RydWN0IGRheF9kZXZpY2VfZHJpdmVyOjpyZW1vdmUoKQ0KcmV0dXJuIHZvaWQs
-IHRvby4gQWxsIHVzZXJzIGFscmVhZHkgdW5jb25kaXRpb25hbGx5IHJldHVybiAwLCB0aGlzIGNv
-bW1pdA0KbWFrZXMgaXQgb2J2aW91cyB0aGF0IHJldHVybmluZyBhbiBlcnJvciBjb2RlIGlzIGEg
-YmFkIGlkZWEgYW5kIG1ha2VzIGl0DQpvYnZpb3VzIGZvciBmdXR1cmUgZHJpdmVyIGF1dGhvcnMg
-dGhhdCByZXR1cm5pbmcgYW4gZXJyb3IgY29kZSBpc24ndA0KaW50ZW5kZWQuDQoNClNpZ25lZC1v
-ZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1d2VAa2xlaW5lLWtvZW5pZy5vcmc+DQotLS0NCiBk
-cml2ZXJzL2RheC9idXMuYyAgICB8IDQgKysrLQ0KIGRyaXZlcnMvZGF4L2J1cy5oICAgIHwgMiAr
-LQ0KIGRyaXZlcnMvZGF4L2RldmljZS5jIHwgMyArLS0NCiBkcml2ZXJzL2RheC9rbWVtLmMgICB8
-IDcgKystLS0tLQ0KIDQgZmlsZXMgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9u
-cygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgvYnVzLmMgYi9kcml2ZXJzL2RheC9idXMu
-Yw0KaW5kZXggNDk4YzYwMzMzZDYwLi4yNTNmMzdhNjEzNzEgMTAwNjQ0DQotLS0gYS9kcml2ZXJz
-L2RheC9idXMuYw0KKysrIGIvZHJpdmVycy9kYXgvYnVzLmMNCkBAIC0xNzksNyArMTc5LDkgQEAg
-c3RhdGljIGludCBkYXhfYnVzX3JlbW92ZShzdHJ1Y3QgZGV2aWNlICpkZXYpDQogCXN0cnVjdCBk
-YXhfZGV2aWNlX2RyaXZlciAqZGF4X2RydiA9IHRvX2RheF9kcnYoZGV2LT5kcml2ZXIpOw0KIAlz
-dHJ1Y3QgZGV2X2RheCAqZGV2X2RheCA9IHRvX2Rldl9kYXgoZGV2KTsNCiANCi0JcmV0dXJuIGRh
-eF9kcnYtPnJlbW92ZShkZXZfZGF4KTsNCisJZGF4X2Rydi0+cmVtb3ZlKGRldl9kYXgpOw0KKw0K
-KwlyZXR1cm4gMDsNCiB9DQogDQogc3RhdGljIHN0cnVjdCBidXNfdHlwZSBkYXhfYnVzX3R5cGUg
-PSB7DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgvYnVzLmggYi9kcml2ZXJzL2RheC9idXMuaA0K
-aW5kZXggNzJiOTJmOTU1MDlmLi4xZTk0NmFkNzc4MGEgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL2Rh
-eC9idXMuaA0KKysrIGIvZHJpdmVycy9kYXgvYnVzLmgNCkBAIC0zOSw3ICszOSw3IEBAIHN0cnVj
-dCBkYXhfZGV2aWNlX2RyaXZlciB7DQogCXN0cnVjdCBsaXN0X2hlYWQgaWRzOw0KIAlpbnQgbWF0
-Y2hfYWx3YXlzOw0KIAlpbnQgKCpwcm9iZSkoc3RydWN0IGRldl9kYXggKmRldik7DQotCWludCAo
-KnJlbW92ZSkoc3RydWN0IGRldl9kYXggKmRldik7DQorCXZvaWQgKCpyZW1vdmUpKHN0cnVjdCBk
-ZXZfZGF4ICpkZXYpOw0KIH07DQogDQogaW50IF9fZGF4X2RyaXZlcl9yZWdpc3RlcihzdHJ1Y3Qg
-ZGF4X2RldmljZV9kcml2ZXIgKmRheF9kcnYsDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgvZGV2
-aWNlLmMgYi9kcml2ZXJzL2RheC9kZXZpY2UuYw0KaW5kZXggNWRhMjk4MGJiMTZiLi5kNTMyYzg4
-NWY1NzQgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL2RheC9kZXZpY2UuYw0KKysrIGIvZHJpdmVycy9k
-YXgvZGV2aWNlLmMNCkBAIC00NTIsMTAgKzQ1Miw5IEBAIGludCBkZXZfZGF4X3Byb2JlKHN0cnVj
-dCBkZXZfZGF4ICpkZXZfZGF4KQ0KIH0NCiBFWFBPUlRfU1lNQk9MX0dQTChkZXZfZGF4X3Byb2Jl
-KTsNCiANCi1zdGF0aWMgaW50IGRldl9kYXhfcmVtb3ZlKHN0cnVjdCBkZXZfZGF4ICpkZXZfZGF4
-KQ0KK3N0YXRpYyB2b2lkIGRldl9kYXhfcmVtb3ZlKHN0cnVjdCBkZXZfZGF4ICpkZXZfZGF4KQ0K
-IHsNCiAJLyogYWxsIHByb2JlIGFjdGlvbnMgYXJlIHVud291bmQgYnkgZGV2bSAqLw0KLQlyZXR1
-cm4gMDsNCiB9DQogDQogc3RhdGljIHN0cnVjdCBkYXhfZGV2aWNlX2RyaXZlciBkZXZpY2VfZGF4
-X2RyaXZlciA9IHsNCmRpZmYgLS1naXQgYS9kcml2ZXJzL2RheC9rbWVtLmMgYi9kcml2ZXJzL2Rh
-eC9rbWVtLmMNCmluZGV4IDQwM2VjNDI0NzJkMS4uYWMyMzFjYzM2MzU5IDEwMDY0NA0KLS0tIGEv
-ZHJpdmVycy9kYXgva21lbS5jDQorKysgYi9kcml2ZXJzL2RheC9rbWVtLmMNCkBAIC0xMzYsNyAr
-MTM2LDcgQEAgc3RhdGljIGludCBkZXZfZGF4X2ttZW1fcHJvYmUoc3RydWN0IGRldl9kYXggKmRl
-dl9kYXgpDQogfQ0KIA0KICNpZmRlZiBDT05GSUdfTUVNT1JZX0hPVFJFTU9WRQ0KLXN0YXRpYyBp
-bnQgZGV2X2RheF9rbWVtX3JlbW92ZShzdHJ1Y3QgZGV2X2RheCAqZGV2X2RheCkNCitzdGF0aWMg
-dm9pZCBkZXZfZGF4X2ttZW1fcmVtb3ZlKHN0cnVjdCBkZXZfZGF4ICpkZXZfZGF4KQ0KIHsNCiAJ
-aW50IGksIHN1Y2Nlc3MgPSAwOw0KIAlzdHJ1Y3QgZGV2aWNlICpkZXYgPSAmZGV2X2RheC0+ZGV2
-Ow0KQEAgLTE3NiwxMSArMTc2LDkgQEAgc3RhdGljIGludCBkZXZfZGF4X2ttZW1fcmVtb3ZlKHN0
-cnVjdCBkZXZfZGF4ICpkZXZfZGF4KQ0KIAkJa2ZyZWUoZGF0YSk7DQogCQlkZXZfc2V0X2RydmRh
-dGEoZGV2LCBOVUxMKTsNCiAJfQ0KLQ0KLQlyZXR1cm4gMDsNCiB9DQogI2Vsc2UNCi1zdGF0aWMg
-aW50IGRldl9kYXhfa21lbV9yZW1vdmUoc3RydWN0IGRldl9kYXggKmRldl9kYXgpDQorc3RhdGlj
-IHZvaWQgZGV2X2RheF9rbWVtX3JlbW92ZShzdHJ1Y3QgZGV2X2RheCAqZGV2X2RheCkNCiB7DQog
-CS8qDQogCSAqIFdpdGhvdXQgaG90cmVtb3ZlIHB1cnBvc2VseSBsZWFrIHRoZSByZXF1ZXN0X21l
-bV9yZWdpb24oKSBmb3IgdGhlDQpAQCAtMTkwLDcgKzE4OCw2IEBAIHN0YXRpYyBpbnQgZGV2X2Rh
-eF9rbWVtX3JlbW92ZShzdHJ1Y3QgZGV2X2RheCAqZGV2X2RheCkNCiAJICogcmVxdWVzdF9tZW1f
-cmVnaW9uKCkuDQogCSAqLw0KIAlhbnlfaG90cmVtb3ZlX2ZhaWxlZCA9IHRydWU7DQotCXJldHVy
-biAwOw0KIH0NCiAjZW5kaWYgLyogQ09ORklHX01FTU9SWV9IT1RSRU1PVkUgKi8NCiANCi0tIA0K
-Mi4yOS4yDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
-aW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8g
-dW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEu
-b3JnCg==
+On Mon, Dec 21, 2020 at 8:26 PM Santosh Sivaraj <santosh@fossix.org> wrote:
+>
+> This will help in getting the dimm fail tests to run on papr family too.
+> Also add nvdimm_test compatibility string for recognizing the test module.
+>
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  ndctl/lib/libndctl.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+> index 5f09628..3fb3aed 100644
+> --- a/ndctl/lib/libndctl.c
+> +++ b/ndctl/lib/libndctl.c
+> @@ -815,6 +815,8 @@ static void parse_papr_flags(struct ndctl_dimm *dimm, char *flags)
+>                         dimm->flags.f_restore = 1;
+>                 else if (strcmp(start, "smart_notify") == 0)
+>                         dimm->flags.f_smart = 1;
+> +               else if (strcmp(start, "save_fail") == 0)
+> +                       dimm->flags.f_save = 1;
+>                 start = end + 1;
+>         }
+>         if (end != start)
+> @@ -1044,7 +1046,8 @@ NDCTL_EXPORT int ndctl_bus_is_papr_scm(struct ndctl_bus *bus)
+>         if (sysfs_read_attr(bus->ctx, bus->bus_buf, buf) < 0)
+>                 return 0;
+>
+> -       return (strcmp(buf, "ibm,pmemory") == 0);
+> +       return (strcmp(buf, "ibm,pmemory") == 0 ||
+> +               strcmp(buf, "nvdimm_test") == 0);
+
+A bit unfortunate to leak test details into the production path,
+especially when nvdimm_test is meant to be generic. It seems what you
+really want is a generic way to determine if dimm supports the common
+error state flags, right? I'd add an api for that and say yes for nfit
+and papr.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
