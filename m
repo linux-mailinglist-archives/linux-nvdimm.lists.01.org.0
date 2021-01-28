@@ -2,218 +2,206 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87F0307253
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 10:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD9A307280
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 10:23:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 268B4100F2271;
-	Thu, 28 Jan 2021 01:11:22 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=87.248.110.83; helo=sonic302-20.consmr.mail.ir2.yahoo.com; envelope-from=elizabeth773822@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic302-20.consmr.mail.ir2.yahoo.com (sonic302-20.consmr.mail.ir2.yahoo.com [87.248.110.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id A1135100F2276;
+	Thu, 28 Jan 2021 01:23:20 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0755F100F2263
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 01:11:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1611825077; bh=HKuJzIWB2foVeS7cmBCr6+VO7RGBIknZaAUJ1+yxky4=; h=Date:From:Reply-To:Subject:References:From:Subject:Reply-To; b=ZdyPThJxkXFWZSIA1aZwji8iqn+vreRRTxqoez74MCqRJFY0bH1Iijr0cYBqulg9TQoghMSduIqya0/Zgvsz+hISsG6+FSxGgSWzvfALD9qk1D2eY/qE+STkTVjWs0o8HjSSTeOvjPw+7Fg+W5zrYMnVCuw+CNiQFAnt0C8b6pCMnK9MUqeMk70mVtT6M+yR/t9DzvHoH/kab27mMcaLPHb9+woR4Y2RLKCIIDBoybCgA38LCilo5H2S9b3P2NNhf6aoCd3UXF/Df4ST92+yE9+YT0cJ5VxbHD2U3MS+jf6bUr+6GopwVl7RqPbsNoOr/YB0c1G5/8cUbjB+x4H1bg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1611825077; bh=GLIJgKBWv+l/Ut9ctMjClNahC/wS557A1s5cyWt+X75=; h=Date:From:Subject:From:Subject:Reply-To; b=fGcJhC/MM6Xm+z5QsgOgxCJ9+3Suu5xNl4dvosP51uPNezN0t0sx2ZlOHvRV6WtsOyAC7/He3Z7dZHkajn1Up4qdY6/Hz+s6OpQ0ODnR6qvOdsjx9iLNrO8NXi/eOj+zyg6Vafw9ugCIErCACMEog8FqDXoRT89oFVno4Id/LPD0YbJ44Dpa1JuP3e82e0/UOUPnt5Z6s1FTM3+jVxvRN/FMMzXJGUHwZ0Mt7dxv+lYRe6EB+fqswrFKNtecPOly8EyU/NvjQ9iEkyB28fPosCCfIoZh4RzrJwX1Mxf5edL08iCYAi2Vw98bpTlXsy4l4aACotbF2CXq5zanItBNTQ==
-X-YMail-OSG: DALQAO4VM1kHBDzKgb8MJVUt5iURhdZy0SPVwi4L_IMBNGj59rfNdWxSLgfQ9Wk
- Wjnxs1MqPlzzUCoGhlrSLuXsJJP0zWdDuIbNTwY3hIZo2c8SGIhygrwCzrYV4mCRXkoE_8cZO4.l
- gNSF3hcRr8C48CtGou5YTZfFD5eRvyFhORuHFpsQK.HBa1GkI8jFa0dLokX1N5.KqdtxVrkTuBey
- Q22aV2pfmdx7_P0yMMrn7OATrS1dz8voUrugoWOxqZCGuEgra4RfGGFeQ5tmowxhi4ESOajs1q9g
- fW6JN3f4aug4Gi53Mjq9MNQAVgc6VQ6w62hOPSiRXrMTUcpVd2zwFSyshh9RHffE1WLspp8sLL24
- gsYLYk0BISYZWay4Jks6K1DvsQdzRXPNLXHu_2.zpjYt3G4A7h0voaASAGZmesXzqSdIlc7Jpnqi
- 8Ely2GyTC04iIv9vh8V5_vdCXc2Dfuw7OTm0s8sNJNtksEZLnxsROiazw_j.7i3.NRHS0ai7GOlb
- jVDh.C9YipUT6aAQzBuTe9818NRd9unncQ7MDvEqWoZm1UZZPk9d3Xe_imBeVx7LM.zegLBrHBI8
- KjUiiqLgVO4tW1CnfXC3VXjjuVAsCZN4bfFLXTtbUOAwO89H4UkpNt9zXnSCx5CHdJkBziEXRP8u
- 8jChuhZFEqNMjNcX0SuLDODohN8RGjasb.3BPk3RdJmBYVVBxs29s0ybz_QCSgbbZQlXhtOU3CM6
- 7v8CHA4YkiSPYmWAvqTUkRj8zbTBAV_pl.ANm7YoMzAqNAtu6Z7MRaJgOT8TEi1YxZ34RqqlyB00
- mLWqAlvnGcrPjps3dqIdHv0IkZXRaHX3pmHUwfMZSGcmD1b2T5hNFjWDbTi9vJBBfWH_CMCci3jo
- uudg9eullX9x6cAXSYre5SywBMkmkEW4AgiTfXW8TEa56cpeP6d4f_DeiEE49gHEoF6NIkzeC1TJ
- WRai.d64l4ZITxOKI1pu9wTj9nT3CBR_JeqPYm84977QwsDe8GmncsOqkoYZ.3fcOr39aZ4tBGjw
- dWgUj.xQzLT_BibLj9qHOS7zbHNvwMntME.uC5ZwfnRV0xHEHY45qy0j5KcyfDzjj2e.LYQhoY1K
- Ph5mwYAmEmMw4PM9f98wS6KHEM.EOTlkOwNH3O8IAmsV4hTM1lhozzEBMUYmpNuKFn.EUS2Q1qDJ
- WF4D6f9_iREEj6Q.rFTHyW_PHsOK4JC1AeWx8LlscR5RPnRVUo14JmoTsU9YZlyZf3gJcSlrG3mK
- fLEDQHV6pWwRgRy.Qmj8IMZo.Md4QQQ6B58KSjuE1oPJbYTOOsvfqJkoWndwY6kFiYd3Rz8qLdcy
- EXUnuhPLWNXeuihUn8J6QUpZHT2N8Tj0qEulC9C1gwC8bqBCIwWT3fx.ykf2MwVFRHBaZf76ExLS
- p9WnZ2tDVKoktO3fSOg6EsdVksDykFWfxlxDt_GI6RlhQjf27zLQESKS4akgh0CjQXVyN5vZ1ef6
- CfEIYJclGRBCvKx_7ZuWA441LkfLMEuRyJlxkJFUvsdYaAMeAZmPTQ4vbzt2gWvdebkiABLtOZiG
- EP2k9Ela35wFwN3e6v9D3tvxQh6D5Z4ZGSgbWU_nRHzm9JpJajLz5.mg7qQ2Yo8lg5wYf97K9j4O
- YuAhtfQx51VvU.1MMTdemb0Xgx4CP1KL_JS0Jb0n6DZqSj4seKpD7PgKeZhB_VpWLw.KibiIz4GH
- Nb._xHcnIqxQQd8GpLfF4iD4q6mIiIvizi5upxRhMm5V8w65EAAS76p8F3XvGa5zT8yZKdLdYf6R
- nWRdG_GyogEF6MFjGAGotDXE9nktIxQxrOwMDutsqVp2KSI09201h0DLf1g.hncx8etJRP3zcCEk
- HhDb5yOL6l0edvW6zka88XT1v.BgDvCxL0kGRxLrH.heLsEHvqovLgu7Ec7EFAnPJCXUeemqzMTN
- vvKIcyIOSuWwjjC224vAI_1m95vkKM9_lZp.sqwQLyWmH6wS.zhgrVHtn18N900o7v8JMOJ2Lcmd
- Io.Abck4K.ATuK9qB_mWvaoFYJn6S2XKAOCZUEIUCTequeKwdDzkEXFzQ06aQCt_ldPS4d3ifdjj
- FHwNkd4V_EIKAmeFVrdBPGVAZbm8QCj1a.Z9fYVpz7x_6YsCLnUPTl.f1KgnbDw9uA8mf_pTFNnI
- yvwLWVy8otZ4P.Pfq3NthaCkLgtm5zd.fD25eHhF_lt5hm2wyqyZMKeQcpOYX629Z8EB_COkPvw.
- lNE2ZQKpgwJhtsPQZf0U4zjQRiyrvQlO9bxZVfTKcmNpHmuqYp_J9vcg7grlG9Xxl700Dp3Iugk1
- VysQAJAnXgHwEkSv8t3ZdsJWKaQO8uye.akI24NT5df1qUmAahWrwz3jGNT6_qKCBoMcbIh.bVmK
- rChh8_m.AiqL67oMqcespRhTvc2HFEb3a52Gn5H3.zVHPS5ZF3gPz5azR9o_mnDN2JdtJemfsk80
- WSzKuWfQW7tqi7zKQEN3_4FD0zoOcL9wGcX2kQXjSFH38lEEiv6Yxh7Ju9fbR0nFKomi.xi7wJqZ
- 1kS4SD8qOqQ1CyNVtM19gsE5_qEGeL_oZPXwsDi4.y2xKnWr5eXxK7BNAgr2cpH5W0qW7LVlqtdr
- 6E6kmI7twk.oBAKpUVQK4MKeVtY0BhO9H.dOrKRjPcrFT5NB3lchpToAEb5M3uqse3n60roCKHry
- Md14YjrNt2.TgSoVY3iRBN9Msm8K_KawoEsYR7m4YAh42l.vzDHdrnOkphom6I0hJmkYfpdIEHH1
- ruF_A4ex_4KyKZRXnirvOu7BUSN1x8lQGDYVsrwob1nj423.xUiqwTwjAYcdGKJxmn9x7QvSWgGY
- zeFyUm0kJZM.SGdOwfDs3KofI2Ndq7LG_y5ZwCKOu04S16hPGtdttu_9he_Ka4MrwfOH_Oh83aXf
- LzV_4KiRbBjPT3PHI5wOKc_cZ5W6E7Lg5fnyYy0cqH8p8auHzO1gnQqyEYVkmuM4mpQEu_hYwCEZ
- 70X8SWn63I9XpNTwXSK7x80I2wFcywmKEKFeefRL0WU9Kzcqzn8HYblUaIMx8_CCk1S3oytavDo.
- 0bWb6irPRS2nWaG28o9B2Qu8LW0XY9Ge2lCrIyiakqajJNOVFy80yJGR1EsMmyuFypkSYd0lk1mf
- JHTEapQthXmm7Ixhi_JMGP_a1j4KxjECVSkiJIW_H26eSnE_catGWRr5BX3u.2IfswDrsrmSJNLj
- v5i7h9T9f_9BN4bStw7.NR.uyGZfIr8xadOHhHARk5SQat0AWsO55.cImLvuP4DGGS1u1RoF0Bec
- ZvPJrNDNv0_POs0eDIQ6vaoSM4DkkPCRG6KtzlTVXRJHwjZ.sp1wZnOaI29GGBTQThd3QJ7w8PJg
- seCJPGRRlBzv0LeQU03mcUJpGl40otY7AAx7CZGBUleqoLutcaRWjBNbi.Lfyr.K5ktGCwEZ7Fol
- TnZ1CLyNXTKzOg3vG8nUqY11w49HwiMlNKG49uC1J.6ISLlCl5zJVJy4Nzcvc7_mnxUah7bBY4St
- 1zYtYBu_vWdmU1_xj7Jr9T.7fDVGAg7d1yRYh1ADm7YXLwR2BXpiGwH7W6VIcCMjFtQq0tuubKb7
- mgfQfcR3HxdvyGZj8ES5yYTRnIx5t0ZdW4YBzivSXTmXVt5sJMROo2nK5KZfKoi23FPf_5aGZ7X0
- 8u9GKyet3xiqBEIxmDg_Kz9Bm9y7vbgZK4SjXYNJ4My6UDzRgkTu_oAPAJrKFZEXJ3TGMa75jtq_
- e0VxZ7VRkFCwF8KPikbI5I2cosDPvbNjvLfXkXuKcr4_aWHv18O_f5Zhw22sZG2WxiGMkQq4K.k1
- 822n3dGJ4EeIOKfcw2t9ZB6Sd6tNTkdnkteNRDUaFHIb85ZswlPUQB2MN_pWa28J4dMme1Tr19RX
- x58z4Lp3mNDeKAr58iHwqhwBSfHjtfrGsuABlM4IE6Dgptsj1tM0iyszC77Beyvru0e5l4UCljlW
- Pi_.3vKnzpAfjiXXG7ZYG1zbFxifD3yiCtO3UoP0GvV5NPzMqL5OlZ1LDIrtCU72dbL.5cBUB12A
- amcVs_JbxVwPMpEL1fPVR8Wyaq8yyMup3PGURSMnOXKTZNdLDYyKV1e42lKExwV7uXID5TmT0SMB
- LQ5GJr6LRrXP0BCpPIkpGBa69MvtSkiS5Mu3jTVO_yxa_q1BY3CBTZjsIkc8Ys4ryUoMy_DgHY3p
- 2Zs2nan7opv7DYMPbnadZOQAUuzM_zYsmsvDj4t8AqkNi6QxuYRfnWfn252IYo2ga6FCmXnHYhSZ
- 3iztQ0oXOkJIjCKRJPs5TuSMR4AhD3dOqQr9hYQ9W0cc.YYaitl5rYbuK8S7Tj1RulXVrF4d96t4
- duEIs2karJfsorT4_UKD85lp5AGtjfPDw3LqShN0ofFI6LjoTXjE3eg3Lbe6TFepCv6_dAR_jF5C
- dAvdZSu784k.DxZ0HFijzrvj7AaO5PQ0A7.CpZc39KyiJK59JkD4.YqBEzCtYOjqR9ZG1lDPMYFc
- EA93qmncjtwNn47QUYmADd7tR0_E.osWk8y4z.DJOTSrqqujBydH8FvW3DiFyCHCyrAwLmFwef26
- yLTZRSjP8Jwo5CQVazzJu8twznBOOfRmrB5v3GOYlCzodn_GF4vNrxen.o4RgEWtKhwNZ44ui7xX
- whY72G0SKHXqjpw.RdVWxp7oz1paeA43Zg.sQ8blhQXmrQaWghmSesz1gqEKrzDHZKWvwiPzx3S3
- PbRLmUp.2QZXM1sas4tZKTqQFJiFGNJgMJ_gRJUNbB3kCtxK0d5Ll915AOkxl.x5oac4vz6e.hsF
- iXUxcveTMMEFvnq1BwDp1Aam0RUJP_5T9duMgnvQm1YjOJYwwyh6MloaD7MwhYN3So9uU3YUS.BE
- SJedax18ssOWKAuUe.bZth4juH5KXQdIrZ0tY0imUx48X2m8wWr6nD1gB0LvsZ_Rz3g5q.JuV3zQ
- RyifZPVFNWHRAEU8VZgLPgXRG5DyeXI2mT527BhvNQHdM.z0pQxp3A4SME3ySAs7L3LGtKM5742G
- pGQZTFMOvXa8XbrnWaOg4XkF8q4WwBb2OXueNLCIj4a_HVzozAQ8Kuc7pZ0QSeGx40CXb6RYkoii
- .VBUlpR3KkfabxBuVv13dCSTRjaMYVg4Fx3.lqpTF4qpUrHEgZOV6GaTq1IHX.nBeSjNwQf.Hxse
- Zc7a1FEtheVUCVqYLjFd3NBFFxx0P99kp53F1dym_yINwsPMgzriCP88fckw2dEnQUIICWGQXi7W
- RYqDkkO7nqToiYi.KErQl18M4OlhXyc3i3FCbMm_GsRx4cj.8uSXnY36rksSQ7.RqUzJCqSZg.QB
- rd6bFImJJghsqeqeq2WxilKjiZWwxDhqp8xFWUadLbV3yPa2G8yowyWdpDvjTL5SRKhuYA8tdjWs
- KPnL4PEphlCE99SZQjl0p.HMzJOQ42_VMrU.IIzBtmeblhEDk_0BPOQeVxWFILxXIZeHNDo4gtXv
- 24dDQ_GH6czu4jq2VZSctfe3B3rYDl5dW9WYgoRI8m2k0ZGBcL_VIt4.IZsenApUTiU25.DpT4NV
- zM2ZR0PoVhfIC51vAVUabridqIQbSJhGpbH5uLV1LBCiiIY1gzghQNxs5B5ETq2O0.H5MjAK7JTD
- q9zwIpW7OR2olbSnzqq.DN8E7tO1BzDjB6P0w6DUtenytXOrS7zoFU49OZRYFVw7hEa.8ae6uk5Q
- OVBQmmwNi05jXtOt5d63v9Wh0_Pfk8dvLZmoUHGDyZo6S2is3COry.FwBqawNK0ZxjmiQfz2mI5v
- YZRBpIEuK.KBpx8ACq5n4WOvmXK4ymeDplt6JXCvgV1sF68n2YCQDFzeFtnvSUSBL96eG_SX8Zin
- DM0c0S8jWc_4bQisQEuzjLziUkbYLCCdWGjl6FxZQa9TAARcnONr_0wIa4C9S6HpyltkzSGsO7_h
- 7FURvgqpjNkShnJel4IM7Tnt_C6d5TRn4Heeak1qbCQtsX_nqPc5Ws96Cq5o2FNUiXI9p8HV23SZ
- a7rL.5WzxxkL70WkUlg9heyCCQyGA0BvxXb4sWc344jxTEEfli5oF0JzG3G7HKUvUPI5KTnNjAk5
- OkqvQgsMTyH5LgEeRxdp4kQyYZn8SG2SndM..35iL._ZX5dFiXGz7IQLkZHBE0PBImkKXJ8D4Kcv
- Vh2dVOXJOT8WgNE.4neKNjAURoFrm55IKG1snpcAX6kSe9sZGcs1KL6LYOp1iXwEhnloduRQt8go
- acpB_a8QG..7CutwOcFVIBj6UQAO_2v9miMv.lNr4EsrCUejxbMlXXC9a_oIzNK0oQaH28XlZEGg
- ghy1Rs4ZdQCFg1DDWTVoHfFdanv7.5IElmaKRGNsLe2ZqRlHU_w_wAI9FjsnB6ARJQ4o2Vk1nTn8
- NvSXR.6tZ7KCB.7_i8QUBiU8KcPI8TOeHMX9vmAMqhNdGSGRD9G.cqxO1uZ.8eyhHLvtVdSuoxGR
- UARXcll0vsk9zCqgU81_._FTyjcPA2IC7FWVY0k3xe2h8aof8Yv6wiSgwX123iCxbxXhNPc71OEJ
- LQFULSxzD9y65oTzZb5ZagnDGjixK7kbX7hJrY2RCUSVENxytKMIvLxug77pGznj3FsSOVF3gHkD
- h04BCSqEnhzSPl6vYR8yBSGOi.bPggq4dcmOsysuWdu3oCOTGb8fYnFSrAjyU5F521gcmTltOFnj
- wBKW479ahPsTTRM8X7emhPMaQFbeeoXw9wpW6Fs6.0g09Gzu24CJxfdEQvmG1LlFvv1NeeFXRrRg
- uiYPFdRs50gg2xYHjD2AaHQGRYbLFOnGF7Ib9bOQL5PqzUERl6xhCatLH8S4A4gNRsJjcdHrqCtB
- sVfh2wnDpET.UbTStr6QFXaDiceaG4vySwrXcDkgr6HLiDRmanNCi3UuhZNeNVpt4gRPvJ5jovZu
- ulY10X0Cn66c0ArlKfNe_4YNZptTMdKQVq5CDcQAzpfuAgbmsI.UvJ2uDc8RBzSPDbGNVFpanam9
- 1jB_tHSeyMYe.sdwqk.BGJw14Ok9SiCxc2yBS7lgqWFFaV4ZH7rA2BXMVN4vEd_.Aawt1dXTy8gO
- 4RLiEOZOpCKPUtzW_HN.zGNqdyTxVyad.UXwgkT8rIfLHIdrCA.MQRZpWBf1F.Q7SKqVauDXOQWR
- 3QzWNidCYrlRUN2ImQ_8AdaUe9zMqyXVMwGywmt332BIR7W.uM1.iYsmbr2ER6ILlVjd_8LpWLT4
- LKYLL2sM_jh9cKprtal_2kFESJt.7_403MhQLX9iJa8u2_oB3D5TvJwA2LQ66GOh6kzSYprGsgYn
- Kv2nVMfN7aqovyg0HFrBJTuSVdhSxsmgewxfmdkfZB5PY9n3DorF2AVwZB8q5PPiVGpSi5gJpNvo
- PurwxE3rVw2SCr0e9cl6SlqigP9_f7GoY04YlyU37qRlXagbrdvyFbk9BCZw7c15CuNU1vDEX0j4
- XLbjb0NUBTYmofxWUdFig_Weyxd1A1ngEl6dAUg1R9LLzUFicc9DLi3_5fCVf9XYbhPCa_gSPgOW
- EOo5H9DWCIHrq4r_W8pozNf.wVsXBDt.BRTAVgflz0z2Hwm6mOldvUI.Z8Hs6LisQNF50u6b5KsE
- 4dPwsYYNYrquKsHD5iZan5VoML0HdJu82POZA8WbV7a9FE9MWh_YcjfyPl55oHNrk33dzKl3S7Ja
- ye3AOwIe_5oN2SS0OBzHqZAYh19tVZhkKUsFYvJBGB_GqlJyUGhP3z0M3A.VpYHzcchRKLHmU1sX
- XyRkG6JvslRKflXaEX0GieH0VnpSCfXxJqOgbSLpn0y9ZNqg6PhscfmpMWrveLahfzSB2pADQhyu
- sP7FTi9pNl8oxX2CWyxxIH.3ETZASq3jWU8OvC2oZGycfNrBgvCpKB88BaQfMn052hBhBxe3cwS.
- MhhdvURGh4.P.anQVrxyzHzgreSJ5AaaJ8AmOrx.0.WIgZDjI7iwQZrmtPYMWS7M36VImh_0dZjj
- gsu4eKQC4YJaKC1oO.Rzdp.t9r3AnJYx.u4VowK6l9_M7CWM13e_CLLVt6d5IS2mM4M1q2wMMmkr
- h3Psp0n_vplSo7aRCx5QFgaxwt8AqWyHldTvQLYQ5bS76AfZuyopzvKQG416xKPy_xKYNBeal3rh
- 5fo.3XFUoDTKd7zXFW6lLSixcnZE3xYzZ7igb_9eaz_ffs.LNEMuai_flG8iBejw13JhwPPPYnCq
- RgRrfSw2ZEO.bXNsHlCKEe_bShKbXhsvjIM6QBUcbKHioLs4lF2_ePTds9XqZlPaHnFX7J88XzUu
- DwQx.01XA7T.6zsnBSs5kRYL2dG9lvPdNEY3xHGnJtprbfHBB1EFCfp38Iwtq9GUrLj5q1dDLSRZ
- tdPJKEolJilYclcAp.qnGOuCHt2h0hIsukDh5cXYuKgNfE4a96.HK.8hOdiiRlFMmai9RrG9UmeG
- jDQM9Crlv4tWn4RsDDdIXMHesWjFKb7dfEXVChFO.OFAbe_f_YI7F_gOGMDbqZC4myB4asCIYztH
- 8170NbxTwbRa7gnWDaMvbQjOx0nvr340RBjmgLbMe5DBxKeQeHpxyGduIsZ23Bk361yu.I7y.6ky
- .UTLuZulGZq1N6yjnDbUDgcH_SN2aTpDzIZ1F6TmL7EdLJQs.fiE8RgWHgrMcMHVqQnwUHW7xAYj
- vacOzUWteMwU1wC5oX4zWft1xI40nGinpwps0Hvfs6ZjR0ThDZcgD7dHl3XGeBSZl28Zxqw3dBi8
- QBP0H4JfNkSAuRUEePw0ecfnn3h0op2iyE6kwGcgjuR9zXTpfw_9iVGL0RsPK4GUIlArSaHOBM8D
- 7a0wsDOWpBkKfs59px_6B0eKhz2FdeCG3xnrqMxBWnBbwF_wz1OeqAuzAL58CVo2KsfUGioHPjKC
- LJh4hET4jMQBKPoNaR8FWM8b.e.33VufBiGgKsZHVLOXAN9QaQ4UpG8rHixvNIWr8yaVxYtkuoAM
- 3t92CqsRi_D0SxFS7bwDLanZdNsBXVInnfoCEXRsgBs5EB0qdB97FcF8FnL6iMt7hnRjA9LuIgq9
- eiptdBOqs.T51r_2vhxGQuonKpq0HKxhMHS1m6NUm0sJO.3A56Y4nXV7JVFuhRlSgZwgYabg3xqo
- tSAWfP_NiTfrq4sHzrZPLyk8JSoTAFIhrpZCIAfd3Qp_fPLO.BDw23fys.ksVqMH5KssrpxU1dDT
- 6pTSSVep9QFogIjBuUqU8M1DrKRSPzNSU20FWbNNHlifG_i81pJcy9im3lNVtYvs41tnuvQZHPXr
- cRehTFZKv3TEjMJHAcFG2xIp7vqOnFGkoST.GSq_6n_Q5v9jJtr180qF1UcdlbW3HXOpYwCh4egG
- 6cUB0zdjTwAlQUQm0627vw0tU2MjV5NGvDjzJtYqLhYFzhoGNy2xaIdDlhxPkK5oTAas.q75G03l
- n19M1uLDmatvZBp2IlUBRmqUI2ZjJ.EMAZJ24U_5vWJvgo8e7tWy7Rl9xKnyyx2h1sw8ox0fqTJT
- d153iFPNVXpqbu0sorvD_9MAd3wrb1VPlAqtSdsKG_TI2j7PJS3MVh.eSHR3DVz_rcf1Uo5eE0Bu
- psEOY4HXu04LydHXXKKrxbYJyz2lL2UgvcUAQ3ALP91FasOvOWtQPbZiETCE9aZxC0N_rdSuE7nn
- ZFUijEteqBfprhReLNiAYS.YG9ID7t8uP.iDJv4gTQM_aRzDtWDH365VqpJp8To6RP.Xxlq5HNLg
- SJn1UKXiJgzDRq0xp11q.rgCSYJDSBYkrV0SRy2bJUUcdVY1opHB.KHkBZ1roGCGCucY6GIfhj8r
- kW5Ay84qodkzQzXvT803W_Ch0iO0RHM34FS.yHSebknoOB_oS4ZZPDRiAtpOr2eh3nwkDoOzN515
- 0Vxozc4e69w8SzyEQiJdPI0RRT2_82haJELXhP_dznNTslKcEcNtO8.aRv9jQTBhUr0IjtAB4gV7
- 1oqBl6CAKO4Y3w85pYB24gQkBBwn4P3gQokj4LbE7q2kv7C6UHdw5yAOdLUyq62Q4iZ7iLpHY8RP
- 1nQaqRAsLxD1po461upRPc8dIx6Ye.0C.N5lCGqpgKJ.HCy7j5unXQTedA8yAL3G5AT3zawyLQr7
- ZnN5ov9XdbsDiZH5GjY8EkXqzJNT0K4A9jmYHK8LPRtvN9Es3svNvvt1z6YA4
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Thu, 28 Jan 2021 09:11:17 +0000
-Date: Thu, 28 Jan 2021 09:11:13 +0000 (UTC)
-From: "Mrs. Elizabeth Hunter" <elizabeth773822@yahoo.com>
-Message-ID: <1207022229.75929.1611825073131@mail.yahoo.com>
-Subject: GREETINGS FROM MY HOSPITAL BED( NOT JUNK)
+	by ml01.01.org (Postfix) with ESMTPS id C4EA5100EF265
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 01:23:18 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BDB2664DBD;
+	Thu, 28 Jan 2021 09:23:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1611825798;
+	bh=wFG5EhdlVFCwH+afpQDALNPmvIOm44hDKteic5pytDI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rxsJaJjU3sN48PyjZmsBwjDAMzpV1mSDumbq6Vyhy1ylEqh17Y4BWGasGmEKM8wGb
+	 FFiXgqi9YKa2UW585N4J/UJUUiMSsvRqdthQ8lWnluP+x5F7LzK94JTif6Q9PlN4Qp
+	 0vTd4DdZTyxQs/VSO/swnV8HFYZgo19Bwx/Pip182+f3Fb3AxlbTFLjCdj8TdrjWSX
+	 h/qZFSgYAfnmiXoEsb6t5X8uFqRtKIMlLzCTMEcmb/dlZipJDPSJ67u+u2XAzNKw+U
+	 FwH99yq1Pt4VruScF6VwyzEABEVF5UHEXyz20348tQsQVXLyUoh3LOrNAXJp3tqz74
+	 76PCZTZpxL6Hg==
+Date: Thu, 28 Jan 2021 11:22:59 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
+ direct map fragmentation
+Message-ID: <20210128092259.GB242749@kernel.org>
+References: <20210121122723.3446-1-rppt@kernel.org>
+ <20210121122723.3446-8-rppt@kernel.org>
+ <20210126114657.GL827@dhcp22.suse.cz>
+ <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
+ <20210126120823.GM827@dhcp22.suse.cz>
 MIME-Version: 1.0
-References: <1207022229.75929.1611825073131.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.17648 YMailNorrin Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36
-Message-ID-Hash: 5QFHSW7423VXQNQEM7HETQPP5CM4CZX4
-X-Message-ID-Hash: 5QFHSW7423VXQNQEM7HETQPP5CM4CZX4
-X-MailFrom: elizabeth773822@yahoo.com
+Content-Disposition: inline
+In-Reply-To: <20210126120823.GM827@dhcp22.suse.cz>
+Message-ID-Hash: E4ACABJZET4PZV4HSUZYT7DZ4EOQCOO2
+X-Message-ID-Hash: E4ACABJZET4PZV4HSUZYT7DZ4EOQCOO2
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
+ Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: "Mrs. Elizabeth Hunter" <elizabethmiles010@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5QFHSW7423VXQNQEM7HETQPP5CM4CZX4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E4ACABJZET4PZV4HSUZYT7DZ4EOQCOO2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RGVhcmVzdMKgIEZyaWVuZCwNCkdyZWV0aW5ncywgcGxlYXNlIGxldCB0aGlzIG5vdCBzb3VuZCBz
-dHJhbmdlIHRvIHlvdS4gTXkgb25seSBzdXJ2aXZpbmcgbGF3eWVyIHdobyB3b3VsZCBoYXZlIGRv
-bmUgdGhpcyBmb3IgbWUgZGllZCByZWNlbnRseSAuDQpJIHByYXllZCBhbmQgZ290IHlvdXIgZW1h
-aWwgYWRkcmVzcyBmcm9tIGEgZ3Vlc3Rib29rLiBNeSBuYW1lcyBhcmUgRWxpemFiZXRoIEh1bnRl
-ciBmcm9tIEFVU1RSQUxJQSwgSSBhbSA1NSB5ZWFycyBvbGQsIEkgYW0gc3VmZmVyaW5nIGZyb20g
-YSBsb25nLXRpbWUgY2FuY2VyIG9mIHRoZSBsdW5ncyB3aGljaCBhbHNvIGFmZmVjdGVkIG15IGJy
-YWluLCBmcm9tIGFsbCBpbmRpY2F0aW9uIG15IGNvbmRpdGlvbnMgYXJlIHJlYWxseSBkZXRlcmlv
-cmF0aW5nIGFuZCBpdCBpcyBxdWl0ZSBvYnZpb3VzIHRoYXQsIGFjY29yZGluZyB0byBteSBkb2N0
-b3JzIHRoZXkgaGF2ZSBhZHZpc2VkIG1lIHRoYXQgSSBtYXkgbm90IGxpdmUgZm9yIHRoZSBuZXh0
-IE9uZSBZZWFyIGFuZCB0aGlzIGlzIGJlY2F1c2UgdGhlIGNhbmNlciBzdGFnZSBoYXMgZ290dGVu
-IHRvIGEgdmVyeSBiYWQgc3RhZ2UuIEkgd2FzIGJyb3VnaHQgdXAgZnJvbSBhIG1vdGhlcmxlc3Mg
-YmFieSdzIGhvbWUgYW5kIHdhcyBtYXJyaWVkIHRvIG15IGxhdGUgaHVzYmFuZCBmb3Igc2V2ZW4g
-eWVhcnMgd2l0aG91dCBhIGNoaWxkLCBJIGFuZCBteSBodXNiYW5kIG1vdmVkIGRvd24gdG8gVW5p
-dGVkIFN0YXRlcyBoaXMgaG9tZSBjb3VudHJ5IHNpeCB5ZWFycyBhZ28gZHVyaW5nIHRoZSB0aW1l
-IGhlIGdvdCBhIEdvdmVybm1lbnQgQ29udHJhY3Qgd29ydGggb3ZlciAkMTAwLDAwMCwwMDAgYW5k
-IHdlIGRlY2lkZWQgdG8gc2V0dGxlIGluIHRoZSBjb3VudHJ5IGJlY2F1c2Ugb2YgbXkgaHVzYmFu
-ZCdzIGludGVyZXN0IGZvciBBbWVyaWNhLiBOb3QgbG9uZyBhZ28gbXkgaHVzYmFuZCBkaWVkIGlu
-IGEgZmF0YWwgbW90b3IgYWNjaWRlbnQsIGJlZm9yZSBoaXMgZGVhdGggd2Ugd2VyZSB0cnVlIGJl
-bGlldmVycy4gU2luY2UgaGlzIGRlYXRoIEkgZGVjaWRlZCBub3QgdG8gcmUtbWFycnksIEkgc29s
-ZCBhbGwgbXkgaW5oZXJpdGVkIGJlbG9uZ2luZ3MgYW5kIGRlcG9zaXRlZCBhbGwgdGhlIHN1bSBv
-ZiBUZW4gTWlsbGlvbiBVUyBEb2xsYXJzIHdpdGggYSBCYW5rLg0KUHJlc2VudGx5LCB0aGlzIG1v
-bmV5IGlzIHN0aWxsIHdpdGggdGhlbSBhbmQgdGhlIG1hbmFnZW1lbnQganVzdCB3cm90ZSBtZSBh
-cyB0aGUgdHJ1ZSBvd25lciB0byBjb21lIGZvcndhcmQgdG8gcmVjZWl2ZSB0aGUgbW9uZXkgYW5k
-IHRoZSB2YWx1YWJsZXMgZm9yIGtlZXBpbmcgaXQgc28gbG9uZyBvciByYXRoZXIgaXNzdWUgYSBs
-ZXR0ZXIgb2YgYXV0aG9yaXphdGlvbiB0byBzb21lYm9keSB0byByZWNlaXZlIGl0IG9uIG15IGJl
-aGFsZiBzaW5jZSBJIGNhbm5vdCBjb21lIG92ZXIgYmVjYXVzZSBvZiBteSBpbGxuZXNzIG9yIHRo
-ZXkgZ2V0IGl0IGNvbmZpc2NhdGVkLiBQcmVzZW50bHksIEknbSB3aXRoIG15IGxhcHRvcCBpbiBh
-IGhvc3BpdGFsIGhlcmUgaW4gTG9uZG9uIHdoZXJlIEkgaGF2ZSBiZWVuIHVuZGVyZ29pbmcgdHJl
-YXRtZW50IGZvciBjYW5jZXIgb2YgdGhlIGx1bmcuIEl0IGlzIG15IHdpc2ggdG8gc2VlIHRoYXQg
-dGhpcyBtb25leSBpcyB1c2VkIGZvciBpbnZlc3RtZW50IHB1cnBvc2VzIGluIGFueSBwcm9maXRh
-YmxlIGJ1c2luZXNzIHZlbnR1cmUgYW5kIGFsc28sIEkgd291bGQgd2FudCAxMCUgb2YgdGhlIHRv
-dGFsIEZ1bmQgcmVsZWFzZWQgdG8gQ2hhcml0eSBPcmdhbml6YXRpb24gYW5kIGZvciB0aGUgbGVz
-cyBwcml2aWxlZ2VkIC4NCg0KUGxlYXNlIGFzc3VyZSBtZSB0aGF0IHlvdSB3aWxsIGFjdCBhY2Nv
-cmRpbmdseSBhcyBJIHN0YXRlZCBoZXJlaW4uIEhvcGluZyB0byBoZWFyIGZyb20geW91IHNvb24u
-IFBsZWFzZSBkbyByZXNwb25kIHRvIG15IHByaXZhdGUgZW1haWwgb25seSBhdCBlbGl6YWJldGht
-aWxlczAxMEBnbWFpbC5jb20uDQpXYWl0aW5nIGZvciB5b3VyIHJlcGx5VGhhbmtzTXJzLiBFbGl6
-YWJldGggSHVudGVyDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5v
-cmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlz
-dHMuMDEub3JnCg==
+On Tue, Jan 26, 2021 at 01:08:23PM +0100, Michal Hocko wrote:
+> On Tue 26-01-21 12:56:48, David Hildenbrand wrote:
+> > On 26.01.21 12:46, Michal Hocko wrote:
+> > > On Thu 21-01-21 14:27:19, Mike Rapoport wrote:
+> > > > From: Mike Rapoport <rppt@linux.ibm.com>
+> > > > 
+> > > > Removing a PAGE_SIZE page from the direct map every time such page is
+> > > > allocated for a secret memory mapping will cause severe fragmentation of
+> > > > the direct map. This fragmentation can be reduced by using PMD-size pages
+> > > > as a pool for small pages for secret memory mappings.
+> > > > 
+> > > > Add a gen_pool per secretmem inode and lazily populate this pool with
+> > > > PMD-size pages.
+> > > > 
+> > > > As pages allocated by secretmem become unmovable, use CMA to back large
+> > > > page caches so that page allocator won't be surprised by failing attempt to
+> > > > migrate these pages.
+> > > > 
+> > > > The CMA area used by secretmem is controlled by the "secretmem=" kernel
+> > > > parameter. This allows explicit control over the memory available for
+> > > > secretmem and provides upper hard limit for secretmem consumption.
+> > > 
+> > > OK, so I have finally had a look at this closer and this is really not
+> > > acceptable. I have already mentioned that in a response to other patch
+> > > but any task is able to deprive access to secret memory to other tasks
+> > > and cause OOM killer which wouldn't really recover ever and potentially
+> > > panic the system. Now you could be less drastic and only make SIGBUS on
+> > > fault but that would be still quite terrible. There is a very good
+> > > reason why hugetlb implements is non-trivial reservation system to avoid
+> > > exactly these problems.
+
+So, if I understand your concerns correct this implementation has two
+issues:
+1) allocation failure at page fault that causes unrecoverable OOM and
+2) a possibility for an unprivileged user to deplete secretmem pool and
+cause (1) to others
+
+I'm not really familiar with OOM internals, but when I simulated an
+allocation failure in my testing only the allocating process and it's
+parent were OOM-killed and then the system continued normally. 
+
+You are right, it would be better if we SIGBUS instead of OOM but I don't
+agree SIGBUS is terrible. As we started to draw parallels with hugetlbfs
+even despite it's complex reservation system, hugetlb_fault() may fail to
+allocate pages from CMA and this still will cause SIGBUS.
+
+And hugetlb pools may be also depleted by anybody by calling
+mmap(MAP_HUGETLB) and there is no any limiting knob for this, while
+secretmem has RLIMIT_MEMLOCK.
+
+That said, simply replacing VM_FAULT_OOM with VM_FAULT_SIGBUS makes
+secretmem at least as controllable and robust than hugeltbfs even without
+complex reservation at mmap() time.
+
+> > > So unless I am really misreading the code
+> > > Nacked-by: Michal Hocko <mhocko@suse.com>
+> > > 
+> > > That doesn't mean I reject the whole idea. There are some details to
+> > > sort out as mentioned elsewhere but you cannot really depend on
+> > > pre-allocated pool which can fail at a fault time like that.
+> > 
+> > So, to do it similar to hugetlbfs (e.g., with CMA), there would have to be a
+> > mechanism to actually try pre-reserving (e.g., from the CMA area), at which
+> > point in time the pages would get moved to the secretmem pool, and a
+> > mechanism for mmap() etc. to "reserve" from these secretmem pool, such that
+> > there are guarantees at fault time?
+> 
+> yes, reserve at mmap time and use during the fault. But this all sounds
+> like a self inflicted problem to me. Sure you can have a pre-allocated
+> or more dynamic pool to reduce the direct mapping fragmentation but you
+> can always fall back to regular allocatios. In other ways have the pool
+> as an optimization rather than a hard requirement. With a careful access
+> control this sounds like a manageable solution to me.
+
+I'd really wish we had this discussion for earlier spins of this series,
+but since this didn't happen let's refresh the history a bit.
+
+One of the major pushbacks on the first RFC [1] of the concept was about
+the direct map fragmentation. I tried really hard to find data that shows
+what is the performance difference with different page sizes in the direct
+map and I didn't find anything.
+
+So presuming that large pages do provide advantage the first implementation
+of secretmem used PMD_ORDER allocations to amortise the effect of the
+direct map fragmentation and then handed out 4k pages at each fault. In
+addition there was an option to reserve a finite pool at boot time and
+limit secretmem allocations only to that pool.
+
+At some point David suggested to use CMA to improve overall flexibility
+[3], so I switched secretmem to use CMA.
+
+Now, with the data we have at hand (my benchmarks and Intel's report David
+mentioned) I'm even not sure this whole pooling even required.
+
+I like the idea to have a pool as an optimization rather than a hard
+requirement but I don't see why would it need a careful access control. As
+the direct map fragmentation is not necessarily degrades the performance
+(and even sometimes it actually improves it) and even then the degradation
+is small, trying a PMD_ORDER allocation for a pool and then falling back to
+4K page may be just fine.
+
+I think we could have something like this (error handling is mostly
+omitted):
+
+static int secretmem_pool_increase(struct secretmem_ctx *ctx, gfp_t gfp)
+{
+	struct page *page = alloc_pages(gfp, PMD_PAGE_ORDER);
+
+	if (!page)
+		return -ENOMEM;
+
+	/* add large page to pool */
+	
+	return 0;
+}
+
+static struct page *secretmem_alloc_page(struct secretmem_ctx *ctx,
+					 gfp_t gfp)
+{
+	struct page *page;
+	...
+
+	if (gen_pool_avail(pool) < PAGE_SIZE) {
+		err = secretmem_pool_increase(ctx, gfp);
+		if (!err) {
+			addr = gen_pool_alloc(pool, PAGE_SIZE);
+			if (addr)
+				page = virt_to_page(addr);
+		}
+	}
+
+	if (!page)
+		page = alloc_page(gfp);
+
+	return page;	
+}
+
+[1] https://lore.kernel.org/lkml/1572171452-7958-1-git-send-email-rppt@kernel.org/
+[2] https://lore.kernel.org/lkml/20200720092435.17469-1-rppt@kernel.org/
+[3] https://lore.kernel.org/lkml/03ec586d-c00c-c57e-3118-7186acb7b823@redhat.com/#t
+
+-- 
+Sincerely yours,
+Mike.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
