@@ -1,46 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4967D307A1D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 16:56:42 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA211307A45
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 17:05:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 88506100EAB41;
-	Thu, 28 Jan 2021 07:56:40 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=3.19.106.255; helo=gentwo.org; envelope-from=cl@linux.com; receiver=<UNKNOWN> 
-Received: from gentwo.org (gentwo.org [3.19.106.255])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id DCE84100EAB44;
+	Thu, 28 Jan 2021 08:05:28 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=redhairer.li@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 20D84100EB833
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 07:56:37 -0800 (PST)
-Received: by gentwo.org (Postfix, from userid 1002)
-	id 70A813F4C1; Thu, 28 Jan 2021 15:56:36 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 6DA583F461;
-	Thu, 28 Jan 2021 15:56:36 +0000 (UTC)
-Date: Thu, 28 Jan 2021 15:56:36 +0000 (UTC)
-From: Christoph Lameter <cl@linux.com>
-X-X-Sender: cl@www.lameter.com
-To: Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
- direct map fragmentation
-In-Reply-To: <YBLA7sEKn01HXd/U@dhcp22.suse.cz>
-Message-ID: <alpine.DEB.2.22.394.2101281549390.11861@www.lameter.com>
-References: <20210121122723.3446-1-rppt@kernel.org> <20210121122723.3446-8-rppt@kernel.org> <20210126114657.GL827@dhcp22.suse.cz> <303f348d-e494-e386-d1f5-14505b5da254@redhat.com> <20210126120823.GM827@dhcp22.suse.cz> <20210128092259.GB242749@kernel.org>
- <YBK1kqL7JA7NePBQ@dhcp22.suse.cz> <alpine.DEB.2.22.394.2101281326360.10563@www.lameter.com> <YBLA7sEKn01HXd/U@dhcp22.suse.cz>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	by ml01.01.org (Postfix) with ESMTPS id B66BC100EAB41
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 08:05:25 -0800 (PST)
+IronPort-SDR: /WEnxfbH/6WiFJov1gzs7LISLAig02YGKHtjmzeaT2T13LFyaijzg5Qu0pE0lbeJegzcsqOXTL
+ idIa67JF3/dw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9878"; a="180335920"
+X-IronPort-AV: E=Sophos;i="5.79,383,1602572400";
+   d="scan'208";a="180335920"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2021 08:05:02 -0800
+IronPort-SDR: enxwOT95FyvZcDAGyFtN/yx0hY4Z0Df5SS5mkxRF6UVxvUq08SFeBN/pkpdAVo5WvpDoB4u95W
+ RPRBH3qy/x5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,383,1602572400";
+   d="scan'208";a="473881816"
+Received: from unknown (HELO localhost.itwn.intel.com) ([10.5.250.84])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Jan 2021 08:05:01 -0800
+From: redhairer <redhairer.li@intel.com>
+To: linux-nvdimm@lists.01.org,
+	dan.j.williams@intel.com
+Subject: [PATCH 1/1] ndctl/namespace: Fix disable-namespace accounting relative to seed devices
+Date: Thu, 28 Jan 2021 22:03:39 +0800
+Message-Id: <20210128140339.3080-1-redhairer.li@intel.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <CAPcyv4iG9XMfrhKn+vSmU2RjyeaHtiF2pprGJ6t-56uOtPNSJg@mail.gmail.com>
+References: <CAPcyv4iG9XMfrhKn+vSmU2RjyeaHtiF2pprGJ6t-56uOtPNSJg@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID-Hash: VVBYP7CLVVSYIL5AJOCDFA5YQRGZUAMR
-X-Message-ID-Hash: VVBYP7CLVVSYIL5AJOCDFA5YQRGZUAMR
-X-MailFrom: cl@linux.com
+Message-ID-Hash: 3Y7SYR3XCO2OAX2NLZL3U7EHLZQ3JNMO
+X-Message-ID-Hash: 3Y7SYR3XCO2OAX2NLZL3U7EHLZQ3JNMO
+X-MailFrom: redhairer.li@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho And
- ersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+CC: Redhairer Li <redhairer.li@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VVBYP7CLVVSYIL5AJOCDFA5YQRGZUAMR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3Y7SYR3XCO2OAX2NLZL3U7EHLZQ3JNMO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,42 +55,139 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, 28 Jan 2021, Michal Hocko wrote:
+From: Redhairer Li <redhairer.li@intel.com>
 
-> > > If you kill the allocating process then yes, it would work, but your
-> > > process might be the very last to be selected.
-> >
-> > OOMs are different if you have a "constrained allocation". In that case it
-> > is the fault of the process who wanted memory with certain conditions.
-> > That memory is not available. General memory is available though. In that
-> > case the allocating process is killed.
->
-> I do not see this implementation would do anything like that. Neither
-> anything like that implemented in the oom killer. Constrained
-> allocations (cpusets/memcg/mempolicy) only do restrict their selection
-> to processes which belong to the same domain. So I am not really sure
-> what you are referring to. The is only a global knob to _always_ kill
-> the allocating process on OOM.
+Seed namespaces are included in "ndctl disable-namespace all". However
+since the user never "creates" them it is surprising to see
+"disable-namespace" report 1 more namespace relative to the number that
+have been created. Catch attempts to disable a zero-sized namespace:
 
-Constrained allocations refer to allocations where the NUMA nodes are
-restricted or something else does not allow the use of arbitrary memory.
-The OOM killer changes its behavior. In the past we fell back to killing
-the calling process.
-
-See constrained_alloc() in mm/oom_kill.c
-
-static const char * const oom_constraint_text[] = {
-        [CONSTRAINT_NONE] = "CONSTRAINT_NONE",
-        [CONSTRAINT_CPUSET] = "CONSTRAINT_CPUSET",
-        [CONSTRAINT_MEMORY_POLICY] = "CONSTRAINT_MEMORY_POLICY",
-        [CONSTRAINT_MEMCG] = "CONSTRAINT_MEMCG",
-};
-
-/*
- * Determine the type of allocation constraint.
- */
-static enum oom_constraint constrained_alloc(struct oom_control *oc)
+Before:
 {
+  "dev":"namespace1.0",
+  "size":"492.00 MiB (515.90 MB)",
+  "blockdev":"pmem1"
+}
+{
+  "dev":"namespace1.1",
+  "size":"492.00 MiB (515.90 MB)",
+  "blockdev":"pmem1.1"
+}
+{
+  "dev":"namespace1.2",
+  "size":"492.00 MiB (515.90 MB)",
+  "blockdev":"pmem1.2"
+}
+disabled 4 namespaces
+
+After:
+{
+  "dev":"namespace1.0",
+  "size":"492.00 MiB (515.90 MB)",
+  "blockdev":"pmem1"
+}
+{
+  "dev":"namespace1.3",
+  "size":"492.00 MiB (515.90 MB)",
+  "blockdev":"pmem1.3"
+}
+{
+  "dev":"namespace1.1",
+  "size":"492.00 MiB (515.90 MB)",
+  "blockdev":"pmem1.1"
+}
+disabled 3 namespaces
+
+Signed-off-by: Redhairer Li <redhairer.li@intel.com>
+---
+ ndctl/lib/libndctl.c | 10 ++++++++--
+ ndctl/namespace.c    |  8 ++++----
+ ndctl/region.c       |  2 +-
+ 3 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+index 36fb6fe..2f6d806 100644
+--- a/ndctl/lib/libndctl.c
++++ b/ndctl/lib/libndctl.c
+@@ -4602,6 +4602,7 @@ NDCTL_EXPORT int ndctl_namespace_disable_safe(struct ndctl_namespace *ndns)
+ 	const char *bdev = NULL;
+ 	char path[50];
+ 	int fd;
++	unsigned long long size = ndctl_namespace_get_size(ndns);
+ 
+ 	if (pfn && ndctl_pfn_is_enabled(pfn))
+ 		bdev = ndctl_pfn_get_block_device(pfn);
+@@ -4631,8 +4632,13 @@ NDCTL_EXPORT int ndctl_namespace_disable_safe(struct ndctl_namespace *ndns)
+ 					devname, bdev, strerror(errno));
+ 			return -errno;
+ 		}
+-	} else
+-		ndctl_namespace_disable_invalidate(ndns);
++	} else {
++		if (size == 0)
++			/* No disable necessary due to no capacity allocated */
++			return 1;
++		else
++			ndctl_namespace_disable_invalidate(ndns);
++	}
+ 
+ 	return 0;
+ }
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index 0c8df9f..1feb74d 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -1125,7 +1125,7 @@ static int namespace_prep_reconfig(struct ndctl_region *region,
+ 	}
+ 
+ 	rc = ndctl_namespace_disable_safe(ndns);
+-	if (rc)
++	if (rc < 0)
+ 		return rc;
+ 
+ 	ndctl_namespace_set_enforce_mode(ndns, NDCTL_NS_MODE_RAW);
+@@ -1431,7 +1431,7 @@ static int dax_clear_badblocks(struct ndctl_dax *dax)
+ 		return -ENXIO;
+ 
+ 	rc = ndctl_namespace_disable_safe(ndns);
+-	if (rc) {
++	if (rc < 0) {
+ 		error("%s: unable to disable namespace: %s\n", devname,
+ 			strerror(-rc));
+ 		return rc;
+@@ -1455,7 +1455,7 @@ static int pfn_clear_badblocks(struct ndctl_pfn *pfn)
+ 		return -ENXIO;
+ 
+ 	rc = ndctl_namespace_disable_safe(ndns);
+-	if (rc) {
++	if (rc < 0) {
+ 		error("%s: unable to disable namespace: %s\n", devname,
+ 			strerror(-rc));
+ 		return rc;
+@@ -1478,7 +1478,7 @@ static int raw_clear_badblocks(struct ndctl_namespace *ndns)
+ 		return -ENXIO;
+ 
+ 	rc = ndctl_namespace_disable_safe(ndns);
+-	if (rc) {
++	if (rc < 0) {
+ 		error("%s: unable to disable namespace: %s\n", devname,
+ 			strerror(-rc));
+ 		return rc;
+diff --git a/ndctl/region.c b/ndctl/region.c
+index 3edb9b3..4552c4a 100644
+--- a/ndctl/region.c
++++ b/ndctl/region.c
+@@ -70,7 +70,7 @@ static int region_action(struct ndctl_region *region, enum device_action mode)
+ 	case ACTION_DISABLE:
+ 		ndctl_namespace_foreach(region, ndns) {
+ 			rc = ndctl_namespace_disable_safe(ndns);
+-			if (rc)
++			if (rc < 0)
+ 				return rc;
+ 		}
+ 		rc = ndctl_region_disable_invalidate(region);
+-- 
+2.27.0.windows.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
