@@ -1,150 +1,124 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28103079B3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 16:30:01 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8503079D4
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 16:34:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 36997100F227C;
-	Thu, 28 Jan 2021 07:30:00 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2E4A6100F225C
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 07:29:56 -0800 (PST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10SFLNHs039731;
-	Thu, 28 Jan 2021 10:29:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=BVjEY1aLHVWHgW1JrF/80HMLKbeNHJOxCddk5Vowny0=;
- b=Yevp9Xe/XpYW7upEtY53faLYNKGYJRhwMIPFh60FKc4taK+WYZNlt9DuMlv50W+vD8ly
- 2Rgn1wAtfZ67UHGAQox0ckGTHb2oqn8IRLrq6uji204LoWnlpRR/NJvaQoNMZAYuZoRB
- xq5g9FnHp3LeVO8cdzrK3YGMvO7FDRvmLBEO3Bozb/XQOHQ2DzX+6rnoqWjwTMEhZddr
- OSY1Bqpso6OHC3FRHlTJDvMjoEa7jrOfz6jrQpvjF8wk8FaCtw52sLccAjFbJMIFQoQE
- 6XeEX2cRqytx0yaPYDFC9xg51JYkA/RXWVyaAqGSpVtCTzcEu1fQc+RJ2y/rtgp7FeAK Lg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 36by8ysn02-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Jan 2021 10:29:12 -0500
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10SFLgJY041664;
-	Thu, 28 Jan 2021 10:29:11 -0500
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 36by8ysmyf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Jan 2021 10:29:11 -0500
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10SFNCCV013626;
-	Thu, 28 Jan 2021 15:29:09 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma04dal.us.ibm.com with ESMTP id 36agvf5abj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Jan 2021 15:29:09 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10SFT8Om25821540
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Jan 2021 15:29:08 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C0D67805C;
-	Thu, 28 Jan 2021 15:29:08 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 707E67805F;
-	Thu, 28 Jan 2021 15:28:59 +0000 (GMT)
-Received: from jarvis.int.hansenpartnership.com (unknown [9.85.133.159])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu, 28 Jan 2021 15:28:59 +0000 (GMT)
-Message-ID: <2b6a5f22f0b062432186b89eeef58e2ba45e09c1.camel@linux.ibm.com>
-Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
- direct map fragmentation
-From: James Bottomley <jejb@linux.ibm.com>
-To: Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>
-Date: Thu, 28 Jan 2021 07:28:57 -0800
-In-Reply-To: <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
-References: <20210121122723.3446-1-rppt@kernel.org>
-	 <20210121122723.3446-8-rppt@kernel.org>
-	 <20210126114657.GL827@dhcp22.suse.cz>
-	 <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
-	 <20210126120823.GM827@dhcp22.suse.cz> <20210128092259.GB242749@kernel.org>
-	 <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
-User-Agent: Evolution 3.34.4 
+	by ml01.01.org (Postfix) with ESMTP id 2FC5E100EB330;
+	Thu, 28 Jan 2021 07:34:37 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=66.235.173.17; helo=automobileindia.com; envelope-from=huimeyflenios@urbanskinrx.com; receiver=<UNKNOWN> 
+Received: from automobileindia.com (unknown [66.235.173.17])
+	by ml01.01.org (Postfix) with ESMTP id 2555A100EBB76
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 07:34:34 -0800 (PST)
+To: linux-nvdimm@lists.01.org
+Subject: Waypoint flying
+Message-ID: <6a79ce666801322b358207c8f5ac60a6@onedayglass.com>
+Date: Thu, 28 Jan 2021 12:16:34 +0100
+From: "Roy Wilson" <huimeaylenios@urbanskinrx.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-28_08:2021-01-28,2021-01-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- suspectscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
- phishscore=0 clxscore=1011 adultscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101280074
-Message-ID-Hash: 6ITOSCQWRXWMNYNHXKWMCCRAXGP2G5HD
-X-Message-ID-Hash: 6ITOSCQWRXWMNYNHXKWMCCRAXGP2G5HD
-X-MailFrom: jejb@linux.ibm.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: GJHIRE4YYF6VZDEKEFSPIO5HLIIQBFWH
+X-Message-ID-Hash: GJHIRE4YYF6VZDEKEFSPIO5HLIIQBFWH
+X-MailFrom: huimeyflenios@urbanskinrx.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon
-  <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jejb@linux.ibm.com
+Reply-To: kesonreyoresp@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ITOSCQWRXWMNYNHXKWMCCRAXGP2G5HD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GJHIRE4YYF6VZDEKEFSPIO5HLIIQBFWH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============1724671004155702871=="
+
+--===============1724671004155702871==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"text-align:
+left;"><span><span><span>Hi,</span></span></span><span><span><span></span=
+></span></span></span></span></span></span>
+<p>How are you? I hope this email finds you well.<br />Just want to check
+with you whether you have got our email from last week?&nbsp;</p>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"text-align:
+left;"><span><span><span></span></span></span></span></span></span></span=
+>
+<p>This email is just let you know that the following new GPS drone is
+here, <span>ready to ship to customers all over the world.&nbsp;<br /><br
+/><img
+src=3D"https://www.bestdronedose.com/wp-content/uploads/2020/03/a541bdfa-=
+b6e1-403a-a525-165558ad3579.__CR00970600_PT0_SX970_V1___.jpg"
+width=3D"500" height=3D"309" /><br /></span></p>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"text-align:
+left;"><span>Specification<br />Weight : 520 g / 18.34 oz<br />Max flight
+time: 30 Mins<br />Charging time: 3.5 Hours (5V=3D3A adapter)<br />Contro=
+l
+range: 1200M/3937ft<br />Live video transmission range: 1000M=EF=BC=88Dep=
+ends on
+phone device and environment=EF=BC=89<br />Dimension: 6.9*4.1*3.15 IN
+(Folding)/17.51*15.94*3.15 IN (Unfolding)<br /><br />Detail costs for
+different volume.<br />1-10 pieces&nbsp; 359.00 each&nbsp;<br />10-50
+pieces 329.00 each<br />50+ pieces 289.00 each<br /><br />If you want to
+order this drone, just reply to our email with your delivery address, we
+will ready the shipment.&nbsp;<br /><br /><br /><img
+src=3D"https://gearsdeals.com/wp-content/uploads/2020/06/Ruko-F11-Pro-Dro=
+ne.jpg"
+width=3D"500" height=3D"281" /><br />What in the packpage.<br />1 x 4K Dr=
+one<br
+/>2 x 11.1V 2500mAH Batteries=EF=BC=881 in the drone and 1 in the case=EF=
+=BC=89total 60
+mins flying<br />1 x Transmitter<br />1 x User manual<br />1 x
+Screwdriver<br />4 x Extra propeller blades<br /><br /><img
+src=3D"https://topazelectronicsexport.com/wp-content/uploads/2019/11/51bO=
+YmRnRSL._SL1001_.jpg"
+width=3D"451" height=3D"451" /></span><img
+src=3D"https://www.thedronelogic.com/wp-content/uploads/2020/01/Ruko-F11-=
+Pro-battery.jpg"
+width=3D"451" height=3D"451" /><br /><br />Some features:<br />5G WiFi 4K=
+ UHD
+Camera<br />4K HD camera with 130&deg; wide angle and 90&deg; adjustable
+lens catch much more details for the footage. <br />5GHz FPV transmission
+deliver a smooth live video feed from distance of about 1000 meters.<br
+/><br /></span></span></span><span style=3D"display: block; text-align:
+left;"><span style=3D"text-align: left;">Waypoint flying<br />In the
+Waypoint-Fly Mode, you can just focus on composing, it will fly along wit=
+h
+the route you set on smartphone screen.<br /><br />Follow me mode<br
+/>Automatically track and follow you, capture your movement with a
+particular aerial videos, free your hands to take complex shots<br /><br
+/>GPS Auto return<br />GPS accurate positioning, prevent your drone from
+lost. It will always returns to home automatically whenever Battery is lo=
+w,
+<br />signal is lost or You press one key return.<br /><br />If you want =
+to
+order this drone, just reply to our email with your delivery address, we
+will ready the shipment.&nbsp;<br /><br />Best Regards,<br />Roy Wilson<b=
+r
+/><br /></span></span>
+</body>
+</html>
+
+--===============1724671004155702871==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-
-On Thu, 2021-01-28 at 14:01 +0100, Michal Hocko wrote:
-> On Thu 28-01-21 11:22:59, Mike Rapoport wrote:
-[...]
-> > One of the major pushbacks on the first RFC [1] of the concept was
-> > about the direct map fragmentation. I tried really hard to find
-> > data that shows what is the performance difference with different
-> > page sizes in the direct map and I didn't find anything.
-> > 
-> > So presuming that large pages do provide advantage the first
-> > implementation of secretmem used PMD_ORDER allocations to amortise
-> > the effect of the direct map fragmentation and then handed out 4k
-> > pages at each fault. In addition there was an option to reserve a
-> > finite pool at boot time and limit secretmem allocations only to
-> > that pool.
-> > 
-> > At some point David suggested to use CMA to improve overall
-> > flexibility [3], so I switched secretmem to use CMA.
-> > 
-> > Now, with the data we have at hand (my benchmarks and Intel's
-> > report David mentioned) I'm even not sure this whole pooling even
-> > required.
-> 
-> I would still like to understand whether that data is actually
-> representative. With some underlying reasoning rather than I have run
-> these XYZ benchmarks and numbers do not look terrible.
-
-My theory, and the reason I made Mike run the benchmarks, is that our
-fear of TLB miss has been alleviated by CPU speculation advances over
-the years.  You can appreciate this if you think that both Intel and
-AMD have increased the number of levels in the page table to
-accommodate larger virtual memory size 5 instead of 3.  That increases
-the length of the page walk nearly 2x in a physical system and even
-more in a virtual system.  Unless this were massively optimized,
-systems would have slowed down significantly.  Using 2M pages only
-eliminates one level and 2G pages eliminates 2, so I theorized that
-actually fragmentation wouldn't be the significant problem we once
-thought it was and asked Mike to benchmark it.
-
-The benchmarks show that indeed, it isn't a huge change in the data TLB
-miss time, I suspect because data is nicely continuous nowadays and the
-prediction that goes into the CPU optimizations quite easy.  ITLB
-fragmentation actually seems to be quite a bit worse, likely because we
-still don't have branch prediction down to an exact science.
-
-James
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1724671004155702871==--
