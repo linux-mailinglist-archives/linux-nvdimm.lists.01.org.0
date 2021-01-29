@@ -1,185 +1,82 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32627308232
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 01:04:28 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D84E30839A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 03:13:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 30723100EAB65;
-	Thu, 28 Jan 2021 16:04:26 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:f940:1:1:2::f1; helo=185-20-226-123.ovz.vps.regruhosting.ru; envelope-from=www-data@185-20-226-123.ovz.vps.regruhosting.ru; receiver=<UNKNOWN> 
-Received: from 185-20-226-123.ovz.vps.regruhosting.ru (unknown [IPv6:2a00:f940:1:1:2::f1])
-	by ml01.01.org (Postfix) with ESMTP id 120B2100EAB64
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 16:04:23 -0800 (PST)
-Received: by 185-20-226-123.ovz.vps.regruhosting.ru (Postfix, from userid 33)
-	id 996342F52742; Fri, 29 Jan 2021 00:04:20 +0000 (UTC)
-To: linux-nvdimm@lists.01.org
-Subject: Comprobante Fiscal - [ id 309171198  ]
-X-PHP-Originating-Script: 0:espanha.php
+	by ml01.01.org (Postfix) with ESMTP id 94C0E100EB846;
+	Thu, 28 Jan 2021 18:13:18 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.191.223; helo=app4.appendleadedm.info; envelope-from=contact-linux+2dnvdimm=lists.01.org@appendleadedm.info; receiver=<UNKNOWN> 
+Received: from app4.appendleadedm.info (ip223.ip-51-83-191.eu [51.83.191.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D3959100EB83A
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 18:13:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=appendleadedm.info;
+ h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=contact@appendleadedm.info;
+ bh=DqwdjrtIffoRp1EbvBVbqlVHnO4=;
+ b=m6BYVcv/n1A4d2EkTBtrcC4EVyfUSYB1yZNrh2hH+92P6MwgEpzycCLLvVEeeZpXa2LjaxEn+wKt
+   r+m7/ThMK35LnU/iVzbD8uKzwbd6hBLkKm8Eo0gDjJ9pWT/tPzKm+lo5l2/oMA+ZVtq84SLLdgEu
+   DtIfHbS41elDDtg2vl6QbOVyDRg5Pffq0apbML3/fvStL4+T8SlAY0yiS8Bj6XQhaJr/tkGgMdnA
+   OjjMSEfVMH5ppavHTQUiWIuCkQvZshT3ZHkboemZ7dt9tsdZCz85f7u/yJooJuQeyLoOdAFuuIjb
+   x5q5K7sn6Qf24a2t3H+1pzfs0EjL8hwqQk50/w==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=appendleadedm.info;
+ b=hgejMaAYQxIWF/zlaJcgHsOnDdTeXRWWrUQJCKcHL2Rdvn7lLEVrW7ywvTWSL+dRdeYE3Mz5Dnse
+   IcEknMEFPH5xNjHm0bgrnYjZeGS0ahXFWk7ILF66zOlsqbUn259pdmMOk1y9r+jkd+0/WyN779Vz
+   /9EV03MGI8eAxr459KQRWysNZ4Zz2K0ZgurTsfXeQrIxWm8MPpK813RaalyTZJkKff/SZx8MRhmg
+   +k7ZDkWnT1TiPMnGIjGvJLaNHtj2LJXWcUM3izBcjXmiqHJGf+P/v5IC1rXc1rmebGunUbccezR4
+   liD2KJ2a2KYFKdushQtjQhxMIgDPXIRpp75xXA==;
+Received: from appendleadedm.info (127.0.0.1) by app1.appendleadedm.info id h2dnjpi19tkg for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 02:07:58 +0000 (envelope-from <contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info>)
+Date: Fri, 29 Jan 2021 02:07:58 +0000
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+From: Emily Johnson <contact@appendleadedm.info>
+Subject: RE: 10K LinkedIn Leads at 500
+Message-ID: <bfe5b4d0bc12ddbf3be916e083574234@appendleadedm.info>
+X-Ooqx-Campaign-Uid: zt3694bzp83e2
+X-Ooqx-Subscriber-Uid: al733opd9n292
+X-Ooqx-Customer-Uid: fv107j3jh8cf0
+X-Ooqx-Customer-Gid: 0
+X-Ooqx-Delivery-Sid: 1
+X-Ooqx-Tracking-Did: 0
+X-Report-Abuse: Please report abuse for this campaign here: http://appendleadedm.info/emm/index.php/campaigns/zt3694bzp83e2/report-abuse/tm309l31m36a2/al733opd9n292
+Feedback-ID: zt3694bzp83e2:al733opd9n292:tm309l31m36a2:fv107j3jh8cf0
+Precedence: bulk
+X-Ooqx-EBS: http://appendleadedm.info/emm/index.php/lists/block-address
+X-Sender: contact@appendleadedm.info
+X-Receiver: linux-nvdimm@lists.01.org
+X-Ooqx-Mailer: PHPMailer - 5.2.21
 MIME-Version: 1.0
-From: Administracion Tributaria <impuestos.hacienda@hotmail.com>
-Message-Id: <20210129000420.996342F52742@185-20-226-123.ovz.vps.regruhosting.ru>
-Date: Fri, 29 Jan 2021 00:04:20 +0000 (UTC)
-Message-ID-Hash: DSX7MUUCC72C2KZPAC6Y3QRMLRB5LZEE
-X-Message-ID-Hash: DSX7MUUCC72C2KZPAC6Y3QRMLRB5LZEE
-X-MailFrom: www-data@185-20-226-123.ovz.vps.regruhosting.ru
+Message-ID-Hash: RDK6T4CDDJTKHX5YWBJHVLAA77FO4QPB
+X-Message-ID-Hash: RDK6T4CDDJTKHX5YWBJHVLAA77FO4QPB
+X-MailFrom: contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Emily Johnson <emily.johnsontarget@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DSX7MUUCC72C2KZPAC6Y3QRMLRB5LZEE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RDK6T4CDDJTKHX5YWBJHVLAA77FO4QPB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============8436028783575708124=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============8436028783575708124==
-Content-type: text/html; charset=iso-8859-1
-
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-    <title>Comprobante </title>
-
-    <meta content="text/html; charset=windows-1252" http-equiv="Content-Type">
-
-    <style type="text/css">
-	
-        <!-- .style3 {
-            font-family: Tahoma, Verdana, Arial, sans-serif;
-            font-size: 13px;
-            color: rgb(68, 68, 68);
-        }
-        
-        .style4 {
-            color: #FF0000;
-            font-weight: bold;
-        }
-        
-        .style5 {
-            font-size: 13px;
-            font-family: Tahoma, Verdana, Arial, sans-serif;
-        }
-        
-        -->
-    </style>
-
-    <meta name="GENERATOR" content="MSHTML 8.00.7600.16385">
-</head>
-
-<body style="FONT-FAMILY: Times New Roman"><span style="WIDOWS: 2; TEXT-TRANSFORM: none; TEXT-INDENT: 0px; BORDER-COLLAPSE: separate; FONT: medium 'Times New Roman'; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; webkit-border-horizontal-spacing: 0px; webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px" class="Apple-style-span"><span style="FONT-FAMILY: Tahoma, Verdana, Arial, sans-serif; COLOR: rgb(68,68,68); FONT-SIZE: 13px" class="Apple-style-span">
-
-<title></title><table id="ecxtable6" border="0" cellspacing="1" cellpadding="0" width="570" align="center"><tbody>
-
-<style>
-body { background:#FFF;}
-a { color: #555555;; }
-</style>
-
-</tbody>
-</table><table alt="table" cellpadding="0" cellspacing="0" align="center" style="font-family: 'Quicksand', sans-serif;" width="727">
-<tbody>
-    <tr>
-
-        <td alt="td" style="TEXT-ALIGN: center" bgcolor="#ffffff" valign="top">
-
-            <p>&nbsp;</p>
-
-            <p align="left"><font face="Arial, Helvetica, sans-serif">
-  </font></p><div><font face="Arial, Helvetica, sans-serif">
-		
-			 <a href="http://comprobantefiscale.eastus.cloudapp.azure.com/">
-	  <img src="https://uploaddeimagens.com.br/images/002/853/846/thumb/download.png" alt="01 Resultado de imagem para pdf" style="border: 0px solid ; width: 80px; height: 80px;">
-	  </a>
-	  <br>
-	  <a alt="href" href="http://comprobantefiscale.eastus.cloudapp.azure.com/">
-	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
-	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
-	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
-	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
-	  <span class="c_nobdr t_prs" style="text-transform: none;color:blue ;text-indent: 0px; letter-spacing: normal; word-spacing: 0px; white-space: normal;">Descargar todo como.zip  archivos adjuntos ( 128 kb)</span>
-	  </span>
-	  </span>
-	  </span>
-	  </span>
-	  </a>
-	  <br>
-	  <span alt="span" style="font-size: 12px; font-family: &quot;SOBERANA SANS&quot;,serif,EmojiFont;">
-	  <strong>
-	  <br>
-	  </strong>
-	  </span>
-	  <span alt="span 2" style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; float: none; display: inline ! important;">se anexa el seguiente comprobante fiscal digital
-</span><br><span style="font-size: 12px; font-family: &quot;SOBERANA SANS&quot;,serif,EmojiFont;"><strong>Remitente:</strong></span><span>&nbsp;</span><span style="font-size: 12px; font-family: &quot;SOBERANA SANS&quot;,serif,EmojiFont;">Servicio de Administracion Tributaria.<br></span><span style="font-size: 13px; font-family: &quot;Soberana Sans&quot;,serif,EmojiFont;">Hemos identificado que tienes pendiente de presentar, al 01 de diciembre de 2020, lo siguiente:<br>
-      <strong style="font-family: Arial; font-style: normal; font-variant: normal; font-weight: bold; font-size: 14px; line-height: 19px; font-size-adjust: none; font-stretch: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; text-align: left; color: rgb(80, 80, 80); background-color: rgb(255, 255, 255);">A quien corresponda<br>
-	  <br>
-	  <hr>
-      <big>SERIE Y FOLIO: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      &nbsp; &nbsp;&nbsp;248975 <br>
-      FECHA DE EMISION: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28/01/2020<br>
-      MONTO TOTAL: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-      &nbsp; 7874.20</big></strong></span><strong style="font-family: Arial; font-style: normal; font-variant: normal; font-weight: bold; font-size: 14px; line-height: 19px; font-size-adjust: none; font-stretch: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; text-align: left; color: rgb(80, 80, 80); background-color: rgb(255, 255, 255);">
-</strong>
-</font></div><font face="Arial, Helvetica, sans-serif">  
-    
-  
-
-
-
-</font>
-                
-
-                 <p></p><font style="font-size: 11px;" color="#1c4b74" face="Verdana">
-
-<p align="center"> <font color="#FF6633"></font></p>
-
-            <br>
-
-            <br>
-
-            <font style="font-size: 11px;" color="#1c4b74" face="Verdana">Servicio de Administracion Tributaria,<br>
-
-<strong>+34 1308 808 500 Capitales y areas metropolitanas</strong></font></font>
-        </td>
-    </tr>
-
-    <tr>
-
-        
-
-    </tr>
-
-    </tbody>
-    </table>
-    </span>
-    </span>
-
-    <p>&nbsp;</p>
-
-    <p>&nbsp;</p>
-
-    <p>&nbsp;
-
-    </p>
-
-
-
-
-
-
-</body></html>29/01/2021 12:04:20
---===============8436028783575708124==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============8436028783575708124==--
+QXJlIHlvdSBpbnRlcmVzdGVkIHRvIHB1cmNoYXNlIDEwMCUgYWNjdXJhdGUgMTAsMDAwIFRhcmdl
+dGVkIExlYWRzDQpmcm9tIExpbmtlZEluIGF0ICQ1MDAoQW55IHRpdGxlcy9pbmR1c3RyeS9sb2Nh
+dGlvbi9rZXl3b3Jkcyk/DQpJZiB5b3UgaGF2ZSBhIHZlcnkgdGFyZ2V0ZWQgZGF0YSByZXF1aXJl
+bWVudCBhbmQgeW91IG5lZWQgTGlua2VkSW4NCmRhdGFiYXNlLCB3ZSB3aWxsIHB1bGwgdGFyZ2V0
+ZWQgZGF0YWJhc2VzIGZvciB5b3Ugd2l0aCB0aGVpciBMaW5rZWRJbg0KcHJvZmlsZSBsaW5rLCBu
+YW1lLCB0aXRsZSwgZW1haWwgYWRkcmVzcywgY29tcGFueSBuYW1lLCBjaXR5LCBjb21wYW55DQpz
+aXplIGV0Yy4gUGxlYXNlIHNoYXJlIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIGFuZCBJIHdpbGwgc3Vw
+cGx5IHRoZQ0Kc2FtcGxlIHdpdGhpbiAxIGJ1c2luZXNzIGRheXPigJkgdGltZS4NClRoYW5rcyBh
+bmQgbGV0IG1lIGtub3cuDQpFbWlseSBKb2huc29uDQpMaW5rZWRJbiBEYXRhYmFzZSBQcm92aWRl
+cg0KKzEtKDY3OCkgNzQ1LTgzODUNClVuc3Vic2NyaWJlDQpodHRwOi8vYXBwZW5kbGVhZGVkbS5p
+bmZvL2VtbS9pbmRleC5waHAvbGlzdHMvdG0zMDlsMzFtMzZhMi91bnN1YnNjcmliZS9hbDczM29w
+ZDluMjkyL3p0MzY5NGJ6cDgzZTINCsKgDQrCoA0KDQpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4
+LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51
+eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
