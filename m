@@ -1,53 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE743085B5
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 07:28:28 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6162308625
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 08:04:18 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 03747100EAAEF;
-	Thu, 28 Jan 2021 22:28:26 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id EF5CA100EAB70
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 22:28:21 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.79,384,1602518400";
-   d="scan'208";a="103973638"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 29 Jan 2021 14:28:18 +0800
-Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
-	by cn.fujitsu.com (Postfix) with ESMTP id 14C804CE6791;
-	Fri, 29 Jan 2021 14:28:15 +0800 (CST)
-Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
- G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Fri, 29 Jan 2021 14:28:15 +0800
-Received: from irides.mr.mr.mr (10.167.225.141) by
- G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Fri, 29 Jan 2021 14:28:15 +0800
-From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-mm@kvack.org>,
-	<linux-fsdevel@vger.kernel.org>, <dm-devel@redhat.com>
-Subject: [PATCH RESEND v2 10/10] fs/dax: Remove useless functions
-Date: Fri, 29 Jan 2021 14:27:57 +0800
-Message-ID: <20210129062757.1594130-11-ruansy.fnst@cn.fujitsu.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210129062757.1594130-1-ruansy.fnst@cn.fujitsu.com>
-References: <20210129062757.1594130-1-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id 0C435100EAB7B;
+	Thu, 28 Jan 2021 23:04:17 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 78C5D100EAB62
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 23:04:14 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6692D60234;
+	Fri, 29 Jan 2021 07:04:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1611903853;
+	bh=B8baj/kr8egXx07AKTfXmu2q+uVtPa7Wa10vxWLTyX4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FU1gKzkR0Kkuw4BUPc2Ykvl/qSOzFXlBbHnlbTvI/BhKT7ahDUpGEZB46gpU40Y83
+	 MoHNwFp1wY6tLb5AUTCsnEfd/AMZYsjtoOTM/ubtkBakz4JEJpx2QSQ5qDWK5JBhpB
+	 4v3NJredQAUcuf0ikqua2sKTx8pGC/pdnTjma60/EtjBbJKLV0sBexjvYgwWm6cmAr
+	 6YkTn12NhzoZ5vWMbb1h+pYot7MLL4lAT5rK7YbxkDbSaKqIWEB24dlTSavj0W7G0i
+	 ikyrL756m9C6l5UyrhfShwTx10Viq23ua1S5t39e8a1T6A4j5m1JHtrkXMph6V4jLt
+	 ck06v8VwMSCEw==
+Date: Fri, 29 Jan 2021 09:03:55 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: James Bottomley <jejb@linux.ibm.com>
+Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
+ direct map fragmentation
+Message-ID: <20210129070355.GC242749@kernel.org>
+References: <20210121122723.3446-1-rppt@kernel.org>
+ <20210121122723.3446-8-rppt@kernel.org>
+ <20210126114657.GL827@dhcp22.suse.cz>
+ <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
+ <20210126120823.GM827@dhcp22.suse.cz>
+ <20210128092259.GB242749@kernel.org>
+ <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
+ <2b6a5f22f0b062432186b89eeef58e2ba45e09c1.camel@linux.ibm.com>
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 14C804CE6791.AECA7
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: OPEFRIKTFXNMAOVBPUMZWRE72O4CCJBS
-X-Message-ID-Hash: OPEFRIKTFXNMAOVBPUMZWRE72O4CCJBS
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, agk@redhat.com, snitzer@redhat.com, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+Content-Disposition: inline
+In-Reply-To: <2b6a5f22f0b062432186b89eeef58e2ba45e09c1.camel@linux.ibm.com>
+Message-ID-Hash: WCHPYKE6WYUJUKGAKPGBIOPPOLQBA2FF
+X-Message-ID-Hash: WCHPYKE6WYUJUKGAKPGBIOPPOLQBA2FF
+X-MailFrom: rppt@kernel.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Anders
+ en <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OPEFRIKTFXNMAOVBPUMZWRE72O4CCJBS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WCHPYKE6WYUJUKGAKPGBIOPPOLQBA2FF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,96 +61,62 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Since owner tarcking is triggerred by pmem device, these functions are
-useless.  So remove it.
+On Thu, Jan 28, 2021 at 07:28:57AM -0800, James Bottomley wrote:
+> On Thu, 2021-01-28 at 14:01 +0100, Michal Hocko wrote:
+> > On Thu 28-01-21 11:22:59, Mike Rapoport wrote:
+> [...]
+> > > One of the major pushbacks on the first RFC [1] of the concept was
+> > > about the direct map fragmentation. I tried really hard to find
+> > > data that shows what is the performance difference with different
+> > > page sizes in the direct map and I didn't find anything.
+> > > 
+> > > So presuming that large pages do provide advantage the first
+> > > implementation of secretmem used PMD_ORDER allocations to amortise
+> > > the effect of the direct map fragmentation and then handed out 4k
+> > > pages at each fault. In addition there was an option to reserve a
+> > > finite pool at boot time and limit secretmem allocations only to
+> > > that pool.
+> > > 
+> > > At some point David suggested to use CMA to improve overall
+> > > flexibility [3], so I switched secretmem to use CMA.
+> > > 
+> > > Now, with the data we have at hand (my benchmarks and Intel's
+> > > report David mentioned) I'm even not sure this whole pooling even
+> > > required.
+> > 
+> > I would still like to understand whether that data is actually
+> > representative. With some underlying reasoning rather than I have run
+> > these XYZ benchmarks and numbers do not look terrible.
+> 
+> My theory, and the reason I made Mike run the benchmarks, is that our
+> fear of TLB miss has been alleviated by CPU speculation advances over
+> the years.  You can appreciate this if you think that both Intel and
+> AMD have increased the number of levels in the page table to
+> accommodate larger virtual memory size 5 instead of 3.  That increases
+> the length of the page walk nearly 2x in a physical system and even
+> more in a virtual system.  Unless this were massively optimized,
+> systems would have slowed down significantly.  Using 2M pages only
+> eliminates one level and 2G pages eliminates 2, so I theorized that
+> actually fragmentation wouldn't be the significant problem we once
+> thought it was and asked Mike to benchmark it.
+> 
+> The benchmarks show that indeed, it isn't a huge change in the data TLB
+> miss time, I suspect because data is nicely continuous nowadays and the
+> prediction that goes into the CPU optimizations quite easy.  ITLB
+> fragmentation actually seems to be quite a bit worse, likely because we
+> still don't have branch prediction down to an exact science.
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
----
- fs/dax.c | 46 ----------------------------------------------
- 1 file changed, 46 deletions(-)
+Another thing is that normally useful work done by userspace so data
+accesses are dominated by userspace and any change in dTLB miss rate for
+kernel data accesses is only a small fraction of all misses.
 
-diff --git a/fs/dax.c b/fs/dax.c
-index c64c3a0e76a6..e20a5df03eec 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -323,48 +323,6 @@ static unsigned long dax_end_pfn(void *entry)
- 	for (pfn = dax_to_pfn(entry); \
- 			pfn < dax_end_pfn(entry); pfn++)
- 
--/*
-- * TODO: for reflink+dax we need a way to associate a single page with
-- * multiple address_space instances at different linear_page_index()
-- * offsets.
-- */
--static void dax_associate_entry(void *entry, struct address_space *mapping,
--		struct vm_area_struct *vma, unsigned long address)
--{
--	unsigned long size = dax_entry_size(entry), pfn, index;
--	int i = 0;
--
--	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
--		return;
--
--	index = linear_page_index(vma, address & ~(size - 1));
--	for_each_mapped_pfn(entry, pfn) {
--		struct page *page = pfn_to_page(pfn);
--
--		WARN_ON_ONCE(page->mapping);
--		page->mapping = mapping;
--		page->index = index + i++;
--	}
--}
--
--static void dax_disassociate_entry(void *entry, struct address_space *mapping,
--		bool trunc)
--{
--	unsigned long pfn;
--
--	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
--		return;
--
--	for_each_mapped_pfn(entry, pfn) {
--		struct page *page = pfn_to_page(pfn);
--
--		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
--		WARN_ON_ONCE(page->mapping && page->mapping != mapping);
--		page->mapping = NULL;
--		page->index = 0;
--	}
--}
--
- static struct page *dax_busy_page(void *entry)
- {
- 	unsigned long pfn;
-@@ -543,7 +501,6 @@ static void *grab_mapping_entry(struct xa_state *xas,
- 			xas_lock_irq(xas);
- 		}
- 
--		dax_disassociate_entry(entry, mapping, false);
- 		xas_store(xas, NULL);	/* undo the PMD join */
- 		dax_wake_entry(xas, entry, true);
- 		mapping->nrexceptional--;
-@@ -680,7 +637,6 @@ static int __dax_invalidate_entry(struct address_space *mapping,
- 	    (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY) ||
- 	     xas_get_mark(&xas, PAGECACHE_TAG_TOWRITE)))
- 		goto out;
--	dax_disassociate_entry(entry, mapping, trunc);
- 	xas_store(&xas, NULL);
- 	mapping->nrexceptional--;
- 	ret = 1;
-@@ -774,8 +730,6 @@ static void *dax_insert_entry(struct xa_state *xas,
- 	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
- 		void *old;
- 
--		dax_disassociate_entry(entry, mapping, false);
--		dax_associate_entry(new_entry, mapping, vmf->vma, vmf->address);
- 		/*
- 		 * Only swap our new entry into the page cache if the current
- 		 * entry is a zero page or an empty entry.  If a normal PTE or
+> James
+> 
+> 
+
 -- 
-2.30.0
-
-
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
