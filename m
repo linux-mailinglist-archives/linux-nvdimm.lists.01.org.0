@@ -2,170 +2,181 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDB308723
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 09:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EAA308774
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 10:39:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9F50E100EAB06;
-	Fri, 29 Jan 2021 00:51:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4C3ED100EAB0B;
+	Fri, 29 Jan 2021 01:39:25 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=149.72.233.132; helo=wrqvzwvq.outbound-mail.sendgrid.net; envelope-from=bounces+7689-cf7e-linux-nvdimm=lists.01.org@email.proprofs.com; receiver=<UNKNOWN> 
+Received: from wrqvzwvq.outbound-mail.sendgrid.net (wrqvzwvq.outbound-mail.sendgrid.net [149.72.233.132])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 887AC100EAB05
-	for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 00:51:18 -0800 (PST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1611910277; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oz5cMvs61w9nxAoe4HzR3mysk0/Hr5mRI47kmCm2DS0=;
-	b=JlAN3/6ogutWOafvXtaRPUY2CcqVH8YluGJuxVw3j5M8pdVfxjPuXWqJ1TpSUCsjvBL8Jh
-	hawPaBwcHUKIexzg5OBrQB9L0nFn7he5WG1sTy30AdaWWlyFyJAU8bOKTbKEvAVjrh2dU9
-	LZzhuvObvkNyN52W4YE1B2PWXA7ohhg=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id C1ABBACB0;
-	Fri, 29 Jan 2021 08:51:16 +0000 (UTC)
-Date: Fri, 29 Jan 2021 09:51:15 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
- direct map fragmentation
-Message-ID: <YBPMg/C5Sb78gFEB@dhcp22.suse.cz>
-References: <20210121122723.3446-1-rppt@kernel.org>
- <20210121122723.3446-8-rppt@kernel.org>
- <20210126114657.GL827@dhcp22.suse.cz>
- <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
- <20210126120823.GM827@dhcp22.suse.cz>
- <20210128092259.GB242749@kernel.org>
- <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
- <20210129072128.GD242749@kernel.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210129072128.GD242749@kernel.org>
-Message-ID-Hash: GBS3VFF5P2D3JEVANSOVALP64KJWBJQT
-X-Message-ID-Hash: GBS3VFF5P2D3JEVANSOVALP64KJWBJQT
-X-MailFrom: mhocko@suse.com
+	by ml01.01.org (Postfix) with ESMTPS id 5E44A100EB346
+	for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 01:39:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proprofs.com;
+	h=content-transfer-encoding:content-type:from:mime-version:subject:
+	reply-to:to;
+	s=smtpapi; bh=um8tC8EfF8C5OPeH66VcoYGBrJ+Qx/44PH38rQjQwKY=;
+	b=KhVP5+sdfXniziFWEd0qygp7u1R5B4PQD70hDYmp2kQMhry3G9nxpVEmf0hm82aoMlM7
+	MohourV+Tb2D8zMm7//fIZKuPPiEM31lgPQaZnKnzeJ8fOmhM0RxIvxUhUuoUZrSCFOKWC
+	33d2/eDoRlgS3J3+KgoH1tHpIAIRhTMws=
+Received: by filterdrecv-p1las1-asgard-b-644f7d6f57-mxrfr with SMTP id filterdrecv-p1las1-asgard-b-644f7d6f57-mxrfr-14-6013D7C7-78
+        2021-01-29 09:39:19.725882204 +0000 UTC m=+34959.663854711
+Received: from NzY4OQ (unknown)
+	by geopod-ismtpd-4-3 (SG) with HTTP
+	id HvIbSNUeT1OJqOKFCCcmDg
+	Fri, 29 Jan 2021 09:39:19.581 +0000 (UTC)
+Date: Fri, 29 Jan 2021 09:39:19 +0000 (UTC)
+From: Mariawillasey44 <no-reply@proprofs.com>
+Mime-Version: 1.0
+Message-ID: <HvIbSNUeT1OJqOKFCCcmDg@geopod-ismtpd-4-3>
+Subject: Email message from Ms Maria Willasey
+X-SG-EID: 
+ =?us-ascii?Q?WhKQZfIcxPpTdvSEMRWdisSe=2FQ8CZV1GdlE2FNjkB51Vlj=2FOOTeGVEKHtEuRXu?=
+ =?us-ascii?Q?iNqIm12+Mf5Mq9Um1QVlNJ4VT9xHT21eJ+m5+P3?=
+ =?us-ascii?Q?xpVUgcEUT9xTHnUpKHV3bOm6I18xyz7feJ+OLAN?=
+ =?us-ascii?Q?fKzaB5m20CYMVV5XzlzAX7OrNL1v4rpJcHMvsJf?=
+ =?us-ascii?Q?P6RgzmejsdnmW1KCkiv6Tb6Ozxx63dQArgX=2FchN?=
+ =?us-ascii?Q?4UpL0UtcV=2FWKFvf46e5IdtGH38AeBeyhC=2FAkhYX?=
+ =?us-ascii?Q?qSQlyEC0EzMgtyjzw0Gwg=3D=3D?=
+X-SG-ID: 
+ =?us-ascii?Q?N2C25iY2uzGMFz6rgvQsb7cbaDyJZLA7KVzRy=2FCHJRk+97Hv4lxyB6S8=2FimLFf?=
+ =?us-ascii?Q?P0F2aAyaCSZ+aYzFkowleB5gPWr2ykZdA18jOkF?=
+ =?us-ascii?Q?iJpFL=2FVuC2LpDCiAzfFHBj+m8HA?=
+To: linux-nvdimm@lists.01.org
+X-Entity-ID: nJqfvQ3eGVSRS3fDZMPvHg==
+Message-ID-Hash: 2SHRJZOQG6UMUKQNHURSN2X6LBP4X6GH
+X-Message-ID-Hash: 2SHRJZOQG6UMUKQNHURSN2X6LBP4X6GH
+X-MailFrom: bounces+7689-cf7e-linux-nvdimm=lists.01.org@email.proprofs.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
- Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: mariawillasey44@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GBS3VFF5P2D3JEVANSOVALP64KJWBJQT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2SHRJZOQG6UMUKQNHURSN2X6LBP4X6GH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============2968984053347432009=="
+
+--===============2968984053347432009==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=iso-8859-1
+
+<html><head></head><body>
+                                            <div bgcolor=3D"#FAFAFA">
+                                            <table width=3D"100%" bgcolor=
+=3D"#FAFAFA" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" align=3D"cent=
+er">
+                                            <tbody>
+                                            <tr>
+                                            <td align=3D"center">
+                                            <table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" style=3D"width:164px;margin:12px auto 0 auto;">
+                                            <tbody>
+                                            <tr>
+                                            <td valign=3D"bottom" align=3D"=
+center">
+                                            <a href=3D"http://www.proprofs.=
+com/classroom/3005330">
+                                            <img style=3D"padding-left:5px;=
+height:35px" src=3D"https://www.proprofs.com/api/classroom/images/Classroom=
+.png?v=3D1" alt=3D"ProProfs Classroom" border=3D"0" class=3D"CToWUd">
+                                            </a>
+                                            </td>
+                                            </tr>
+                                            </tbody>
+                                            </table>
+                                            <table width=3D"90%" style=3D"m=
+ax-width:600px;margin-top:0%!important;margin-bottom:2%!important">
+                                            <tbody><tr style=3D"height:80px=
+;background:#2c7db7">
+                                            <td style=3D"text-align:center;=
+font-size:27px">
+                                            <span style=3D"color: #fff;text=
+-decoration: none;">Your Classroom Link</span>
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                            <td>
+                                            <div style=3D"color:#505050;fon=
+t-family:Arial;font-size:15px;line-height:150%;background:#fff;padding:4%">
+                                            <p>Dear one<br />
+<br />
+With your permission I want to present to you my sincere initiatives and pr=
+oposals.<br />
+<br />
+In the spirit of faith, solidarity, humanity and common sense appeal to you=
+r wisdom and kindness as a human of this planet with the request friendship=
+ sustains me if you consider setting up a foundation for humanitarian work =
+with 6.650 million American United States dollars inherited from my late hu=
+sband who was an industrialist.<br />
+<br />
+I decided to donate these funds because I have no child and my days are num=
+bered according to my physician who always examines my health because I was=
+ diagnosed by serious lung and breast cancer and will be going for my third=
+ surgical operation next week, I want you to use these funds nationally and=
+ internationally to people without hope, against which we must not be carel=
+ess.<br />
+<br />
+I am Mrs Maria Willasey, and childless, always cheerful with a desire to do=
+ good and give those who need help. The principles which I rely in life are=
+ faith, humanity, solidarity, respect and trust.<br />
+<br />
+Please always put me in your daily prayers so that God will grant more days=
+ to my leaving and confirm these funds into your hand.<br />
+<br />
+Hoping to hearing from you soonest with your information that I will submit=
+ to the bank for the transfer of this money to your account and your delays=
+ in replying to this message will create an avenue of searching for another=
+ person that will understand the nature of my situation in other to handle =
+this donation funds gloriously to the Kingdom of God.<br />
+<br />
+I am urgently expecting your kind acceptance reply through my private email=
+ address (<a href=3D"mailto:mariawillasey44@gmail.com" target=3D"_blank">ma=
+riawillasey44@gmail.com</a>) Remain blessed with your family.<br />
+Mrs. Maria Willasey</p>
+
+                                            </div>
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                            <td align=3D"center" style=3D"b=
+order-top:1px #f1f1f1 solid;padding:10px 0px 10px 0px"><font face=3D"Arial"=
+ style=3D"font-size:11px;color:#cccccc">
+                                            <span style=3D"font-size:12px">=
+Copyright =A9 2005 - 2021 ProProfs.com</span></font>
+                                            </td>
+                                            </tr>
+                                            </tbody>
+                                            </table>
+                                            </td>
+                                            </tr>
+                                            </tbody>
+                                            </table>
+                                            </div><img src=3D"http://email.=
+proprofs.com/wf/open?upn=3DoDb6ny51mUB6FExYn3rQhp9v-2BSEotJ75cJ9XNLugTFBDNC=
+KocIMEiOVVzZvvf98CT68NGif3biJmPlrWAAP6zvR6WmJBlCsHEcwLp32CKPbv4CIRrIu-2B2lV=
+moXkp2R6SYAbbzRxJLZ2JFA7g51rboee6InE8f6-2FgPZ4JgI1tdjXofKAMttr5q52ouiuiM5GI=
+trvJ2Zh53gh46F-2F1DBTZnGCdQ4QgRMBOS4dS5UTzrKJBHvCh3zhHpc88y2h5fONnMg8YMz8qC=
+vuI3fXkRVXlI6qLyZwNmzZGoFnC4875GqfOhLk3sxG-2FFhzCcpheNEWCUPdXpwiUiMhnf-2FKi=
+-2B2jZoQ-3D-3D" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=3D"hei=
+ght:1px !important;width:1px !important;border-width:0 !important;margin-to=
+p:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-=
+left:0 !important;padding-top:0 !important;padding-bottom:0 !important;padd=
+ing-right:0 !important;padding-left:0 !important;"/></body>
+                                            </html>
+--===============2968984053347432009==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Fri 29-01-21 09:21:28, Mike Rapoport wrote:
-> On Thu, Jan 28, 2021 at 02:01:06PM +0100, Michal Hocko wrote:
-> > On Thu 28-01-21 11:22:59, Mike Rapoport wrote:
-> > 
-> > > And hugetlb pools may be also depleted by anybody by calling
-> > > mmap(MAP_HUGETLB) and there is no any limiting knob for this, while
-> > > secretmem has RLIMIT_MEMLOCK.
-> > 
-> > Yes it can fail. But it would fail at the mmap time when the reservation
-> > fails. Not during the #PF time which can be at any time.
-> 
-> It may fail at $PF time as well:
-> 
-> hugetlb_fault()
->         hugeltb_no_page()
->                 ...
->                 alloc_huge_page()
->                         alloc_gigantic_page()
->                                 cma_alloc()
->                                         -ENOMEM; 
-
-I would have to double check. From what I remember cma allocator is an
-optimization to increase chances to allocate hugetlb pages when
-overcommiting because pages should be normally pre-allocated in the pool
-and reserved during mmap time. But even if a hugetlb page is not pre
-allocated then this will get propagated as SIGBUS unless that has
-changed.
-  
-> > > That said, simply replacing VM_FAULT_OOM with VM_FAULT_SIGBUS makes
-> > > secretmem at least as controllable and robust than hugeltbfs even without
-> > > complex reservation at mmap() time.
-> > 
-> > Still sucks huge!
->  
-> Any #PF can get -ENOMEM for whatever reason. Sucks huge indeed.
-
-I certainly can. But it doesn't in practice because most allocations
-will simply not fail and rather invoke OOM killer directly. Maybe there
-are cases which still might fail (higher order, weaker reclaim
-capabilities etc) but that would result in a bug in the end because the
-#PF handler would trigger the oom killer.
-
-[...]
-> > I would still like to understand whether that data is actually
-> > representative. With some underlying reasoning rather than I have run
-> > these XYZ benchmarks and numbers do not look terrible.
-> 
-> I would also very much like to see, for example, reasoning to enabling 1GB
-> pages in the direct map beyond "because we can" (commits 00d1c5e05736
-> ("x86: add gbpages switches") and ef9257668e31 ("x86: do kernel direct
-> mapping at boot using GB pages")).
-> 
-> The original Kconfig text for CONFIG_DIRECT_GBPAGES said
-> 
->           Enable gigabyte pages support (if the CPU supports it). This can
->           improve the kernel's performance a tiny bit by reducing TLB
->           pressure.
-> 
-> So it is very interesting how tiny that bit was.
-
-Yeah and that sucks! Because it is leaving us with speculations now. I
-hope you do not want to repeat the same mistake now and leave somebody
-in the future in the same situation.
-
-> > > I like the idea to have a pool as an optimization rather than a hard
-> > > requirement but I don't see why would it need a careful access control. As
-> > > the direct map fragmentation is not necessarily degrades the performance
-> > > (and even sometimes it actually improves it) and even then the degradation
-> > > is small, trying a PMD_ORDER allocation for a pool and then falling back to
-> > > 4K page may be just fine.
-> > 
-> > Well, as soon as this is a scarce resource then an access control seems
-> > like a first thing to think of. Maybe it is not really necessary but
-> > then this should be really justified.
-> 
-> And what being a scarce resource here?
-
-A fixed size pool shared by all users of this feature.
-
-> If we consider lack of the direct
-> map fragmentation as this resource, there enough measures secretmem
-> implements to limit user ability to fragment the direct map, as was already
-> discussed several times. Global limit, memcg and rlimit provide enough
-> access control already.
-
-Try to do a simple excercise. You have X amout of secret memory. How do
-you distribute that to all interested users (some of them adversaries)
-based on the above. Global limit is a DoS vector potentially, memcg is a
-mixed bag of all other memory and it would become really tricky to
-enforece proportion of the X while having other memory consumed and
-rlimit is per process rather than per user.
-
-Look at how hugetlb had to develop its cgroup controler to distribute
-the pool among workloads. Then it has turned out that even reservations
-have to be per workload. Quite a convoluted stuff evolved around that
-feature because it turned out that the initial assumption that only few
-users would be using the pool simply didn't pass the reality check.
-
-As I've mentioned in other response to James. If the direct map
-manipulation is not as big of a problem as most of us dogmatically
-believed then things become much simpler. There is no need for global
-pool and you are back to mlock kinda model.
--- 
-Michal Hocko
-SUSE Labs
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============2968984053347432009==--
