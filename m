@@ -2,70 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A1A30859C
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 07:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5043085AE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 07:28:13 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5BEA2100EAB70;
-	Thu, 28 Jan 2021 22:24:38 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8D877100EAB6F
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 22:24:35 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id l18so5806023pji.3
-        for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 22:24:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=Bd6R58wUJvAcnB/Gl2aPwFx5YSMoLj1S3qRYt9x/ML8=;
-        b=PcYRZnIo1JKsnac6Zf97qLmUi+vf2BZpVMLY9ccn+E+S/B5N0OyAXc13h2blesLVpx
-         mVX/z2oZHEfRJcZ5mRwriR2x9PCMSs8kVVp97vao0+oujgcJR1xelNFoKYRBrpEEC04E
-         X/Rez2AhYY5f0UnI8F2ZgDbafbrK0VKlYwNpXM+98u+wnXB4+SvxJxRrqvnwjc/Au384
-         2AxgfIPDLH16fAMO1jmXGSuK75ok7RqB4DPZ7poYEZrJo7qzkc/gckmj1z17n+IahmxA
-         CEpG8EtSuywiGzq35TpBr78qc62YZpt3megkWHAgab6f06GhTzoLeJkiurbzeNytv0lm
-         0BNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=Bd6R58wUJvAcnB/Gl2aPwFx5YSMoLj1S3qRYt9x/ML8=;
-        b=dSbZd6eIUj5SqJJ8Kc2TIIqUr/gwpLGWEGYpsfGJ2zkBlZian7ks/0spjO0oJat1VL
-         Cc4ypxSMvAiP/mQuPYMXHHy5RtSXPXiogauo531AXW9IFIoqbgiRZph+fpqsjj+aDqFu
-         zlrnZhOIqVOQpNKXjocwBRwfLizyDj7Q+nrL0AGWK2Zbxb6KHCwKSi5vv2v4SXvWltjH
-         ZGVlmk0pyw8WwSwFeH9bFfo8+ce3Ncljf9WLHYpTaVqYoQxyUTpHmDJQTzPs7NAaFHdb
-         8HC+TKtcaggFWjveFwLC9/hg1Jyh3u86hsACmMK9X8SosUOkH1z/sKI3DglPueMDotiG
-         j2ZA==
-X-Gm-Message-State: AOAM531k6/xLzq77PTz42xjEoir2R+UdapOhT7awQux7g8vyODtHTT4K
-	6I9DhFaPpGCU2xhelbK5q2O6HQ==
-X-Google-Smtp-Source: ABdhPJwxC5OTicCqM25MKPmljQoJI/oYcyerAR5K4buUbEvUyFbBHH9tlVIjrOtXdpqYr6HkP5t7KQ==
-X-Received: by 2002:a17:90b:19c7:: with SMTP id nm7mr3211525pjb.20.1611901474470;
-        Thu, 28 Jan 2021 22:24:34 -0800 (PST)
-Received: from localhost ([2409:4072:6d15:137:55da:c919:236a:4ad6])
-        by smtp.gmail.com with ESMTPSA id cu5sm6525168pjb.7.2021.01.28.22.24.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 22:24:33 -0800 (PST)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [ndctl 5/5] Use page size as alignment value
-In-Reply-To: <CAPcyv4inaEKt4s5vNGsbfidCz+biWJk6QTLyOMWB05iFreOMfA@mail.gmail.com>
-References: <20201222042240.2983755-1-santosh@fossix.org>
- <20201222042516.2984348-1-santosh@fossix.org>
- <20201222042516.2984348-5-santosh@fossix.org>
- <CAPcyv4inaEKt4s5vNGsbfidCz+biWJk6QTLyOMWB05iFreOMfA@mail.gmail.com>
-Date: Fri, 29 Jan 2021 11:54:30 +0530
-Message-ID: <87wnvwuuox.fsf@santosiv.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTP id 13F03100EAB7E;
+	Thu, 28 Jan 2021 22:28:11 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id 4B99B100EAB70
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 22:28:08 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.79,384,1602518400";
+   d="scan'208";a="103973619"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 29 Jan 2021 14:28:05 +0800
+Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
+	by cn.fujitsu.com (Postfix) with ESMTP id 304B448990D2;
+	Fri, 29 Jan 2021 14:28:01 +0800 (CST)
+Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Fri, 29 Jan 2021 14:28:01 +0800
+Received: from irides.mr.mr.mr (10.167.225.141) by
+ G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
+ id 15.0.1497.2 via Frontend Transport; Fri, 29 Jan 2021 14:28:01 +0800
+From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
+	<linux-nvdimm@lists.01.org>, <linux-mm@kvack.org>,
+	<linux-fsdevel@vger.kernel.org>, <dm-devel@redhat.com>
+Subject: [PATCH RESEND v2 00/10] fsdax: introduce fs query to support reflink
+Date: Fri, 29 Jan 2021 14:27:47 +0800
+Message-ID: <20210129062757.1594130-1-ruansy.fnst@cn.fujitsu.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Message-ID-Hash: TFZCU4GALX4ZD6UF4CHWXRFHZIH472PP
-X-Message-ID-Hash: TFZCU4GALX4ZD6UF4CHWXRFHZIH472PP
-X-MailFrom: santosh@fossix.org
+X-yoursite-MailScanner-ID: 304B448990D2.AA014
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: HEMDAACJLHM3HGXSI4DKXUMMTFTGOB6M
+X-Message-ID-Hash: HEMDAACJLHM3HGXSI4DKXUMMTFTGOB6M
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+CC: darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, agk@redhat.com, snitzer@redhat.com, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TFZCU4GALX4ZD6UF4CHWXRFHZIH472PP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HEMDAACJLHM3HGXSI4DKXUMMTFTGOB6M/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,102 +54,98 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
+This patchset is aimed to support shared pages tracking for fsdax.
 
-> On Mon, Dec 21, 2020 at 8:26 PM Santosh Sivaraj <santosh@fossix.org> wrote:
->>
->> The alignment sizes passed to ndctl in the tests are all hardcoded to 4k,
->> the default page size on x86. Change those to the default page size on that
->> architecture (sysconf/getconf). No functional changes otherwise.
->>
->> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
->> ---
->>  test/dpa-alloc.c    | 23 ++++++++++++++---------
->>  test/multi-dax.sh   |  6 ++++--
->>  test/sector-mode.sh |  4 +++-
->>  3 files changed, 21 insertions(+), 12 deletions(-)
->>
->> diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
->> index 10af189..ff6143e 100644
->> --- a/test/dpa-alloc.c
->> +++ b/test/dpa-alloc.c
->> @@ -48,12 +48,13 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->>         struct ndctl_region *region, *blk_region = NULL;
->>         struct ndctl_namespace *ndns;
->>         struct ndctl_dimm *dimm;
->> -       unsigned long size;
->> +       unsigned long size, page_size;
->>         struct ndctl_bus *bus;
->>         char uuid_str[40];
->>         int round;
->>         int rc;
->>
->> +       page_size = sysconf(_SC_PAGESIZE);
->>         /* disable nfit_test.1, not used in this test */
->>         bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
->>         if (!bus)
->> @@ -134,11 +135,11 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->>                         return rc;
->>                 }
->>                 ndctl_namespace_disable_invalidate(ndns);
->> -               rc = ndctl_namespace_set_size(ndns, SZ_4K);
->> +               rc = ndctl_namespace_set_size(ndns, page_size);
->>                 if (rc) {
->> -                       fprintf(stderr, "failed to init %s to size: %d\n",
->> +                       fprintf(stderr, "failed to init %s to size: %lu\n",
->>                                         ndctl_namespace_get_devname(ndns),
->> -                                       SZ_4K);
->> +                                       page_size);
->>                         return rc;
->>                 }
->>                 namespaces[i].ndns = ndns;
->> @@ -160,7 +161,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->>                 ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
->>                 if (i % ARRAY_SIZE(namespaces) == 0)
->>                         round++;
->> -               size = SZ_4K * round;
->> +               size = page_size * round;
->>                 rc = ndctl_namespace_set_size(ndns, size);
->>                 if (rc) {
->>                         fprintf(stderr, "%s: set_size: %lx failed: %d\n",
->> @@ -176,7 +177,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->>         i--;
->>         round++;
->>         ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
->> -       size = SZ_4K * round;
->> +       size = page_size * round;
->>         rc = ndctl_namespace_set_size(ndns, size);
->>         if (rc) {
->>                 fprintf(stderr, "%s failed to update while labels full\n",
->> @@ -185,7 +186,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->>         }
->>
->>         round--;
->> -       size = SZ_4K * round;
->> +       size = page_size * round;
->>         rc = ndctl_namespace_set_size(ndns, size);
->>         if (rc) {
->>                 fprintf(stderr, "%s failed to reduce size while labels full\n",
->> @@ -279,8 +280,12 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
->>
->>         available_slots = ndctl_dimm_get_available_labels(dimm);
->>         if (available_slots != default_available_slots - 1) {
->> -               fprintf(stderr, "mishandled slot count\n");
->> -               return -ENXIO;
->> +               fprintf(stderr, "mishandled slot count (%u, %u)\n",
->> +                       available_slots, default_available_slots - 1);
->> +
->> +               /* TODO: fix it on non-acpi platforms */
->> +               if (ndctl_bus_has_nfit(bus))
->> +                       return -ENXIO;
->
-> This change seems unrelated to page size fixups. Care to break it out?
+Resend V2:
+  - Cc dm-devel instead of linux-raid
 
-Sure Dan, I will add the API to check for DIMM error state flags too. Thanks for
-the review, I will send a v2 soon.
+Change from V1:
+  - Add the old memory-failure handler back for rolling back
+  - Add callback in MD's ->rmap() to support multiple mapping of dm device
+  - Add judgement for CONFIG_SYSFS
+  - Add pfn_valid() judgement in hwpoison_filter()
+  - Rebased to v5.11-rc5
 
-Thanks,
-Santosh
+Change from RFC v3:
+  - Do not lock dax entry in memory failure handler
+  - Add a helper function for corrupted_range
+  - Add restrictions in xfs code
+  - Fix code style
+  - remove the useless association and lock in fsdax
+
+Change from RFC v2:
+  - Adjust the order of patches
+  - Divide the infrastructure and the drivers that use it
+  - Rebased to v5.10
+
+Change from RFC v1:
+  - Introduce ->block_lost() for block device
+  - Support mapped device
+  - Add 'not available' warning for realtime device in XFS
+  - Rebased to v5.10-rc1
+
+This patchset moves owner tracking from dax_assocaite_entry() to pmem
+device driver, by introducing an interface ->memory_failure() of struct
+pagemap.  This interface is called by memory_failure() in mm, and
+implemented by pmem device.  Then pmem device calls its ->corrupted_range()
+to find the filesystem which the corrupted data located in, and call
+filesystem handler to track files or metadata assocaited with this page.
+Finally we are able to try to fix the corrupted data in filesystem and do
+other necessary processing, such as killing processes who are using the
+files affected.
+
+The call trace is like this:
+memory_failure()
+ pgmap->ops->memory_failure()      => pmem_pgmap_memory_failure()
+  gendisk->fops->corrupted_range() => - pmem_corrupted_range()
+                                      - md_blk_corrupted_range()
+   sb->s_ops->currupted_range()    => xfs_fs_corrupted_range()
+    xfs_rmap_query_range()
+     xfs_currupt_helper()
+      * corrupted on metadata
+          try to recover data, call xfs_force_shutdown()
+      * corrupted on file data 
+          try to recover data, call mf_dax_mapping_kill_procs()
+
+The fsdax & reflink support for XFS is not contained in this patchset.
+
+(Rebased on v5.11-rc5)
+
+Shiyang Ruan (10):
+  pagemap: Introduce ->memory_failure()
+  blk: Introduce ->corrupted_range() for block device
+  fs: Introduce ->corrupted_range() for superblock
+  mm, fsdax: Refactor memory-failure handler for dax mapping
+  mm, pmem: Implement ->memory_failure() in pmem driver
+  pmem: Implement ->corrupted_range() for pmem driver
+  dm: Introduce ->rmap() to find bdev offset
+  md: Implement ->corrupted_range()
+  xfs: Implement ->corrupted_range() for XFS
+  fs/dax: Remove useless functions
+
+ block/genhd.c                 |   6 ++
+ drivers/md/dm-linear.c        |  20 ++++
+ drivers/md/dm.c               |  61 +++++++++++
+ drivers/nvdimm/pmem.c         |  44 ++++++++
+ fs/block_dev.c                |  42 +++++++-
+ fs/dax.c                      |  63 ++++-------
+ fs/xfs/xfs_fsops.c            |   5 +
+ fs/xfs/xfs_mount.h            |   1 +
+ fs/xfs/xfs_super.c            | 109 +++++++++++++++++++
+ include/linux/blkdev.h        |   2 +
+ include/linux/dax.h           |   1 +
+ include/linux/device-mapper.h |   5 +
+ include/linux/fs.h            |   2 +
+ include/linux/genhd.h         |   3 +
+ include/linux/memremap.h      |   8 ++
+ include/linux/mm.h            |   9 ++
+ mm/memory-failure.c           | 190 +++++++++++++++++++++++-----------
+ 17 files changed, 466 insertions(+), 105 deletions(-)
+
+-- 
+2.30.0
+
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
