@@ -2,35 +2,35 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8383086B4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 08:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B8A3086F7
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Jan 2021 09:23:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C84D7100EAAFA;
-	Thu, 28 Jan 2021 23:54:05 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id E7B1B100EAAFE;
+	Fri, 29 Jan 2021 00:23:18 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DA19C100EAAF9
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Jan 2021 23:54:02 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 66FF8100EAB63
+	for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 00:23:15 -0800 (PST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1611906841; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1611908593; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Qq/LTzApf3bN0KeQhA5voHbd39mSTuwpVJHWgFqS7tI=;
-	b=VeS+erlQ/D0mICcn4h1apyKupa7vysv7jPuADT7gGBStXgvb2Mh94pxpNtxq3ZHFM6eVx2
-	AzZTdG6HodXjhRfYzr8XnVmsRMMpIlEG/g/WmygtSF5VOOokvXwPyg8PvtC3BvdtYDoTuK
-	+Ynl/lAwL00OK4XFtLs9b+94Viv/g4c=
+	bh=s/Q67vMMYuPsjuSK9sLzU1LCeFaWe4xF/l4UFNZMONQ=;
+	b=AVLJQflv/+SYkSv4ERXyiT7/jY3GzNjJm97jAboIN3LMwVBbN2x7H/KCFiEihomOMdrfsH
+	gcyRhiH9LkuycXyRf5uQ6UzJ7Ci67vQ0hTzLhrvCsqWvWU3wqQc1iBhmw76ZvSCZGUhLvj
+	8w0LFU8kORoRU9LyGyyHc/SD3SCCYBo=
 Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id AFFA7AC55;
-	Fri, 29 Jan 2021 07:54:00 +0000 (UTC)
-Date: Fri, 29 Jan 2021 08:53:59 +0100
+	by mx2.suse.de (Postfix) with ESMTP id 8D1A8AFEC;
+	Fri, 29 Jan 2021 08:23:13 +0000 (UTC)
+Date: Fri, 29 Jan 2021 09:23:12 +0100
 From: Michal Hocko <mhocko@suse.com>
 To: James Bottomley <jejb@linux.ibm.com>
 Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
  direct map fragmentation
-Message-ID: <YBO/F6zlyaAhVwcm@dhcp22.suse.cz>
+Message-ID: <YBPF8ETGBHUzxaZR@dhcp22.suse.cz>
 References: <20210121122723.3446-1-rppt@kernel.org>
  <20210121122723.3446-8-rppt@kernel.org>
  <20210126114657.GL827@dhcp22.suse.cz>
@@ -42,8 +42,8 @@ References: <20210121122723.3446-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
 In-Reply-To: <73738cda43236b5ac2714e228af362b67a712f5d.camel@linux.ibm.com>
-Message-ID-Hash: KEERCSZ536ABQI7KH7XZCGUQBSOBU6ED
-X-Message-ID-Hash: KEERCSZ536ABQI7KH7XZCGUQBSOBU6ED
+Message-ID-Hash: XJCOTFA4IXWZNNGFDH3UPH52FPC6BFQ3
+X-Message-ID-Hash: XJCOTFA4IXWZNNGFDH3UPH52FPC6BFQ3
 X-MailFrom: mhocko@suse.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -52,7 +52,7 @@ CC: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>, Andre
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KEERCSZ536ABQI7KH7XZCGUQBSOBU6ED/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XJCOTFA4IXWZNNGFDH3UPH52FPC6BFQ3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,24 +62,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 On Thu 28-01-21 13:05:02, James Bottomley wrote:
-> On Thu, 2021-01-28 at 14:01 +0100, Michal Hocko wrote:
-[...]
-> > I am also still not sure why this whole thing is not just a
-> > ramdisk/ramfs which happens to unmap its pages from the direct
-> > map. Wouldn't that be a much more easier model to work with? You
-> > would get an access control for free as well.
-> 
-> The original API was a memfd which does have this access control as
-> well.  However, the decision was made after much discussion to go with
-> a new system call instead.
+> Obviously the API choice could be revisited
+> but do you have anything to add over the previous discussion, or is
+> this just to get your access control?
 
-It would be really great to summarize reasoning behind that decision.
-Not only for those who were not part of those discussion but also for
-anybody who will be reading git log and want to try to understand that
-reasoning. Go and read 15 versions of patchset to find that out is
-certainly not great use of time.
+Well, access control is certainly one thing which I still believe is
+missing. But if there is a general agreement that the direct map
+manipulation is not that critical then this will become much less of a
+problem of course.
 
-Thanks!
+It all boils down whether secret memory is a scarce resource. With the
+existing implementation it really is. It is effectivelly repeating
+same design errors as hugetlb did. And look now, we have a subtle and
+convoluted reservation code to track mmap requests and we have a cgroup
+controller to, guess what, have at least some control over distribution
+if the preallocated pool. See where am I coming from?
+
+If the secret memory is more in line with mlock without any imposed
+limit (other than available memory) in the end then, sure, using the same
+access control as mlock sounds reasonable. Btw. if this is really
+just a more restrictive mlock then is there any reason to not hook this
+into the existing mlock infrastructure (e.g. MCL_EXCLUSIVE)?
+Implications would be that direct map would be handled on instantiation/tear
+down paths, migration would deal with the same (if possible). Other than
+that it would be mlock like.
 -- 
 Michal Hocko
 SUSE Labs
