@@ -1,64 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ABA309101
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 30 Jan 2021 01:31:23 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50686309169
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 30 Jan 2021 02:59:35 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EDB06100EB34E;
-	Fri, 29 Jan 2021 16:31:21 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	by ml01.01.org (Postfix) with ESMTP id 67AC7100EC1D8;
+	Fri, 29 Jan 2021 17:59:33 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DB0D6100EF27E
-	for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 16:31:19 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id g12so15443107ejf.8
-        for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 16:31:19 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id A9130100ED48C
+	for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 17:59:28 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id hs11so15656231ejc.1
+        for <linux-nvdimm@lists.01.org>; Fri, 29 Jan 2021 17:59:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=IHqwNfHmdWEcZfyYPR4+sBaYZ3Bn6Age7W/ZhgBDEQU=;
-        b=NB6BRSIj0GzX1o6kI9lGeXRyRJGr6RAcJQ+EhSWJ0BC3oc/SvPN8mDWEfixyZfopvl
-         BANLs4tolXi9xalwI4vJzTF5OSuXUJsridXoHgYjPKbJiQKeVk5vaBH6mcLY0H4BZRiq
-         wfaYlKezDkRFMIrzC/4N3H4PPq5oJdHXV6Q01Q/n5KcCs6Ew+/ZecSW/Ta6Irop56k7U
-         Z/DLPpfhWC0iKLTezq/K3cXp9ZKO27xjK0zn3Bqqqi6Zq8pzsnpj7my50SQHQOHfdaJ2
-         MbkYoSMosvq8kWvBha1+L8Yc6pwMpH0ki+Tt+yxj6akZwZ5ZXx0qjp88CJKo9ExxxZaR
-         IoOw==
+        bh=EWo4KjlIrzjbnoyurSSBVNGq8JCtPRxkHzDKnUW80j0=;
+        b=P858ojYjTMLet0tza2ROjVLugxIkJKWKScHcI99wlUNAmdxT/q0A+8k3B4mv69C6zW
+         pZ3i9rKjIGm6RktXcFu6kGETkt4+Jprl742+JAq4QxjvLpmTtFhN3miGluA4/V/VKeJv
+         9nZml1zipllmwJKOv8oSAuBaFNUHz9Rl4zI9JcuPjIHxoW3Bl2UIz3T7v/Mhw5V6YC6F
+         XVFOnWy13TgIeKZ9JZEcevyMlunFbyxb2gWPKmVAZuGq6Nh186yBr2KUEe4zNweU597Q
+         J2WEvdpkdziTYPjCr6ZlwS9Ei/JRG+DNDI+wOaCr7qodi4DudmJQBCv2t/yAQ5R6U3fT
+         df+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IHqwNfHmdWEcZfyYPR4+sBaYZ3Bn6Age7W/ZhgBDEQU=;
-        b=dPMBX1BfR85fqd9HPjx2LAoLJAZO2JL/u2PlO+zNpfwZpvrcQJkpuXNwj3fW4x7YIh
-         l93V4DqqEnyUAD0aX94UWwVC5UgXFgwkgV162JE0vjnYILnG8M3OBvGc3t/DRTYbLb9G
-         wPwAyPykjnspmZ7qCzDJ1MCC5jpU0jgB7SaZa79LEznIWslCAkpzcDWVxEMyiVwCyJJd
-         uni5xsBUyQWbHuzDvkYYF7hayqvvB0uczRocMCLnExTo1f3UKNEsV5YdJQQbrzY92K0h
-         zbkfbSCZ3K6+HkxolNLP7juKVh8iK7W9fNHm9V2+yKCoJpRLSNe2X6sXzv5AsQFnoJqB
-         spkw==
-X-Gm-Message-State: AOAM531frDN6/KS+pVMV4cwjr1wwhIoLTm8lttZ6gwFsWKZdFIaz2cTa
-	b0Z0CvzNi4A+Q24OetcarDvppGVDZkBFWoslHIA8dw==
-X-Google-Smtp-Source: ABdhPJxWORcLeJpILlCiBMkcM8hzzExkJ43LngkFSAc8o5W/IdsfFI1WUl5QRvX2O9IoWQ8K1Y0+8F2KdET67DExNU0=
-X-Received: by 2002:a17:906:191b:: with SMTP id a27mr7103895eje.472.1611966677063;
- Fri, 29 Jan 2021 16:31:17 -0800 (PST)
+        bh=EWo4KjlIrzjbnoyurSSBVNGq8JCtPRxkHzDKnUW80j0=;
+        b=BuOVB9RrGrVbqC16FvEWnfod5CihmKt6s8EfFEay776MGfpzrdHMhRP0NXPi/JCFHE
+         0fCjwcJNE0qGysJPljsv4sxA4Ew7Qg/Tw3lyHpLWjSVNQBRXRNUsJuOQLW/yv8IfAHb/
+         gXfTtZdDp2w8K3+9M5tkKRWDTMsC3dl6XVaTXfNW1jqtSONQ2pUpyIOHfVN8DvaAADyc
+         oRzmgmr+vPuUVkJRy3twYGmSuMSEvoLKYeR2s2yjwH06GknNSgxjIS+lKDRu9l/AoYfC
+         TFdFTTwRlzzM4eIWDRKp9fZPpKa06HUW4TuZlUqvSNnoR1PEXmtNHWMsVC0ROR93mNPi
+         36vw==
+X-Gm-Message-State: AOAM5338sNFparwo2NHozoo+Zmes/Yd4y0OYtUJL9SKwLKoXd2f5GnPB
+	iLsQiMOlirH/4/C+vkIYG+JJCMkk11Ou2epz5M1IKw==
+X-Google-Smtp-Source: ABdhPJyteHUAK6EjHEtc9xneY7O6pvnG4P0dUDapv2YrqKHQ9TTcKg3Asw/O8AVJSbRScvPOSKnGqXrPFZiktJtSdM8=
+X-Received: by 2002:a17:906:f919:: with SMTP id lc25mr7315521ejb.323.1611971966715;
+ Fri, 29 Jan 2021 17:59:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20210130002438.1872527-1-ben.widawsky@intel.com> <20210130002438.1872527-6-ben.widawsky@intel.com>
-In-Reply-To: <20210130002438.1872527-6-ben.widawsky@intel.com>
+References: <161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 29 Jan 2021 16:31:15 -0800
-Message-ID: <CAPcyv4gZvxJxPQr3XwC3=yh8opkz5ThDjy4E-AWzL7ysFeC0Mg@mail.gmail.com>
-Subject: Re: [PATCH 05/14] cxl/mem: Register CXL memX devices
-To: Ben Widawsky <ben.widawsky@intel.com>
-Message-ID-Hash: PEVO5XNMWA2GU42BSROTDKW3VEEQF7GE
-X-Message-ID-Hash: PEVO5XNMWA2GU42BSROTDKW3VEEQF7GE
+Date: Fri, 29 Jan 2021 17:59:24 -0800
+Message-ID: <CAPcyv4jEYPsyh0bhbtKGRbK3bgp=_+=2rjx4X0gLi5-25VvDyg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] cdev: Generic shutdown handling
+To: Greg KH <gregkh@linuxfoundation.org>
+Message-ID-Hash: 6RKXJZMBAG7QLTV27WSPJIWWO5VQKVWW
+X-Message-ID-Hash: 6RKXJZMBAG7QLTV27WSPJIWWO5VQKVWW
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+CC: Alexandre Belloni <alexandre.belloni@free-electrons.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Logan Gunthorpe <logang@deltatee.com>, Hans Verkuil <hans.verkuil@cisco.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PEVO5XNMWA2GU42BSROTDKW3VEEQF7GE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6RKXJZMBAG7QLTV27WSPJIWWO5VQKVWW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,63 +67,67 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 29, 2021 at 4:25 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+On Wed, Jan 20, 2021 at 11:38 AM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> From: Dan Williams <dan.j.williams@intel.com>
+> After reviewing driver submissions with new cdev + ioctl usages one
+> common stumbling block is coordinating the shutdown of the ioctl path,
+> or other file operations, at driver ->remove() time. While cdev_del()
+> guarantees that no new file descriptors will be established, operations
+> on existing file descriptors can proceed indefinitely.
 >
-> Create the /sys/bus/cxl hierarchy to enumerate:
+> Given the observation that the kernel spends the resources for a percpu_ref
+> per request_queue shared with all block_devices on a gendisk, do the
+> same for all the cdev instances that share the same
+> cdev_add()-to-cdev_del() lifetime.
 >
-> * Memory Devices (per-endpoint control devices)
->
-> * Memory Address Space Devices (platform address ranges with
->   interleaving, performance, and persistence attributes)
->
-> * Memory Regions (active provisioned memory from an address space device
->   that is in use as System RAM or delegated to libnvdimm as Persistent
->   Memory regions).
->
-> For now, only the per-endpoint control devices are registered on the
-> 'cxl' bus. However, going forward it will provide a mechanism to
-> coordinate cross-device interleave.
->
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-cxl       |  26 ++
->  .../driver-api/cxl/memory-devices.rst         |  17 +
->  drivers/base/core.c                           |  14 +
->  drivers/cxl/Makefile                          |   3 +
->  drivers/cxl/bus.c                             |  29 ++
->  drivers/cxl/cxl.h                             |   4 +
->  drivers/cxl/mem.c                             | 308 +++++++++++++++++-
->  include/linux/device.h                        |   1 +
->  8 files changed, 400 insertions(+), 2 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-cxl
->  create mode 100644 drivers/cxl/bus.c
-[..]
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 25e08e5f40bd..33432a4cbe23 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -3179,6 +3179,20 @@ struct device *get_device(struct device *dev)
->  }
->  EXPORT_SYMBOL_GPL(get_device);
->
-> +/**
-> + * get_live_device() - increment reference count for device iff !dead
-> + * @dev: device.
-> + *
-> + * Forward the call to get_device() if the device is still alive. If
-> + * this is called with the device_lock() held then the device is
-> + * guaranteed to not die until the device_lock() is dropped.
-> + */
-> +struct device *get_live_device(struct device *dev)
-> +{
-> +       return dev && !dev->p->dead ? get_device(dev) : NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(get_live_device);
+> With this in place cdev_del() not only guarantees 'no new opens', but it
+> also guarantees 'no new operations invocations' and 'all threads running
+> in an operation handler have exited that handler'.
 
-Disregard this hunk, it's an abandoned idea that I failed to cleanup.
+Prompted by the reaction I realized that this is pushing an incomplete
+story about why this is needed, and the "queued" concept is way off
+base. The problem this is trying to solve is situations like this:
+
+long xyz_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+        xyz_ioctl_dev = file->private_data;
+        xyz_driver_context = xyz_ioctl_dev->context;
+        ...
+}
+
+int xyz_probe(struct device *dev)
+{
+        xyz_driver_context = devm_kzalloc(...);
+        ...
+        xyz_ioctl_dev = kmalloc(...);
+        device_initialize(&xyz_ioctl_dev->dev);
+        xyz_ioctl_dev->context = xyz_driver_context;
+      ...
+        cdev_device_add(&xyz_ioctl_dev->cdev, xyz_ioctl_dev->dev);
+}
+
+...where a parent driver allocates context tied to the lifetime of the
+parent device driver-bind-lifetime, and that context ends up getting
+used in the ioctl path. I interpret Greg's assertion "if you do this
+right you don't have this problem" as "don't reference anything with a
+lifetime shorter than the xyz_ioctl_dev lifetime in your ioctl
+handler". That is true, but it can be awkward to constraint
+xyz_driver_context to a sub-device, and it constrains some of the
+convenience of devm. So the goal is to have a cdev api that accounts
+for all the common lifetimes when devm is in use. So I'm now thinking
+of an api like:
+
+    devm_cdev_device_add(struct device *host, struct cdev *cdev,
+struct device *dev)
+
+...where @host bounds the lifetime of data used by the cdev
+file_operations, and @dev is the typical containing structure for
+@cdev. Internally I would refactor the debugfs mechanism for flushing
+in-flight file_operations so that is shared by the cdev
+implementation. Either adopt the debugfs method for file_operations
+syncing, or switch debugfs to percpu_ref (leaning towards the former).
+
+Does this clarify the raised concerns?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
