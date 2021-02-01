@@ -2,58 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6EC30B33F
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 00:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6EFC30B34F
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 00:19:46 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B65BD100EA92C;
-	Mon,  1 Feb 2021 15:17:23 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 099A2100EB340;
+	Mon,  1 Feb 2021 15:19:45 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 84125100EA91D
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 15:17:21 -0800 (PST)
-IronPort-SDR: jOlaWQ70nPhT+zX0dCbRao4Pa7Uix12yEKWKu3c1clIcMrQZIgCs/vPNnzVeuo+VPtbHmxVv16
- MMWiyAxpxUfA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="168447766"
-X-IronPort-AV: E=Sophos;i="5.79,393,1602572400";
-   d="scan'208";a="168447766"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 15:17:20 -0800
-IronPort-SDR: 8bdJnMFA0kHmvh7DoPbPCnHbnphnf3MPu4bPVWxPwJfsCqN+WEedY9p8s+2FeZLVcRrs3sUus2
- AQqkT0yDaSbg==
-X-IronPort-AV: E=Sophos;i="5.79,393,1602572400";
-   d="scan'208";a="575281971"
-Received: from jambrizm-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.133.15])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 15:17:20 -0800
-Date: Mon, 1 Feb 2021 15:17:18 -0800
-From: Ben Widawsky <ben.widawsky@intel.com>
-To: David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-Message-ID: <20210201231718.2hwaqgn2f7kc7usw@intel.com>
-References: <234711bf-c03f-9aca-e0b5-ca677add3ea@google.com>
- <20210201165352.wi7tzpnd4ymxlms4@intel.com>
- <32f33dd-97a-8b1c-d488-e5198a3d7748@google.com>
- <20210201215857.ud5cpg7hbxj2j5bx@intel.com>
- <b46ed01-3f1-6643-d371-7764c3bde4f8@google.com>
- <20210201222859.lzw3gvxuqebukvr6@intel.com>
- <20210201223314.qh24uxd7ajdppgfl@intel.com>
- <f86149f8-3aea-9d8c-caa9-62771bf22cb5@google.com>
- <20210201225052.vrrvuxrsgmddjzbb@intel.com>
- <79b98f60-151b-6c80-65c3-91a37699d121@google.com>
+	by ml01.01.org (Postfix) with ESMTPS id 56D7C100EB33D
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 15:19:42 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id z22so20855803edb.9
+        for <linux-nvdimm@lists.01.org>; Mon, 01 Feb 2021 15:19:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yEGz+dLPiI3e/jslfpMf9TOttSm5sVcrBxCPC90Kx7M=;
+        b=MZN+I2UZ85k4O9bkOQ+ITr8FDAC79nO7UygEAdCz8z21VIPTEUWijheuNedhuaEq//
+         U0lspKWMTYEyOqzLTh7y0dph80lY3mvfrvBxSZjhAtzoE0mCqNA1MA/4IfqLkhKLra71
+         00zpbAzkzwjddfrjL38YMX/OO2mDfIBbUyprulTaDTBubemXOC1lNmtK4LbjzFUHurc6
+         TPiI9ZkW8IGmQ/GXLLrHZ/+9HskyuHXEGYfINQBJM7iWaPoN+ron/s/iKUQcDDohf+dM
+         3DFTnfiaFeNQiGN1oMIc69tB+N16+0Dt52gzAUJfHaRCa9uHDsljZAkjBEsSxnAwpD7R
+         Y72Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yEGz+dLPiI3e/jslfpMf9TOttSm5sVcrBxCPC90Kx7M=;
+        b=AhIegI6EB+vsKTDQEpgjlTwc1/eWGicOqBTfvGN6+wRXzS2RKUMRkHO2GGpKrdazPu
+         XejngZiqXK+VQaVPZ7vm5FcoJcrfG01LOLUwTgi8Y9oMEpMOXSly8pHN/wJMjaYITRIU
+         U1yK+V7FDDkRiPxWZh8sdG0TEK0GPfbaa2CBKGRAiDC2/dn+8R/MIqNi4fY56X5C13vc
+         b+++x9lu/3ReRj2sjPbHaswQ3s1uXI+BKSn/BDgPO8akYAc1kArv5dbCI1p99sSAFJ0q
+         RrNw0bwc4yEfFvRDfdLZXRKyxAC9goXGs6DQI6/ZzPLJyS+5eJmOWrRs1JhJZuvGjYuv
+         djwg==
+X-Gm-Message-State: AOAM533H+08OSmklNh0XCSDXwMIWeZTsXAC08mR7vITwa0m0ePDBbOWQ
+	S2JKoY4EJ7DrG7JFM/GT0EfsNJ2Giw/xkH6z4wBxUw==
+X-Google-Smtp-Source: ABdhPJwoXp33gfzuIBwe2JXmvKCytBg+xKcBWV6c56gwpEwjaF9fYaIdATFU4OOlSxGwozZCpPiy8HRA2T7eVRgj2Kk=
+X-Received: by 2002:a50:f19a:: with SMTP id x26mr12051589edl.354.1612221580105;
+ Mon, 01 Feb 2021 15:19:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <79b98f60-151b-6c80-65c3-91a37699d121@google.com>
-Message-ID-Hash: VSIQDPSO4YATIZ57K7DVSMNSMCGNEHND
-X-Message-ID-Hash: VSIQDPSO4YATIZ57K7DVSMNSMCGNEHND
-X-MailFrom: ben.widawsky@intel.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+References: <20200615074723.12163-1-rpalethorpe@suse.com>
+In-Reply-To: <20200615074723.12163-1-rpalethorpe@suse.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 1 Feb 2021 15:19:37 -0800
+Message-ID: <CAPcyv4jzfnnOTJTK5WKYpt_qOm1UWv-PZ7ZH3GiXf7x_oz6jQw@mail.gmail.com>
+Subject: Re: [PATCH v2] nvdimm: Avoid race between probe and reading device attributes
+To: Richard Palethorpe <rpalethorpe@suse.com>
+Message-ID-Hash: LQMDVUAQ2ASA4ZH4V67J65WPP5KVUMFO
+X-Message-ID-Hash: LQMDVUAQ2ASA4ZH4V67J65WPP5KVUMFO
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Coly Li <colyli@suse.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VSIQDPSO4YATIZ57K7DVSMNSMCGNEHND/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LQMDVUAQ2ASA4ZH4V67J65WPP5KVUMFO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,46 +67,124 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 21-02-01 15:09:45, David Rientjes wrote:
-> On Mon, 1 Feb 2021, Ben Widawsky wrote:
-> 
-> > > I think that's what 8.2.8.4.3 says, no?  And then 8.2.8.4.5 says you 
-> > > can use up to Payload Size.  That's why my recommendation was to enforce 
-> > > this in cxl_mem_setup_mailbox() up front.
-> > 
-> > Yeah. I asked our spec people to update 8.2.8.4.5 to make it clearer. I'd argue
-> > the intent is how you describe it, but the implementation isn't.
-> > 
-> > My argument was silly anyway because if you specify greater than 1M as your
-> > payload, you will get EINVAL at the ioctl.
-> > 
-> > The value of how it works today is the driver will at least bind and allow you
-> > to interact with it.
-> > 
-> > How strongly do you feel about this?
-> > 
-> 
-> I haven't seen the update to 8.2.8.4.5 to know yet :)
-> 
-> You make a good point of at least being able to interact with the driver.  
-> I think you could argue that if the driver binds, then the payload size is 
-> accepted, in which case it would be strange to get an EINVAL when using 
-> the ioctl with anything >1MB.
-> 
-> Concern was that if we mask off the reserved bits from the command 
-> register that we could be masking part of the payload size that is being 
-> passed if the accepted max is >1MB.  Idea was to avoid any possibility of 
-> this inconsistency.  If this is being checked for ioctl, seems like it's 
-> checking reserved bits.
-> 
-> But maybe I should just wait for the spec update.
+Yikes, sorry this languished so long, comments below:
 
-Well, I wouldn't hold your breath (it would be an errata in this case anyway).
-My preference would be to just allow allow mailbox payload size to be 2^31 and
-not deal with this.
+On Mon, Jun 15, 2020 at 12:48 AM Richard Palethorpe
+<rpalethorpe@suse.com> wrote:
+>
+> It is possible to cause a division error and use-after-free by querying the
+> nmem device before the driver data is fully initialised in nvdimm_probe. E.g
+> by doing
+>
+> (while true; do
+>      cat /sys/bus/nd/devices/nmem*/available_slots 2>&1 > /dev/null
+>  done) &
+>
+> while true; do
+>      for i in $(seq 0 4); do
+>          echo nmem$i > /sys/bus/nd/drivers/nvdimm/bind
+>      done
+>      for i in $(seq 0 4); do
+>          echo nmem$i > /sys/bus/nd/drivers/nvdimm/unbind
+>      done
+>  done
+>
+> On 5.7-rc3 this causes:
+>
+> [   12.711578] divide error: 0000 [#1] SMP KASAN PTI
+> [   12.714857] RIP: 0010:nd_label_nfree+0x134/0x1a0 [libnvdimm]
+[..]
+> [   12.725308] CR2: 00007fd16f1ec000 CR3: 0000000064322006 CR4: 0000000000160ef0
+> [   12.726268] Call Trace:
+> [   12.726633]  available_slots_show+0x4e/0x120 [libnvdimm]
+> [   12.727380]  dev_attr_show+0x42/0x80
+> [   12.727891]  ? memset+0x20/0x40
+> [   12.728341]  sysfs_kf_seq_show+0x218/0x410
+> [   12.728923]  seq_read+0x389/0xe10
+> [   12.729415]  vfs_read+0x101/0x2d0
+> [   12.729891]  ksys_read+0xf9/0x1d0
+> [   12.730361]  ? kernel_write+0x120/0x120
+> [   12.730915]  do_syscall_64+0x95/0x4a0
+> [   12.731435]  entry_SYSCALL_64_after_hwframe+0x49/0xb3
+[..]
+> Fixes: 4d88a97aa9e8 ("libnvdimm, nvdimm: dimm driver and base libnvdimm device-driver infrastructure")
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Vishal Verma <vishal.l.verma@intel.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: linux-nvdimm@lists.01.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Coly Li <colyli@suse.com>
+> Signed-off-by: Richard Palethorpe <rpalethorpe@suse.com>
+> ---
+>
+> V2:
+> + Reviewed by Coly and removed unecessary lock
+>
+>  drivers/nvdimm/dimm.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/nvdimm/dimm.c b/drivers/nvdimm/dimm.c
+> index 7d4ddc4d9322..3d3988e1d9a0 100644
+> --- a/drivers/nvdimm/dimm.c
+> +++ b/drivers/nvdimm/dimm.c
+> @@ -43,7 +43,6 @@ static int nvdimm_probe(struct device *dev)
+>         if (!ndd)
+>                 return -ENOMEM;
+>
+> -       dev_set_drvdata(dev, ndd);
+>         ndd->dpa.name = dev_name(dev);
+>         ndd->ns_current = -1;
+>         ndd->ns_next = -1;
+> @@ -106,6 +105,8 @@ static int nvdimm_probe(struct device *dev)
+>         if (rc)
+>                 goto err;
+>
+> +       dev_set_drvdata(dev, ndd);
+> +
 
-My question was how strongly do you feel it's an error that should prevent
-binding.
+I see why this works, but I think the bug is in
+available_slots_show(). It is a bug for a sysfs attribute to reference
+driver-data without synchronizing against bind. So it should be
+possible for probe set that pointer whenever it wants. In other words
+this fix (forgive the whitespace damage from pasting).
+
+diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
+index b59032e0859b..e68b17bc7aab 100644
+--- a/drivers/nvdimm/dimm_devs.c
++++ b/drivers/nvdimm/dimm_devs.c
+@@ -335,10 +335,8 @@ static ssize_t state_show(struct device *dev,
+struct device_attribute *attr,
+ }
+ static DEVICE_ATTR_RO(state);
+
+-static ssize_t available_slots_show(struct device *dev,
+-               struct device_attribute *attr, char *buf)
++static ssize_t __available_slots_show(struct nvdimm_drvdata *ndd, char *buf)
+ {
+-       struct nvdimm_drvdata *ndd = dev_get_drvdata(dev);
+        ssize_t rc;
+        u32 nfree;
+
+@@ -356,6 +354,18 @@ static ssize_t available_slots_show(struct device *dev,
+        nvdimm_bus_unlock(dev);
+        return rc;
+ }
++
++static ssize_t available_slots_show(struct device *dev,
++                                   struct device_attribute *attr, char *buf)
++{
++       ssize_t rc;
++
++       nd_device_lock(dev);
++       rc = __available_slots_show(dev_get_drvdata(dev), buf);
++       nd_device_unlock(dev);
++
++       return rc;
++}
+ static DEVICE_ATTR_RO(available_slots);
+
+ __weak ssize_t security_show(struct device *dev,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
