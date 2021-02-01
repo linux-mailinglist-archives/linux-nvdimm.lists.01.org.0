@@ -2,51 +2,97 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCD330AD22
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Feb 2021 17:54:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C92F30AD30
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Feb 2021 17:57:14 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C2734100EB825;
-	Mon,  1 Feb 2021 08:53:59 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	by ml01.01.org (Postfix) with ESMTP id 1B620100EB829;
+	Mon,  1 Feb 2021 08:57:12 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 16327100EB823
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 08:53:54 -0800 (PST)
-IronPort-SDR: nKjNUs2MayUTa3xu/e4OydiPlbnsf2Eu0YeBfHLczckk/W+JKiD4Q6wFPDJtmZHPs+poCfJN3L
- l23u35k8sF8A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="168396793"
-X-IronPort-AV: E=Sophos;i="5.79,393,1602572400";
-   d="scan'208";a="168396793"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 08:53:54 -0800
-IronPort-SDR: yFSgEt+mhM9fBwFjcN56znWBQoTvbYdQbzSwOQKVq4azQE//8pACLBc8Kf3fRvPDCMHvmBG5Zs
- xWa6SNj8pZKA==
-X-IronPort-AV: E=Sophos;i="5.79,393,1602572400";
-   d="scan'208";a="577882409"
-Received: from jambrizm-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.133.15])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 08:53:53 -0800
-Date: Mon, 1 Feb 2021 08:53:52 -0800
-From: Ben Widawsky <ben.widawsky@intel.com>
-To: David Rientjes <rientjes@google.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-Message-ID: <20210201165352.wi7tzpnd4ymxlms4@intel.com>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-4-ben.widawsky@intel.com>
- <234711bf-c03f-9aca-e0b5-ca677add3ea@google.com>
+	by ml01.01.org (Postfix) with ESMTPS id AFE48100EB825
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 08:57:10 -0800 (PST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 111GglEJ113096;
+	Mon, 1 Feb 2021 11:56:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=wT7a/liLBSfcD7N/UPbkV3RD/KslWeh4NLQG5EPJ7nQ=;
+ b=kXkBzChwTSaNHsMVY+LTYccolmWv+mZ3ZGn7eEUUvVLxfBBPI8zUta1XvW7g70uLasS9
+ d0kJKgQu1dnLNQXDFjIopZmB9sTHhJDP3oPSyrFyYZArItFkrYbc0fnPmsfx4LaO19/B
+ gS3Uixq/pAGwHT/prSDU8KzbQN5/ynJ+Ukn891aJzwdQslDSjiXbXsHV4bYfJjVJ8WEF
+ At5mCisx5yq+hfISjZTWjkCnERXf9VUD7yAJaJeyECDFSM3fRjdUzxLOBdyJJ3y9Vl6d
+ Qu5S+5LmA7rR1AuPmGiirOyAgBqXBXMd37MobQIK9K4Qmw9U2wP/9xPBaN10moKzV8Pu Yg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 36en3vs16b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Feb 2021 11:56:31 -0500
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 111GgxhQ114162;
+	Mon, 1 Feb 2021 11:56:30 -0500
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 36en3vs155-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Feb 2021 11:56:30 -0500
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 111GfuSI009246;
+	Mon, 1 Feb 2021 16:56:28 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+	by ppma03dal.us.ibm.com with ESMTP id 36eheka7ga-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Feb 2021 16:56:28 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+	by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 111GuRjN23003516
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Feb 2021 16:56:27 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 692A278063;
+	Mon,  1 Feb 2021 16:56:27 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5CD187806B;
+	Mon,  1 Feb 2021 16:56:20 +0000 (GMT)
+Received: from jarvis.int.hansenpartnership.com (unknown [9.85.153.205])
+	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Feb 2021 16:56:20 +0000 (GMT)
+Message-ID: <6de6b9f9c2d28eecc494e7db6ffbedc262317e11.camel@linux.ibm.com>
+Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
+ direct map fragmentation
+From: James Bottomley <jejb@linux.ibm.com>
+To: Michal Hocko <mhocko@suse.com>
+Date: Mon, 01 Feb 2021 08:56:19 -0800
+In-Reply-To: <YBPF8ETGBHUzxaZR@dhcp22.suse.cz>
+References: <20210121122723.3446-1-rppt@kernel.org>
+	 <20210121122723.3446-8-rppt@kernel.org>
+	 <20210126114657.GL827@dhcp22.suse.cz>
+	 <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
+	 <20210126120823.GM827@dhcp22.suse.cz> <20210128092259.GB242749@kernel.org>
+	 <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
+	 <73738cda43236b5ac2714e228af362b67a712f5d.camel@linux.ibm.com>
+	 <YBPF8ETGBHUzxaZR@dhcp22.suse.cz>
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <234711bf-c03f-9aca-e0b5-ca677add3ea@google.com>
-Message-ID-Hash: VPYOS7IU3JNSRUYYTBIS763I5UEBYQJN
-X-Message-ID-Hash: VPYOS7IU3JNSRUYYTBIS763I5UEBYQJN
-X-MailFrom: ben.widawsky@intel.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-01_06:2021-01-29,2021-02-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ mlxlogscore=818 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 mlxscore=0 clxscore=1015 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2102010084
+Message-ID-Hash: YJQNXUS7TP22WIWUFM5PJZREPIVCZBFU
+X-Message-ID-Hash: YJQNXUS7TP22WIWUFM5PJZREPIVCZBFU
+X-MailFrom: jejb@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+CC: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Ander
+ sen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: jejb@linux.ibm.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VPYOS7IU3JNSRUYYTBIS763I5UEBYQJN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YJQNXUS7TP22WIWUFM5PJZREPIVCZBFU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,30 +101,57 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 21-01-30 15:51:49, David Rientjes wrote:
-> On Fri, 29 Jan 2021, Ben Widawsky wrote:
+On Fri, 2021-01-29 at 09:23 +0100, Michal Hocko wrote:
+> On Thu 28-01-21 13:05:02, James Bottomley wrote:
+> > Obviously the API choice could be revisited
+> > but do you have anything to add over the previous discussion, or is
+> > this just to get your access control?
 > 
-> > +static int cxl_mem_setup_mailbox(struct cxl_mem *cxlm)
-> > +{
-> > +	const int cap = cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-> > +
-> > +	cxlm->mbox.payload_size =
-> > +		1 << CXL_GET_FIELD(cap, CXLDEV_MB_CAP_PAYLOAD_SIZE);
-> > +
-> > +	/* 8.2.8.4.3 */
-> > +	if (cxlm->mbox.payload_size < 256) {
-> > +		dev_err(&cxlm->pdev->dev, "Mailbox is too small (%zub)",
-> > +			cxlm->mbox.payload_size);
-> > +		return -ENXIO;
-> > +	}
-> 
-> Any reason not to check cxlm->mbox.payload_size > (1 << 20) as well and 
-> return ENXIO if true?
+> Well, access control is certainly one thing which I still believe is
+> missing. But if there is a general agreement that the direct map
+> manipulation is not that critical then this will become much less of
+> a problem of course.
 
-If some crazy vendor wanted to ship a mailbox larger than 1M, why should the
-driver not allow it?
+The secret memory is a scarce resource but it's not a facility that
+should only be available to some users.
 
-I'm open to changing it, it just seems like a larger mailbox wouldn't be fatal.
+> It all boils down whether secret memory is a scarce resource. With
+> the existing implementation it really is. It is effectivelly
+> repeating same design errors as hugetlb did. And look now, we have a
+> subtle and convoluted reservation code to track mmap requests and we
+> have a cgroup controller to, guess what, have at least some control
+> over distribution if the preallocated pool. See where am I coming
+> from?
+
+I'm fairly sure rlimit is the correct way to control this.  The
+subtlety in both rlimit and memcg tracking comes from deciding to
+account under an existing category rather than having our own new one. 
+People don't like new stuff in accounting because it requires
+modifications to everything in userspace.  Accounting under and
+existing limit keeps userspace the same but leads to endless arguments
+about which limit it should be under.  It took us several patch set
+iterations to get to a fragile consensus on this which you're now
+disrupting for reasons you're not making clear.
+
+> If the secret memory is more in line with mlock without any imposed
+> limit (other than available memory) in the end then, sure, using the
+> same access control as mlock sounds reasonable. Btw. if this is
+> really just a more restrictive mlock then is there any reason to not
+> hook this into the existing mlock infrastructure (e.g.
+> MCL_EXCLUSIVE)? Implications would be that direct map would be
+> handled on instantiation/tear down paths, migration would deal with
+> the same (if possible). Other than that it would be mlock like.
+
+In the very first patch set we proposed a mmap flag to do this.  Under
+detailed probing it emerged that this suffers from several design
+problems: the KVM people want VMM to be able to remove the secret
+memory range from the process; there may be situations where sharing is
+useful and some people want to be able to seal the operations.  All of
+this ended up convincing everyone that a file descriptor based approach
+was better than a mmap one.
+
+James
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
