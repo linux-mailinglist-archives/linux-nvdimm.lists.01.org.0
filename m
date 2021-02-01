@@ -1,113 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0982431089B
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 10:59:46 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F43310E1B
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 17:47:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 60B72100EA2C5;
-	Fri,  5 Feb 2021 01:59:44 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=181.176.182.67; helo=mail.coopacnsr.com.pe; envelope-from=jolorteguip@coopacnsr.com.pe; receiver=<UNKNOWN> 
-Received: from mail.coopacnsr.com.pe (mail.coopacnsr.com.pe [181.176.182.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F1BDA100EBBC4;
+	Fri,  5 Feb 2021 08:47:35 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=20.39.40.203; helo=optinix.in; envelope-from=support@digitalsol.in; receiver=<UNKNOWN> 
+Received: from optinix.in (unknown [20.39.40.203])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E5E5D100EA2BB;
-	Fri,  5 Feb 2021 01:59:30 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.coopacnsr.com.pe (Postfix) with ESMTP id 82691C8C5215;
-	Fri,  5 Feb 2021 04:58:50 -0500 (-05)
-Received: from mail.coopacnsr.com.pe ([127.0.0.1])
-	by localhost (mail.coopacnsr.com.pe [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id aA6XI11w0YE7; Fri,  5 Feb 2021 04:58:49 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.coopacnsr.com.pe (Postfix) with ESMTP id 6961DC8C5214;
-	Fri,  5 Feb 2021 04:58:49 -0500 (-05)
-X-Virus-Scanned: amavisd-new at coopacnsr.com.pe
-Received: from mail.coopacnsr.com.pe ([127.0.0.1])
-	by localhost (mail.coopacnsr.com.pe [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id JOwfo9c3lFok; Fri,  5 Feb 2021 04:58:49 -0500 (-05)
-Received: from mail.coopacnsr.com.pe (localhost [127.0.0.1])
-	by mail.coopacnsr.com.pe (Postfix) with ESMTP id 64D23C8C5202;
-	Fri,  5 Feb 2021 04:58:48 -0500 (-05)
-Date: Fri, 5 Feb 2021 04:58:48 -0500 (PET)
-From: Jhon Franklin Olortegui Pisco <jolorteguip@coopacnsr.com.pe>
-Message-ID: <363189022.55286.1612519128340.JavaMail.zimbra@coopacnsr.com.pe>
-Subject: ESP NOTICIA
+	by ml01.01.org (Postfix) with ESMTPS id 3145A100EBBB1;
+	Fri,  5 Feb 2021 08:47:32 -0800 (PST)
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+	c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+	b=JFt3cjfr2gf0oZFNAIkKMxcz4dJD/YGkc0fGvOoSd3DydZ6om7JzTU837vBFVq1NIPU0D2QA5BLHZXE1+7cBmkJlbZjYCUFmJkkaBVbP88e4KHnDVRcctmBLIZ1pL5VerRqjcciKkL4DSuyXFJlGk3Z0CRoskvUoLBM7ZhpxLeqIU2BKsbHQXJZ1h2qHQhaHiD+VrGx+bGKjZzbhmRvwLDQIByq6jRcjht5MzYCcxpzOzp/k+Dev9dQj7B
+	WId68CyP4XonlI4wIMRo1xiGfUtKZ+P3cZo2ejPWBjr+ynq3dK3OxibTTEKfmOc5W1zmJFMAPQ+ZKxsa3M4d1PiYxHmg==
+Received: from User (Unknown [52.231.31.5])
+	by optinix.in with ESMTP
+	; Mon, 1 Feb 2021 08:50:14 +0000
+Message-ID: <D474448D-A325-42CC-A881-8334C6C84BA7@optinix.in>
+From: "Ms. Reem"<support@digitalsol.in>
+Subject: Re:read
+Date: Mon, 1 Feb 2021 08:50:13 -0000
 MIME-Version: 1.0
-X-Originating-IP: [192.168.3.1]
-X-Mailer: Zimbra 8.7.11_GA_3810 (zclient/8.7.11_GA_3810)
-Thread-Index: oVMN7Q0a2R127ssdBoPTVy9rWeS6GQ==
-Thread-Topic: ESP NOTICIA
-Message-ID-Hash: QWVRQ54FBIUV4H7JQT2MLHKXY7IHS344
-X-Message-ID-Hash: QWVRQ54FBIUV4H7JQT2MLHKXY7IHS344
-X-MailFrom: jolorteguip@coopacnsr.com.pe
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID-Hash: VHLO47BFAANMDWQBAOQZ4KKAYADJAJFK
+X-Message-ID-Hash: VHLO47BFAANMDWQBAOQZ4KKAYADJAJFK
+X-MailFrom: support@digitalsol.in
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: ESP NOTICIA <esp.noticia2000@yandex.com>
+Reply-To: ms.reem@yandex.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QWVRQ54FBIUV4H7JQT2MLHKXY7IHS344/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VHLO47BFAANMDWQBAOQZ4KKAYADJAJFK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCg0KRlJPTTogVEhFIERFU0sgT0YgVEhFIFZJQ0UgUFJFU0lERU5ULiANCklOVEVSTkFUSU9O
-QUwgUFJPTU9USU9OL1BSSUNFIEFXQVJEIA0KTUFEUklELCBTUEFJTi4NClJlZiBOwrogOiBFU1Av
-SzExMDUyMDIwDQpUSUNLRVQvQkFUQ0g6IDUzMTUyIA0KQVRUOiBCRU5FRklDSUFSWToNCiBSRTog
-TE9URVJJQSBOQUNJT05BTCBBV0FSRCBOT1RJRklDQVRJT04gDQpUaGlzIGlzIHRvIGluZm9ybSB5
-b3Ugb2YgdGhlIHJlbGVhc2Ugb2YgdGhlIExPVEVSSUEgTkFDSU9OQUwvRVVST01JTExJT05FUy9F
-TC1HT1JETyBMT1RURVJZIFBST01PVElPTlMgUFJPR1JBTSBoZWxkIGluIE1hZHJpZCBTcGFpbiwg
-b24gdGhlIDIyTkQgREVDRU1CRVIsIDIwMjAuIFlvdXIgTkFNRSB3YXMgcGljayBhbmQgYXR0YWNo
-ZWQgdG8gdGlja2V0L0JhdGNoIG51bWJlciA1MzE1MiB3aXRoIFJlZmVyZW5jZSBudW1iZXIgRVNQ
-L0sxMTA1MjAyMCBkcmV3IHRoZSBsdWNreSBudW1iZXJzIDA3LTE1LTI1LTMxLTM0LTQ2LCB3aGlj
-aCBjb25zZXF1ZW50bHkgd29uIHRoZSBsb3R0ZXJ5IGluIHRoZSAyTkQgY2F0ZWdvcnkuIFlvdSBo
-YXZlIHRoZXJlZm9yZSBiZWVuIGFwcHJvdmVkIG9mIGEgbHVtcCBzdW0gcGF5bWVudCBvZiDigqwy
-Ljg5OC4wMDAuMDAuDQoNCllvdXIgZnVuZCBpcyBub3cgZGVwb3NpdGVkIHdpdGggdGhlIEJBTkss
-IGFuZCBpbnN1cmVkIGluIHlvdXIgbmFtZSB3aXRoIGluc3VyYW5jZSBudW1iZXI6IEVTUC8xOTAw
-NDMzLzIwMjEuIER1ZSB0byBmYWxzZSBwcmFjdGljZXMsIHdlIGFzayB0aGF0IHlvdSBrZWVwIHlv
-dXIgYXdhcmQgaW5mb3JtYXRpb24gc3RyaWN0bHkgYXdheSBmcm9tIHB1YmxpYyBub3RpY2UsIHVu
-dGlsIHlvdXIgY2xhaW0gaGFzIGJlZW4gcHJvY2Vzc2VkIGFuZCBtb25leSByZW1pdHRlZCB0byB5
-b3VyIHBvc3Nlc3Npb24gYXMgdGhpcyBpcyBwYXJ0IG9mIG91ciBzZWN1cml0eSBwcm90b2NvbCB0
-byBhdm9pZCBkb3VibGUgY2xhaW1pbmcgb3IgdW53YXJyYW50ZWQgYWJ1c2Ugb2YgdGhpcyBwcm9n
-cmFtIGJ5IHVuc2NydXB1bG91cyBpbmRpdmlkdWFscy4gQWxsIHBhcnRpY2lwYW50cyB3ZXJlIHNl
-bGVjdGVkIHRocm91Z2ggdmlzaWJsZSB0aWNrZXRzIGFuZCBjb21wdXRlciBiYWxsb3Qgc3lzdGVt
-IGRyYXduIGZyb20gKE1JTExJT05TKSBvZiBuYW1lcyBmcm9tIEFzaWEsIEFtZXJpY2EsIEFmcmlj
-YSwgRXVyb3BlLCBhbmQgU291dGggUGFjaWZpYywgYXMgcGFydCBvZiBvdXIgSW50ZXJuYXRpb25h
-bCBwcm9tb3Rpb24gcHJvZ3JhbS4gV2UgaG9wZSB5b3VyIGx1Y2t5IG5hbWUgYW5kIGVtYWlsIHdp
-bGwgZHJhdyBhIGJpZ2dlciBjYXNoIHByaXplIGluIHRoZSBzdWJzZXF1ZW50IHByb2dyYW1zIGFo
-ZWFkLg0KDQpUTyBCRUdJTiBZT1VSIExPVFRFUlkgQ0xBSU1TLCBQTEVBU0UgQ09OVEFDVCBZT1VS
-IENMQUlNUyBBR0VOVA0KTVIgSVNJRFJPIFNBTkNIRVogQUxCRVJUTywgRk9SRUlHTiBTRVJWSUNF
-IE1BTkFHRVIgT2YgRVhDRUwgU0VHVVJPUywgUy5MLg0KVGVsOiArMzQtNjM0IDEzOSAzMzgsIEZh
-eDogKzM0LTkxOSAwMzkgNDQ3IA0KRU1BSUw6IGlzaWRyb3NhbmNoZXphbGJlcnRvQGdtYWlsLmNv
-bSANCg0KRm9yIHRoZSBwcm9jZXNzaW5nIGFuZCByZW1pdHRhbmNlIG9mIHlvdXIgcHJpemUgd2lu
-bmluZyBtb25leSB0byBhIGRlc2lnbmF0ZWQgY2hvaWNlIG9mIHlvdXJzLg0KDQpOT1RFOiBUaHJl
-ZSAoMykgY2VydGlmaWNhdGVzIGFyZSB0byBiZSBpc3N1ZWQgdG8geW91IGJ5IHRoZSBMT0NBTCBH
-T1ZFUk5NRU5UIFRBWCBBVVRIT1JJVFksIE1JTklTVFJZIE9GIEZJTkFOQ0UgQU5EIE5BVElPTkFM
-IExPVFRFUlkgQk9BUkQsIHRvIGJhY2sgdXAgeW91ciB3aW5uaW5nLiBZb3VyIGFnZW50IHdpbGwg
-ZGlyZWN0IHlvdSBmdXJ0aGVyIG9uIHRoZSBhZG1pbmlzdHJhdGl2ZSByZXF1aXJlbWVudCB0byBl
-bmFibGUgdGhlIGJhbmsgcmVsZWFzZSB5b3VyIGZ1bmQgdG8gdGhlIGRlc2lnbmF0ZWQgY2hvaWNl
-IG9mIHlvdXJzLiANCg0KDQpQQVlNRU5UIFBST0NFU1NJTkcgRk9STeKApi5GSUxMIFRIRSBGT1JN
-IEFORCBTRU5EIFRPIEVNQUlMOiBpc2lkcm9zYW5jaGV6YWxiZXJ0b0BnbWFpbC5jb20gDQoNClNV
-Uk5BTUVfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19OQU1FOl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fDQoNCkFERFJFU1NJTkZVTEw6X19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQoN
-ClRFTEVGT046X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX0VNQUlMX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fDQoNCk9DQ1VQQVRJT05fX19fX19fX19fX19fX19f
-X19fX19fX19fX19EQVRFT0ZCSVJUSF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-DQoNClJFRkVSRU5DRSBOwro6X19fX19fX19fX19fX19fX19fX19fX19fQkFUQ0hOwro6X19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KQkFOSyBOQU1FOl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18NCg0KSUJBTjpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19C
-SUMvU1dJRlRfX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KQkFOSyBBRERSRVNTOl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18NCg0KDQpDT05HUkFUVUxBVElPTiBPTkNFIEFHQUlODQpEUiBBTkEgTUFSSUEgTE9Q
-RVoNClZJQ0UgUFJFU0lERU5ULCBJTlRFUk5BVElPTkFMIFBSSVpFIERFUEFSVE1FTlQNCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBt
-YWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBz
-ZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Hello,
+
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
