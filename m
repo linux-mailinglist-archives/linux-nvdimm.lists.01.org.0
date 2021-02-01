@@ -1,65 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6DF30B112
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Feb 2021 21:00:30 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE0630B1FC
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Feb 2021 22:20:27 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C2CD4100EAB09;
-	Mon,  1 Feb 2021 12:00:28 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+	by ml01.01.org (Postfix) with ESMTP id 4B0C7100EA903;
+	Mon,  1 Feb 2021 13:20:25 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8ADC7100EAAEF
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 12:00:25 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id sa23so10024218ejb.0
-        for <linux-nvdimm@lists.01.org>; Mon, 01 Feb 2021 12:00:25 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id E53FA100EA900
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 13:20:19 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id kg20so26658386ejc.4
+        for <linux-nvdimm@lists.01.org>; Mon, 01 Feb 2021 13:20:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=461YGUpeMwuirfSPdv36fT4hA/Nfndl8hImXvd+kglU=;
-        b=Fy0CnF6qJQE/SIb2lSkDnbYkezpH15gQ6p/LXcDkhpabDypI4jB/x7kK41krPNFgXr
-         i3WULbXipQ6rdY7LlcDX94sVSLoeRLZtfLBAmo0h6Utu/oWDo7C55t1arvOIcXUh4WXB
-         +i6mhIjKHvQJEJTz8/+kwBX0Skfv1jDt3NjaxeAzzywjF4SyHlkSssEIbwDhfwN4Ky49
-         lmgyY0dcBY5SVYOMe6CN2AB08ICK2F2ThwNqKO3pADvN9fcw9EkuxFIKg9EzvqKrkIDt
-         bmmJ2qWW21QArEDTrZrh3Ev5H81G38s7v0gU0SEevYAleoBXbkS2wYLlzGVDIAr3Zgwu
-         3EXQ==
+        bh=RKV8tfXM/P2yr23U8IrmSV+OjOgK46IvUPsK7p0jMgk=;
+        b=jZLlF1BLcZiQNvZuriBZtAzF6XOXuBz6zZN01Lb11NP+6NRYwxYB0ZMdTbEIExzDKb
+         r/gC0LbZUA18tkBHhoxigMtqVYDxB4j+RWtLlmqHfDvcPVcvDdr3AUlNiqW2LxbOfb3O
+         +V+GSB9O1BjCxxSnLTCxG8gvlUz2B5Itq3vnR+d9KT98zWWMdBnlW1/DAzbz4ulPCc4G
+         nq+Wrn51F//JFhDa2w3l398dovOGhgDJhWKfhYV/ofnLxv7doKXgn3rI+ESCn2v5Ofq9
+         ZecFkI5v7FgvOkds/8sJojnO2M7YKnUAbPpdVdFqGTVqquOyo2GU3ijaFXNzoa5HRNf0
+         nLAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=461YGUpeMwuirfSPdv36fT4hA/Nfndl8hImXvd+kglU=;
-        b=r9N4uO9kknFbMmHD7bfjFY8xr6cvmASSJuwMIO/Z3UAIgoF6OhEFewd/DE90/mvfk7
-         N6iHRCDIihAx6IwPibO88AwBbPWbdJ4e700fXlXRJ+x9tDuqzf43q023PyVPwnAdWqNU
-         aylIeworjImjx51I7lcinuc+f7TZfhFq5rob5kXWBJGJ0nksSxioAN8IYvmoNIKxUS9W
-         H1+Mkf99bxQJsXfBerNIVqABsZvpcPJ3F6sHqA61EbOH4x4ZPHvYpnu6Xjo05z7K6Jtp
-         vovDWWixI7pkL9lWT+wzIMeZQCiyoKLRnUKwz1lvhj4tYIfAW6cbVA72tw44+tSn6hxl
-         +qlg==
-X-Gm-Message-State: AOAM531VD1CAhD6mFgmXZDFcyBskofxH8IMtgnRAsuJS2dygeN4DPRLo
-	i/UUwx3GbUTlQyxwpFULPJGxbomuPY5vR7JGgKdRew==
-X-Google-Smtp-Source: ABdhPJz9uFWkuLDdrzvffjOIXGKy+Hssz4LaB90QiLrBPnysw4tcYuXlQkzlx7XyI13fiOAYKVJMKVpjmbozh/Nwrkg=
-X-Received: by 2002:a17:906:d8a1:: with SMTP id qc1mr12489360ejb.523.1612209621231;
- Mon, 01 Feb 2021 12:00:21 -0800 (PST)
+        bh=RKV8tfXM/P2yr23U8IrmSV+OjOgK46IvUPsK7p0jMgk=;
+        b=MDnRVMh84tYP1qgxsNkmtoyTXcaczxdAaEJhOybhyIFSvfXkxqYvRnP4kZS3sm7Ga4
+         oqVQhXp3PVZ35p7c7Lt8QBf81bmEIX5htxS3SdY5m/y2BcBCpZgC21P5zTun+jVL/DpT
+         PwdKNkwMKq/bBSxy3BECPEj4K1sDOI8RXOFENMUBxnk/+OvxMWjySsjDC0Cl+fMdHDQ5
+         3BdXKPByVqPuIoHIw6iVgxGugZOsOf7N5nfm0EPIvLnDu5nYQsOc8KEEVtjU7gEFJSPc
+         ZOIvzoch2T1iShfQsBBKVsr2UFpDaaj8JJOlfyMhXR4nsAwct/VO4Cx7ThmP87PyW9Gy
+         0UHQ==
+X-Gm-Message-State: AOAM533e0yw7YaaVW8/+2rI8IHhFJZID8LbnwrENYywFuM9Md9IDC+qJ
+	HEAOL1GE/NlLpnRzTSaSxMldnZRipzvjKh59lJBmMA==
+X-Google-Smtp-Source: ABdhPJwA3l0e3MUGip6gEtrbLA1M+onIFo5pqjzQ23LyigVAMvz9JEe/SBsagHRrDaseCVuas2GfBzS5C8qSA8H7dF0=
+X-Received: by 2002:a17:906:f919:: with SMTP id lc25mr20142627ejb.323.1612214417615;
+ Mon, 01 Feb 2021 13:20:17 -0800 (PST)
 MIME-Version: 1.0
 References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-5-ben.widawsky@intel.com> <5986abe5-1248-30b2-5f53-fa7013baafad@google.com>
-In-Reply-To: <5986abe5-1248-30b2-5f53-fa7013baafad@google.com>
+ <20210130002438.1872527-10-ben.widawsky@intel.com> <20210201182400.GK197521@fedora>
+ <20210201192708.5cvyecbcdrwx77de@intel.com> <20210201193453.GA308086@fedora>
+In-Reply-To: <20210201193453.GA308086@fedora>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 1 Feb 2021 12:00:18 -0800
-Message-ID: <CAPcyv4g_yUpwoBJsLeVwCZAkZGGrfSgrCk2+GXVXBcouktZNSQ@mail.gmail.com>
-Subject: Re: [PATCH 04/14] cxl/mem: Implement polled mode mailbox
-To: David Rientjes <rientjes@google.com>
-Message-ID-Hash: ID6ATHA34TDWSLGPGDPHCQGMNJIYRNN4
-X-Message-ID-Hash: ID6ATHA34TDWSLGPGDPHCQGMNJIYRNN4
+Date: Mon, 1 Feb 2021 13:20:14 -0800
+Message-ID: <CAPcyv4hivzQh=rresymO+fRP2g1LLJzEr2d7Or6Pha7V_1L6Pg@mail.gmail.com>
+Subject: Re: [PATCH 09/14] cxl/mem: Add a "RAW" send command
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Message-ID-Hash: Q46AC5NB4KPW7SP66CK3VWEUMUJUHHIM
+X-Message-ID-Hash: Q46AC5NB4KPW7SP66CK3VWEUMUJUHHIM
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ID6ATHA34TDWSLGPGDPHCQGMNJIYRNN4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Q46AC5NB4KPW7SP66CK3VWEUMUJUHHIM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,265 +69,88 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sat, Jan 30, 2021 at 3:52 PM David Rientjes <rientjes@google.com> wrote:
+On Mon, Feb 1, 2021 at 11:36 AM Konrad Rzeszutek Wilk
+<konrad.wilk@oracle.com> wrote:
 >
-> On Fri, 29 Jan 2021, Ben Widawsky wrote:
+> On Mon, Feb 01, 2021 at 11:27:08AM -0800, Ben Widawsky wrote:
+> > On 21-02-01 13:24:00, Konrad Rzeszutek Wilk wrote:
+> > > On Fri, Jan 29, 2021 at 04:24:33PM -0800, Ben Widawsky wrote:
+> > > > The CXL memory device send interface will have a number of supported
+> > > > commands. The raw command is not such a command. Raw commands allow
+> > > > userspace to send a specified opcode to the underlying hardware and
+> > > > bypass all driver checks on the command. This is useful for a couple of
+> > > > usecases, mainly:
+> > > > 1. Undocumented vendor specific hardware commands
+> > > > 2. Prototyping new hardware commands not yet supported by the driver
+> > >
+> > > This sounds like a recipe for ..
+> > >
+> > > In case you really really want this may I recommend you do two things:
+> > >
+> > > - Wrap this whole thing with #ifdef
+> > >   CONFIG_CXL_DEBUG_THIS_WILL_DESTROY_YOUR_LIFE
+> > >
+> > >  (or something equivalant to make it clear this should never be
+> > >   enabled in production kernels).
+> > >
+> > >  - Add a nice big fat printk in dmesg telling the user that they
+> > >    are creating a unstable parallel universe that will lead to their
+> > >    blood pressure going sky-high, or perhaps something more professional
+> > >    sounding.
+> > >
+> > > - Rethink this. Do you really really want to encourage vendors
+> > >   to use this raw API instead of them using the proper APIs?
+> >
+> > Again, the ideal is proper APIs. Barring that they get a WARN, and a taint if
+> > they use the raw commands.
 >
-> > Provide enough functionality to utilize the mailbox of a memory device.
-> > The mailbox is used to interact with the firmware running on the memory
-> > device.
+> Linux upstream is all about proper APIs. Just don't do this.
 > >
-> > The CXL specification defines separate capabilities for the mailbox and
-> > the memory device. The mailbox interface has a doorbell to indicate
-> > ready to accept commands and the memory device has a capability register
-> > that indicates the mailbox interface is ready. The expectation is that
-> > the doorbell-ready is always later than the memory-device-indication
-> > that the mailbox is ready.
+> > >
+> > > >
+> > > > While this all sounds very powerful it comes with a couple of caveats:
+> > > > 1. Bug reports using raw commands will not get the same level of
+> > > >    attention as bug reports using supported commands (via taint).
+> > > > 2. Supported commands will be rejected by the RAW command.
+> > > >
+> > > > With this comes new debugfs knob to allow full access to your toes with
+> > > > your weapon of choice.
+> > >
+> > > Problem is that debugfs is no longer "debug" but is enabled in
+> > > production kernel.
 > >
-> > Create a function to handle sending a command, optionally with a
-> > payload, to the memory device, polling on a result, and then optionally
-> > copying out the payload. The algorithm for doing this comes straight out
-> > of the CXL 2.0 specification.
-> >
-> > Primary mailboxes are capable of generating an interrupt when submitting
-> > a command in the background. That implementation is saved for a later
-> > time.
-> >
-> > Secondary mailboxes aren't implemented at this time.
-> >
-> > The flow is proven with one implemented command, "identify". Because the
-> > class code has already told the driver this is a memory device and the
-> > identify command is mandatory.
-> >
-> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > ---
-> >  drivers/cxl/Kconfig |  14 ++
-> >  drivers/cxl/cxl.h   |  39 +++++
-> >  drivers/cxl/mem.c   | 342 +++++++++++++++++++++++++++++++++++++++++++-
-> >  3 files changed, 394 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-> > index 3b66b46af8a0..fe591f74af96 100644
-> > --- a/drivers/cxl/Kconfig
-> > +++ b/drivers/cxl/Kconfig
-> > @@ -32,4 +32,18 @@ config CXL_MEM
-> >         Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
-> >
-> >         If unsure say 'm'.
-> > +
-> > +config CXL_MEM_INSECURE_DEBUG
-> > +     bool "CXL.mem debugging"
-> > +     depends on CXL_MEM
-> > +     help
-> > +       Enable debug of all CXL command payloads.
-> > +
-> > +       Some CXL devices and controllers support encryption and other
-> > +       security features. The payloads for the commands that enable
-> > +       those features may contain sensitive clear-text security
-> > +       material. Disable debug of those command payloads by default.
-> > +       If you are a kernel developer actively working on CXL
-> > +       security enabling say Y, otherwise say N.
+> > I don't see this as my problem. Again, they've been WARNed and tainted. If they
 >
-> Not specific to this patch, but the reference to encryption made me
-> curious about integrity: are all CXL.mem devices compatible with DIMP?
-> Some?  None?
-
-The encryption here is "device passphrase" similar to the NVDIMM
-Security Management described here:
-
-https://pmem.io/documents/IntelOptanePMem_DSM_Interface-V2.0.pdf
-
-The LIBNVDIMM enabling wrapped this support with the Linux keys
-interface which among other things enforces wrapping the clear text
-passphrase with a Linux "trusted/encrypted" key.
-
-Additionally, the CXL.io interface optionally supports PCI IDE:
-
-https://www.intel.com/content/dam/www/public/us/en/documents/reference-guides/pcie-device-security-enhancements.pdf
-
-I'm otherwise not familiar with the DIMP acronym?
-
-> > +
-> >  endif
-> > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> > index a3da7f8050c4..df3d97154b63 100644
-> > --- a/drivers/cxl/cxl.h
-> > +++ b/drivers/cxl/cxl.h
-> > @@ -31,9 +31,36 @@
-> >  #define CXLDEV_MB_CAPS_OFFSET 0x00
-> >  #define   CXLDEV_MB_CAP_PAYLOAD_SIZE_MASK GENMASK(4, 0)
-> >  #define CXLDEV_MB_CTRL_OFFSET 0x04
-> > +#define   CXLDEV_MB_CTRL_DOORBELL BIT(0)
-> >  #define CXLDEV_MB_CMD_OFFSET 0x08
-> > +#define   CXLDEV_MB_CMD_COMMAND_OPCODE_MASK GENMASK(15, 0)
-> > +#define   CXLDEV_MB_CMD_PAYLOAD_LENGTH_MASK GENMASK(36, 16)
-> >  #define CXLDEV_MB_STATUS_OFFSET 0x10
-> > +#define   CXLDEV_MB_STATUS_RET_CODE_MASK GENMASK(47, 32)
-> >  #define CXLDEV_MB_BG_CMD_STATUS_OFFSET 0x18
-> > +#define CXLDEV_MB_PAYLOAD_OFFSET 0x20
-> > +
-> > +/* Memory Device (CXL 2.0 - 8.2.8.5.1.1) */
-> > +#define CXLMDEV_STATUS_OFFSET 0x0
-> > +#define   CXLMDEV_DEV_FATAL BIT(0)
-> > +#define   CXLMDEV_FW_HALT BIT(1)
-> > +#define   CXLMDEV_STATUS_MEDIA_STATUS_MASK GENMASK(3, 2)
-> > +#define     CXLMDEV_MS_NOT_READY 0
-> > +#define     CXLMDEV_MS_READY 1
-> > +#define     CXLMDEV_MS_ERROR 2
-> > +#define     CXLMDEV_MS_DISABLED 3
-> > +#define   CXLMDEV_READY(status) \
-> > +             (CXL_GET_FIELD(status, CXLMDEV_STATUS_MEDIA_STATUS) == CXLMDEV_MS_READY)
-> > +#define   CXLMDEV_MBOX_IF_READY BIT(4)
-> > +#define   CXLMDEV_RESET_NEEDED_SHIFT 5
-> > +#define   CXLMDEV_RESET_NEEDED_MASK GENMASK(7, 5)
-> > +#define     CXLMDEV_RESET_NEEDED_NOT 0
-> > +#define     CXLMDEV_RESET_NEEDED_COLD 1
-> > +#define     CXLMDEV_RESET_NEEDED_WARM 2
-> > +#define     CXLMDEV_RESET_NEEDED_HOT 3
-> > +#define     CXLMDEV_RESET_NEEDED_CXL 4
-> > +#define   CXLMDEV_RESET_NEEDED(status) \
-> > +             (CXL_GET_FIELD(status, CXLMDEV_RESET_NEEDED) != CXLMDEV_RESET_NEEDED_NOT)
-> >
-> >  /**
-> >   * struct cxl_mem - A CXL memory device
-> > @@ -44,6 +71,16 @@ struct cxl_mem {
-> >       struct pci_dev *pdev;
-> >       void __iomem *regs;
-> >
-> > +     struct {
-> > +             struct range range;
-> > +     } pmem;
-> > +
-> > +     struct {
-> > +             struct range range;
-> > +     } ram;
-> > +
-> > +     char firmware_version[0x10];
-> > +
-> >       /* Cap 0001h - CXL_CAP_CAP_ID_DEVICE_STATUS */
-> >       struct {
-> >               void __iomem *regs;
-> > @@ -51,6 +88,7 @@ struct cxl_mem {
-> >
-> >       /* Cap 0002h - CXL_CAP_CAP_ID_PRIMARY_MAILBOX */
-> >       struct {
-> > +             struct mutex mutex; /* Protects device mailbox and firmware */
-> >               void __iomem *regs;
-> >               size_t payload_size;
-> >       } mbox;
-> > @@ -89,5 +127,6 @@ struct cxl_mem {
-> >
-> >  cxl_reg(status);
-> >  cxl_reg(mbox);
-> > +cxl_reg(mem);
-> >
-> >  #endif /* __CXL_H__ */
-> > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > index fa14d51243ee..69ed15bfa5d4 100644
-> > --- a/drivers/cxl/mem.c
-> > +++ b/drivers/cxl/mem.c
-> > @@ -6,6 +6,270 @@
-> >  #include "pci.h"
-> >  #include "cxl.h"
-> >
-> > +#define cxl_doorbell_busy(cxlm)                                                \
-> > +     (cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CTRL_OFFSET) &                    \
-> > +      CXLDEV_MB_CTRL_DOORBELL)
-> > +
-> > +#define CXL_MAILBOX_TIMEOUT_US 2000
+> Right not your problem, nice.
 >
-> This should be _MS?
+> But it is going to be the problem of vendor kernel engineers who don't have this luxury.
 >
-> > +
-> > +enum opcode {
-> > +     CXL_MBOX_OP_IDENTIFY            = 0x4000,
-> > +     CXL_MBOX_OP_MAX                 = 0x10000
-> > +};
-> > +
-> > +/**
-> > + * struct mbox_cmd - A command to be submitted to hardware.
-> > + * @opcode: (input) The command set and command submitted to hardware.
-> > + * @payload_in: (input) Pointer to the input payload.
-> > + * @payload_out: (output) Pointer to the output payload. Must be allocated by
-> > + *            the caller.
-> > + * @size_in: (input) Number of bytes to load from @payload.
-> > + * @size_out: (output) Number of bytes loaded into @payload.
-> > + * @return_code: (output) Error code returned from hardware.
-> > + *
-> > + * This is the primary mechanism used to send commands to the hardware.
-> > + * All the fields except @payload_* correspond exactly to the fields described in
-> > + * Command Register section of the CXL 2.0 spec (8.2.8.4.5). @payload_in and
-> > + * @payload_out are written to, and read from the Command Payload Registers
-> > + * defined in (8.2.8.4.8).
-> > + */
-> > +struct mbox_cmd {
-> > +     u16 opcode;
-> > +     void *payload_in;
-> > +     void *payload_out;
-> > +     size_t size_in;
-> > +     size_t size_out;
-> > +     u16 return_code;
-> > +#define CXL_MBOX_SUCCESS 0
-> > +};
-> > +
-> > +static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> > +{
-> > +     const int timeout = msecs_to_jiffies(CXL_MAILBOX_TIMEOUT_US);
-> > +     const unsigned long start = jiffies;
-> > +     unsigned long end = start;
-> > +
-> > +     while (cxl_doorbell_busy(cxlm)) {
-> > +             end = jiffies;
-> > +
-> > +             if (time_after(end, start + timeout)) {
-> > +                     /* Check again in case preempted before timeout test */
-> > +                     if (!cxl_doorbell_busy(cxlm))
-> > +                             break;
-> > +                     return -ETIMEDOUT;
-> > +             }
-> > +             cpu_relax();
-> > +     }
-> > +
-> > +     dev_dbg(&cxlm->pdev->dev, "Doorbell wait took %dms",
-> > +             jiffies_to_msecs(end) - jiffies_to_msecs(start));
-> > +     return 0;
-> > +}
-> > +
-> > +static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
-> > +                              struct mbox_cmd *mbox_cmd)
-> > +{
-> > +     dev_warn(&cxlm->pdev->dev, "Mailbox command timed out\n");
-> > +     dev_info(&cxlm->pdev->dev,
-> > +              "\topcode: 0x%04x\n"
-> > +              "\tpayload size: %zub\n",
-> > +              mbox_cmd->opcode, mbox_cmd->size_in);
-> > +
-> > +     if (IS_ENABLED(CONFIG_CXL_MEM_INSECURE_DEBUG)) {
-> > +             print_hex_dump_debug("Payload ", DUMP_PREFIX_OFFSET, 16, 1,
-> > +                                  mbox_cmd->payload_in, mbox_cmd->size_in,
-> > +                                  true);
-> > +     }
-> > +
-> > +     /* Here's a good place to figure out if a device reset is needed */
+> > want to do this, that's their business. They will be asked to reproduce without
+> > RAW if they file a bug report.
 >
-> What are the implications if we don't do a reset, as this implementation
-> does not?  IOW, does a timeout require a device to be recovered through a
-> reset before it can receive additional commands, or is it safe to simply
-> drop the command that timed out on the floor and proceed?
+>
+> This is not how customers see the world. "If it is there, then it is
+> there to used right? Why else would someone give me the keys to this?"
+>
+> Just kill this. Or better yet, make it a seperate set of patches for
+> folks developing code but not have it as part of this patchset.
 
-Not a satisfying answer, but "it depends". It's also complicated by
-the fact that a reset may need to be coordinated with other devices in
-the interleave-set as the HDM decoders may bounce.
+In the ACPI NFIT driver, the only protection against vendor
+shenanigans is the requirement that any and all DSM functions be
+described in a public specification, so there is no unfettered access
+to the DSM interface However, multiple vendors just went ahead and
+included a "vendor passthrough" as a DSM sub-command in their
+implementation. The driver does have the "disable_vendor_specific"
+module parameter, however that does not amount to much more than a
+stern look from the kernel at vendors shipping functionality through
+that path rather than proper functions. It has been a source of bugs.
 
-For comparison, to date there have been no problems with the "drop on
-the floor" policy of LIBNVDIMM command timeouts. At the same time
-there simply was not a software visible reset mechanism for those
-devices so this problem never came out. This mailbox isn't a fast
-path, so the device is likely completely dead if this timeout is ever
-violated, and the firmware reporting a timeout might as well assume
-that the OS gives up on the device.
-
-I'll let Ben chime in on the rest...
+The RAW command proposal Ben has here is a significant improvement on
+that status quo. It's built on the observation that customers pick up
+the phone whenever their kernel backtraces, and makes it is easy to
+spot broken tooling. That said, I think it is reasonable to place the
+RAW interface behind a configuration option and let distribution
+policy decide the availability.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
