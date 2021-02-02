@@ -2,70 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8AB30B46D
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 02:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA4030B4D0
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 02:47:59 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 025FF100EC1D8;
-	Mon,  1 Feb 2021 17:09:23 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=rientjes@google.com; receiver=<UNKNOWN> 
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 1E07D100EB355;
+	Mon,  1 Feb 2021 17:47:58 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 17A67100ED484
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 17:09:19 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id d2so1298171pjs.4
-        for <linux-nvdimm@lists.01.org>; Mon, 01 Feb 2021 17:09:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:in-reply-to:message-id:references
-         :mime-version;
-        bh=pNCTQ+GJhIhHpTNwwogRL6Yi/0jouh3mFkQQjXxphC8=;
-        b=KnvUvAZHPhu3r6Yh7bIMIXCYLeRudcUaDGZlu1gyzOjzIwWPZXs8tIgfnVHSZYL4R6
-         ZaY41xp4cjstE99q+drLELvzoA1XGHVs4Ci11M7UyrGpT8Nu2TajXHUBW3ajbAm05IVL
-         Uc1sqaK0T8c9Vj7ws6Awhl9unwhQJaY1aj5/TAuTWPLRT5b+rqpXJ+3+H0h7kiXg3dpr
-         7/7EBCmXMa8/T30kzfk8G/z/nlCocltuHltX+HW4agnpVtcRw4MIeEW66iCxkgKOpnDM
-         eXXiMSm/x+Kakf/k1msvZiFbMreUy3rP9qvrpiaqgnTcDX44PtQMQHTIynkX39EYorin
-         sdog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
-         :references:mime-version;
-        bh=pNCTQ+GJhIhHpTNwwogRL6Yi/0jouh3mFkQQjXxphC8=;
-        b=M0tPRD2dOumeqb6oZYGhLUxh1LZSnkNRCGuqwZpxXebZqPhAq4lZSMUquuWTzjdcR3
-         khjE/DdrFSEdgblIl0CGcpCPIPHctlpvv8xRbTQhY17+hS39NqXFg5cqwT+bOtEQXhEV
-         PJUg5msU43gZGx215tCocYa+RiXIr9EaFGjZw+Uyz5s0NKlJXaakd8bqSoGg+GIV8Sh6
-         TY2WIfagYKRwDRYKcxzTNdne8Jx5+RMkRqImQoXjgHH1fnSQxevmGUlFoo/fdejR6Q4N
-         jb8y2HsOxMWQAugYxXDSZ8KCHsy2wLtifKcYAQ6qf0UTCWWJzgcPJcNrYCb0FA7Yy1+T
-         /IRQ==
-X-Gm-Message-State: AOAM532Msh+elYCRtr7Ist9BwKvyjKOBqmyORc3t4cxL6J7itapyXQ5C
-	r/EEPH1pC8Y04lcmu6hBDWbwxfGKyIkMTw==
-X-Google-Smtp-Source: ABdhPJyMh8u3GTa8m7YFZfJbDC7xX65+VnYP+upZQGZBqpSgFHhwIl7QJrf8YVKXSX+s6Zeew7AAiA==
-X-Received: by 2002:a17:90a:7e94:: with SMTP id j20mr1621007pjl.218.1612228159179;
-        Mon, 01 Feb 2021 17:09:19 -0800 (PST)
-Received: from [2620:15c:17:3:4a0f:cfff:fe51:6667] ([2620:15c:17:3:4a0f:cfff:fe51:6667])
-        by smtp.gmail.com with ESMTPSA id r21sm20536846pgg.34.2021.02.01.17.09.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Feb 2021 17:09:18 -0800 (PST)
-Date: Mon, 1 Feb 2021 17:09:17 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-In-Reply-To: <CAPcyv4jRVDdZyqH_eL4jjRvbCOEpO_UMUZdXbtevsY6PpcRq4Q@mail.gmail.com>
-Message-ID: <26a3b4dc-8872-3547-33f7-20cbd6cd981d@google.com>
-References: <32f33dd-97a-8b1c-d488-e5198a3d7748@google.com> <20210201215857.ud5cpg7hbxj2j5bx@intel.com> <b46ed01-3f1-6643-d371-7764c3bde4f8@google.com> <20210201222859.lzw3gvxuqebukvr6@intel.com> <20210201223314.qh24uxd7ajdppgfl@intel.com>
- <f86149f8-3aea-9d8c-caa9-62771bf22cb5@google.com> <20210201225052.vrrvuxrsgmddjzbb@intel.com> <79b98f60-151b-6c80-65c3-91a37699d121@google.com> <20210201231718.2hwaqgn2f7kc7usw@intel.com> <a789317e-2ac2-10a1-dedd-1851972e3d6b@google.com>
- <20210202001120.vr6mos7ylnbqytxh@intel.com> <CAPcyv4jRVDdZyqH_eL4jjRvbCOEpO_UMUZdXbtevsY6PpcRq4Q@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id B7F73100EB352
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Feb 2021 17:47:55 -0800 (PST)
+IronPort-SDR: 49/7GyPxvgD+SNPrgrv4gtEUxIGiRLvTibGJxXBMIXxuzsOYNMU4CrTN5O1jlo+K/6e6ieVFCq
+ QgnQsxbOsSDw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9882"; a="265613943"
+X-IronPort-AV: E=Sophos;i="5.79,393,1602572400";
+   d="scan'208";a="265613943"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 17:47:54 -0800
+IronPort-SDR: cTIokm0jo98k7fEoro2xwG68uHTxSwmfepHt18u5dRUaS9fvSx+3D9uzaJNOX54DyuGEmnknEG
+ rN+5ldPYUG8Q==
+X-IronPort-AV: E=Sophos;i="5.79,393,1602572400";
+   d="scan'208";a="370192789"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2021 17:47:54 -0800
+Subject: [PATCH] libnvdimm/dimm: Avoid race between probe and
+ available_slots_show()
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Mon, 01 Feb 2021 17:47:53 -0800
+Message-ID: <161223047357.4134109.9331035508023355722.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: XS7VKJDSXFPNP22HUDG2UEQWMI6FMIQT
-X-Message-ID-Hash: XS7VKJDSXFPNP22HUDG2UEQWMI6FMIQT
-X-MailFrom: rientjes@google.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+Message-ID-Hash: BS2CZHHNRYHKNTILAYPEXJKRJ7W6VWNQ
+X-Message-ID-Hash: BS2CZHHNRYHKNTILAYPEXJKRJ7W6VWNQ
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: stable@vger.kernel.org, Coly Li <colyli@suse.com>, Richard Palethorpe <rpalethorpe@suse.com>, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XS7VKJDSXFPNP22HUDG2UEQWMI6FMIQT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BS2CZHHNRYHKNTILAYPEXJKRJ7W6VWNQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,22 +51,93 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, 1 Feb 2021, Dan Williams wrote:
+Richard reports that the following test:
 
-> > > I don't have an objection to binding, but doesn't this require that the
-> > > check in cxl_validate_cmd_from_user() guarantees send_cmd->size_in cannot
-> > > be greater than 1MB?
-> >
-> > You're correct. I'd need to add:
-> > cxlm->mbox.payload_size =
-> >     min_t(size_t, 1 << CXL_GET_FIELD(cap, CXLDEV_MB_CAP_PAYLOAD_SIZE), 1<<20)
-> 
-> nit, use the existing SZ_1M define.
-> 
+(while true; do
+     cat /sys/bus/nd/devices/nmem*/available_slots 2>&1 > /dev/null
+ done) &
 
-Sounds good, thanks both!  I'll assume you'll follow-up on this in the 
-next revision for patch 7 ("cxl/mem: Add send command") and we can 
-consider this resolved :)
+while true; do
+     for i in $(seq 0 4); do
+         echo nmem$i > /sys/bus/nd/drivers/nvdimm/bind
+     done
+     for i in $(seq 0 4); do
+         echo nmem$i > /sys/bus/nd/drivers/nvdimm/unbind
+     done
+ done
+
+...fails with a crash signature like:
+
+    divide error: 0000 [#1] SMP KASAN PTI
+    RIP: 0010:nd_label_nfree+0x134/0x1a0 [libnvdimm]
+    [..]
+    Call Trace:
+     available_slots_show+0x4e/0x120 [libnvdimm]
+     dev_attr_show+0x42/0x80
+     ? memset+0x20/0x40
+     sysfs_kf_seq_show+0x218/0x410
+
+The root cause is that available_slots_show() consults driver-data, but
+fails to synchronize against device-unbind setting up a TOCTOU race to
+access uninitialized memory.
+
+Validate driver-data under the device-lock.
+
+Fixes: 4d88a97aa9e8 ("libnvdimm, nvdimm: dimm driver and base libnvdimm device-driver infrastructure")
+Cc: <stable@vger.kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Coly Li <colyli@suse.com>
+Reported-by: Richard Palethorpe <rpalethorpe@suse.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/nvdimm/dimm_devs.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
+index b59032e0859b..9d208570d059 100644
+--- a/drivers/nvdimm/dimm_devs.c
++++ b/drivers/nvdimm/dimm_devs.c
+@@ -335,16 +335,16 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
+ }
+ static DEVICE_ATTR_RO(state);
+ 
+-static ssize_t available_slots_show(struct device *dev,
+-		struct device_attribute *attr, char *buf)
++static ssize_t __available_slots_show(struct nvdimm_drvdata *ndd, char *buf)
+ {
+-	struct nvdimm_drvdata *ndd = dev_get_drvdata(dev);
++	struct device *dev;
+ 	ssize_t rc;
+ 	u32 nfree;
+ 
+ 	if (!ndd)
+ 		return -ENXIO;
+ 
++	dev = ndd->dev;
+ 	nvdimm_bus_lock(dev);
+ 	nfree = nd_label_nfree(ndd);
+ 	if (nfree - 1 > nfree) {
+@@ -356,6 +356,18 @@ static ssize_t available_slots_show(struct device *dev,
+ 	nvdimm_bus_unlock(dev);
+ 	return rc;
+ }
++
++static ssize_t available_slots_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	ssize_t rc;
++
++	nd_device_lock(dev);
++	rc = __available_slots_show(dev_get_drvdata(dev), buf);
++	nd_device_unlock(dev);
++
++	return rc;
++}
+ static DEVICE_ATTR_RO(available_slots);
+ 
+ __weak ssize_t security_show(struct device *dev,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
