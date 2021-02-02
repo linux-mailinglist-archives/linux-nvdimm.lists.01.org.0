@@ -1,52 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119C530C9D7
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 19:33:32 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DC930CA1B
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 19:42:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C1970100EA2C9;
-	Tue,  2 Feb 2021 10:33:30 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A97E8100EAB4E;
+	Tue,  2 Feb 2021 10:42:18 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::232; helo=mail-oi1-x232.google.com; envelope-from=enbyamy@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1F2E8100EAB46
-	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 10:33:29 -0800 (PST)
-IronPort-SDR: 8SRGcIiFHivwT46E564xIroEZ26wDop2l9YhVpQlXMoiw1XmhPoD0vQ/67g8OAHOr0VPQVJvDw
- b+xscdWDD5Wg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="242421455"
-X-IronPort-AV: E=Sophos;i="5.79,396,1602572400";
-   d="scan'208";a="242421455"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 10:33:28 -0800
-IronPort-SDR: o0BhQQsQFexfvQyPOkPHDvxmcu9hxi3ywGSD4mrPrneLs4gP1togqGK+AONy7stmmIWpDROh81
- OpG9MSEPKy+Q==
-X-IronPort-AV: E=Sophos;i="5.79,396,1602572400";
-   d="scan'208";a="582136028"
-Received: from joship1x-mobl1.amr.corp.intel.com (HELO intel.com) ([10.252.131.202])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 10:33:26 -0800
-Date: Tue, 2 Feb 2021 10:33:25 -0800
-From: Ben Widawsky <ben.widawsky@intel.com>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 06/14] cxl/mem: Add basic IOCTL interface
-Message-ID: <20210202183325.ls7o54zza4obw6df@intel.com>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-7-ben.widawsky@intel.com>
- <20210202181505.GF3708021@infradead.org>
+	by ml01.01.org (Postfix) with ESMTPS id DFFEA100F2252
+	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 10:42:15 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id x71so23822354oia.9
+        for <linux-nvdimm@lists.01.org>; Tue, 02 Feb 2021 10:42:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SGzfrsnXhgnNBXcQhxaXbM4GAEaugMss3IIAYpF95qk=;
+        b=KL3fKa+7CX/VKuMHsaXqb1Kj/o/WTNYC1ZplA6ziaxDV4ag3iuqBjJaxr5+JgkAHsB
+         tepUk47mcRKdWNP5rlWzlLA4kr5jYd+Z89LokH7fQ4SJUmOOBIi+43yx345F7CgB5mpm
+         /Odz5mEq7ie34DkUkPBPTMMTMhqq9QCimELZ0ofKJIBAXKX9CHpRuV9YUgtZKMmYfZhX
+         j2oFHgjRC3wdmkJopUkSvDHTJDP6YhdDISpc6kP02mR+uLdtwKc16mBpVe1KBevY/wDb
+         f6mJaS1ioo7m/AwLJQyKmtRDTt/qRoyxIFkph3fW3sy0GKbPJ1t84xArtAl2ZjeMgRyf
+         llkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SGzfrsnXhgnNBXcQhxaXbM4GAEaugMss3IIAYpF95qk=;
+        b=J6c6K2wIW0/R1zrZ5FOLih5wbgA7DTpasHIv4SNjBtZAvFuYSQlGTNiEgkweIKcXj0
+         NnaI9JDdlydRU/lL9q/gmLxJbD/E48iyRwLGOddMHFXsWUkym521mre7rkv1KPOJYQB+
+         XKjFJUt4XASJ4+tihyqTZlAn7HDiLTRyDJOmE18LXyb/oWMm/+JGLcc4MPRl/NkrGYDA
+         BA2yD767uIXCjNLr8JcrwG8GN2L8xPfO9S8FosjwvK+MjtbC8taw1oP0Mau25V9wOS1m
+         gcH44+xShgJWNGqzDH9znmv97ftrqJi2CWEexqPsFXz4zTGrDl2513d6PNsSkLEOLkHT
+         JTig==
+X-Gm-Message-State: AOAM532mdgEDvYNoDE5cG7LCxI9dlbCyNTrauKuQOK703xziSu2znc0L
+	pZAhTH7kQMQI0cIF9i2r2dxdz+bq128RBW7UpBg=
+X-Google-Smtp-Source: ABdhPJzBExcuHZCpDQGPbKvNqFaaijui4YpUFeAlLdQdLloNwkfYR8gbl9evSF4KyBBaFsTu/bpITB4lVZHkwVKGgBY=
+X-Received: by 2002:a54:458f:: with SMTP id z15mr3878491oib.139.1612291334759;
+ Tue, 02 Feb 2021 10:42:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210202181505.GF3708021@infradead.org>
-Message-ID-Hash: KCPDQKF66CVJZBBS5J62Z627QMF2QGC5
-X-Message-ID-Hash: KCPDQKF66CVJZBBS5J62Z627QMF2QGC5
-X-MailFrom: ben.widawsky@intel.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-cxl@vger.kernel.org, kernel test robot <lkp@intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+References: <CAE1WUT7ke9TR_H+et5_BUg93OYcDF0LD2ku+Cto59PhP6nz8qg@mail.gmail.com>
+ <20201130133652.GK11250@quack2.suse.cz> <CAE1WUT5LbFiKTAmT8V-ERH-=aGUjhOw5ZMjPMmoNWTNTspzN9w@mail.gmail.com>
+ <20201130150923.GM11250@quack2.suse.cz> <20201130163613.GE4327@casper.infradead.org>
+In-Reply-To: <20201130163613.GE4327@casper.infradead.org>
+From: Amy Parker <enbyamy@gmail.com>
+Date: Tue, 2 Feb 2021 10:42:03 -0800
+Message-ID: <CAE1WUT7mFw2_ndhW=P_Q8BRDb1rDOVixhp7sveqK=Ci6yi35fA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] fs: dax.c: move fs hole signifier from
+ DAX_ZERO_PAGE to XA_ZERO_ENTRY
+To: Matthew Wilcox <willy@infradead.org>
+Message-ID-Hash: HWKWEUOPOZALBWVE2VJDWIZ5FG254JXT
+X-Message-ID-Hash: HWKWEUOPOZALBWVE2VJDWIZ5FG254JXT
+X-MailFrom: enbyamy@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KCPDQKF66CVJZBBS5J62Z627QMF2QGC5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HWKWEUOPOZALBWVE2VJDWIZ5FG254JXT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,15 +70,20 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 21-02-02 18:15:05, Christoph Hellwig wrote:
-> > +#if defined(__cplusplus)
-> > +extern "C" {
-> > +#endif
-> 
-> This has no business in a kernel header.
+Apologize for taking a long time - this got swamped in a sea of other
+kernel bits.
 
-This was copypasta from DRM headers (which as you're probably aware wasn't
-always part of the kernel)... It's my mistake and I will get rid of it.
+There doesn't seem to be much of a point now to switch to the XArray
+zero entry for what is currently DAX_ZERO_ENTRY. However, if you want
+to explore it further, a potential thought could be adapting the bits
+around the XArray 257 entry. There's a large swath of available bits
+that we could use between bit 3 and bit 9. If Matthew really wants to
+use the XA zero entry for it, perhaps we could shift the other DAX
+bits to those?
+
+Best regards,
+Amy Parker
+(she/her/hers)
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
