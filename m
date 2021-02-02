@@ -2,139 +2,116 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE9330CB04
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 20:11:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E603430CDDC
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Feb 2021 22:22:55 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B3E39100EAB4E;
-	Tue,  2 Feb 2021 11:11:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 3A48A100EB34D;
+	Tue,  2 Feb 2021 13:22:54 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.191.220; helo=app1.appendleadedm.info; envelope-from=contact-linux+2dnvdimm=lists.01.org@appendleadedm.info; receiver=<UNKNOWN> 
+Received: from app1.appendleadedm.info (ip220.ip-51-83-191.eu [51.83.191.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 60B6B100EB851
-	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 11:11:06 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 47C6D64D87;
-	Tue,  2 Feb 2021 19:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1612293066;
-	bh=Pzyl+wYYgvPCwgJ+GvBahmfBmshzS1gdeGZydw56C1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=urlxNYufSkfJp0SH0EEfwFzSeIYwXDdueMnyILwXIullWx4SbMoEerX80f5OQqyLU
-	 Bg+fxp5cMzP5FzVAMlOPfjBauj+B1/aEKphaIK3R5lVLYCvCQesqrDIQmZvMjDXmNR
-	 wmsGMRNi9ZfDbI6vAJ5p7VMbSsLj4nb8l1NhazBIB10phtLBckQ1cOU2nN3vTXLilS
-	 uJtQ4CoJagfCIkQnsWqgtg/k3AnTkwWKwrvb5ozbBGjBggCHGi2zD+24ANJ5uL76kr
-	 bEh+jPfAk+q1UtVeseCuM6MVzwqCxfVLsegGHFyjAVr0PWSO8yZEm61pbzlwU5cRc5
-	 HnguLQxiFymVg==
-Date: Tue, 2 Feb 2021 21:10:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
- direct map fragmentation
-Message-ID: <20210202191040.GP242749@kernel.org>
-References: <303f348d-e494-e386-d1f5-14505b5da254@redhat.com>
- <20210126120823.GM827@dhcp22.suse.cz>
- <20210128092259.GB242749@kernel.org>
- <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
- <73738cda43236b5ac2714e228af362b67a712f5d.camel@linux.ibm.com>
- <YBPF8ETGBHUzxaZR@dhcp22.suse.cz>
- <6de6b9f9c2d28eecc494e7db6ffbedc262317e11.camel@linux.ibm.com>
- <YBkcyQsky2scjEcP@dhcp22.suse.cz>
- <20210202124857.GN242749@kernel.org>
- <YBlTMqjB06aqyGbT@dhcp22.suse.cz>
+	by ml01.01.org (Postfix) with ESMTPS id 729DE100EB342
+	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 13:22:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=appendleadedm.info;
+ h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=contact@appendleadedm.info;
+ bh=lLpF42ASyBQyu1/zt5FTz6QYcpE=;
+ b=ct1QPKrm6v6rj6xKXxMHlWJ0obZSuHVLSSGxHydEbF3jKTdfJKvOJ1cZ3OpgHmu5JrL7DwKcU0c8
+   iBejNGSuWM88JnfrwOLBLBIubYtShLJnigd+nSNP6ArG4zcIJuIK8UGObRl26nFgB1uzRXtUh+rN
+   CYi7gT03bDFL3qILB/5AQxmA8JzXPElurhlREXED6mlBqdPQIsGpWPAvddkGWEfgI0Hs5/+LxvhS
+   TmfJA/2r6imGETmt0lqBrfZlgJAPwGVAlAAARCU2Ub9x5wykMI3NrWmu+OLNA6CHAC29aqc/ytl3
+   Y6N0cq3Akp8tYLMRihguO2kd+FGqLOBNP8J85w==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=appendleadedm.info;
+ b=LlUwsnKVOk/f+oLOdo0pDjGBimME7f0leXbdPIzV6cjRg+Pcpn6xADTCkjcZKa0Hm42oBVHY2+eX
+   DIY7u3cTMeFvbEOs+DWrsfeH8RMxJvR6AnQd5RzL4fXd6pXKIUDlCwHgOVL6PPkt3GakZoyjCWz8
+   OiCnK3iQAe1CQA0zg6m+DTjNWvfrQReXX++H9lRm3xo/PFZZWvSpiNppyNHFD9iSgnSkV9G5X4n9
+   wjNTzU2nod9btatDrooSWXE6RC7kE1jJiBrQLYV4fHAew0uemFYf8hP9LSRbAi9tQG3pr5Fmxm1y
+   p1yUYJc0g9fAyJy7SoyWdm8+rj3I5VxIQAhc+g==;
+Received: from appendleadedm.info (127.0.0.1) by app1.appendleadedm.info id h371ani19tkq for <linux-nvdimm@lists.01.org>; Tue, 2 Feb 2021 21:15:53 +0000 (envelope-from <contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info>)
+Date: Tue, 2 Feb 2021 21:15:53 +0000
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+From: Susan Taylor <contact@appendleadedm.info>
+Subject: RE: Conference call
+Message-ID: <04d4897633ce40a995c47b182c2a9afc@appendleadedm.info>
+X-Ooqx-Campaign-Uid: pm05337we6e03
+X-Ooqx-Subscriber-Uid: al733opd9n292
+X-Ooqx-Customer-Uid: fv107j3jh8cf0
+X-Ooqx-Customer-Gid: 0
+X-Ooqx-Delivery-Sid: 1
+X-Ooqx-Tracking-Did: 0
+X-Report-Abuse: Please report abuse for this campaign here: http://appendleadedm.info/emm/index.php/campaigns/pm05337we6e03/report-abuse/tm309l31m36a2/al733opd9n292
+Feedback-ID: pm05337we6e03:al733opd9n292:tm309l31m36a2:fv107j3jh8cf0
+Precedence: bulk
+X-Ooqx-EBS: http://appendleadedm.info/emm/index.php/lists/block-address
+X-Sender: contact@appendleadedm.info
+X-Receiver: linux-nvdimm@lists.01.org
+X-Ooqx-Mailer: PHPMailer - 5.2.21
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <YBlTMqjB06aqyGbT@dhcp22.suse.cz>
-Message-ID-Hash: HO434KD2ZUQMQMOKX7I44VZXGSX4X7OY
-X-Message-ID-Hash: HO434KD2ZUQMQMOKX7I44VZXGSX4X7OY
-X-MailFrom: rppt@kernel.org
+Message-ID-Hash: DKJW6YAWUQT6XLWMDRMQJUAXDIIT5WVQ
+X-Message-ID-Hash: DKJW6YAWUQT6XLWMDRMQJUAXDIIT5WVQ
+X-MailFrom: contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: James Bottomley <jejb@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
- Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Susan Taylor <susan.taylordata@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HO434KD2ZUQMQMOKX7I44VZXGSX4X7OY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DKJW6YAWUQT6XLWMDRMQJUAXDIIT5WVQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, Feb 02, 2021 at 02:27:14PM +0100, Michal Hocko wrote:
-> On Tue 02-02-21 14:48:57, Mike Rapoport wrote:
-> > On Tue, Feb 02, 2021 at 10:35:05AM +0100, Michal Hocko wrote:
-> > > On Mon 01-02-21 08:56:19, James Bottomley wrote:
-> > > 
-> > > I have also proposed potential ways out of this. Either the pool is not
-> > > fixed sized and you make it a regular unevictable memory (if direct map
-> > > fragmentation is not considered a major problem)
-> > 
-> > I think that the direct map fragmentation is not a major problem, and the
-> > data we have confirms it, so I'd be more than happy to entirely drop the
-> > pool, allocate memory page by page and remove each page from the direct
-> > map. 
-> > 
-> > Still, we cannot prove negative and it could happen that there is a
-> > workload that would suffer a lot from the direct map fragmentation, so
-> > having a pool of large pages upfront is better than trying to fix it
-> > afterwards. As we get more confidence that the direct map fragmentation is
-> > not an issue as it is common to believe we may remove the pool altogether.
-> 
-> I would drop the pool altogether and instantiate pages to the
-> unevictable LRU list and internally treat it as ramdisk/mlock so you
-> will get an accounting correctly. The feature should be still opt-in
-> (e.g. a kernel command line parameter) for now. The recent report by
-> Intel (http://lkml.kernel.org/r/213b4567-46ce-f116-9cdf-bbd0c884eb3c@linux.intel.com)
-> there is no clear win to have huge mappings in _general_ but there are
-> still workloads which benefit. 
->  
-> > I think that using PMD_ORDER allocations for the pool with a fallback to
-> > order 0 will do the job, but unfortunately I doubt we'll reach a consensus
-> > about this because dogmatic beliefs are hard to shake...
-> 
-> If this is opt-in then those beliefs can be relaxed somehow. Long term
-> it makes a lot of sense to optimize for a better direct map management
-> but I do not think this is a hard requirement for an initial
-> implementation if it is not imposed to everybody by default.
->
-> > A more restrictive possibility is to still use plain PMD_ORDER allocations
-> > to fill the pool, without relying on CMA. In this case there will be no
-> > global secretmem specific pool to exhaust, but then it's possible to drain
-> > high order free blocks in a system, so CMA has an advantage of limiting
-> > secretmem pools to certain amount of memory with somewhat higher
-> > probability for high order allocation to succeed. 
-> > 
-> > > or you need a careful access control 
-> > 
-> > Do you mind elaborating what do you mean by "careful access control"?
-> 
-> As already mentioned, a mechanism to control who can use this feature -
-> e.g. make it a special device which you can access control by
-> permissions or higher level security policies. But that is really needed
-> only if the pool is fixed sized.
-  
-Let me reiterate to make sure I don't misread your suggestion.
-
-If we make secretmem an opt-in feature with, e.g. kernel parameter, the
-pooling of large pages is unnecessary. In this case there is no limited
-resource we need to protect because secretmem will allocate page by page.
-
-Since there is no limited resource, we don't need special permissions
-to access secretmem so we can move forward with a system call that creates
-a mmapable file descriptor and save the hassle of a chardev.
-
-I cannot say I don't like this as it cuts roughly half of mm/secretmem.c :)
-
-But I must say I am still a bit concerned about that we have no provisions
-here for dealing with the direct map fragmentation even with the set goal
-to improve the direct map management in the long run...
-
--- 
-Sincerely yours,
-Mike.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+QXJlIHlvdSBsb29raW5nIGZvciBhbnkgb2YgdGhlIGZvbGxvd2luZyBFbWFpbCBhbmQgcGhvbmUg
+bGlzdCBnYXRoZXJlZA0KZnJvbSBMaW5rZWRJbiwgRXZlbnRzIGFuZCBtYXJrZXQgcmVzZWFyY2g/
+IFBsZWFzZSBzcGVjaWZ5IHlvdXIgdGFyZ2V0DQphdWRpZW5jZSBzbyB0aGF0IHdlIGNhbiBzaGFy
+ZSBhIHNhbXBsZSB3aXRoIHlvdS4NCiogQXJjaGl0ZWN0cyBhbmQgaW50ZXJpb3IgZGVzaWduZXJz
+IGVtYWlsIGxpc3QNCiogQ0VPLCBvd25lciwgUHJlc2lkZW50IGFuZCBDT08gY29udGFjdHMNCiog
+Q0ZPLCBDb250cm9sbGVyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEZpbmFuY2UsIEFjY291bnRz
+IFBheWFibGUsDQpBY2NvdW50cyBSZWNlaXZhYmxlLCBBdWRpdCBDb250YWN0cw0KKiBDaGllZiBI
+dW1hbiBSZXNvdXJjZXMgT2ZmaWNlciwgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBIUiwgRW1wbG95
+ZWUNCkJlbmVmaXRzLCBFbXBsb3llZSBDb21tdW5pY2F0aW9ucywgRW1wbG95ZWUgQ29tcGVuc2F0
+aW9uLCBFbXBsb3llZQ0KRW5nYWdlbWVudCwgRW1wbG95ZWUgRXhwZXJpZW5jZSBhbmQgRW1wbG95
+ZWUgUmVsYXRpb25zLCBUYWxlbnQNCkFjcXVpc2l0aW9uLCBUYWxlbnQgRGV2ZWxvcG1lbnQsIFRh
+bGVudCBNYW5hZ2VtZW50LCBSZWNydWl0aW5nDQpDb250YWN0cw0KKiBDSU8sQ1RPLCBDSVNPLCBW
+UC9EaXJlY3Rvci9NYW5hZ2VyIG9mIElULCBJVCBDb21wbGlhbmNlLCBJVCBSaXNrLA0KQkksIENs
+b3VkLCBEYXRhYmFzZSBhbmQgSVQgU2VjdXJpdHkgQ29udGFjdHMNCiogQ01PLCBWUC9EaXJlY3Rv
+ci9NYW5hZ2VyIG9mIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5kDQpnZW5l
+cmF0aW9uLCBMZWFkIGdlbmVyYXRpb24sIGluc2lkZSBzYWxlcywgTWFya2V0aW5nIENvbW11bmlj
+YXRpb25zDQpjb250YWN0cyBldGMuDQoqIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVudCBD
+b250YWN0cw0KKiBDUEEgYW5kIEJvb2trZWVwZXJzIGVtYWlsIGxpc3QNCiogRGF0YSBBbmFseXRp
+Y3MgYW5kIERhdGFiYXNlIEFkbWluaXN0cmF0b3JzIGNvbnRhY3RzDQoqIERpc2FzdGVyIFJlY292
+ZXJ5IENvbnRhY3RzDQoqIEUtY29tbWVyY2Ugb3Igb25saW5lIHJldGFpbGVycyBlbWFpbCBsaXN0
+DQoqIEVkdWNhdGlvbiBpbmR1c3RyeSBleGVjdXRpdmVzIGVtYWlsIGxpc3QgLSBQcmluY2lwYWxz
+LCBEZWFuLA0KQWRtaW5zIGFuZCB0ZWFjaGVycyBmcm9tIFNjaG9vbHMsIENvbGxlZ2VzIGFuZCBV
+bml2ZXJzaXRpZXMNCiogRW5naW5lZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5kIG1lZXRpbmcg
+cGxhbm5lcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzIGFuZCBvZmZpY2UgbWFuYWdlciBDb250
+YWN0cw0KKiBHZW5lcmFsIGFuZCBjb3Jwb3JhdGUgY291bnNlbCBhcyB3ZWxsIGxlZ2FsIHByb2Zl
+c3Npb25hbHMgbGlzdA0KKiBHb3Zlcm5tZW50IGNvbnRyYWN0b3JzIGVtYWlsIGxpc3QNCiogSGVh
+bHRoICYgU2FmZXR5IENvbnRhY3RzDQoqIEhpZ2ggbmV0IHdvcnRoIGluZGl2aWR1YWxzL2ludmVz
+dG9ycyBlbWFpbCBsaXN0DQoqIEhvc3BpdGFscywgY2xpbmljcywgcHJpdmF0ZSBwcmFjdGljZXMs
+IFBoYXJtYWNldXRpY2FsIGFuZA0KYmlvdGVjaG5vbG9neSBjb21wYW554oCZcyB0b3AgZGVjaXNp
+b24gbWFrZXJzIGVtYWlsIGxpc3QNCiogSHVtYW4gQ2FwaXRhbCBNYW5hZ2VtZW50IENvbnRhY3Rz
+DQoqIEluZGl2aWR1YWwgaW5zdXJhbmNlIGFnZW50cyBsaXN0DQoqIElTVi9WQVJzIGxpc3QNCiog
+TGVhcm5pbmcgJiBEZXZlbG9wbWVudCBDb250YWN0cw0KKiBMb2dpc3RpY3MsIHNoaXBwaW5nIGFu
+ZCBzdXBwbHkgY2hhaW4gbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBNYW51ZmFjdHVyaW5nIEluZHVz
+dHJ5IGV4ZWN1dGl2ZXMgbGlzdA0KKiBOZXR3b3JrIG1hbmFnZXIsIFN1cnZlaWxsYW5jZSwgU3lz
+dGVtIEFkbWluaXN0cmF0b3IsIFRlY2huaWNhbA0KU3VwcG9ydCBDb250YWN0cw0KKiBOZXcgJiBV
+c2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QNCiogT2lsLCBHYXMgYW5kIHV0aWxpdHkgaW5kdXN0
+cnkgY29udGFjdHMNCiogUGh5c2ljaWFucywgRG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhl
+cmFwaXN0cyBlbWFpbCBsaXN0DQoqIFBsYW50IE1hbmFnZXIgQ29udGFjdHMNCiogUHJvZHVjdCBh
+bmQgcHJvamVjdCBtYW5hZ2VtZW50IGxpc3QNCiogUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQg
+Q29udGFjdHMNCiogU3BlY2lmaWMgRXZlbnQgYXR0ZW5kZWVzIGxpc3QNCiogVGVsZWNvbSBtYW5h
+Z2VycywgVk9JUCBtYW5hZ2VycywgQ2xvdWQgYXJjaGl0ZWN0LCBDbG91ZCBtYW5hZ2VycywNClN0
+b3JhZ2UgbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3Rv
+bWVyIFNlcnZpY2UgYW5kIEN1c3RvbWVyIFN1Y2Nlc3MNClN1c2FuIFRheWxvcg0KRGF0YWJhc2Ug
+Q29uc3VsdGFudA0KNDJNaWwgQjJCIGFuZCAyMTBNaWwgQjJDIE9wdC1pbiBFbWFpbCBhbmQgcGhv
+bmUgbGlzdCB3aXRoIG90aGVyIGRhdGENCmZpZWxkcw0KVW5zdWJzY3JpYmUNCmh0dHA6Ly9hcHBl
+bmRsZWFkZWRtLmluZm8vZW1tL2luZGV4LnBocC9saXN0cy90bTMwOWwzMW0zNmEyL3Vuc3Vic2Ny
+aWJlL2FsNzMzb3BkOW4yOTIvcG0wNTMzN3dlNmUwMw0KDQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
+bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
+aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
