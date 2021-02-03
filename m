@@ -1,67 +1,100 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840D130E4E0
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 22:23:37 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9608230E640
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 23:50:11 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E6FA6100EAB73;
-	Wed,  3 Feb 2021 13:23:35 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 98A1A100EC1CD;
+	Wed,  3 Feb 2021 14:50:09 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.73.108; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=asdcsvxcbv3@outlook.com; receiver=<UNKNOWN> 
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-oln040092073108.outbound.protection.outlook.com [40.92.73.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9A1D4100EAB53
-	for <linux-nvdimm@lists.01.org>; Wed,  3 Feb 2021 13:23:33 -0800 (PST)
-Received: by mail-ej1-x62c.google.com with SMTP id i8so1427417ejc.7
-        for <linux-nvdimm@lists.01.org>; Wed, 03 Feb 2021 13:23:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VT23w92CT9zXGoB2xTF4DjGzC0MXKQMCiaO+54MJ7Ao=;
-        b=kxpyxImNyl0PD+X1iGOdvaWlfhCG1TIKsHTUd3YIbtmQGOQN1d0MCUUHfIff4tHdHo
-         4rkeo72QT5v52E7o4MSw6G5C9PFnkqsaxGiD2t6Z3g/nUDvrDKbVkRo0D9oUGce8xMd1
-         D9WDuYQE1t98gpIh3hjVGZlF/tNPEAhtns2hDwk/fUXSf38hcGas8HbkZcDAaRURLGKV
-         3RiAoKUv3nJWfMx/5VeciMGYvZKE2HYlJAAUd9sAwpDOwfKSbc1R0yNBFxbZNzr0+sYo
-         /MDlatcZ7OcQ7mRVmkYp7bnDyKHd824Gp2Hb+fsrxrOX/ujxvWArT4kJDlSVwPhsHWbv
-         WhOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VT23w92CT9zXGoB2xTF4DjGzC0MXKQMCiaO+54MJ7Ao=;
-        b=IETWhROsZxehlzJvDTXlB1Be48OG3Wq6Wra3606d3Pnt3F0obA2aVdDNjyK63s7ZdN
-         VzgiwCVWqFv1LnqiBnmZIzL+daK7VdV5E8lwRuA8BHd73B90hAviu4tLbKSKdz7kKrWc
-         1KAdDnwop0SDWITpeCkM8akv6wQiKrtdRuzqHjU1iBUU/1wicVqbPCGqw9irxhX6H2ke
-         UlP781kVwz3VLNIXyfB1q4D8BAf9TQL8TWQ55NnysAsrhLAxD4QmqjhT+7Kbpfscrm5b
-         4jazk6gDoSpqo0NLU55s604B5u9VcH/eHeWalHoVXd+J1+A3L7M4KT/EYH4DNp2+GRu2
-         8qGQ==
-X-Gm-Message-State: AOAM532GJvYrq/q1aKvRNWAYQ2R9DdZ4WURAG1+nxCuimbYusAHba1n0
-	+CHYvJLjuAWxIs5wOuc22XzQvx0uWmsUkn+hVZbTcQ==
-X-Google-Smtp-Source: ABdhPJycsTuuO9WFxOwJr0uveWLDYX613Mw9CD4bctsoU/uYDmnrN/Izr6YTrrIN45yfo7Sw2Zt5lHunHYMWXjSffEI=
-X-Received: by 2002:a17:906:d8a1:: with SMTP id qc1mr5313759ejb.523.1612387411333;
- Wed, 03 Feb 2021 13:23:31 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id A296F100EF270
+	for <linux-nvdimm@lists.01.org>; Wed,  3 Feb 2021 14:50:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Kl8egOa0ywGIkrDkSKCX0UFMQZA+3SVwHosB2m9W9zG1R4HCrDaIsu7oqK5sIAHE/xXiCArp46hH9EXLEOf2F+Tn86Wh3tXuKLyNJ15D4u9i6s8nLI2exbNMa/8NKWz8gZEJ2ayZSrcKOwtmj8P0ouZtjT9sd2lw+T6ijHyihff/302UlJOfXyIGDzmJ4I/XscXkLxuBoozZo1Nt/Toj7qYqfxPoFdiAqKcg+NyIa7te3+OfG2fiLV3+x1vlyWmGWz7TeQh8I7oXQJG6EFQpb++GE6b6Owu2E7XRaYjjUdJD8AGCiqlxIXPsxHEPR6peheR3z/PH3xHZjCnkXY74CA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2XbJ1Z9UD824nCSXF781UWnXOHTWzlL/uNNQrhzZdDw=;
+ b=dbjiYLpYnQr/nGnFaOqbEADpuMTtbL+s4wkZJq5a2yNpZ7xdgknFzStsVdSWdgcceqWUBPNBHanJZg1yMxC9l5NTkzDO7zAJIotLbTelfCVx07sLMXV/CeD5nom5xbHZiGKk0UaDoZClwtCkdkCKyvdEbSOFhJB334K29JY7ou66clSNQJ0FoTmqrCK4jEP8t3NrkvEdJh0BlgxNLBu+ktpv0AucxwdkH915ElCWkMB8T93R/UXd+m256nA5oZtMVZsedUBY1UMUcmi6TJSeLfgPHXZDUQvKRJctUmKZbJlDbXVjK9+cAfFMpDB44WQevzhmrGNxlLpH72iisD5Sxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2XbJ1Z9UD824nCSXF781UWnXOHTWzlL/uNNQrhzZdDw=;
+ b=anm9YXb+b5f3CE2fcF4k7TRziBegzmAFqomnWuJToL31E/zwtRB6aJpv9uo//Fks60kuimjUXN892TsNNG5ihVj2AvLiFSkmEMC8bbH5ncdL+9z5cCQXEQ+g+fzjZ44m3tw+P/JS1gKUfVh8r9abXd9WNG34vniFgUuula4xucZe33a4fqRocCZejjNr4lXEzTXyFGCbbgGBux9OlNWGN///pQbG9KeUSUZaJCZ3V+MERsKYTwRBPQdbv2+/APbQx6+psul1OucycPYb0aN3uHau7UYTqy0IwxaCODrKS03NwIyMAvY2JDbXIfPEHOI6iDewlluOrO4gmwgXxBXdmg==
+Received: from DB3EUR04FT050.eop-eur04.prod.protection.outlook.com
+ (2a01:111:e400:7e0c::4e) by
+ DB3EUR04HT169.eop-eur04.prod.protection.outlook.com (2a01:111:e400:7e0c::85)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11; Wed, 3 Feb
+ 2021 22:49:52 +0000
+Received: from DBBPR01MB7516.eurprd01.prod.exchangelabs.com
+ (2a01:111:e400:7e0c::45) by DB3EUR04FT050.mail.protection.outlook.com
+ (2a01:111:e400:7e0c::296) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3784.11 via Frontend
+ Transport; Wed, 3 Feb 2021 22:49:52 +0000
+Received: from DBBPR01MB7516.eurprd01.prod.exchangelabs.com
+ ([fe80::3530:fa48:2c47:4374]) by DBBPR01MB7516.eurprd01.prod.exchangelabs.com
+ ([fe80::3530:fa48:2c47:4374%7]) with mapi id 15.20.3805.027; Wed, 3 Feb 2021
+ 22:49:52 +0000
+From: Global Financial Services SA. <asdcsvxcbv3@outlook.com>
+Subject: DO YOU NEED A FINANCIAL LOAN? PLEASE VIEW THE ATTACHED FORM. 
+Thread-Topic: DO YOU NEED A FINANCIAL LOAN? PLEASE VIEW THE ATTACHED FORM. 
+Thread-Index: AQHWw1yQBTXcqc8ciUCN83zJi9PNn6pHmGUL
+Date: Wed, 3 Feb 2021 22:49:52 +0000
+Message-ID: 
+ <DBBPR01MB7516F782F09C9A059A4EA506F0B49@DBBPR01MB7516.eurprd01.prod.exchangelabs.com>
+References: 
+ <AM0PR01MB628933E466102D282FD854F2F0FA0@AM0PR01MB6289.eurprd01.prod.exchangelabs.com>
+In-Reply-To: 
+ <AM0PR01MB628933E466102D282FD854F2F0FA0@AM0PR01MB6289.eurprd01.prod.exchangelabs.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-incomingtopheadermarker: 
+ OriginalChecksum:6606F24549EFE434AB7D2B694E5DE6BE0174D27E04E003C09CD8A86EE6BA095B;UpperCasedChecksum:09561204A4F536FC0D6B2B4E83E901794C0814965243C61A5D5D75611B83D742;SizeAsReceived:32875;Count:42
+x-tmn: [eF+hIFuWTZA8vyZfUbz6tBvJJzqsQw9g]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 42
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: b9361d26-6b7b-4855-827e-08d8c89604f1
+x-ms-exchange-slblob-mailprops: 
+ vJxI5U0j4N7dxvHrtXwORO8EL4YYK1cBOuavHc3hId6rr4PtBtE1T45yKUxXk0FUaSvLysTgoVJQ92ImgqZt7RFhwe3S3j7nJpZPH+AROiwoijpTKcn3MVgSWnTa57nngih6xwdkxz4B1GfruJVVDYyreQ5HxnCOOM11VucK7As/qT34FnAGyhd+5QaDu/VgAiUmyKMi46S3gZrmIQ6Mbe8aJwHlrQuEsrNC4+lgP4S/P4KJGt8n5A+sEwY96u/WtLTRsO4SFjzACuYcZ6BLryP/v8X4t5Pn/vtvOBdqS/JQmHvvS+ijaTDQI83MLWq0+GQCwmfIepA0+F1zDLIS12nMFl+x9+CmLE6+dDZaaluEBo6PCutUovKw+qlh/8h45AOaEzQUzMCR/cD0cuuhEjq1q64yrIOLj6AyLowbooH9ClMmrkz/plknxMHB6G39UVTifS26XtsICUA2sQK1W/neRgun6dygmJjpvZbTZCxEuHU/f0gnGQiQMC4IVFTbmO/B2w9dK9TxxWLDDmUzRUKtY+/jvIkA0rSB2xwhBHSuRr/Hyukrua3OGGh9S50l3U8Oaf9Sf9ZmgtWAg0FVn486UtFiqLD/dpEqCCwAUB8rcxuHNT4pL8eWwakKB0ul3kdTfEbHw3WTqNtpU+HqSCOGAoyA9A1yNlbR6aycZOaTESMGNk1OlBnap6Czv3NNja43oNxagF9Hin81JXlzLy81nWHxK9k3
+x-ms-traffictypediagnostic: DB3EUR04HT169:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ myrelhEpBgnlhANrK38l3ah+kfO8bD7UsO67u1dO0XTd3vv3kfCCXO/dT4jMZ2+U/Mf8U4wmr5medzTJ4S0AsMT4A8YkyfCcTThQ0in3cuRm7ACjQvG/9kVGFqbjC2nA17tzLbZ9C0oDSM7GFLjI8naoMJ+E1EgHhkplBJcUYNF/wP8CluJ6JCGzaoRtvjMf9RCia7jpW+DK9YuCSILX3Ji3MzVusES86gGMJYJHRBUNnPI+xxgjhRs0dRIZsvkn7oUx+kW0FOYAhLXcbguWc37Z5A4p/C4Kc4asw3OFuVpUrps/RgU0wMxqDPCfRE0iq6l7C9qpzoxeYvwtpqtsUIjEXvFNouaTDsBEZv3UFd5Dy4rsh3EmExWhcQ5HTSnIDpwGSjetZeNwvMCX30Y/DQ==
+x-ms-exchange-antispam-messagedata: 
+ GMWMSE17+NajCtORQX9Elsg0RU31zZH13M1gS8DaUny8NY4S8jfLNbJGI6WTz8h3e2V4tVKQ+BW4SJgFLzqXJcXfzVh7Q1iTLFIa/zpnaqAN7xdgEWuvh+NRzpGVR1GM8DvF86Dp3EvvXayZ/jDrZA==
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-4-ben.widawsky@intel.com> <20210202181016.GD3708021@infradead.org>
- <20210202182418.3wyxnm6rqeoeclu2@intel.com> <20210203171534.GB4104698@infradead.org>
- <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
-In-Reply-To: <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 3 Feb 2021 13:23:31 -0800
-Message-ID: <CAPcyv4hvFjs=QqmUYqPipuaLoFiZ-dr6qVhqbDupWuKTw3QDkg@mail.gmail.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-To: Ben Widawsky <ben.widawsky@intel.com>
-Message-ID-Hash: BJTKK3OYBWTRRGDVOJDDGH5BOQRRG2HC
-X-Message-ID-Hash: BJTKK3OYBWTRRGDVOJDDGH5BOQRRG2HC
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Christoph Hellwig <hch@infradead.org>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-AuthSource: DB3EUR04FT050.eop-eur04.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9361d26-6b7b-4855-827e-08d8c89604f1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Feb 2021 22:49:52.4231
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3EUR04HT169
+Message-ID-Hash: EGROOMUUUASPAK2Z3AEWU2WFMY5YZOPF
+X-Message-ID-Hash: EGROOMUUUASPAK2Z3AEWU2WFMY5YZOPF
+X-MailFrom: asdcsvxcbv3@outlook.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BJTKK3OYBWTRRGDVOJDDGH5BOQRRG2HC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KONPP6BIB6MTGMTH575YI3P5PXO43KUT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,104 +103,36 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 3, 2021 at 9:23 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
->
-> On 21-02-03 17:15:34, Christoph Hellwig wrote:
-> > On Tue, Feb 02, 2021 at 10:24:18AM -0800, Ben Widawsky wrote:
-> > > > > +       /* Cap 4000h - CXL_CAP_CAP_ID_MEMDEV */
-> > > > > +       struct {
-> > > > > +               void __iomem *regs;
-> > > > > +       } mem;
-> > > >
-> > > > This style looks massively obsfucated.  For one the comments look like
-> > > > absolute gibberish, but also what is the point of all these anonymous
-> > > > structures?
-> > >
-> > > They're not anonymous, and their names are for the below register functions. The
-> > > comments are connected spec reference 'Cap XXXXh' to definitions in cxl.h. I can
-> > > articulate that if it helps.
-> >
-> > But why no simply a
-> >
-> >       void __iomem *mem_regs;
-> >
-> > field vs the extra struct?
-> >
-> > > The register space for CXL devices is a bit weird since it's all subdivided
-> > > under 1 BAR for now. To clearly distinguish over the different subregions, these
-> > > helpers exist. It's really easy to mess this up as the developer and I actually
-> > > would disagree that it makes debugging quite a bit easier. It also gets more
-> > > convoluted when you add the other 2 BARs which also each have their own
-> > > subregions.
-> > >
-> > > For example. if my mailbox function does:
-> > > cxl_read_status_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-> > >
-> > > instead of:
-> > > cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-> > >
-> > > It's easier to spot than:
-> > > readl(cxlm->regs + cxlm->status_offset + CXLDEV_MB_CAPS_OFFSET)
-> >
-> > Well, what I think would be the most obvious is:
-> >
-> > readl(cxlm->status_regs + CXLDEV_MB_CAPS_OFFSET);
-> >
->
-> Right, so you wrote the buggy version. Should be.
-> readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
->
-> Admittedly, "MB" for mailbox isn't super obvious. I think you've convinced me to
-> rename these register definitions
-> s/MB/MBOX.
->
-> I'd prefer to keep the helpers for now as I do find them helpful, and so far
-> nobody else who has touched the code has complained. If you feel strongly, I
-> will change it.
-
-After seeing the options, I think I'd prefer to not have to worry what
-extra magic is happening with cxl_read_mbox_reg32()
-
-cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-
-readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
-
-The latter is both shorter and more idiomatic.
+Greetings,
 
 
->
-> > > > > +       /* 8.2.8.4.3 */
-> > > >
-> > > > ????
-> > > >
-> > >
-> > > I had been trying to be consistent with 'CXL2.0 - ' in front of all spec
-> > > reference. I obviously missed this one.
-> >
-> > FYI, I generally find section names much easier to find than section
-> > numbers.  Especially as the numbers change very frequently, some times
-> > even for very minor updates to the spec.  E.g. in NVMe the numbers might
-> > even change from NVMe 1.X to NVMe 1.Xa because an errata had to add
-> > a clarification as its own section.
->
-> Why not both?
->
-> I ran into this in fact going from version 0.7 to 1.0 of the spec. I did call
-> out the spec version to address this, but you're right. Section names can change
-> too in theory.
->
-> /*
->  * CXL 2.0 8.2.8.4.3
->  * Mailbox Capabilities Register
->  */
->
-> Too much?
 
-That seems like too many lines.
+To Whom It May Concern,
 
-/* CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register */
 
-...this looks ok.
+
+We, the Global Financial Services are offering loans at a very low interest rate of 3.5% per year. We offer Personal loans, Debt Consolidation Loan, Venture Capital, Business Loan, Education Loan, Home Loan or "Loan for any reason and for all citizens and non-citizens with either a good or bad credit history.
+
+
+
+Have you been turned down by your bank? Do you have bad credit? Do you have unpaid bills? Are you in debt? Blacklisted? Are you under Debt review? Do you need to set up a business? Worry no more as we are here to offer you a low interest loan.
+
+
+
+Do not hesitate to contact us on the telephone and email address below for further clarification(s).
+
+Tel/WhatsApp:  +27 63 923 1747
+
+Email Address:  global.fs.za@consultant.com<mailto:global.fs.za@consultant.com>
+
+
+
+Warm Regards,
+
+Customer Service
+
+Global Financial Services Pty South Africa.
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
