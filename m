@@ -1,345 +1,218 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D003830D087
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 01:54:49 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E22D430D107
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 02:51:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3F593100EAB61;
-	Tue,  2 Feb 2021 16:54:48 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 87377100EAB5E
-	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 16:54:45 -0800 (PST)
-IronPort-SDR: fajQIJ+VcRju2j94BNwjmHRCE0Ksmobdwij48MRa9Uztp82/CmjC2k8r3aeMua0W7LtsbRZedq
- QN2fgt4mS2Ag==
-X-IronPort-AV: E=McAfee;i="6000,8403,9883"; a="177455079"
-X-IronPort-AV: E=Sophos;i="5.79,396,1602572400";
-   d="scan'208";a="177455079"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 16:54:44 -0800
-IronPort-SDR: T/OKYfRyJECY92tbmhe95trHnlElgkP/dg1d1yQ7hUQWoAcmWXv06c4utLZaKcN9E5eW0I+84+
- WVBgh83fvJ6A==
-X-IronPort-AV: E=Sophos;i="5.79,396,1602572400";
-   d="scan'208";a="371036464"
-Received: from rebbutt-mobl3.amr.corp.intel.com (HELO intel.com) ([10.252.133.20])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2021 16:54:43 -0800
-Date: Tue, 2 Feb 2021 16:54:40 -0800
-From: Ben Widawsky <ben.widawsky@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 04/14] cxl/mem: Implement polled mode mailbox
-Message-ID: <20210203005440.yyyphe4yigf3fvkc@intel.com>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-5-ben.widawsky@intel.com>
- <5986abe5-1248-30b2-5f53-fa7013baafad@google.com>
- <CAPcyv4g_yUpwoBJsLeVwCZAkZGGrfSgrCk2+GXVXBcouktZNSQ@mail.gmail.com>
- <20210202225733.miq5sl3mqit2zuhg@intel.com>
- <CAPcyv4gPbN74wOzPH5-qC6a1V5ZwXUVedtr0ZJmfP8DA13YWnA@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTP id 1B0FE100F226B;
+	Tue,  2 Feb 2021 17:51:47 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id 3C19E100EB83F
+	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 17:51:43 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.79,396,1602518400";
+   d="scan'208";a="104124130"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 03 Feb 2021 09:51:42 +0800
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
+	by cn.fujitsu.com (Postfix) with ESMTP id C1F3D4CE6D74;
+	Wed,  3 Feb 2021 09:51:38 +0800 (CST)
+Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
+ (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 3 Feb
+ 2021 09:51:39 +0800
+Subject: Re: [PATCH RESEND v2 08/10] md: Implement ->corrupted_range()
+To: "Darrick J. Wong" <djwong@kernel.org>
+References: <20210129062757.1594130-1-ruansy.fnst@cn.fujitsu.com>
+ <20210129062757.1594130-9-ruansy.fnst@cn.fujitsu.com>
+ <20210202031711.GJ7193@magnolia>
+From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
+Message-ID: <8742625e-8ae7-47a8-fd62-18c201c45a33@cn.fujitsu.com>
+Date: Wed, 3 Feb 2021 09:51:37 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4gPbN74wOzPH5-qC6a1V5ZwXUVedtr0ZJmfP8DA13YWnA@mail.gmail.com>
-Message-ID-Hash: ZMNPWUYZHMUGAOB7NYOY7LZ3MAACKWXQ
-X-Message-ID-Hash: ZMNPWUYZHMUGAOB7NYOY7LZ3MAACKWXQ
-X-MailFrom: ben.widawsky@intel.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: David Rientjes <rientjes@google.com>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+In-Reply-To: <20210202031711.GJ7193@magnolia>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.141]
+X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
+ G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
+X-yoursite-MailScanner-ID: C1F3D4CE6D74.A03BC
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: EWAT5LHXOMNLWK27JYUF7FRQMNHOILMP
+X-Message-ID-Hash: EWAT5LHXOMNLWK27JYUF7FRQMNHOILMP
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, dm-devel@redhat.com, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, agk@redhat.com, snitzer@redhat.com, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZMNPWUYZHMUGAOB7NYOY7LZ3MAACKWXQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EWAT5LHXOMNLWK27JYUF7FRQMNHOILMP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On 21-02-02 15:54:03, Dan Williams wrote:
-> On Tue, Feb 2, 2021 at 2:57 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
-> >
-> > On 21-02-01 12:00:18, Dan Williams wrote:
-> > > On Sat, Jan 30, 2021 at 3:52 PM David Rientjes <rientjes@google.com> wrote:
-> > > >
-> > > > On Fri, 29 Jan 2021, Ben Widawsky wrote:
-> > > >
-> > > > > Provide enough functionality to utilize the mailbox of a memory device.
-> > > > > The mailbox is used to interact with the firmware running on the memory
-> > > > > device.
-> > > > >
-> > > > > The CXL specification defines separate capabilities for the mailbox and
-> > > > > the memory device. The mailbox interface has a doorbell to indicate
-> > > > > ready to accept commands and the memory device has a capability register
-> > > > > that indicates the mailbox interface is ready. The expectation is that
-> > > > > the doorbell-ready is always later than the memory-device-indication
-> > > > > that the mailbox is ready.
-> > > > >
-> > > > > Create a function to handle sending a command, optionally with a
-> > > > > payload, to the memory device, polling on a result, and then optionally
-> > > > > copying out the payload. The algorithm for doing this comes straight out
-> > > > > of the CXL 2.0 specification.
-> > > > >
-> > > > > Primary mailboxes are capable of generating an interrupt when submitting
-> > > > > a command in the background. That implementation is saved for a later
-> > > > > time.
-> > > > >
-> > > > > Secondary mailboxes aren't implemented at this time.
-> > > > >
-> > > > > The flow is proven with one implemented command, "identify". Because the
-> > > > > class code has already told the driver this is a memory device and the
-> > > > > identify command is mandatory.
-> > > > >
-> > > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> > > > > ---
-> > > > >  drivers/cxl/Kconfig |  14 ++
-> > > > >  drivers/cxl/cxl.h   |  39 +++++
-> > > > >  drivers/cxl/mem.c   | 342 +++++++++++++++++++++++++++++++++++++++++++-
-> > > > >  3 files changed, 394 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-> > > > > index 3b66b46af8a0..fe591f74af96 100644
-> > > > > --- a/drivers/cxl/Kconfig
-> > > > > +++ b/drivers/cxl/Kconfig
-> > > > > @@ -32,4 +32,18 @@ config CXL_MEM
-> > > > >         Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
-> > > > >
-> > > > >         If unsure say 'm'.
-> > > > > +
-> > > > > +config CXL_MEM_INSECURE_DEBUG
-> > > > > +     bool "CXL.mem debugging"
-> > > > > +     depends on CXL_MEM
-> > > > > +     help
-> > > > > +       Enable debug of all CXL command payloads.
-> > > > > +
-> > > > > +       Some CXL devices and controllers support encryption and other
-> > > > > +       security features. The payloads for the commands that enable
-> > > > > +       those features may contain sensitive clear-text security
-> > > > > +       material. Disable debug of those command payloads by default.
-> > > > > +       If you are a kernel developer actively working on CXL
-> > > > > +       security enabling say Y, otherwise say N.
-> > > >
-> > > > Not specific to this patch, but the reference to encryption made me
-> > > > curious about integrity: are all CXL.mem devices compatible with DIMP?
-> > > > Some?  None?
-> > >
-> > > The encryption here is "device passphrase" similar to the NVDIMM
-> > > Security Management described here:
-> > >
-> > > https://pmem.io/documents/IntelOptanePMem_DSM_Interface-V2.0.pdf
-> > >
-> > > The LIBNVDIMM enabling wrapped this support with the Linux keys
-> > > interface which among other things enforces wrapping the clear text
-> > > passphrase with a Linux "trusted/encrypted" key.
-> > >
-> > > Additionally, the CXL.io interface optionally supports PCI IDE:
-> > >
-> > > https://www.intel.com/content/dam/www/public/us/en/documents/reference-guides/pcie-device-security-enhancements.pdf
-> > >
-> > > I'm otherwise not familiar with the DIMP acronym?
-> > >
-> > > > > +
-> > > > >  endif
-> > > > > diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> > > > > index a3da7f8050c4..df3d97154b63 100644
-> > > > > --- a/drivers/cxl/cxl.h
-> > > > > +++ b/drivers/cxl/cxl.h
-> > > > > @@ -31,9 +31,36 @@
-> > > > >  #define CXLDEV_MB_CAPS_OFFSET 0x00
-> > > > >  #define   CXLDEV_MB_CAP_PAYLOAD_SIZE_MASK GENMASK(4, 0)
-> > > > >  #define CXLDEV_MB_CTRL_OFFSET 0x04
-> > > > > +#define   CXLDEV_MB_CTRL_DOORBELL BIT(0)
-> > > > >  #define CXLDEV_MB_CMD_OFFSET 0x08
-> > > > > +#define   CXLDEV_MB_CMD_COMMAND_OPCODE_MASK GENMASK(15, 0)
-> > > > > +#define   CXLDEV_MB_CMD_PAYLOAD_LENGTH_MASK GENMASK(36, 16)
-> > > > >  #define CXLDEV_MB_STATUS_OFFSET 0x10
-> > > > > +#define   CXLDEV_MB_STATUS_RET_CODE_MASK GENMASK(47, 32)
-> > > > >  #define CXLDEV_MB_BG_CMD_STATUS_OFFSET 0x18
-> > > > > +#define CXLDEV_MB_PAYLOAD_OFFSET 0x20
-> > > > > +
-> > > > > +/* Memory Device (CXL 2.0 - 8.2.8.5.1.1) */
-> > > > > +#define CXLMDEV_STATUS_OFFSET 0x0
-> > > > > +#define   CXLMDEV_DEV_FATAL BIT(0)
-> > > > > +#define   CXLMDEV_FW_HALT BIT(1)
-> > > > > +#define   CXLMDEV_STATUS_MEDIA_STATUS_MASK GENMASK(3, 2)
-> > > > > +#define     CXLMDEV_MS_NOT_READY 0
-> > > > > +#define     CXLMDEV_MS_READY 1
-> > > > > +#define     CXLMDEV_MS_ERROR 2
-> > > > > +#define     CXLMDEV_MS_DISABLED 3
-> > > > > +#define   CXLMDEV_READY(status) \
-> > > > > +             (CXL_GET_FIELD(status, CXLMDEV_STATUS_MEDIA_STATUS) == CXLMDEV_MS_READY)
-> > > > > +#define   CXLMDEV_MBOX_IF_READY BIT(4)
-> > > > > +#define   CXLMDEV_RESET_NEEDED_SHIFT 5
-> > > > > +#define   CXLMDEV_RESET_NEEDED_MASK GENMASK(7, 5)
-> > > > > +#define     CXLMDEV_RESET_NEEDED_NOT 0
-> > > > > +#define     CXLMDEV_RESET_NEEDED_COLD 1
-> > > > > +#define     CXLMDEV_RESET_NEEDED_WARM 2
-> > > > > +#define     CXLMDEV_RESET_NEEDED_HOT 3
-> > > > > +#define     CXLMDEV_RESET_NEEDED_CXL 4
-> > > > > +#define   CXLMDEV_RESET_NEEDED(status) \
-> > > > > +             (CXL_GET_FIELD(status, CXLMDEV_RESET_NEEDED) != CXLMDEV_RESET_NEEDED_NOT)
-> > > > >
-> > > > >  /**
-> > > > >   * struct cxl_mem - A CXL memory device
-> > > > > @@ -44,6 +71,16 @@ struct cxl_mem {
-> > > > >       struct pci_dev *pdev;
-> > > > >       void __iomem *regs;
-> > > > >
-> > > > > +     struct {
-> > > > > +             struct range range;
-> > > > > +     } pmem;
-> > > > > +
-> > > > > +     struct {
-> > > > > +             struct range range;
-> > > > > +     } ram;
-> > > > > +
-> > > > > +     char firmware_version[0x10];
-> > > > > +
-> > > > >       /* Cap 0001h - CXL_CAP_CAP_ID_DEVICE_STATUS */
-> > > > >       struct {
-> > > > >               void __iomem *regs;
-> > > > > @@ -51,6 +88,7 @@ struct cxl_mem {
-> > > > >
-> > > > >       /* Cap 0002h - CXL_CAP_CAP_ID_PRIMARY_MAILBOX */
-> > > > >       struct {
-> > > > > +             struct mutex mutex; /* Protects device mailbox and firmware */
-> > > > >               void __iomem *regs;
-> > > > >               size_t payload_size;
-> > > > >       } mbox;
-> > > > > @@ -89,5 +127,6 @@ struct cxl_mem {
-> > > > >
-> > > > >  cxl_reg(status);
-> > > > >  cxl_reg(mbox);
-> > > > > +cxl_reg(mem);
-> > > > >
-> > > > >  #endif /* __CXL_H__ */
-> > > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > > > index fa14d51243ee..69ed15bfa5d4 100644
-> > > > > --- a/drivers/cxl/mem.c
-> > > > > +++ b/drivers/cxl/mem.c
-> > > > > @@ -6,6 +6,270 @@
-> > > > >  #include "pci.h"
-> > > > >  #include "cxl.h"
-> > > > >
-> > > > > +#define cxl_doorbell_busy(cxlm)                                                \
-> > > > > +     (cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CTRL_OFFSET) &                    \
-> > > > > +      CXLDEV_MB_CTRL_DOORBELL)
-> > > > > +
-> > > > > +#define CXL_MAILBOX_TIMEOUT_US 2000
-> > > >
-> > > > This should be _MS?
-> > > >
-> > > > > +
-> > > > > +enum opcode {
-> > > > > +     CXL_MBOX_OP_IDENTIFY            = 0x4000,
-> > > > > +     CXL_MBOX_OP_MAX                 = 0x10000
-> > > > > +};
-> > > > > +
-> > > > > +/**
-> > > > > + * struct mbox_cmd - A command to be submitted to hardware.
-> > > > > + * @opcode: (input) The command set and command submitted to hardware.
-> > > > > + * @payload_in: (input) Pointer to the input payload.
-> > > > > + * @payload_out: (output) Pointer to the output payload. Must be allocated by
-> > > > > + *            the caller.
-> > > > > + * @size_in: (input) Number of bytes to load from @payload.
-> > > > > + * @size_out: (output) Number of bytes loaded into @payload.
-> > > > > + * @return_code: (output) Error code returned from hardware.
-> > > > > + *
-> > > > > + * This is the primary mechanism used to send commands to the hardware.
-> > > > > + * All the fields except @payload_* correspond exactly to the fields described in
-> > > > > + * Command Register section of the CXL 2.0 spec (8.2.8.4.5). @payload_in and
-> > > > > + * @payload_out are written to, and read from the Command Payload Registers
-> > > > > + * defined in (8.2.8.4.8).
-> > > > > + */
-> > > > > +struct mbox_cmd {
-> > > > > +     u16 opcode;
-> > > > > +     void *payload_in;
-> > > > > +     void *payload_out;
-> > > > > +     size_t size_in;
-> > > > > +     size_t size_out;
-> > > > > +     u16 return_code;
-> > > > > +#define CXL_MBOX_SUCCESS 0
-> > > > > +};
-> > > > > +
-> > > > > +static int cxl_mem_wait_for_doorbell(struct cxl_mem *cxlm)
-> > > > > +{
-> > > > > +     const int timeout = msecs_to_jiffies(CXL_MAILBOX_TIMEOUT_US);
-> > > > > +     const unsigned long start = jiffies;
-> > > > > +     unsigned long end = start;
-> > > > > +
-> > > > > +     while (cxl_doorbell_busy(cxlm)) {
-> > > > > +             end = jiffies;
-> > > > > +
-> > > > > +             if (time_after(end, start + timeout)) {
-> > > > > +                     /* Check again in case preempted before timeout test */
-> > > > > +                     if (!cxl_doorbell_busy(cxlm))
-> > > > > +                             break;
-> > > > > +                     return -ETIMEDOUT;
-> > > > > +             }
-> > > > > +             cpu_relax();
-> > > > > +     }
-> > > > > +
-> > > > > +     dev_dbg(&cxlm->pdev->dev, "Doorbell wait took %dms",
-> > > > > +             jiffies_to_msecs(end) - jiffies_to_msecs(start));
-> > > > > +     return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
-> > > > > +                              struct mbox_cmd *mbox_cmd)
-> > > > > +{
-> > > > > +     dev_warn(&cxlm->pdev->dev, "Mailbox command timed out\n");
-> > > > > +     dev_info(&cxlm->pdev->dev,
-> > > > > +              "\topcode: 0x%04x\n"
-> > > > > +              "\tpayload size: %zub\n",
-> > > > > +              mbox_cmd->opcode, mbox_cmd->size_in);
-> > > > > +
-> > > > > +     if (IS_ENABLED(CONFIG_CXL_MEM_INSECURE_DEBUG)) {
-> > > > > +             print_hex_dump_debug("Payload ", DUMP_PREFIX_OFFSET, 16, 1,
-> > > > > +                                  mbox_cmd->payload_in, mbox_cmd->size_in,
-> > > > > +                                  true);
-> > > > > +     }
-> > > > > +
-> > > > > +     /* Here's a good place to figure out if a device reset is needed */
-> > > >
-> > > > What are the implications if we don't do a reset, as this implementation
-> > > > does not?  IOW, does a timeout require a device to be recovered through a
-> > > > reset before it can receive additional commands, or is it safe to simply
-> > > > drop the command that timed out on the floor and proceed?
-> > >
-> > > Not a satisfying answer, but "it depends". It's also complicated by
-> > > the fact that a reset may need to be coordinated with other devices in
-> > > the interleave-set as the HDM decoders may bounce.
-> > >
-> > > For comparison, to date there have been no problems with the "drop on
-> > > the floor" policy of LIBNVDIMM command timeouts. At the same time
-> > > there simply was not a software visible reset mechanism for those
-> > > devices so this problem never came out. This mailbox isn't a fast
-> > > path, so the device is likely completely dead if this timeout is ever
-> > > violated, and the firmware reporting a timeout might as well assume
-> > > that the OS gives up on the device.
-> > >
-> > > I'll let Ben chime in on the rest...
-> >
-> > Reset handling is next on the TODO list for the driver. I had two main reasons
-> > for not even taking a stab at it.
-> > 1. I have no good way to test it. We are working on adding some test conditions
-> >    to QEMU for it.
-> > 2. The main difficulty in my mind with reset is you can't pull the memory out
-> >    from under the OS here. While the driver doesn't yet handle persistent memory
-> >    capacities, it may have volatile capacity configured by the BIOS. So the goal
-> >    was, get the bits of the driver in that would at least allow developers,
-> >    hardware vendors, and folks contributing to the spec a way to have basic
-> >    interaction with a CXL type 3 device.
-> 
-> Honestly I think in most cases if the firmware decides to return a
-> "reset required" status the Linux response will be "lol, no" because
-> the firmware has no concept of the violence that would impose on the
-> rest of the system.
-
-How about UAPI to initiate a reset? I think a sysfs bool would do the trick.
-Maybe sysfs file to display current error status, and one to reset?
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCk9uIDIwMjEvMi8yIOS4iuWNiDExOjE3LCBEYXJyaWNrIEouIFdvbmcgd3JvdGU6DQo+IE9u
+IEZyaSwgSmFuIDI5LCAyMDIxIGF0IDAyOjI3OjU1UE0gKzA4MDAsIFNoaXlhbmcgUnVhbiB3cm90
+ZToNCj4+IFdpdGggdGhlIHN1cHBvcnQgb2YgLT5ybWFwKCksIGl0IGlzIHBvc3NpYmxlIHRvIG9i
+dGFpbiB0aGUgc3VwZXJibG9jayBvbg0KPj4gYSBtYXBwZWQgZGV2aWNlLg0KPj4NCj4+IElmIGEg
+cG1lbSBkZXZpY2UgaXMgdXNlZCBhcyBvbmUgdGFyZ2V0IG9mIG1hcHBlZCBkZXZpY2UsIHdlIGNh
+bm5vdA0KPj4gb2J0YWluIGl0cyBzdXBlcmJsb2NrIGRpcmVjdGx5LiAgV2l0aCB0aGUgaGVscCBv
+ZiBTWVNGUywgdGhlIG1hcHBlZA0KPj4gZGV2aWNlIGNhbiBiZSBmb3VuZCBvbiB0aGUgdGFyZ2V0
+IGRldmljZXMuICBTbywgd2UgaXRlcmF0ZSB0aGUNCj4+IGJkZXYtPmJkX2hvbGRlcl9kaXNrcyB0
+byBvYnRhaW4gaXRzIG1hcHBlZCBkZXZpY2UuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogU2hpeWFu
+ZyBSdWFuIDxydWFuc3kuZm5zdEBjbi5mdWppdHN1LmNvbT4NCj4+IC0tLQ0KPj4gICBkcml2ZXJz
+L21kL2RtLmMgICAgICAgfCA2MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrDQo+PiAgIGRyaXZlcnMvbnZkaW1tL3BtZW0uYyB8IDExICsrKy0tLS0tDQo+PiAgIGZz
+L2Jsb2NrX2Rldi5jICAgICAgICB8IDQyICsrKysrKysrKysrKysrKysrKysrKysrKysrKystDQo+
+IA0KPiBJIGZlZWwgbGlrZSB0aGlzIF5eXiBwYXJ0IHRoYXQgaW1wbGVtZW50cyB0aGUgZ2VuZXJp
+YyBhYmlsaXR5IGZvciBhIGJsb2NrDQo+IGRldmljZSB3aXRoIGEgYmFkIHNlY3RvciB0byBub3Rp
+Znkgd2hhdGV2ZXIncyBob2xkaW5nIG9udG8gaXQgKGZzLCBvdGhlcg0KPiBibG9jayBkZXZpY2Up
+IHNob3VsZCBiZSBpbiBwYXRjaCAyLiAgVGhhdCdzIGdlbmVyaWMgYmxvY2sgbGF5ZXIgY29kZSwN
+Cj4gYW5kIGl0J3MgaGFyZCB0byB0ZWxsICh3aGVuIHlvdSdyZSBsb29raW5nIGF0IHBhdGNoIDIp
+IHdoYXQgdGhlIGJhcmUNCj4gZnVuY3Rpb24gZGVjbGFyYXRpb24gaW4gaXQgaXMgcmVhbGx5IHN1
+cHBvc2VkIHRvIGRvLg0KPiANCj4gQWxzbywgdGhpcyBwYXRjaCBpcyBzdGlsbCBkaWZmaWN1bHQg
+dG8gcmV2aWV3IGJlY2F1c2UgaXQgbWl4ZXMgZGV2aWNlDQo+IG1hcHBlciwgbnZkaW1tLCBhbmQg
+YmxvY2sgbGF5ZXIgY2hhbmdlcyENCg0KT0suICBJJ2xsIHNwbGl0IHRoaXMgdG8gbWFrZSBpdCBs
+b29rcyBzaW1wbGUuDQoNCj4gDQo+PiAgIGluY2x1ZGUvbGludXgvZ2VuaGQuaCB8ICAyICsrDQo+
+PiAgIDQgZmlsZXMgY2hhbmdlZCwgMTA3IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQo+
+Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWQvZG0uYyBiL2RyaXZlcnMvbWQvZG0uYw0KPj4g
+aW5kZXggN2JhYzU2NGYzZmFhLi4zMWIwYzM0MGI2OTUgMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJz
+L21kL2RtLmMNCj4+ICsrKyBiL2RyaXZlcnMvbWQvZG0uYw0KPj4gQEAgLTUwNyw2ICs1MDcsNjYg
+QEAgc3RhdGljIGludCBkbV9ibGtfcmVwb3J0X3pvbmVzKHN0cnVjdCBnZW5kaXNrICpkaXNrLCBz
+ZWN0b3JfdCBzZWN0b3IsDQo+PiAgICNkZWZpbmUgZG1fYmxrX3JlcG9ydF96b25lcwkJTlVMTA0K
+Pj4gICAjZW5kaWYgLyogQ09ORklHX0JMS19ERVZfWk9ORUQgKi8NCj4+ICAgDQo+PiArc3RydWN0
+IGNvcnJ1cHRlZF9oaXRfaW5mbyB7DQo+PiArCXN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXY7DQo+
+PiArCXNlY3Rvcl90IG9mZnNldDsNCj4+ICt9Ow0KPj4gKw0KPj4gK3N0YXRpYyBpbnQgZG1fYmxr
+X2NvcnJ1cHRlZF9oaXQoc3RydWN0IGRtX3RhcmdldCAqdGksIHN0cnVjdCBkbV9kZXYgKmRldiwN
+Cj4+ICsJCQkJc2VjdG9yX3Qgc3RhcnQsIHNlY3Rvcl90IGNvdW50LCB2b2lkICpkYXRhKQ0KPj4g
+K3sNCj4+ICsJc3RydWN0IGNvcnJ1cHRlZF9oaXRfaW5mbyAqYmMgPSBkYXRhOw0KPj4gKw0KPj4g
+KwlyZXR1cm4gYmMtPmJkZXYgPT0gKHZvaWQgKilkZXYtPmJkZXYgJiYNCj4+ICsJCQkoc3RhcnQg
+PD0gYmMtPm9mZnNldCAmJiBiYy0+b2Zmc2V0IDwgc3RhcnQgKyBjb3VudCk7DQo+PiArDQo+PiAr
+fQ0KPj4gKw0KPj4gK3N0cnVjdCBjb3JydXB0ZWRfZG9faW5mbyB7DQo+PiArCXNpemVfdCBsZW5n
+dGg7DQo+PiArCXZvaWQgKmRhdGE7DQo+PiArfTsNCj4+ICsNCj4+ICtzdGF0aWMgaW50IGRtX2Js
+a19jb3JydXB0ZWRfZG8oc3RydWN0IGRtX3RhcmdldCAqdGksIHN0cnVjdCBibG9ja19kZXZpY2Ug
+KmJkZXYsDQo+PiArCQkJICAgICAgIHNlY3Rvcl90IGRpc2tfc2VjdCwgdm9pZCAqZGF0YSkNCj4+
+ICt7DQo+PiArCXN0cnVjdCBjb3JydXB0ZWRfZG9faW5mbyAqYmMgPSBkYXRhOw0KPj4gKwlsb2Zm
+X3QgZGlza19vZmYgPSB0b19ieXRlcyhkaXNrX3NlY3QpOw0KPj4gKwlsb2ZmX3QgYmRldl9vZmYg
+PSB0b19ieXRlcyhkaXNrX3NlY3QgLSBnZXRfc3RhcnRfc2VjdChiZGV2KSk7DQo+PiArDQo+PiAr
+CXJldHVybiBiZF9jb3JydXB0ZWRfcmFuZ2UoYmRldiwgZGlza19vZmYsIGJkZXZfb2ZmLCBiYy0+
+bGVuZ3RoLCBiYy0+ZGF0YSk7DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyBpbnQgZG1fYmxrX2Nv
+cnJ1cHRlZF9yYW5nZShzdHJ1Y3QgZ2VuZGlzayAqZGlzaywNCj4+ICsJCQkJICBzdHJ1Y3QgYmxv
+Y2tfZGV2aWNlICp0YXJnZXRfYmRldiwNCj4+ICsJCQkJICBsb2ZmX3QgdGFyZ2V0X29mZnNldCwg
+c2l6ZV90IGxlbiwgdm9pZCAqZGF0YSkNCj4+ICt7DQo+PiArCXN0cnVjdCBtYXBwZWRfZGV2aWNl
+ICptZCA9IGRpc2stPnByaXZhdGVfZGF0YTsNCj4+ICsJc3RydWN0IGRtX3RhYmxlICptYXA7DQo+
+PiArCXN0cnVjdCBkbV90YXJnZXQgKnRpOw0KPj4gKwlzZWN0b3JfdCB0YXJnZXRfc2VjdCA9IHRv
+X3NlY3Rvcih0YXJnZXRfb2Zmc2V0KTsNCj4+ICsJc3RydWN0IGNvcnJ1cHRlZF9oaXRfaW5mbyBo
+aSA9IHt0YXJnZXRfYmRldiwgdGFyZ2V0X3NlY3R9Ow0KPj4gKwlzdHJ1Y3QgY29ycnVwdGVkX2Rv
+X2luZm8gZGkgPSB7bGVuLCBkYXRhfTsNCj4+ICsJaW50IHNyY3VfaWR4LCBpLCByYyA9IC1FTk9E
+RVY7DQo+PiArDQo+PiArCW1hcCA9IGRtX2dldF9saXZlX3RhYmxlKG1kLCAmc3JjdV9pZHgpOw0K
+Pj4gKwlpZiAoIW1hcCkNCj4+ICsJCXJldHVybiByYzsNCj4+ICsNCj4+ICsJZm9yIChpID0gMDsg
+aSA8IGRtX3RhYmxlX2dldF9udW1fdGFyZ2V0cyhtYXApOyBpKyspIHsNCj4+ICsJCXRpID0gZG1f
+dGFibGVfZ2V0X3RhcmdldChtYXAsIGkpOw0KPj4gKwkJaWYgKCEodGktPnR5cGUtPml0ZXJhdGVf
+ZGV2aWNlcyAmJiB0aS0+dHlwZS0+cm1hcCkpDQo+PiArCQkJY29udGludWU7DQo+PiArCQlpZiAo
+IXRpLT50eXBlLT5pdGVyYXRlX2RldmljZXModGksIGRtX2Jsa19jb3JydXB0ZWRfaGl0LCAmaGkp
+KQ0KPj4gKwkJCWNvbnRpbnVlOw0KPj4gKw0KPj4gKwkJcmMgPSB0aS0+dHlwZS0+cm1hcCh0aSwg
+dGFyZ2V0X3NlY3QsIGRtX2Jsa19jb3JydXB0ZWRfZG8sICZkaSk7DQo+IA0KPiBXaHkgaXMgaXQg
+bmVjZXNzYXJ5IHRvIGNhbGwgLT5pdGVyYXRlX2RldmljZXMgaGVyZT8NCg0KLT5pdGVyYXRlX2Rl
+dmljZXMoKSBoZXJlIGlzIHRvIGZpbmQgb3V0IHdoaWNoIHRhcmdldCBpcyB0aGUgcG1lbSBkZXZp
+Y2UgDQp3aGljaCBpcyBjb3JydXB0ZWQgbm93LiAgVGhlbiBjYWxsIC0+cm1hcCgpIG9uIHRoaXMg
+dGFyZ2V0LiAgT3RoZXIgDQp0YXJnZXRzIHdpbGwgYmUgaWdub3JlZC4NCg0KPiANCj4gSWYgeW91
+IHBhc3MgdGhlIHRhcmdldF9iZGV2LCBvZmZzZXQsIGFuZCBsZW5ndGggdG8gdGhlIGRtLXRhcmdl
+dCdzDQo+IC0+cm1hcCBmdW5jdGlvbiwgaXQgc2hvdWxkIGJlIGFibGUgdG8gd29yayBiYWNrd2Fy
+ZHMgdGhyb3VnaCBpdHMgbWFwcGluZw0KPiBsb2dpYyB0byBjb21lIHVwIHdpdGggYWxsIHRoZSBM
+QkEgcmFuZ2VzIG9mIHRoZSBtYXBwZWRfZGV2aWNlIHRoYXQNCj4gYXJlIGFmZmVjdGVkLCBhbmQg
+dGhlbiBpdCBjYW4gY2FsbCBiZF9jb3JydXB0ZWRfcmFuZ2Ugb24gZWFjaCBvZiB0aG9zZQ0KPiBy
+ZXZlcnNlIG1hcHBpbmdzLg0KPiANCj4gSXQgd291bGQgYmUgaGVscGZ1bCB0byBoYXZlIHRoZSBj
+aGFuZ2VzIHRvIGRtLWxpbmVhci5jIGluIHRoaXMgcGF0Y2gNCj4gdG9vLCBzaW5jZSB0aGF0J3Mg
+dGhlIG9ubHkgcmVhbCBpbXBsZW1lbnRhdGlvbiBhdCB0aGlzIHBvaW50Lg0KPiANCj4+ICsJCWJy
+ZWFrOw0KPj4gKwl9DQo+PiArDQo+PiArCWRtX3B1dF9saXZlX3RhYmxlKG1kLCBzcmN1X2lkeCk7
+DQo+PiArCXJldHVybiByYzsNCj4+ICt9DQo+PiArDQo+PiAgIHN0YXRpYyBpbnQgZG1fcHJlcGFy
+ZV9pb2N0bChzdHJ1Y3QgbWFwcGVkX2RldmljZSAqbWQsIGludCAqc3JjdV9pZHgsDQo+PiAgIAkJ
+CSAgICBzdHJ1Y3QgYmxvY2tfZGV2aWNlICoqYmRldikNCj4+ICAgew0KPj4gQEAgLTMwNjIsNiAr
+MzEyMiw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgYmxvY2tfZGV2aWNlX29wZXJhdGlvbnMgZG1f
+YmxrX2RvcHMgPSB7DQo+PiAgIAkuZ2V0Z2VvID0gZG1fYmxrX2dldGdlbywNCj4+ICAgCS5yZXBv
+cnRfem9uZXMgPSBkbV9ibGtfcmVwb3J0X3pvbmVzLA0KPj4gICAJLnByX29wcyA9ICZkbV9wcl9v
+cHMsDQo+PiArCS5jb3JydXB0ZWRfcmFuZ2UgPSBkbV9ibGtfY29ycnVwdGVkX3JhbmdlLA0KPj4g
+ICAJLm93bmVyID0gVEhJU19NT0RVTEUNCj4+ICAgfTsNCj4+ICAgDQo+PiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9udmRpbW0vcG1lbS5jIGIvZHJpdmVycy9udmRpbW0vcG1lbS5jDQo+PiBpbmRleCA1
+MDE5NTk5NDdkNDguLjNkOWY0Y2NiYmQ5ZSAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbnZkaW1t
+L3BtZW0uYw0KPj4gKysrIGIvZHJpdmVycy9udmRpbW0vcG1lbS5jDQo+PiBAQCAtMjU2LDIxICsy
+NTYsMTYgQEAgc3RhdGljIGludCBwbWVtX3J3X3BhZ2Uoc3RydWN0IGJsb2NrX2RldmljZSAqYmRl
+diwgc2VjdG9yX3Qgc2VjdG9yLA0KPj4gICBzdGF0aWMgaW50IHBtZW1fY29ycnVwdGVkX3Jhbmdl
+KHN0cnVjdCBnZW5kaXNrICpkaXNrLCBzdHJ1Y3QgYmxvY2tfZGV2aWNlICpiZGV2LA0KPj4gICAJ
+CQkJbG9mZl90IGRpc2tfb2Zmc2V0LCBzaXplX3QgbGVuLCB2b2lkICpkYXRhKQ0KPj4gICB7DQo+
+PiAtCXN0cnVjdCBzdXBlcl9ibG9jayAqc2I7DQo+PiAgIAlsb2ZmX3QgYmRldl9vZmZzZXQ7DQo+
+PiAgIAlzZWN0b3JfdCBkaXNrX3NlY3RvciA9IGRpc2tfb2Zmc2V0ID4+IFNFQ1RPUl9TSElGVDsN
+Cj4+IC0JaW50IHJjID0gMDsNCj4+ICsJaW50IHJjID0gLUVOT0RFVjsNCj4+ICAgDQo+PiAgIAli
+ZGV2ID0gYmRnZXRfZGlza19zZWN0b3IoZGlzaywgZGlza19zZWN0b3IpOw0KPj4gICAJaWYgKCFi
+ZGV2KQ0KPj4gLQkJcmV0dXJuIC1FTk9ERVY7DQo+PiArCQlyZXR1cm4gcmM7DQo+PiAgIA0KPj4g
+ICAJYmRldl9vZmZzZXQgPSAoZGlza19zZWN0b3IgLSBnZXRfc3RhcnRfc2VjdChiZGV2KSkgPDwg
+U0VDVE9SX1NISUZUOw0KPj4gLQlzYiA9IGdldF9zdXBlcihiZGV2KTsNCj4+IC0JaWYgKHNiICYm
+IHNiLT5zX29wLT5jb3JydXB0ZWRfcmFuZ2UpIHsNCj4+IC0JCXJjID0gc2ItPnNfb3AtPmNvcnJ1
+cHRlZF9yYW5nZShzYiwgYmRldiwgYmRldl9vZmZzZXQsIGxlbiwgZGF0YSk7DQo+PiAtCQlkcm9w
+X3N1cGVyKHNiKTsNCj4+IC0JfQ0KPj4gKwlyYyA9IGJkX2NvcnJ1cHRlZF9yYW5nZShiZGV2LCBi
+ZGV2X29mZnNldCwgYmRldl9vZmZzZXQsIGxlbiwgZGF0YSk7DQo+PiAgIA0KPj4gICAJYmRwdXQo
+YmRldik7DQo+PiAgIAlyZXR1cm4gcmM7DQo+PiBkaWZmIC0tZ2l0IGEvZnMvYmxvY2tfZGV2LmMg
+Yi9mcy9ibG9ja19kZXYuYw0KPj4gaW5kZXggM2I4OTYzZTIyOGExLi4zY2MyYjI5MTFlM2EgMTAw
+NjQ0DQo+PiAtLS0gYS9mcy9ibG9ja19kZXYuYw0KPj4gKysrIGIvZnMvYmxvY2tfZGV2LmMNCj4+
+IEBAIC0xMDc5LDYgKzEwNzksMjcgQEAgc3RydWN0IGJkX2hvbGRlcl9kaXNrIHsNCj4+ICAgCWlu
+dAkJCXJlZmNudDsNCj4+ICAgfTsNCj4+ICAgDQo+PiArc3RhdGljIGludCBiZF9kaXNrX2hvbGRl
+cl9jb3JydXB0ZWRfcmFuZ2Uoc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwgbG9mZl90IG9mZiwN
+Cj4+ICsJCQkJCSAgc2l6ZV90IGxlbiwgdm9pZCAqZGF0YSkNCj4+ICt7DQo+PiArCXN0cnVjdCBi
+ZF9ob2xkZXJfZGlzayAqaG9sZGVyOw0KPj4gKwlzdHJ1Y3QgZ2VuZGlzayAqZGlzazsNCj4+ICsJ
+aW50IHJjID0gMDsNCj4+ICsNCj4+ICsJaWYgKGxpc3RfZW1wdHkoJihiZGV2LT5iZF9ob2xkZXJf
+ZGlza3MpKSkNCj4+ICsJCXJldHVybiAtRU5PREVWOw0KPj4gKw0KPj4gKwlsaXN0X2Zvcl9lYWNo
+X2VudHJ5KGhvbGRlciwgJmJkZXYtPmJkX2hvbGRlcl9kaXNrcywgbGlzdCkgew0KPj4gKwkJZGlz
+ayA9IGhvbGRlci0+ZGlzazsNCj4+ICsJCWlmIChkaXNrLT5mb3BzLT5jb3JydXB0ZWRfcmFuZ2Up
+IHsNCj4+ICsJCQlyYyA9IGRpc2stPmZvcHMtPmNvcnJ1cHRlZF9yYW5nZShkaXNrLCBiZGV2LCBv
+ZmYsIGxlbiwgZGF0YSk7DQo+PiArCQkJaWYgKHJjICE9IC1FTk9ERVYpDQo+PiArCQkJCWJyZWFr
+Ow0KPj4gKwkJfQ0KPj4gKwl9DQo+PiArCXJldHVybiByYzsNCj4+ICt9DQo+PiArDQo+PiAgIHN0
+YXRpYyBzdHJ1Y3QgYmRfaG9sZGVyX2Rpc2sgKmJkX2ZpbmRfaG9sZGVyX2Rpc2soc3RydWN0IGJs
+b2NrX2RldmljZSAqYmRldiwNCj4+ICAgCQkJCQkJICBzdHJ1Y3QgZ2VuZGlzayAqZGlzaykNCj4+
+ICAgew0KPj4gQEAgLTEyMTIsNyArMTIzMywyNiBAQCB2b2lkIGJkX3VubGlua19kaXNrX2hvbGRl
+cihzdHJ1Y3QgYmxvY2tfZGV2aWNlICpiZGV2LCBzdHJ1Y3QgZ2VuZGlzayAqZGlzaykNCj4+ICAg
+CW11dGV4X3VubG9jaygmYmRldi0+YmRfbXV0ZXgpOw0KPj4gICB9DQo+PiAgIEVYUE9SVF9TWU1C
+T0xfR1BMKGJkX3VubGlua19kaXNrX2hvbGRlcik7DQo+PiAtI2VuZGlmDQo+PiArI2VuZGlmIC8q
+IENPTkZJR19TWVNGUyAqLw0KPj4gKw0KPj4gK2ludCBiZF9jb3JydXB0ZWRfcmFuZ2Uoc3RydWN0
+IGJsb2NrX2RldmljZSAqYmRldiwgbG9mZl90IGRpc2tfb2ZmLA0KPj4gKwkJICAgICAgIGxvZmZf
+dCBiZGV2X29mZiwgc2l6ZV90IGxlbiwgdm9pZCAqZGF0YSkNCj4+ICt7DQo+PiArCXN0cnVjdCBz
+dXBlcl9ibG9jayAqc2IgPSBnZXRfc3VwZXIoYmRldik7DQo+PiArCWludCByYyA9IC1FT1BOT1RT
+VVBQOw0KPj4gKw0KPj4gKwlpZiAoIXNiKSB7DQo+PiArI2lmZGVmIENPTkZJR19TWVNGUw0KPj4g
+KwkJcmMgPSBiZF9kaXNrX2hvbGRlcl9jb3JydXB0ZWRfcmFuZ2UoYmRldiwgZGlza19vZmYsIGxl
+biwgZGF0YSk7DQo+PiArI2VuZGlmIC8qIENPTkZJR19TWVNGUyAqLw0KPiANCj4gTm9ybWFsIGtl
+cm5lbCBjb252ZW50aW9uIGlzIHRoYXQgeW91J2QgcHJvdmlkZSBhIGVtcHR5IHNoZWxsIGZvciB0
+aGUNCj4gQ09ORklHX1NZU0ZTPW4gY2FzZSwgZS5nLg0KPiANCj4gI2lmZGVmIENPTkZJR19TWVNG
+Uw0KPiBpbnQgYmRfY29ycnVwdGVkX3JhbmdlKC4uLikgew0KPiAJLyogcmVhbCBjb2RlICovDQo+
+IH0NCj4gI2Vsc2UNCj4gc3RhdGljIGlubGluZSBiZF9jb3JydXB0ZWRfcmFuZ2UoLi4uKSB7IHJl
+dHVybiAtRU9QTk9UU1VQUDsgfQ0KPiAjZW5kaWYNCj4gDQo+IHNvIHRoYXQgeW91IGRvbid0IGhh
+dmUgcHJlcHJvY2Vzc29yIGRpcmVjdGl2ZXMgbWFraW5nIHRoaXMgZnVuY3Rpb24NCj4gY2hvcHB5
+Lg0KDQpJJ2xsIGZpeCBpdC4NCg0KDQotLQ0KVGhhbmtzLA0KUnVhbiBTaGl5YW5nLg0KDQo+IA0K
+PiAtLUQNCj4gDQo+PiArCQlyZXR1cm4gcmM7DQo+PiArCX0gZWxzZSBpZiAoc2ItPnNfb3AtPmNv
+cnJ1cHRlZF9yYW5nZSkNCj4+ICsJCXJjID0gc2ItPnNfb3AtPmNvcnJ1cHRlZF9yYW5nZShzYiwg
+YmRldiwgYmRldl9vZmYsIGxlbiwgZGF0YSk7DQo+PiArCWRyb3Bfc3VwZXIoc2IpOw0KPj4gKw0K
+Pj4gKwlyZXR1cm4gcmM7DQo+PiArfQ0KPj4gK0VYUE9SVF9TWU1CT0woYmRfY29ycnVwdGVkX3Jh
+bmdlKTsNCj4+ICAgDQo+PiAgIHN0YXRpYyB2b2lkIF9fYmxrZGV2X3B1dChzdHJ1Y3QgYmxvY2tf
+ZGV2aWNlICpiZGV2LCBmbW9kZV90IG1vZGUsIGludCBmb3JfcGFydCk7DQo+PiAgIA0KPj4gZGlm
+ZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvZ2VuaGQuaCBiL2luY2x1ZGUvbGludXgvZ2VuaGQuaA0K
+Pj4gaW5kZXggNGRhNDgwNzk4OTU1Li45OTZmOTFiMDhkNDggMTAwNjQ0DQo+PiAtLS0gYS9pbmNs
+dWRlL2xpbnV4L2dlbmhkLmgNCj4+ICsrKyBiL2luY2x1ZGUvbGludXgvZ2VuaGQuaA0KPj4gQEAg
+LTMxNSw2ICszMTUsOCBAQCB2b2lkIHVucmVnaXN0ZXJfYmxrZGV2KHVuc2lnbmVkIGludCBtYWpv
+ciwgY29uc3QgY2hhciAqbmFtZSk7DQo+PiAgIGJvb2wgYmRldl9jaGVja19tZWRpYV9jaGFuZ2Uo
+c3RydWN0IGJsb2NrX2RldmljZSAqYmRldik7DQo+PiAgIGludCBfX2ludmFsaWRhdGVfZGV2aWNl
+KHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIGJvb2wga2lsbF9kaXJ0eSk7DQo+PiAgIHZvaWQg
+c2V0X2NhcGFjaXR5KHN0cnVjdCBnZW5kaXNrICpkaXNrLCBzZWN0b3JfdCBzaXplKTsNCj4+ICtp
+bnQgYmRfY29ycnVwdGVkX3JhbmdlKHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIGxvZmZfdCBk
+aXNrX29mZiwNCj4+ICsJCSAgICAgICBsb2ZmX3QgYmRldl9vZmYsIHNpemVfdCBsZW4sIHZvaWQg
+KmRhdGEpOw0KPj4gICANCj4+ICAgLyogZm9yIGRyaXZlcnMvY2hhci9yYXcuYzogKi8NCj4+ICAg
+aW50IGJsa2Rldl9pb2N0bChzdHJ1Y3QgYmxvY2tfZGV2aWNlICosIGZtb2RlX3QsIHVuc2lnbmVk
+LCB1bnNpZ25lZCBsb25nKTsNCj4+IC0tIA0KPj4gMi4zMC4wDQo+Pg0KPj4NCj4+DQo+IA0KPiAN
+Cg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
+bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
+c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
