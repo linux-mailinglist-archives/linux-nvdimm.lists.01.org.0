@@ -1,67 +1,83 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6351430DFC7
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 17:33:28 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BC630E09A
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 18:12:42 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6E253100EB34D;
-	Wed,  3 Feb 2021 08:33:26 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=160.251.93.155; helo=vpass.ne.jp; envelope-from=sto@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (v160-251-93-155.mfp4.static.cnode.io [160.251.93.155])
-	by ml01.01.org (Postfix) with ESMTP id 0D338100EC1D5
-	for <linux-nvdimm@lists.01.org>; Wed,  3 Feb 2021 08:33:22 -0800 (PST)
-Message-ID: <8D497DCA5DA3A6A0B3F68659A9D55E54@vpass.ne.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <sto@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CRVnBhc3NE44Gu6Kit5a6a44GM54Sh?=
-	=?utf-8?B?5Yq544Gn44GZ?=
-Date: Thu, 4 Feb 2021 01:33:16 +0900
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
-Message-ID-Hash: DB3M4OBOHPE72HGETAUKIGVNREWKW6CR
-X-Message-ID-Hash: DB3M4OBOHPE72HGETAUKIGVNREWKW6CR
-X-MailFrom: sto@vpass.ne.jp
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+	by ml01.01.org (Postfix) with ESMTP id 3DB51100EAB7E;
+	Wed,  3 Feb 2021 09:12:40 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+f06b10cfe9d4f1643769+6373+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 4303F100EAB7D
+	for <linux-nvdimm@lists.01.org>; Wed,  3 Feb 2021 09:12:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TOHrz9rJRmT1MZjmRcdSp7+GuY9P+OtZtUJvbJgCulo=; b=QlTPVhm61sGQuTcf3P0iNWT8ED
+	Bi2gkvv6DDeJQwV2HZj+zq53XZjee6QmF+jgW/E4anVOGeBwLE0OhGlE/INHWoFljCKhZx4kLuKFi
+	vBpPlOiPaIYrUSdcPkchYs5y8EocLYDkgBQi5zK2utgiNqo1gFusaNMlddnGX4lCKct1oIiIfQN0x
+	4FZFsAcm9c0hrwdS+WY55lmm+xjte1BQs5jszrftBaCW8zuTfPkpbQPL1wxnyHoTRZuCOgTwdKSQC
+	PmSjukh2Zy50HgX10fdq7MOFixROv7xKlGJkbVoqgE9rz6+csO3TxasqOuAu242s0FMgsIu5s/vvZ
+	pnxR5IZg==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1l7LhT-00HEZu-Qm; Wed, 03 Feb 2021 17:12:20 +0000
+Date: Wed, 3 Feb 2021 17:12:19 +0000
+From: Christoph Hellwig <hch@infradead.org>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH 02/14] cxl/mem: Map memory device registers
+Message-ID: <20210203171219.GA4104698@infradead.org>
+References: <20210130002438.1872527-1-ben.widawsky@intel.com>
+ <20210130002438.1872527-3-ben.widawsky@intel.com>
+ <20210202180441.GC3708021@infradead.org>
+ <20210202183151.7kwruvip7nshqsc4@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20210202183151.7kwruvip7nshqsc4@intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: SSPBPRJ673JOTQEGX2YZWEZFVX375FC7
+X-Message-ID-Hash: SSPBPRJ673JOTQEGX2YZWEZFVX375FC7
+X-MailFrom: BATV+f06b10cfe9d4f1643769+6373+infradead.org+hch@casper.srs.infradead.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@infradead.org>, linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DB3M4OBOHPE72HGETAUKIGVNREWKW6CR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SSPBPRJ673JOTQEGX2YZWEZFVX375FC7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IA0KDQogDQogDQoNCiANCg0KIA0KIA0KDQogDQoNCiANCg0KDQpsaW51eC1udmRpbW3mp5gNCg0K
-ICDlubPntKDjgojjgorkuInkupXkvY/lj4vjgqvjg7zjg4njga7jgrXjg7zjg5PjgrnjgpLjgZTl
-iKnnlKjjgYTjgZ/jgaDjgY3jgIHoqqDjgavjgYLjgorjgYzjgajjgYbjgZTjgZbjgYTjgb7jgZnj
-gIINCg0KICDjgIzliKnnlKjnkrDlooPjgI3jgYzlpInmm7TjgZXjgozjgZ/jgZ/jgoHjgIHjgYrl
-rqLmp5jjga5WcGFzc0lE44Gu6Kit5a6a44GM54Sh5Yq544Gr44Gq44KK44G+44GX44Gf44CC5LiL
-6KiY44Gr44GC44KLVVJM44KS44Kv44Oq44OD44Kv44GX44Gm44GE44Gf44Gg44GN44CBVnBhc3Np
-ZOOCkuWGjeioreWumuOBmeOCi+OAguOAjOWIqeeUqOeSsOWig+ebo+imluOCt+OCueODhuODoOOA
-jeOCkue1guS6huOBmeOCi+WgtOWQiOOBr+OAgVZwYXNzSUTjgpLjg6rjgrvjg4Pjg4jjgZfjgabn
-tYLkuobjgZfjgabjgY/jgaDjgZXjgYTjgIINCg0KDQrilIHilIHilIHilIHilIHilIHilIENCuKW
-oCDjgZRWcGFzc2lk56K66KqN44Gv44GT44Gh44KJDQrilIHilIHilIHilIHilIHilIHilIENCiBo
-dHRwczovL3NtYmMtY2FyZGkuYml6DQrilIHilIHilIHilIHilIHilIHilIENCuKWoCDms6jmhI/k
-uovpoIUNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4oC744Kr44O844OJ44Gu5YCL5Lq65oOF5aCx
-44Gr44KI44Gj44Gm44Gv6Zu76Kmx44Gn6YCj57Wh44GZ44KL5aC05ZCI44KC44GU44GW44GE44G+
-44GZ44CCDQrigLvmraPnorrjgarmg4XloLHjga/lv4XjgZroqJjlhaXjgZfjgabjgY/jgaDjgZXj
-gYTjgIINCuKAu+OBlOmAo+e1oeWFiOmbu+ipseeVquWPtyDvvJogMDkwLTMwMzQtMTAwMCDvvIjl
-j5fku5jmmYLplpPvvJrml6XmnKzmmYLplpM5OjAwIC0gMjE6MDDvvIkNCuKAu+a1t+WkluOBi+OC
-ieOBrumAo+e1oeOBruWgtOWQiCDvvJogODHvvIjlm73jgrPjg7zjg4nvvIktMDkwLTMwMzQtMTEw
-MA0K4pSB4pSB4pSB4pSB4pSB4pSB4pSBDQrilqDnmbrooYzogIUNCuKUgeKUgeKUgeKUgeKUgeKU
-geKUgQ0K5LiJ5LqV5L2P5Y+L44Kr44O844OJ5qCq5byP5Lya56S+DQrjgIBodHRwOi8vc21iYy1j
-YXJkLmNvbQ0K44CSMTA1LTgwMTEg5p2x5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLnlaoyMOWP
-tyDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCg0KDQoNCiANCkNvcHlyaWdodCDCqSBTdW1pdG9t
-byBNaXRzdWkgQmFua2luZyBDb3Jwb3JhdGlvbi5BbGwgUmlnaHRzIFJlc2VydmVkLg0KIApfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
-bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
-c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Tue, Feb 02, 2021 at 10:31:51AM -0800, Ben Widawsky wrote:
+> > > +		if (reg_type == CXL_REGLOC_RBI_MEMDEV) {
+> > > +			rc = 0;
+> > > +			cxlm = cxl_mem_create(pdev, reg_lo, reg_hi);
+> > > +			if (!cxlm)
+> > > +				rc = -ENODEV;
+> > > +			break;
+> > 
+> > And given that we're going to grow more types eventually, why not start
+> > out with a switch here?  Also why return the structure when nothing
+> > uses it?
+> 
+>  We've (Intel) already started working on the libnvdimm integration which does
+>  change this around a bit. In order to go with what's best tested though, I've
+>  chosen to use this as is for merge. Many different people not just in Intel
+>  have tested these codepaths. The resulting code moves the check on register
+>  type out of this function entirely.
+> 
+>  If you'd like me to make it a switch, I can, but it's going to be extracted
+>  later anyway.
+
+This was just a suggestion.  No hard feelings, it's just that the code
+looks a little odd to me.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
