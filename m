@@ -1,218 +1,89 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22D430D107
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 02:51:48 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84DA30D311
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Feb 2021 06:30:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1B0FE100F226B;
-	Tue,  2 Feb 2021 17:51:47 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 3C19E100EB83F
-	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 17:51:43 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.79,396,1602518400";
-   d="scan'208";a="104124130"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 03 Feb 2021 09:51:42 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id C1F3D4CE6D74;
-	Wed,  3 Feb 2021 09:51:38 +0800 (CST)
-Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
- (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 3 Feb
- 2021 09:51:39 +0800
-Subject: Re: [PATCH RESEND v2 08/10] md: Implement ->corrupted_range()
-To: "Darrick J. Wong" <djwong@kernel.org>
-References: <20210129062757.1594130-1-ruansy.fnst@cn.fujitsu.com>
- <20210129062757.1594130-9-ruansy.fnst@cn.fujitsu.com>
- <20210202031711.GJ7193@magnolia>
-From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
-Message-ID: <8742625e-8ae7-47a8-fd62-18c201c45a33@cn.fujitsu.com>
-Date: Wed, 3 Feb 2021 09:51:37 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+	by ml01.01.org (Postfix) with ESMTP id B011A100ED4A3;
+	Tue,  2 Feb 2021 21:30:22 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.168.202.207; helo=financeexchange.co; envelope-from=m.d@financeexchange.co; receiver=<UNKNOWN> 
+Received: from financeexchange.co (hwsrv-829980.hostwindsdns.com [104.168.202.207])
+	by ml01.01.org (Postfix) with ESMTP id 4F20A100ED480
+	for <linux-nvdimm@lists.01.org>; Tue,  2 Feb 2021 21:30:19 -0800 (PST)
+From: M.D@financeexchange.co <M.D@financeexchange.co>
+To: linux-nvdimm@lists.01.org
+Subject: Finance Trade Investment Company
+Date: 3 Feb 2021 05:29:55 +0000
+Message-ID: <20210203052930.BEEC8947DF93BD80@financeexchange.co>
 MIME-Version: 1.0
-In-Reply-To: <20210202031711.GJ7193@magnolia>
-Content-Language: en-US
-X-Originating-IP: [10.167.225.141]
-X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
-X-yoursite-MailScanner-ID: C1F3D4CE6D74.A03BC
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: EWAT5LHXOMNLWK27JYUF7FRQMNHOILMP
-X-Message-ID-Hash: EWAT5LHXOMNLWK27JYUF7FRQMNHOILMP
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, dm-devel@redhat.com, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, agk@redhat.com, snitzer@redhat.com, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+Message-ID-Hash: R7M6KPLJ6GISTPCQ6GFCIYTF3CC2U2SG
+X-Message-ID-Hash: R7M6KPLJ6GISTPCQ6GFCIYTF3CC2U2SG
+X-MailFrom: M.D@financeexchange.co
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EWAT5LHXOMNLWK27JYUF7FRQMNHOILMP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R7M6KPLJ6GISTPCQ6GFCIYTF3CC2U2SG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============4283869613900867791=="
 
-DQoNCk9uIDIwMjEvMi8yIOS4iuWNiDExOjE3LCBEYXJyaWNrIEouIFdvbmcgd3JvdGU6DQo+IE9u
-IEZyaSwgSmFuIDI5LCAyMDIxIGF0IDAyOjI3OjU1UE0gKzA4MDAsIFNoaXlhbmcgUnVhbiB3cm90
-ZToNCj4+IFdpdGggdGhlIHN1cHBvcnQgb2YgLT5ybWFwKCksIGl0IGlzIHBvc3NpYmxlIHRvIG9i
-dGFpbiB0aGUgc3VwZXJibG9jayBvbg0KPj4gYSBtYXBwZWQgZGV2aWNlLg0KPj4NCj4+IElmIGEg
-cG1lbSBkZXZpY2UgaXMgdXNlZCBhcyBvbmUgdGFyZ2V0IG9mIG1hcHBlZCBkZXZpY2UsIHdlIGNh
-bm5vdA0KPj4gb2J0YWluIGl0cyBzdXBlcmJsb2NrIGRpcmVjdGx5LiAgV2l0aCB0aGUgaGVscCBv
-ZiBTWVNGUywgdGhlIG1hcHBlZA0KPj4gZGV2aWNlIGNhbiBiZSBmb3VuZCBvbiB0aGUgdGFyZ2V0
-IGRldmljZXMuICBTbywgd2UgaXRlcmF0ZSB0aGUNCj4+IGJkZXYtPmJkX2hvbGRlcl9kaXNrcyB0
-byBvYnRhaW4gaXRzIG1hcHBlZCBkZXZpY2UuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogU2hpeWFu
-ZyBSdWFuIDxydWFuc3kuZm5zdEBjbi5mdWppdHN1LmNvbT4NCj4+IC0tLQ0KPj4gICBkcml2ZXJz
-L21kL2RtLmMgICAgICAgfCA2MSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrDQo+PiAgIGRyaXZlcnMvbnZkaW1tL3BtZW0uYyB8IDExICsrKy0tLS0tDQo+PiAgIGZz
-L2Jsb2NrX2Rldi5jICAgICAgICB8IDQyICsrKysrKysrKysrKysrKysrKysrKysrKysrKystDQo+
-IA0KPiBJIGZlZWwgbGlrZSB0aGlzIF5eXiBwYXJ0IHRoYXQgaW1wbGVtZW50cyB0aGUgZ2VuZXJp
-YyBhYmlsaXR5IGZvciBhIGJsb2NrDQo+IGRldmljZSB3aXRoIGEgYmFkIHNlY3RvciB0byBub3Rp
-Znkgd2hhdGV2ZXIncyBob2xkaW5nIG9udG8gaXQgKGZzLCBvdGhlcg0KPiBibG9jayBkZXZpY2Up
-IHNob3VsZCBiZSBpbiBwYXRjaCAyLiAgVGhhdCdzIGdlbmVyaWMgYmxvY2sgbGF5ZXIgY29kZSwN
-Cj4gYW5kIGl0J3MgaGFyZCB0byB0ZWxsICh3aGVuIHlvdSdyZSBsb29raW5nIGF0IHBhdGNoIDIp
-IHdoYXQgdGhlIGJhcmUNCj4gZnVuY3Rpb24gZGVjbGFyYXRpb24gaW4gaXQgaXMgcmVhbGx5IHN1
-cHBvc2VkIHRvIGRvLg0KPiANCj4gQWxzbywgdGhpcyBwYXRjaCBpcyBzdGlsbCBkaWZmaWN1bHQg
-dG8gcmV2aWV3IGJlY2F1c2UgaXQgbWl4ZXMgZGV2aWNlDQo+IG1hcHBlciwgbnZkaW1tLCBhbmQg
-YmxvY2sgbGF5ZXIgY2hhbmdlcyENCg0KT0suICBJJ2xsIHNwbGl0IHRoaXMgdG8gbWFrZSBpdCBs
-b29rcyBzaW1wbGUuDQoNCj4gDQo+PiAgIGluY2x1ZGUvbGludXgvZ2VuaGQuaCB8ICAyICsrDQo+
-PiAgIDQgZmlsZXMgY2hhbmdlZCwgMTA3IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pDQo+
-Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWQvZG0uYyBiL2RyaXZlcnMvbWQvZG0uYw0KPj4g
-aW5kZXggN2JhYzU2NGYzZmFhLi4zMWIwYzM0MGI2OTUgMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJz
-L21kL2RtLmMNCj4+ICsrKyBiL2RyaXZlcnMvbWQvZG0uYw0KPj4gQEAgLTUwNyw2ICs1MDcsNjYg
-QEAgc3RhdGljIGludCBkbV9ibGtfcmVwb3J0X3pvbmVzKHN0cnVjdCBnZW5kaXNrICpkaXNrLCBz
-ZWN0b3JfdCBzZWN0b3IsDQo+PiAgICNkZWZpbmUgZG1fYmxrX3JlcG9ydF96b25lcwkJTlVMTA0K
-Pj4gICAjZW5kaWYgLyogQ09ORklHX0JMS19ERVZfWk9ORUQgKi8NCj4+ICAgDQo+PiArc3RydWN0
-IGNvcnJ1cHRlZF9oaXRfaW5mbyB7DQo+PiArCXN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXY7DQo+
-PiArCXNlY3Rvcl90IG9mZnNldDsNCj4+ICt9Ow0KPj4gKw0KPj4gK3N0YXRpYyBpbnQgZG1fYmxr
-X2NvcnJ1cHRlZF9oaXQoc3RydWN0IGRtX3RhcmdldCAqdGksIHN0cnVjdCBkbV9kZXYgKmRldiwN
-Cj4+ICsJCQkJc2VjdG9yX3Qgc3RhcnQsIHNlY3Rvcl90IGNvdW50LCB2b2lkICpkYXRhKQ0KPj4g
-K3sNCj4+ICsJc3RydWN0IGNvcnJ1cHRlZF9oaXRfaW5mbyAqYmMgPSBkYXRhOw0KPj4gKw0KPj4g
-KwlyZXR1cm4gYmMtPmJkZXYgPT0gKHZvaWQgKilkZXYtPmJkZXYgJiYNCj4+ICsJCQkoc3RhcnQg
-PD0gYmMtPm9mZnNldCAmJiBiYy0+b2Zmc2V0IDwgc3RhcnQgKyBjb3VudCk7DQo+PiArDQo+PiAr
-fQ0KPj4gKw0KPj4gK3N0cnVjdCBjb3JydXB0ZWRfZG9faW5mbyB7DQo+PiArCXNpemVfdCBsZW5n
-dGg7DQo+PiArCXZvaWQgKmRhdGE7DQo+PiArfTsNCj4+ICsNCj4+ICtzdGF0aWMgaW50IGRtX2Js
-a19jb3JydXB0ZWRfZG8oc3RydWN0IGRtX3RhcmdldCAqdGksIHN0cnVjdCBibG9ja19kZXZpY2Ug
-KmJkZXYsDQo+PiArCQkJICAgICAgIHNlY3Rvcl90IGRpc2tfc2VjdCwgdm9pZCAqZGF0YSkNCj4+
-ICt7DQo+PiArCXN0cnVjdCBjb3JydXB0ZWRfZG9faW5mbyAqYmMgPSBkYXRhOw0KPj4gKwlsb2Zm
-X3QgZGlza19vZmYgPSB0b19ieXRlcyhkaXNrX3NlY3QpOw0KPj4gKwlsb2ZmX3QgYmRldl9vZmYg
-PSB0b19ieXRlcyhkaXNrX3NlY3QgLSBnZXRfc3RhcnRfc2VjdChiZGV2KSk7DQo+PiArDQo+PiAr
-CXJldHVybiBiZF9jb3JydXB0ZWRfcmFuZ2UoYmRldiwgZGlza19vZmYsIGJkZXZfb2ZmLCBiYy0+
-bGVuZ3RoLCBiYy0+ZGF0YSk7DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyBpbnQgZG1fYmxrX2Nv
-cnJ1cHRlZF9yYW5nZShzdHJ1Y3QgZ2VuZGlzayAqZGlzaywNCj4+ICsJCQkJICBzdHJ1Y3QgYmxv
-Y2tfZGV2aWNlICp0YXJnZXRfYmRldiwNCj4+ICsJCQkJICBsb2ZmX3QgdGFyZ2V0X29mZnNldCwg
-c2l6ZV90IGxlbiwgdm9pZCAqZGF0YSkNCj4+ICt7DQo+PiArCXN0cnVjdCBtYXBwZWRfZGV2aWNl
-ICptZCA9IGRpc2stPnByaXZhdGVfZGF0YTsNCj4+ICsJc3RydWN0IGRtX3RhYmxlICptYXA7DQo+
-PiArCXN0cnVjdCBkbV90YXJnZXQgKnRpOw0KPj4gKwlzZWN0b3JfdCB0YXJnZXRfc2VjdCA9IHRv
-X3NlY3Rvcih0YXJnZXRfb2Zmc2V0KTsNCj4+ICsJc3RydWN0IGNvcnJ1cHRlZF9oaXRfaW5mbyBo
-aSA9IHt0YXJnZXRfYmRldiwgdGFyZ2V0X3NlY3R9Ow0KPj4gKwlzdHJ1Y3QgY29ycnVwdGVkX2Rv
-X2luZm8gZGkgPSB7bGVuLCBkYXRhfTsNCj4+ICsJaW50IHNyY3VfaWR4LCBpLCByYyA9IC1FTk9E
-RVY7DQo+PiArDQo+PiArCW1hcCA9IGRtX2dldF9saXZlX3RhYmxlKG1kLCAmc3JjdV9pZHgpOw0K
-Pj4gKwlpZiAoIW1hcCkNCj4+ICsJCXJldHVybiByYzsNCj4+ICsNCj4+ICsJZm9yIChpID0gMDsg
-aSA8IGRtX3RhYmxlX2dldF9udW1fdGFyZ2V0cyhtYXApOyBpKyspIHsNCj4+ICsJCXRpID0gZG1f
-dGFibGVfZ2V0X3RhcmdldChtYXAsIGkpOw0KPj4gKwkJaWYgKCEodGktPnR5cGUtPml0ZXJhdGVf
-ZGV2aWNlcyAmJiB0aS0+dHlwZS0+cm1hcCkpDQo+PiArCQkJY29udGludWU7DQo+PiArCQlpZiAo
-IXRpLT50eXBlLT5pdGVyYXRlX2RldmljZXModGksIGRtX2Jsa19jb3JydXB0ZWRfaGl0LCAmaGkp
-KQ0KPj4gKwkJCWNvbnRpbnVlOw0KPj4gKw0KPj4gKwkJcmMgPSB0aS0+dHlwZS0+cm1hcCh0aSwg
-dGFyZ2V0X3NlY3QsIGRtX2Jsa19jb3JydXB0ZWRfZG8sICZkaSk7DQo+IA0KPiBXaHkgaXMgaXQg
-bmVjZXNzYXJ5IHRvIGNhbGwgLT5pdGVyYXRlX2RldmljZXMgaGVyZT8NCg0KLT5pdGVyYXRlX2Rl
-dmljZXMoKSBoZXJlIGlzIHRvIGZpbmQgb3V0IHdoaWNoIHRhcmdldCBpcyB0aGUgcG1lbSBkZXZp
-Y2UgDQp3aGljaCBpcyBjb3JydXB0ZWQgbm93LiAgVGhlbiBjYWxsIC0+cm1hcCgpIG9uIHRoaXMg
-dGFyZ2V0LiAgT3RoZXIgDQp0YXJnZXRzIHdpbGwgYmUgaWdub3JlZC4NCg0KPiANCj4gSWYgeW91
-IHBhc3MgdGhlIHRhcmdldF9iZGV2LCBvZmZzZXQsIGFuZCBsZW5ndGggdG8gdGhlIGRtLXRhcmdl
-dCdzDQo+IC0+cm1hcCBmdW5jdGlvbiwgaXQgc2hvdWxkIGJlIGFibGUgdG8gd29yayBiYWNrd2Fy
-ZHMgdGhyb3VnaCBpdHMgbWFwcGluZw0KPiBsb2dpYyB0byBjb21lIHVwIHdpdGggYWxsIHRoZSBM
-QkEgcmFuZ2VzIG9mIHRoZSBtYXBwZWRfZGV2aWNlIHRoYXQNCj4gYXJlIGFmZmVjdGVkLCBhbmQg
-dGhlbiBpdCBjYW4gY2FsbCBiZF9jb3JydXB0ZWRfcmFuZ2Ugb24gZWFjaCBvZiB0aG9zZQ0KPiBy
-ZXZlcnNlIG1hcHBpbmdzLg0KPiANCj4gSXQgd291bGQgYmUgaGVscGZ1bCB0byBoYXZlIHRoZSBj
-aGFuZ2VzIHRvIGRtLWxpbmVhci5jIGluIHRoaXMgcGF0Y2gNCj4gdG9vLCBzaW5jZSB0aGF0J3Mg
-dGhlIG9ubHkgcmVhbCBpbXBsZW1lbnRhdGlvbiBhdCB0aGlzIHBvaW50Lg0KPiANCj4+ICsJCWJy
-ZWFrOw0KPj4gKwl9DQo+PiArDQo+PiArCWRtX3B1dF9saXZlX3RhYmxlKG1kLCBzcmN1X2lkeCk7
-DQo+PiArCXJldHVybiByYzsNCj4+ICt9DQo+PiArDQo+PiAgIHN0YXRpYyBpbnQgZG1fcHJlcGFy
-ZV9pb2N0bChzdHJ1Y3QgbWFwcGVkX2RldmljZSAqbWQsIGludCAqc3JjdV9pZHgsDQo+PiAgIAkJ
-CSAgICBzdHJ1Y3QgYmxvY2tfZGV2aWNlICoqYmRldikNCj4+ICAgew0KPj4gQEAgLTMwNjIsNiAr
-MzEyMiw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgYmxvY2tfZGV2aWNlX29wZXJhdGlvbnMgZG1f
-YmxrX2RvcHMgPSB7DQo+PiAgIAkuZ2V0Z2VvID0gZG1fYmxrX2dldGdlbywNCj4+ICAgCS5yZXBv
-cnRfem9uZXMgPSBkbV9ibGtfcmVwb3J0X3pvbmVzLA0KPj4gICAJLnByX29wcyA9ICZkbV9wcl9v
-cHMsDQo+PiArCS5jb3JydXB0ZWRfcmFuZ2UgPSBkbV9ibGtfY29ycnVwdGVkX3JhbmdlLA0KPj4g
-ICAJLm93bmVyID0gVEhJU19NT0RVTEUNCj4+ICAgfTsNCj4+ICAgDQo+PiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9udmRpbW0vcG1lbS5jIGIvZHJpdmVycy9udmRpbW0vcG1lbS5jDQo+PiBpbmRleCA1
-MDE5NTk5NDdkNDguLjNkOWY0Y2NiYmQ5ZSAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbnZkaW1t
-L3BtZW0uYw0KPj4gKysrIGIvZHJpdmVycy9udmRpbW0vcG1lbS5jDQo+PiBAQCAtMjU2LDIxICsy
-NTYsMTYgQEAgc3RhdGljIGludCBwbWVtX3J3X3BhZ2Uoc3RydWN0IGJsb2NrX2RldmljZSAqYmRl
-diwgc2VjdG9yX3Qgc2VjdG9yLA0KPj4gICBzdGF0aWMgaW50IHBtZW1fY29ycnVwdGVkX3Jhbmdl
-KHN0cnVjdCBnZW5kaXNrICpkaXNrLCBzdHJ1Y3QgYmxvY2tfZGV2aWNlICpiZGV2LA0KPj4gICAJ
-CQkJbG9mZl90IGRpc2tfb2Zmc2V0LCBzaXplX3QgbGVuLCB2b2lkICpkYXRhKQ0KPj4gICB7DQo+
-PiAtCXN0cnVjdCBzdXBlcl9ibG9jayAqc2I7DQo+PiAgIAlsb2ZmX3QgYmRldl9vZmZzZXQ7DQo+
-PiAgIAlzZWN0b3JfdCBkaXNrX3NlY3RvciA9IGRpc2tfb2Zmc2V0ID4+IFNFQ1RPUl9TSElGVDsN
-Cj4+IC0JaW50IHJjID0gMDsNCj4+ICsJaW50IHJjID0gLUVOT0RFVjsNCj4+ICAgDQo+PiAgIAli
-ZGV2ID0gYmRnZXRfZGlza19zZWN0b3IoZGlzaywgZGlza19zZWN0b3IpOw0KPj4gICAJaWYgKCFi
-ZGV2KQ0KPj4gLQkJcmV0dXJuIC1FTk9ERVY7DQo+PiArCQlyZXR1cm4gcmM7DQo+PiAgIA0KPj4g
-ICAJYmRldl9vZmZzZXQgPSAoZGlza19zZWN0b3IgLSBnZXRfc3RhcnRfc2VjdChiZGV2KSkgPDwg
-U0VDVE9SX1NISUZUOw0KPj4gLQlzYiA9IGdldF9zdXBlcihiZGV2KTsNCj4+IC0JaWYgKHNiICYm
-IHNiLT5zX29wLT5jb3JydXB0ZWRfcmFuZ2UpIHsNCj4+IC0JCXJjID0gc2ItPnNfb3AtPmNvcnJ1
-cHRlZF9yYW5nZShzYiwgYmRldiwgYmRldl9vZmZzZXQsIGxlbiwgZGF0YSk7DQo+PiAtCQlkcm9w
-X3N1cGVyKHNiKTsNCj4+IC0JfQ0KPj4gKwlyYyA9IGJkX2NvcnJ1cHRlZF9yYW5nZShiZGV2LCBi
-ZGV2X29mZnNldCwgYmRldl9vZmZzZXQsIGxlbiwgZGF0YSk7DQo+PiAgIA0KPj4gICAJYmRwdXQo
-YmRldik7DQo+PiAgIAlyZXR1cm4gcmM7DQo+PiBkaWZmIC0tZ2l0IGEvZnMvYmxvY2tfZGV2LmMg
-Yi9mcy9ibG9ja19kZXYuYw0KPj4gaW5kZXggM2I4OTYzZTIyOGExLi4zY2MyYjI5MTFlM2EgMTAw
-NjQ0DQo+PiAtLS0gYS9mcy9ibG9ja19kZXYuYw0KPj4gKysrIGIvZnMvYmxvY2tfZGV2LmMNCj4+
-IEBAIC0xMDc5LDYgKzEwNzksMjcgQEAgc3RydWN0IGJkX2hvbGRlcl9kaXNrIHsNCj4+ICAgCWlu
-dAkJCXJlZmNudDsNCj4+ICAgfTsNCj4+ICAgDQo+PiArc3RhdGljIGludCBiZF9kaXNrX2hvbGRl
-cl9jb3JydXB0ZWRfcmFuZ2Uoc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwgbG9mZl90IG9mZiwN
-Cj4+ICsJCQkJCSAgc2l6ZV90IGxlbiwgdm9pZCAqZGF0YSkNCj4+ICt7DQo+PiArCXN0cnVjdCBi
-ZF9ob2xkZXJfZGlzayAqaG9sZGVyOw0KPj4gKwlzdHJ1Y3QgZ2VuZGlzayAqZGlzazsNCj4+ICsJ
-aW50IHJjID0gMDsNCj4+ICsNCj4+ICsJaWYgKGxpc3RfZW1wdHkoJihiZGV2LT5iZF9ob2xkZXJf
-ZGlza3MpKSkNCj4+ICsJCXJldHVybiAtRU5PREVWOw0KPj4gKw0KPj4gKwlsaXN0X2Zvcl9lYWNo
-X2VudHJ5KGhvbGRlciwgJmJkZXYtPmJkX2hvbGRlcl9kaXNrcywgbGlzdCkgew0KPj4gKwkJZGlz
-ayA9IGhvbGRlci0+ZGlzazsNCj4+ICsJCWlmIChkaXNrLT5mb3BzLT5jb3JydXB0ZWRfcmFuZ2Up
-IHsNCj4+ICsJCQlyYyA9IGRpc2stPmZvcHMtPmNvcnJ1cHRlZF9yYW5nZShkaXNrLCBiZGV2LCBv
-ZmYsIGxlbiwgZGF0YSk7DQo+PiArCQkJaWYgKHJjICE9IC1FTk9ERVYpDQo+PiArCQkJCWJyZWFr
-Ow0KPj4gKwkJfQ0KPj4gKwl9DQo+PiArCXJldHVybiByYzsNCj4+ICt9DQo+PiArDQo+PiAgIHN0
-YXRpYyBzdHJ1Y3QgYmRfaG9sZGVyX2Rpc2sgKmJkX2ZpbmRfaG9sZGVyX2Rpc2soc3RydWN0IGJs
-b2NrX2RldmljZSAqYmRldiwNCj4+ICAgCQkJCQkJICBzdHJ1Y3QgZ2VuZGlzayAqZGlzaykNCj4+
-ICAgew0KPj4gQEAgLTEyMTIsNyArMTIzMywyNiBAQCB2b2lkIGJkX3VubGlua19kaXNrX2hvbGRl
-cihzdHJ1Y3QgYmxvY2tfZGV2aWNlICpiZGV2LCBzdHJ1Y3QgZ2VuZGlzayAqZGlzaykNCj4+ICAg
-CW11dGV4X3VubG9jaygmYmRldi0+YmRfbXV0ZXgpOw0KPj4gICB9DQo+PiAgIEVYUE9SVF9TWU1C
-T0xfR1BMKGJkX3VubGlua19kaXNrX2hvbGRlcik7DQo+PiAtI2VuZGlmDQo+PiArI2VuZGlmIC8q
-IENPTkZJR19TWVNGUyAqLw0KPj4gKw0KPj4gK2ludCBiZF9jb3JydXB0ZWRfcmFuZ2Uoc3RydWN0
-IGJsb2NrX2RldmljZSAqYmRldiwgbG9mZl90IGRpc2tfb2ZmLA0KPj4gKwkJICAgICAgIGxvZmZf
-dCBiZGV2X29mZiwgc2l6ZV90IGxlbiwgdm9pZCAqZGF0YSkNCj4+ICt7DQo+PiArCXN0cnVjdCBz
-dXBlcl9ibG9jayAqc2IgPSBnZXRfc3VwZXIoYmRldik7DQo+PiArCWludCByYyA9IC1FT1BOT1RT
-VVBQOw0KPj4gKw0KPj4gKwlpZiAoIXNiKSB7DQo+PiArI2lmZGVmIENPTkZJR19TWVNGUw0KPj4g
-KwkJcmMgPSBiZF9kaXNrX2hvbGRlcl9jb3JydXB0ZWRfcmFuZ2UoYmRldiwgZGlza19vZmYsIGxl
-biwgZGF0YSk7DQo+PiArI2VuZGlmIC8qIENPTkZJR19TWVNGUyAqLw0KPiANCj4gTm9ybWFsIGtl
-cm5lbCBjb252ZW50aW9uIGlzIHRoYXQgeW91J2QgcHJvdmlkZSBhIGVtcHR5IHNoZWxsIGZvciB0
-aGUNCj4gQ09ORklHX1NZU0ZTPW4gY2FzZSwgZS5nLg0KPiANCj4gI2lmZGVmIENPTkZJR19TWVNG
-Uw0KPiBpbnQgYmRfY29ycnVwdGVkX3JhbmdlKC4uLikgew0KPiAJLyogcmVhbCBjb2RlICovDQo+
-IH0NCj4gI2Vsc2UNCj4gc3RhdGljIGlubGluZSBiZF9jb3JydXB0ZWRfcmFuZ2UoLi4uKSB7IHJl
-dHVybiAtRU9QTk9UU1VQUDsgfQ0KPiAjZW5kaWYNCj4gDQo+IHNvIHRoYXQgeW91IGRvbid0IGhh
-dmUgcHJlcHJvY2Vzc29yIGRpcmVjdGl2ZXMgbWFraW5nIHRoaXMgZnVuY3Rpb24NCj4gY2hvcHB5
-Lg0KDQpJJ2xsIGZpeCBpdC4NCg0KDQotLQ0KVGhhbmtzLA0KUnVhbiBTaGl5YW5nLg0KDQo+IA0K
-PiAtLUQNCj4gDQo+PiArCQlyZXR1cm4gcmM7DQo+PiArCX0gZWxzZSBpZiAoc2ItPnNfb3AtPmNv
-cnJ1cHRlZF9yYW5nZSkNCj4+ICsJCXJjID0gc2ItPnNfb3AtPmNvcnJ1cHRlZF9yYW5nZShzYiwg
-YmRldiwgYmRldl9vZmYsIGxlbiwgZGF0YSk7DQo+PiArCWRyb3Bfc3VwZXIoc2IpOw0KPj4gKw0K
-Pj4gKwlyZXR1cm4gcmM7DQo+PiArfQ0KPj4gK0VYUE9SVF9TWU1CT0woYmRfY29ycnVwdGVkX3Jh
-bmdlKTsNCj4+ICAgDQo+PiAgIHN0YXRpYyB2b2lkIF9fYmxrZGV2X3B1dChzdHJ1Y3QgYmxvY2tf
-ZGV2aWNlICpiZGV2LCBmbW9kZV90IG1vZGUsIGludCBmb3JfcGFydCk7DQo+PiAgIA0KPj4gZGlm
-ZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvZ2VuaGQuaCBiL2luY2x1ZGUvbGludXgvZ2VuaGQuaA0K
-Pj4gaW5kZXggNGRhNDgwNzk4OTU1Li45OTZmOTFiMDhkNDggMTAwNjQ0DQo+PiAtLS0gYS9pbmNs
-dWRlL2xpbnV4L2dlbmhkLmgNCj4+ICsrKyBiL2luY2x1ZGUvbGludXgvZ2VuaGQuaA0KPj4gQEAg
-LTMxNSw2ICszMTUsOCBAQCB2b2lkIHVucmVnaXN0ZXJfYmxrZGV2KHVuc2lnbmVkIGludCBtYWpv
-ciwgY29uc3QgY2hhciAqbmFtZSk7DQo+PiAgIGJvb2wgYmRldl9jaGVja19tZWRpYV9jaGFuZ2Uo
-c3RydWN0IGJsb2NrX2RldmljZSAqYmRldik7DQo+PiAgIGludCBfX2ludmFsaWRhdGVfZGV2aWNl
-KHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIGJvb2wga2lsbF9kaXJ0eSk7DQo+PiAgIHZvaWQg
-c2V0X2NhcGFjaXR5KHN0cnVjdCBnZW5kaXNrICpkaXNrLCBzZWN0b3JfdCBzaXplKTsNCj4+ICtp
-bnQgYmRfY29ycnVwdGVkX3JhbmdlKHN0cnVjdCBibG9ja19kZXZpY2UgKmJkZXYsIGxvZmZfdCBk
-aXNrX29mZiwNCj4+ICsJCSAgICAgICBsb2ZmX3QgYmRldl9vZmYsIHNpemVfdCBsZW4sIHZvaWQg
-KmRhdGEpOw0KPj4gICANCj4+ICAgLyogZm9yIGRyaXZlcnMvY2hhci9yYXcuYzogKi8NCj4+ICAg
-aW50IGJsa2Rldl9pb2N0bChzdHJ1Y3QgYmxvY2tfZGV2aWNlICosIGZtb2RlX3QsIHVuc2lnbmVk
-LCB1bnNpZ25lZCBsb25nKTsNCj4+IC0tIA0KPj4gMi4zMC4wDQo+Pg0KPj4NCj4+DQo+IA0KPiAN
-Cg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
-c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+--===============4283869613900867791==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+Finance Exchange Investment company is a Crypto currencies investment platf=
+orm with international/professional trader backed up with insurance compani=
+es. Finance Exchange is fully registered in London-Uk and is under security=
+ agency. We are also into mining and real estate business that&#8217;s wher=
+e we generate most of our incomes. We have over 5000 investors at the momen=
+t and all investment are fully secured, strong enough from hackers and it&#=
+8217;s automated system.
+
+What Currencies are Accepted? Investment can be made in five(5) different c=
+rypto coin: BTC. ETH. LTC. BCH. and XRP for now. More currencies will be ad=
+ded.
+
+
+We have three(3) investment plans with difference percentage=20
+
+Our First(1) investment plan is called (silver plan) with the silver plan y=
+ou will earn 1.5% ROI daily for the investment duration of 30days.
+The minimum investment of 0.05 BTC. 3 ETH. 14 LTC and 3000 XRP.=20
+
+Our second(2) investment plan is called (Gold plan) with the gold plan you =
+will earn 3% ROl daily for the investment duration of 30days.
+The minimum investment of 0.5 BTC. 25 ETH. 20 BCH. 115 LTC and 25000 XRP.=
+=20
+
+Our Third(3) investment plan is called (Diamond plan) with Diamond plan you=
+ will earn 5% ROI daily for the investment duration of 30days.
+The minimum investment of 2 BTC. 100 ETH. 90 BCH. 500 LTC and 100000 XRP=20=
+
+
+We offer lucrative investment plans and a referral commission of 7% for eve=
+ry investment made by your referral.=20
+
+Finance Exchange vision is to build a strong alliance and lasting partnersh=
+ip.we finance exchange Investment platform rewards with passion.
+
+You can reach out to us through our email for more inquiries and classifica=
+tions:=A0support@financeexchange.co
+
+Visit our company website: www.financeexchange.co
+--===============4283869613900867791==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============4283869613900867791==--
