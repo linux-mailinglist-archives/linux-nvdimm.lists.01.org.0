@@ -1,79 +1,117 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAAD30ED17
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Feb 2021 08:17:04 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E86C30EFF5
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Feb 2021 10:50:52 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8E161100EAB01;
-	Wed,  3 Feb 2021 23:17:02 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+5218da1eca3c543fccff+6374+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E5FD3100EAB08;
+	Thu,  4 Feb 2021 01:50:50 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.191.230; helo=app9.appendleadedm.info; envelope-from=contact-linux+2dnvdimm=lists.01.org@appendleadedm.info; receiver=<UNKNOWN> 
+Received: from app9.appendleadedm.info (ip230.ip-51-83-191.eu [51.83.191.230])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A9D75100EAB5F
-	for <linux-nvdimm@lists.01.org>; Wed,  3 Feb 2021 23:16:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QgfWxu4yt82JE/xIZ7oOgqgnaPHBT7dbTPo6JkGjbSA=; b=lwT7az+6ZMRVD6pMMGQeUxcGkz
-	3sALDZXQnzoZAsV22q0sZB+6S/aKedsLuXCbgPrJ755mQQeczFZ3/OkCvIZaNAN1CpijxKmBvg872
-	5+Dzv3/TXvRgYoYNI0fwjsd4wWwnvgiaKGwtH43/d+PMeW2C+pFw4V1KjDNnustdp1/7uD2knEK1p
-	2ZqTmGENdZcvywP7ZnZSFdo+Azf3/Gieg5+M1xCdPooxSra5JG9Qe7BFX4IkCr0LbJeKyz0MJpxrd
-	+rtljPjDSwGZkFQlZuyQQvP7Q0B3B0RBBv9nwpXRaHVzScnSqM6y4b/tUsWT6n88kcKSdYQvEM7nk
-	s5pqCAlg==;
-Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-	id 1l7Ysg-000W3O-9s; Thu, 04 Feb 2021 07:16:46 +0000
-Date: Thu, 4 Feb 2021 07:16:46 +0000
-From: Christoph Hellwig <hch@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 03/14] cxl/mem: Find device capabilities
-Message-ID: <20210204071646.GA122880@infradead.org>
-References: <20210130002438.1872527-1-ben.widawsky@intel.com>
- <20210130002438.1872527-4-ben.widawsky@intel.com>
- <20210202181016.GD3708021@infradead.org>
- <20210202182418.3wyxnm6rqeoeclu2@intel.com>
- <20210203171534.GB4104698@infradead.org>
- <20210203172342.fpn5vm4xj2xwh6fq@intel.com>
- <CAPcyv4hvFjs=QqmUYqPipuaLoFiZ-dr6qVhqbDupWuKTw3QDkg@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 8F68A100EB834
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Feb 2021 01:50:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=appendleadedm.info;
+ h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=contact@appendleadedm.info;
+ bh=2AsUzzJClWzq25Y/GPQhhvdy5kg=;
+ b=itgf0f2u5emI9I/+xfmcZUsDgrkXRUZKr4mrXkoaPE956yh42Vr7XqfibfRVy1/J4OFEorXKPdxm
+   s2R4GnX2RRK2stdAoebdVhO2Y9MWhf9cn9kAY+WGPv5/0gHZnVGK/5YaLq9lf5kw8TRdihapAXGp
+   4FCffLBReYOLCFpwuAzbsLwmamAc3z5Dr47zLhsdL2v2bQK3s8ncs3xkx9Urdq4X4p+6B3bJBuV9
+   3l9vDlYKc3Yt6eJ9l6ZEQcRMWy1kZsvdYa3UGOSeAqnyi0VeXcTL0K3r48s9f+VDukfPKV9QFmT5
+   mZnI2XOy3zA8aHcLBPPTRhQ2kA614sYi6z/hfw==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=appendleadedm.info;
+ b=JINN77bwKIqo+T6qh4aYiatFoPrHpCuGXVcUQevysNsEw7jOB9sRHqvakEFHKroQUjFxCrYlULQR
+   qQCxl+5hYJHfZiNT9D2B1de36pj7hOf+MSqCMqxsD+vWFxnHA/0Ah5N7pn1NingXm1R3JMIJl7Jp
+   uhMEFGwdNZMhWyQ09iZ4+voakaPrQFTj2+b83AUwMLQg3nH43VwgNKcA3WyEKhrbzMoFfon3FIxG
+   PVDIdRnV4Gq6RcCrsQXi2iaSPJEx0lFN/rrVYzfCeNcfFo4JKMVtjxV4bLu9QE4DujuWjj7xf37h
+   uD8HMDe6uj1lbxez3W6P71e/xLcOdJ2Qp0tZGA==;
+Received: from appendleadedm.info (127.0.0.1) by app1.appendleadedm.info id h3f1nfi19tkn for <linux-nvdimm@lists.01.org>; Thu, 4 Feb 2021 08:22:55 +0000 (envelope-from <contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info>)
+Date: Thu, 4 Feb 2021 08:22:55 +0000
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+From: Susan Taylor <contact@appendleadedm.info>
+Subject: RE: did you see this email
+Message-ID: <10c5f617c2e4589eec85d4aa9cbe09a3@appendleadedm.info>
+X-Ooqx-Campaign-Uid: gy7717gnvgbea
+X-Ooqx-Subscriber-Uid: qm572ras4eff5
+X-Ooqx-Customer-Uid: fv107j3jh8cf0
+X-Ooqx-Customer-Gid: 0
+X-Ooqx-Delivery-Sid: 1
+X-Ooqx-Tracking-Did: 0
+X-Report-Abuse: Please report abuse for this campaign here: http://appendleadedm.info/emm/index.php/campaigns/gy7717gnvgbea/report-abuse/sr6194wpxree4/qm572ras4eff5
+Feedback-ID: gy7717gnvgbea:qm572ras4eff5:sr6194wpxree4:fv107j3jh8cf0
+Precedence: bulk
+X-Ooqx-EBS: http://appendleadedm.info/emm/index.php/lists/block-address
+X-Sender: contact@appendleadedm.info
+X-Receiver: linux-nvdimm@lists.01.org
+X-Ooqx-Mailer: PHPMailer - 5.2.21
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4hvFjs=QqmUYqPipuaLoFiZ-dr6qVhqbDupWuKTw3QDkg@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: GWZ4EWSWCNS6VLTZ3K3TYGP5HNLEVTG5
-X-Message-ID-Hash: GWZ4EWSWCNS6VLTZ3K3TYGP5HNLEVTG5
-X-MailFrom: BATV+5218da1eca3c543fccff+6374+infradead.org+hch@casper.srs.infradead.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Ben Widawsky <ben.widawsky@intel.com>, Christoph Hellwig <hch@infradead.org>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, daniel.lll@alibaba-inc.com, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+Message-ID-Hash: I3C7WH47Y5PWWMDYJVNYZDJXPVOT64VG
+X-Message-ID-Hash: I3C7WH47Y5PWWMDYJVNYZDJXPVOT64VG
+X-MailFrom: contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Susan Taylor <susan.taylordata@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GWZ4EWSWCNS6VLTZ3K3TYGP5HNLEVTG5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I3C7WH47Y5PWWMDYJVNYZDJXPVOT64VG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed, Feb 03, 2021 at 01:23:31PM -0800, Dan Williams wrote:
-> > I'd prefer to keep the helpers for now as I do find them helpful, and so far
-> > nobody else who has touched the code has complained. If you feel strongly, I
-> > will change it.
-> 
-> After seeing the options, I think I'd prefer to not have to worry what
-> extra magic is happening with cxl_read_mbox_reg32()
-> 
-> cxl_read_mbox_reg32(cxlm, CXLDEV_MB_CAPS_OFFSET);
-> 
-> readl(cxlm->mbox_regs + CXLDEV_MB_CAPS_OFFSET);
-> 
-> The latter is both shorter and more idiomatic.
-
-Same here.  That being said I know some driver maintainers like
-wrappers, my real main irk was the macro magic to generate them.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+QXJlIHlvdSBsb29raW5nIGZvciBhbnkgb2YgdGhlIGZvbGxvd2luZyBFbWFpbCBhbmQgcGhvbmUg
+bGlzdCBnYXRoZXJlZA0KZnJvbSBMaW5rZWRJbiwgRXZlbnRzIGFuZCBtYXJrZXQgcmVzZWFyY2g/
+IFBsZWFzZSBzcGVjaWZ5IHlvdXIgdGFyZ2V0DQphdWRpZW5jZSBzbyB0aGF0IHdlIGNhbiBzaGFy
+ZSBhIHNhbXBsZSB3aXRoIHlvdS4NCiogQXJjaGl0ZWN0cyBhbmQgaW50ZXJpb3IgZGVzaWduZXJz
+IGVtYWlsIGxpc3QNCiogQ0VPLCBvd25lciwgUHJlc2lkZW50IGFuZCBDT08gY29udGFjdHMNCiog
+Q0ZPLCBDb250cm9sbGVyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEZpbmFuY2UsIEFjY291bnRz
+IFBheWFibGUsDQpBY2NvdW50cyBSZWNlaXZhYmxlLCBBdWRpdCBDb250YWN0cw0KKiBDaGllZiBI
+dW1hbiBSZXNvdXJjZXMgT2ZmaWNlciwgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBIUiwgRW1wbG95
+ZWUNCkJlbmVmaXRzLCBFbXBsb3llZSBDb21tdW5pY2F0aW9ucywgRW1wbG95ZWUgQ29tcGVuc2F0
+aW9uLCBFbXBsb3llZQ0KRW5nYWdlbWVudCwgRW1wbG95ZWUgRXhwZXJpZW5jZSBhbmQgRW1wbG95
+ZWUgUmVsYXRpb25zLCBUYWxlbnQNCkFjcXVpc2l0aW9uLCBUYWxlbnQgRGV2ZWxvcG1lbnQsIFRh
+bGVudCBNYW5hZ2VtZW50LCBSZWNydWl0aW5nDQpDb250YWN0cw0KKiBDSU8sQ1RPLCBDSVNPLCBW
+UC9EaXJlY3Rvci9NYW5hZ2VyIG9mIElULCBJVCBDb21wbGlhbmNlLCBJVCBSaXNrLA0KQkksIENs
+b3VkLCBEYXRhYmFzZSBhbmQgSVQgU2VjdXJpdHkgQ29udGFjdHMNCiogQ01PLCBWUC9EaXJlY3Rv
+ci9NYW5hZ2VyIG9mIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5kDQpnZW5l
+cmF0aW9uLCBMZWFkIGdlbmVyYXRpb24sIGluc2lkZSBzYWxlcywgTWFya2V0aW5nIENvbW11bmlj
+YXRpb25zDQpjb250YWN0cyBldGMuDQoqIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVudCBD
+b250YWN0cw0KKiBDUEEgYW5kIEJvb2trZWVwZXJzIGVtYWlsIGxpc3QNCiogRGF0YSBBbmFseXRp
+Y3MgYW5kIERhdGFiYXNlIEFkbWluaXN0cmF0b3JzIGNvbnRhY3RzDQoqIERpc2FzdGVyIFJlY292
+ZXJ5IENvbnRhY3RzDQoqIEUtY29tbWVyY2Ugb3Igb25saW5lIHJldGFpbGVycyBlbWFpbCBsaXN0
+DQoqIEVkdWNhdGlvbiBpbmR1c3RyeSBleGVjdXRpdmVzIGVtYWlsIGxpc3QgLSBQcmluY2lwYWxz
+LCBEZWFuLA0KQWRtaW5zIGFuZCB0ZWFjaGVycyBmcm9tIFNjaG9vbHMsIENvbGxlZ2VzIGFuZCBV
+bml2ZXJzaXRpZXMNCiogRW5naW5lZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5kIG1lZXRpbmcg
+cGxhbm5lcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzIGFuZCBvZmZpY2UgbWFuYWdlciBDb250
+YWN0cw0KKiBHZW5lcmFsIGFuZCBjb3Jwb3JhdGUgY291bnNlbCBhcyB3ZWxsIGxlZ2FsIHByb2Zl
+c3Npb25hbHMgbGlzdA0KKiBHb3Zlcm5tZW50IGNvbnRyYWN0b3JzIGVtYWlsIGxpc3QNCiogSGVh
+bHRoICYgU2FmZXR5IENvbnRhY3RzDQoqIEhpZ2ggbmV0IHdvcnRoIGluZGl2aWR1YWxzL2ludmVz
+dG9ycyBlbWFpbCBsaXN0DQoqIEhvc3BpdGFscywgY2xpbmljcywgcHJpdmF0ZSBwcmFjdGljZXMs
+IFBoYXJtYWNldXRpY2FsIGFuZA0KYmlvdGVjaG5vbG9neSBjb21wYW554oCZcyB0b3AgZGVjaXNp
+b24gbWFrZXJzIGVtYWlsIGxpc3QNCiogSHVtYW4gQ2FwaXRhbCBNYW5hZ2VtZW50IENvbnRhY3Rz
+DQoqIEluZGl2aWR1YWwgaW5zdXJhbmNlIGFnZW50cyBsaXN0DQoqIElTVi9WQVJzIGxpc3QNCiog
+TGVhcm5pbmcgJiBEZXZlbG9wbWVudCBDb250YWN0cw0KKiBMb2dpc3RpY3MsIHNoaXBwaW5nIGFu
+ZCBzdXBwbHkgY2hhaW4gbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBNYW51ZmFjdHVyaW5nIEluZHVz
+dHJ5IGV4ZWN1dGl2ZXMgbGlzdA0KKiBOZXR3b3JrIG1hbmFnZXIsIFN1cnZlaWxsYW5jZSwgU3lz
+dGVtIEFkbWluaXN0cmF0b3IsIFRlY2huaWNhbA0KU3VwcG9ydCBDb250YWN0cw0KKiBOZXcgJiBV
+c2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QNCiogT2lsLCBHYXMgYW5kIHV0aWxpdHkgaW5kdXN0
+cnkgY29udGFjdHMNCiogUGh5c2ljaWFucywgRG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhl
+cmFwaXN0cyBlbWFpbCBsaXN0DQoqIFBsYW50IE1hbmFnZXIgQ29udGFjdHMNCiogUHJvZHVjdCBh
+bmQgcHJvamVjdCBtYW5hZ2VtZW50IGxpc3QNCiogUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQg
+Q29udGFjdHMNCiogU3BlY2lmaWMgRXZlbnQgYXR0ZW5kZWVzIGxpc3QNCiogVGVsZWNvbSBtYW5h
+Z2VycywgVk9JUCBtYW5hZ2VycywgQ2xvdWQgYXJjaGl0ZWN0LCBDbG91ZCBtYW5hZ2VycywNClN0
+b3JhZ2UgbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3Rv
+bWVyIFNlcnZpY2UgYW5kIEN1c3RvbWVyIFN1Y2Nlc3MNClN1c2FuIFRheWxvcg0KRGF0YWJhc2Ug
+Q29uc3VsdGFudA0KNDJNaWwgQjJCIGFuZCAyMTBNaWwgQjJDIE9wdC1pbiBFbWFpbCBhbmQgcGhv
+bmUgbGlzdCB3aXRoIG90aGVyIGRhdGENCmZpZWxkcw0KVW5zdWJzY3JpYmUNCmh0dHA6Ly9hcHBl
+bmRsZWFkZWRtLmluZm8vZW1tL2luZGV4LnBocC9saXN0cy9zcjYxOTR3cHhyZWU0L3Vuc3Vic2Ny
+aWJlL3FtNTcycmFzNGVmZjUvZ3k3NzE3Z252Z2JlYQ0KDQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
+bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
+aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
