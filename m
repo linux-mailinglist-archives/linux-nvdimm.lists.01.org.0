@@ -2,116 +2,102 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E86C30EFF5
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Feb 2021 10:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BD230F003
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Feb 2021 10:59:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E5FD3100EAB08;
-	Thu,  4 Feb 2021 01:50:50 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.191.230; helo=app9.appendleadedm.info; envelope-from=contact-linux+2dnvdimm=lists.01.org@appendleadedm.info; receiver=<UNKNOWN> 
-Received: from app9.appendleadedm.info (ip230.ip-51-83-191.eu [51.83.191.230])
+	by ml01.01.org (Postfix) with ESMTP id 90390100EB834;
+	Thu,  4 Feb 2021 01:59:15 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8F68A100EB834
-	for <linux-nvdimm@lists.01.org>; Thu,  4 Feb 2021 01:50:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=appendleadedm.info;
- h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=contact@appendleadedm.info;
- bh=2AsUzzJClWzq25Y/GPQhhvdy5kg=;
- b=itgf0f2u5emI9I/+xfmcZUsDgrkXRUZKr4mrXkoaPE956yh42Vr7XqfibfRVy1/J4OFEorXKPdxm
-   s2R4GnX2RRK2stdAoebdVhO2Y9MWhf9cn9kAY+WGPv5/0gHZnVGK/5YaLq9lf5kw8TRdihapAXGp
-   4FCffLBReYOLCFpwuAzbsLwmamAc3z5Dr47zLhsdL2v2bQK3s8ncs3xkx9Urdq4X4p+6B3bJBuV9
-   3l9vDlYKc3Yt6eJ9l6ZEQcRMWy1kZsvdYa3UGOSeAqnyi0VeXcTL0K3r48s9f+VDukfPKV9QFmT5
-   mZnI2XOy3zA8aHcLBPPTRhQ2kA614sYi6z/hfw==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=appendleadedm.info;
- b=JINN77bwKIqo+T6qh4aYiatFoPrHpCuGXVcUQevysNsEw7jOB9sRHqvakEFHKroQUjFxCrYlULQR
-   qQCxl+5hYJHfZiNT9D2B1de36pj7hOf+MSqCMqxsD+vWFxnHA/0Ah5N7pn1NingXm1R3JMIJl7Jp
-   uhMEFGwdNZMhWyQ09iZ4+voakaPrQFTj2+b83AUwMLQg3nH43VwgNKcA3WyEKhrbzMoFfon3FIxG
-   PVDIdRnV4Gq6RcCrsQXi2iaSPJEx0lFN/rrVYzfCeNcfFo4JKMVtjxV4bLu9QE4DujuWjj7xf37h
-   uD8HMDe6uj1lbxez3W6P71e/xLcOdJ2Qp0tZGA==;
-Received: from appendleadedm.info (127.0.0.1) by app1.appendleadedm.info id h3f1nfi19tkn for <linux-nvdimm@lists.01.org>; Thu, 4 Feb 2021 08:22:55 +0000 (envelope-from <contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info>)
-Date: Thu, 4 Feb 2021 08:22:55 +0000
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-From: Susan Taylor <contact@appendleadedm.info>
-Subject: RE: did you see this email
-Message-ID: <10c5f617c2e4589eec85d4aa9cbe09a3@appendleadedm.info>
-X-Ooqx-Campaign-Uid: gy7717gnvgbea
-X-Ooqx-Subscriber-Uid: qm572ras4eff5
-X-Ooqx-Customer-Uid: fv107j3jh8cf0
-X-Ooqx-Customer-Gid: 0
-X-Ooqx-Delivery-Sid: 1
-X-Ooqx-Tracking-Did: 0
-X-Report-Abuse: Please report abuse for this campaign here: http://appendleadedm.info/emm/index.php/campaigns/gy7717gnvgbea/report-abuse/sr6194wpxree4/qm572ras4eff5
-Feedback-ID: gy7717gnvgbea:qm572ras4eff5:sr6194wpxree4:fv107j3jh8cf0
-Precedence: bulk
-X-Ooqx-EBS: http://appendleadedm.info/emm/index.php/lists/block-address
-X-Sender: contact@appendleadedm.info
-X-Receiver: linux-nvdimm@lists.01.org
-X-Ooqx-Mailer: PHPMailer - 5.2.21
+	by ml01.01.org (Postfix) with ESMTPS id 39E88100EC1C8
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Feb 2021 01:59:13 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A884364F46;
+	Thu,  4 Feb 2021 09:59:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1612432752;
+	bh=Zelq6D4XZGDuPo70kYTJJgaDbDwK093nuyMe02isfTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fZFn4SNNNsHZIThixqTd5WKR7HGKRGMdU+ddKY4VdNoOwSQ9sODqK3VgxpKL2A56s
+	 4I3o8KBCJHtLjeKmCDkWXpGpYpGakfGQfRhSVgtlpOrfdQ5QAi0R3o4gjlXj7MIvFC
+	 Ql/7xPdKgGPYgPgsAFnGZRVBP1GrMxNjIdlhLDg3vtnKQVC0uVe1NaVVXvOSxEagFl
+	 5y6xdti/3JckXFJOMvgjQwfxD24nH4jVxSXiirTWWQrL2Wdx2stjQ2AChARA3yWjIv
+	 HiCcrNO6+HU6R5Uv0EPl7S1u0uczvREvOdVTv98bo0LM7TPjMzx3LQFogyEOGejvpC
+	 DeRySER1corJA==
+Date: Thu, 4 Feb 2021 11:58:55 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v16 07/11] secretmem: use PMD-size pages to amortize
+ direct map fragmentation
+Message-ID: <20210204095855.GQ242749@kernel.org>
+References: <20210128092259.GB242749@kernel.org>
+ <YBK1kqL7JA7NePBQ@dhcp22.suse.cz>
+ <73738cda43236b5ac2714e228af362b67a712f5d.camel@linux.ibm.com>
+ <YBPF8ETGBHUzxaZR@dhcp22.suse.cz>
+ <6de6b9f9c2d28eecc494e7db6ffbedc262317e11.camel@linux.ibm.com>
+ <YBkcyQsky2scjEcP@dhcp22.suse.cz>
+ <20210202124857.GN242749@kernel.org>
+ <YBlTMqjB06aqyGbT@dhcp22.suse.cz>
+ <20210202191040.GP242749@kernel.org>
+ <YBpo9mC5feVQ0mpG@dhcp22.suse.cz>
 MIME-Version: 1.0
-Message-ID-Hash: I3C7WH47Y5PWWMDYJVNYZDJXPVOT64VG
-X-Message-ID-Hash: I3C7WH47Y5PWWMDYJVNYZDJXPVOT64VG
-X-MailFrom: contact-linux+2Dnvdimm=lists.01.org@appendleadedm.info
+Content-Disposition: inline
+In-Reply-To: <YBpo9mC5feVQ0mpG@dhcp22.suse.cz>
+Message-ID-Hash: RMUJARZ7Y7IXAL2YO7LSL65522SK2MOL
+X-Message-ID-Hash: RMUJARZ7Y7IXAL2YO7LSL65522SK2MOL
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: James Bottomley <jejb@linux.ibm.com>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
+ Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
-Reply-To: Susan Taylor <susan.taylordata@gmail.com>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I3C7WH47Y5PWWMDYJVNYZDJXPVOT64VG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RMUJARZ7Y7IXAL2YO7LSL65522SK2MOL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QXJlIHlvdSBsb29raW5nIGZvciBhbnkgb2YgdGhlIGZvbGxvd2luZyBFbWFpbCBhbmQgcGhvbmUg
-bGlzdCBnYXRoZXJlZA0KZnJvbSBMaW5rZWRJbiwgRXZlbnRzIGFuZCBtYXJrZXQgcmVzZWFyY2g/
-IFBsZWFzZSBzcGVjaWZ5IHlvdXIgdGFyZ2V0DQphdWRpZW5jZSBzbyB0aGF0IHdlIGNhbiBzaGFy
-ZSBhIHNhbXBsZSB3aXRoIHlvdS4NCiogQXJjaGl0ZWN0cyBhbmQgaW50ZXJpb3IgZGVzaWduZXJz
-IGVtYWlsIGxpc3QNCiogQ0VPLCBvd25lciwgUHJlc2lkZW50IGFuZCBDT08gY29udGFjdHMNCiog
-Q0ZPLCBDb250cm9sbGVyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEZpbmFuY2UsIEFjY291bnRz
-IFBheWFibGUsDQpBY2NvdW50cyBSZWNlaXZhYmxlLCBBdWRpdCBDb250YWN0cw0KKiBDaGllZiBI
-dW1hbiBSZXNvdXJjZXMgT2ZmaWNlciwgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBIUiwgRW1wbG95
-ZWUNCkJlbmVmaXRzLCBFbXBsb3llZSBDb21tdW5pY2F0aW9ucywgRW1wbG95ZWUgQ29tcGVuc2F0
-aW9uLCBFbXBsb3llZQ0KRW5nYWdlbWVudCwgRW1wbG95ZWUgRXhwZXJpZW5jZSBhbmQgRW1wbG95
-ZWUgUmVsYXRpb25zLCBUYWxlbnQNCkFjcXVpc2l0aW9uLCBUYWxlbnQgRGV2ZWxvcG1lbnQsIFRh
-bGVudCBNYW5hZ2VtZW50LCBSZWNydWl0aW5nDQpDb250YWN0cw0KKiBDSU8sQ1RPLCBDSVNPLCBW
-UC9EaXJlY3Rvci9NYW5hZ2VyIG9mIElULCBJVCBDb21wbGlhbmNlLCBJVCBSaXNrLA0KQkksIENs
-b3VkLCBEYXRhYmFzZSBhbmQgSVQgU2VjdXJpdHkgQ29udGFjdHMNCiogQ01PLCBWUC9EaXJlY3Rv
-ci9NYW5hZ2VyIG9mIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5kDQpnZW5l
-cmF0aW9uLCBMZWFkIGdlbmVyYXRpb24sIGluc2lkZSBzYWxlcywgTWFya2V0aW5nIENvbW11bmlj
-YXRpb25zDQpjb250YWN0cyBldGMuDQoqIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVudCBD
-b250YWN0cw0KKiBDUEEgYW5kIEJvb2trZWVwZXJzIGVtYWlsIGxpc3QNCiogRGF0YSBBbmFseXRp
-Y3MgYW5kIERhdGFiYXNlIEFkbWluaXN0cmF0b3JzIGNvbnRhY3RzDQoqIERpc2FzdGVyIFJlY292
-ZXJ5IENvbnRhY3RzDQoqIEUtY29tbWVyY2Ugb3Igb25saW5lIHJldGFpbGVycyBlbWFpbCBsaXN0
-DQoqIEVkdWNhdGlvbiBpbmR1c3RyeSBleGVjdXRpdmVzIGVtYWlsIGxpc3QgLSBQcmluY2lwYWxz
-LCBEZWFuLA0KQWRtaW5zIGFuZCB0ZWFjaGVycyBmcm9tIFNjaG9vbHMsIENvbGxlZ2VzIGFuZCBV
-bml2ZXJzaXRpZXMNCiogRW5naW5lZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5kIG1lZXRpbmcg
-cGxhbm5lcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzIGFuZCBvZmZpY2UgbWFuYWdlciBDb250
-YWN0cw0KKiBHZW5lcmFsIGFuZCBjb3Jwb3JhdGUgY291bnNlbCBhcyB3ZWxsIGxlZ2FsIHByb2Zl
-c3Npb25hbHMgbGlzdA0KKiBHb3Zlcm5tZW50IGNvbnRyYWN0b3JzIGVtYWlsIGxpc3QNCiogSGVh
-bHRoICYgU2FmZXR5IENvbnRhY3RzDQoqIEhpZ2ggbmV0IHdvcnRoIGluZGl2aWR1YWxzL2ludmVz
-dG9ycyBlbWFpbCBsaXN0DQoqIEhvc3BpdGFscywgY2xpbmljcywgcHJpdmF0ZSBwcmFjdGljZXMs
-IFBoYXJtYWNldXRpY2FsIGFuZA0KYmlvdGVjaG5vbG9neSBjb21wYW554oCZcyB0b3AgZGVjaXNp
-b24gbWFrZXJzIGVtYWlsIGxpc3QNCiogSHVtYW4gQ2FwaXRhbCBNYW5hZ2VtZW50IENvbnRhY3Rz
-DQoqIEluZGl2aWR1YWwgaW5zdXJhbmNlIGFnZW50cyBsaXN0DQoqIElTVi9WQVJzIGxpc3QNCiog
-TGVhcm5pbmcgJiBEZXZlbG9wbWVudCBDb250YWN0cw0KKiBMb2dpc3RpY3MsIHNoaXBwaW5nIGFu
-ZCBzdXBwbHkgY2hhaW4gbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBNYW51ZmFjdHVyaW5nIEluZHVz
-dHJ5IGV4ZWN1dGl2ZXMgbGlzdA0KKiBOZXR3b3JrIG1hbmFnZXIsIFN1cnZlaWxsYW5jZSwgU3lz
-dGVtIEFkbWluaXN0cmF0b3IsIFRlY2huaWNhbA0KU3VwcG9ydCBDb250YWN0cw0KKiBOZXcgJiBV
-c2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QNCiogT2lsLCBHYXMgYW5kIHV0aWxpdHkgaW5kdXN0
-cnkgY29udGFjdHMNCiogUGh5c2ljaWFucywgRG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhl
-cmFwaXN0cyBlbWFpbCBsaXN0DQoqIFBsYW50IE1hbmFnZXIgQ29udGFjdHMNCiogUHJvZHVjdCBh
-bmQgcHJvamVjdCBtYW5hZ2VtZW50IGxpc3QNCiogUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQg
-Q29udGFjdHMNCiogU3BlY2lmaWMgRXZlbnQgYXR0ZW5kZWVzIGxpc3QNCiogVGVsZWNvbSBtYW5h
-Z2VycywgVk9JUCBtYW5hZ2VycywgQ2xvdWQgYXJjaGl0ZWN0LCBDbG91ZCBtYW5hZ2VycywNClN0
-b3JhZ2UgbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3Rv
-bWVyIFNlcnZpY2UgYW5kIEN1c3RvbWVyIFN1Y2Nlc3MNClN1c2FuIFRheWxvcg0KRGF0YWJhc2Ug
-Q29uc3VsdGFudA0KNDJNaWwgQjJCIGFuZCAyMTBNaWwgQjJDIE9wdC1pbiBFbWFpbCBhbmQgcGhv
-bmUgbGlzdCB3aXRoIG90aGVyIGRhdGENCmZpZWxkcw0KVW5zdWJzY3JpYmUNCmh0dHA6Ly9hcHBl
-bmRsZWFkZWRtLmluZm8vZW1tL2luZGV4LnBocC9saXN0cy9zcjYxOTR3cHhyZWU0L3Vuc3Vic2Ny
-aWJlL3FtNTcycmFzNGVmZjUvZ3k3NzE3Z252Z2JlYQ0KDQpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
-aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Wed, Feb 03, 2021 at 10:12:22AM +0100, Michal Hocko wrote:
+> On Tue 02-02-21 21:10:40, Mike Rapoport wrote:
+> >   
+> > Let me reiterate to make sure I don't misread your suggestion.
+> > 
+> > If we make secretmem an opt-in feature with, e.g. kernel parameter, the
+> > pooling of large pages is unnecessary. In this case there is no limited
+> > resource we need to protect because secretmem will allocate page by page.
+> 
+> Yes.
+> 
+> > Since there is no limited resource, we don't need special permissions
+> > to access secretmem so we can move forward with a system call that creates
+> > a mmapable file descriptor and save the hassle of a chardev.
+> 
+> Yes, I assume you implicitly assume mlock rlimit here.
+
+Yes.
+
+> Also memcg accounting should be in place. 
+
+Right, without pools memcg accounting is no different from other
+unevictable files.
+
+> Wrt to the specific syscall, please document why existing interfaces are
+> not a good fit as well. It would be also great to describe interaction
+> with mlock itself (I assume the two to be incompatible - mlock will fail
+> on and mlockall will ignore it).
+
+The interaction with mlock() belongs more to the man page, but I don't mind
+adding this to changelog as well.
+
+-- 
+Sincerely yours,
+Mike.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
