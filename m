@@ -2,167 +2,112 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964453106AB
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 09:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0982431089B
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 10:59:46 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AA77A100EA2AA;
-	Fri,  5 Feb 2021 00:29:50 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 60B72100EA2C5;
+	Fri,  5 Feb 2021 01:59:44 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=181.176.182.67; helo=mail.coopacnsr.com.pe; envelope-from=jolorteguip@coopacnsr.com.pe; receiver=<UNKNOWN> 
+Received: from mail.coopacnsr.com.pe (mail.coopacnsr.com.pe [181.176.182.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 09551100EA2A9
-	for <linux-nvdimm@lists.01.org>; Fri,  5 Feb 2021 00:29:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1612513787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DWOcO3uoOpH4F+jDhXKK3Onym76g8W4DkUdj3mzQVbM=;
-	b=FcOUTK/C6UWl9iWePHxd1yHDGysVVjI7UK7GOawN5xarf+/pC4T37Z4vXt1v/x3Ld3P6HC
-	NUf1nKek8fbV+uPPW+zvxxQ9LY2BrMTzedFTaWf3kD/RjZkhD91KkiPyvOgBBxGYX5ZGNX
-	Vr2ftB0B4mWV62FVmcP+aN87/zmSw5M=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-197-MPNj4J5VPEik1K3UV8z0fA-1; Fri, 05 Feb 2021 03:29:44 -0500
-X-MC-Unique: MPNj4J5VPEik1K3UV8z0fA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 56BE8803F47;
-	Fri,  5 Feb 2021 08:29:43 +0000 (UTC)
-Received: from [10.36.113.156] (ovpn-113-156.ams2.redhat.com [10.36.113.156])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A99B85D9D7;
-	Fri,  5 Feb 2021 08:29:41 +0000 (UTC)
-Subject: Re: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if
- hugepage support is disabled
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linux-nvdimm@lists.01.org, dan.j.williams@intel.com,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Jan Kara <jack@suse.cz>
-References: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <ee1bfaf9-88a3-1d3f-0af9-36cc75f957bb@redhat.com>
-Date: Fri, 5 Feb 2021 09:29:40 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+	by ml01.01.org (Postfix) with ESMTPS id E5E5D100EA2BB;
+	Fri,  5 Feb 2021 01:59:30 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.coopacnsr.com.pe (Postfix) with ESMTP id 82691C8C5215;
+	Fri,  5 Feb 2021 04:58:50 -0500 (-05)
+Received: from mail.coopacnsr.com.pe ([127.0.0.1])
+	by localhost (mail.coopacnsr.com.pe [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id aA6XI11w0YE7; Fri,  5 Feb 2021 04:58:49 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.coopacnsr.com.pe (Postfix) with ESMTP id 6961DC8C5214;
+	Fri,  5 Feb 2021 04:58:49 -0500 (-05)
+X-Virus-Scanned: amavisd-new at coopacnsr.com.pe
+Received: from mail.coopacnsr.com.pe ([127.0.0.1])
+	by localhost (mail.coopacnsr.com.pe [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id JOwfo9c3lFok; Fri,  5 Feb 2021 04:58:49 -0500 (-05)
+Received: from mail.coopacnsr.com.pe (localhost [127.0.0.1])
+	by mail.coopacnsr.com.pe (Postfix) with ESMTP id 64D23C8C5202;
+	Fri,  5 Feb 2021 04:58:48 -0500 (-05)
+Date: Fri, 5 Feb 2021 04:58:48 -0500 (PET)
+From: Jhon Franklin Olortegui Pisco <jolorteguip@coopacnsr.com.pe>
+Message-ID: <363189022.55286.1612519128340.JavaMail.zimbra@coopacnsr.com.pe>
+Subject: ESP NOTICIA
 MIME-Version: 1.0
-In-Reply-To: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Message-ID-Hash: EJGOQ27GDVQBX3TMUQQ6VPIK7QOL36S3
-X-Message-ID-Hash: EJGOQ27GDVQBX3TMUQQ6VPIK7QOL36S3
-X-MailFrom: david@redhat.com
+X-Originating-IP: [192.168.3.1]
+X-Mailer: Zimbra 8.7.11_GA_3810 (zclient/8.7.11_GA_3810)
+Thread-Index: oVMN7Q0a2R127ssdBoPTVy9rWeS6GQ==
+Thread-Topic: ESP NOTICIA
+Message-ID-Hash: QWVRQ54FBIUV4H7JQT2MLHKXY7IHS344
+X-Message-ID-Hash: QWVRQ54FBIUV4H7JQT2MLHKXY7IHS344
+X-MailFrom: jolorteguip@coopacnsr.com.pe
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: ESP NOTICIA <esp.noticia2000@yandex.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EJGOQ27GDVQBX3TMUQQ6VPIK7QOL36S3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QWVRQ54FBIUV4H7JQT2MLHKXY7IHS344/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 05.02.21 03:39, Aneesh Kumar K.V wrote:
-> Differentiate between hardware not supporting hugepages and user disabling THP
-> via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
-> 
-> For the devdax namespace, the kernel handles the above via the
-> supported_alignment attribute and failing to initialize the namespace
-> if the namespace align value is not supported on the platform.
-> 
-> For the fsdax namespace, the kernel will continue to initialize
-> the namespace. This can result in the kernel creating a huge pte
-> entry even though the hardware don't support the same.
-> 
-> We do want hugepage support with pmem even if the end-user disabled THP
-> via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
-> differentiate between hardware/firmware lacking support vs user-controlled
-> disable of THP and prevent a huge fault if the hardware lacks hugepage
-> support.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   include/linux/huge_mm.h | 15 +++++++++------
->   mm/huge_memory.c        |  6 +++++-
->   2 files changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 6a19f35f836b..ba973efcd369 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -78,6 +78,7 @@ static inline vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn,
->   }
->   
->   enum transparent_hugepage_flag {
-> +	TRANSPARENT_HUGEPAGE_NEVER_DAX,
->   	TRANSPARENT_HUGEPAGE_FLAG,
->   	TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
->   	TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
-> @@ -123,6 +124,13 @@ extern unsigned long transparent_hugepage_flags;
->    */
->   static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->   {
-> +
-> +	/*
-> +	 * If the hardware/firmware marked hugepage support disabled.
-> +	 */
-> +	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_NEVER_DAX))
-> +		return false;
-> +
->   	if (vma->vm_flags & VM_NOHUGEPAGE)
->   		return false;
->   
-> @@ -134,12 +142,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->   
->   	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
->   		return true;
-> -	/*
-> -	 * For dax vmas, try to always use hugepage mappings. If the kernel does
-> -	 * not support hugepages, fsdax mappings will fallback to PAGE_SIZE
-> -	 * mappings, and device-dax namespaces, that try to guarantee a given
-> -	 * mapping size, will fail to enable
-> -	 */
-> +
->   	if (vma_is_dax(vma))
->   		return true;
->   
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9237976abe72..d698b7e27447 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -386,7 +386,11 @@ static int __init hugepage_init(void)
->   	struct kobject *hugepage_kobj;
->   
->   	if (!has_transparent_hugepage()) {
-> -		transparent_hugepage_flags = 0;
-> +		/*
-> +		 * Hardware doesn't support hugepages, hence disable
-> +		 * DAX PMD support.
-> +		 */
-> +		transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_NEVER_DAX;
->   		return -EINVAL;
->   	}
->   
-> 
-
-Looks sane to me from my limited understanding of that code :)
-
--- 
-Thanks,
-
-David / dhildenb
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCg0KRlJPTTogVEhFIERFU0sgT0YgVEhFIFZJQ0UgUFJFU0lERU5ULiANCklOVEVSTkFUSU9O
+QUwgUFJPTU9USU9OL1BSSUNFIEFXQVJEIA0KTUFEUklELCBTUEFJTi4NClJlZiBOwrogOiBFU1Av
+SzExMDUyMDIwDQpUSUNLRVQvQkFUQ0g6IDUzMTUyIA0KQVRUOiBCRU5FRklDSUFSWToNCiBSRTog
+TE9URVJJQSBOQUNJT05BTCBBV0FSRCBOT1RJRklDQVRJT04gDQpUaGlzIGlzIHRvIGluZm9ybSB5
+b3Ugb2YgdGhlIHJlbGVhc2Ugb2YgdGhlIExPVEVSSUEgTkFDSU9OQUwvRVVST01JTExJT05FUy9F
+TC1HT1JETyBMT1RURVJZIFBST01PVElPTlMgUFJPR1JBTSBoZWxkIGluIE1hZHJpZCBTcGFpbiwg
+b24gdGhlIDIyTkQgREVDRU1CRVIsIDIwMjAuIFlvdXIgTkFNRSB3YXMgcGljayBhbmQgYXR0YWNo
+ZWQgdG8gdGlja2V0L0JhdGNoIG51bWJlciA1MzE1MiB3aXRoIFJlZmVyZW5jZSBudW1iZXIgRVNQ
+L0sxMTA1MjAyMCBkcmV3IHRoZSBsdWNreSBudW1iZXJzIDA3LTE1LTI1LTMxLTM0LTQ2LCB3aGlj
+aCBjb25zZXF1ZW50bHkgd29uIHRoZSBsb3R0ZXJ5IGluIHRoZSAyTkQgY2F0ZWdvcnkuIFlvdSBo
+YXZlIHRoZXJlZm9yZSBiZWVuIGFwcHJvdmVkIG9mIGEgbHVtcCBzdW0gcGF5bWVudCBvZiDigqwy
+Ljg5OC4wMDAuMDAuDQoNCllvdXIgZnVuZCBpcyBub3cgZGVwb3NpdGVkIHdpdGggdGhlIEJBTkss
+IGFuZCBpbnN1cmVkIGluIHlvdXIgbmFtZSB3aXRoIGluc3VyYW5jZSBudW1iZXI6IEVTUC8xOTAw
+NDMzLzIwMjEuIER1ZSB0byBmYWxzZSBwcmFjdGljZXMsIHdlIGFzayB0aGF0IHlvdSBrZWVwIHlv
+dXIgYXdhcmQgaW5mb3JtYXRpb24gc3RyaWN0bHkgYXdheSBmcm9tIHB1YmxpYyBub3RpY2UsIHVu
+dGlsIHlvdXIgY2xhaW0gaGFzIGJlZW4gcHJvY2Vzc2VkIGFuZCBtb25leSByZW1pdHRlZCB0byB5
+b3VyIHBvc3Nlc3Npb24gYXMgdGhpcyBpcyBwYXJ0IG9mIG91ciBzZWN1cml0eSBwcm90b2NvbCB0
+byBhdm9pZCBkb3VibGUgY2xhaW1pbmcgb3IgdW53YXJyYW50ZWQgYWJ1c2Ugb2YgdGhpcyBwcm9n
+cmFtIGJ5IHVuc2NydXB1bG91cyBpbmRpdmlkdWFscy4gQWxsIHBhcnRpY2lwYW50cyB3ZXJlIHNl
+bGVjdGVkIHRocm91Z2ggdmlzaWJsZSB0aWNrZXRzIGFuZCBjb21wdXRlciBiYWxsb3Qgc3lzdGVt
+IGRyYXduIGZyb20gKE1JTExJT05TKSBvZiBuYW1lcyBmcm9tIEFzaWEsIEFtZXJpY2EsIEFmcmlj
+YSwgRXVyb3BlLCBhbmQgU291dGggUGFjaWZpYywgYXMgcGFydCBvZiBvdXIgSW50ZXJuYXRpb25h
+bCBwcm9tb3Rpb24gcHJvZ3JhbS4gV2UgaG9wZSB5b3VyIGx1Y2t5IG5hbWUgYW5kIGVtYWlsIHdp
+bGwgZHJhdyBhIGJpZ2dlciBjYXNoIHByaXplIGluIHRoZSBzdWJzZXF1ZW50IHByb2dyYW1zIGFo
+ZWFkLg0KDQpUTyBCRUdJTiBZT1VSIExPVFRFUlkgQ0xBSU1TLCBQTEVBU0UgQ09OVEFDVCBZT1VS
+IENMQUlNUyBBR0VOVA0KTVIgSVNJRFJPIFNBTkNIRVogQUxCRVJUTywgRk9SRUlHTiBTRVJWSUNF
+IE1BTkFHRVIgT2YgRVhDRUwgU0VHVVJPUywgUy5MLg0KVGVsOiArMzQtNjM0IDEzOSAzMzgsIEZh
+eDogKzM0LTkxOSAwMzkgNDQ3IA0KRU1BSUw6IGlzaWRyb3NhbmNoZXphbGJlcnRvQGdtYWlsLmNv
+bSANCg0KRm9yIHRoZSBwcm9jZXNzaW5nIGFuZCByZW1pdHRhbmNlIG9mIHlvdXIgcHJpemUgd2lu
+bmluZyBtb25leSB0byBhIGRlc2lnbmF0ZWQgY2hvaWNlIG9mIHlvdXJzLg0KDQpOT1RFOiBUaHJl
+ZSAoMykgY2VydGlmaWNhdGVzIGFyZSB0byBiZSBpc3N1ZWQgdG8geW91IGJ5IHRoZSBMT0NBTCBH
+T1ZFUk5NRU5UIFRBWCBBVVRIT1JJVFksIE1JTklTVFJZIE9GIEZJTkFOQ0UgQU5EIE5BVElPTkFM
+IExPVFRFUlkgQk9BUkQsIHRvIGJhY2sgdXAgeW91ciB3aW5uaW5nLiBZb3VyIGFnZW50IHdpbGwg
+ZGlyZWN0IHlvdSBmdXJ0aGVyIG9uIHRoZSBhZG1pbmlzdHJhdGl2ZSByZXF1aXJlbWVudCB0byBl
+bmFibGUgdGhlIGJhbmsgcmVsZWFzZSB5b3VyIGZ1bmQgdG8gdGhlIGRlc2lnbmF0ZWQgY2hvaWNl
+IG9mIHlvdXJzLiANCg0KDQpQQVlNRU5UIFBST0NFU1NJTkcgRk9STeKApi5GSUxMIFRIRSBGT1JN
+IEFORCBTRU5EIFRPIEVNQUlMOiBpc2lkcm9zYW5jaGV6YWxiZXJ0b0BnbWFpbC5jb20gDQoNClNV
+Uk5BTUVfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19OQU1FOl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fDQoNCkFERFJFU1NJTkZVTEw6X19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQoN
+ClRFTEVGT046X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX0VNQUlMX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fDQoNCk9DQ1VQQVRJT05fX19fX19fX19fX19fX19f
+X19fX19fX19fX19EQVRFT0ZCSVJUSF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+DQoNClJFRkVSRU5DRSBOwro6X19fX19fX19fX19fX19fX19fX19fX19fQkFUQ0hOwro6X19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KQkFOSyBOQU1FOl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18NCg0KSUJBTjpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19C
+SUMvU1dJRlRfX19fX19fX19fX19fX19fX19fX19fX19fX18NCg0KQkFOSyBBRERSRVNTOl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18NCg0KDQpDT05HUkFUVUxBVElPTiBPTkNFIEFHQUlODQpEUiBBTkEgTUFSSUEgTE9Q
+RVoNClZJQ0UgUFJFU0lERU5ULCBJTlRFUk5BVElPTkFMIFBSSVpFIERFUEFSVE1FTlQNCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBt
+YWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBz
+ZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
