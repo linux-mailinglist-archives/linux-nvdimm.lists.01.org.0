@@ -1,80 +1,170 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FD73102E2
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 03:39:29 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661C93102E5
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 03:40:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AB7A1100EAAE3;
-	Thu,  4 Feb 2021 18:39:27 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=160.251.93.85; helo=vpass.ne.jp; envelope-from=irskoyjuhi@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (v160-251-93-85.mfp4.static.cnode.io [160.251.93.85])
-	by ml01.01.org (Postfix) with ESMTP id 37661100EAB69
-	for <linux-nvdimm@lists.01.org>; Thu,  4 Feb 2021 18:39:25 -0800 (PST)
-Sender: irskoyjuhi@vpass.ne.jp
-Message-ID: <919D3BFC4D7084025919479A3547D727@vpass.ne.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CO44CQ6YeN6KaB44CR5LiJ5LqV5L2P5Y+L44Kr44O844OJ5qCq5byP5Lya56S+44GL44KJ44Gu57eK?=
-	=?utf-8?B?5oCl44Gu44GU6YCj57Wh44CPIA==?=
-Date: Fri, 5 Feb 2021 11:39:12 +0900
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: HDG27IOI6SXOW44GEO5X5SLJCQU7P26C
-X-Message-ID-Hash: HDG27IOI6SXOW44GEO5X5SLJCQU7P26C
-X-MailFrom: irskoyjuhi@vpass.ne.jp
+	by ml01.01.org (Postfix) with ESMTP id 148DF100EAB00;
+	Thu,  4 Feb 2021 18:40:21 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id E0E1B100EAAE3
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Feb 2021 18:40:18 -0800 (PST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 1152WCAr085383;
+	Thu, 4 Feb 2021 21:40:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ZiRm4Mrwiruj8mZh6Z1HK5K5UhjVumOmWXRKUYoLkOQ=;
+ b=KU16l9Y3KqA/qdLe3WavxJGeYVALQ5NvDQ0zHUarZ4ewIdCi5ArGPxYLzTAjlRHSmoy9
+ lO1GovmNJO7NT4GxfPLiVwGqLmAk1VRBh4ya9rfjAEBhVNNwjtysdf5q01ovlSvxkRjq
+ BYe4ueq4OzjhuEptC41ecLz2gkW1fedqTLQpl1QcCStn6XEn0Whz8HLGIzDhdp3yAXMz
+ /7hVMoAd0Sd/SxPRLBvLwn98RuI4KjAfyb56ZdA9NtFrTc9xAfLe3Vf/sINpTI+25fx/
+ FsjJWxCfjx3wlk4RJrvsghmV135+mAyf/GChS2hSeQDyfmGI/GJEcQtU20mI29T84tk4 XA==
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 36gv5f1gn2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Feb 2021 21:40:15 -0500
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1152cSdx023921;
+	Fri, 5 Feb 2021 02:40:14 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+	by ppma04dal.us.ibm.com with ESMTP id 36ex3pe5k4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Feb 2021 02:40:14 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1152eDG913697580
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Feb 2021 02:40:13 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 155DE136051;
+	Fri,  5 Feb 2021 02:40:13 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44253136055;
+	Fri,  5 Feb 2021 02:40:09 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.1.215])
+	by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Feb 2021 02:40:08 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-nvdimm@lists.01.org, dan.j.williams@intel.com,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if hugepage support is disabled
+Date: Fri,  5 Feb 2021 08:09:56 +0530
+Message-Id: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
+ definitions=2021-02-04_13:2021-02-04,2021-02-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ phishscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ adultscore=0 impostorscore=0 spamscore=0 priorityscore=1501 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2102050011
+Message-ID-Hash: DVOQA3IHEY42BRVVLBRVCO57GEANKJMR
+X-Message-ID-Hash: DVOQA3IHEY42BRVVLBRVCO57GEANKJMR
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HDG27IOI6SXOW44GEO5X5SLJCQU7P26C/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DVOQA3IHEY42BRVVLBRVCO57GEANKJMR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IA0KDQogDQogDQoNCiANCg0KIA0KIA0KDQogDQoNCiANCg0KDQoNCuacrOOBhOOBpOOCguW8iuek
-vuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOB
-hOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPliKnnlKjjga7mgKXlopfjgavk
-vLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Poppbjgrfjgrnjg4bjg6DjgI3j
-gpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OCq+ODvOODieOBruOBlOWIqeeU
-qOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOBo+OBpuOBiuOCiuOBvuOBmeOA
-gg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTliKnnlKjjgYvjganjgYbjgYvj
-gpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrlj5blvJXjgYzjgYLjgorjgb7j
-gZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHjgqvjg7zjg4njga7jgZTliKnn
-lKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgIHjgZTpgKPntaHjgZXjgZvj
-gabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL
-44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU
-5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CC44GK5a6i5qeY44Gu44K744Kt44Ol44Oq
-44OG44Kj44Gv5byK56S+44Gr44Go44Gj44Gm6Z2e5bi444Gr6YeN6KaB44Gq44KC44Gu44Gn44GU
-44GW44GE44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTj
-gZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0KDQoNCuKU
-geKUgeKUgeKUgeKUgeKUgeKUgQ0K4pagIOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOCiQ0K4pSB
-4pSB4pSB4pSB4pSB4pSB4pSBDQogaHR0cHM6Ly9zbWJjLWNhcmQubWNpeG4uY29tDQrilIHilIHi
-lIHilIHilIHilIHilIENCuKWoCDms6jmhI/kuovpoIUNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K
-4oC75pys44Oh44O844Or44Gv44GU55m76Yyy44GE44Gf44Gg44GE44Gf44Oh44O844Or44Ki44OJ
-44Os44K55a6b44Gr6Ieq5YuV55qE44Gr6YCB5L+h44GV44KM44Gm44GE44G+44GZ44CCDQrigLvm
-nKzjg6Hjg7zjg6vjga/pgIHkv6HlsILnlKjjgafjgZnjgILjgZTov5Tkv6HjgYTjgZ/jgaDjgY3j
-gb7jgZfjgabjgoLjgYrnrZTjgYjjgafjgY3jgb7jgZvjgpPjga7jgafjgZTkuobmib/jgY/jgaDj
-gZXjgYTjgIINCuKAu+WkieabtOW+jOOAgTQ45pmC6ZaT5Lul5YaF44Gr55m65Yq544GZ44KL5b+F
-6KaB44GM44GC44KK44CB5pyf6ZaT5Lit44Gv5L2/55So44Gn44GN44G+44Gb44KT44CCDQrigLvj
-gqvjg7zjg4njga7lgIvkurrmg4XloLHjgavjgojjgaPjgabjga/pm7voqbHjgafpgKPntaHjgZnj
-govloLTlkIjjgoLjgZTjgZbjgYTjgb7jgZnjgILjgIINCuKAu+ato+eiuuOBquaDheWgseOBr+W/
-heOBmuiomOWFpeOBl+OBpuOBj+OBoOOBleOBhOOAgiANCuKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K
-4pag55m66KGM6ICFDQrilIHilIHilIHilIHilIHilIHilIENCuS4ieS6leS9j+WPi+OCq+ODvOOD
-ieagquW8j+S8muekvg0KaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbQ0K44CSMTA1LTgwMTEg5p2x
-5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLnlaoyMOWPtyDmsZDnlZnjg5Pjg6vjg4fjgqPjg7Pj
-grANCg0KDQoNCiANCkNvcHlyaWdodCAoQykgMjAyMSBTdW1pdG9tbyBNaXRzdWkgQ2FyZCBDby4s
-IEx0ZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
-dXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVu
-c3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9y
-Zwo=
+Differentiate between hardware not supporting hugepages and user disabling THP
+via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
+
+For the devdax namespace, the kernel handles the above via the
+supported_alignment attribute and failing to initialize the namespace
+if the namespace align value is not supported on the platform.
+
+For the fsdax namespace, the kernel will continue to initialize
+the namespace. This can result in the kernel creating a huge pte
+entry even though the hardware don't support the same.
+
+We do want hugepage support with pmem even if the end-user disabled THP
+via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
+differentiate between hardware/firmware lacking support vs user-controlled
+disable of THP and prevent a huge fault if the hardware lacks hugepage
+support.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ include/linux/huge_mm.h | 15 +++++++++------
+ mm/huge_memory.c        |  6 +++++-
+ 2 files changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 6a19f35f836b..ba973efcd369 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -78,6 +78,7 @@ static inline vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn,
+ }
+ 
+ enum transparent_hugepage_flag {
++	TRANSPARENT_HUGEPAGE_NEVER_DAX,
+ 	TRANSPARENT_HUGEPAGE_FLAG,
+ 	TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
+ 	TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
+@@ -123,6 +124,13 @@ extern unsigned long transparent_hugepage_flags;
+  */
+ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
+ {
++
++	/*
++	 * If the hardware/firmware marked hugepage support disabled.
++	 */
++	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_NEVER_DAX))
++		return false;
++
+ 	if (vma->vm_flags & VM_NOHUGEPAGE)
+ 		return false;
+ 
+@@ -134,12 +142,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
+ 
+ 	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
+ 		return true;
+-	/*
+-	 * For dax vmas, try to always use hugepage mappings. If the kernel does
+-	 * not support hugepages, fsdax mappings will fallback to PAGE_SIZE
+-	 * mappings, and device-dax namespaces, that try to guarantee a given
+-	 * mapping size, will fail to enable
+-	 */
++
+ 	if (vma_is_dax(vma))
+ 		return true;
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 9237976abe72..d698b7e27447 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -386,7 +386,11 @@ static int __init hugepage_init(void)
+ 	struct kobject *hugepage_kobj;
+ 
+ 	if (!has_transparent_hugepage()) {
+-		transparent_hugepage_flags = 0;
++		/*
++		 * Hardware doesn't support hugepages, hence disable
++		 * DAX PMD support.
++		 */
++		transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_NEVER_DAX;
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.29.2
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
