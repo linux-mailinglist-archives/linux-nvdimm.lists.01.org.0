@@ -1,42 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B785431152D
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Feb 2021 23:30:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86974311DBD
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  6 Feb 2021 15:38:43 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 33DE8100EA2DD;
-	Fri,  5 Feb 2021 14:30:02 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a01:4f8:c0c:3a97::2; helo=antares.kleine-koenig.org; envelope-from=uwe@kleine-koenig.org; receiver=<UNKNOWN> 
-Received: from antares.kleine-koenig.org (antares.kleine-koenig.org [IPv6:2a01:4f8:c0c:3a97::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 98A41100EBB81;
+	Sat,  6 Feb 2021 06:38:41 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::334; helo=mail-ot1-x334.google.com; envelope-from=stephennbada@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3521A100ED4BC
-	for <linux-nvdimm@lists.01.org>; Fri,  5 Feb 2021 14:29:05 -0800 (PST)
-Received: by antares.kleine-koenig.org (Postfix, from userid 1000)
-	id 00403AEDF01; Fri,  5 Feb 2021 23:29:03 +0100 (CET)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 5/5] dax-device: Make remove callback return void
-Date: Fri,  5 Feb 2021 23:28:42 +0100
-Message-Id: <20210205222842.34896-6-uwe@kleine-koenig.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210205222842.34896-1-uwe@kleine-koenig.org>
-References: <20210205222842.34896-1-uwe@kleine-koenig.org>
+	by ml01.01.org (Postfix) with ESMTPS id 2AE44100EF271
+	for <linux-nvdimm@lists.01.org>; Sat,  6 Feb 2021 06:38:37 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id v1so9841454ott.10
+        for <linux-nvdimm@lists.01.org>; Sat, 06 Feb 2021 06:38:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
+        b=k6g4h14QCOZxUuS0WtdOy5Cv/enfoTR1UoK0M3h8ZEcrHsx3vZ44qFuL7veaWNn9lj
+         OLKNbz5IAYtLrBr8I5rQ5XUXP5RpE9ePifi5VYlcueXNltzLELCAG1hgh5HhRiemP7Zd
+         us/ViSwfZDr++uFa/xe04YpZl6B2bh12HAKR5z6ExoSPJ66vrb3MLKOo9sYIkkT4rgU8
+         Bes1o8LMnAqumSnd2YioV3Hb8n/krxj/6aElKh1IrYzQous3ZUJhjsdVo3nEooIVpihu
+         IKSuzNUUFSw89UWMgkppKRD8zk4dcawcUSmUcqHZwKhbFSR+4O2jTJvmrcrH/c1T8LGw
+         eePQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
+        b=LS+IkiPXGRRTbT8KDxY5T/jhMn3gRAW7ja2IeGlHDjKj7t2Qbz2YD55k03Qlb4zXYd
+         Nu6tnGR5ptMlPBs/tubawvzs49cP9aFU7Dkh6q1po2J+aStBW8FJxlDRBqHPGZyX2yyZ
+         9E66PwdpaoZhC8KNwvsINVkDqin2kgFK8eEHgtanlxrOrNXP7MTRKHebvdYRezmJqTdM
+         iR8I4xk8+O2T2k+fhSWpMe3ahPkjfyJlfsqZl1LlV5MKz4MzqrPgNuOZeSBJqZ1P98Em
+         em7fb+tmhaYBbJ49q36Ct0OnrqtDC4rou3CSXcKhGma4eI7h1wma+uNzNJyfmw6A3OXE
+         qbTQ==
+X-Gm-Message-State: AOAM530bKcdirE6/A0qFj3BqcpgI5TyDtmvj0fEZ048gnaHIcqd3H94j
+	8dBG+auHKgWGmTl3sxHh+gmuMLHAR9UzuNk/9lg=
+X-Google-Smtp-Source: ABdhPJy50OWDS13imtA1XFGJzGjBXx0EQEZx8DuBWLPVcnuyiwHX/pGSFbInQDBq+ZPoUA762HXZDAYhvWRXue7Z66A=
+X-Received: by 2002:a9d:69cf:: with SMTP id v15mr7280167oto.122.1612622315687;
+ Sat, 06 Feb 2021 06:38:35 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: 7NGBKTV3BE5EHOLMCGUEOLUTAV4BCU6E
-X-Message-ID-Hash: 7NGBKTV3BE5EHOLMCGUEOLUTAV4BCU6E
-X-MailFrom: uwe@kleine-koenig.org
+Received: by 2002:a9d:3e4c:0:0:0:0:0 with HTTP; Sat, 6 Feb 2021 06:38:35 -0800 (PST)
+From: Barrister Daven Bango <stephennbada@gmail.com>
+Date: Sat, 6 Feb 2021 15:38:35 +0100
+Message-ID: <CAO_fDi-7cZzW18vF3SsjEC8f8hjQR+6f2gZbxoRKNp4R3q+nXA@mail.gmail.com>
+Subject: 
+To: undisclosed-recipients:;
+Message-ID-Hash: LX5RGVGFYSGPKEORF3W5WLJ4Y536YLXV
+X-Message-ID-Hash: LX5RGVGFYSGPKEORF3W5WLJ4Y536YLXV
+X-MailFrom: stephennbada@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: lawyer.nba@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7NGBKTV3BE5EHOLMCGUEOLUTAV4BCU6E/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LX5RGVGFYSGPKEORF3W5WLJ4Y536YLXV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -45,51 +67,12 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-VGhlIGRyaXZlciBjb3JlIGlnbm9yZXMgdGhlIHJldHVybiB2YWx1ZSBvZiBzdHJ1Y3QgYnVzX3R5
-cGU6OnJlbW92ZSgpDQpiZWNhdXNlIHRoZXJlIGlzIG9ubHkgbGl0dGxlIHRoYXQgY2FuIGJlIGRv
-bmUuIFRvIHNpbXBsaWZ5IHRoZSBxdWVzdCB0bw0KbWFrZSB0aGlzIGZ1bmN0aW9uIHJldHVybiB2
-b2lkLCBsZXQgc3RydWN0IGRheF9kZXZpY2VfZHJpdmVyOjpyZW1vdmUoKQ0KcmV0dXJuIHZvaWQs
-IHRvby4gQWxsIHVzZXJzIGFscmVhZHkgdW5jb25kaXRpb25hbGx5IHJldHVybiAwLCB0aGlzIGNv
-bW1pdA0KbWFrZXMgaXQgb2J2aW91cyB0aGF0IHJldHVybmluZyBhbiBlcnJvciBjb2RlIGlzbid0
-IGludGVuZGVkLg0KDQpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dXdlQGtsZWlu
-ZS1rb2VuaWcub3JnPg0KLS0tDQogZHJpdmVycy9kYXgvYnVzLmMgIHwgNSArKy0tLQ0KIGRyaXZl
-cnMvZGF4L2J1cy5oICB8IDIgKy0NCiBkcml2ZXJzL2RheC9rbWVtLmMgfCA3ICsrLS0tLS0NCiAz
-IGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkNCg0KZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvZGF4L2J1cy5jIGIvZHJpdmVycy9kYXgvYnVzLmMNCmluZGV4IGJjNDI1
-ZjFjNTJiZC4uMGE5MzllMjhkMDQ4IDEwMDY0NA0KLS0tIGEvZHJpdmVycy9kYXgvYnVzLmMNCisr
-KyBiL2RyaXZlcnMvZGF4L2J1cy5jDQpAQCAtMTc4LDEyICsxNzgsMTEgQEAgc3RhdGljIGludCBk
-YXhfYnVzX3JlbW92ZShzdHJ1Y3QgZGV2aWNlICpkZXYpDQogew0KIAlzdHJ1Y3QgZGF4X2Rldmlj
-ZV9kcml2ZXIgKmRheF9kcnYgPSB0b19kYXhfZHJ2KGRldi0+ZHJpdmVyKTsNCiAJc3RydWN0IGRl
-dl9kYXggKmRldl9kYXggPSB0b19kZXZfZGF4KGRldik7DQotCWludCByZXQgPSAwOw0KIA0KIAlp
-ZiAoZGF4X2Rydi0+cmVtb3ZlKQ0KLQkJcmV0ID0gZGF4X2Rydi0+cmVtb3ZlKGRldl9kYXgpOw0K
-KwkJZGF4X2Rydi0+cmVtb3ZlKGRldl9kYXgpOw0KIA0KLQlyZXR1cm4gcmV0Ow0KKwlyZXR1cm4g
-MDsNCiB9DQogDQogc3RhdGljIHN0cnVjdCBidXNfdHlwZSBkYXhfYnVzX3R5cGUgPSB7DQpkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9kYXgvYnVzLmggYi9kcml2ZXJzL2RheC9idXMuaA0KaW5kZXggNzJi
-OTJmOTU1MDlmLi4xZTk0NmFkNzc4MGEgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL2RheC9idXMuaA0K
-KysrIGIvZHJpdmVycy9kYXgvYnVzLmgNCkBAIC0zOSw3ICszOSw3IEBAIHN0cnVjdCBkYXhfZGV2
-aWNlX2RyaXZlciB7DQogCXN0cnVjdCBsaXN0X2hlYWQgaWRzOw0KIAlpbnQgbWF0Y2hfYWx3YXlz
-Ow0KIAlpbnQgKCpwcm9iZSkoc3RydWN0IGRldl9kYXggKmRldik7DQotCWludCAoKnJlbW92ZSko
-c3RydWN0IGRldl9kYXggKmRldik7DQorCXZvaWQgKCpyZW1vdmUpKHN0cnVjdCBkZXZfZGF4ICpk
-ZXYpOw0KIH07DQogDQogaW50IF9fZGF4X2RyaXZlcl9yZWdpc3RlcihzdHJ1Y3QgZGF4X2Rldmlj
-ZV9kcml2ZXIgKmRheF9kcnYsDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgva21lbS5jIGIvZHJp
-dmVycy9kYXgva21lbS5jDQppbmRleCA0MDNlYzQyNDcyZDEuLmFjMjMxY2MzNjM1OSAxMDA2NDQN
-Ci0tLSBhL2RyaXZlcnMvZGF4L2ttZW0uYw0KKysrIGIvZHJpdmVycy9kYXgva21lbS5jDQpAQCAt
-MTM2LDcgKzEzNiw3IEBAIHN0YXRpYyBpbnQgZGV2X2RheF9rbWVtX3Byb2JlKHN0cnVjdCBkZXZf
-ZGF4ICpkZXZfZGF4KQ0KIH0NCiANCiAjaWZkZWYgQ09ORklHX01FTU9SWV9IT1RSRU1PVkUNCi1z
-dGF0aWMgaW50IGRldl9kYXhfa21lbV9yZW1vdmUoc3RydWN0IGRldl9kYXggKmRldl9kYXgpDQor
-c3RhdGljIHZvaWQgZGV2X2RheF9rbWVtX3JlbW92ZShzdHJ1Y3QgZGV2X2RheCAqZGV2X2RheCkN
-CiB7DQogCWludCBpLCBzdWNjZXNzID0gMDsNCiAJc3RydWN0IGRldmljZSAqZGV2ID0gJmRldl9k
-YXgtPmRldjsNCkBAIC0xNzYsMTEgKzE3Niw5IEBAIHN0YXRpYyBpbnQgZGV2X2RheF9rbWVtX3Jl
-bW92ZShzdHJ1Y3QgZGV2X2RheCAqZGV2X2RheCkNCiAJCWtmcmVlKGRhdGEpOw0KIAkJZGV2X3Nl
-dF9kcnZkYXRhKGRldiwgTlVMTCk7DQogCX0NCi0NCi0JcmV0dXJuIDA7DQogfQ0KICNlbHNlDQot
-c3RhdGljIGludCBkZXZfZGF4X2ttZW1fcmVtb3ZlKHN0cnVjdCBkZXZfZGF4ICpkZXZfZGF4KQ0K
-K3N0YXRpYyB2b2lkIGRldl9kYXhfa21lbV9yZW1vdmUoc3RydWN0IGRldl9kYXggKmRldl9kYXgp
-DQogew0KIAkvKg0KIAkgKiBXaXRob3V0IGhvdHJlbW92ZSBwdXJwb3NlbHkgbGVhayB0aGUgcmVx
-dWVzdF9tZW1fcmVnaW9uKCkgZm9yIHRoZQ0KQEAgLTE5MCw3ICsxODgsNiBAQCBzdGF0aWMgaW50
-IGRldl9kYXhfa21lbV9yZW1vdmUoc3RydWN0IGRldl9kYXggKmRldl9kYXgpDQogCSAqIHJlcXVl
-c3RfbWVtX3JlZ2lvbigpLg0KIAkgKi8NCiAJYW55X2hvdHJlbW92ZV9mYWlsZWQgPSB0cnVlOw0K
-LQlyZXR1cm4gMDsNCiB9DQogI2VuZGlmIC8qIENPTkZJR19NRU1PUllfSE9UUkVNT1ZFICovDQog
-DQotLSANCjIuMjkuMg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEu
-b3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxp
-c3RzLjAxLm9yZwo=
+LS0gDQpLb3Jpc25payBmb25kYSDEjWVzdGl0YW5qYSwgVmHFoWEgc3JlZHN0dmEgemEgbmFrbmFk
+dSBvZCA4NTAuMDAwLDAwDQphbWVyacSNa2loIGRvbGFyYSBvZG9icmlsYSBqZSBNZcSRdW5hcm9k
+bmEgbW9uZXRhcm5hIG9yZ2FuaXphY2lqYSAoTU1GKQ0KdSBzdXJhZG5qaSBzIChGQkkpIG5ha29u
+IG1ub2dvIGlzdHJhZ2EuIMSMZWthbW8gZGEgc2Ugb2JyYXRpbW8gemENCmRvZGF0bmUgaW5mb3Jt
+YWNpamUNCg0KQWR2b2thdDogRGF2ZW4gQmFuZ28NClRlbGVmb246ICsyMjg5MTY2NzI3Ng0KKFVS
+RUQgTU1GLWEgTE9NRSBUT0dPKQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0
+cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVh
+dmVAbGlzdHMuMDEub3JnCg==
