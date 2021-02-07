@@ -2,51 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8AC312634
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Feb 2021 18:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C72312667
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Feb 2021 18:37:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 93FEE100EB829;
-	Sun,  7 Feb 2021 09:09:49 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id B5E38100EB829
-	for <linux-nvdimm@lists.01.org>; Sun,  7 Feb 2021 09:09:46 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.81,160,1610380800";
-   d="scan'208";a="104299378"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 08 Feb 2021 01:09:44 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id A63F74CE6F74;
-	Mon,  8 Feb 2021 01:09:38 +0800 (CST)
-Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 8 Feb 2021 01:09:38 +0800
-Received: from irides.mr.mr.mr (10.167.225.141) by
- G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Mon, 8 Feb 2021 01:09:37 +0800
-From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-fsdevel@vger.kernel.org>
-Subject: [PATCH 7/7] fs/xfs: Add dedupe support for fsdax
-Date: Mon, 8 Feb 2021 01:09:24 +0800
-Message-ID: <20210207170924.2933035-8-ruansy.fnst@cn.fujitsu.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210207170924.2933035-1-ruansy.fnst@cn.fujitsu.com>
-References: <20210207170924.2933035-1-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id BC248100EBB7D;
+	Sun,  7 Feb 2021 09:37:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::f31; helo=mail-qv1-xf31.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 65DBB100EBB6C
+	for <linux-nvdimm@lists.01.org>; Sun,  7 Feb 2021 09:37:20 -0800 (PST)
+Received: by mail-qv1-xf31.google.com with SMTP id j4so5974606qvk.6
+        for <linux-nvdimm@lists.01.org>; Sun, 07 Feb 2021 09:37:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=j9qX/HSwLIMkP63Z3KVtmxMD254RgIGqBGNpCVomjWY=;
+        b=nNNMJeBi0mPrn9xvenzjb7nX0r7+1vTZVgnpiPdsvMEYsbPxm577zKBfHWm1WnZ0I6
+         d+3OwFjhKKyKbJP46sku5okjjhHvffxRGy8cqlkwDuRUzQ0XCMMKEVQ6AgCWPExndX71
+         iV/F/MxRqhLEVIW7PCyQVdwxaFFoXgExBvu8sYrNURdElojS1mGJiXG9sabighuYGzQU
+         0wWIWHzgN8BnvfcPJjQf3+xcdeyTYuPqQLXwkqiII5Ijfv0+VK66zfGu0J+OLQWHBlrr
+         Kw2EdENjXfdhW5dSrS4JoV0AYReI4rMEoi1srVgbWsGwO+gkYbaR63jGH+RAAwEVIjYG
+         6mWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=j9qX/HSwLIMkP63Z3KVtmxMD254RgIGqBGNpCVomjWY=;
+        b=tKH3rePSpUivj19kLPHKPIucFcVS34yqkWf+GcYg1HlwOhF7Coe43JC8JeWpryApmc
+         q8hLPo5HDnuUl0VTF0wGgk6p90K/1qIXAc5or/fP3X08IuycAy1PCQkfrYhFaOsDtzsh
+         OpkVG4PD3T4Vq2XREJxSqk9/JiHd2E89uNgbsr30Bx1DHGY91FrvwoW34DWDrDfCrHdu
+         jUcUKCw7VCq3KMNMC2NNwH5DV66ViER14zKgNQPKD8JXfeQ5AQZn3z4VmxUpM6vEMj/4
+         gF9bNTAAR7Lln9hAXLVGlDseUEXMMnY6E2ldvJ/EN9AxODGB67qgWNc5WwKq0waSV1+H
+         cdGQ==
+X-Gm-Message-State: AOAM532+DLpMRenoSNOJC7Odj4e8cTOImdzV9kItkpNy2mwNOwWU7qq3
+	7adkki8k7gUL5G9h9GiMfa6MukaJwlOqHswcO6pyYg==
+X-Google-Smtp-Source: ABdhPJxCjzPVfc2g1XZxDZvYSY4IV7O7SVX3xJakIAGZzxobmpJJpZpBIB0BY2mm1CSY2CXwv2rPdWyqlr2BrsTWol4=
+X-Received: by 2002:ad4:584b:: with SMTP id de11mr12935044qvb.19.1612719438769;
+ Sun, 07 Feb 2021 09:37:18 -0800 (PST)
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: A63F74CE6F74.AE72D
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: IB3B5HACIFG6RORNHNOXQU4V666WSJXZ
-X-Message-ID-Hash: IB3B5HACIFG6RORNHNOXQU4V666WSJXZ
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sun, 7 Feb 2021 09:37:21 -0800
+Message-ID: <CAPcyv4j++J_ra8zWkvVovmwmYCERp8vKsVSZn9x4PYGoJa-XOA@mail.gmail.com>
+Subject: [GIT PULL] libnvdimm fixes for v5.11-rc7
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Message-ID-Hash: XKISQKOPFOXRUMD6QCRZEBQMGNXZUMV6
+X-Message-ID-Hash: XKISQKOPFOXRUMD6QCRZEBQMGNXZUMV6
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IB3B5HACIFG6RORNHNOXQU4V666WSJXZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XKISQKOPFOXRUMD6QCRZEBQMGNXZUMV6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,147 +63,78 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add xfs_break_two_dax_layouts() to break layout for tow dax files.  Then
-call compare range function only when files are both DAX or not.
+Hi Linus, please pull from:
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/libnvdimm-fixes-5.11-rc7
+
+...to receive a fix for a crash scenario that has been present since
+the initial merge, a minor regression in sysfs attribute visibility,
+and a fix for some flexible array warnings. The bulk of this pull is
+an update to the libnvdimm unit test infrastructure to test non-ACPI
+platforms. Given there is zero regression risk for test updates, and
+the tests enable validation of bits headed towards the next merge
+window, I saw no reason to hold the new tests back. Santosh originally
+submitted this before the v5.11 window opened.
+
+This has all appeared in -next with no reported issues.
+
 ---
- fs/xfs/xfs_file.c    | 20 ++++++++++++++++++++
- fs/xfs/xfs_inode.c   |  8 +++++++-
- fs/xfs/xfs_inode.h   |  1 +
- fs/xfs/xfs_reflink.c | 21 ++++++++++++++++++---
- 4 files changed, 46 insertions(+), 4 deletions(-)
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index ab738641a3f4..64ded96b43c8 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -791,6 +791,26 @@ xfs_break_dax_layouts(
- 			0, 0, xfs_wait_dax_page(inode));
- }
- 
-+int
-+xfs_break_two_dax_layouts(
-+	struct inode		*src,
-+	struct inode		*dest)
-+{
-+	int			error;
-+	bool			retry = false;
-+
-+retry:
-+	error = xfs_break_dax_layouts(src, &retry);
-+	if (error || retry)
-+		goto retry;
-+
-+	error = xfs_break_dax_layouts(dest, &retry);
-+	if (error || retry)
-+		goto retry;
-+
-+	return error;
-+}
-+
- int
- xfs_break_layouts(
- 	struct inode		*inode,
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index 2bfbcf28b1bd..6483dbaa4d57 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -3786,8 +3786,10 @@ xfs_ilock2_io_mmap(
- 	struct xfs_inode	*ip2)
- {
- 	int			ret;
-+	struct inode		*inode1 = VFS_I(ip1);
-+	struct inode		*inode2 = VFS_I(ip2);
- 
--	ret = xfs_iolock_two_inodes_and_break_layout(VFS_I(ip1), VFS_I(ip2));
-+	ret = xfs_iolock_two_inodes_and_break_layout(inode1, inode2);
- 	if (ret)
- 		return ret;
- 	if (ip1 == ip2)
-@@ -3795,6 +3797,10 @@ xfs_ilock2_io_mmap(
- 	else
- 		xfs_lock_two_inodes(ip1, XFS_MMAPLOCK_EXCL,
- 				    ip2, XFS_MMAPLOCK_EXCL);
-+
-+	if (IS_DAX(inode1) && IS_DAX(inode2))
-+		ret = xfs_break_two_dax_layouts(inode1, inode2);
-+
- 	return 0;
- }
- 
-diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
-index 751a3d1d7d84..462b61bea691 100644
---- a/fs/xfs/xfs_inode.h
-+++ b/fs/xfs/xfs_inode.h
-@@ -431,6 +431,7 @@ enum xfs_prealloc_flags {
- 
- int	xfs_update_prealloc_flags(struct xfs_inode *ip,
- 				  enum xfs_prealloc_flags flags);
-+int	xfs_break_two_dax_layouts(struct inode *inode1, struct inode *inode2);
- int	xfs_break_layouts(struct inode *inode, uint *iolock,
- 		enum layout_break_reason reason);
- 
-diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
-index 38bde16cdb39..bdb9a07e703f 100644
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -29,6 +29,7 @@
- #include "xfs_iomap.h"
- #include "xfs_sb.h"
- #include "xfs_ag_resv.h"
-+#include <linux/dax.h>
- 
- /*
-  * Copy on Write of Shared Blocks
-@@ -1251,6 +1252,14 @@ xfs_reflink_zero_posteof(
- 			&xfs_buffered_write_iomap_ops);
- }
- 
-+int xfs_reflink_dedupe_file_range_compare(struct inode *src, loff_t srcoff,
-+					  struct inode *dest, loff_t destoff,
-+					  loff_t len, bool *is_same)
-+{
-+	return dax_file_range_compare(src, srcoff, dest, destoff, len, is_same,
-+				      &xfs_read_iomap_ops);
-+}
-+
- /*
-  * Prepare two files for range cloning.  Upon a successful return both inodes
-  * will have the iolock and mmaplock held, the page cache of the out file will
-@@ -1293,6 +1302,7 @@ xfs_reflink_remap_prep(
- 	struct xfs_inode	*src = XFS_I(inode_in);
- 	struct inode		*inode_out = file_inode(file_out);
- 	struct xfs_inode	*dest = XFS_I(inode_out);
-+	compare_range_t		compare_range_fn;
- 	int			ret;
- 
- 	/* Lock both files against IO */
-@@ -1306,12 +1316,17 @@ xfs_reflink_remap_prep(
- 	if (XFS_IS_REALTIME_INODE(src) || XFS_IS_REALTIME_INODE(dest))
- 		goto out_unlock;
- 
--	/* Don't share DAX file data for now. */
--	if (IS_DAX(inode_in) || IS_DAX(inode_out))
-+	/* Don't share DAX file data with non-DAX file. */
-+	if (IS_DAX(inode_in) != IS_DAX(inode_out))
- 		goto out_unlock;
- 
-+	if (IS_DAX(inode_in))
-+		compare_range_fn = xfs_reflink_dedupe_file_range_compare;
-+	else
-+		compare_range_fn = vfs_dedupe_file_range_compare;
-+
- 	ret = generic_remap_file_range_prep(file_in, pos_in, file_out, pos_out,
--			len, remap_flags, vfs_dedupe_file_range_compare);
-+			len, remap_flags, compare_range_fn);
- 	if (ret || *len == 0)
- 		goto out_unlock;
- 
--- 
-2.30.0
+The following changes since commit 7c53f6b671f4aba70ff15e1b05148b10d58c2837:
 
+  Linux 5.11-rc3 (2021-01-10 14:34:50 -0800)
 
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/libnvdimm-fixes-5.11-rc7
+
+for you to fetch changes up to 7018c897c2f243d4b5f1b94bc6b4831a7eab80fb:
+
+  libnvdimm/dimm: Avoid race between probe and available_slots_show()
+(2021-02-01 16:20:40 -0800)
+
+----------------------------------------------------------------
+libnvdimm for 5.11-rc7
+- Fix a crash when sysfs accesses race 'dimm' driver probe/remove.
+
+- Fix a regression in 'resource' attribute visibility necessary for
+  mapping badblocks and other physical address interrogations.
+
+- Fix some flexible array warnings
+
+- Expand the unit test infrastructure for non-ACPI platforms
+
+----------------------------------------------------------------
+Dan Williams (3):
+      ACPI: NFIT: Fix flexible_array.cocci warnings
+      libnvdimm/namespace: Fix visibility of namespace resource attribute
+      libnvdimm/dimm: Avoid race between probe and available_slots_show()
+
+Jianpeng Ma (1):
+      libnvdimm/pmem: Remove unused header
+
+Santosh Sivaraj (7):
+      testing/nvdimm: Add test module for non-nfit platforms
+      ndtest: Add compatability string to treat it as PAPR family
+      ndtest: Add dimms to the two buses
+      ndtest: Add dimm attributes
+      ndtest: Add regions and mappings to the test buses
+      ndtest: Add nvdimm control functions
+      ndtest: Add papr health related flags
+
+ drivers/acpi/nfit/core.c            |   75 +--
+ drivers/nvdimm/dimm_devs.c          |   18 +-
+ drivers/nvdimm/namespace_devs.c     |   10 +-
+ drivers/nvdimm/pmem.c               |    1 -
+ tools/testing/nvdimm/config_check.c |    3 +-
+ tools/testing/nvdimm/test/Kbuild    |    6 +-
+ tools/testing/nvdimm/test/ndtest.c  | 1129 +++++++++++++++++++++++++++++++++++
+ tools/testing/nvdimm/test/ndtest.h  |  109 ++++
+ 8 files changed, 1293 insertions(+), 58 deletions(-)
+ create mode 100644 tools/testing/nvdimm/test/ndtest.c
+ create mode 100644 tools/testing/nvdimm/test/ndtest.h
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
