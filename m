@@ -2,77 +2,88 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEB6312730
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Feb 2021 20:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2659A31287B
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Feb 2021 00:57:21 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C875E100EBB7B;
-	Sun,  7 Feb 2021 11:23:13 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 15C1D100EBB9E;
+	Sun,  7 Feb 2021 15:57:19 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.195.209.81; helo=slot0.kimetsan.ga; envelope-from=info@kimetsan.ga; receiver=<UNKNOWN> 
+Received: from slot0.kimetsan.ga (unknown [134.195.209.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 155EB100EBB62
-	for <linux-nvdimm@lists.01.org>; Sun,  7 Feb 2021 11:23:10 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id AC23D64E3A;
-	Sun,  7 Feb 2021 19:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1612725789;
-	bh=IeP1OvJ/k8x8gikOH5SEUORTPYx4qLXqVQVQFSsRFhs=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Jok/F8hus0w+lI/pk6NY5unYbH9BETlJf84sibD7pwN2m3bUi08GWmqBrYet4Dlig
-	 3o9AINusWTpxCCP5P9xkqNL0wURU0d2CghEdYDTZ5Sgl/OOSpIikT8EMkRgvFXl6Dr
-	 4TjBFlsqPk89OOm5nQ9L0HqeOyNo/PSwa0xmTWNBKt8D8anSnyVIIlUx4YfyDjrWzH
-	 Jc7qhVfpdUezfZmWoyva3SehDSSAFJnlh5K1edtdBVb0NNIYh8HmMXRau2vM2VZIYQ
-	 6sYdV83Fwr9L//u0pZ17zuZPX7Wlbbx2+Cb2P2XzF2rS0yzm7IeTSnDB4YBB+9smS2
-	 jackFgYAhYuuQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 9BD0060A0E;
-	Sun,  7 Feb 2021 19:23:09 +0000 (UTC)
-Subject: Re: [GIT PULL] libnvdimm fixes for v5.11-rc7
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <CAPcyv4j++J_ra8zWkvVovmwmYCERp8vKsVSZn9x4PYGoJa-XOA@mail.gmail.com>
-References: <CAPcyv4j++J_ra8zWkvVovmwmYCERp8vKsVSZn9x4PYGoJa-XOA@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAPcyv4j++J_ra8zWkvVovmwmYCERp8vKsVSZn9x4PYGoJa-XOA@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/libnvdimm-fixes-5.11-rc7
-X-PR-Tracked-Commit-Id: 7018c897c2f243d4b5f1b94bc6b4831a7eab80fb
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b75dba7f472ca6c2dd0b8ee41f5a4b5a45539306
-Message-Id: <161272578963.18997.13576347206696291411.pr-tracker-bot@kernel.org>
-Date: Sun, 07 Feb 2021 19:23:09 +0000
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: IX77IEAOUSMB2CS6H5ZAUXXTSFBNKOTE
-X-Message-ID-Hash: IX77IEAOUSMB2CS6H5ZAUXXTSFBNKOTE
-X-MailFrom: pr-tracker-bot@kernel.org
+	by ml01.01.org (Postfix) with ESMTPS id D22A0100EBB97
+	for <linux-nvdimm@lists.01.org>; Sun,  7 Feb 2021 15:57:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=kimetsan.ga;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=info@kimetsan.ga;
+ bh=2KjE8unYZheHUh7APoDjwqoZDTM=;
+ b=ArkouDMnlv1Gzejwr6PiLiMYj6g/vWXtxnl/5FfereGMLb48KkCq0icOEjLB7ruvVyHMlAuLAONi
+   WPJYsiSDorw3zGl2Q9jgWHDLWHFRLiSDEoPsRnt3cogTopG/cV65CKxLs0nS2M+CkAbi/HnOXklO
+   BQMa0ey/YiUumyNmX+Ml1z4SmDV6DSmUtBFIXm3MszBTeTcOp4iyx4t4mMy2wHyswiNua8Tq6XZa
+   IzqRtROEaZHf0sCkwK1kHCuG0Jgf1U0fAeVi1n23kw6rKiuNXR8ttD8IePbFQUg3hbk/N5l1PG/b
+   0jKWWil9vPSUMngNSMrBm+yLxkhffYbef7s7sQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=kimetsan.ga;
+ b=X+U/9V3vqQzG4gLpC60X2c3Fv5jlaKAoRIkTWhjZRgprcOiVHF+X8NUPIe8eDUuc++OIXXsIktkk
+   AqaAQYdD9IaQnfpwfN+bkGOlCJRm79cNu2+MK5mpEPjmf7BR8VeA3GwLMZqEtgz8IwKyewTyG68W
+   W2fHT4TMYwAGD1sG74y44ugB0jRKWjVKOG1g/C/x9xgtkSqygNtCCgBYEfYfZPsANSyg7KM0QEDC
+   KHD6ULypNY0CwVt81x1qTN+XYrz6vAEUWJp3Ei6Ny0kw+VW7gdWjRFFzin4JsGCq5jSvv2lw/xYS
+   80lvhSoz+ncjr+CzMQzaE3dFjRzX/ssN62p5Rg==;
+From: Sharon Suzuki <info@kimetsan.ga>
+To: linux-nvdimm@lists.01.org
+Subject: Good day!
+Date: 08 Feb 2021 02:57:16 +0300
+Message-ID: <20210208025716.5F71C0B4EBF2978A@kimetsan.ga>
+MIME-Version: 1.0
+Message-ID-Hash: V2D6WWNEDZHPQVDVJBI325JV7L4GTWPJ
+X-Message-ID-Hash: V2D6WWNEDZHPQVDVJBI325JV7L4GTWPJ
+X-MailFrom: info@kimetsan.ga
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linus Torvalds <torvalds@linux-foundation.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: geneoffice@yandex.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IX77IEAOUSMB2CS6H5ZAUXXTSFBNKOTE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/V2D6WWNEDZHPQVDVJBI325JV7L4GTWPJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============1198077288885716408=="
+
+--===============1198077288885716408==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19867"></HEAD>
+<body style=3D"MARGIN: 0.5em">
+<P>Beloved,<BR>&nbsp;<BR>I am writing this mail to you with heavy tears in =
+my eyes and great sorrow in my heart.&nbsp; As I informed you earlier, I am=
+ (Mrs.)Sharon Suzuki&nbsp; from Japan and&nbsp; a widow to the late Martin =
+Suzuki, I am 63 years old, suffering from long time Cancer of the breast. F=
+rom all indications my condition is really deteriorating and it's quite obv=
+ious that I won't live more than 2 months according to my doctors.<BR>&nbsp=
+;<BR>
+I have some funds I inherited from my late loving husband Mr. Martin Suzuki=
+, the sum of ($2,000,000,00) which he deposited in a Bank&nbsp; .I need a v=
+ery honest and God fearing person that can use these funds for Charity work=
+, helping the Less Privileges, and 20% of this money will be for your time =
+and expenses, while 80% goes to charities.<BR>&nbsp;<BR>
+Please let me know if I can TRUST YOU ON THIS to carry out this favour for =
+me.&nbsp; I look forward to your prompt reply&nbsp; for more details .</P>
+<P>Yours sincerely<BR>Mrs.Sharon Suzuki</P></BODY></HTML>
+--===============1198077288885716408==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-The pull request you sent on Sun, 7 Feb 2021 09:37:21 -0800:
-
-> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/libnvdimm-fixes-5.11-rc7
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b75dba7f472ca6c2dd0b8ee41f5a4b5a45539306
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1198077288885716408==--
