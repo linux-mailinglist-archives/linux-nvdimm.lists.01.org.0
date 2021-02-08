@@ -2,88 +2,75 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2659A31287B
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Feb 2021 00:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 574A0312A39
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Feb 2021 06:49:47 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 15C1D100EBB9E;
-	Sun,  7 Feb 2021 15:57:19 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.195.209.81; helo=slot0.kimetsan.ga; envelope-from=info@kimetsan.ga; receiver=<UNKNOWN> 
-Received: from slot0.kimetsan.ga (unknown [134.195.209.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D22A0100EBB97
-	for <linux-nvdimm@lists.01.org>; Sun,  7 Feb 2021 15:57:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=kimetsan.ga;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=info@kimetsan.ga;
- bh=2KjE8unYZheHUh7APoDjwqoZDTM=;
- b=ArkouDMnlv1Gzejwr6PiLiMYj6g/vWXtxnl/5FfereGMLb48KkCq0icOEjLB7ruvVyHMlAuLAONi
-   WPJYsiSDorw3zGl2Q9jgWHDLWHFRLiSDEoPsRnt3cogTopG/cV65CKxLs0nS2M+CkAbi/HnOXklO
-   BQMa0ey/YiUumyNmX+Ml1z4SmDV6DSmUtBFIXm3MszBTeTcOp4iyx4t4mMy2wHyswiNua8Tq6XZa
-   IzqRtROEaZHf0sCkwK1kHCuG0Jgf1U0fAeVi1n23kw6rKiuNXR8ttD8IePbFQUg3hbk/N5l1PG/b
-   0jKWWil9vPSUMngNSMrBm+yLxkhffYbef7s7sQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=kimetsan.ga;
- b=X+U/9V3vqQzG4gLpC60X2c3Fv5jlaKAoRIkTWhjZRgprcOiVHF+X8NUPIe8eDUuc++OIXXsIktkk
-   AqaAQYdD9IaQnfpwfN+bkGOlCJRm79cNu2+MK5mpEPjmf7BR8VeA3GwLMZqEtgz8IwKyewTyG68W
-   W2fHT4TMYwAGD1sG74y44ugB0jRKWjVKOG1g/C/x9xgtkSqygNtCCgBYEfYfZPsANSyg7KM0QEDC
-   KHD6ULypNY0CwVt81x1qTN+XYrz6vAEUWJp3Ei6Ny0kw+VW7gdWjRFFzin4JsGCq5jSvv2lw/xYS
-   80lvhSoz+ncjr+CzMQzaE3dFjRzX/ssN62p5Rg==;
-From: Sharon Suzuki <info@kimetsan.ga>
-To: linux-nvdimm@lists.01.org
-Subject: Good day!
-Date: 08 Feb 2021 02:57:16 +0300
-Message-ID: <20210208025716.5F71C0B4EBF2978A@kimetsan.ga>
+	by ml01.01.org (Postfix) with ESMTP id 36944100ED480;
+	Sun,  7 Feb 2021 21:49:45 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id AAD63100EF276
+	for <linux-nvdimm@lists.01.org>; Sun,  7 Feb 2021 21:49:42 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.81,161,1610380800";
+   d="scan'208";a="104316295"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 08 Feb 2021 13:49:40 +0800
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
+	by cn.fujitsu.com (Postfix) with ESMTP id B970C4CE6F74;
+	Mon,  8 Feb 2021 13:49:37 +0800 (CST)
+Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
+ (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 8 Feb
+ 2021 13:49:40 +0800
+Subject: Re: [PATCH] dax: fix default return code of range_parse()
+From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
+To: <linux-nvdimm@lists.01.org>, <dan.j.williams@intel.com>,
+	<vishal.l.verma@intel.com>, <dave.jiang@intel.com>
+References: <20210126021331.1059933-1-ruansy.fnst@cn.fujitsu.com>
+Message-ID: <49788459-f42d-5173-c77a-f0a33558a58e@cn.fujitsu.com>
+Date: Mon, 8 Feb 2021 13:49:38 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Message-ID-Hash: V2D6WWNEDZHPQVDVJBI325JV7L4GTWPJ
-X-Message-ID-Hash: V2D6WWNEDZHPQVDVJBI325JV7L4GTWPJ
-X-MailFrom: info@kimetsan.ga
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+In-Reply-To: <20210126021331.1059933-1-ruansy.fnst@cn.fujitsu.com>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.141]
+X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
+ G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
+X-yoursite-MailScanner-ID: B970C4CE6F74.AAECC
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: IRHU5DJOBZX5XMCW2ZQIYKS5IJ46KHVG
+X-Message-ID-Hash: IRHU5DJOBZX5XMCW2ZQIYKS5IJ46KHVG
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: geneoffice@yandex.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/V2D6WWNEDZHPQVDVJBI325JV7L4GTWPJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IRHU5DJOBZX5XMCW2ZQIYKS5IJ46KHVG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1198077288885716408=="
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
---===============1198077288885716408==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
-w3.org/TR/html4/loose.dtd">
-
-<HTML><HEAD>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19867"></HEAD>
-<body style=3D"MARGIN: 0.5em">
-<P>Beloved,<BR>&nbsp;<BR>I am writing this mail to you with heavy tears in =
-my eyes and great sorrow in my heart.&nbsp; As I informed you earlier, I am=
- (Mrs.)Sharon Suzuki&nbsp; from Japan and&nbsp; a widow to the late Martin =
-Suzuki, I am 63 years old, suffering from long time Cancer of the breast. F=
-rom all indications my condition is really deteriorating and it's quite obv=
-ious that I won't live more than 2 months according to my doctors.<BR>&nbsp=
-;<BR>
-I have some funds I inherited from my late loving husband Mr. Martin Suzuki=
-, the sum of ($2,000,000,00) which he deposited in a Bank&nbsp; .I need a v=
-ery honest and God fearing person that can use these funds for Charity work=
-, helping the Less Privileges, and 20% of this money will be for your time =
-and expenses, while 80% goes to charities.<BR>&nbsp;<BR>
-Please let me know if I can TRUST YOU ON THIS to carry out this favour for =
-me.&nbsp; I look forward to your prompt reply&nbsp; for more details .</P>
-<P>Yours sincerely<BR>Mrs.Sharon Suzuki</P></BODY></HTML>
---===============1198077288885716408==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============1198077288885716408==--
+cGluZw0KDQpPbiAyMDIxLzEvMjYg5LiK5Y2IMTA6MTMsIFNoaXlhbmcgUnVhbiB3cm90ZToNCj4g
+VGhlIHJldHVybiB2YWx1ZSBvZiByYW5nZV9wYXJzZSgpIGluZGljYXRlcyB0aGUgc2l6ZSB3aGVu
+IGl0IGlzDQo+IHBvc2l0aXZlLiAgVGhlIGVycm9yIGNvZGUgc2hvdWxkIGJlIG5lZ2F0aXZlLg0K
+PiANCj4gU2lnbmVkLW9mZi1ieTogU2hpeWFuZyBSdWFuIDxydWFuc3kuZm5zdEBjbi5mdWppdHN1
+LmNvbT4NCj4gLS0tDQo+ICAgZHJpdmVycy9kYXgvYnVzLmMgfCAyICstDQo+ICAgMSBmaWxlIGNo
+YW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9kYXgvYnVzLmMgYi9kcml2ZXJzL2RheC9idXMuYw0KPiBpbmRleCA3MzdiMjA3Yzll
+MzAuLjMwMDM1NThjMWE4YiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9kYXgvYnVzLmMNCj4gKysr
+IGIvZHJpdmVycy9kYXgvYnVzLmMNCj4gQEAgLTEwMzgsNyArMTAzOCw3IEBAIHN0YXRpYyBzc2l6
+ZV90IHJhbmdlX3BhcnNlKGNvbnN0IGNoYXIgKm9wdCwgc2l6ZV90IGxlbiwgc3RydWN0IHJhbmdl
+ICpyYW5nZSkNCj4gICB7DQo+ICAgCXVuc2lnbmVkIGxvbmcgbG9uZyBhZGRyID0gMDsNCj4gICAJ
+Y2hhciAqc3RhcnQsICplbmQsICpzdHI7DQo+IC0Jc3NpemVfdCByYyA9IEVJTlZBTDsNCj4gKwlz
+c2l6ZV90IHJjID0gLUVJTlZBTDsNCj4gICANCj4gICAJc3RyID0ga3N0cmR1cChvcHQsIEdGUF9L
+RVJORUwpOw0KPiAgIAlpZiAoIXN0cikNCj4gDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgt
+bnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4
+LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
