@@ -2,46 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EEB314C1F
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Feb 2021 10:53:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA73314CD6
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Feb 2021 11:23:58 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CF6D3100EC1E9;
-	Tue,  9 Feb 2021 01:53:50 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A98A8100EB35A;
+	Tue,  9 Feb 2021 02:23:56 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EE035100ED4AC
-	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 01:53:47 -0800 (PST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1612864426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by ml01.01.org (Postfix) with ESMTPS id F1CEB100EB35A
+	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 02:23:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1612866233;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ys4lZa12PW2rFBR9uYb+XrRjecZKizZLu20iG5KOoeU=;
-	b=qMkZ7XbqI1d8hRSD4sQuj8GloCeGKTkheB3rXPURIdHzln4FFQIx0n7YjCba0Bw7Yo+suG
-	YVH6OFVka1kiTncyA9TPZgvqak3KFQTe+UD6eD7U0V5Q5FCqYqLZFu60NAxFSbvHXVFlM8
-	PKcchFgHt4dmUy7k0ra5KqJyGsnIQ0A=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 4727BAC43;
-	Tue,  9 Feb 2021 09:53:46 +0000 (UTC)
-Date: Tue, 9 Feb 2021 10:53:29 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v17 00/10] mm: introduce memfd_secret system call to
- create "secret" memory areas
-Message-ID: <YCJbmR11ikrWKaU8@dhcp22.suse.cz>
+	bh=1IoX1DQCPa+nZtjLne30VDad7vc/+9XUN1LzFVohs0o=;
+	b=CHLKqheCD8/67o9xr8llyKnonFmde21iE75kEqc1RUCbaiLFow1RgZCL8zXjBOnLqNc4gP
+	50t1gEPtrIKiTZj5CJDIBg1qizUzSi0SyOD9tuhRkJmz2TFCAz91n5TsJJJFFG73YIfHHJ
+	dT/VfNWwbaxbIYgRVZjc3I6jl3tpass=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-65-shSTZr8_P1uvA3gtZUZXlw-1; Tue, 09 Feb 2021 05:23:49 -0500
+X-MC-Unique: shSTZr8_P1uvA3gtZUZXlw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5220F804023;
+	Tue,  9 Feb 2021 10:23:44 +0000 (UTC)
+Received: from [10.36.113.141] (ovpn-113-141.ams2.redhat.com [10.36.113.141])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 192F22CE01;
+	Tue,  9 Feb 2021 10:23:35 +0000 (UTC)
+To: Michal Hocko <mhocko@suse.com>
 References: <20210208211326.GV242749@kernel.org>
  <1F6A73CF-158A-4261-AA6C-1F5C77F4F326@redhat.com>
  <YCJO8zLq8YkXGy8B@dhcp22.suse.cz>
  <662b5871-b461-0896-697f-5e903c23d7b9@redhat.com>
+ <YCJbmR11ikrWKaU8@dhcp22.suse.cz>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Subject: Re: [PATCH v17 00/10] mm: introduce memfd_secret system call to
+ create "secret" memory areas
+Message-ID: <c1e5e7b6-3360-ddc4-2ff5-0e79515ee23a@redhat.com>
+Date: Tue, 9 Feb 2021 11:23:35 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <662b5871-b461-0896-697f-5e903c23d7b9@redhat.com>
-Message-ID-Hash: KIHVUQMGHY6JYEUDWYEUYQEKDMB5E6IT
-X-Message-ID-Hash: KIHVUQMGHY6JYEUDWYEUYQEKDMB5E6IT
-X-MailFrom: mhocko@suse.com
+In-Reply-To: <YCJbmR11ikrWKaU8@dhcp22.suse.cz>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Message-ID-Hash: TLWD2NQ4FSTMFK3YQ7HB5RFCYUSBTKAW
+X-Message-ID-Hash: TLWD2NQ4FSTMFK3YQ7HB5RFCYUSBTKAW
+X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Ander
@@ -49,105 +63,155 @@ CC: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KIHVUQMGHY6JYEUDWYEUYQEKDMB5E6IT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TLWD2NQ4FSTMFK3YQ7HB5RFCYUSBTKAW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Transfer-Encoding: 7bit
 
-T24gVHVlIDA5LTAyLTIxIDEwOjE1OjE3LCBEYXZpZCBIaWxkZW5icmFuZCB3cm90ZToNCj4gT24g
-MDkuMDIuMjEgMDk6NTksIE1pY2hhbCBIb2NrbyB3cm90ZToNCj4gPiBPbiBNb24gMDgtMDItMjEg
-MjI6Mzg6MDMsIERhdmlkIEhpbGRlbmJyYW5kIHdyb3RlOg0KPiA+ID4gDQo+ID4gPiA+IEFtIDA4
-LjAyLjIwMjEgdW0gMjI6MTMgc2NocmllYiBNaWtlIFJhcG9wb3J0IDxycHB0QGtlcm5lbC5vcmc+
-Og0KPiA+ID4gPiANCj4gPiA+ID4g77u/T24gTW9uLCBGZWIgMDgsIDIwMjEgYXQgMTA6Mjc6MThB
-TSArMDEwMCwgRGF2aWQgSGlsZGVuYnJhbmQgd3JvdGU6DQo+ID4gPiA+ID4gT24gMDguMDIuMjEg
-MDk6NDksIE1pa2UgUmFwb3BvcnQgd3JvdGU6DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gU29tZSBx
-dWVzdGlvbnMgKGFuZCByZXF1ZXN0IHRvIGRvY3VtZW50IHRoZSBhbnN3ZXJzKSBhcyB3ZSBub3cg
-YWxsb3cgdG8gaGF2ZQ0KPiA+ID4gPiA+IHVubW92YWJsZSBhbGxvY2F0aW9ucyBhbGwgb3ZlciB0
-aGUgcGxhY2UgYW5kIEkgZG9uJ3Qgc2VlIGEgc2luZ2xlIGNvbW1lbnQNCj4gPiA+ID4gPiByZWdh
-cmRpbmcgdGhhdCBpbiB0aGUgY292ZXIgbGV0dGVyOg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IDEu
-IEhvdyB3aWxsIHRoZSBpc3N1ZSBvZiBwbGVudHkgb2YgdW5tb3ZhYmxlIGFsbG9jYXRpb25zIGZv
-ciB1c2VyIHNwYWNlIGJlDQo+ID4gPiA+ID4gdGFja2xlZCBpbiB0aGUgZnV0dXJlPw0KPiA+ID4g
-PiA+IA0KPiA+ID4gPiA+IDIuIEhvdyBoYXMgdGhpcyBpc3N1ZSBiZWVuIGRvY3VtZW50ZWQ/IEUu
-Zy4sIGludGVyYWN0aW9uIHdpdGggWk9ORV9NT1ZBQkxFDQo+ID4gPiA+ID4gYW5kIENNQSwgYWxs
-b2NfY29uaWdfcmFuZ2UoKS9hbGxvY19jb250aWdfcGFnZXM/Lg0KPiA+ID4gPiANCj4gPiA+ID4g
-U2VjcmV0bWVtIHNldHMgdGhlIG1hcHBpbmdzIGdmcCBtYXNrIHRvIEdGUF9ISUdIVVNFUiwgc28g
-aXQgZG9lcyBub3QNCj4gPiA+ID4gYWxsb2NhdGUgbW92YWJsZSBwYWdlcyBhdCB0aGUgZmlyc3Qg
-cGxhY2UuDQo+ID4gPiANCj4gPiA+IFRoYXQgaXMgbm90IHRoZSBwb2ludC4gU2VjcmV0bWVtIGNh
-bm5vdCBnbyBvbiBDTUEgLyBaT05FX01PVkFCTEUNCj4gPiA+IG1lbW9yeSBhbmQgYmVoYXZlcyBs
-aWtlIGxvbmctdGVybSBwaW5uaW5ncyBpbiB0aGF0IHNlbnNlLiBUaGlzIGlzIGENCj4gPiA+IHJl
-YWwgaXNzdWUgd2hlbiB1c2luZyBhIGxvdCBvZiBzZWN0cmVtZW0uDQo+ID4gDQo+ID4gQSBsb3Qg
-b2YgdW5ldmljdGFibGUgbWVtb3J5IGlzIGEgY29uY2VybiByZWdhcmRsZXNzIG9mIENNQS9aT05F
-X01PVkFCTEUuDQo+ID4gQXMgSSd2ZSBzYWlkIGl0IGlzIHF1aXRlIGVhc3kgdG8gbGFuZCBhdCB0
-aGUgc2ltaWxhciBzaXR1YXRpb24gZXZlbiB3aXRoDQo+ID4gdG1wZnMvTUFQX0FOT058TUFQX1NI
-QVJFRCBvbiBzd2FwbGVzcyBzeXN0ZW0uIE5laXRoZXIgb2YgdGhlIHR3byBpcw0KPiA+IHJlYWxs
-eSB1bmNvbW1vbi4gSXQgd291bGQgYmUgZXZlbiB3b3JzZSB0aGF0IHRob3NlIHdvdWxkIGJlIGFs
-bG93ZWQgdG8NCj4gPiBjb25zdW1lIGJvdGggQ01BL1pPTkVfTU9WQUJMRS4NCj4gDQo+IElJUkMs
-IHRtcGZzL01BUF9BTk9OfE1BUF9TSEFSRUQgbWVtb3J5DQo+IGEpIElzIG1vdmFibGUsIGNhbiBs
-YW5kIGluIFpPTkVfTU9WQUJMRS9DTUENCj4gYikgQ2FuIGJlIGxpbWl0ZWQgYnkgc2l6aW5nIHRt
-cGZzIGFwcHJvcHJpYXRlbHkNCj4gDQo+IEFGQUlLLCB3aGF0IHlvdSBkZXNjcmliZSBpcyBhIHBy
-b2JsZW0gd2l0aCBtZW1vcnkgb3ZlcmNvbW1pdCwgbm90IHdpdGggem9uZQ0KPiBpbWJhbGFuY2Vz
-IChiZWxvdykuIE9yIHdoYXQgYW0gSSBtaXNzaW5nPw0KDQpJdCBjYW4gYmUgcHJvYmxlbSBmb3Ig
-Ym90aC4gSWYgeW91IGhhdmUganVzdCB0b28gbXVjaCBvZiBzaG0gKGRvIG5vdA0KZm9yZ2V0IGFi
-b3V0IE1BUF9TSEFSRUR8TUFQX0FOT04gd2hpY2ggaXMgbXVjaCBoYXJkZXIgdG8gc2l6ZSBmcm9t
-IGFuDQphZG1pbiBQT1YpIHRoZW4gbWlncmF0ZWFiaWxpdHkgZG9lc24ndCByZWFsbHkgaGVscCBi
-ZWNhdXNlIHlvdSBuZWVkIGENCmZyZWUgbWVtb3J5IHRvIG1pZ3JhdGUuIFdpdGhvdXQgcmVjbGFp
-bWFiaWxpdHkgdGhpcyBjYW4gZWFzaWx5IGJlY29tZSBhDQpwcm9ibGVtLiBUaGF0IGlzIHdoeSBJ
-IGFtIHNheWluZyB0aGlzIGlzIG5vdCByZWFsbHkgYSBuZXcgcHJvYmxlbS4NClN3YXBsZXNzIHN5
-c3RlbXMgYXJlIG5vdCBhbGwgdGhhdCB1bmNvbW1vbi4NCiANCj4gPiBPbmUgaGFzIHRvIGJlIHZl
-cnkgY2FyZWZ1bCB3aGVuIHJlbHlpbmcgb24gQ01BIG9yIG1vdmFibGUgem9uZXMuIFRoaXMgaXMN
-Cj4gPiBkZWZpbml0ZWx5IHdvcnRoIGEgY29tbWVudCBpbiB0aGUga2VybmVsIGNvbW1hbmQgbGlu
-ZSBwYXJhbWV0ZXINCj4gPiBkb2N1bWVudGF0aW9uLiBCdXQgdGhpcyBpcyBub3QgYSBuZXcgcHJv
-YmxlbS4NCj4gDQo+IEkgc2VlIHRoZSBmb2xsb3dpbmcgdGhpbmcgd29ydGggZG9jdW1lbnRpbmc6
-DQo+IA0KPiBBc3N1bWUgeW91IGhhdmUgYSBzeXN0ZW0gd2l0aCAyR0Igb2YgWk9ORV9OT1JNQUwv
-Wk9ORV9ETUEgYW5kIDRHQiBvZg0KPiBaT05FX01PVkFCTEUvQ01BLg0KPiANCj4gQXNzdW1lIHlv
-dSBtYWtlIHVzZSBvZiAxLjVHQiBvZiBzZWNyZXRtZW0uIFlvdXIgc3lzdGVtIG1pZ2h0IHJ1biBp
-bnRvIE9PTQ0KPiBhbnkgdGltZSBhbHRob3VnaCB5b3Ugc3RpbGwgaGF2ZSBwbGVudHkgb2YgbWVt
-b3J5IG9uIFpPTkVfTU9WQVZMRSAoYW5kIGV2ZW4NCj4gc3dhcCEpLCBzaW1wbHkgYmVjYXVzZSB5
-b3UgYXJlIG1ha2luZyBleGNlc3NpdmUgdXNlIG9mIHVubW92YWJsZSBhbGxvY2F0aW9ucw0KPiAo
-Zm9yIHVzZXIgc3BhY2UhKSBpbiBhbiBlbnZpcm9ubWVudCB3aGVyZSB5b3Ugc2hvdWxkIG5vdCBt
-YWtlIGV4Y2Vzc2l2ZSB1c2UNCj4gb2YgdW5tb3ZhYmxlIGFsbG9jYXRpb25zIChlLmcuLCB3aGVy
-ZSBzaG91bGQgcGFnZSB0YWJsZXMgZ28/KS4NCg0KeWVzLCB5b3UgYXJlIHJpZ2h0IG9mIGNvdXJz
-ZSBhbmQgSSBhbSBub3QgcmVhbGx5IGRpc3B1dGluZyB0aGlzLiBCdXQgSQ0Kd291bGQgYXJndWUg
-dGhhdCAyOjEgTW92YWJsZS9Ob3JtYWwgaXMgc29tZXRoaW5nIHRvIGV4cGVjdCBwcm9ibGVtcw0K
-YWxyZWFkeS4gIkxvd21lbSIgYWxsb2NhdGlvbnMgY2FuIGVhc2lseSB0cmlnZ2VyIE9PTSBldmVu
-IHdpdGhvdXQgc2VjcmV0DQptZW0gaW4gdGhlIHBpY3R1cmUuIEl0IGFsbCBqdXN0IHRha2VzIHRv
-IGFsbG9jYXRlIGEgbG90IG9mIEdGUF9LRVJORUwgb3INCmV2ZW4gR0ZQX3tISUdIfVVTRVIuIFJl
-YWxseSwgaXQgaXMgQ01BL01PVkFCTEUgdGhhdCBhcmUgZWxlcGhhbnQgaW4gdGhlDQpyb29tIGFu
-ZCBvbmUgaGFzIHRvIGJlIHJlYWxseSBjYXJlZnVsIHdoZW4gcmVseWluZyBvbiB0aGVtLg0KIA0K
-PiBUaGUgZXhpc3RpbmcgY29udHJvbHMgKG1sb2NrIGxpbWl0KSBkb24ndCByZWFsbHkgbWF0Y2gg
-dGhlIGN1cnJlbnQgc2VtYW50aWNzDQo+IG9mIHRoYXQgbWVtb3J5LiBJIHJlcGVhdCBpdCBvbmNl
-IGFnYWluOiBzZWNyZXRtZW0gKmN1cnJlbnRseSogcmVzZW1ibGVzDQo+IGxvbmctdGVybSBwaW5u
-ZWQgbWVtb3J5LCBub3QgbWxvY2tlZCBtZW1vcnkuDQoNCldlbGwsIGlmIHdlIGhhZCBhIHByb3Bl
-ciB1c2VyIHNwYWNlIHBpbm5pbmcgYWNjb3VudGluZyB0aGVuIEkgd291bGQNCmFncmVlIHRoYXQg
-dGhlcmUgaXMgYSBiZXR0ZXIgbW9kZWwgdG8gdXNlLiBCdXQgd2UgZG9uJ3QuIEFuZCBwcmV2aW91
-cw0KYXR0ZW1wdHMgdG8gYWNoaWV2ZSB0aGF0IGhhdmUgZmFpbGVkLiBTbyBJIGFtIGFmcmFpZCB0
-aGF0IHdlIGRvIG5vdCBoYXZlDQptdWNoIGNob2ljZSBsZWZ0IHRoYW4gdXNpbmcgbWxvY2sgYXMg
-YSBtb2RlbC4NCg0KPiBUaGluZ3Mgd2lsbCBjaGFuZ2Ugd2hlbg0KPiBpbXBsZW1lbnRpbmcgbWln
-cmF0aW9uIHN1cHBvcnQgZm9yIHNlY3JldG1lbSBwYWdlcy4gVW50aWwgdGhlbiwgdGhlDQo+IHNl
-bWFudGljcyBhcmUgZGlmZmVyZW50IGFuZCB0aGlzIHNob3VsZCBiZSBzcGVsbGVkIG91dC4NCj4g
-DQo+IEZvciBsb25nLXRlcm0gcGlubmluZ3MgdGhpcyBpcyBraW5kIG9mIG9idmlvdXMsIHN0aWxs
-IHdlJ3JlIG5vdyBkb2N1bWVudGluZw0KPiBpdCBiZWNhdXNlIGl0J3MgZGFuZ2Vyb3VzIHRvIG5v
-dCBiZSBhd2FyZSBvZi4gU2VjcmV0bWVtIGJlaGF2ZXMgZXhhY3RseSB0aGUNCj4gc2FtZSBhbmQg
-SSB0aGluayB0aGlzIGlzIHdvcnRoIHNwZWxsaW5nIG91dDogc2VjcmV0bWVtIGhhcyB0aGUgcG90
-ZW50aWFsIG9mDQo+IGJlaW5nIHVzZWQgbXVjaCBtb3JlIG9mdGVuIHRoYW4gZmFpcmx5IHNwZWNp
-YWwgdmZpby9yZG1hLyAuLi4NCg0KeWVhaCBJIGRvIGFncmVlIHRoYXQgcGlubmluZyBpcyBhIHBy
-b2JsZW0gZm9yIG1vdmFibGUvQ01BIGJ1dCBtb3N0DQpwZW9wbGUgc2ltcGx5IGRvIG5vdCBjYXJl
-IGFib3V0IHRob3NlLiBNb3ZhYmxlIGlzIHRoZSB0aGluZyBmb3IgaG9wdGx1Zw0KYW5kIGEgcmVh
-bGx5IHdlaXJkIGZyYWdtZW50YXRpb24gYXZvaWRhbmNlIElJUkMgYW5kIENNQSBpcyBtb3N0bHkg
-dG8NCmhhbmRsZSBjcmFwIEhXLiBJZiB0aG9zZSBhcmUgdG8gYmUgdXNlZCBhbG9uZyB3aXRoIHNl
-Y3JldCBtZW0gb3INCmxvbmd0ZXJtIEdVUCB0aGVuIHRoZXkgd2lsbCBjb25zdGFudGx5IGJ1bXAg
-aW50byBjb3JuZXIgY2FzZXMuIERvIG5vdA0KdGFrZSBtZSB3cm9uZywgd2Ugc2hvdWxkIGJlIGxv
-b2tpbmcgYXQgdGhvc2UgcHJvYmxlbXMsIHdlIHNob3VsZCBldmVuDQpkb2N1bWVudCB0aGVtIGJ1
-dCBJIGRvIG5vdCBzZWUgdGhpcyBhcyBhbnl0aGluZyBuZXcuIFdlIHNob3VsZCBwcm9iYWJseQ0K
-aGF2ZSBhIGNlbnRyYWwgcGxhY2UgaW4gRG9jdW1lbnRhdGlvbiBleHBsYWluaW5nIGFsbCB0aG9z
-ZSBwcm9ibGVtcy4gSQ0Kd291bGQgYmUgZXZlbiBoYXBweSB0byBzZWUgYW4gZXhwbGljaXQgbm90
-ZSBpbiB0aGUgdHVuYWJsZXMgLSBlLmcuDQpjb25maWd1cmluZyBtb3ZhYmxlL25vcm1hbCBpbiAy
-OjEgd2lsbCBnZXQgeW91IGJhY2sgdG8gMzJiIHRpbWVzIHdydC4NCmxvdyBtZW0gcHJvYmxlbXMu
-DQotLSANCk1pY2hhbCBIb2Nrbw0KU1VTRSBMYWJzCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgt
-bnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4
-LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+>>> A lot of unevictable memory is a concern regardless of CMA/ZONE_MOVABLE.
+>>> As I've said it is quite easy to land at the similar situation even with
+>>> tmpfs/MAP_ANON|MAP_SHARED on swapless system. Neither of the two is
+>>> really uncommon. It would be even worse that those would be allowed to
+>>> consume both CMA/ZONE_MOVABLE.
+>>
+>> IIRC, tmpfs/MAP_ANON|MAP_SHARED memory
+>> a) Is movable, can land in ZONE_MOVABLE/CMA
+>> b) Can be limited by sizing tmpfs appropriately
+>>
+>> AFAIK, what you describe is a problem with memory overcommit, not with zone
+>> imbalances (below). Or what am I missing?
+> 
+> It can be problem for both. If you have just too much of shm (do not
+> forget about MAP_SHARED|MAP_ANON which is much harder to size from an
+> admin POV) then migrateability doesn't really help because you need a
+> free memory to migrate. Without reclaimability this can easily become a
+> problem. That is why I am saying this is not really a new problem.
+> Swapless systems are not all that uncommon.
+
+I get your point, it's similar but still different. "no memory in the 
+system" vs. "plenty of unusable free memory available in the system".
+
+In many setups, memory for user space applications can go to 
+ZONE_MOVABLE just fine. ZONE_NORMAL etc. can be used for supporting user 
+space memory (e.g., page tables) and other kernel stuff.
+
+Like, have 4GB of ZONE_MOVABLE with 2GB of ZONE_NORMAL. Have an 
+application (database) that allocates 4GB of memory. Works just fine. 
+The zone ratio ends up being a problem for example with many processes 
+(-> many page tables).
+
+Not being able to put user space memory into the movable zone is a 
+special case. And we are introducing yet another special case here 
+(besides vfio, rdma, unmigratable huge pages like gigantic pages).
+
+With plenty of secretmem, looking at /proc/meminfo Total vs. Free can be 
+a big lie of how your system behaves.
+
+>   
+>>> One has to be very careful when relying on CMA or movable zones. This is
+>>> definitely worth a comment in the kernel command line parameter
+>>> documentation. But this is not a new problem.
+>>
+>> I see the following thing worth documenting:
+>>
+>> Assume you have a system with 2GB of ZONE_NORMAL/ZONE_DMA and 4GB of
+>> ZONE_MOVABLE/CMA.
+>>
+>> Assume you make use of 1.5GB of secretmem. Your system might run into OOM
+>> any time although you still have plenty of memory on ZONE_MOVAVLE (and even
+>> swap!), simply because you are making excessive use of unmovable allocations
+>> (for user space!) in an environment where you should not make excessive use
+>> of unmovable allocations (e.g., where should page tables go?).
+> 
+> yes, you are right of course and I am not really disputing this. But I
+> would argue that 2:1 Movable/Normal is something to expect problems
+> already. "Lowmem" allocations can easily trigger OOM even without secret
+> mem in the picture. It all just takes to allocate a lot of GFP_KERNEL or
+> even GFP_{HIGH}USER. Really, it is CMA/MOVABLE that are elephant in the
+> room and one has to be really careful when relying on them.
+
+Right, it's all about what the setup actually needs. Sure, there are 
+cases where you need significantly more GFP_KERNEL/GFP_{HIGH}USER such 
+that a 2:1 ratio is not feasible. But I claim that these are corner cases.
+
+Secretmem gives user space the option to allocate a lot of 
+GFP_{HIGH}USER memory. If I am not wrong, "ulimit -a" tells me that each 
+application on F33 can allocate 16 GiB (!) of secretmem.
+
+Which other ways do you know where random user space can do something 
+similar? I'd be curious what other scenarios there are where user space 
+can easily allocate a lot of unmovable memory.
+
+>   
+>> The existing controls (mlock limit) don't really match the current semantics
+>> of that memory. I repeat it once again: secretmem *currently* resembles
+>> long-term pinned memory, not mlocked memory.
+> 
+> Well, if we had a proper user space pinning accounting then I would
+> agree that there is a better model to use. But we don't. And previous
+> attempts to achieve that have failed. So I am afraid that we do not have
+> much choice left than using mlock as a model.
+
+Yes, I agree.
+
+> 
+>> Things will change when
+>> implementing migration support for secretmem pages. Until then, the
+>> semantics are different and this should be spelled out.
+>>
+>> For long-term pinnings this is kind of obvious, still we're now documenting
+>> it because it's dangerous to not be aware of. Secretmem behaves exactly the
+>> same and I think this is worth spelling out: secretmem has the potential of
+>> being used much more often than fairly special vfio/rdma/ ...
+> 
+> yeah I do agree that pinning is a problem for movable/CMA but most
+> people simply do not care about those. Movable is the thing for hoptlug
+> and a really weird fragmentation avoidance IIRC and CMA is mostly to
+
++ handling gigantic pages dynamically
+
+> handle crap HW. If those are to be used along with secret mem or
+> longterm GUP then they will constantly bump into corner cases. Do not
+> take me wrong, we should be looking at those problems, we should even
+> document them but I do not see this as anything new. We should probably
+> have a central place in Documentation explaining all those problems. I
+
+Exactly.
+
+> would be even happy to see an explicit note in the tunables - e.g.
+> configuring movable/normal in 2:1 will get you back to 32b times wrt.
+> low mem problems.
+
+In most setups, ratios of 1:1 up to 4:1 work reasonably well. Of course, 
+it's not applicable to all setups (obviously).
+
+For example, oVirt has been using ratios of 3:1 for a long time. (online 
+all memory to ZONE_MOVABLE in the guest, never hotplug more than 3x boot 
+memory size). Most distros end up onlining all hotplugged memory on bare 
+metal to ZONE_MOVABLE, and I've seen basically no bug reports related to 
+that.
+
+Highmem was a little different, yet similar. RHEL provided the bigmem 
+kernel with ratios of 60:4, which worked in many setups. The main 
+difference to highmem was that e.g., pagetables could be placed onto it. 
+So ratios like 18:1 are completely insane with ZONE_MOVABLE.
+
+I am constantly trying to fight for making more stuff MOVABLE instead of 
+going into the other direction (e.g., because it's easier to implement, 
+which feels like the wrong direction).
+
+Maybe I am the only person that really cares about ZONE_MOVABLE these 
+days :) I can't stop such new stuff from popping up, so at least I want 
+it to be documented.
+
+-- 
+Thanks,
+
+David / dhildenb
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
