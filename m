@@ -1,57 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E1F316C82
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 18:24:16 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC01316D77
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 18:58:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 820CD100EA903;
-	Wed, 10 Feb 2021 09:24:14 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BFF41100EA902
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 09:24:11 -0800 (PST)
-Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.206])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbRK86P3Bz67mKc;
-	Thu, 11 Feb 2021 01:17:32 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Wed, 10 Feb 2021 18:24:08 +0100
-Received: from localhost (10.47.67.2) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 10 Feb
- 2021 17:24:07 +0000
-Date: Wed, 10 Feb 2021 17:23:07 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ben Widawsky <ben.widawsky@intel.com>
-Subject: Re: [PATCH v2 1/8] cxl/mem: Introduce a driver for CXL-2.0-Type-3
- endpoints
-Message-ID: <20210210172307.000020d5@Huawei.com>
-In-Reply-To: <20210210171220.67bncvfxqwg5wtu4@intel.com>
-References: <20210210000259.635748-1-ben.widawsky@intel.com>
-	<20210210000259.635748-2-ben.widawsky@intel.com>
-	<20210210161707.000073ab@Huawei.com>
-	<20210210171220.67bncvfxqwg5wtu4@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+	by ml01.01.org (Postfix) with ESMTP id 68FEF100EBBB4;
+	Wed, 10 Feb 2021 09:58:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=24.56.89.101; helo=barracuda.auroraoh.com; envelope-from=januskad@auroraoh.com; receiver=<UNKNOWN> 
+Received: from barracuda.auroraoh.com (spam.auroraoh.com [24.56.89.101])
+	by ml01.01.org (Postfix) with ESMTP id B5CA1100ED4BB
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 09:58:19 -0800 (PST)
+X-ASG-Debug-ID: 1612979891-112c0d6a799e8b0003-9siDFq
+Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id RGytFTEIEFolFEj5; Wed, 10 Feb 2021 12:58:12 -0500 (EST)
+X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
+Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
+ (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
+ 02:43:16 -0500
+X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
 MIME-Version: 1.0
-X-Originating-IP: [10.47.67.2]
-X-ClientProxiedBy: lhreml725-chm.china.huawei.com (10.201.108.76) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-Message-ID-Hash: PUC4GJ4IM77AZWZZIKRGABKBI6R5MJT5
-X-Message-ID-Hash: PUC4GJ4IM77AZWZZIKRGABKBI6R5MJT5
-X-MailFrom: jonathan.cameron@huawei.com
+Content-Description: Mail message body
+Subject: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+To: Recipients <januskad@auroraoh.com>
+X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+From: <januskad@auroraoh.com>
+Date: Tue, 9 Feb 2021 15:43:15 +0800
+X-Priority: 1 (High)
+X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <8a74435f-3c35-4b52-8955-3a1b291858bc@COASRV-MAIL2.auroraoh.loc>
+X-Originating-IP: [197.210.29.8]
+X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
+ COASRV-MAIL2.auroraoh.loc (10.3.1.15)
+X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
+X-Barracuda-Start-Time: 1612979891
+X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at auroraoh.com
+X-Barracuda-Scan-Msg-Size: 755
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 1.61
+X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87890
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.00 NO_REAL_NAME           From: does not include a real name
+	0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
+	0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+	                           Address
+	1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
+Message-ID-Hash: GX5UX5D6DGKHGELG26ODU3CFT3LOFROW
+X-Message-ID-Hash: GX5UX5D6DGKHGELG26ODU3CFT3LOFROW
+X-MailFrom: JanuskaD@auroraoh.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, Jonathan Corbet <corbet@lwn.net>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: cfolimiited@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PUC4GJ4IM77AZWZZIKRGABKBI6R5MJT5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GX5UX5D6DGKHGELG26ODU3CFT3LOFROW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,50 +73,20 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Feb 2021 09:12:20 -0800
-Ben Widawsky <ben.widawsky@intel.com> wrote:
+We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
 
-...
-   
-> > > +}
-> > > +
-> > > +static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-> > > +{
-> > > +	struct device *dev = &pdev->dev;
-> > > +	int regloc;
-> > > +
-> > > +	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC_OFFSET);
-> > > +	if (!regloc) {
-> > > +		dev_err(dev, "register location dvsec not found\n");
-> > > +		return -ENXIO;
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static const struct pci_device_id cxl_mem_pci_tbl[] = {
-> > > +	/* PCI class code for CXL.mem Type-3 Devices */
-> > > +	{ PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
-> > > +	  PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF, 0xffffff, 0 },  
-> > 
-> > Having looked at this and thought 'thats a bit tricky to check'
-> > I did a quick grep and seems the kernel is split between this approach
-> > and people going with the mor readable c99 style initiators
-> > 	.class = .. etc
-> > 
-> > Personally I'd find the c99 approach easier to read. 
-> >   
-> 
-> Well, it's Dan's patch, but I did modify this last. I took a look around, and
-> the best fit seems to me seems to be:
-> -       { PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
-> -         PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF, 0xffffff, 0 },
-> +       { PCI_DEVICE_CLASS((PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF), ~0)},
-> 
-> That work for you?
-> 
+We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
 
-Yes that's definitely nicer.
+Please contact us for more details;
+
+
+Kind regards,
+
+Paul McCann
+
+-- 
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
