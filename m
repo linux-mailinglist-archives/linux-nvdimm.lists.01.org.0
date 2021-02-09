@@ -1,58 +1,77 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C5F314BA6
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Feb 2021 10:34:45 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6048314BF7
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Feb 2021 10:46:23 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0B11B100EAB53;
-	Tue,  9 Feb 2021 01:34:44 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=<UNKNOWN> 
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 37415100EAB4D
-	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 01:34:41 -0800 (PST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 0B90868BFE; Tue,  9 Feb 2021 10:34:38 +0100 (CET)
-Date: Tue, 9 Feb 2021 10:34:38 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id 341A1100EAB58;
+	Tue,  9 Feb 2021 01:46:22 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id A41B8100EAB53
+	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 01:46:19 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.81,164,1610380800";
+   d="scan'208";a="104368304"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 09 Feb 2021 17:46:18 +0800
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
+	by cn.fujitsu.com (Postfix) with ESMTP id 7E31B4CE6F81;
+	Tue,  9 Feb 2021 17:46:13 +0800 (CST)
+Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
+ (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 9 Feb
+ 2021 17:46:12 +0800
 Subject: Re: [PATCH 5/7] fsdax: Dedup file range to use a compare function
-Message-ID: <20210209093438.GA630@lst.de>
-References: <20210207170924.2933035-1-ruansy.fnst@cn.fujitsu.com> <20210207170924.2933035-6-ruansy.fnst@cn.fujitsu.com> <20210208151920.GE12872@lst.de> <9193e305-22a1-3928-0675-af1cecd28942@cn.fujitsu.com>
+To: Christoph Hellwig <hch@lst.de>
+References: <20210207170924.2933035-1-ruansy.fnst@cn.fujitsu.com>
+ <20210207170924.2933035-6-ruansy.fnst@cn.fujitsu.com>
+ <20210208151920.GE12872@lst.de>
+ <9193e305-22a1-3928-0675-af1cecd28942@cn.fujitsu.com>
+ <20210209093438.GA630@lst.de>
+From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
+Message-ID: <79b0d65c-95dd-4821-e412-ab27c8cb6942@cn.fujitsu.com>
+Date: Tue, 9 Feb 2021 17:46:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <9193e305-22a1-3928-0675-af1cecd28942@cn.fujitsu.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Message-ID-Hash: SZROXHL5JBQP4NALBYXYS5A3ADVDOMDB
-X-Message-ID-Hash: SZROXHL5JBQP4NALBYXYS5A3ADVDOMDB
-X-MailFrom: hch@lst.de
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, rgoldwyn@suse.de, Goldwyn Rodrigues <rgoldwyn@suse.com>
+In-Reply-To: <20210209093438.GA630@lst.de>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.141]
+X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
+ G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
+X-yoursite-MailScanner-ID: 7E31B4CE6F81.AEF5B
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: 37NTNMQVVWOD5VXWKZP2NME6XGRMUREW
+X-Message-ID-Hash: 37NTNMQVVWOD5VXWKZP2NME6XGRMUREW
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, rgoldwyn@suse.de, Goldwyn Rodrigues <rgoldwyn@suse.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SZROXHL5JBQP4NALBYXYS5A3ADVDOMDB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/37NTNMQVVWOD5VXWKZP2NME6XGRMUREW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Tue, Feb 09, 2021 at 05:15:13PM +0800, Ruan Shiyang wrote:
-> The dax dedupe comparison need the iomap_ops pointer as argument, so my 
-> understanding is that we don't modify the argument list of 
-> generic_remap_file_range_prep(), but move its code into 
-> __generic_remap_file_range_prep() whose argument list can be modified to 
-> accepts the iomap_ops pointer.  Then it looks like this:
-
-I'd say just add the iomap_ops pointer to
-generic_remap_file_range_prep and do away with the extra wrappers.  We
-only have three callers anyway.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCk9uIDIwMjEvMi85IOS4i+WNiDU6MzQsIENocmlzdG9waCBIZWxsd2lnIHdyb3RlOg0KPiBP
+biBUdWUsIEZlYiAwOSwgMjAyMSBhdCAwNToxNToxM1BNICswODAwLCBSdWFuIFNoaXlhbmcgd3Jv
+dGU6DQo+PiBUaGUgZGF4IGRlZHVwZSBjb21wYXJpc29uIG5lZWQgdGhlIGlvbWFwX29wcyBwb2lu
+dGVyIGFzIGFyZ3VtZW50LCBzbyBteQ0KPj4gdW5kZXJzdGFuZGluZyBpcyB0aGF0IHdlIGRvbid0
+IG1vZGlmeSB0aGUgYXJndW1lbnQgbGlzdCBvZg0KPj4gZ2VuZXJpY19yZW1hcF9maWxlX3Jhbmdl
+X3ByZXAoKSwgYnV0IG1vdmUgaXRzIGNvZGUgaW50bw0KPj4gX19nZW5lcmljX3JlbWFwX2ZpbGVf
+cmFuZ2VfcHJlcCgpIHdob3NlIGFyZ3VtZW50IGxpc3QgY2FuIGJlIG1vZGlmaWVkIHRvDQo+PiBh
+Y2NlcHRzIHRoZSBpb21hcF9vcHMgcG9pbnRlci4gIFRoZW4gaXQgbG9va3MgbGlrZSB0aGlzOg0K
+PiANCj4gSSdkIHNheSBqdXN0IGFkZCB0aGUgaW9tYXBfb3BzIHBvaW50ZXIgdG8NCj4gZ2VuZXJp
+Y19yZW1hcF9maWxlX3JhbmdlX3ByZXAgYW5kIGRvIGF3YXkgd2l0aCB0aGUgZXh0cmEgd3JhcHBl
+cnMuICBXZQ0KPiBvbmx5IGhhdmUgdGhyZWUgY2FsbGVycyBhbnl3YXkuDQoNCk9LLg0KDQoNCi0t
+DQpUaGFua3MsDQpSdWFuIFNoaXlhbmcuDQo+IA0KPiANCg0KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
+aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
+bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
