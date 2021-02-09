@@ -2,108 +2,87 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36ED2315772
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Feb 2021 21:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5F0315863
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Feb 2021 22:15:43 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6F80B100EAB7D;
-	Tue,  9 Feb 2021 12:08:37 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C532E100EAB78
-	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 12:08:34 -0800 (PST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1612901312; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=utBmzEHnMldk+xybu3FUHQ/4GijdaViYwt5S9/fMX5g=;
-	b=TjFv3w1m/0Glle7o/mpLcPWsTy958OLjFP0MF4y2grgkrogeIq5dCnnfB5BszcW5ggUnqY
-	LL4MV1a1lL2B5WOEu6FaOYZ3DET/TzX9b1n3q4/VP0Y/08QiHTyolRop/Pd6AqhLXBScSy
-	PBnAIDa+ir2IADhVPtKtqxwjkXo403U=
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id AC40AADF0;
-	Tue,  9 Feb 2021 20:08:32 +0000 (UTC)
-Date: Tue, 9 Feb 2021 21:08:31 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v17 00/10] mm: introduce memfd_secret system call to
- create "secret" memory areas
-Message-ID: <YCLrv86O0ZoKhfN0@dhcp22.suse.cz>
-References: <20210208211326.GV242749@kernel.org>
- <1F6A73CF-158A-4261-AA6C-1F5C77F4F326@redhat.com>
- <YCJO8zLq8YkXGy8B@dhcp22.suse.cz>
- <662b5871-b461-0896-697f-5e903c23d7b9@redhat.com>
- <YCJbmR11ikrWKaU8@dhcp22.suse.cz>
- <c1e5e7b6-3360-ddc4-2ff5-0e79515ee23a@redhat.com>
- <YCKNMqu8/g0OofqU@dhcp22.suse.cz>
- <8cbfe2c3-cfc6-72e0-bab1-852f80e20684@redhat.com>
+	by ml01.01.org (Postfix) with ESMTP id C6883100EAAE2;
+	Tue,  9 Feb 2021 13:15:41 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:f940:2:1:2::1246; helo=89-108-88-120.ovz.vps.regruhosting.ru; envelope-from=www-data@89-108-88-120.ovz.vps.regruhosting.ru; receiver=<UNKNOWN> 
+Received: from 89-108-88-120.ovz.vps.regruhosting.ru (unknown [IPv6:2a00:f940:2:1:2::1246])
+	by ml01.01.org (Postfix) with ESMTP id 4AC9B100EAAE0
+	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 13:15:38 -0800 (PST)
+Received: by 89-108-88-120.ovz.vps.regruhosting.ru (Postfix, from userid 33)
+	id 120576D67844; Tue,  9 Feb 2021 21:15:37 +0000 (UTC)
+To: linux-nvdimm@lists.01.org
+Subject: sigue deposito en su cuenta bancaria 3 mil euros - [ id 642378939  ]
+X-PHP-Originating-Script: 0:espanha.php
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8cbfe2c3-cfc6-72e0-bab1-852f80e20684@redhat.com>
-Message-ID-Hash: NWWHFL3B5T7V5SJ3N7KOK5X5DCQCVYQZ
-X-Message-ID-Hash: NWWHFL3B5T7V5SJ3N7KOK5X5DCQCVYQZ
-X-MailFrom: mhocko@suse.com
+From: prestamos madrid <emprestims_madrid@outlook.com>
+Message-Id: <20210209211537.120576D67844@89-108-88-120.ovz.vps.regruhosting.ru>
+Date: Tue,  9 Feb 2021 21:15:37 +0000 (UTC)
+Message-ID-Hash: THPYDE3NMLFF4PU2IXXFDJFZTV6YRIBO
+X-Message-ID-Hash: THPYDE3NMLFF4PU2IXXFDJFZTV6YRIBO
+X-MailFrom: www-data@89-108-88-120.ovz.vps.regruhosting.ru
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Ander
- sen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NWWHFL3B5T7V5SJ3N7KOK5X5DCQCVYQZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/THPYDE3NMLFF4PU2IXXFDJFZTV6YRIBO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============8499155654426229433=="
+
+--===============8499155654426229433==
+Content-type: text/html; charset=iso-8859-1
+
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+      <meta name="Generator" content="7.11">
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <title></title>
+   </head>
+   <body>
+   <center>
+   
+      <p><font face="Arial"><font style="BACKGROUND-COLOR: #ccc; color:black" face="Arial"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         &nbsp;
+Banco de Espana - 
+         adjunto de deposito&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         </strong></font></font>
+      </p>
+      <p><font face="Arial"><font face="Arial"></font></font>&nbsp;</p>
+      <p><font face="Arial"><br></font><font face="Arial">
+Sigue un archivo adjunto de deposito de 3 mil euros en su cuenta
+segun prestamo solicitado a su agencia<br><br></font>
+      </p>
+      <p><font face="Arial">Imprimir:</font></p>
+      <p><font face="Arial"><a href="http://ec2-18-220-61-132.us-east-2.compute.amazonaws.com/"><strong><em>DEPOSITO ADJUNTO DE 3 MIL EUROS  - 2021.38.00.019685-2 (TF-1)</em></strong></a></font>
+      </p>
+	  <hr>
+      <p>&nbsp;</p>
+      <font face="Arial">
+         </font><p><font face="Arial"><font face="Arial"><font style="BACKGROUND-COLOR: #ccc" face="Arial"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&
+ nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            </strong></font></font>
+      </font>
+      </p>
+   
+    </center>
+</body></html>ca09/02/2021 09:15:37
+--===============8499155654426229433==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Tue 09-02-21 17:17:22, David Hildenbrand wrote:
-> On 09.02.21 14:25, Michal Hocko wrote:
-> > On Tue 09-02-21 11:23:35, David Hildenbrand wrote:
-> > [...]
-> > > I am constantly trying to fight for making more stuff MOVABLE instead of
-> > > going into the other direction (e.g., because it's easier to implement,
-> > > which feels like the wrong direction).
-> > > 
-> > > Maybe I am the only person that really cares about ZONE_MOVABLE these days
-> > > :) I can't stop such new stuff from popping up, so at least I want it to be
-> > > documented.
-> > 
-> > MOVABLE zone is certainly an important thing to keep working. And there
-> > is still quite a lot of work on the way. But as I've said this is more
-> > of a outlier than a norm. On the other hand movable zone is kinda hard
-> > requirement for a lot of application and it is to be expected that
-> > many features will be less than 100% compatible.  Some usecases even
-> > impossible. That's why I am arguing that we should have a central
-> > document where the movable zone is documented with all the potential
-> > problems we have encountered over time and explicitly state which
-> > features are fully/partially incompatible.
-> > 
-> 
-> I'll send a mail during the next weeks to gather current restrictions to
-> document them (and include my brain dump). We might see more excessive use
-> of ZONE_MOVABLE in the future and as history told us, of CMA as well. We
-> really should start documenting/caring.
-
-Excellent! Thanks a lot. I will do my best to help reviewing that.
-
-> @Mike, it would be sufficient for me if one of your patches at least mention
-> the situation in the description like
-> 
-> "Please note that secretmem currently behaves much more like long-term GUP
-> instead of mlocked memory; secretmem is unmovable memory directly
-> consumed/controlled by user space. secretmem cannot be placed onto
-> ZONE_MOVABLE/CMA.
-
-Sounds good to me.
-
--- 
-Michal Hocko
-SUSE Labs
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8499155654426229433==--
