@@ -2,155 +2,53 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A86316E4E
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 19:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C61316F17
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 19:46:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 05550100EA917;
-	Wed, 10 Feb 2021 10:18:53 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+	by ml01.01.org (Postfix) with ESMTP id B76B9100EB831;
+	Wed, 10 Feb 2021 10:46:47 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 38A09100EA915
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 10:18:50 -0800 (PST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11AIDkVP116969;
-	Wed, 10 Feb 2021 18:18:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=ohGq6eEJX7JYWdlL17KxdXJ6R7Tq81Q8fQjrlmt+/ec=;
- b=vFF60VYe+4GQWSIel+3D/5ndJmpcK+GR+nWqp8RcCHu7i3cjRqyvX2Yzv4RyyhU+vACe
- De5mP7CYLLqlsaLf6HQHKGX/062DxbDWIbT4/xv7iumYG1H+JvYjpTU+JWuyG8qzuv46
- HLpz1cR5c0aWGv4Fbvp4HazZYris4ILSZ0fv2JSCN0I2TUm8rloP9XhHCOG+5LeLFfib
- uGLRiNEZ4vXb8qvI87CTstqELvcBJyVNFUd6BfzcnR24vRiVAxe0YjyHq+cxGEHzjPF4
- MXyu3rzlFTS+0wcquHTDpVbqH5eoZ+JqXRc4a5AUmG4e24g4/Y3KD9wPjzpZjmcNk4Z/ aQ==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by userp2120.oracle.com with ESMTP id 36hkrn4fu8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Feb 2021 18:18:45 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11AIA00f074633;
-	Wed, 10 Feb 2021 18:18:44 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2102.outbound.protection.outlook.com [104.47.58.102])
-	by aserp3030.oracle.com with ESMTP id 36j4pqgd1t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Feb 2021 18:18:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W0kwjX5HKrP8K71qGx0b3alIymgDWzCDnkA4jUkeapvRFETMDdosghArKVf3odbrEeFQ8wGjxo2jMRl++gUtchTcXcApHWCv0O5tZY1rkqs/5n2cAr0KC4k2mrTyqOZJSUVn7oPxLHbd1epf2qRp39gt0nl34poDsAShxbKU68gAg/6KmRHQM3rtrJ0PiIoiCT72UG2BNCEM1Z0OZt0NhL3QbZrxhNn+m5rRH806CzlkrWRz2QK1MoaowV9iPLrfR9Hsyx9WgvdD3Ou0V+v/E6Aj2JbHLaZ7To3ZsYtKF7L9jiauky2ZC/zDFiShZ6PLn3FXwJIcW6ySoq4nOoZ2nQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ohGq6eEJX7JYWdlL17KxdXJ6R7Tq81Q8fQjrlmt+/ec=;
- b=mQ537keoIrLtJm8rP/TZPrCn22U3yUcAJpz8nFZ10vItnbaBG5BTmR1zkhmRjDA2vD3QN/n8m7mA6NtT5EhuFpCc2ry1k6bpnWfJyL0dD2R3kkXMSoR7Q4gJs7tNU2G087Z+dXnr7lCt4ADOLWqshQmwxb6p+zrp7fgjjIwn7GbpZAUXQgWhDus19yznX6LkWaJwg0i9NxZANoSOmUzjZOVED0/Lg+ZWzC6qWviNAKG7NA6HNFNxqbsThTEPr+V9RZRyZ8unV5fdhFZ0wgvc/h8bLEukw4WChOVZ5DDW1SUeD5ci4wTlldjujgqjhVN2jp8g8M3X5tIvjog2q21+hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ohGq6eEJX7JYWdlL17KxdXJ6R7Tq81Q8fQjrlmt+/ec=;
- b=c0vjFfRGX+MHPJuoabKiwUsnpJxk2JBq/7QVYqlnrEb5596pswPwq7sZXhfaysPaMof7jwmzQFjYv27mCr65boqUNZ8eRnnN8SwKwLPV0Xf27hvCS6Z/Z6LlPFAlRZn2lGUXolmduoKfGzL2CVETYRcnvMs5sTwMCc3vebyDnis=
-Authentication-Results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=oracle.com;
-Received: from BYAPR10MB3077.namprd10.prod.outlook.com (2603:10b6:a03:8c::12)
- by BYAPR10MB3349.namprd10.prod.outlook.com (2603:10b6:a03:155::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.29; Wed, 10 Feb
- 2021 18:18:42 +0000
-Received: from BYAPR10MB3077.namprd10.prod.outlook.com
- ([fe80::74a8:8649:e20b:d571]) by BYAPR10MB3077.namprd10.prod.outlook.com
- ([fe80::74a8:8649:e20b:d571%7]) with mapi id 15.20.3825.030; Wed, 10 Feb 2021
- 18:18:42 +0000
-Subject: Re: [PATCH] dax: fix default return code of range_parse()
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-References: <20210126021331.1059933-1-ruansy.fnst@cn.fujitsu.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <b685493f-98f5-9717-f88a-308e96440dcd@oracle.com>
-Date: Wed, 10 Feb 2021 18:18:35 +0000
-In-Reply-To: <20210126021331.1059933-1-ruansy.fnst@cn.fujitsu.com>
-Content-Language: en-US
-X-Originating-IP: [94.61.1.144]
-X-ClientProxiedBy: LO4P123CA0212.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::19) To BYAPR10MB3077.namprd10.prod.outlook.com
- (2603:10b6:a03:8c::12)
+	by ml01.01.org (Postfix) with ESMTPS id DBAD0100EBBB3
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 10:46:44 -0800 (PST)
+Received: from fraeml742-chm.china.huawei.com (unknown [172.18.147.226])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbTCm6GX3z67mck;
+	Thu, 11 Feb 2021 02:43:00 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml742-chm.china.huawei.com (10.206.15.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 10 Feb 2021 19:46:42 +0100
+Received: from localhost (10.47.67.2) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 10 Feb
+ 2021 18:46:41 +0000
+Date: Wed, 10 Feb 2021 18:45:40 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v2 4/8] cxl/mem: Add basic IOCTL interface
+Message-ID: <20210210184540.00007536@Huawei.com>
+In-Reply-To: <20210210000259.635748-5-ben.widawsky@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+	<20210210000259.635748-5-ben.widawsky@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.67] (94.61.1.144) by LO4P123CA0212.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:1a5::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.20 via Frontend Transport; Wed, 10 Feb 2021 18:18:40 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b2378be1-550b-44be-69f9-08d8cdf04be9
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3349:
-X-Microsoft-Antispam-PRVS: 
-	<BYAPR10MB3349ADC749C396A7532A05ABBB8D9@BYAPR10MB3349.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	NjPQiefl9QYKQrjICU/AFUFprBe3EAogREPfuAaCYUH5HIg9bibCtDq+vZt1PNYQHAA1NSDWmwyg4+8OQgUp8X3gRnaZgueflmKziQlLiPPSQnG9UzcEyqRQM846ZSB46jdC/rZ+Ku8eZ079BaN1po+u+oV8+Yg6h08uLLSAjFHreInW3QuJT+g6St16uLpThPoR7sLOfxnfgxWjQb3inRvxmzhVf/UevjBLCUBZg042MEDLiwYOCenEmGPFy2oOE090V8Yu1Ax39y/IoSFbUFPg09Wax0/jM3JR9FqMlrEllENg4Z2XF3hOoObBf5csT90AsEbMsqzJNayFMS3O+LynfGmCCtdHBXGNMQFIoZC1DKGiddd19CU2Ngrzaaeo4JE582GZRXLQcgTcGkKhcLAZwNWlq1U6zHWy+YTNbu2uHNAk2LtWmkJU3oZAtLJUb3vrgWqS9BKUiYnQpmfvaPcClfkXFuLP7TB2uWgYWODXeNQ/+KRotV0s7fWNON3BG7VKta8RK/oJW2Y1urW+9yHQzmb70/OZ0Fu2ic283mnhiSqJC7zjaaHi82C0rQQRWbcNtJ9tsCeElVWCpVPyPOZ0z/Bng5DEQoQkpQfVASGO9y8+JnuVK5QR9Ds7YIaY7mD8nTnRxjvzSEVNNaNJ+56WSVh+NnAZpOGMqULsctI=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3077.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(396003)(346002)(366004)(376002)(136003)(86362001)(36756003)(31686004)(478600001)(66946007)(66476007)(66556008)(83380400001)(31696002)(956004)(2616005)(53546011)(8936002)(16526019)(186003)(8676002)(26005)(16576012)(316002)(4744005)(6916009)(2906002)(4326008)(5660300002)(6666004)(966005)(6486002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 
-	=?utf-8?B?UXErV2lnTmVJaGVGRm1WUW5WTlNMM2NQK2t3MDFLckZaTjlSMDVsNDRTM0xy?=
- =?utf-8?B?SjNOdUs2ejl4dHhNVGJQU204QXJ2L1NqbCszdnRRdVEzM0ZWZk9KMlRzSklq?=
- =?utf-8?B?TDFZZDFuSGRrcklZdjY0WXNyNE5aK21KQzNIVU5OWHp6MHVmcG1RYW1uZkww?=
- =?utf-8?B?aU9BZ29ETHYxVDhBK2NyNVVjaHczWFRKVHNneEZaMUFaTjM0UXJ4NE1KL3NR?=
- =?utf-8?B?elE2MDhDTmFEaENySitLbVEvYzVRUHhITUZMek93bDcwYXh4SEZuU05seUZC?=
- =?utf-8?B?Vm9qZW9Ma3NML0YvaTd4NW44VkVWeTN1R3EyZUhBMGtJbXBCdURxcUtGWjM2?=
- =?utf-8?B?UnFvUG1BKy8raVR2RjJsU1dpMXZub2wxTmFnOFhvWElPVUdVS3puSVVuYjFo?=
- =?utf-8?B?ZlBUc09wRkZlRGhaUTkvQkhvNXBXVmVzRDl0TDJtN2tiV2lJOXNNZ2gyZlNx?=
- =?utf-8?B?aEFRS1h5SmRCWUJaR1NSeDkweWU3clNpRlJOQ3lvcm9zN1RKOFhEQStvcDI0?=
- =?utf-8?B?VmJQeHNkclhYMW9pM2dZYVVTVVM2alN1R09xWFpaVkZTNHpFWnlJZ1BTYUtt?=
- =?utf-8?B?NDJSVjA4WnM1WmdKM2Q4Z2ZDRDFnTGZhdHFRY1VJN1lMTEVZbXFBZDZ4cUJI?=
- =?utf-8?B?VndwRW5sVkZqZEFTWjNjL2dqTUVOMzk0ektEZ0k2UTMzWjVoclB5WUgvb2RZ?=
- =?utf-8?B?WkZhdmQ4QWRxOUdoZ3Ayd25sVEpDdE5aaTRJaHk4Y24xSDZaNnZMcmFPTXVZ?=
- =?utf-8?B?OUlXa3JuelczQWN5UFQ2amVQbUFUZElOeGpCVlBuSXdZWXYxRVltL3pUNXdJ?=
- =?utf-8?B?OUVucTUvRTRmb0hCOTBXbWFETXREbktUZUMwbktudHBOVW1JM0pQQmhHdExV?=
- =?utf-8?B?cVNzR2EzZDAwMFpzdmluVjJNQ3FCdU13Wi9hS0gwbmRxdTJacWJiQzA3V2NR?=
- =?utf-8?B?cnN1RVhwcHJxaFFpMzNCWU9LRFF5ZlNSUnZCUStpdVluREtNOWZFY2NNRWxu?=
- =?utf-8?B?TC9XZzV2S1VSOWFPa0U1T2IzeTBUZGhVZ3U1VzdDYi93ZlVqUUFtQk9GZmdo?=
- =?utf-8?B?TFJ5cHNZYzBhd0lxLzNyQlE2V3FZVXRXQUthdlYzME9UYXdkZXI5KzB3Njg3?=
- =?utf-8?B?VmRCeVJwbzVVMHVNeFduR2c3eUI5Y2RXc1FialNCcGUzd2ZxUlRxVjdXT0hl?=
- =?utf-8?B?cmc3TGxtNmVycGN2ejlSQTRVYWNETS9TeHgvVnU5NTFZbjFrN3Yrc29xS0hE?=
- =?utf-8?B?aGZ6MFdvRUxZZlRPZGNENzRDMHR4WjREbHFGdjlCNDBzMGluYUV0TythSU55?=
- =?utf-8?B?eDlESEFpdExFallkN1lzRU84Y09UZUppaXY4TUk4dFA1TXp6N0FXSjJNYldZ?=
- =?utf-8?B?Z24vLzZtak5UaCs0aDhyaVJDcHlrYjVjK0ptVkxLcTBWdmV4RklSMnIwdWNY?=
- =?utf-8?B?b2VTYTNWYk10dFh2ZDN2dWs4RjE4OXA1T1E5WFBKUjR5WFRxbVhlampJR0Zq?=
- =?utf-8?B?b2tLaWJMbng4S3ZpQmNrUFNuaTl3eXJJdEFQK2E4R1V4RlBCbnR2SUZOMlEx?=
- =?utf-8?B?TnBERjBWUVlaZGF5MWZWWnI5ZTV6VVVKanY3MjdSS3g2bkpCWklSTTJ0amVR?=
- =?utf-8?B?cDZaSkdETlVpZXUxdFpobThmMVBwaFllS3NxTkRXbHAyeWloV1dkMmdOSUVX?=
- =?utf-8?B?T2tEZTZUL2UxZEJXVFpxTlhDempIakFwVGJvcnVvUmZEVmhYTWJ4dnNHeG9k?=
- =?utf-8?Q?ZdI45X0n45hc3mpli17qbVb0AlcO0uCV4eAvdGw?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2378be1-550b-44be-69f9-08d8cdf04be9
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3077.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2021 18:18:42.4407
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xvwnhhh8qmoVDHMGHRKNVwVcYTaNrXkvtqnbmfg6nEtT+0cQ8qwjSh2s9K+JeCA0FnnUM5+8RrSthmQdC25Keq3JL88QoGbzTG8cRaJe8aI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3349
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9891 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102100166
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9891 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 adultscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102100166
-Message-ID-Hash: SYRBTAH7CIXLDCY5J6GRXO6LILATYHKK
-X-Message-ID-Hash: SYRBTAH7CIXLDCY5J6GRXO6LILATYHKK
-X-MailFrom: joao.m.martins@oracle.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+X-Originating-IP: [10.47.67.2]
+X-ClientProxiedBy: lhreml725-chm.china.huawei.com (10.201.108.76) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+Message-ID-Hash: GEV3IAET3FTMLO6KN7I7LMFCYUOFVP33
+X-Message-ID-Hash: GEV3IAET3FTMLO6KN7I7LMFCYUOFVP33
+X-MailFrom: jonathan.cameron@huawei.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, kernel test robot <lkp@intel.com>, Dan Williams <dan.j.willams@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SYRBTAH7CIXLDCY5J6GRXO6LILATYHKK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GEV3IAET3FTMLO6KN7I7LMFCYUOFVP33/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -159,37 +57,351 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 1/26/21 2:13 AM, Shiyang Ruan wrote:
-> The return value of range_parse() indicates the size when it is
-> positive.  The error code should be negative.
+On Tue, 9 Feb 2021 16:02:55 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
+
+> Add a straightforward IOCTL that provides a mechanism for userspace to
+> query the supported memory device commands. CXL commands as they appear
+> to userspace are described as part of the UAPI kerneldoc. The command
+> list returned via this IOCTL will contain the full set of commands that
+> the driver supports, however, some of those commands may not be
+> available for use by userspace.
 > 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+> Memory device commands first appear in the CXL 2.0 specification. They
+> are submitted through a mailbox mechanism specified also originally
+> specified in the CXL 2.0 specification.
+> 
+> The send command allows userspace to issue mailbox commands directly to
+> the hardware. The list of available commands to send are the output of
+> the query command. The driver verifies basic properties of the command
+> and possibly inspect the input (or output) payload to determine whether
+> or not the command is allowed (or might taint the kernel).
+> 
+> Reported-by: kernel test robot <lkp@intel.com> # bug in earlier revision
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> Reviewed-by: Dan Williams <dan.j.willams@intel.com>
 
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+A bit of anti macro commentary below.  Heavy use of them may make the code
+shorter, but I'd argue they make it harder to do review if you've not looked
+at a given bit of code for a while.
 
-Although, FWIW, there was another patch exactly like this a couple
-months ago, albeit it didn't get pulled for some reason:
+Also there is a bit of documentation in here for flags that don't seem to
+exist (at this stage anyway) - may just be in the wrong patch.
 
-https://lore.kernel.org/linux-nvdimm/20201026110425.136629-1-zhangqilong3@huawei.com/
+Jonathan
+
 
 > ---
->  drivers/dax/bus.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .clang-format                                 |   1 +
+>  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+>  drivers/cxl/mem.c                             | 291 +++++++++++++++++-
+>  include/uapi/linux/cxl_mem.h                  | 152 +++++++++
+>  4 files changed, 443 insertions(+), 2 deletions(-)
+>  create mode 100644 include/uapi/linux/cxl_mem.h
 > 
-> diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-> index 737b207c9e30..3003558c1a8b 100644
-> --- a/drivers/dax/bus.c
-> +++ b/drivers/dax/bus.c
-> @@ -1038,7 +1038,7 @@ static ssize_t range_parse(const char *opt, size_t len, struct range *range)
->  {
->  	unsigned long long addr = 0;
->  	char *start, *end, *str;
-> -	ssize_t rc = EINVAL;
-> +	ssize_t rc = -EINVAL;
+> diff --git a/.clang-format b/.clang-format
+> index 10dc5a9a61b3..3f11c8901b43 100644
+> --- a/.clang-format
+> +++ b/.clang-format
+> @@ -109,6 +109,7 @@ ForEachMacros:
+>    - 'css_for_each_child'
+>    - 'css_for_each_descendant_post'
+>    - 'css_for_each_descendant_pre'
+> +  - 'cxl_for_each_cmd'
+>    - 'device_for_each_child_node'
+>    - 'dma_fence_chain_for_each'
+>    - 'do_for_each_ftrace_op'
+> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+> index a4c75a28c839..6eb8e634664d 100644
+> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
+> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+> @@ -352,6 +352,7 @@ Code  Seq#    Include File                                           Comments
+>                                                                       <mailto:michael.klein@puffin.lb.shuttle.de>
+>  0xCC  00-0F  drivers/misc/ibmvmc.h                                   pseries VMC driver
+>  0xCD  01     linux/reiserfs_fs.h
+> +0xCE  01-02  uapi/linux/cxl_mem.h                                    Compute Express Link Memory Devices
+>  0xCF  02     fs/cifs/ioctl.c
+>  0xDB  00-0F  drivers/char/mwave/mwavepub.h
+>  0xDD  00-3F                                                          ZFCP device driver see drivers/s390/scsi/
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index 8bbd2495e237..ce65630bb75e 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /* Copyright(c) 2020 Intel Corporation. All rights reserved. */
+> +#include <uapi/linux/cxl_mem.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/cdev.h>
+> @@ -39,6 +40,7 @@
+>  #define CXL_MAILBOX_TIMEOUT_MS (2 * HZ)
 >  
->  	str = kstrdup(opt, GFP_KERNEL);
->  	if (!str)
-> 
+>  enum opcode {
+> +	CXL_MBOX_OP_INVALID		= 0x0000,
+>  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
+>  	CXL_MBOX_OP_MAX			= 0x10000
+>  };
+> @@ -90,9 +92,57 @@ struct cxl_memdev {
+>  static int cxl_mem_major;
+>  static DEFINE_IDA(cxl_memdev_ida);
+>  
+> +/**
+> + * struct cxl_mem_command - Driver representation of a memory device command
+> + * @info: Command information as it exists for the UAPI
+> + * @opcode: The actual bits used for the mailbox protocol
+> + * @flags: Set of flags reflecting the state of the command.
+> + *
+> + *  * %CXL_CMD_FLAG_MANDATORY: Hardware must support this command. This flag is
+> + *    only used internally by the driver for sanity checking.
+
+Doesn't seem to be defined yet.
+
+> + *
+> + * The cxl_mem_command is the driver's internal representation of commands that
+> + * are supported by the driver. Some of these commands may not be supported by
+> + * the hardware. The driver will use @info to validate the fields passed in by
+> + * the user then submit the @opcode to the hardware.
+> + *
+> + * See struct cxl_command_info.
+> + */
+> +struct cxl_mem_command {
+> +	struct cxl_command_info info;
+> +	enum opcode opcode;
+> +};
+> +
+> +#define CXL_CMD(_id, _flags, sin, sout)                                        \
+> +	[CXL_MEM_COMMAND_ID_##_id] = {                                         \
+> +	.info =	{                                                              \
+> +			.id = CXL_MEM_COMMAND_ID_##_id,                        \
+> +			.flags = CXL_MEM_COMMAND_FLAG_##_flags,                \
+> +			.size_in = sin,                                        \
+> +			.size_out = sout,                                      \
+> +		},                                                             \
+> +	.opcode = CXL_MBOX_OP_##_id,                                           \
+> +	}
+> +
+> +/*
+> + * This table defines the supported mailbox commands for the driver. This table
+> + * is made up of a UAPI structure. Non-negative values as parameters in the
+> + * table will be validated against the user's input. For example, if size_in is
+> + * 0, and the user passed in 1, it is an error.
+> + */
+> +static struct cxl_mem_command mem_commands[] = {
+> +	CXL_CMD(IDENTIFY, NONE, 0, 0x43),
+> +};
+
+As below, I'm doubtful about the macro magic and would rather see the
+long hand version. It's a fwe more characters but I can immediately see if fields
+are in the right places etc and we can skip the 0 default values.
+
+static struct cxl_mem_command mem_commands[] = {
+	[CXL_MEM_COMMAND_ID_IDENTIFY] = {
+		.info = {
+			.id = CXL_MEM_COMMAND_ID_IDENTIFY,
+			.size_out = 0x43,
+		},
+		.opcode = CXL_MBOX_OP_IDENTIFY,	
+	},
+};
+
+Still it's your driver and I guess I'll guess I can probably get my head around
+this macro..
+
+>  
+> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
+> new file mode 100644
+> index 000000000000..f1f7e9f32ea5
+> --- /dev/null
+> +++ b/include/uapi/linux/cxl_mem.h
+> @@ -0,0 +1,152 @@
+> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+> +/*
+> + * CXL IOCTLs for Memory Devices
+> + */
+> +
+> +#ifndef _UAPI_CXL_MEM_H_
+> +#define _UAPI_CXL_MEM_H_
+> +
+> +#include <linux/types.h>
+> +
+> +/**
+> + * DOC: UAPI
+> + *
+> + * Not all of all commands that the driver supports are always available for use
+> + * by userspace. Userspace must check the results from the QUERY command in
+> + * order to determine the live set of commands.
+> + */
+> +
+> +#define CXL_MEM_QUERY_COMMANDS _IOR(0xCE, 1, struct cxl_mem_query_commands)
+> +#define CXL_MEM_SEND_COMMAND _IOWR(0xCE, 2, struct cxl_send_command)
+> +
+> +#define CXL_CMDS                                                          \
+> +	___C(INVALID, "Invalid Command"),                                 \
+> +	___C(IDENTIFY, "Identify Command"),                               \
+> +	___C(MAX, "Last command")
+> +
+> +#define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+> +enum { CXL_CMDS };
+> +
+> +#undef ___C
+> +#define ___C(a, b) { b }
+> +static const struct {
+> +	const char *name;
+> +} cxl_command_names[] = { CXL_CMDS };
+> +#undef ___C
+
+Unless there are going to be a lot of these, I'd just write them out long hand
+as much more readable than the macro magic.
+
+enum {
+	CXL_MEM_COMMAND_ID_INVALID,
+	CXL_MEM_COMMAND_ID_IDENTIFY,
+	CXL_MEM_COMMAND_ID_MAX
+};
+
+static const struct {
+	const char *name;
+} cxl_command_names[] = {
+	[CXL_MEM_COMMAND_ID_INVALID] = { "Invalid Command" },
+	[CXL_MEM_COMMAND_ID_IDENTIFY] = { "Identify Comamnd" },
+	/* I hope you never need the Last command to exist in here as that sounds like a bug */
+};
+
+That's assuming I actually figured the macro fun out correctly.
+To my mind it's worth doing this stuff for 'lots' no so much for 3.
+
+> +
+> +/**
+> + * struct cxl_command_info - Command information returned from a query.
+> + * @id: ID number for the command.
+> + * @flags: Flags that specify command behavior.
+> + *
+> + *  * %CXL_MEM_COMMAND_FLAG_KERNEL: This command is reserved for exclusive
+> + *    kernel use.
+> + *  * %CXL_MEM_COMMAND_FLAG_MUTEX: This command may require coordination with
+> + *    the kernel in order to complete successfully.
+Doesn't correspond to the flags defined below.  If introduced in a later patch
+then bring the docs in with the first use.
+
+> + *
+> + * @size_in: Expected input size, or -1 if variable length.
+> + * @size_out: Expected output size, or -1 if variable length.
+> + *
+> + * Represents a single command that is supported by both the driver and the
+> + * hardware. This is returned as part of an array from the query ioctl. The
+> + * following would be a command named "foobar" that takes a variable length
+> + * input and returns 0 bytes of output.
+
+Why give it a name?  It's just an id!
+
+> + *
+> + *  - @id = 10
+> + *  - @flags = CXL_MEM_COMMAND_FLAG_MUTEX
+
+That flag doesn't seem to be defined below.
+
+> + *  - @size_in = -1
+> + *  - @size_out = 0
+> + *
+> + * See struct cxl_mem_query_commands.
+> + */
+> +struct cxl_command_info {
+> +	__u32 id;
+> +
+> +	__u32 flags;
+> +#define CXL_MEM_COMMAND_FLAG_NONE 0
+> +#define CXL_MEM_COMMAND_FLAG_KERNEL BIT(0)
+> +#define CXL_MEM_COMMAND_FLAG_MASK GENMASK(1, 0)
+> +
+> +	__s32 size_in;
+> +	__s32 size_out;
+> +};
+> +
+> +/**
+> + * struct cxl_mem_query_commands - Query supported commands.
+> + * @n_commands: In/out parameter. When @n_commands is > 0, the driver will
+> + *		return min(num_support_commands, n_commands). When @n_commands
+> + *		is 0, driver will return the number of total supported commands.
+> + * @rsvd: Reserved for future use.
+> + * @commands: Output array of supported commands. This array must be allocated
+> + *            by userspace to be at least min(num_support_commands, @n_commands)
+> + *
+> + * Allow userspace to query the available commands supported by both the driver,
+> + * and the hardware. Commands that aren't supported by either the driver, or the
+> + * hardware are not returned in the query.
+> + *
+> + * Examples:
+> + *
+> + *  - { .n_commands = 0 } // Get number of supported commands
+> + *  - { .n_commands = 15, .commands = buf } // Return first 15 (or less)
+> + *    supported commands
+> + *
+> + *  See struct cxl_command_info.
+> + */
+> +struct cxl_mem_query_commands {
+> +	/*
+> +	 * Input: Number of commands to return (space allocated by user)
+> +	 * Output: Number of commands supported by the driver/hardware
+> +	 *
+> +	 * If n_commands is 0, kernel will only return number of commands and
+> +	 * not try to populate commands[], thus allowing userspace to know how
+> +	 * much space to allocate
+> +	 */
+> +	__u32 n_commands;
+> +	__u32 rsvd;
+> +
+> +	struct cxl_command_info __user commands[]; /* out: supported commands */
+> +};
+> +
+> +/**
+> + * struct cxl_send_command - Send a command to a memory device.
+> + * @id: The command to send to the memory device. This must be one of the
+> + *	commands returned by the query command.
+> + * @flags: Flags for the command (input).
+> + * @rsvd: Must be zero.
+> + * @retval: Return value from the memory device (output).
+> + * @in.size: Size of the payload to provide to the device (input).
+> + * @in.rsvd: Must be zero.
+> + * @in.payload: Pointer to memory for payload input (little endian order).
+
+Silly point, but perhaps distinguish it's the payload that is in little endian order
+not the pointer.  (I obviously haven't had enough coffee today and missread it)
+
+
+> + * @out.size: Size of the payload received from the device (input/output). This
+> + *	      field is filled in by userspace to let the driver know how much
+> + *	      space was allocated for output. It is populated by the driver to
+> + *	      let userspace know how large the output payload actually was.
+> + * @out.rsvd: Must be zero.
+> + * @out.payload: Pointer to memory for payload output (little endian order).
+> + *
+> + * Mechanism for userspace to send a command to the hardware for processing. The
+> + * driver will do basic validation on the command sizes. In some cases even the
+> + * payload may be introspected. Userspace is required to allocate large
+> + * enough buffers for size_out which can be variable length in certain
+> + * situations.
+> + */
+> +struct cxl_send_command {
+> +	__u32 id;
+> +	__u32 flags;
+> +	__u32 rsvd;
+> +	__u32 retval;
+> +
+> +	struct {
+> +		__s32 size;
+> +		__u32 rsvd;
+> +		__u64 payload;
+> +	} in;
+> +
+> +	struct {
+> +		__s32 size;
+> +		__u32 rsvd;
+> +		__u64 payload;
+> +	} out;
+> +};
+> +
+> +#endif
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
