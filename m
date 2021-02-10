@@ -1,54 +1,153 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059DC316D03
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 18:42:16 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C1B316DB6
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 19:03:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 21688100EA90D;
-	Wed, 10 Feb 2021 09:42:14 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by ml01.01.org (Postfix) with ESMTP id 3EFBA100EA911;
+	Wed, 10 Feb 2021 10:03:47 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=68.232.154.123; helo=esa.microchip.iphmx.com; envelope-from=ariel.sibley@microchip.com; receiver=<UNKNOWN> 
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A9079100EA90C
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 09:42:11 -0800 (PST)
-Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.206])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbRjv1YlDz67mTF;
-	Thu, 11 Feb 2021 01:35:31 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Wed, 10 Feb 2021 18:42:06 +0100
-Received: from localhost (10.47.67.2) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Wed, 10 Feb
- 2021 17:42:05 +0000
-Date: Wed, 10 Feb 2021 17:41:04 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ben Widawsky <ben.widawsky@intel.com>
-Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
-Message-ID: <20210210174104.0000710a@Huawei.com>
-In-Reply-To: <20210210000259.635748-3-ben.widawsky@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 44F27100EA910
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 10:03:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1612980224; x=1644516224;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=DJ+9Kkc1J5DopGIRKe4YqGARUu/skXfsV21LdBZrulw=;
+  b=z32c0KbzAuH33fHY5m2iulwc5tDu9mnjTAMYn2WqnxaLpVqqJk7kFGhJ
+   RDMRm/zLgAqPI/wjbvEgYyJcuzPXpDr8aSdDSoYnRLJ8o25SKBk4DUiOW
+   7C6TWYYNuuRgDt5C2Rbni5l3N2kVV8Xo5zzQrv82FchYeX90UEaNJNa0/
+   KQqkT+Kl6WMXnUACbhzCrQVA0PzUQm29BU7RZNOxPWnrmUF4eDoXOTuGu
+   Lsb4yE8jLXaAq+EqIe7kKHBBOgUwLWae9PdkRXWoECuoAjw274Z1f8/83
+   UKcZHNEB0D8QklILt2HUqH/lniENwzU+VtqKj9rV19wNfkZsfv+OUG0Hw
+   g==;
+IronPort-SDR: LlMoBaDMnFdhuozyciwETT3M9F4J+vgS5Dc+7A9WSBoBsrIW+WTX8nTQ4UWKKb0eazVgOMfiA3
+ lcARfWZayqoRqiAAB/i7lq0ONRh9ftxb8C3T/HQIrIWFsGXyeqIpZ6XULrulf805S+G/cnOI6+
+ DqoCnKyzlQdPaOsvvBfo2V9da0kZhUR/hEoPVVCkjsIkjXasXmVzuzN1CQbdGUqVzPVyKL+V/9
+ pcnOahgrC37EjpKvX9/hmCeBsxV25+3SnuPRDL/jxFbdfhg8LaRK9bRhgmU+VOYsnuC1GcoiyJ
+ VV4=
+X-IronPort-AV: E=Sophos;i="5.81,168,1610434800";
+   d="scan'208";a="106153187"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Feb 2021 11:03:42 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Wed, 10 Feb 2021 11:03:42 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3 via Frontend
+ Transport; Wed, 10 Feb 2021 11:03:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SeCiLASgnJanIyDlABuFRmZr5MkSCPFShf0dZrY+JStXUcZXvZQVkTR2Qwxt82cM4lfqh06JHhksguWF67aMYVsU+O3x/eMBGk856mmWwHuIqhCmeHr0PZtNFtV3vu79BpZVb7q1CER9bB/YUBpZr9i77Bm+6bz/4/Tu/s9qVxd+ugZ8MZnRzznWR8oaXvjnQAXxIZ0UcnDq9BV+PmwQ46Lxtk4/cPdNxrzyk/c8W7TrbjVkBwvlJDOr286JljqagMCyP+grbJc7BJnGLoFbHer1vWCVWN8zHl3nhqwhYUZusD67qXa2n7bH2pzu01i+CfavLaZxJ74h4zzQxNVcoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DJ+9Kkc1J5DopGIRKe4YqGARUu/skXfsV21LdBZrulw=;
+ b=SPO8TT8IX3mVK7fx4c8NblZrthNsuGWCoIgtrSTei3VXYyVoFkHGJv0WsdbXgXeBhne0/2YYUfbnhx+R8HG6deDAamsg+fdE4WE2ZcSp1WKwc3aWkf8BYUYSJm1AzqAV6EkPwSG116NdV4NI4s6NTYPvBi6zVUHpU57QEt6CfiF8PUGlNi125CsaIeDaMKTnLzu29Qb+mzhQAj71cZWs8fgsG4Abiv5rf91r4bWC0alBspyAF88daknkIXJIW8q09V3M8YtA8+WOLpJrWxb98/0n/jY9DoUZY+AKuVOkbRTHvSsU2u1R6iwPWvq19S5FhKu0AebkWWpVjXH8S5ED9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DJ+9Kkc1J5DopGIRKe4YqGARUu/skXfsV21LdBZrulw=;
+ b=DbcWfPYEjgcCjBFDe7oi26ugKtvCCI7MUEqCUZI8TIKVyIuNgzRrSpDmi7lxRAttl6wtRNvTI+1TaXkqqx2dUfiBn4Yf8aSbv5T7INGUvBgEYLW8Ni18N6vWsRwCGf41GLFUqndA0anaxe2BNKpyW5OSfs0SOheS/T8pNjk0fP8=
+Received: from MN2PR11MB3645.namprd11.prod.outlook.com (2603:10b6:208:f8::13)
+ by MN2PR11MB3856.namprd11.prod.outlook.com (2603:10b6:208:ef::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.27; Wed, 10 Feb
+ 2021 18:03:36 +0000
+Received: from MN2PR11MB3645.namprd11.prod.outlook.com
+ ([fe80::51c7:31cf:308f:4c30]) by MN2PR11MB3645.namprd11.prod.outlook.com
+ ([fe80::51c7:31cf:308f:4c30%5]) with mapi id 15.20.3825.030; Wed, 10 Feb 2021
+ 18:03:36 +0000
+From: <Ariel.Sibley@microchip.com>
+To: <ben.widawsky@intel.com>
+Subject: RE: [PATCH v2 5/8] cxl/mem: Add a "RAW" send command
+Thread-Topic: [PATCH v2 5/8] cxl/mem: Add a "RAW" send command
+Thread-Index: AQHW/0AqZCOVul459UanKz+acVTCvapRfUwQgAAdewCAAAx2IA==
+Date: Wed, 10 Feb 2021 18:03:35 +0000
+Message-ID: <MN2PR11MB36450EFC1729D9A4CDB2FB27888D9@MN2PR11MB3645.namprd11.prod.outlook.com>
 References: <20210210000259.635748-1-ben.widawsky@intel.com>
-	<20210210000259.635748-3-ben.widawsky@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+ <20210210000259.635748-6-ben.widawsky@intel.com>
+ <MN2PR11MB36455574E25237635D3F9CC0888D9@MN2PR11MB3645.namprd11.prod.outlook.com>
+ <20210210164904.lfhtfvlyeypfpjhe@intel.com>
+In-Reply-To: <20210210164904.lfhtfvlyeypfpjhe@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=microchip.com;
+x-originating-ip: [142.134.145.175]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1be68f97-d6dd-421d-dcb6-08d8cdee2fe3
+x-ms-traffictypediagnostic: MN2PR11MB3856:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR11MB385637DA454C5F0B17DD800E888D9@MN2PR11MB3856.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: VGw5lSVDsEA26xJgkcrh4HeKvKdBjMhFt+K32htYVJVHtlzN1FBdgpmVMku8D12eRlm1hqT1m3Kp8WcmF7hx5kMtjIbVHaUWCgaOu4KIrzqZpUtu+AxdMm5T1G0FtM4Ni/1t6uh4Otud9iwMSVHebC2ox1QWUyKmw6Vf7oY8gliNdCcqFiq2mxaxZDWtVdMtoLPsBb4OskQTPLwL3fkN32C9cECVPB1BdAuRRH1giWYVIK28Ip/hPzCzllN1HIdoeWNARVSTFTpRy/IIBvJTSQcnhYx/7AvWrQtaZjARn5bIvHDrLgG8JE/MIm0riRtkR7X1Qgr3YfQu6RYCpnIqsC1ZFBMFb0+vmqF47BHYvBlfMk/UjE0Svv/1qYel5AKPYhXy5wvMXlug5xcf/PgX9+i57Uq1dDW5veSYRbnSiIFzPuRXuTawtXMu+1cpMbPqTYUq1j9TIfS21mu1RFrQjYQPXccDlubH258EN7SuhMo2bVY+s5pHu112D4pTvGZCJ4FR4UQ8kmQb9oDpWRSqbQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(136003)(376002)(396003)(346002)(39860400002)(33656002)(9686003)(6506007)(478600001)(8936002)(55016002)(54906003)(7416002)(316002)(8676002)(71200400001)(66446008)(66556008)(66476007)(66946007)(76116006)(64756008)(86362001)(26005)(2906002)(7696005)(186003)(4326008)(83380400001)(6916009)(52536014)(5660300002)(107886003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: =?utf-8?B?d25HNHhUbkxmWUN4STR6d0NTVHhlTnVqNWtRb3JhOEdDWms3TG5sWWNCd0hI?=
+ =?utf-8?B?c1JOdDJGcVdsa1dxMS8wS3JWU3U5c0YyS2dlWk5DbGM0d2Vzd1RXTEVRQ045?=
+ =?utf-8?B?NDhrYUIxbWovWGtxY0M1cGpOR2dlZ1JFcjFYcU5YYStIajhmU3hxNUNDbUR6?=
+ =?utf-8?B?cjZ0SGNmOW52ZThSVmRlYXRZQzRaRmYwckZPQ0UzSStLVWQxN2J3clBNelM1?=
+ =?utf-8?B?VThzbFd2V1BFNDRETEp6L0U2aHg4ZUR0c05Lbm1xeGRoYmIzTEVKVTVlTGlm?=
+ =?utf-8?B?Qmw5cGh3b3NtKzJxQjNXZXZ6Sy9EZHF3NWEwVmlOTUU4anRzUm12djVPeWY1?=
+ =?utf-8?B?aXQyZTdwVzJEWG4zZThZelp2M1F4Y0xPdUc4Mk90Si9RWnBQL2NJVVJ1N0RP?=
+ =?utf-8?B?czVQTmsvakpQQk9wODJFcUZlUGhtZE9CSFJ4UC9hVTRhUGpGaU9mS2VUblFn?=
+ =?utf-8?B?OEtUQmdWT213WGFFQUpiRlNRQ0VjaFQ3Zm1ENlMxVGptdWVqUlBRTzk5eUhw?=
+ =?utf-8?B?d0FnV3RCMEEvNXlxdE1TNnVuZnlkSGxvZklQeE5NRExaYW1PRVFlUkhGa0FZ?=
+ =?utf-8?B?dkhVZThPV2N5VmljQ0c5d2ZWTkxoengrWFpaZlJqa3lqQytkZ0J4VWFqTUVI?=
+ =?utf-8?B?bnhsQkd0aUlQdU03cFVrUDJtbEV4TG50dHFOR0FaZWRBKzkxTmczcEFFZ3I3?=
+ =?utf-8?B?MC9vYXRtUzNMbXIvMytCdnMxZnJ0NUVDbFJHWFJRczlORGpoRVVmbWIxYWxl?=
+ =?utf-8?B?QkVVQVcvVmxaRi8vVGdldFlLakhrRSsxcDBYY0NVQndtSk1jQW50a1RJYTBJ?=
+ =?utf-8?B?Q3hGdW9oZERsdXV1d0wwd000ZXd0NHN6T1NHaGVpUUxtMjdvei9HSEdqVmxI?=
+ =?utf-8?B?MWlsbUFBeGNPejY5emhKRjlod016dzVTVmhvUWZvYjlQNXZyT1hFZ1RINkRM?=
+ =?utf-8?B?ZDZpU3FvMzFXWkxxcXJQN3BOOGdzLzF3S3lFaDJoK096RjN0am5MZGhpWjJU?=
+ =?utf-8?B?eHlxYTVDZEE1NzlPZzN0Sk1zUXhYSmNRRmVzeWFldFBGbDFWaU90cm43bVd2?=
+ =?utf-8?B?M3B0TENQUmRHbzFVSW92OWUzRlRKRG1DNlpjK2pwaWNZV3YxcTdPM1hUSVVC?=
+ =?utf-8?B?d1ZWQWh3d1RVVVVtb0I3SEV5VnljQUdhdXZlWkovN25RSzN3LytXYVNIRnVY?=
+ =?utf-8?B?UDVsb1lIWFhDblFPMTRBeUNyOTVhMmp5Zi81RVJVVjk4S2RSa1NBRXJWTFJx?=
+ =?utf-8?B?RTFsWEt4b0s5cThRaCtJYXB5dmVFK0hqR3o1V3Q3czZhYzJJT3VRSjh4ZE5C?=
+ =?utf-8?B?WFI4enFIdkdlMTBpZkMxSWNYcXZjL2orOXJaTDg3anFXV3NncHdaUDVqSTZI?=
+ =?utf-8?B?NnBMUmdMN3gwSjA0S3QweTFadHZYSXJSQzNDVWlXTVNzSW43cC9ITjRkdUt4?=
+ =?utf-8?B?dU5tNXkyWDRsOGdGT1ROWGMraytLMVk4WlFVb1hJMmQ5UTBJaGhJcmZJbm9M?=
+ =?utf-8?B?M0VWM3EzNjl4KzdrdUtOUEhHbDNoL3NGR0dZWTNxcEZzbFZ3ckZYRDVPeFJ0?=
+ =?utf-8?B?QldQcEtXREdIcG8rSGhWY2tkUG5tblQ3eXZHaUd2eDlCcUZJN2UrbzErelFP?=
+ =?utf-8?B?OTkyZmNPZFJnQWdvYzBsSnlkN0N1eDl0TjAxd1lLUFpJK2d6OGJsUzN0eWs0?=
+ =?utf-8?B?Umx1dEhCT3RTNExmeFpSczBTdGJhVWo0a2dubXhaUXRYVkJvd3JlY2hwWjBZ?=
+ =?utf-8?Q?06A+2RcRBfZxGBYVjJE4xf45yBph+wqvmaM7ga9?=
 MIME-Version: 1.0
-X-Originating-IP: [10.47.67.2]
-X-ClientProxiedBy: lhreml725-chm.china.huawei.com (10.201.108.76) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-Message-ID-Hash: LPVNGGMABPV6AGJ4LMRV3JK3QF4AKLTJ
-X-Message-ID-Hash: LPVNGGMABPV6AGJ4LMRV3JK3QF4AKLTJ
-X-MailFrom: jonathan.cameron@huawei.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3645.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1be68f97-d6dd-421d-dcb6-08d8cdee2fe3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Feb 2021 18:03:35.9599
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zu1rEbW7cHnnKLjEh6ri4r0xUbti1DgOO+SIyiDf2gBThJLk7DcIF8A8claAAIPeivUE8DStZX1m4ipS7ibzZ4nFkuOboeB89tfd6hfZ+Qw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB3856
+Message-ID-Hash: FXMG5M4XPA7FH2AOAH5DMHNI6A7JGWOZ
+X-Message-ID-Hash: FXMG5M4XPA7FH2AOAH5DMHNI6A7JGWOZ
+X-MailFrom: Ariel.Sibley@microchip.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, helgaas@kernel.org, cbrowy@avery-design.com, hch@infradead.org, david@redhat.com, rientjes@google.com, jcm@jonmasters.org, Jonathan.Cameron@huawei.com, rafael.j.wysocki@intel.com, rdunlap@infradead.org, jgroves@micron.com, sean.v.kelley@intel.com, Ahmad.Danesh@microchip.com, Varada.Dighe@microchip.com, Kirthi.Shenoy@microchip.com, Sanjay.Goyal@microchip.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LPVNGGMABPV6AGJ4LMRV3JK3QF4AKLTJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FXMG5M4XPA7FH2AOAH5DMHNI6A7JGWOZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -57,502 +156,100 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Feb 2021 16:02:53 -0800
-Ben Widawsky <ben.widawsky@intel.com> wrote:
-
-> Provide enough functionality to utilize the mailbox of a memory device.
-> The mailbox is used to interact with the firmware running on the memory
-> device. The flow is proven with one implemented command, "identify".
-> Because the class code has already told the driver this is a memory
-> device and the identify command is mandatory.
+> > > diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> > > index c4ba3aa0a05d..08eaa8e52083 100644
+> > > --- a/drivers/cxl/Kconfig
+> > > +++ b/drivers/cxl/Kconfig
+> > > @@ -33,6 +33,24 @@ config CXL_MEM
+> > >
+> > >           If unsure say 'm'.
+> > >
+> > > +config CXL_MEM_RAW_COMMANDS
+> > > +       bool "RAW Command Interface for Memory Devices"
+> > > +       depends on CXL_MEM
+> > > +       help
+> > > +         Enable CXL RAW command interface.
+> > > +
+> > > +         The CXL driver ioctl interface may assign a kernel ioctl command
+> > > +         number for each specification defined opcode. At any given point in
+> > > +         time the number of opcodes that the specification defines and a device
+> > > +         may implement may exceed the kernel's set of associated ioctl function
+> > > +         numbers. The mismatch is either by omission, specification is too new,
+> > > +         or by design. When prototyping new hardware, or developing /
+> > > debugging
+> > > +         the driver it is useful to be able to submit any possible command to
+> > > +         the hardware, even commands that may crash the kernel due to their
+> > > +         potential impact to memory currently in use by the kernel.
+> > > +
+> > > +         If developing CXL hardware or the driver say Y, otherwise say N.
+> >
+> > Blocking RAW commands by default will prevent vendors from developing user
+> > space tools that utilize vendor specific commands. Vendors of CXL.mem devices
+> > should take ownership of ensuring any vendor defined commands that could cause
+> > user data to be exposed or corrupted are disabled at the device level for
+> > shipping configurations.
 > 
-> CXL devices contain an array of capabilities that describe the
-> interactions software can have with the device or firmware running on
-> the device. A CXL compliant device must implement the device status and
-> the mailbox capability. Additionally, a CXL compliant memory device must
-> implement the memory device capability. Each of the capabilities can
-> [will] provide an offset within the MMIO region for interacting with the
-> CXL device.
+> Thanks for brining this up Ariel. If there is a recommendation on how to codify
+> this, I would certainly like to know because the explanation will be long.
 > 
-> The capabilities tell the driver how to find and map the register space
-> for CXL Memory Devices. The registers are required to utilize the CXL
-> spec defined mailbox interface. The spec outlines two mailboxes, primary
-> and secondary. The secondary mailbox is earmarked for system firmware,
-> and not handled in this driver.
-> 
-> Primary mailboxes are capable of generating an interrupt when submitting
-> a background command. That implementation is saved for a later time.
-> 
-> Link: https://www.computeexpresslink.org/download-the-specification
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-
-A few more comments inline (proper review whereas my other reply was a
-bug chase).
-
-Jonathan
-
 > ---
->  drivers/cxl/Kconfig           |  14 +
->  drivers/cxl/cxl.h             |  93 +++++++
->  drivers/cxl/mem.c             | 511 +++++++++++++++++++++++++++++++++-
->  drivers/cxl/pci.h             |  13 +
->  include/uapi/linux/pci_regs.h |   1 +
->  5 files changed, 630 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/cxl/cxl.h
 > 
-> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-> index 9e80b311e928..c4ba3aa0a05d 100644
-> --- a/drivers/cxl/Kconfig
-> +++ b/drivers/cxl/Kconfig
-> @@ -32,4 +32,18 @@ config CXL_MEM
->  	  Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
->  
->  	  If unsure say 'm'.
-> +
-> +config CXL_MEM_INSECURE_DEBUG
-> +	bool "CXL.mem debugging"
+> The background:
+> 
+> The enabling/disabling of the Kconfig option is driven by the distribution
+> and/or system integrator. Even if we made the default 'y', nothing stops them
+> from changing that. if you are using this driver in production and insist on
+> using RAW commands, you are free to carry around a small patch to get rid of the
+> WARN (it is a one-liner).
+> 
+> To recap why this is in place - the driver owns the sanctity of the device and
+> therefore a [large] part of the whole system. What we can do as driver writers
+> is figure out the set of commands that are "safe" and allow those. Aside from
+> being able to validate them, we're able to mediate them with other parallel
+> operations that might conflict. We gain the ability to squint extra hard at bug
+> reports. We provide a reason to try to use a well defined part of the spec.
+> Realizing that only allowing that small set of commands in a rapidly growing
+> ecosystem is not a welcoming API; we decided on RAW.
+> 
+> Vendor commands can be one of two types:
+> 1. Some functionality probably most vendors want.
+> 2. Functionality that is really single vendor specific.
+> 
+> Hopefully we can agree that the path for case #1 is to work with the consortium
+> to standardize a command that does what is needed and that can eventually become
+> part of UAPI. The situation is unfortunate, but temporary. If you won't be able
+> to upgrade your kernel, patch out the WARN as above.
+> 
+> The second situation is interesting and does need some more thought and
+> discussion.
+> 
+> ---
+> 
+> I see 3 realistic options for truly vendor specific commands.
+> 1. Tough noogies. Vendors aren't special and they shouldn't do that.
+> 2. modparam to disable the WARN for specific devices (let the sysadmin decide)
+> 3. Try to make them part of UAPI.
+> 
+> The right answer to me is #1, but I also realize I live in the real world.
+> 
+> #2 provides too much flexibility. Vendors will just do what they please and
+> distros and/or integrators will be seen as hostile if they don't accommodate.
+> 
+> I like #3, but I have a feeling not everyone will agree. My proposal for vendor
+> specific commands is, if it's clear it's truly a unique command, allow adding it
+> as part of UAPI (moving it out of RAW). I expect like 5 of these, ever. If we
+> start getting multiple per vendor, we've failed. The infrastructure is already
+> in place to allow doing this pretty easily. I think we'd have to draw up some
+> guidelines (like adding test cases for the command) to allow these to come in.
+> Anything with command effects is going to need extra scrutiny.
 
-As mentioned below, this makes me a tiny bit uncomfortable.
+This would necessitate adding specific opcode values in the range C000h-FFFFh to UAPI, and those would then be allowed for all CXL.mem devices, correct?  If so, I do not think this is the right approach, as opcodes in this range are by definition vendor defined.  A given opcode value will have totally different effects depending on the vendor.
 
-> +	depends on CXL_MEM
-> +	help
-> +	  Enable debug of all CXL command payloads.
-> +
-> +	  Some CXL devices and controllers support encryption and other
-> +	  security features. The payloads for the commands that enable
-> +	  those features may contain sensitive clear-text security
-> +	  material. Disable debug of those command payloads by default.
-> +	  If you are a kernel developer actively working on CXL
-> +	  security enabling say Y, otherwise say N.
-> +
->  endif
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> new file mode 100644
-> index 000000000000..745f5e0bfce3
-> --- /dev/null
-> +++ b/drivers/cxl/cxl.h
-> @@ -0,0 +1,93 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/* Copyright(c) 2020 Intel Corporation. */
-> +
-> +#ifndef __CXL_H__
-> +#define __CXL_H__
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/bitops.h>
-> +#include <linux/io.h>
-> +
-> +/* CXL 2.0 8.2.8.1 Device Capabilities Array Register */
-> +#define CXLDEV_CAP_ARRAY_OFFSET 0x0
-> +#define   CXLDEV_CAP_ARRAY_CAP_ID 0
-> +#define   CXLDEV_CAP_ARRAY_ID_MASK GENMASK(15, 0)
-> +#define   CXLDEV_CAP_ARRAY_COUNT_MASK GENMASK(47, 32)
-> +/* CXL 2.0 8.2.8.2.1 CXL Device Capabilities */
-> +#define CXLDEV_CAP_CAP_ID_DEVICE_STATUS 0x1
-> +#define CXLDEV_CAP_CAP_ID_PRIMARY_MAILBOX 0x2
-> +#define CXLDEV_CAP_CAP_ID_SECONDARY_MAILBOX 0x3
-> +#define CXLDEV_CAP_CAP_ID_MEMDEV 0x4000
-> +
-> +/* CXL 2.0 8.2.8.4 Mailbox Registers */
-> +#define CXLDEV_MBOX_CAPS_OFFSET 0x00
-> +#define   CXLDEV_MBOX_CAP_PAYLOAD_SIZE_MASK GENMASK(4, 0)
-> +#define CXLDEV_MBOX_CTRL_OFFSET 0x04
-> +#define   CXLDEV_MBOX_CTRL_DOORBELL BIT(0)
-> +#define CXLDEV_MBOX_CMD_OFFSET 0x08
-> +#define   CXLDEV_MBOX_CMD_COMMAND_OPCODE_MASK GENMASK(15, 0)
-> +#define   CXLDEV_MBOX_CMD_PAYLOAD_LENGTH_MASK GENMASK(36, 16)
-> +#define CXLDEV_MBOX_STATUS_OFFSET 0x10
-> +#define   CXLDEV_MBOX_STATUS_RET_CODE_MASK GENMASK(47, 32)
-> +#define CXLDEV_MBOX_BG_CMD_STATUS_OFFSET 0x18
-> +#define CXLDEV_MBOX_PAYLOAD_OFFSET 0x20
-> +
-> +/* CXL 2.0 8.2.8.5.1.1 Memory Device Status Register */
-> +#define CXLMDEV_STATUS_OFFSET 0x0
-> +#define   CXLMDEV_DEV_FATAL BIT(0)
-> +#define   CXLMDEV_FW_HALT BIT(1)
-> +#define   CXLMDEV_STATUS_MEDIA_STATUS_MASK GENMASK(3, 2)
-> +#define     CXLMDEV_MS_NOT_READY 0
-> +#define     CXLMDEV_MS_READY 1
-> +#define     CXLMDEV_MS_ERROR 2
-> +#define     CXLMDEV_MS_DISABLED 3
-> +#define CXLMDEV_READY(status)                                                  \
-> +	(FIELD_GET(CXLMDEV_STATUS_MEDIA_STATUS_MASK, status) ==                \
-> +	 CXLMDEV_MS_READY)
-> +#define   CXLMDEV_MBOX_IF_READY BIT(4)
-> +#define   CXLMDEV_RESET_NEEDED_MASK GENMASK(7, 5)
-> +#define     CXLMDEV_RESET_NEEDED_NOT 0
-> +#define     CXLMDEV_RESET_NEEDED_COLD 1
-> +#define     CXLMDEV_RESET_NEEDED_WARM 2
-> +#define     CXLMDEV_RESET_NEEDED_HOT 3
-> +#define     CXLMDEV_RESET_NEEDED_CXL 4
-> +#define CXLMDEV_RESET_NEEDED(status)                                           \
-> +	(FIELD_GET(CXLMDEV_RESET_NEEDED_MASK, status) !=                       \
-> +	 CXLMDEV_RESET_NEEDED_NOT)
-> +
-> +/**
-> + * struct cxl_mem - A CXL memory device
-> + * @pdev: The PCI device associated with this CXL device.
-> + * @regs: IO mappings to the device's MMIO
-> + * @status_regs: CXL 2.0 8.2.8.3 Device Status Registers
-> + * @mbox_regs: CXL 2.0 8.2.8.4 Mailbox Registers
-> + * @memdev_regs: CXL 2.0 8.2.8.5 Memory Device Registers
-> + * @payload_size: Size of space for payload
-> + *                (CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register)
-> + * @mbox_mutex: Mutex to synchronize mailbox access.
-> + * @firmware_version: Firmware version for the memory device.
-> + * @pmem: Persistent memory capacity information.
-> + * @ram: Volatile memory capacity information.
-> + */
-> +struct cxl_mem {
-> +	struct pci_dev *pdev;
-> +	void __iomem *regs;
-> +
-> +	void __iomem *status_regs;
-> +	void __iomem *mbox_regs;
-> +	void __iomem *memdev_regs;
-> +
-> +	size_t payload_size;
-> +	struct mutex mbox_mutex; /* Protects device mailbox and firmware */
-> +	char firmware_version[0x10];
-> +
-> +	struct {
-> +		struct range range;
-> +	} pmem;
+I think you may be on to something with the command effects.  But rather than "extra scrutiny" for opcodes that have command effects, would it make sense to allow vendor defined opcodes that have Bit[5:0] in the Command Effect field of the CEL Entry Structure (Table 173) set to 0?  In conjunction, those bits represent any change to the configuration or data within the device.  For commands that have no such effects, is there harm to allowing them?  Of course, this approach relies on the vendor to not misrepresent the command effects.
 
-Christoph raised this in v1, and I agree with him that his would me more compact
-and readable as
-
-	struct range pmem_range;
-	struct range ram_range;
-
-The discussion seemed to get lost without getting resolved that I can see.
-
-> +
-> +	struct {
-> +		struct range range;
-> +	} ram;
-
-> +};
-> +
-> +#endif /* __CXL_H__ */
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index 99a6571508df..0a868a15badc 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-
-
-...
-
-> +static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
-> +				 struct mbox_cmd *mbox_cmd)
-> +{
-> +	struct device *dev = &cxlm->pdev->dev;
-> +
-> +	dev_dbg(dev, "Mailbox command (opcode: %#x size: %zub) timed out\n",
-> +		mbox_cmd->opcode, mbox_cmd->size_in);
-> +
-> +	if (IS_ENABLED(CONFIG_CXL_MEM_INSECURE_DEBUG)) {
-
-Hmm.  Whilst I can see the advantage of this for debug, I'm not sure we want
-it upstream even under a rather evil looking CONFIG variable.
-
-Is there a bigger lock we can use to avoid chance of accidental enablement?
-
-
-> +		print_hex_dump_debug("Payload ", DUMP_PREFIX_OFFSET, 16, 1,
-> +				     mbox_cmd->payload_in, mbox_cmd->size_in,
-> +				     true);
-> +	}
-> +}
-> +
-> +/**
-> + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
-> + * @cxlm: The CXL memory device to communicate with.
-> + * @mbox_cmd: Command to send to the memory device.
-> + *
-> + * Context: Any context. Expects mbox_lock to be held.
-> + * Return: -ETIMEDOUT if timeout occurred waiting for completion. 0 on success.
-> + *         Caller should check the return code in @mbox_cmd to make sure it
-> + *         succeeded.
-> + *
-> + * This is a generic form of the CXL mailbox send command, thus the only I/O
-> + * operations used are cxl_read_mbox_reg(). Memory devices, and perhaps other
-> + * types of CXL devices may have further information available upon error
-> + * conditions.
-> + *
-> + * The CXL spec allows for up to two mailboxes. The intention is for the primary
-> + * mailbox to be OS controlled and the secondary mailbox to be used by system
-> + * firmware. This allows the OS and firmware to communicate with the device and
-> + * not need to coordinate with each other. The driver only uses the primary
-> + * mailbox.
-> + */
-> +static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
-> +				 struct mbox_cmd *mbox_cmd)
-> +{
-> +	void __iomem *payload = cxlm->mbox_regs + CXLDEV_MBOX_PAYLOAD_OFFSET;
-> +	u64 cmd_reg, status_reg;
-> +	size_t out_len;
-> +	int rc;
-> +
-> +	lockdep_assert_held(&cxlm->mbox_mutex);
-> +
-> +	/*
-> +	 * Here are the steps from 8.2.8.4 of the CXL 2.0 spec.
-> +	 *   1. Caller reads MB Control Register to verify doorbell is clear
-> +	 *   2. Caller writes Command Register
-> +	 *   3. Caller writes Command Payload Registers if input payload is non-empty
-> +	 *   4. Caller writes MB Control Register to set doorbell
-> +	 *   5. Caller either polls for doorbell to be clear or waits for interrupt if configured
-> +	 *   6. Caller reads MB Status Register to fetch Return code
-> +	 *   7. If command successful, Caller reads Command Register to get Payload Length
-> +	 *   8. If output payload is non-empty, host reads Command Payload Registers
-> +	 *
-> +	 * Hardware is free to do whatever it wants before the doorbell is rung,
-> +	 * and isn't allowed to change anything after it clears the doorbell. As
-> +	 * such, steps 2 and 3 can happen in any order, and steps 6, 7, 8 can
-> +	 * also happen in any order (though some orders might not make sense).
-> +	 */
-> +
-> +	/* #1 */
-> +	if (cxl_doorbell_busy(cxlm)) {
-> +		dev_err_ratelimited(&cxlm->pdev->dev,
-> +				    "Mailbox re-busy after acquiring\n");
-> +		return -EBUSY;
-> +	}
-> +
-> +	cmd_reg = FIELD_PREP(CXLDEV_MBOX_CMD_COMMAND_OPCODE_MASK,
-> +			     mbox_cmd->opcode);
-> +	if (mbox_cmd->size_in) {
-> +		if (WARN_ON(!mbox_cmd->payload_in))
-> +			return -EINVAL;
-> +
-> +		cmd_reg |= FIELD_PREP(CXLDEV_MBOX_CMD_PAYLOAD_LENGTH_MASK,
-> +				      mbox_cmd->size_in);
-> +		memcpy_toio(payload, mbox_cmd->payload_in, mbox_cmd->size_in);
-> +	}
-> +
-> +	/* #2, #3 */
-> +	writeq(cmd_reg, cxlm->mbox_regs + CXLDEV_MBOX_CMD_OFFSET);
-> +
-> +	/* #4 */
-> +	dev_dbg(&cxlm->pdev->dev, "Sending command\n");
-> +	writel(CXLDEV_MBOX_CTRL_DOORBELL,
-> +	       cxlm->mbox_regs + CXLDEV_MBOX_CTRL_OFFSET);
-> +
-> +	/* #5 */
-> +	rc = cxl_mem_wait_for_doorbell(cxlm);
-> +	if (rc == -ETIMEDOUT) {
-> +		cxl_mem_mbox_timeout(cxlm, mbox_cmd);
-> +		return rc;
-> +	}
-> +
-> +	/* #6 */
-> +	status_reg = readq(cxlm->mbox_regs + CXLDEV_MBOX_STATUS_OFFSET);
-> +	mbox_cmd->return_code =
-> +		FIELD_GET(CXLDEV_MBOX_STATUS_RET_CODE_MASK, status_reg);
-> +
-> +	if (mbox_cmd->return_code != 0) {
-> +		dev_dbg(&cxlm->pdev->dev, "Mailbox operation had an error\n");
-> +		return 0;
-
-See earlier diversion whilst I was chasing my bug (another branch of this
-thread)
-
-> +	}
-> +
-> +	/* #7 */
-> +	cmd_reg = readq(cxlm->mbox_regs + CXLDEV_MBOX_CMD_OFFSET);
-> +	out_len = FIELD_GET(CXLDEV_MBOX_CMD_PAYLOAD_LENGTH_MASK, cmd_reg);
-> +
-> +	/* #8 */
-> +	if (out_len && mbox_cmd->payload_out)
-> +		memcpy_fromio(mbox_cmd->payload_out, payload, out_len);
-> +
-> +	mbox_cmd->size_out = out_len;
-> +
-> +	return 0;
-> +}
-> +
-
-
-...
-
-> +static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
-> +				      u32 reg_hi)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct cxl_mem *cxlm;
-> +	void __iomem *regs;
-> +	u64 offset;
-> +	u8 bar;
-> +	int rc;
-> +
-> +	cxlm = devm_kzalloc(&pdev->dev, sizeof(*cxlm), GFP_KERNEL);
-> +	if (!cxlm) {
-> +		dev_err(dev, "No memory available\n");
-> +		return NULL;
-> +	}
-> +
-> +	offset = ((u64)reg_hi << 32) | FIELD_GET(CXL_REGLOC_ADDR_MASK, reg_lo);
-> +	bar = FIELD_GET(CXL_REGLOC_BIR_MASK, reg_lo);
-> +
-> +	/* Basic sanity check that BAR is big enough */
-> +	if (pci_resource_len(pdev, bar) < offset) {
-> +		dev_err(dev, "BAR%d: %pr: too small (offset: %#llx)\n", bar,
-> +			&pdev->resource[bar], (unsigned long long)offset);
-> +		return NULL;
-> +	}
-> +
-> +	rc = pcim_iomap_regions(pdev, BIT(bar), pci_name(pdev));
-> +	if (rc != 0) {
-
-if (rc) 
-
-> +		dev_err(dev, "failed to map registers\n");
-> +		return NULL;
-> +	}
-> +	regs = pcim_iomap_table(pdev)[bar];
-> +
-> +	mutex_init(&cxlm->mbox_mutex);
-> +	cxlm->pdev = pdev;
-> +	cxlm->regs = regs + offset;
-> +
-> +	dev_dbg(dev, "Mapped CXL Memory Device resource\n");
-> +	return cxlm;
-> +}
->  
-
-...
-
->  static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  {
->  	struct device *dev = &pdev->dev;
-> -	int regloc;
-> +	struct cxl_mem *cxlm;
-> +	int rc, regloc, i;
-> +	u32 regloc_size;
-> +
-> +	rc = pcim_enable_device(pdev);
-> +	if (rc)
-> +		return rc;
->  
->  	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC_OFFSET);
->  	if (!regloc) {
-> @@ -39,7 +509,44 @@ static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  		return -ENXIO;
->  	}
->  
-> -	return 0;
-> +	/* Get the size of the Register Locator DVSEC */
-> +	pci_read_config_dword(pdev, regloc + PCI_DVSEC_HEADER1, &regloc_size);
-> +	regloc_size = FIELD_GET(PCI_DVSEC_HEADER1_LENGTH_MASK, regloc_size);
-> +
-> +	regloc += PCI_DVSEC_ID_CXL_REGLOC_BLOCK1_OFFSET;
-> +
-> +	rc = -ENXIO;
-> +	for (i = regloc; i < regloc + regloc_size; i += 8) {
-> +		u32 reg_lo, reg_hi;
-> +		u8 reg_type;
-> +
-> +		/* "register low and high" contain other bits */
-
-high doesn't contain any other bits so that's a tiny bit misleading.
-
-> +		pci_read_config_dword(pdev, i, &reg_lo);
-> +		pci_read_config_dword(pdev, i + 4, &reg_hi);
-> +
-> +		reg_type = FIELD_GET(CXL_REGLOC_RBI_MASK, reg_lo);
-> +
-> +		if (reg_type == CXL_REGLOC_RBI_MEMDEV) {
-> +			rc = 0;
-
-I sort of assumed this unusual structure was to allow for some future
-change, but checked end result and it still looks like this.
-So, drop the rc assignment here and...
-
-> +			cxlm = cxl_mem_create(pdev, reg_lo, reg_hi);
-> +			if (!cxlm)
-> +				rc = -ENODEV;
-
-return -ENODEV;
-
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (rc)
-> +		return rc;
-
-With above direct return, only get here if rc = -ENXIO.
-Could just as easily check if i >= regloc + regloc_size then it's
-obvious this is kind of canonical form of 'not found'.
-
-
-Alternative would be to treat the above as a 'find' loop then
-have the clxm = cxl_mem_create() outside of the loop.
-
-
-> +
-> +	rc = cxl_mem_setup_regs(cxlm);
-> +	if (rc)
-> +		return rc;
-> +
-> +	rc = cxl_mem_setup_mailbox(cxlm);
-> +	if (rc)
-> +		return rc;
-> +
-> +	return cxl_mem_identify(cxlm);
->  }
->  
->  static const struct pci_device_id cxl_mem_pci_tbl[] = {
-> diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
-> index f135b9f7bb21..ffcbc13d7b5b 100644
-> --- a/drivers/cxl/pci.h
-> +++ b/drivers/cxl/pci.h
-> @@ -14,5 +14,18 @@
->  #define PCI_DVSEC_ID_CXL		0x0
->  
->  #define PCI_DVSEC_ID_CXL_REGLOC_OFFSET		0x8
-> +#define PCI_DVSEC_ID_CXL_REGLOC_BLOCK1_OFFSET	0xC
-> +
-> +/* BAR Indicator Register (BIR) */
-> +#define CXL_REGLOC_BIR_MASK GENMASK(2, 0)
-> +
-> +/* Register Block Identifier (RBI) */
-> +#define CXL_REGLOC_RBI_MASK GENMASK(15, 8)
-> +#define CXL_REGLOC_RBI_EMPTY 0
-> +#define CXL_REGLOC_RBI_COMPONENT 1
-> +#define CXL_REGLOC_RBI_VIRT 2
-> +#define CXL_REGLOC_RBI_MEMDEV 3
-> +
-> +#define CXL_REGLOC_ADDR_MASK GENMASK(31, 16)
-
-CXL_REGLOCL_ADDR_LOW_MASK perhaps for clarity?
-
->  
->  #endif /* __CXL_PCI_H__ */
-> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-> index e709ae8235e7..6267ca9ae683 100644
-> --- a/include/uapi/linux/pci_regs.h
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -1080,6 +1080,7 @@
->  
->  /* Designated Vendor-Specific (DVSEC, PCI_EXT_CAP_ID_DVSEC) */
->  #define PCI_DVSEC_HEADER1		0x4 /* Designated Vendor-Specific Header1 */
-> +#define PCI_DVSEC_HEADER1_LENGTH_MASK	0xFFF00000
-
-Seems sensible to add the revision mask as well.
-The vendor id currently read using a word read rather than dword, but perhaps
-neater to add that as well for completeness?
-
-Having said that, given Bjorn's comment on clashes and the fact he'd rather see
-this stuff defined in drivers and combined later (see review patch 1 and follow
-the link) perhaps this series should not touch this header at all.
- 
->  #define PCI_DVSEC_HEADER2		0x8 /* Designated Vendor-Specific Header2 */
->  
->  /* Data Link Feature */
+> 
+> In my opinion, as maintainers of the driver, we do owe the community an answer
+> as to our direction for this. Dan, what is your thought?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
