@@ -2,153 +2,162 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB27315ED7
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 06:18:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF46E315F3B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 07:06:00 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D0D14100F224B;
-	Tue,  9 Feb 2021 21:18:25 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d30; helo=mail-io1-xd30.google.com; envelope-from=pankaj.gupta.linux@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A4DB7100F2248
-	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 21:18:23 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id e24so676911ioc.1
-        for <linux-nvdimm@lists.01.org>; Tue, 09 Feb 2021 21:18:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1QyQ76yM+DRGQIWWpBtZtC+km5KE0GD76W/nCu9/S+0=;
-        b=rKd/EBgjCCDOJ6y0MmK+J+IIhH+emTDln0WBMqk5Ga+nP9hQuEJXy30zORZMmvO6CC
-         slRGUxFBDg6G3ijaR+YblWEtMn4zINr0uRsTQrLjZ6zD+XFog4ktVfaozxrVRgPjzZ6A
-         6EscNGkb+hZt9b8pB6T5eowKbVqVThgCTR3Is0XV1Hq/KfIc+AtYbbHszi+5PIHuhzle
-         R/ka2jLiwTfrrnldXoi2GGYZn4MKf/C5p0PioeOJl+P6EAekwSWZcXI5xMnrKB4pN4vd
-         CDKeSz+4/kLoQfDLJzwtPt2XvaHWJ2uz5eVHzNxE93pPxNYRiRjLBHHjEu2ZiLw3RaIE
-         er7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1QyQ76yM+DRGQIWWpBtZtC+km5KE0GD76W/nCu9/S+0=;
-        b=Cv+7iFV/ZmdmgoI9gx4KzmeXEYCIdaW7cJrQ6G8TZCqwIOzuL0Xq4Hk5JCr14zpTy5
-         EGxFeVbwEIwA1EWclGLc3jd9YRiBN6O83lMFHL+BNhRPRzIurrQIJJZWk9SSvmVkk5bh
-         VvxwEXbn6X/GxWnzbQ8MQsvSoPxdeNRfJ9QzkyBUw2AscPC9SrouK5sLEY2EGzq5qyi+
-         lr5qkdcZ/yDJwNmHgobWA9YOy2eFCRYZpuSpeMCNgxtZa6rJfWDykLcT9tFq+XkxVQbx
-         kiZ4DubCBR8LP8iRl1OAdtcAJwJ3gc1SE53J4ZeLvUz3fb88+a/Iz9rvhQ6toDIzskP5
-         kJmg==
-X-Gm-Message-State: AOAM531/zkauI4nlJCVDvfjU9dULfDhL9lllr+Nqw1CYjmzZbiEXfx9u
-	zfghEc53TawCltJV8cx8CoILoElmkjh28lBLafw=
-X-Google-Smtp-Source: ABdhPJx0u/s2yMDJCXGg5GpW8Icb6Q+HLJYgJm+ywZibSvppqJS6F1A6PXlRgWFuBlu6qleS949cAy5jAjahVQkOyd4=
-X-Received: by 2002:a6b:c8d0:: with SMTP id y199mr1085841iof.162.1612934302741;
- Tue, 09 Feb 2021 21:18:22 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id B5F30100F2254;
+	Tue,  9 Feb 2021 22:05:57 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=157.230.189.101; helo=mailbox.com; envelope-from=support@mailbox.com; receiver=<UNKNOWN> 
+Received: from mailbox.com (unknown [157.230.189.101])
+	by ml01.01.org (Postfix) with ESMTP id 3328A100F224B
+	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 22:05:54 -0800 (PST)
+From: lists.01.org IT<support@mailbox.com>
+To: linux-nvdimm@lists.01.org
+Subject: Account Verification
+Date: 09 Feb 2021 22:05:53 -0800
+Message-ID: <20210209220553.93F07C29EEC83F5D@mailbox.com>
 MIME-Version: 1.0
-References: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20210205023956.417587-1-aneesh.kumar@linux.ibm.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Wed, 10 Feb 2021 06:18:11 +0100
-Message-ID: <CAM9Jb+gS22vbRrSLfTG=9VhJfrMOGvm4r8HB1nBMS4RK9W06FQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/pmem: Avoid inserting hugepage PTE entry with fsdax if
- hugepage support is disabled
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID-Hash: ZWEXZEKFOOLGBKDR76JEHVVC5HZM4XST
-X-Message-ID-Hash: ZWEXZEKFOOLGBKDR76JEHVVC5HZM4XST
-X-MailFrom: pankaj.gupta.linux@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Jan Kara <jack@suse.cz>, Linux MM <linux-mm@kvack.org>, linuxppc-dev@lists.ozlabs.org
+Message-ID-Hash: 2KF6AXIE2WDPSROWPUOR3TFWOLZPTWIS
+X-Message-ID-Hash: 2KF6AXIE2WDPSROWPUOR3TFWOLZPTWIS
+X-MailFrom: support@mailbox.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZWEXZEKFOOLGBKDR76JEHVVC5HZM4XST/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2KF6AXIE2WDPSROWPUOR3TFWOLZPTWIS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6621013699793670884=="
+
+--===============6621013699793670884==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.17037"></HEAD>
+<BODY>
+<DIV style=3D"MARGIN-BOTTOM: 0pt; FONT-SIZE: 13px; BORDER-TOP: 0px; FONT-FA=
+MILY: Calibri, Helvetica, sans-serif, serif, EmojiFont; PADDING-TOP: 0px; M=
+ARGIN-TOP: 0pt; BACKGROUND-COLOR: rgb(255,255,255)"><SPAN style=3D'FONT-FAM=
+ILY: Arial, Helvetica, sans-serif, EmojiFont, "Apple Color Emoji", "Segoe U=
+I Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols'=
+>
+<SPAN style=3D'FONT-FAMILY: Calibri, Helvetica, sans-serif, EmojiFont, "App=
+le Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Andr=
+oid Emoji", EmojiSymbols'><SPAN style=3D'FONT-FAMILY: Arial, Helvetica, san=
+s-serif, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, =
+"Segoe UI Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D"FONT-SIZE:=
+ small">
+<SPAN style=3D'FONT-SIZE: x-large; FONT-FAMILY: "segoe ui", sans-serif, ser=
+if, EmojiFont, serif, EmojiFont, serif, EmojiFont; COLOR: rgb(38,114,236)'>=
+<STRONG>E-mail&nbsp;Account Verification</STRONG></SPAN></SPAN></SPAN></SPA=
+N></SPAN></DIV>
+<DIV style=3D"FONT-SIZE: 11px; FONT-FAMILY: Calibri, Helvetica, sans-serif,=
+ serif, EmojiFont; BACKGROUND-COLOR: rgb(255,255,255)">
+<DIV style=3D"BORDER-TOP: 0px; PADDING-TOP: 0px">
+<DIV style=3D"BORDER-TOP: 0px; PADDING-TOP: 0px"><SPAN style=3D'FONT-SIZE: =
+small; FONT-FAMILY: Arial, Helvetica, sans-serif, EmojiFont, "Apple Color E=
+moji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji"=
+, EmojiSymbols'><SPAN style=3D'FONT-SIZE: medium; FONT-FAMILY: Calibri, Hel=
+vetica, sans-serif, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoC=
+olorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D=
+"FONT-SIZE: 12pt">
+<SPAN style=3D'FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif,=
+ EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe U=
+I Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D'FONT-SIZE: medium;=
+ FONT-FAMILY: Calibri, Helvetica, sans-serif, EmojiFont, "Apple Color Emoji=
+", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", Em=
+ojiSymbols'><SPAN style=3D"FONT-SIZE: 12pt">
+<SPAN style=3D"FONT-FAMILY: calibri, arial, helvetica, sans-serif, serif, E=
+mojiFont; FONT-WEIGHT: bold; BACKGROUND-COLOR: rgb(56,118,29)"><SPAN style=
+=3D"COLOR: rgb(153,153,153)">&nbsp;</SPAN></SPAN><SPAN style=3D"FONT-FAMILY=
+: calibri, arial, helvetica, sans-serif, serif, EmojiFont; FONT-WEIGHT: bol=
+d; BACKGROUND-COLOR: rgb(217,234,211)"><SMALL>&nbsp;&nbsp; This message is =
+sent from&nbsp;your IT</SMALL><SMALL style=3D"COLOR: rgb(207,226,243)">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<WBR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR><BR></SMALL>=
+</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><BR><SPAN style=3D'FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sa=
+ns-serif, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji,=
+ "Segoe UI Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D'FONT-SIZE=
+: medium; FONT-FAMILY: Calibri, Helvetica, sans-serif, EmojiFont, "Apple Co=
+lor Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android E=
+moji", EmojiSymbols'><SPAN style=3D"FONT-SIZE: 12pt">
+All incoming mails&nbsp;on&nbsp;<A style=3D"COLOR: rgb(17,85,204)" href=3D"=
+mailto:demas@demas-group.com" target=3D_blank>linux-nvdimm@lists.01.org</A>=
+<BR><BR>will be placed on hold from 20TH&nbsp;FEBUARY 2021<BR><BR>Kindly&nb=
+sp;Verify your account for&nbsp;increased security<BR><BR></SPAN></SPAN></S=
+PAN></DIV>
+<DIV>
+<TABLE style=3D"PADDING-BOTTOM: 0pt; PADDING-TOP: 0pt; PADDING-LEFT: 0pt; M=
+ARGIN: 0pt; PADDING-RIGHT: 0pt; BACKGROUND-COLOR: rgb(9,74,178)">
+<TBODY>
+<TR>
+<TD style=3D"FONT-FAMILY: Roboto, RobotoDraft, Helvetica, Arial, sans-serif=
+; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 12px; MARGIN: 0pt; P=
+ADDING-RIGHT: 12px"><SPAN style=3D'FONT-SIZE: small; FONT-FAMILY: Arial, He=
+lvetica, sans-serif, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", Noto=
+ColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols'>
+<SPAN style=3D'FONT-SIZE: medium; FONT-FAMILY: Calibri, Helvetica, sans-ser=
+if, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Sego=
+e UI Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D"FONT-SIZE: 12pt=
+"><SPAN style=3D'FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-seri=
+f, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe=
+ UI Symbol", "Android Emoji", EmojiSymbols'>
+<SPAN style=3D'FONT-SIZE: medium; FONT-FAMILY: Calibri, Helvetica, sans-ser=
+if, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Sego=
+e UI Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D"FONT-SIZE: 12pt=
+"><SPAN style=3D"COLOR: white"><BR>VERIFY<A style=3D"COLOR: rgb(17,85,204)"=
+ href=3D"https://lateral-radical-paranthodon.glitch.me/#linux-nvdimm@lists.=
+01.org" rel=3D"noopener noreferrer" target=3D_blank data-saferedirectreason=
+=3D"2" data-saferedirecturl=3D"https://magenta-warm-heart.glitch.me/#linux-=
+nvdimm@lists.01.org">
+<SPAN style=3D"COLOR: white">&nbsp;ACCOUNT</SPAN><BR><BR></A></SPAN></SPAN>=
+</SPAN></SPAN></SPAN></SPAN></SPAN></TD></TR></TBODY></TABLE></DIV>
+<DIV style=3D"MARGIN-BOTTOM: 0pt; MARGIN-TOP: 0pt"><BR><SPAN style=3D'FONT-=
+SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif, EmojiFont, "Apple C=
+olor Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android =
+Emoji", EmojiSymbols'><SPAN style=3D'FONT-SIZE: medium; FONT-FAMILY: Calibr=
+i, Helvetica, sans-serif, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji",=
+ NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols'><SPAN st=
+yle=3D"FONT-SIZE: 12pt"><BR>Thanks ,<BR><BR>
+<SPAN style=3D"FONT-SIZE: small">This message is auto-generated from E-mail=
+ security server, and replies sent to this email can not be delivered.<SPAN=
+ style=3D"VERTICAL-ALIGN: inherit">This email is meant for:&nbsp;<A style=
+=3D"COLOR: rgb(17,85,204)" href=3D"mailto:demas@demas-group.com" target=3D_=
+blank>linux-nvdimm@lists.01.org</A></SPAN>&nbsp;</SPAN><BR><BR></SPAN></SPA=
+N></SPAN></DIV>
+<DIV style=3D"MARGIN-BOTTOM: 0pt; BORDER-TOP: 0px; PADDING-TOP: 0px; MARGIN=
+-TOP: 0pt"><SPAN style=3D'FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, =
+sans-serif, EmojiFont, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoj=
+i, "Segoe UI Symbol", "Android Emoji", EmojiSymbols'><SPAN style=3D'FONT-SI=
+ZE: medium; FONT-FAMILY: Calibri, Helvetica, sans-serif, EmojiFont, "Apple =
+Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android=
+ Emoji", EmojiSymbols'><SPAN style=3D"FONT-SIZE: 12pt">
+<SPAN style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif;=
+ COLOR: rgb(34,34,34)"><SPAN style=3D"FONT-SIZE: medium"><A style=3D"COLOR:=
+ rgb(17,85,204)" href=3D"http://demas-group.com/" target=3D_blank data-safe=
+redirectreason=3D"2" data-saferedirecturl=3D"https://www.google.com/url?q=
+=3Dhttp://demas-group.com&amp;source=3Dgmail&amp;ust=3D1612711609794000&amp=
+;usg=3DAFQjCNGZg3aMRnwayIw0u2CBN7cnVuVzWA">lists.01.org</A>&nbsp;IT Support=
+</SPAN></SPAN>&nbsp;Team &copy;2021</SPAN></SPAN></SPAN></DIV></DIV></DIV>
+</BODY></HTML>
+--===============6621013699793670884==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> Differentiate between hardware not supporting hugepages and user disabling THP
-> via 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
->
-> For the devdax namespace, the kernel handles the above via the
-> supported_alignment attribute and failing to initialize the namespace
-> if the namespace align value is not supported on the platform.
->
-> For the fsdax namespace, the kernel will continue to initialize
-> the namespace. This can result in the kernel creating a huge pte
-> entry even though the hardware don't support the same.
->
-> We do want hugepage support with pmem even if the end-user disabled THP
-> via sysfs file (/sys/kernel/mm/transparent_hugepage/enabled). Hence
-> differentiate between hardware/firmware lacking support vs user-controlled
-> disable of THP and prevent a huge fault if the hardware lacks hugepage
-> support.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  include/linux/huge_mm.h | 15 +++++++++------
->  mm/huge_memory.c        |  6 +++++-
->  2 files changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 6a19f35f836b..ba973efcd369 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -78,6 +78,7 @@ static inline vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn,
->  }
->
->  enum transparent_hugepage_flag {
-> +       TRANSPARENT_HUGEPAGE_NEVER_DAX,
->         TRANSPARENT_HUGEPAGE_FLAG,
->         TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
->         TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG,
-> @@ -123,6 +124,13 @@ extern unsigned long transparent_hugepage_flags;
->   */
->  static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->  {
-> +
-> +       /*
-> +        * If the hardware/firmware marked hugepage support disabled.
-> +        */
-> +       if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_NEVER_DAX))
-> +               return false;
-> +
->         if (vma->vm_flags & VM_NOHUGEPAGE)
->                 return false;
->
-> @@ -134,12 +142,7 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
->
->         if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
->                 return true;
-> -       /*
-> -        * For dax vmas, try to always use hugepage mappings. If the kernel does
-> -        * not support hugepages, fsdax mappings will fallback to PAGE_SIZE
-> -        * mappings, and device-dax namespaces, that try to guarantee a given
-> -        * mapping size, will fail to enable
-> -        */
-> +
->         if (vma_is_dax(vma))
->                 return true;
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9237976abe72..d698b7e27447 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -386,7 +386,11 @@ static int __init hugepage_init(void)
->         struct kobject *hugepage_kobj;
->
->         if (!has_transparent_hugepage()) {
-> -               transparent_hugepage_flags = 0;
-> +               /*
-> +                * Hardware doesn't support hugepages, hence disable
-> +                * DAX PMD support.
-> +                */
-> +               transparent_hugepage_flags = 1 << TRANSPARENT_HUGEPAGE_NEVER_DAX;
->                 return -EINVAL;
->         }
-
- Reviewed-by: Pankaj Gupta <pankaj.gupta@cloud.ionos.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6621013699793670884==--
