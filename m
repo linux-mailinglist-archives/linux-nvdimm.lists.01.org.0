@@ -1,190 +1,236 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B279B318A0E
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 13:07:36 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B777318A14
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 13:08:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C34F1100EA2A9;
-	Thu, 11 Feb 2021 04:07:34 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F16E4100EA2A9;
+	Thu, 11 Feb 2021 04:08:42 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3AFC6100EA2A2
-	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 04:07:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1613045249;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FxdQiOdDrI0lN+ynkHsa9xjwUnD3y3w6sb41lTRrq7A=;
-	b=KEp6mbGO452Aa13L/XsJPyLboNBxjMDXzEHL14zg0eHqU3oEq20XMpFkITBBTTeNobFoVf
-	Ts0VL/ZRxyqxVuT1c5ISawLgboTxQuJcalB9YHah2DH1Y+0ue5LzHH5R0ue/2AmOsqNoTt
-	FK78o3ivO8np5LJbBU7EXDAnRajPB34=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-437-HGb2gjz-PHmITs_HU4BpDA-1; Thu, 11 Feb 2021 07:07:25 -0500
-X-MC-Unique: HGb2gjz-PHmITs_HU4BpDA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 51157192AB79;
-	Thu, 11 Feb 2021 12:07:20 +0000 (UTC)
-Received: from [10.36.114.52] (ovpn-114-52.ams2.redhat.com [10.36.114.52])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 001DD60C0F;
-	Thu, 11 Feb 2021 12:07:10 +0000 (UTC)
-To: Mike Rapoport <rppt@kernel.org>
-References: <20210208084920.2884-1-rppt@kernel.org>
- <20210208084920.2884-8-rppt@kernel.org> <YCEXMgXItY7xMbIS@dhcp22.suse.cz>
- <20210208212605.GX242749@kernel.org> <YCJMDBss8Qhha7g9@dhcp22.suse.cz>
- <20210209090938.GP299309@linux.ibm.com> <YCKLVzBR62+NtvyF@dhcp22.suse.cz>
- <20210211071319.GF242749@kernel.org> <YCTtSrCEvuBug2ap@dhcp22.suse.cz>
- <0d66baec-1898-987b-7eaf-68a015c027ff@redhat.com>
- <20210211112702.GI242749@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Subject: Re: [PATCH v17 07/10] mm: introduce memfd_secret system call to
- create "secret" memory areas
-Message-ID: <05082284-bd85-579f-2b3e-9b1af663eb6f@redhat.com>
-Date: Thu, 11 Feb 2021 13:07:10 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+	by ml01.01.org (Postfix) with ESMTPS id 8DB6A100EBBC1
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 04:08:40 -0800 (PST)
+Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.206])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbwGb5y6Pz67n7V;
+	Thu, 11 Feb 2021 20:01:59 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 11 Feb 2021 13:08:38 +0100
+Received: from localhost (10.47.31.44) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 11 Feb
+ 2021 12:08:36 +0000
+Date: Thu, 11 Feb 2021 12:07:36 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v2 7/8] cxl/mem: Add set of informational commands
+Message-ID: <20210211120736.00006778@Huawei.com>
+In-Reply-To: <20210210000259.635748-8-ben.widawsky@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+	<20210210000259.635748-8-ben.widawsky@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <20210211112702.GI242749@kernel.org>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: ZNMV5GDIKA3V7QPJV7Z4VUAMJYMRHOEI
-X-Message-ID-Hash: ZNMV5GDIKA3V7QPJV7Z4VUAMJYMRHOEI
-X-MailFrom: david@redhat.com
+X-Originating-IP: [10.47.31.44]
+X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+Message-ID-Hash: BMRO6I767OIS4ZJ55IDV33JZ52VWANZM
+X-Message-ID-Hash: BMRO6I767OIS4ZJ55IDV33JZ52VWANZM
+X-MailFrom: jonathan.cameron@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Anders
- en <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZNMV5GDIKA3V7QPJV7Z4VUAMJYMRHOEI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BMRO6I767OIS4ZJ55IDV33JZ52VWANZM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gMTEuMDIuMjEgMTI6MjcsIE1pa2UgUmFwb3BvcnQgd3JvdGU6DQo+IE9uIFRodSwgRmViIDEx
-LCAyMDIxIGF0IDEwOjAxOjMyQU0gKzAxMDAsIERhdmlkIEhpbGRlbmJyYW5kIHdyb3RlOg0KPj4g
-T24gMTEuMDIuMjEgMDk6MzksIE1pY2hhbCBIb2NrbyB3cm90ZToNCj4+PiBPbiBUaHUgMTEtMDIt
-MjEgMDk6MTM6MTksIE1pa2UgUmFwb3BvcnQgd3JvdGU6DQo+Pj4+IE9uIFR1ZSwgRmViIDA5LCAy
-MDIxIGF0IDAyOjE3OjExUE0gKzAxMDAsIE1pY2hhbCBIb2NrbyB3cm90ZToNCj4+Pj4+IE9uIFR1
-ZSAwOS0wMi0yMSAxMTowOTozOCwgTWlrZSBSYXBvcG9ydCB3cm90ZToNCj4+PiBbLi4uXQ0KPj4+
-Pj4+IENpdGluZyBteSBvbGRlciBlbWFpbDoNCj4+Pj4+Pg0KPj4+Pj4+ICAgICAgIEkndmUgaGVz
-aXRhdGVkIHdoZXRoZXIgdG8gY29udGludWUgdG8gdXNlIG5ldyBmbGFncyB0byBtZW1mZF9jcmVh
-dGUoKSBvciB0bw0KPj4+Pj4+ICAgICAgIGFkZCBhIG5ldyBzeXN0ZW0gY2FsbCBhbmQgSSd2ZSBk
-ZWNpZGVkIHRvIHVzZSBhIG5ldyBzeXN0ZW0gY2FsbCBhZnRlciBJJ3ZlDQo+Pj4+Pj4gICAgICAg
-c3RhcnRlZCB0byBsb29rIGludG8gbWFuIHBhZ2VzIHVwZGF0ZS4gVGhlcmUgd291bGQgaGF2ZSBi
-ZWVuIHR3byBjb21wbGV0ZWx5DQo+Pj4+Pj4gICAgICAgaW5kZXBlbmRlbnQgZGVzY3JpcHRpb25z
-IGFuZCBJIHRoaW5rIGl0IHdvdWxkIGhhdmUgYmVlbiB2ZXJ5IGNvbmZ1c2luZy4NCj4+Pj4+DQo+
-Pj4+PiBDb3VsZCB5b3UgZWxhYm9yYXRlPyBVbm1hcHBpbmcgZnJvbSB0aGUga2VybmVsIGFkZHJl
-c3Mgc3BhY2UgY2FuIHdvcmsNCj4+Pj4+IGJvdGggZm9yIHNlYWxlZCBvciBodWdldGxiIG1lbWZk
-cywgbm8/IFRob3NlIGZlYXR1cmVzIGFyZSBjb21wbGV0ZWx5DQo+Pj4+PiBvcnRob2dvbmFsIEFG
-QUlDUy4gV2l0aCBhIGRlZGljYXRlZCBzeXNjYWxsIHlvdSB3aWxsIG5lZWQgdG8gaW50cm9kdWNl
-DQo+Pj4+PiB0aGlzIGZ1bmN0aW9uYWxpdHkgb24gdG9wIGlmIHRoYXQgaXMgcmVxdWlyZWQuIEhh
-dmUgeW91IGNvbnNpZGVyZWQgdGhhdD8NCj4+Pj4+IEkgbWVhbiBodWdldGxiIHBhZ2VzIGFyZSB1
-c2VkIHRvIGJhY2sgZ3Vlc3QgbWVtb3J5IHZlcnkgb2Z0ZW4uIElzIHRoaXMNCj4+Pj4+IHNvbWV0
-aGluZyB0aGF0IHdpbGwgYmUgYSBzZWNyZXQgbWVtb3J5IHVzZWNhc2U/DQo+Pj4+Pg0KPj4+Pj4g
-UGxlYXNlIGJlIHJlYWxseSBzcGVjaWZpYyB3aGVuIGdpdmluZyBhcmd1bWVudHMgdG8gYmFjayBh
-IG5ldyBzeXNjYWxsDQo+Pj4+PiBkZWNpc2lvbi4NCj4+Pj4NCj4+Pj4gSXNuJ3QgInN5c2NhbGxz
-IGhhdmUgY29tcGxldGVseSBpbmRlcGVuZGVudCBkZXNjcmlwdGlvbiIgc3BlY2lmaWMgZW5vdWdo
-Pw0KPj4+DQo+Pj4gTm8sIGl0J3Mgbm90IGFzIHlvdSBjYW4gc2VlIGZyb20gcXVlc3Rpb25zIEkn
-dmUgaGFkIGFib3ZlLiBNb3JlIG9uIHRoYXQNCj4+PiBiZWxvdy4NCj4+Pg0KPj4+PiBXZSBhcmUg
-dGFsa2luZyBhYm91dCBBUEkgaGVyZSwgbm90IHRoZSBpbXBsZW1lbnRhdGlvbiBkZXRhaWxzIHdo
-ZXRoZXINCj4+Pj4gc2VjcmV0bWVtIHN1cHBvcnRzIGxhcmdlIHBhZ2VzIG9yIG5vdC4NCj4+Pj4N
-Cj4+Pj4gVGhlIHB1cnBvc2Ugb2YgbWVtZmRfY3JlYXRlKCkgaXMgdG8gY3JlYXRlIGEgZmlsZS1s
-aWtlIGFjY2VzcyB0byBtZW1vcnkuDQo+Pj4+IFRoZSBwdXJwb3NlIG9mIG1lbWZkX3NlY3JldCgp
-IGlzIHRvIGNyZWF0ZSBhIHdheSB0byBhY2Nlc3MgbWVtb3J5IGhpZGRlbg0KPj4+PiBmcm9tIHRo
-ZSBrZXJuZWwuDQo+Pj4+DQo+Pj4+IEkgZG9uJ3QgdGhpbmsgb3ZlcmxvYWRpbmcgbWVtZmRfY3Jl
-YXRlKCkgd2l0aCB0aGUgc2VjcmV0bWVtIGZsYWdzIGJlY2F1c2UNCj4+Pj4gdGhleSBoYXBwZW4g
-dG8gcmV0dXJuIGEgZmlsZSBkZXNjcmlwdG9yIHdpbGwgYmUgYmV0dGVyIGZvciB1c2VycywgYnV0
-DQo+Pj4+IHJhdGhlciB3aWxsIGJlIG1vcmUgY29uZnVzaW5nLg0KPj4+DQo+Pj4gVGhpcyBpcyBx
-dWl0ZSBhIHN1YmplY3RpdmUgY29uY2x1c2lvbi4gSSBjb3VsZCB2ZXJ5IHdlbGwgYXJndWUgdGhh
-dCBpdA0KPj4+IHdvdWxkIGJlIG11Y2ggYmV0dGVyIHRvIGhhdmUgYSBzaW5nbGUgc3lzY2FsbCB0
-byBnZXQgYSBmZCBiYWNrZWQgbWVtb3J5DQo+Pj4gd2l0aCBzcGVkaWZpYyByZXF1aXJlbWVudHMg
-KHNlYWxpbmcsIHVubWFwcGluZyBmcm9tIHRoZSBrZXJuZWwgYWRkcmVzcw0KPj4+IHNwYWNlKS4g
-TmVpdGhlciBvZiB1cyB3b3VsZCBiZSBjbGVhcmx5IHJpZ2h0IG9yIHdyb25nLiBBIG1vcmUgaW1w
-b3J0YW50DQo+Pj4gcG9pbnQgaXMgYSBmdXR1cmUgZXh0ZW5zaWJpbGl0eSBhbmQgdXNhYmlsaXR5
-LCB0aG91Z2guIFNvIGxldCdzIGp1c3QNCj4+PiB0aGluayBvZiBmZXcgdXNlY2FzZXMgSSBoYXZl
-IG91dGxpbmVkIGFib3ZlLiBJcyBpdCB1bnJlYWxpc3RpYyB0byBleHBlY3QNCj4+PiB0aGF0IHNl
-Y3JldCBtZW1vcnkgc2hvdWxkIGJlIHNlYWxhYmxlPyBXaGF0IGFib3V0IGh1Z2V0bGI/IEJlY2F1
-c2UgaWYNCj4+PiB0aGUgYW5zd2VyIGlzIG5vIHRoZW4gYSBuZXcgQVBJIGlzIGEgY2xlYXIgd2lu
-IGFzIHRoZSBjb21iaW5hdGlvbiBvZg0KPj4+IGZsYWdzIHdvdWxkIG5ldmVyIHdvcmsgYW5kIHRo
-ZW4gd2Ugd291bGQganVzdCBzdWZmZXIgZnJvbSB0aGUgc3lzY2FsbA0KPj4+IG11bHRpcGxleGlu
-ZyB3aXRob3V0IG11Y2ggZ2Fpbi4gT24gdGhlIG90aGVyIGhhbmQgaWYgY29tYmluYXRpb24gb2Yg
-dGhlDQo+Pj4gZnVuY3Rpb25hbGl0eSBpcyB0byBiZSBleHBlY3RlZCB0aGVuIHlvdSB3aWxsIGhh
-dmUgdG8gamFtIGl0IGludG8NCj4+PiBtZW1mZF9jcmVhdGUgYW5kIGNvcHkgdGhlIGludGVyZmFj
-ZSBsaWtlbHkgY2F1c2luZyBtb3JlIGNvbmZ1c2lvbi4gU2VlDQo+Pj4gd2hhdCBJIG1lYW4/DQo+
-Pj4NCj4+PiBJIGJ5IG5vIG1lYW5zIGRvIG5vdCBpbnNpc3Qgb25lIHdheSBvciB0aGUgb3RoZXIg
-YnV0IGZyb20gd2hhdCBJIGhhdmUNCj4+PiBzZWVuIHNvIGZhciBJIGhhdmUgYSBmZWVsaW5nIHRo
-YXQgdGhlIGludGVyZmFjZSBoYXNuJ3QgYmVlbiB0aG91Z2h0DQo+Pj4gdGhyb3VnaCBlbm91Z2gu
-IFN1cmUgeW91IGhhdmUgbGFuZGVkIHdpdGggZmQgYmFzZWQgYXBwcm9hY2ggYW5kIHRoYXQNCj4+
-PiBzZWVtcyBmYWlyLiBCdXQgaG93IHRvIGdldCB0aGF0IGZkIHNlZW1zIHRvIHN0aWxsIGhhdmUg
-c29tZSBnYXBzIElNSE8uDQo+Pj4NCj4+DQo+PiBJIGFncmVlIHdpdGggTWljaGFsLiBUaGlzIGhh
-cyBiZWVuIHJhaXNlZCBieSBkaWZmZXJlbnQNCj4+IHBlb3BsZSBhbHJlYWR5LCBpbmNsdWRpbmcg
-b24gTFdOIChodHRwczovL2x3bi5uZXQvQXJ0aWNsZXMvODM1MzQyLykuDQo+Pg0KPj4gSSBjYW4g
-Zm9sbG93IE1pa2UncyByZWFzb25pbmcgKG1hbiBwYWdlKSwgYW5kIEkgYW0gYWxzbyBmaW5lIGlm
-IHRoZXJlIGlzDQo+PiBhIHZhbGlkIHJlYXNvbi4gSG93ZXZlciwgSU1ITyB0aGUgYmFzaWMgZGVz
-Y3JpcHRpb24gc2VlbXMgdG8gbWF0Y2ggcXVpdGUgZ29vZDoNCj4+DQo+PiAgICAgICAgIG1lbWZk
-X2NyZWF0ZSgpIGNyZWF0ZXMgYW4gYW5vbnltb3VzIGZpbGUgYW5kIHJldHVybnMgYSBmaWxlIGRl
-c2NyaXB0b3IgdGhhdCByZWZlcnMgdG8gaXQuICBUaGUNCj4+ICAgICAgICAgZmlsZSBiZWhhdmVz
-IGxpa2UgYSByZWd1bGFyIGZpbGUsIGFuZCBzbyBjYW4gYmUgbW9kaWZpZWQsIHRydW5jYXRlZCwg
-bWVtb3J5LW1hcHBlZCwgYW5kIHNvIG9uLg0KPj4gICAgICAgICBIb3dldmVyLCAgdW5saWtlIGEg
-cmVndWxhciBmaWxlLCBpdCBsaXZlcyBpbiBSQU0gYW5kIGhhcyBhIHZvbGF0aWxlIGJhY2tpbmcg
-c3RvcmFnZS4gIE9uY2UgYWxsDQo+PiAgICAgICAgIHJlZmVyZW5jZXMgdG8gdGhlIGZpbGUgYXJl
-IGRyb3BwZWQsIGl0IGlzIGF1dG9tYXRpY2FsbHkgcmVsZWFzZWQuICBBbm9ueW1vdXMgIG1lbW9y
-eSAgaXMgIHVzZWQNCj4+ICAgICAgICAgZm9yICBhbGwgIGJhY2tpbmcgcGFnZXMgb2YgdGhlIGZp
-bGUuICBUaGVyZWZvcmUsIGZpbGVzIGNyZWF0ZWQgYnkgbWVtZmRfY3JlYXRlKCkgaGF2ZSB0aGUg
-c2FtZQ0KPj4gICAgICAgICBzZW1hbnRpY3MgYXMgb3RoZXIgYW5vbnltb3VzIG1lbW9yeSBhbGxv
-Y2F0aW9ucyBzdWNoIGFzIHRob3NlIGFsbG9jYXRlZCB1c2luZyBtbWFwKDIpIHdpdGggdGhlDQo+
-PiAgICAgICAgIE1BUF9BTk9OWU1PVVMgZmxhZy4NCj4gDQo+IEV2ZW4gZGVzcGl0ZSBteSBsYXpp
-bmVzcyBhbmQgaHVnZSBhbW91bnQgb2YgY29weS1wYXN0ZSB5b3UgY2FuIHNwb3QgdGhlDQo+IGRp
-ZmZlcmVuY2VzICh0aGlzIGlzIGEgdmVyeSBvbGQgdmVyc2lvbiwgdXBkYXRlIGlzIGR1ZSk6DQo+
-IA0KPiAgICAgICAgIG1lbWZkX3NlY3JldCgpICBjcmVhdGVzIGFuIGFub255bW91cyBmaWxlIGFu
-ZCByZXR1cm5zIGEgZmlsZSBkZXNjcmlwdG9yDQo+ICAgICAgICAgdGhhdCByZWZlcnMgdG8gaXQu
-ICBUaGUgZmlsZSBjYW4gb25seSBiZSBtZW1vcnktbWFwcGVkOyB0aGUgIG1lbW9yeSAgaW4NCj4g
-ICAgICAgICBzdWNoICBtYXBwaW5nICB3aWxsICBoYXZlICBzdHJvbmdlciBwcm90ZWN0aW9uIHRo
-YW4gdXN1YWwgbWVtb3J5IG1hcHBlZA0KPiAgICAgICAgIGZpbGVzLCBhbmQgc28gaXQgY2FuIGJl
-IHVzZWQgdG8gc3RvcmUgYXBwbGljYXRpb24gIHNlY3JldHMuICAgVW5saWtlICBhDQo+ICAgICAg
-ICAgcmVndWxhciBmaWxlLCBhIGZpbGUgY3JlYXRlZCB3aXRoIG1lbWZkX3NlY3JldCgpIGxpdmVz
-IGluIFJBTSBhbmQgaGFzIGENCj4gICAgICAgICB2b2xhdGlsZSBiYWNraW5nIHN0b3JhZ2UuICBP
-bmNlIGFsbCByZWZlcmVuY2VzIHRvIHRoZSBmaWxlIGFyZSBkcm9wcGVkLA0KPiAgICAgICAgIGl0
-ICBpcyAgYXV0b21hdGljYWxseSByZWxlYXNlZC4gIFRoZSBpbml0aWFsIHNpemUgb2YgdGhlIGZp
-bGUgaXMgc2V0IHRvDQo+ICAgICAgICAgMC4gIEZvbGxvd2luZyB0aGUgY2FsbCwgdGhlIGZpbGUg
-c2l6ZSBzaG91bGQgYmUgc2V0IHVzaW5nIGZ0cnVuY2F0ZSgyKS4NCj4gDQo+ICAgICAgICAgVGhl
-IG1lbW9yeSBhcmVhcyBvYnRhaW5lZCB3aXRoIG1tYXAoMikgZnJvbSB0aGUgZmlsZSBkZXNjcmlw
-dG9yIGFyZSBleOKAkA0KPiAgICAgICAgIGNsdXNpdmUgdG8gdGhlIG93bmluZyBjb250ZXh0LiAg
-VGhlc2UgYXJlYXMgYXJlIHJlbW92ZWQgZnJvbSB0aGUga2VybmVsDQo+ICAgICAgICAgcGFnZSB0
-YWJsZXMgYW5kIG9ubHkgdGhlIHBhZ2UgdGFibGUgb2YgdGhlIHByb2Nlc3MgaG9sZGluZyB0aGUg
-ZmlsZSBkZeKAkA0KPiAgICAgICAgIHNjcmlwdG9yIG1hcHMgdGhlIGNvcnJlc3BvbmRpbmcgcGh5
-c2ljYWwgbWVtb3J5Lg0KPiAgIA0KDQpTbyBsZXQncyB0YWxrIGFib3V0IHRoZSBtYWluIHVzZXIt
-dmlzaWJsZSBkaWZmZXJlbmNlcyB0byBvdGhlciBtZW1mZCANCmZpbGVzIChlc3BlY2lhbGx5LCBv
-dGhlciBwdXJlbHkgdmlydHVhbCBmaWxlcyBsaWtlIGh1Z2V0bGJmcykuIFdpdGggDQpzZWNyZXRt
-ZW06DQoNCi0gRmlsZSBjb250ZW50IGNhbiBvbmx5IGJlIHJlYWQvd3JpdHRlbiB2aWEgbWVtb3J5
-IG1hcHBpbmdzLg0KLSBGaWxlIGNvbnRlbnQgY2Fubm90IGJlIHN3YXBwZWQgb3V0Lg0KDQpJIHRo
-aW5rIHRoZXJlIGFyZSBzdGlsbCB2YWxpZCB3YXlzIHRvIG1vZGlmeSBmaWxlIGNvbnRlbnQgdXNp
-bmcgDQpzeXNjYWxsczogZS5nLiwgZmFsbG9jYXRlKFBVTkNIX0hPTEUpLiBUaGluZ3MgbGlrZSB0
-cnVuY2F0ZSBhbHNvIHNlZW1zIA0KdG8gd29yayBqdXN0IGZpbmUuDQoNCldoYXQgZWxzZT8NCg0K
-DQo+PiBBRkFJS1MsIHdlIHdvdWxkIG5lZWQgTUZEX1NFQ1JFVCBhbmQgZGlzYWxsb3cNCj4+IE1G
-RF9BTExPV19TRUFMSU5HIGFuZCBNRkRfSFVHRVRMQi4NCj4gDQo+IFNvIGhlcmUgd2Ugc3RhcnQg
-dG8gbXVsdGlwbGV4Lg0KDQpZZXMuIEFuZCBhcyBNaWNoYWwgc2FpZCwgbWF5YmUgd2UgY2FuIHN1
-cHBvcnQgY29tYmluYXRpb25zIGluIHRoZSBmdXR1cmUuDQoNCj4gDQo+PiBJbiBhZGRpdGlvbiwg
-d2UgY291bGQgYWRkIE1GRF9TRUNSRVRfTkVWRVJfTUFQLCB3aGljaCBjb3VsZCBkaXNhbGxvdyBh
-bnkga2luZCBvZg0KPj4gdGVtcG9yYXJ5IG1hcHBpbmdzIChlb3IgbWlncmF0aW9uKS4gVEJDLg0K
-PiANCj4gTmV2ZXIgbWFwIGlzIHRoZSBkZWZhdWx0LiBXaGVuIHdlJ2xsIG5lZWQgdG8gbWFwIHdl
-J2xsIGFkZCBhbiBleHBsaWNpdCBmbGFnDQo+IGZvciBpdC4NCg0KTm8gc3Ryb25nIG9waW5pb24u
-IChJJ2QgdHJ5IHRvIGh1cnQgdGhlIGtlcm5lbCBsZXNzIGFzIGRlZmF1bHQpDQoNCi0tIA0KVGhh
-bmtzLA0KDQpEYXZpZCAvIGRoaWxkZW5iDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGlt
-bUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRp
-bW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Tue, 9 Feb 2021 16:02:58 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
+
+> Add initial set of formal commands beyond basic identify and command
+> enumeration.
+> 
+> Of special note is the Get Log Command which is only specified to return
+> 2 log types, CEL and VENDOR_DEBUG. Given that VENDOR_DEBUG is already a
+> large catch all for vendor specific information there is no known reason
+> for devices to be implementing other log types. Unknown log types are
+> included in the "vendor passthrough shenanigans" safety regime like raw
+> commands and blocked by default.
+
+As mentioned in previous patch comments, the way that is worded in the spec
+suggests to me that what we might see if other specifications providing
+more UUIDs to define other 'standard' info.  Maybe something else was
+intended...   Still what you have done here makes sense to me.
+
+> 
+> Up to this point there has been no reason to inspect payload data.
+> Given the need to check the log type add a new "validate_payload"
+> operation to define a generic mechanism to restrict / filter commands.
+> 
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+>  drivers/cxl/mem.c            | 55 +++++++++++++++++++++++++++++++++++-
+>  include/uapi/linux/cxl_mem.h |  5 ++++
+>  2 files changed, 59 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index e9aa6ca18d99..e8cc076b9f1b 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -44,12 +44,16 @@
+>  enum opcode {
+>  	CXL_MBOX_OP_INVALID		= 0x0000,
+>  	CXL_MBOX_OP_RAW			= CXL_MBOX_OP_INVALID,
+> +	CXL_MBOX_OP_GET_FW_INFO		= 0x0200,
+>  	CXL_MBOX_OP_ACTIVATE_FW		= 0x0202,
+>  	CXL_MBOX_OP_GET_SUPPORTED_LOGS	= 0x0400,
+>  	CXL_MBOX_OP_GET_LOG		= 0x0401,
+>  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
+> +	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
+>  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
+> +	CXL_MBOX_OP_GET_LSA		= 0x4102,
+>  	CXL_MBOX_OP_SET_LSA		= 0x4103,
+> +	CXL_MBOX_OP_GET_HEALTH_INFO	= 0x4200,
+>  	CXL_MBOX_OP_SET_SHUTDOWN_STATE	= 0x4204,
+>  	CXL_MBOX_OP_SCAN_MEDIA		= 0x4304,
+>  	CXL_MBOX_OP_GET_SCAN_MEDIA	= 0x4305,
+> @@ -118,6 +122,9 @@ static const uuid_t log_uuid[] = {
+>  					0xd6, 0x07, 0x19, 0x40, 0x3d, 0x86)
+>  };
+>  
+> +static int validate_log_uuid(struct cxl_mem *cxlm, void __user *payload,
+> +			     size_t size);
+> +
+>  /**
+>   * struct cxl_mem_command - Driver representation of a memory device command
+>   * @info: Command information as it exists for the UAPI
+> @@ -129,6 +136,10 @@ static const uuid_t log_uuid[] = {
+>   *  * %CXL_CMD_INTERNAL_FLAG_PSEUDO: This is a pseudo command which doesn't have
+>   *    a direct mapping to hardware. They are implicitly always enabled.
+>   *
+> + * @validate_payload: A function called after the command is validated but
+> + * before it's sent to the hardware. The primary purpose is to validate, or
+> + * fixup the actual payload.
+> + *
+>   * The cxl_mem_command is the driver's internal representation of commands that
+>   * are supported by the driver. Some of these commands may not be supported by
+>   * the hardware. The driver will use @info to validate the fields passed in by
+> @@ -139,9 +150,12 @@ static const uuid_t log_uuid[] = {
+>  struct cxl_mem_command {
+>  	struct cxl_command_info info;
+>  	enum opcode opcode;
+> +
+> +	int (*validate_payload)(struct cxl_mem *cxlm, void __user *payload,
+> +				size_t size);
+>  };
+>  
+> -#define CXL_CMD(_id, _flags, sin, sout)                                        \
+> +#define CXL_CMD_VALIDATE(_id, _flags, sin, sout, v)                            \
+>  	[CXL_MEM_COMMAND_ID_##_id] = {                                         \
+>  	.info =	{                                                              \
+>  			.id = CXL_MEM_COMMAND_ID_##_id,                        \
+> @@ -150,8 +164,12 @@ struct cxl_mem_command {
+>  			.size_out = sout,                                      \
+>  		},                                                             \
+>  	.opcode = CXL_MBOX_OP_##_id,                                           \
+> +	.validate_payload = v,                                                 \
+>  	}
+>  
+> +#define CXL_CMD(_id, _flags, sin, sout)                                        \
+> +	CXL_CMD_VALIDATE(_id, _flags, sin, sout, NULL)
+> +
+>  /*
+>   * This table defines the supported mailbox commands for the driver. This table
+>   * is made up of a UAPI structure. Non-negative values as parameters in the
+> @@ -164,6 +182,11 @@ static struct cxl_mem_command mem_commands[] = {
+>  	CXL_CMD(RAW, NONE, ~0, ~0),
+>  #endif
+>  	CXL_CMD(GET_SUPPORTED_LOGS, NONE, 0, ~0),
+> +	CXL_CMD(GET_FW_INFO, NONE, 0, 0x50),
+> +	CXL_CMD(GET_PARTITION_INFO, NONE, 0, 0x20),
+> +	CXL_CMD(GET_LSA, NONE, 0x8, ~0),
+> +	CXL_CMD(GET_HEALTH_INFO, NONE, 0, 0x12),
+> +	CXL_CMD_VALIDATE(GET_LOG, NONE, 0x18, ~0, validate_log_uuid),
+>  };
+>  
+>  /*
+> @@ -492,6 +515,14 @@ static int handle_mailbox_cmd_from_user(struct cxl_memdev *cxlmd,
+>  		mbox_cmd.payload_out = kvzalloc(cxlm->payload_size, GFP_KERNEL);
+>  
+>  	if (cmd->info.size_in) {
+> +		if (cmd->validate_payload) {
+> +			rc = cmd->validate_payload(cxlm,
+> +						   u64_to_user_ptr(in_payload),
+> +						   cmd->info.size_in);
+> +			if (rc)
+> +				goto out;
+> +		}
+> +
+>  		mbox_cmd.payload_in = kvzalloc(cmd->info.size_in, GFP_KERNEL);
+>  		if (!mbox_cmd.payload_in) {
+>  			rc = -ENOMEM;
+> @@ -1124,6 +1155,28 @@ struct cxl_mbox_get_log {
+>  	__le32 length;
+>  } __packed;
+>  
+> +static int validate_log_uuid(struct cxl_mem *cxlm, void __user *input,
+> +			     size_t size)
+> +{
+> +	struct cxl_mbox_get_log __user *get_log = input;
+> +	uuid_t payload_uuid;
+> +
+> +	if (copy_from_user(&payload_uuid, &get_log->uuid, sizeof(uuid_t)))
+> +		return -EFAULT;
+> +
+> +	if (uuid_equal(&payload_uuid, &log_uuid[CEL_UUID]))
+> +		return 0;
+> +	if (uuid_equal(&payload_uuid, &log_uuid[VENDOR_DEBUG_UUID]))
+> +		return 0;
+> +
+> +	/* All unspec'd logs shall taint */
+> +	if (WARN_ONCE(!cxl_mem_raw_command_allowed(CXL_MBOX_OP_RAW),
+> +		      "Unknown log UUID %pU used\n", &payload_uuid))
+> +		return -EPERM;
+> +
+> +	return 0;
+> +}
+> +
+>  static int cxl_xfer_log(struct cxl_mem *cxlm, uuid_t *uuid, u32 size, u8 *out)
+>  {
+>  	u32 remaining = size;
+> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
+> index c5e75b9dad9d..ba4d3b4d6b7d 100644
+> --- a/include/uapi/linux/cxl_mem.h
+> +++ b/include/uapi/linux/cxl_mem.h
+> @@ -24,6 +24,11 @@
+>  	___C(IDENTIFY, "Identify Command"),                               \
+>  	___C(RAW, "Raw device command"),                                  \
+>  	___C(GET_SUPPORTED_LOGS, "Get Supported Logs"),                   \
+> +	___C(GET_FW_INFO, "Get FW Info"),                                 \
+> +	___C(GET_PARTITION_INFO, "Get Partition Information"),            \
+> +	___C(GET_LSA, "Get Label Storage Area"),                          \
+> +	___C(GET_HEALTH_INFO, "Get Health Info"),                         \
+> +	___C(GET_LOG, "Get Log"),                                         \
+>  	___C(MAX, "Last command")
+>  
+>  #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
