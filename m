@@ -2,82 +2,470 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BABF31897F
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 12:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 140303189FE
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 13:03:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BCEE5100EA2A6;
-	Thu, 11 Feb 2021 03:33:42 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.188.222; helo=str9.strategiceventtechsummit.live; envelope-from=contact-linux+2dnvdimm=lists.01.org@strategiceventtechsummit.live; receiver=<UNKNOWN> 
-Received: from str9.strategiceventtechsummit.live (ip222.ip-51-83-188.eu [51.83.188.222])
+	by ml01.01.org (Postfix) with ESMTP id 5133C100EA2A2;
+	Thu, 11 Feb 2021 04:03:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8C231100EA2A5
-	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 03:33:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=strategiceventtechsummit.live;
- h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=contact@strategiceventtechsummit.live;
- bh=JhyAvp7/2qzehUqWO3aGON9khVQ=;
- b=CwO03GpveBRucpr4NcLsXJA/RfLMnSTd+Pf9NoudKCsR5r/0UJ3OAUqmTGH57FjjNfy3JAROcpjA
-   pXBN1jxDfsyqYIKuVNc/B50oK3Xzgh+GXu/juP8bMKrgVy/xgcsGCG5NlbY0EFT1mfte6Bw0IB2p
-   XOF0hJ3+cQuuYYH/et3+2aPE9Gp6RIE4o62e2S8EJrwLuM+lxg6/BTo5EZhk60UDaXPixGcFxfky
-   4Lba8tZFD8wX5yekUeBkNSYqRRohu/KkhB9AiGwz8f5IyPd+zTV/pbNPI7/aLFa+jNjrE/Sr3LG6
-   e8gL5pPDFypdF2PSuD3GMTYFsKCat3xvsoTxaA==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=strategiceventtechsummit.live;
- b=pv2hzSvIvWZiC34RWlxP8gfEDW1MsA02HwnTOFBHn9fbsLFdcBz9JYAEX9JIFE+1w4+IEdjEgDum
-   Uy5rOI/5NNDCd0ihatN16q24R3//aLsC+9Tjwd+ioAau5MHPWS+d8OpgK3EnOM74BpiYQ82ESHPR
-   kt0Jv3v2yGHaY7KlOBJ5qe5SoYD9OUtsXBR0KumECBrHJsSyAnoamidwF806HiK/TWvNheyf2nCU
-   j/97xG6sqzG/rAb689tKHhZRhr61ZNQayzGviNFiHlA3umcBY2Zvss5HexQX0uS5NVIYcQsIFuFr
-   XQxaecYemkS8n81rYWkZZ+u4K2RCZc8APHGcdg==;
-Received: from strategiceventtechsummit.live (127.0.0.1) by str1.strategiceventtechsummit.live id h4kb19i19tkh for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 11:33:37 +0000 (envelope-from <contact-linux+2Dnvdimm=lists.01.org@strategiceventtechsummit.live>)
-Message-ID: <0de58bb5ad0b41f2923df2e703801d8b@strategiceventtechsummit.live>
-Date: Thu, 11 Feb 2021 11:33:37 +0000
-Subject: FW: 10K LinkedIn Leads at 500
-From: Emily Johnson <contact@strategiceventtechsummit.live>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTPS id D3191100EA926
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 04:03:19 -0800 (PST)
+Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.201])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbwCp4Z3bz67nKR;
+	Thu, 11 Feb 2021 19:59:34 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 11 Feb 2021 13:03:16 +0100
+Received: from localhost (10.47.31.44) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 11 Feb
+ 2021 12:03:15 +0000
+Date: Thu, 11 Feb 2021 12:02:15 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v2 6/8] cxl/mem: Enable commands via CEL
+Message-ID: <20210211120215.00007d3d@Huawei.com>
+In-Reply-To: <20210210000259.635748-7-ben.widawsky@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+	<20210210000259.635748-7-ben.widawsky@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-X-Sender: contact@strategiceventtechsummit.live
-X-Report-Abuse: Please report abuse for this campaign here:
- https://strategiceventtechsummit.live/app/index.php/campaigns/vm7618zx7ocf5/report-abuse/rd931gt1ao629/ez799f3wvc792
-X-Receiver: linux-nvdimm@lists.01.org
-X-Cojo-Tracking-Did: 0
-X-Cojo-Subscriber-Uid: ez799f3wvc792
-X-Cojo-Mailer: SwiftMailer - 5.4.x
-X-Cojo-EBS: https://strategiceventtechsummit.live/app/index.php/lists/block-address
-X-Cojo-Delivery-Sid: 1
-X-Cojo-Customer-Uid: lg295x7e0jb67
-X-Cojo-Customer-Gid: 0
-X-Cojo-Campaign-Uid: vm7618zx7ocf5
-Precedence: bulk
-Feedback-ID: vm7618zx7ocf5:ez799f3wvc792:rd931gt1ao629:lg295x7e0jb67
-Message-ID-Hash: UIIQ2J424CJY5TJVBIP2ZTBRYKNOMVHW
-X-Message-ID-Hash: UIIQ2J424CJY5TJVBIP2ZTBRYKNOMVHW
-X-MailFrom: contact-linux+2Dnvdimm=lists.01.org@strategiceventtechsummit.live
+X-Originating-IP: [10.47.31.44]
+X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+Message-ID-Hash: 4HASQUDYKKMU3N4O6F3O5U4MOMDH6DTR
+X-Message-ID-Hash: 4HASQUDYKKMU3N4O6F3O5U4MOMDH6DTR
+X-MailFrom: jonathan.cameron@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
-Reply-To: Emily Johnson <emily.johnsontarget@gmail.com>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UIIQ2J424CJY5TJVBIP2ZTBRYKNOMVHW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4HASQUDYKKMU3N4O6F3O5U4MOMDH6DTR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QXJlIHlvdSBpbnRlcmVzdGVkIHRvIHB1cmNoYXNlIDEwMCUgYWNjdXJhdGUgMTAsMDAwIFRhcmdl
-dGVkIExlYWRzDQpmcm9tIExpbmtlZEluIGF0ICQ1MDAoQW55IHRpdGxlcy9pbmR1c3RyeS9sb2Nh
-dGlvbi9rZXl3b3Jkcyk/DQpJZiB5b3UgaGF2ZSBhIHZlcnkgdGFyZ2V0ZWQgZGF0YSByZXF1aXJl
-bWVudCBhbmQgeW91IG5lZWQgTGlua2VkSW4NCmRhdGFiYXNlLCB3ZSB3aWxsIHB1bGwgdGFyZ2V0
-ZWQgZGF0YWJhc2VzIGZvciB5b3Ugd2l0aCB0aGVpciBMaW5rZWRJbg0KcHJvZmlsZSBsaW5rLCBu
-YW1lLCB0aXRsZSwgZW1haWwgYWRkcmVzcywgY29tcGFueSBuYW1lLCBjaXR5LCBjb21wYW55DQpz
-aXplIGV0Yy4gUGxlYXNlIHNoYXJlIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIGFuZCBJIHdpbGwgc3Vw
-cGx5IHRoZQ0Kc2FtcGxlIHdpdGhpbiAxIGJ1c2luZXNzIGRheXPigJkgdGltZS4NClRoYW5rcyBh
-bmQgbGV0IG1lIGtub3cuDQpFbWlseSBKb2huc29uDQpMaW5rZWRJbiBEYXRhYmFzZSBQcm92aWRl
-cg0KKzEtKDY3OCkgNzQ1LTgzODUNClVuc3Vic2NyaWJlDQpodHRwczovL3N0cmF0ZWdpY2V2ZW50
-dGVjaHN1bW1pdC5saXZlL2FwcC9pbmRleC5waHAvbGlzdHMvcmQ5MzFndDFhbzYyOS91bnN1YnNj
-cmliZS9lejc5OWYzd3ZjNzkyL3ZtNzYxOHp4N29jZjUNCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGlu
-dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxp
-bnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On Tue, 9 Feb 2021 16:02:57 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
+
+> CXL devices identified by the memory-device class code must implement
+> the Device Command Interface (described in 8.2.9 of the CXL 2.0 spec).
+> While the driver already maintains a list of commands it supports, there
+> is still a need to be able to distinguish between commands that the
+> driver knows about from commands that are optionally supported by the
+> hardware.
+> 
+> The Command Effects Log (CEL) is specified in the CXL 2.0 specification.
+> The CEL is one of two types of logs, the other being vendor specific.
+
+I'd say "vendor specific debug" just so that no one thinks it has anything
+to do with the rest of this description (which mentioned vendor specific
+commands).
+
+> They are distinguished in hardware/spec via UUID. The CEL is useful for
+> 2 things:
+> 1. Determine which optional commands are supported by the CXL device.
+> 2. Enumerate any vendor specific commands
+> 
+> The CEL is used by the driver to determine which commands are available
+> in the hardware and therefore which commands userspace is allowed to
+> execute. The set of enabled commands might be a subset of commands which
+> are advertised in UAPI via CXL_MEM_SEND_COMMAND IOCTL.
+> 
+> The implementation leaves the statically defined table of commands and
+> supplements it with a bitmap to determine commands that are enabled.
+> This organization was chosen for the following reasons:
+> - Smaller memory footprint. Doesn't need a table per device.
+> - Reduce memory allocation complexity.
+> - Fixed command IDs to opcode mapping for all devices makes development
+>   and debugging easier.
+> - Certain helpers are easily achievable, like cxl_for_each_cmd().
+> 
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/cxl/cxl.h            |   2 +
+>  drivers/cxl/mem.c            | 216 +++++++++++++++++++++++++++++++++++
+>  include/uapi/linux/cxl_mem.h |   1 +
+>  3 files changed, 219 insertions(+)
+> 
+> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+> index b3c56fa6e126..9a5e595abfa4 100644
+> --- a/drivers/cxl/cxl.h
+> +++ b/drivers/cxl/cxl.h
+> @@ -68,6 +68,7 @@ struct cxl_memdev;
+>   *                (CXL 2.0 8.2.8.4.3 Mailbox Capabilities Register)
+>   * @mbox_mutex: Mutex to synchronize mailbox access.
+>   * @firmware_version: Firmware version for the memory device.
+> + * @enabled_commands: Hardware commands found enabled in CEL.
+>   * @pmem: Persistent memory capacity information.
+>   * @ram: Volatile memory capacity information.
+>   */
+> @@ -83,6 +84,7 @@ struct cxl_mem {
+>  	size_t payload_size;
+>  	struct mutex mbox_mutex; /* Protects device mailbox and firmware */
+>  	char firmware_version[0x10];
+> +	unsigned long *enabled_cmds;
+>  
+>  	struct {
+>  		struct range range;
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index 6d766a994dce..e9aa6ca18d99 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -45,6 +45,8 @@ enum opcode {
+>  	CXL_MBOX_OP_INVALID		= 0x0000,
+>  	CXL_MBOX_OP_RAW			= CXL_MBOX_OP_INVALID,
+>  	CXL_MBOX_OP_ACTIVATE_FW		= 0x0202,
+> +	CXL_MBOX_OP_GET_SUPPORTED_LOGS	= 0x0400,
+> +	CXL_MBOX_OP_GET_LOG		= 0x0401,
+>  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
+>  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
+>  	CXL_MBOX_OP_SET_LSA		= 0x4103,
+> @@ -103,6 +105,19 @@ static DEFINE_IDA(cxl_memdev_ida);
+>  static struct dentry *cxl_debugfs;
+>  static bool raw_allow_all;
+>  
+> +enum {
+> +	CEL_UUID,
+> +	VENDOR_DEBUG_UUID
+
+Who wants to take a bet this will get extended at somepoint in the future?
+Add a trailing comma to make that less noisy.
+
+They would never have used a UUID if this wasn't expected to expand.
+CXL spec calls out that "The following Log Identifier UUIDs are defined in _this_
+specification" rather implying other specs may well define more.
+Fun for the future!
+
+> +};
+> +
+> +/* See CXL 2.0 Table 170. Get Log Input Payload */
+> +static const uuid_t log_uuid[] = {
+> +	[CEL_UUID] = UUID_INIT(0xda9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79, 0x96,
+> +			       0xb1, 0x62, 0x3b, 0x3f, 0x17),
+> +	[VENDOR_DEBUG_UUID] = UUID_INIT(0xe1819d9, 0x11a9, 0x400c, 0x81, 0x1f,
+> +					0xd6, 0x07, 0x19, 0x40, 0x3d, 0x86)
+
+likewise on trailing comma
+
+> +};
+> +
+>  /**
+>   * struct cxl_mem_command - Driver representation of a memory device command
+>   * @info: Command information as it exists for the UAPI
+> @@ -111,6 +126,8 @@ static bool raw_allow_all;
+>   *
+>   *  * %CXL_CMD_FLAG_MANDATORY: Hardware must support this command. This flag is
+>   *    only used internally by the driver for sanity checking.
+> + *  * %CXL_CMD_INTERNAL_FLAG_PSEUDO: This is a pseudo command which doesn't have
+> + *    a direct mapping to hardware. They are implicitly always enabled.
+
+Stale comment?
+
+>   *
+>   * The cxl_mem_command is the driver's internal representation of commands that
+>   * are supported by the driver. Some of these commands may not be supported by
+> @@ -146,6 +163,7 @@ static struct cxl_mem_command mem_commands[] = {
+>  #ifdef CONFIG_CXL_MEM_RAW_COMMANDS
+>  	CXL_CMD(RAW, NONE, ~0, ~0),
+>  #endif
+> +	CXL_CMD(GET_SUPPORTED_LOGS, NONE, 0, ~0),
+>  };
+>  
+>  /*
+> @@ -627,6 +645,10 @@ static int cxl_validate_cmd_from_user(struct cxl_mem *cxlm,
+>  	c = &mem_commands[send_cmd->id];
+>  	info = &c->info;
+>  
+> +	/* Check that the command is enabled for hardware */
+> +	if (!test_bit(info->id, cxlm->enabled_cmds))
+> +		return -ENOTTY;
+> +
+>  	if (info->flags & CXL_MEM_COMMAND_FLAG_KERNEL)
+>  		return -EPERM;
+>  
+> @@ -869,6 +891,14 @@ static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+>  	mutex_init(&cxlm->mbox_mutex);
+>  	cxlm->pdev = pdev;
+>  	cxlm->regs = regs + offset;
+> +	cxlm->enabled_cmds =
+> +		devm_kmalloc_array(dev, BITS_TO_LONGS(cxl_cmd_count),
+> +				   sizeof(unsigned long),
+> +				   GFP_KERNEL | __GFP_ZERO);
+
+Hmm. There doesn't seem to be a devm_bitmap_zalloc
+
+Embarrassingly one of the google hits on the topic is me suggesting
+this in a previous review (that I'd long since forgotten)
+
+Perhaps one for a refactoring patch after this lands.
+
+
+> +	if (!cxlm->enabled_cmds) {
+> +		dev_err(dev, "No memory available for bitmap\n");
+> +		return NULL;
+> +	}
+>  
+>  	dev_dbg(dev, "Mapped CXL Memory Device resource\n");
+>  	return cxlm;
+> @@ -1088,6 +1118,188 @@ static int cxl_mem_add_memdev(struct cxl_mem *cxlm)
+>  	return rc;
+>  }
+>  
+> +struct cxl_mbox_get_log {
+> +	uuid_t uuid;
+> +	__le32 offset;
+> +	__le32 length;
+> +} __packed;
+> +
+> +static int cxl_xfer_log(struct cxl_mem *cxlm, uuid_t *uuid, u32 size, u8 *out)
+> +{
+> +	u32 remaining = size;
+> +	u32 offset = 0;
+> +
+> +	while (remaining) {
+> +		u32 xfer_size = min_t(u32, remaining, cxlm->payload_size);
+> +		struct cxl_mbox_get_log log = {
+> +			.uuid = *uuid,
+> +			.offset = cpu_to_le32(offset),
+> +			.length = cpu_to_le32(xfer_size)
+> +		};
+> +		struct mbox_cmd mbox_cmd = {
+> +			.opcode = CXL_MBOX_OP_GET_LOG,
+> +			.payload_in = &log,
+> +			.payload_out = out,
+> +			.size_in = sizeof(log),
+> +		};
+> +		int rc;
+> +
+> +		rc = cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> +		if (rc)
+> +			return rc;
+> +
+> +		WARN_ON(mbox_cmd.size_out != xfer_size);
+
+Just for completeness (as already addressed in one of Ben's replies
+to earlier patch) this is missing handling for the return code.
+
+> +
+> +		out += xfer_size;
+> +		remaining -= xfer_size;
+> +		offset += xfer_size;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static inline struct cxl_mem_command *cxl_mem_find_command(u16 opcode)
+> +{
+> +	struct cxl_mem_command *c;
+> +
+> +	cxl_for_each_cmd(c)
+> +		if (c->opcode == opcode)
+> +			return c;
+> +
+> +	return NULL;
+> +}
+> +
+> +static void cxl_enable_cmd(struct cxl_mem *cxlm,
+> +			   const struct cxl_mem_command *cmd)
+> +{
+> +	if (test_and_set_bit(cmd->info.id, cxlm->enabled_cmds))
+> +		dev_WARN_ONCE(&cxlm->pdev->dev, true, "cmd enabled twice\n");
+> +}
+> +
+> +/**
+> + * cxl_walk_cel() - Walk through the Command Effects Log.
+> + * @cxlm: Device.
+> + * @size: Length of the Command Effects Log.
+> + * @cel: CEL
+> + *
+> + * Iterate over each entry in the CEL and determine if the driver supports the
+> + * command. If so, the command is enabled for the device and can be used later.
+> + */
+> +static void cxl_walk_cel(struct cxl_mem *cxlm, size_t size, u8 *cel)
+> +{
+> +	struct cel_entry {
+> +		__le16 opcode;
+> +		__le16 effect;
+> +	} *cel_entry;
+
+Driver is currently marking a bunch of other structures packed that don't
+need it. Perhaps do this one as well for consistency?
+
+> +	const int cel_entries = size / sizeof(*cel_entry);
+> +	int i;
+> +
+> +	cel_entry = (struct cel_entry *)cel;
+> +
+> +	for (i = 0; i < cel_entries; i++) {
+> +		const struct cel_entry *ce = &cel_entry[i];
+
+Given ce is only ever used to get the ce->opcode maybe better using that
+as the local variable?
+
+		u16 opcode = le16_to_cpu(cel_entry[i].opcode)
+
+Obviously that might change depending on later patches though.
+
+
+> +		const struct cxl_mem_command *cmd =
+> +			cxl_mem_find_command(le16_to_cpu(ce->opcode));
+> +
+> +		if (!cmd) {
+> +			dev_dbg(&cxlm->pdev->dev, "Unsupported opcode 0x%04x",
+
+Unsupported by who? (driver rather than hardware)
+
+> +				le16_to_cpu(ce->opcode));
+> +			continue;
+> +		}
+> +
+> +		cxl_enable_cmd(cxlm, cmd);
+> +	}
+> +}
+> +
+> +/**
+> + * cxl_mem_enumerate_cmds() - Enumerate commands for a device.
+> + * @cxlm: The device.
+> + *
+> + * Returns 0 if enumerate completed successfully.
+> + *
+> + * CXL devices have optional support for certain commands. This function will
+> + * determine the set of supported commands for the hardware and update the
+> + * enabled_cmds bitmap in the @cxlm.
+> + */
+> +static int cxl_mem_enumerate_cmds(struct cxl_mem *cxlm)
+> +{
+> +	struct device *dev = &cxlm->pdev->dev;
+> +	struct cxl_mbox_get_supported_logs {
+> +		__le16 entries;
+> +		u8 rsvd[6];
+> +		struct gsl_entry {
+> +			uuid_t uuid;
+> +			__le32 size;
+> +		} __packed entry[2];
+> +	} __packed gsl;
+> +	struct mbox_cmd mbox_cmd = {
+> +		.opcode = CXL_MBOX_OP_GET_SUPPORTED_LOGS,
+> +		.payload_out = &gsl,
+> +		.size_in = 0,
+> +	};
+> +	int i, rc;
+> +
+> +	rc = cxl_mem_mbox_get(cxlm);
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc = cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> +	if (rc)
+> +		goto out;
+> +
+> +	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS) {
+> +		rc = -ENXIO;
+> +		goto out;
+> +	}
+> +
+> +	if (mbox_cmd.size_out > sizeof(gsl)) {
+> +		dev_warn(dev, "%zu excess logs\n",
+> +			 (mbox_cmd.size_out - sizeof(gsl)) /
+> +				 sizeof(struct gsl_entry));
+
+This could well happen given spec seems to allow for other
+entries defined by other specs.
+
+Note that it's this path that I mentioned earlier as requiring we sanity
+check the output size available before calling mempcy_fromio into it
+with the hardware supported size.
+
+
+> +	}
+> +
+> +	for (i = 0; i < le16_to_cpu(gsl.entries); i++) {
+> +		u32 size = le32_to_cpu(gsl.entry[i].size);
+> +		uuid_t uuid = gsl.entry[i].uuid;
+> +		u8 *log;
+> +
+> +		dev_dbg(dev, "Found LOG type %pU of size %d", &uuid, size);
+> +
+> +		if (!uuid_equal(&uuid, &log_uuid[CEL_UUID]))
+> +			continue;
+> +
+> +		/*
+> +		 * It's a hardware bug if the log size is less than the input
+> +		 * payload size because there are many mandatory commands.
+> +		 */
+> +		if (sizeof(struct cxl_mbox_get_log) > size) {
+
+If you are going to talk about less than in the comment, I'd flip the condition
+around so it lines up. Trivial obviously but nice to tidy up.
+
+> +			dev_err(dev, "CEL log size reported was too small (%d)",
+> +				size);
+> +			rc = -ENOMEM;
+> +			goto out;
+> +		}
+> +
+> +		log = kvmalloc(size, GFP_KERNEL);
+> +		if (!log) {
+> +			rc = -ENOMEM;
+> +			goto out;
+> +		}
+> +
+> +		rc = cxl_xfer_log(cxlm, &uuid, size, log);
+> +		if (rc) {
+> +			kvfree(log);
+> +			goto out;
+> +		}
+> +
+> +		cxl_walk_cel(cxlm, size, log);
+> +		kvfree(log);
+> +	}
+> +
+> +out:
+> +	cxl_mem_mbox_put(cxlm);
+> +	return rc;
+> +}
+> +
+>  /**
+>   * cxl_mem_identify() - Send the IDENTIFY command to the device.
+>   * @cxlm: The device to identify.
+> @@ -1211,6 +1423,10 @@ static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  	if (rc)
+>  		return rc;
+>  
+> +	rc = cxl_mem_enumerate_cmds(cxlm);
+> +	if (rc)
+> +		return rc;
+> +
+>  	rc = cxl_mem_identify(cxlm);
+>  	if (rc)
+>  		return rc;
+> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
+> index 72d1eb601a5d..c5e75b9dad9d 100644
+> --- a/include/uapi/linux/cxl_mem.h
+> +++ b/include/uapi/linux/cxl_mem.h
+> @@ -23,6 +23,7 @@
+>  	___C(INVALID, "Invalid Command"),                                 \
+>  	___C(IDENTIFY, "Identify Command"),                               \
+>  	___C(RAW, "Raw device command"),                                  \
+> +	___C(GET_SUPPORTED_LOGS, "Get Supported Logs"),                   \
+>  	___C(MAX, "Last command")
+>  
+>  #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
