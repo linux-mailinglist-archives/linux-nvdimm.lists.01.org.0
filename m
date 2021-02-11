@@ -2,38 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D2531895F
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 12:27:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A0A318964
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 12:30:08 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F2DE8100EA93F;
-	Thu, 11 Feb 2021 03:27:20 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 54500100EA2A2;
+	Thu, 11 Feb 2021 03:30:06 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A783C100EA93D
-	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 03:27:17 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 418C664E26;
-	Thu, 11 Feb 2021 11:27:07 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id 89CBA100EA2A1
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 03:30:04 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2C89C601FF;
+	Thu, 11 Feb 2021 11:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1613042837;
-	bh=opUcWXi7xUrvrbmjoDXPB2U6cbnKyKBkuV2eGoN2RQ0=;
+	s=k20201202; t=1613043004;
+	bh=JtJHuqvnhxNyM0cSP3Qe3tSMfjdJGVz3S+tERJXfo4M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A5/jbbX3iRUf/Jtm1xCh7A2cWOvkK3kzDtdhjuXDmdNdtTGER2HK1BFbOMjDHidEz
-	 SSAvvaYro9hQ+4UOj7rZChw3GBiogzmiN+96ZwTf8KpbmHjppkBqlpNOGx1+GYSKnW
-	 iiIhy5VQwzOPRd5nhGKpZX9Mb+eGqJHBo98bQp3LuQGfqZdzRYf/BQyRJyHvb6rQIR
-	 vf9QchKbM0VCUg7uK5ktt19qAUj7CPyDJjv4a7QDFu0SNwMWyc8ZvtWr5Inmu5RJdS
-	 kK6a/mH5rwOREuKbaRyEGTNNkx6bq86w3omRuJcmAk5yyZCS72ObmTWwCdBPlR5ydV
-	 SRb+HO2Qsif8g==
-Date: Thu, 11 Feb 2021 13:27:02 +0200
+	b=PEXygoi6R9pVpb0NPj47+Ko3f1Ah21CxDjueYWnlQAO/uRVErOda0UIyi9V6v9rYs
+	 6NXsauRjapfptBwBvo70ls3AAnv08VDhhWUxi7yLuKhQOTQa31mGOOLAdVpQ8B16uZ
+	 SzyBJMAmkReTwWmxT4Tjvg8ZAL2HyRIawjk70IsH5WPDvqJ9dQdETycAuzkDATgNju
+	 gOL/aozy2VFMdzBaSlauwv+UBb82EKAQG3vL++P2TTqj9pWtgKqRk4VcEXI1wyFYG+
+	 5DJMf90zHF2E2ie9ZUU2VlL1vbBwnzXXk30WzSnRm7nZHI33uXE/tbEgH+TreMHc5x
+	 BblQZ8rwiMN2Q==
+Date: Thu, 11 Feb 2021 13:29:46 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
 Subject: Re: [PATCH v17 07/10] mm: introduce memfd_secret system call to
  create "secret" memory areas
-Message-ID: <20210211112702.GI242749@kernel.org>
-References: <20210208084920.2884-1-rppt@kernel.org>
- <20210208084920.2884-8-rppt@kernel.org>
- <YCEXMgXItY7xMbIS@dhcp22.suse.cz>
+Message-ID: <20210211112946.GJ242749@kernel.org>
+References: <YCEXMgXItY7xMbIS@dhcp22.suse.cz>
  <20210208212605.GX242749@kernel.org>
  <YCJMDBss8Qhha7g9@dhcp22.suse.cz>
  <20210209090938.GP299309@linux.ibm.com>
@@ -41,11 +39,13 @@ References: <20210208084920.2884-1-rppt@kernel.org>
  <20210211071319.GF242749@kernel.org>
  <YCTtSrCEvuBug2ap@dhcp22.suse.cz>
  <0d66baec-1898-987b-7eaf-68a015c027ff@redhat.com>
+ <YCT6+9YW474IaKrm@dhcp22.suse.cz>
+ <e7f1b5eb-a4c8-2772-6333-0a72c22b0c51@redhat.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <0d66baec-1898-987b-7eaf-68a015c027ff@redhat.com>
-Message-ID-Hash: IS3RBPB75SZ7S6VOOANTQ3OABXIXZKFX
-X-Message-ID-Hash: IS3RBPB75SZ7S6VOOANTQ3OABXIXZKFX
+In-Reply-To: <e7f1b5eb-a4c8-2772-6333-0a72c22b0c51@redhat.com>
+Message-ID-Hash: 4MXCPLFUD2YQD4TGTL63NEZYSVPNID6N
+X-Message-ID-Hash: 4MXCPLFUD2YQD4TGTL63NEZYSVPNID6N
 X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -54,114 +54,40 @@ CC: Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Andrew M
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IS3RBPB75SZ7S6VOOANTQ3OABXIXZKFX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4MXCPLFUD2YQD4TGTL63NEZYSVPNID6N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gVGh1LCBGZWIgMTEsIDIwMjEgYXQgMTA6MDE6MzJBTSArMDEwMCwgRGF2aWQgSGlsZGVuYnJh
-bmQgd3JvdGU6DQo+IE9uIDExLjAyLjIxIDA5OjM5LCBNaWNoYWwgSG9ja28gd3JvdGU6DQo+ID4g
-T24gVGh1IDExLTAyLTIxIDA5OjEzOjE5LCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0KPiA+ID4gT24g
-VHVlLCBGZWIgMDksIDIwMjEgYXQgMDI6MTc6MTFQTSArMDEwMCwgTWljaGFsIEhvY2tvIHdyb3Rl
-Og0KPiA+ID4gPiBPbiBUdWUgMDktMDItMjEgMTE6MDk6MzgsIE1pa2UgUmFwb3BvcnQgd3JvdGU6
-DQo+ID4gWy4uLl0NCj4gPiA+ID4gPiBDaXRpbmcgbXkgb2xkZXIgZW1haWw6DQo+ID4gPiA+ID4g
-DQo+ID4gPiA+ID4gICAgICBJJ3ZlIGhlc2l0YXRlZCB3aGV0aGVyIHRvIGNvbnRpbnVlIHRvIHVz
-ZSBuZXcgZmxhZ3MgdG8gbWVtZmRfY3JlYXRlKCkgb3IgdG8NCj4gPiA+ID4gPiAgICAgIGFkZCBh
-IG5ldyBzeXN0ZW0gY2FsbCBhbmQgSSd2ZSBkZWNpZGVkIHRvIHVzZSBhIG5ldyBzeXN0ZW0gY2Fs
-bCBhZnRlciBJJ3ZlDQo+ID4gPiA+ID4gICAgICBzdGFydGVkIHRvIGxvb2sgaW50byBtYW4gcGFn
-ZXMgdXBkYXRlLiBUaGVyZSB3b3VsZCBoYXZlIGJlZW4gdHdvIGNvbXBsZXRlbHkNCj4gPiA+ID4g
-PiAgICAgIGluZGVwZW5kZW50IGRlc2NyaXB0aW9ucyBhbmQgSSB0aGluayBpdCB3b3VsZCBoYXZl
-IGJlZW4gdmVyeSBjb25mdXNpbmcuDQo+ID4gPiA+IA0KPiA+ID4gPiBDb3VsZCB5b3UgZWxhYm9y
-YXRlPyBVbm1hcHBpbmcgZnJvbSB0aGUga2VybmVsIGFkZHJlc3Mgc3BhY2UgY2FuIHdvcmsNCj4g
-PiA+ID4gYm90aCBmb3Igc2VhbGVkIG9yIGh1Z2V0bGIgbWVtZmRzLCBubz8gVGhvc2UgZmVhdHVy
-ZXMgYXJlIGNvbXBsZXRlbHkNCj4gPiA+ID4gb3J0aG9nb25hbCBBRkFJQ1MuIFdpdGggYSBkZWRp
-Y2F0ZWQgc3lzY2FsbCB5b3Ugd2lsbCBuZWVkIHRvIGludHJvZHVjZQ0KPiA+ID4gPiB0aGlzIGZ1
-bmN0aW9uYWxpdHkgb24gdG9wIGlmIHRoYXQgaXMgcmVxdWlyZWQuIEhhdmUgeW91IGNvbnNpZGVy
-ZWQgdGhhdD8NCj4gPiA+ID4gSSBtZWFuIGh1Z2V0bGIgcGFnZXMgYXJlIHVzZWQgdG8gYmFjayBn
-dWVzdCBtZW1vcnkgdmVyeSBvZnRlbi4gSXMgdGhpcw0KPiA+ID4gPiBzb21ldGhpbmcgdGhhdCB3
-aWxsIGJlIGEgc2VjcmV0IG1lbW9yeSB1c2VjYXNlPw0KPiA+ID4gPiANCj4gPiA+ID4gUGxlYXNl
-IGJlIHJlYWxseSBzcGVjaWZpYyB3aGVuIGdpdmluZyBhcmd1bWVudHMgdG8gYmFjayBhIG5ldyBz
-eXNjYWxsDQo+ID4gPiA+IGRlY2lzaW9uLg0KPiA+ID4gDQo+ID4gPiBJc24ndCAic3lzY2FsbHMg
-aGF2ZSBjb21wbGV0ZWx5IGluZGVwZW5kZW50IGRlc2NyaXB0aW9uIiBzcGVjaWZpYyBlbm91Z2g/
-DQo+ID4gDQo+ID4gTm8sIGl0J3Mgbm90IGFzIHlvdSBjYW4gc2VlIGZyb20gcXVlc3Rpb25zIEkn
-dmUgaGFkIGFib3ZlLiBNb3JlIG9uIHRoYXQNCj4gPiBiZWxvdy4NCj4gPiANCj4gPiA+IFdlIGFy
-ZSB0YWxraW5nIGFib3V0IEFQSSBoZXJlLCBub3QgdGhlIGltcGxlbWVudGF0aW9uIGRldGFpbHMg
-d2hldGhlcg0KPiA+ID4gc2VjcmV0bWVtIHN1cHBvcnRzIGxhcmdlIHBhZ2VzIG9yIG5vdC4NCj4g
-PiA+IA0KPiA+ID4gVGhlIHB1cnBvc2Ugb2YgbWVtZmRfY3JlYXRlKCkgaXMgdG8gY3JlYXRlIGEg
-ZmlsZS1saWtlIGFjY2VzcyB0byBtZW1vcnkuDQo+ID4gPiBUaGUgcHVycG9zZSBvZiBtZW1mZF9z
-ZWNyZXQoKSBpcyB0byBjcmVhdGUgYSB3YXkgdG8gYWNjZXNzIG1lbW9yeSBoaWRkZW4NCj4gPiA+
-IGZyb20gdGhlIGtlcm5lbC4NCj4gPiA+IA0KPiA+ID4gSSBkb24ndCB0aGluayBvdmVybG9hZGlu
-ZyBtZW1mZF9jcmVhdGUoKSB3aXRoIHRoZSBzZWNyZXRtZW0gZmxhZ3MgYmVjYXVzZQ0KPiA+ID4g
-dGhleSBoYXBwZW4gdG8gcmV0dXJuIGEgZmlsZSBkZXNjcmlwdG9yIHdpbGwgYmUgYmV0dGVyIGZv
-ciB1c2VycywgYnV0DQo+ID4gPiByYXRoZXIgd2lsbCBiZSBtb3JlIGNvbmZ1c2luZy4NCj4gPiAN
-Cj4gPiBUaGlzIGlzIHF1aXRlIGEgc3ViamVjdGl2ZSBjb25jbHVzaW9uLiBJIGNvdWxkIHZlcnkg
-d2VsbCBhcmd1ZSB0aGF0IGl0DQo+ID4gd291bGQgYmUgbXVjaCBiZXR0ZXIgdG8gaGF2ZSBhIHNp
-bmdsZSBzeXNjYWxsIHRvIGdldCBhIGZkIGJhY2tlZCBtZW1vcnkNCj4gPiB3aXRoIHNwZWRpZmlj
-IHJlcXVpcmVtZW50cyAoc2VhbGluZywgdW5tYXBwaW5nIGZyb20gdGhlIGtlcm5lbCBhZGRyZXNz
-DQo+ID4gc3BhY2UpLiBOZWl0aGVyIG9mIHVzIHdvdWxkIGJlIGNsZWFybHkgcmlnaHQgb3Igd3Jv
-bmcuIEEgbW9yZSBpbXBvcnRhbnQNCj4gPiBwb2ludCBpcyBhIGZ1dHVyZSBleHRlbnNpYmlsaXR5
-IGFuZCB1c2FiaWxpdHksIHRob3VnaC4gU28gbGV0J3MganVzdA0KPiA+IHRoaW5rIG9mIGZldyB1
-c2VjYXNlcyBJIGhhdmUgb3V0bGluZWQgYWJvdmUuIElzIGl0IHVucmVhbGlzdGljIHRvIGV4cGVj
-dA0KPiA+IHRoYXQgc2VjcmV0IG1lbW9yeSBzaG91bGQgYmUgc2VhbGFibGU/IFdoYXQgYWJvdXQg
-aHVnZXRsYj8gQmVjYXVzZSBpZg0KPiA+IHRoZSBhbnN3ZXIgaXMgbm8gdGhlbiBhIG5ldyBBUEkg
-aXMgYSBjbGVhciB3aW4gYXMgdGhlIGNvbWJpbmF0aW9uIG9mDQo+ID4gZmxhZ3Mgd291bGQgbmV2
-ZXIgd29yayBhbmQgdGhlbiB3ZSB3b3VsZCBqdXN0IHN1ZmZlciBmcm9tIHRoZSBzeXNjYWxsDQo+
-ID4gbXVsdGlwbGV4aW5nIHdpdGhvdXQgbXVjaCBnYWluLiBPbiB0aGUgb3RoZXIgaGFuZCBpZiBj
-b21iaW5hdGlvbiBvZiB0aGUNCj4gPiBmdW5jdGlvbmFsaXR5IGlzIHRvIGJlIGV4cGVjdGVkIHRo
-ZW4geW91IHdpbGwgaGF2ZSB0byBqYW0gaXQgaW50bw0KPiA+IG1lbWZkX2NyZWF0ZSBhbmQgY29w
-eSB0aGUgaW50ZXJmYWNlIGxpa2VseSBjYXVzaW5nIG1vcmUgY29uZnVzaW9uLiBTZWUNCj4gPiB3
-aGF0IEkgbWVhbj8NCj4gPiANCj4gPiBJIGJ5IG5vIG1lYW5zIGRvIG5vdCBpbnNpc3Qgb25lIHdh
-eSBvciB0aGUgb3RoZXIgYnV0IGZyb20gd2hhdCBJIGhhdmUNCj4gPiBzZWVuIHNvIGZhciBJIGhh
-dmUgYSBmZWVsaW5nIHRoYXQgdGhlIGludGVyZmFjZSBoYXNuJ3QgYmVlbiB0aG91Z2h0DQo+ID4g
-dGhyb3VnaCBlbm91Z2guIFN1cmUgeW91IGhhdmUgbGFuZGVkIHdpdGggZmQgYmFzZWQgYXBwcm9h
-Y2ggYW5kIHRoYXQNCj4gPiBzZWVtcyBmYWlyLiBCdXQgaG93IHRvIGdldCB0aGF0IGZkIHNlZW1z
-IHRvIHN0aWxsIGhhdmUgc29tZSBnYXBzIElNSE8uDQo+ID4gDQo+IA0KPiBJIGFncmVlIHdpdGgg
-TWljaGFsLiBUaGlzIGhhcyBiZWVuIHJhaXNlZCBieSBkaWZmZXJlbnQNCj4gcGVvcGxlIGFscmVh
-ZHksIGluY2x1ZGluZyBvbiBMV04gKGh0dHBzOi8vbHduLm5ldC9BcnRpY2xlcy84MzUzNDIvKS4N
-Cj4gDQo+IEkgY2FuIGZvbGxvdyBNaWtlJ3MgcmVhc29uaW5nIChtYW4gcGFnZSksIGFuZCBJIGFt
-IGFsc28gZmluZSBpZiB0aGVyZSBpcw0KPiBhIHZhbGlkIHJlYXNvbi4gSG93ZXZlciwgSU1ITyB0
-aGUgYmFzaWMgZGVzY3JpcHRpb24gc2VlbXMgdG8gbWF0Y2ggcXVpdGUgZ29vZDoNCj4gDQo+ICAg
-ICAgICBtZW1mZF9jcmVhdGUoKSBjcmVhdGVzIGFuIGFub255bW91cyBmaWxlIGFuZCByZXR1cm5z
-IGEgZmlsZSBkZXNjcmlwdG9yIHRoYXQgcmVmZXJzIHRvIGl0LiAgVGhlDQo+ICAgICAgICBmaWxl
-IGJlaGF2ZXMgbGlrZSBhIHJlZ3VsYXIgZmlsZSwgYW5kIHNvIGNhbiBiZSBtb2RpZmllZCwgdHJ1
-bmNhdGVkLCBtZW1vcnktbWFwcGVkLCBhbmQgc28gb24uDQo+ICAgICAgICBIb3dldmVyLCAgdW5s
-aWtlIGEgcmVndWxhciBmaWxlLCBpdCBsaXZlcyBpbiBSQU0gYW5kIGhhcyBhIHZvbGF0aWxlIGJh
-Y2tpbmcgc3RvcmFnZS4gIE9uY2UgYWxsDQo+ICAgICAgICByZWZlcmVuY2VzIHRvIHRoZSBmaWxl
-IGFyZSBkcm9wcGVkLCBpdCBpcyBhdXRvbWF0aWNhbGx5IHJlbGVhc2VkLiAgQW5vbnltb3VzICBt
-ZW1vcnkgIGlzICB1c2VkDQo+ICAgICAgICBmb3IgIGFsbCAgYmFja2luZyBwYWdlcyBvZiB0aGUg
-ZmlsZS4gIFRoZXJlZm9yZSwgZmlsZXMgY3JlYXRlZCBieSBtZW1mZF9jcmVhdGUoKSBoYXZlIHRo
-ZSBzYW1lDQo+ICAgICAgICBzZW1hbnRpY3MgYXMgb3RoZXIgYW5vbnltb3VzIG1lbW9yeSBhbGxv
-Y2F0aW9ucyBzdWNoIGFzIHRob3NlIGFsbG9jYXRlZCB1c2luZyBtbWFwKDIpIHdpdGggdGhlDQo+
-ICAgICAgICBNQVBfQU5PTllNT1VTIGZsYWcuDQoNCkV2ZW4gZGVzcGl0ZSBteSBsYXppbmVzcyBh
-bmQgaHVnZSBhbW91bnQgb2YgY29weS1wYXN0ZSB5b3UgY2FuIHNwb3QgdGhlDQpkaWZmZXJlbmNl
-cyAodGhpcyBpcyBhIHZlcnkgb2xkIHZlcnNpb24sIHVwZGF0ZSBpcyBkdWUpOg0KDQogICAgICAg
-bWVtZmRfc2VjcmV0KCkgIGNyZWF0ZXMgYW4gYW5vbnltb3VzIGZpbGUgYW5kIHJldHVybnMgYSBm
-aWxlIGRlc2NyaXB0b3INCiAgICAgICB0aGF0IHJlZmVycyB0byBpdC4gIFRoZSBmaWxlIGNhbiBv
-bmx5IGJlIG1lbW9yeS1tYXBwZWQ7IHRoZSAgbWVtb3J5ICBpbg0KICAgICAgIHN1Y2ggIG1hcHBp
-bmcgIHdpbGwgIGhhdmUgIHN0cm9uZ2VyIHByb3RlY3Rpb24gdGhhbiB1c3VhbCBtZW1vcnkgbWFw
-cGVkDQogICAgICAgZmlsZXMsIGFuZCBzbyBpdCBjYW4gYmUgdXNlZCB0byBzdG9yZSBhcHBsaWNh
-dGlvbiAgc2VjcmV0cy4gICBVbmxpa2UgIGENCiAgICAgICByZWd1bGFyIGZpbGUsIGEgZmlsZSBj
-cmVhdGVkIHdpdGggbWVtZmRfc2VjcmV0KCkgbGl2ZXMgaW4gUkFNIGFuZCBoYXMgYQ0KICAgICAg
-IHZvbGF0aWxlIGJhY2tpbmcgc3RvcmFnZS4gIE9uY2UgYWxsIHJlZmVyZW5jZXMgdG8gdGhlIGZp
-bGUgYXJlIGRyb3BwZWQsDQogICAgICAgaXQgIGlzICBhdXRvbWF0aWNhbGx5IHJlbGVhc2VkLiAg
-VGhlIGluaXRpYWwgc2l6ZSBvZiB0aGUgZmlsZSBpcyBzZXQgdG8NCiAgICAgICAwLiAgRm9sbG93
-aW5nIHRoZSBjYWxsLCB0aGUgZmlsZSBzaXplIHNob3VsZCBiZSBzZXQgdXNpbmcgZnRydW5jYXRl
-KDIpLg0KDQogICAgICAgVGhlIG1lbW9yeSBhcmVhcyBvYnRhaW5lZCB3aXRoIG1tYXAoMikgZnJv
-bSB0aGUgZmlsZSBkZXNjcmlwdG9yIGFyZSBleOKAkA0KICAgICAgIGNsdXNpdmUgdG8gdGhlIG93
-bmluZyBjb250ZXh0LiAgVGhlc2UgYXJlYXMgYXJlIHJlbW92ZWQgZnJvbSB0aGUga2VybmVsDQog
-ICAgICAgcGFnZSB0YWJsZXMgYW5kIG9ubHkgdGhlIHBhZ2UgdGFibGUgb2YgdGhlIHByb2Nlc3Mg
-aG9sZGluZyB0aGUgZmlsZSBkZeKAkA0KICAgICAgIHNjcmlwdG9yIG1hcHMgdGhlIGNvcnJlc3Bv
-bmRpbmcgcGh5c2ljYWwgbWVtb3J5Lg0KIA0KPiBBRkFJS1MsIHdlIHdvdWxkIG5lZWQgTUZEX1NF
-Q1JFVCBhbmQgZGlzYWxsb3cNCj4gTUZEX0FMTE9XX1NFQUxJTkcgYW5kIE1GRF9IVUdFVExCLg0K
-DQpTbyBoZXJlIHdlIHN0YXJ0IHRvIG11bHRpcGxleC4NCg0KPiBJbiBhZGRpdGlvbiwgd2UgY291
-bGQgYWRkIE1GRF9TRUNSRVRfTkVWRVJfTUFQLCB3aGljaCBjb3VsZCBkaXNhbGxvdyBhbnkga2lu
-ZCBvZg0KPiB0ZW1wb3JhcnkgbWFwcGluZ3MgKGVvciBtaWdyYXRpb24pLiBUQkMuDQoNCk5ldmVy
-IG1hcCBpcyB0aGUgZGVmYXVsdC4gV2hlbiB3ZSdsbCBuZWVkIHRvIG1hcCB3ZSdsbCBhZGQgYW4g
-ZXhwbGljaXQgZmxhZw0KZm9yIGl0Lg0KDQotLSANClNpbmNlcmVseSB5b3VycywNCk1pa2UuCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGlt
-bSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmli
-ZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On Thu, Feb 11, 2021 at 11:02:07AM +0100, David Hildenbrand wrote:
+> 
+> Another thought regarding "doesn't have _any_ backing storage"
+> 
+> What are the right semantics when it comes to memory accounting/commit?
+> 
+> As secretmem does not have
+> a) any backing storage
+> b) cannot go to swap
+> 
+> The MAP_NORESERVE vs. !MAP_NORESERVE handling gets a little unclear. Why
+> "reserve swap space" if the allocations cannot ever go to swap? Sure, we
+> want to "reserve physical memory", but in contrast to other users that can
+> go to swap.
+> 
+> Of course, this is only relevant for MAP_PRIVATE secretmem mappings. Other
+> MAP_SHARED assumes there is no need for reserving swap space as it can just
+> go to the backing storage. (yeah, tmpfs/shmem is weird in that regard as
+> well, but again, it's a bit different)
+
+In that sense seceremem is as weird as tmpfs and it only allows MAP_SHARED.
+
+-- 
+Sincerely yours,
+Mike.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
