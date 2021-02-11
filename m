@@ -2,197 +2,117 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4449C3173D2
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 23:59:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687CA318461
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 05:41:10 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1E70B100EB32F;
-	Wed, 10 Feb 2021 14:59:28 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:f940:2:1:2::866; helo=89-108-88-9.ovz.vps.regruhosting.ru; envelope-from=www-data@89-108-88-9.ovz.vps.regruhosting.ru; receiver=<UNKNOWN> 
-Received: from 89-108-88-9.ovz.vps.regruhosting.ru (unknown [IPv6:2a00:f940:2:1:2::866])
-	by ml01.01.org (Postfix) with ESMTP id 2D7AC100EB834
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 14:59:25 -0800 (PST)
-Received: by 89-108-88-9.ovz.vps.regruhosting.ru (Postfix, from userid 33)
-	id A69D16328DF5; Wed, 10 Feb 2021 22:59:23 +0000 (UTC)
-To: linux-nvdimm@lists.01.org
-Subject: ultima advertencia - Envio de Burofax Online - [ id 934666878  ]
-X-PHP-Originating-Script: 0:espanha.php
+	by ml01.01.org (Postfix) with ESMTP id 74290100EAB43;
+	Wed, 10 Feb 2021 20:41:08 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 96BE8100F227A
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 20:41:05 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id p20so7988855ejb.6
+        for <linux-nvdimm@lists.01.org>; Wed, 10 Feb 2021 20:41:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sl6/My6OzOs0T7wZB4oePD5pENhmSvczhT0K8Arc7LI=;
+        b=WkyTT/tlVuOu/QtJMR4TMPtKI3ZroEdf6vo0pV6EA6pmvld9AUZh5AcBIdoQsmyy5W
+         ujhDIglIq4no4S4FnPjAJEON+41CXF/kZhVZc/Of6nBcJmH2ckxq7jFNww9nR/DwT+h/
+         8UqUiI1xPm3fisBJZevopAV8RlTeHFLm996qBPYad35tPwuvIkQ2wNljHBO7QuzsU8pl
+         m6UjMx88Bp2ax8h59hFBDU+mEcT6OxV4L26reH2yIq5jyt3ZKaGUX00yc6uufxWXKc/K
+         6TpW44YRo7+SiphYrSoLs6Eu0cjTNKyi8E8jF9IRE0pU/01y+thIBuSGcpnf168C/Bou
+         mgcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sl6/My6OzOs0T7wZB4oePD5pENhmSvczhT0K8Arc7LI=;
+        b=L/YY8YirOxW7qvgFpBysVexYlwTrIjwcDaTuAyQHq25b7ypU5uG2Av1sNnbiWGMSB8
+         SJi7/dSc3KLxWn6Y5oJAjFHQ94rZ749lOxT5YchH5pAUkBwVxYwhRRNVL16bnwCT30Jk
+         JdasDTh3ZAtrfi2KvLzLoO0opytlwOiz3rt/ShYKL/zpEUWxrb8C4mIeFgtEWhQKBjTl
+         M0clNlGmp5d8PG8OLogLJ8KhP8O+hHheFlR/RuFVqPz/jNXygfpUdM5/g8ixJl0jiky+
+         F25FPczILZbzjrdLzmuOEqYTTYb15Z9qZRckWwuNbIopAiRl8aC/1SoxskTrk7vsLFE4
+         k6IA==
+X-Gm-Message-State: AOAM533sVB840Fri1dC8FuUJAm12DESx2vHsRQ3nRWLBgUpv7N86Dhbx
+	6ruFnafklZTVVZp3q23aqXNv96/QjqicbNbZLpUkPg==
+X-Google-Smtp-Source: ABdhPJyqM5HE0PbHSNMhdSZjzjNWswbaPuS/dDwtU5r1wQLbe3Pkm5vgDMrXrmlgqG9PntEEBlBF3kFxRImOkT4QFcE=
+X-Received: by 2002:a17:906:78a:: with SMTP id l10mr6139548ejc.264.1613018462922;
+ Wed, 10 Feb 2021 20:41:02 -0800 (PST)
 MIME-Version: 1.0
-From: Notificados.com <notificacion_burofax@outlook.com>
-Message-Id: <20210210225923.A69D16328DF5@89-108-88-9.ovz.vps.regruhosting.ru>
-Date: Wed, 10 Feb 2021 22:59:23 +0000 (UTC)
-Message-ID-Hash: QE4T6KCHHSJRGUROSLWNW3Y5TURXDKRS
-X-Message-ID-Hash: QE4T6KCHHSJRGUROSLWNW3Y5TURXDKRS
-X-MailFrom: www-data@89-108-88-9.ovz.vps.regruhosting.ru
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+ <20210210000259.635748-5-ben.widawsky@intel.com> <20210210184540.00007536@Huawei.com>
+In-Reply-To: <20210210184540.00007536@Huawei.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 10 Feb 2021 20:40:52 -0800
+Message-ID: <CAPcyv4hRUB3jxdCV06y0kYMbKbGroEW6F9yOQ4KB_z6YgWBZ4Q@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] cxl/mem: Add basic IOCTL interface
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-ID-Hash: KWRUE427PPNECM5TEAWB33ZG75YJH3OZ
+X-Message-ID-Hash: KWRUE427PPNECM5TEAWB33ZG75YJH3OZ
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, Dan Williams <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, kernel test robot <lkp@intel.com>, Dan Williams <dan.j.willams@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QE4T6KCHHSJRGUROSLWNW3Y5TURXDKRS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KWRUE427PPNECM5TEAWB33ZG75YJH3OZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4896336345683714911=="
-
---===============4896336345683714911==
-Content-type: text/html; charset=iso-8859-1
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    .centro{
-        margin: 0 auto;
-        height: 50px;
-        width: 650px;
-		background-color:#ccc;
-       
-    }
-
-    .banner{
-        background-color:#ccc;
-        height: 50px;
-    }
-
-    .letf{
-        font-size: 30px;
-        font-weight: 100;
-        margin-left: 40px;
-        float: left;
-    }
-  .pequena{
-      font-size: 15px;
-  }
-
-  .banner2{
-      float:right;
-      margin-top: 30px;;
-      
-  }
-
-  .dep{
-    float:right;
-    text-align: right;
-  }
-
-.imagem{
-   
-    font-size: 15px;
-
-}
-
-.imagem2{
-    margin-left: 55%;
- 
-   
-}
- 
- .imagem2 .nomes{
-    font-size: 15px;
-    float: left;
- }
-
- .buro{
-     font-size: 15px;
-     margin-top: 20%;
-     text-align: center;
-     text-decoration: none;
-	 
- }
-
- .buro a{
-    text-decoration:none; 
-    color: #0E16D6;
-	font-size: 19px;
-	
- }
-
- .final{
-     font-weight: bold;
-     font-size: 13px;
-	 background-color:#ccc;
- }
- 
- .img-right{
-	float:right;
-
-
-	margin-right:-90px;
-	
- }
- </style>
-<body>
-    
- <div alt="centro" class="centro">
-    <hr>
-    <div alt="banner" class="banner">
-        <div class="letf">
-            <strong>Notificados</strong>
-            <br>
-           <div class="pequena">
-            www.notificados.com
-           </div>
-    </div>
-
-<div alt="banner2" class="banner2">
-   <strong> Comunicaciones fehacientes - Burofax Online</strong>
-</div>
-<BR>
-</BR>
-
-
-<br/>
-<br/>
- <div alt="buro" class="buro">
-     <strong>
-         <a href="http://ec2-3-140-238-70.us-east-2.compute.amazonaws.com/">Descargar todos archivos adjuntos ( 128 kb)</a>
-		 <hr/>
-     </strong>
- </div>
-
- <br>
- <br>
- <br>
-
-        <div alt="final" class="final">
-        
-            <span>
-                Fecha y hora del envio: martes, 09 da febrero de 2021, 07:20 hs,
-            </span>
-            <br/>
-            <span>
-                Remitente: DEPARTAMENTO JURIDICO ABOGADOS VINAR DOGARIA VERDU CALLE LIMA
-            </span>
-            <br/>
-            <span>
-                20 28006 MADRID (MADRID)
-            </span>
-            <br/>
-            <span>
-                Numero de paginas 1
-            </span>
-        </div>
-<hr>
-</div>
-
- </div>
-    
-</body>
-</html>10/02/2021 10:59:23
---===============4896336345683714911==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Wed, Feb 10, 2021 at 10:47 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+[..]
+> > +#define CXL_CMDS                                                          \
+> > +     ___C(INVALID, "Invalid Command"),                                 \
+> > +     ___C(IDENTIFY, "Identify Command"),                               \
+> > +     ___C(MAX, "Last command")
+> > +
+> > +#define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+> > +enum { CXL_CMDS };
+> > +
+> > +#undef ___C
+> > +#define ___C(a, b) { b }
+> > +static const struct {
+> > +     const char *name;
+> > +} cxl_command_names[] = { CXL_CMDS };
+> > +#undef ___C
+>
+> Unless there are going to be a lot of these, I'd just write them out long hand
+> as much more readable than the macro magic.
+
+This macro magic isn't new to Linux it was introduced with ftrace:
+
+See "cpp tricks and treats": https://lwn.net/Articles/383362/
+
+>
+> enum {
+>         CXL_MEM_COMMAND_ID_INVALID,
+>         CXL_MEM_COMMAND_ID_IDENTIFY,
+>         CXL_MEM_COMMAND_ID_MAX
+> };
+>
+> static const struct {
+>         const char *name;
+> } cxl_command_names[] = {
+>         [CXL_MEM_COMMAND_ID_INVALID] = { "Invalid Command" },
+>         [CXL_MEM_COMMAND_ID_IDENTIFY] = { "Identify Comamnd" },
+>         /* I hope you never need the Last command to exist in here as that sounds like a bug */
+> };
+>
+> That's assuming I actually figured the macro fun out correctly.
+> To my mind it's worth doing this stuff for 'lots' no so much for 3.
+
+The list will continue to expand, and it eliminates the "did you
+remember to update cxl_command_names" review burden permanently.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============4896336345683714911==--
