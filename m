@@ -1,54 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B777318A14
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 13:08:44 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D75318A88
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 13:30:52 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F16E4100EA2A9;
-	Thu, 11 Feb 2021 04:08:42 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by ml01.01.org (Postfix) with ESMTP id 04D31100EA2B0;
+	Thu, 11 Feb 2021 04:30:51 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8DB6A100EBBC1
-	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 04:08:40 -0800 (PST)
-Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.206])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbwGb5y6Pz67n7V;
-	Thu, 11 Feb 2021 20:01:59 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Thu, 11 Feb 2021 13:08:38 +0100
-Received: from localhost (10.47.31.44) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 11 Feb
- 2021 12:08:36 +0000
-Date: Thu, 11 Feb 2021 12:07:36 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ben Widawsky <ben.widawsky@intel.com>
-Subject: Re: [PATCH v2 7/8] cxl/mem: Add set of informational commands
-Message-ID: <20210211120736.00006778@Huawei.com>
-In-Reply-To: <20210210000259.635748-8-ben.widawsky@intel.com>
-References: <20210210000259.635748-1-ben.widawsky@intel.com>
-	<20210210000259.635748-8-ben.widawsky@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+	by ml01.01.org (Postfix) with ESMTPS id 6CBFC100EA2AF
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 04:30:47 -0800 (PST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1613046645; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=osI3lOxyWNnCWMwYvgacjyYRqS8PdApBu7r+l9GS1F8=;
+	b=FGCfa/BPAaNMnKzWYBfMoLB55bV/2nWROmax5NShmeaFHcKLO/NerKPjx1ctr7FJZ/MDlK
+	j39ZM2jnxpVR1DSUloBxejptFaGKNBgYEvf5Z1x0XO+JtJwHMbCmw7POQPPk2NJN9eW5Lk
+	zmKurgl8D3XiuDQywu6d2sTB6/qoOf8=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id A9902ACD4;
+	Thu, 11 Feb 2021 12:30:45 +0000 (UTC)
+Date: Thu, 11 Feb 2021 13:30:42 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v17 07/10] mm: introduce memfd_secret system call to
+ create "secret" memory areas
+Message-ID: <YCUjck0I8qgjB24i@dhcp22.suse.cz>
+References: <20210208084920.2884-1-rppt@kernel.org>
+ <20210208084920.2884-8-rppt@kernel.org>
+ <YCEXMgXItY7xMbIS@dhcp22.suse.cz>
+ <20210208212605.GX242749@kernel.org>
+ <YCJMDBss8Qhha7g9@dhcp22.suse.cz>
+ <20210209090938.GP299309@linux.ibm.com>
+ <YCKLVzBR62+NtvyF@dhcp22.suse.cz>
+ <20210211071319.GF242749@kernel.org>
+ <YCTtSrCEvuBug2ap@dhcp22.suse.cz>
+ <20210211112008.GH242749@kernel.org>
 MIME-Version: 1.0
-X-Originating-IP: [10.47.31.44]
-X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-Message-ID-Hash: BMRO6I767OIS4ZJ55IDV33JZ52VWANZM
-X-Message-ID-Hash: BMRO6I767OIS4ZJ55IDV33JZ52VWANZM
-X-MailFrom: jonathan.cameron@huawei.com
+Content-Disposition: inline
+In-Reply-To: <20210211112008.GH242749@kernel.org>
+Message-ID-Hash: 6J2EW3XOCZIWXJE6G24U64VZIU3EERGL
+X-Message-ID-Hash: 6J2EW3XOCZIWXJE6G24U64VZIU3EERGL
+X-MailFrom: mhocko@suse.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+CC: Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho 
+ Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BMRO6I767OIS4ZJ55IDV33JZ52VWANZM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6J2EW3XOCZIWXJE6G24U64VZIU3EERGL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -57,180 +63,44 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Feb 2021 16:02:58 -0800
-Ben Widawsky <ben.widawsky@intel.com> wrote:
+On Thu 11-02-21 13:20:08, Mike Rapoport wrote:
+[...]
+> Sealing is anyway controlled via fcntl() and I don't think
+> MFD_ALLOW_SEALING makes much sense for the secretmem because it is there to
+> prevent rogue file sealing in tmpfs/hugetlbfs.
 
-> Add initial set of formal commands beyond basic identify and command
-> enumeration.
+This doesn't really match my understanding. The primary usecase for the
+sealing is to safely and predictably coordinate over shared memory. I
+absolutely do not see why this would be incompatible with an additional
+requirement to unmap the memory from the kernel to prevent additional
+interference from the kernel side. Quite contrary it looks like a very
+nice extension to this model.
+ 
+> As for the huge pages, I'm not sure at all that supporting huge pages in
+> secretmem will involve hugetlbfs.
+
+Have a look how hugetlb proliferates through our MM APIs. I strongly
+suspect this is strong signal that this won't be any different.
+
+> And even if yes, adding SECRETMEM_HUGE
+> flag seems to me less confusing than saying "from kernel x.y you can use
+> MFD_CREATE | MFD_SECRET | MFD_HUGE" etc for all possible combinations.
+
+I really fail to see your point. This is a standard model we have. It is
+quite natural that flags are added. Moreover adding a new syscall will
+not make it any less of a problem.
+
+> > I by no means do not insist one way or the other but from what I have
+> > seen so far I have a feeling that the interface hasn't been thought
+> > through enough.
 > 
-> Of special note is the Get Log Command which is only specified to return
-> 2 log types, CEL and VENDOR_DEBUG. Given that VENDOR_DEBUG is already a
-> large catch all for vendor specific information there is no known reason
-> for devices to be implementing other log types. Unknown log types are
-> included in the "vendor passthrough shenanigans" safety regime like raw
-> commands and blocked by default.
+> It has been, but we have different thoughts about it ;-)
 
-As mentioned in previous patch comments, the way that is worded in the spec
-suggests to me that what we might see if other specifications providing
-more UUIDs to define other 'standard' info.  Maybe something else was
-intended...   Still what you have done here makes sense to me.
-
-> 
-> Up to this point there has been no reason to inspect payload data.
-> Given the need to check the log type add a new "validate_payload"
-> operation to define a generic mechanism to restrict / filter commands.
-> 
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
->  drivers/cxl/mem.c            | 55 +++++++++++++++++++++++++++++++++++-
->  include/uapi/linux/cxl_mem.h |  5 ++++
->  2 files changed, 59 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index e9aa6ca18d99..e8cc076b9f1b 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-> @@ -44,12 +44,16 @@
->  enum opcode {
->  	CXL_MBOX_OP_INVALID		= 0x0000,
->  	CXL_MBOX_OP_RAW			= CXL_MBOX_OP_INVALID,
-> +	CXL_MBOX_OP_GET_FW_INFO		= 0x0200,
->  	CXL_MBOX_OP_ACTIVATE_FW		= 0x0202,
->  	CXL_MBOX_OP_GET_SUPPORTED_LOGS	= 0x0400,
->  	CXL_MBOX_OP_GET_LOG		= 0x0401,
->  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
-> +	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
->  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
-> +	CXL_MBOX_OP_GET_LSA		= 0x4102,
->  	CXL_MBOX_OP_SET_LSA		= 0x4103,
-> +	CXL_MBOX_OP_GET_HEALTH_INFO	= 0x4200,
->  	CXL_MBOX_OP_SET_SHUTDOWN_STATE	= 0x4204,
->  	CXL_MBOX_OP_SCAN_MEDIA		= 0x4304,
->  	CXL_MBOX_OP_GET_SCAN_MEDIA	= 0x4305,
-> @@ -118,6 +122,9 @@ static const uuid_t log_uuid[] = {
->  					0xd6, 0x07, 0x19, 0x40, 0x3d, 0x86)
->  };
->  
-> +static int validate_log_uuid(struct cxl_mem *cxlm, void __user *payload,
-> +			     size_t size);
-> +
->  /**
->   * struct cxl_mem_command - Driver representation of a memory device command
->   * @info: Command information as it exists for the UAPI
-> @@ -129,6 +136,10 @@ static const uuid_t log_uuid[] = {
->   *  * %CXL_CMD_INTERNAL_FLAG_PSEUDO: This is a pseudo command which doesn't have
->   *    a direct mapping to hardware. They are implicitly always enabled.
->   *
-> + * @validate_payload: A function called after the command is validated but
-> + * before it's sent to the hardware. The primary purpose is to validate, or
-> + * fixup the actual payload.
-> + *
->   * The cxl_mem_command is the driver's internal representation of commands that
->   * are supported by the driver. Some of these commands may not be supported by
->   * the hardware. The driver will use @info to validate the fields passed in by
-> @@ -139,9 +150,12 @@ static const uuid_t log_uuid[] = {
->  struct cxl_mem_command {
->  	struct cxl_command_info info;
->  	enum opcode opcode;
-> +
-> +	int (*validate_payload)(struct cxl_mem *cxlm, void __user *payload,
-> +				size_t size);
->  };
->  
-> -#define CXL_CMD(_id, _flags, sin, sout)                                        \
-> +#define CXL_CMD_VALIDATE(_id, _flags, sin, sout, v)                            \
->  	[CXL_MEM_COMMAND_ID_##_id] = {                                         \
->  	.info =	{                                                              \
->  			.id = CXL_MEM_COMMAND_ID_##_id,                        \
-> @@ -150,8 +164,12 @@ struct cxl_mem_command {
->  			.size_out = sout,                                      \
->  		},                                                             \
->  	.opcode = CXL_MBOX_OP_##_id,                                           \
-> +	.validate_payload = v,                                                 \
->  	}
->  
-> +#define CXL_CMD(_id, _flags, sin, sout)                                        \
-> +	CXL_CMD_VALIDATE(_id, _flags, sin, sout, NULL)
-> +
->  /*
->   * This table defines the supported mailbox commands for the driver. This table
->   * is made up of a UAPI structure. Non-negative values as parameters in the
-> @@ -164,6 +182,11 @@ static struct cxl_mem_command mem_commands[] = {
->  	CXL_CMD(RAW, NONE, ~0, ~0),
->  #endif
->  	CXL_CMD(GET_SUPPORTED_LOGS, NONE, 0, ~0),
-> +	CXL_CMD(GET_FW_INFO, NONE, 0, 0x50),
-> +	CXL_CMD(GET_PARTITION_INFO, NONE, 0, 0x20),
-> +	CXL_CMD(GET_LSA, NONE, 0x8, ~0),
-> +	CXL_CMD(GET_HEALTH_INFO, NONE, 0, 0x12),
-> +	CXL_CMD_VALIDATE(GET_LOG, NONE, 0x18, ~0, validate_log_uuid),
->  };
->  
->  /*
-> @@ -492,6 +515,14 @@ static int handle_mailbox_cmd_from_user(struct cxl_memdev *cxlmd,
->  		mbox_cmd.payload_out = kvzalloc(cxlm->payload_size, GFP_KERNEL);
->  
->  	if (cmd->info.size_in) {
-> +		if (cmd->validate_payload) {
-> +			rc = cmd->validate_payload(cxlm,
-> +						   u64_to_user_ptr(in_payload),
-> +						   cmd->info.size_in);
-> +			if (rc)
-> +				goto out;
-> +		}
-> +
->  		mbox_cmd.payload_in = kvzalloc(cmd->info.size_in, GFP_KERNEL);
->  		if (!mbox_cmd.payload_in) {
->  			rc = -ENOMEM;
-> @@ -1124,6 +1155,28 @@ struct cxl_mbox_get_log {
->  	__le32 length;
->  } __packed;
->  
-> +static int validate_log_uuid(struct cxl_mem *cxlm, void __user *input,
-> +			     size_t size)
-> +{
-> +	struct cxl_mbox_get_log __user *get_log = input;
-> +	uuid_t payload_uuid;
-> +
-> +	if (copy_from_user(&payload_uuid, &get_log->uuid, sizeof(uuid_t)))
-> +		return -EFAULT;
-> +
-> +	if (uuid_equal(&payload_uuid, &log_uuid[CEL_UUID]))
-> +		return 0;
-> +	if (uuid_equal(&payload_uuid, &log_uuid[VENDOR_DEBUG_UUID]))
-> +		return 0;
-> +
-> +	/* All unspec'd logs shall taint */
-> +	if (WARN_ONCE(!cxl_mem_raw_command_allowed(CXL_MBOX_OP_RAW),
-> +		      "Unknown log UUID %pU used\n", &payload_uuid))
-> +		return -EPERM;
-> +
-> +	return 0;
-> +}
-> +
->  static int cxl_xfer_log(struct cxl_mem *cxlm, uuid_t *uuid, u32 size, u8 *out)
->  {
->  	u32 remaining = size;
-> diff --git a/include/uapi/linux/cxl_mem.h b/include/uapi/linux/cxl_mem.h
-> index c5e75b9dad9d..ba4d3b4d6b7d 100644
-> --- a/include/uapi/linux/cxl_mem.h
-> +++ b/include/uapi/linux/cxl_mem.h
-> @@ -24,6 +24,11 @@
->  	___C(IDENTIFY, "Identify Command"),                               \
->  	___C(RAW, "Raw device command"),                                  \
->  	___C(GET_SUPPORTED_LOGS, "Get Supported Logs"),                   \
-> +	___C(GET_FW_INFO, "Get FW Info"),                                 \
-> +	___C(GET_PARTITION_INFO, "Get Partition Information"),            \
-> +	___C(GET_LSA, "Get Label Storage Area"),                          \
-> +	___C(GET_HEALTH_INFO, "Get Health Info"),                         \
-> +	___C(GET_LOG, "Get Log"),                                         \
->  	___C(MAX, "Last command")
->  
->  #define ___C(a, b) CXL_MEM_COMMAND_ID_##a
+Then you must be carrying a lot of implicit knowledge which I want you
+to document.
+-- 
+Michal Hocko
+SUSE Labs
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
