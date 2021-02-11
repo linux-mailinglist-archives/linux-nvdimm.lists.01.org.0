@@ -1,134 +1,283 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C4631874B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 10:49:13 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D2E31878A
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Feb 2021 10:56:56 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0C88D100EA901;
-	Thu, 11 Feb 2021 01:49:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C9958100EA925;
+	Thu, 11 Feb 2021 01:56:54 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0D628100EAB0D
-	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 01:49:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1613036947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D4KClAbW7qAjd5KF/8/23pSoF5vXBE09nxYc8TlmEUM=;
-	b=Wvdx4T0etpdPbxWRf+PxEFJXyobCquw7Ia8NzvSSWzmUeffoQFWCwdClzG+m2Hkk8SGnwz
-	YemrIMC0OdkIuCDMBpWRJZLYEyOEpk0bZYvgjNDOCVi2cH9z7BygdvvfF0ff+TP6/Zp8DF
-	XksTP0UZovQLIQrBYO+RF7TlE+rTDvQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-249-9tsn6XZgPY-p0wHYN_-nmw-1; Thu, 11 Feb 2021 04:49:03 -0500
-X-MC-Unique: 9tsn6XZgPY-p0wHYN_-nmw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6F49280364D;
-	Thu, 11 Feb 2021 09:48:58 +0000 (UTC)
-Received: from [10.36.114.52] (ovpn-114-52.ams2.redhat.com [10.36.114.52])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 4AE5010016F4;
-	Thu, 11 Feb 2021 09:48:49 +0000 (UTC)
-To: Michal Hocko <mhocko@suse.com>
-References: <20210208084920.2884-1-rppt@kernel.org>
- <20210208084920.2884-8-rppt@kernel.org> <YCEXMgXItY7xMbIS@dhcp22.suse.cz>
- <20210208212605.GX242749@kernel.org> <YCJMDBss8Qhha7g9@dhcp22.suse.cz>
- <20210209090938.GP299309@linux.ibm.com> <YCKLVzBR62+NtvyF@dhcp22.suse.cz>
- <20210211071319.GF242749@kernel.org> <YCTtSrCEvuBug2ap@dhcp22.suse.cz>
- <0d66baec-1898-987b-7eaf-68a015c027ff@redhat.com>
- <YCT6+9YW474IaKrm@dhcp22.suse.cz>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Subject: Re: [PATCH v17 07/10] mm: introduce memfd_secret system call to
- create "secret" memory areas
-Message-ID: <367808fc-8f5c-10a4-fc0b-a71df616dfce@redhat.com>
-Date: Thu, 11 Feb 2021 10:48:48 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+	by ml01.01.org (Postfix) with ESMTPS id AB3AD100EA923
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Feb 2021 01:56:52 -0800 (PST)
+Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.226])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DbsNS1HYxz67m9C;
+	Thu, 11 Feb 2021 17:51:52 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 11 Feb 2021 10:56:49 +0100
+Received: from localhost (10.47.31.44) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Thu, 11 Feb
+ 2021 09:56:48 +0000
+Date: Thu, 11 Feb 2021 09:55:48 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
+Message-ID: <20210211095548.00000da7@Huawei.com>
+In-Reply-To: <20210210181605.ecbl3m5ep4rszpqs@intel.com>
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+	<20210210000259.635748-3-ben.widawsky@intel.com>
+	<20210210133252.000047af@Huawei.com>
+	<20210210150759.00005684@Huawei.com>
+	<20210210165557.7fuqbyr7e7zjoxaa@intel.com>
+	<20210210181605.ecbl3m5ep4rszpqs@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
-In-Reply-To: <YCT6+9YW474IaKrm@dhcp22.suse.cz>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Message-ID-Hash: VKWTVFK65WLXE43IQSUFOHY5FMKNQVPF
-X-Message-ID-Hash: VKWTVFK65WLXE43IQSUFOHY5FMKNQVPF
-X-MailFrom: david@redhat.com
+X-Originating-IP: [10.47.31.44]
+X-ClientProxiedBy: lhreml709-chm.china.huawei.com (10.201.108.58) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+Message-ID-Hash: 55KFXTEHBT6RBESTSGKB3J7V6NGJLDUR
+X-Message-ID-Hash: 55KFXTEHBT6RBESTSGKB3J7V6NGJLDUR
+X-MailFrom: jonathan.cameron@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Ander
- sen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VKWTVFK65WLXE43IQSUFOHY5FMKNQVPF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/55KFXTEHBT6RBESTSGKB3J7V6NGJLDUR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
->> Some random thoughts regarding files.
->>
->> What is the page size of secretmem memory? Sometimes we use huge pages,
->> sometimes we fallback to 4k pages. So I assume huge pages in general?
+On Wed, 10 Feb 2021 10:16:05 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
+
+> On 21-02-10 08:55:57, Ben Widawsky wrote:
+> > On 21-02-10 15:07:59, Jonathan Cameron wrote:  
+> > > On Wed, 10 Feb 2021 13:32:52 +0000
+> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > >   
+> > > > On Tue, 9 Feb 2021 16:02:53 -0800
+> > > > Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > > >   
+> > > > > Provide enough functionality to utilize the mailbox of a memory device.
+> > > > > The mailbox is used to interact with the firmware running on the memory
+> > > > > device. The flow is proven with one implemented command, "identify".
+> > > > > Because the class code has already told the driver this is a memory
+> > > > > device and the identify command is mandatory.
+> > > > > 
+> > > > > CXL devices contain an array of capabilities that describe the
+> > > > > interactions software can have with the device or firmware running on
+> > > > > the device. A CXL compliant device must implement the device status and
+> > > > > the mailbox capability. Additionally, a CXL compliant memory device must
+> > > > > implement the memory device capability. Each of the capabilities can
+> > > > > [will] provide an offset within the MMIO region for interacting with the
+> > > > > CXL device.
+> > > > > 
+> > > > > The capabilities tell the driver how to find and map the register space
+> > > > > for CXL Memory Devices. The registers are required to utilize the CXL
+> > > > > spec defined mailbox interface. The spec outlines two mailboxes, primary
+> > > > > and secondary. The secondary mailbox is earmarked for system firmware,
+> > > > > and not handled in this driver.
+> > > > > 
+> > > > > Primary mailboxes are capable of generating an interrupt when submitting
+> > > > > a background command. That implementation is saved for a later time.
+> > > > > 
+> > > > > Link: https://www.computeexpresslink.org/download-the-specification
+> > > > > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> > > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>    
+> > > > 
+> > > > Hi Ben,
+> > > > 
+> > > >   
+> > > > > +/**
+> > > > > + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> > > > > + * @cxlm: The CXL memory device to communicate with.
+> > > > > + * @mbox_cmd: Command to send to the memory device.
+> > > > > + *
+> > > > > + * Context: Any context. Expects mbox_lock to be held.
+> > > > > + * Return: -ETIMEDOUT if timeout occurred waiting for completion. 0 on success.
+> > > > > + *         Caller should check the return code in @mbox_cmd to make sure it
+> > > > > + *         succeeded.    
+> > > > 
+> > > > cxl_xfer_log() doesn't check mbox_cmd->return_code and for my test it currently
+> > > > enters an infinite loop as a result.  
+> > 
+> > I meant to fix that.
+> >   
+> > > > 
+> > > > I haven't checked other paths, but to my mind it is not a good idea to require
+> > > > two levels of error checking - the example here proves how easy it is to forget
+> > > > one.  
+> > 
+> > Demonstrably, you're correct. I think it would be good to have a kernel only
+> > mbox command that does the error checking though. Let me type something up and
+> > see how it looks.  
 > 
-> Unless there is an explicit request for hugetlb I would say the page
-> size is not really important like for any other fds. Huge pages can be
-> used transparently.
+> Hi Jonathan. What do you think of this? The bit I'm on the fence about is if I
+> should validate output size too. I like the simplicity as it is, but it requires
+> every caller to possibly check output size, which is kind of the same problem
+> you're originally pointing out.
 
-If everything is currently allocated/mapped on PTE granularity, then yes 
-I agree. I remember previous versions used to "pool 2MB pages", which 
-might have been problematic (thus, my concerns regarding mmap() etc.). 
-If that part is now gone, good!
+The simplicity is good and this is pretty much what I expected you would end up with
+(always reassuring)
 
->   
->> What are semantics of MADV()/FALLOCATE() etc on such files?
-> 
-> I would expect the same semantic as regular shmem (memfd_create) except
-> the memory doesn't have _any_ backing storage which makes it
-> unevictable. So the reclaim related madv won't work but there shouldn't
-> be any real reason why e.g. MADV_DONTNEED, WILLNEED, DONT_FORK and
-> others don't work.
+For the output, perhaps just add another parameter to the wrapper for minimum
+output length expected?
 
-Agreed if we don't have hugepage semantics.
+Now you mention the length question.  It does rather feel like there should also
+be some protection on memcpy_fromio() copying too much data if the hardware
+happens to return an unexpectedly long length.  Should never happen, but
+the hardening is worth adding anyway given it's easy to do.
 
->> Is userfaultfd() properly fenced? Or does it even work (doubt)?
->>
->> How does it behave if I mmap(FIXED) something in between?
->> In which granularity can I do that (->page-size?)?
-> 
-> Again, nothing really exceptional here. This is a mapping like any
-> other from address space manipulation POV.
+Jonathan
 
-Agreed with the PTE mapping approach.
 
 > 
->> What are other granularity restrictions (->page size)?
->>
->> Don't want to open a big discussion here, just some random thoughts.
->> Maybe it has all been already figured out and most of the answers
->> above are "Fails with -EINVAL".
+> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> index 55c5f5a6023f..ad7b2077ab28 100644
+> --- a/drivers/cxl/mem.c
+> +++ b/drivers/cxl/mem.c
+> @@ -284,7 +284,7 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+>  }
+>  
+>  /**
+> - * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> + * __cxl_mem_mbox_send_cmd() - Execute a mailbox command
+>   * @cxlm: The CXL memory device to communicate with.
+>   * @mbox_cmd: Command to send to the memory device.
+>   *
+> @@ -296,7 +296,8 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+>   * This is a generic form of the CXL mailbox send command, thus the only I/O
+>   * operations used are cxl_read_mbox_reg(). Memory devices, and perhaps other
+>   * types of CXL devices may have further information available upon error
+> - * conditions.
+> + * conditions. Driver facilities wishing to send mailbox commands should use the
+> + * wrapper command.
+>   *
+>   * The CXL spec allows for up to two mailboxes. The intention is for the primary
+>   * mailbox to be OS controlled and the secondary mailbox to be used by system
+> @@ -304,8 +305,8 @@ static void cxl_mem_mbox_timeout(struct cxl_mem *cxlm,
+>   * not need to coordinate with each other. The driver only uses the primary
+>   * mailbox.
+>   */
+> -static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> -				 struct mbox_cmd *mbox_cmd)
+> +static int __cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
+> +				   struct mbox_cmd *mbox_cmd)
+>  {
+>  	void __iomem *payload = cxlm->mbox_regs + CXLDEV_MBOX_PAYLOAD_OFFSET;
+>  	u64 cmd_reg, status_reg;
+> @@ -469,6 +470,54 @@ static void cxl_mem_mbox_put(struct cxl_mem *cxlm)
+>  	mutex_unlock(&cxlm->mbox_mutex);
+>  }
+>  
+> +/**
+> + * cxl_mem_mbox_send_cmd() - Send a mailbox command to a memory device.
+> + * @cxlm: The CXL memory device to communicate with.
+> + * @opcode: Opcode for the mailbox command.
+> + * @in: The input payload for the mailbox command.
+> + * @in_size: The length of the input payload
+> + * @out: Caller allocated buffer for the output.
+> + *
+> + * Context: Any context. Will acquire and release mbox_mutex.
+> + * Return:
+> + *  * %>=0	- Number of bytes returned in @out.
+> + *  * %-EBUSY	- Couldn't acquire exclusive mailbox access.
+> + *  * %-EFAULT	- Hardware error occurred.
+> + *  * %-ENXIO	- Command completed, but device reported an error.
+> + *
+> + * Mailbox commands may execute successfully yet the device itself reported an
+> + * error. While this distinction can be useful for commands from userspace, the
+> + * kernel will often only care when both are successful.
+> + *
+> + * See __cxl_mem_mbox_send_cmd()
+> + */
+> +static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
+> +				 size_t in_size, u8 *out)
+> +{
+> +	struct mbox_cmd mbox_cmd = {
+> +		.opcode = opcode,
+> +		.payload_in = in,
+> +		.size_in = in_size,
+> +		.payload_out = out,
+> +	};
+> +	int rc;
+> +
+> +	rc = cxl_mem_mbox_get(cxlm);
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc = __cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> +	cxl_mem_mbox_put(cxlm);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* TODO: Map return code to proper kernel style errno */
+> +	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS)
+> +		return -ENXIO;
+> +
+> +	return mbox_cmd.size_out;
+> +}
+> +
+>  /**
+>   * handle_mailbox_cmd_from_user() - Dispatch a mailbox command.
+>   * @cxlmd: The CXL memory device to communicate with.
+> @@ -1380,33 +1429,18 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
+>  		u8 poison_caps;
+>  		u8 qos_telemetry_caps;
+>  	} __packed id;
+> -	struct mbox_cmd mbox_cmd = {
+> -		.opcode = CXL_MBOX_OP_IDENTIFY,
+> -		.payload_out = &id,
+> -		.size_in = 0,
+> -	};
+>  	int rc;
+>  
+> -	/* Retrieve initial device memory map */
+> -	rc = cxl_mem_mbox_get(cxlm);
+> -	if (rc)
+> -		return rc;
+> -
+> -	rc = cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> -	cxl_mem_mbox_put(cxlm);
+> -	if (rc)
+> +	rc = cxl_mem_mbox_send_cmd(cxlm, CXL_MBOX_OP_IDENTIFY, NULL, 0,
+> +				   (u8 *)&id);
+> +	if (rc < 0)
+>  		return rc;
+>  
+> -	/* TODO: Handle retry or reset responses from firmware. */
+> -	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS) {
+> -		dev_err(&cxlm->pdev->dev, "Mailbox command failed (%d)\n",
+> -			mbox_cmd.return_code);
+> +	if (rc < sizeof(id)) {
+> +		dev_err(&cxlm->pdev->dev, "Short identify data\n",
+>  		return -ENXIO;
+>  	}
+>  
+> -	if (mbox_cmd.size_out != sizeof(id))
+> -		return -ENXIO;
+> -
+>  	/*
+>  	 * TODO: enumerate DPA map, as 'ram' and 'pmem' do not alias.
+>  	 * For now, only the capacity is exported in sysfs
 > 
-> I think that the behavior should be really in sync with shmem semantic
-> as much as possible. Most operations should simply work with an
-> aditional direct map manipulation. There is no real reason to be
-> special. Some functionality might be missing, e.g. hugetlb support but
-> that has been traditionally added on top of shmem interface so nothing
-> really new here.
-
-Agreed!
-
--- 
-Thanks,
-
-David / dhildenb
+> 
+> [snip]
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
