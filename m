@@ -2,34 +2,34 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A06319FBE
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Feb 2021 14:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9CC319FD6
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Feb 2021 14:28:16 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 91C31100EBBAF;
-	Fri, 12 Feb 2021 05:24:39 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 05A8D100EA934;
+	Fri, 12 Feb 2021 05:28:15 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CD952100EC1CF
-	for <linux-nvdimm@lists.01.org>; Fri, 12 Feb 2021 05:24:35 -0800 (PST)
-Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.200])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DcYvf0qYCz67n7P;
-	Fri, 12 Feb 2021 21:17:50 +0800 (CST)
+	by ml01.01.org (Postfix) with ESMTPS id 46334100EBBAF
+	for <linux-nvdimm@lists.01.org>; Fri, 12 Feb 2021 05:28:13 -0800 (PST)
+Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.201])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DcZ1n46DXz67g3H;
+	Fri, 12 Feb 2021 21:23:09 +0800 (CST)
 Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
+ fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2106.2; Fri, 12 Feb 2021 14:24:31 +0100
+ 15.1.2106.2; Fri, 12 Feb 2021 14:28:09 +0100
 Received: from localhost (10.47.28.230) by lhreml710-chm.china.huawei.com
  (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2; Fri, 12 Feb
- 2021 13:24:30 +0000
-Date: Fri, 12 Feb 2021 13:23:28 +0000
+ 2021 13:28:08 +0000
+Date: Fri, 12 Feb 2021 13:27:06 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Ben Widawsky <ben.widawsky@intel.com>
 Subject: Re: [PATCH v2 2/8] cxl/mem: Find device capabilities
-Message-ID: <20210212132328.0000482f@Huawei.com>
-In-Reply-To: <20210211182741.yrojts2cdyoufsfl@intel.com>
+Message-ID: <20210212132706.00006edc@Huawei.com>
+In-Reply-To: <20210211155529.agul56lcb33cta5s@intel.com>
 References: <20210210000259.635748-1-ben.widawsky@intel.com>
 	<20210210000259.635748-3-ben.widawsky@intel.com>
 	<20210210133252.000047af@Huawei.com>
@@ -37,7 +37,7 @@ References: <20210210000259.635748-1-ben.widawsky@intel.com>
 	<20210210165557.7fuqbyr7e7zjoxaa@intel.com>
 	<20210210181605.ecbl3m5ep4rszpqs@intel.com>
 	<20210211095548.00000da7@Huawei.com>
-	<20210211182741.yrojts2cdyoufsfl@intel.com>
+	<20210211155529.agul56lcb33cta5s@intel.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
 MIME-Version: 1.0
@@ -45,8 +45,8 @@ X-Originating-IP: [10.47.28.230]
 X-ClientProxiedBy: lhreml721-chm.china.huawei.com (10.201.108.72) To
  lhreml710-chm.china.huawei.com (10.201.108.61)
 X-CFilter-Loop: Reflected
-Message-ID-Hash: 7Q7OMIVQSKGGUOYKKE6Z2FKVLCZMBBJU
-X-Message-ID-Hash: 7Q7OMIVQSKGGUOYKKE6Z2FKVLCZMBBJU
+Message-ID-Hash: FPTBB3Q3DQCOUQLC4EQMBPTSLRT7UYNE
+X-Message-ID-Hash: FPTBB3Q3DQCOUQLC4EQMBPTSLRT7UYNE
 X-MailFrom: jonathan.cameron@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -54,7 +54,7 @@ CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.ker
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7Q7OMIVQSKGGUOYKKE6Z2FKVLCZMBBJU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FPTBB3Q3DQCOUQLC4EQMBPTSLRT7UYNE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, 11 Feb 2021 10:27:41 -0800
+On Thu, 11 Feb 2021 07:55:29 -0800
 Ben Widawsky <ben.widawsky@intel.com> wrote:
 
 > On 21-02-11 09:55:48, Jonathan Cameron wrote:
@@ -148,87 +148,42 @@ Ben Widawsky <ben.widawsky@intel.com> wrote:
 > > happens to return an unexpectedly long length.  Should never happen, but
 > > the hardening is worth adding anyway given it's easy to do.
 > > 
-> > Jonathan
-> >   
+> > Jonathan  
 > 
-> I like it.
+> Some background because I forget what I've said previously... It's unfortunate
+> that the spec maxes at 1M mailbox size but has enough bits in the length field
+> to support 2M-1. I've made some requests to have this fixed, so maybe 3.0 won't
+> be awkward like this.
+
+Agreed spec should be tighter here, but I'd argue over 1M indicates buggy hardware.
+
 > 
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index 2e199b05f686..58071a203212 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-> @@ -293,7 +293,7 @@ static void cxl_mem_mbox_put(struct cxl_mem *cxlm)
->   * See __cxl_mem_mbox_send_cmd()
->   */
->  static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
-> -				 size_t in_size, u8 *out)
-> +				 size_t in_size, u8 *out, size_t out_min_size)
+> I think it makes sense to do as you suggested. One question though, do you have
+> an opinion on we return to the caller as the output payload size, do we cap it
+> at 1M also, or are we honest?
+> 
+> -       if (out_len && mbox_cmd->payload_out)
+> -               memcpy_fromio(mbox_cmd->payload_out, payload, out_len);
+> +       if (out_len && mbox_cmd->payload_out) {
+> +               size_t n = min_t(size_t, cxlm->payload_size, out_len);
+> +               memcpy_fromio(mbox_cmd->payload_out, payload, n);
+> +       }
 
-This is kind of the opposite of what I was expecting.  What I'm worried about is
-not so much that we receive at least enough data, but rather that we receive too much.
-Buggy hardware or potentially a spec change being most likely causes.
+Ah, I read emails in wrong order.  What you have is what I expected and got
+confused about in your other email.
 
-So something like
-int __cxl_mem_mbox_send_cmd(struct cxl_mem..., struct mbox_cmd, u8 *out, size_t out_sz)
-//Or put the max size in the .size_out element of the command and make that inout rather
-//than just out direction.
-{
-	...
-	/* #8 */
-	if (out_len && mbox_cmd->payload_out) {
-		if (outlen > out_sz)
-			//or just copy what we can fit in payload_out and return that size.
-			return -E2BIG;
-		memcpy_fromio(mbox_cmd->payload_out, payload, out_len);
-	}
+> 
+> So...
+> mbox_cmd->size_out = out_len;
+> mbox_cmd->size_out = n;
 
-	
-}
+Good question.  My gut says the second one.
+Maybe it's worth a warning print to let us know something
+unexpected happened.
 
-Fine to also check the returned length is at least a minimum size.
-
->  {
->  	struct mbox_cmd mbox_cmd = {
->  		.opcode = opcode,
-> @@ -303,6 +303,9 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
->  	};
->  	int rc;
->  
-> +	if (out_min_size > cxlm->payload_size)
-> +		return -E2BIG;
-> +
->  	rc = cxl_mem_mbox_get(cxlm);
->  	if (rc)
->  		return rc;
-> @@ -316,6 +319,9 @@ static int cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm, u16 opcode, u8 *in,
->  	if (mbox_cmd.return_code != CXL_MBOX_SUCCESS)
->  		return -ENXIO;
->  
-> +	if (mbox_cmd.size_out < out_min_size)
-> +		return -ENODATA;
-> +
->  	return mbox_cmd.size_out;
->  }
->  
-> @@ -505,15 +511,10 @@ static int cxl_mem_identify(struct cxl_mem *cxlm)
->  	int rc;
->  
->  	rc = cxl_mem_mbox_send_cmd(cxlm, CXL_MBOX_OP_IDENTIFY, NULL, 0,
-> -				   (u8 *)&id);
-> +				   (u8 *)&id, sizeof(id));
->  	if (rc < 0)
->  		return rc;
->  
-> -	if (rc < sizeof(id)) {
-> -		dev_err(&cxlm->pdev->dev, "Short identify data\n");
-> -		return -ENXIO;
-> -	}
-> -
->  	/*
->  	 * TODO: enumerate DPA map, as 'ram' and 'pmem' do not alias.
->  	 * For now, only the capacity is exported in sysfs
 > 
 > 
+> > 
 > >   
 > > > 
 > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
