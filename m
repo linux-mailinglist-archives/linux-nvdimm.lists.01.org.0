@@ -2,107 +2,114 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60DB31BBCB
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 15 Feb 2021 16:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B347731BF33
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 15 Feb 2021 17:30:21 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B6FDB100EB320;
-	Mon, 15 Feb 2021 07:04:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id DCF8E100EB324;
+	Mon, 15 Feb 2021 08:30:19 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::c33; helo=mail-oo1-xc33.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 22882100EB85F
-	for <linux-nvdimm@lists.01.org>; Mon, 15 Feb 2021 07:04:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1613401449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=v6KSsVad5fz+13MYpeONrGVE/Pn0gqQPvShBbeX2sbc=;
-	b=XxwBwQc8pJddrVYT0eIsnNXWaVhT3+TWQuq+Y5encdSht6wYxMNpzlD2xuI6hDf/WWWpsr
-	7v7yt8EOBDDa+CH3cLf9mQowTCg4x3yjMgZLloz+i6nxAf25wTw6Y4VPgShKQlYkMTDMFr
-	oTDsh+D/k1Oct4rFpdcTj+N93eJAFig=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-580-Shh2TTTbOAqew6VmOkYRtw-1; Mon, 15 Feb 2021 10:04:05 -0500
-X-MC-Unique: Shh2TTTbOAqew6VmOkYRtw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B770610CE782;
-	Mon, 15 Feb 2021 15:04:02 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A9F560C0F;
-	Mon, 15 Feb 2021 15:04:00 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 11FF3xbh008633;
-	Mon, 15 Feb 2021 10:03:59 -0500
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 11FF3sVY008629;
-	Mon, 15 Feb 2021 10:03:55 -0500
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Mon, 15 Feb 2021 10:03:54 -0500 (EST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Zhongwei Cai <sunrise_l@sjtu.edu.cn>,
-        Mingkai Dong <mingkaidong@gmail.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>
-Subject: [RFC v3] nvfs: a filesystem for persistent memory
-Message-ID: <alpine.LRH.2.02.2102021307370.4109@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTPS id 021A7100EB82A
+	for <linux-nvdimm@lists.01.org>; Mon, 15 Feb 2021 08:30:16 -0800 (PST)
+Received: by mail-oo1-xc33.google.com with SMTP id h38so1645234ooi.8
+        for <linux-nvdimm@lists.01.org>; Mon, 15 Feb 2021 08:30:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=xZjHpynkO+jEqpoKJ7WUe4G5S6bqtxbRdwfSHl/HMrc=;
+        b=jFo/wSwluSwMjlgb2z0JQRyhDpb3qIx8XNZ8qwfCj6NbhGG1ZoZO/yFSb3g3yGhis0
+         5AReuZqH6EfN/tfoCx32nOFo7Ig9SCuPm2MtrLbfPjvh2KMpDLuajyIvdOWnVVfkhXrY
+         XjwbovzeG4Mv96pwlYJ5AbIcAByssG1DRoO3CXM3zhprfBHdaOfBqu+hKinQAT7TxfBA
+         bkhJNH6aEVGgs2F9y8QtbTnYy0QLgPY5rrAdzUTpbcTNvRpXCdiuwY7njJfwsAOAfSg9
+         OoIjvVGnuZM5vxGZoIeW4W9rSz4TqN8/0nFKFCoHU8i94rRrFKn5I7f2X1bC5CDLbgqM
+         go6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xZjHpynkO+jEqpoKJ7WUe4G5S6bqtxbRdwfSHl/HMrc=;
+        b=nEQhXDEDMJg/FkZ8A3K0hXQFp9UzipKTjaOLzpEZnwI/uSvR20DRermEcJFbFXmJgX
+         59v50tGtNxGNvfMuqMW5fDbjcTMWjsvC/bZjZ+1Bl5SoPQPBImmGE5/C9t/E7XaFdGcT
+         izf3idoMxm1Vw+aMpJL4zEMvkW9e1zau1cxy2vH1FJB1FDjud+/D9OHi3zVyMW7iKqJW
+         qeaCifwDJfNKDITKpKSMJf4tzTFlYWIuBKA3Dg4d08xXcfLC1t1OqJ+zMbcTwCMh39uV
+         ZrQm76BwiV9jg2wG8j+7wT3/yioyU4mu4zWWePUZUuMkGCfiKPViyri7ZllGw2V1Mw+N
+         H3Ng==
+X-Gm-Message-State: AOAM533fyoxNflmSutXUNcaRAeNBxnbDP2vgyQfglLPeorVo4A/BD2eL
+	PG7r41s68fUB20OB2JG4rZA=
+X-Google-Smtp-Source: ABdhPJxFxNxXETq3ks4F+XSxZSd8J7B6SpNWE+i6QDVDnydfjooydiKQhpY7tRCSKEA/Q+tkXCXvtg==
+X-Received: by 2002:a4a:a105:: with SMTP id i5mr11372483ool.54.1613406615929;
+        Mon, 15 Feb 2021 08:30:15 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id f76sm2183491oig.52.2021.02.15.08.30.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 15 Feb 2021 08:30:15 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Mon, 15 Feb 2021 08:30:14 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v3 3/9] cxl/mem: Register CXL memX devices
+Message-ID: <20210215163014.GA116265@roeck-us.net>
+References: <20210212222541.2123505-1-ben.widawsky@intel.com>
+ <20210212222541.2123505-4-ben.widawsky@intel.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: WTTFOZEQRRSCZTZWRA7DHA6WMF7DGDY3
-X-Message-ID-Hash: WTTFOZEQRRSCZTZWRA7DHA6WMF7DGDY3
-X-MailFrom: mpatocka@redhat.com
+Content-Disposition: inline
+In-Reply-To: <20210212222541.2123505-4-ben.widawsky@intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID-Hash: 4ZXUUIO36BYFXC63SFFU7K2GS2VSTEXL
+X-Message-ID-Hash: 4ZXUUIO36BYFXC63SFFU7K2GS2VSTEXL
+X-MailFrom: groeck7@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Dave Chinner <david@fromorbit.com>, Theodore Ts'o <tytso@mit.edu>, David Laight <David.Laight@aculab.com>, Steven Whitehouse <swhiteho@redhat.com>, Eric Sandeen <esandeen@redhat.com>, Wang Jianchao <jianchao.wan9@gmail.com>, Rajesh Tadakamadla <rajesh.tadakamadla@hpe.com>, linux-kernel <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WTTFOZEQRRSCZTZWRA7DHA6WMF7DGDY3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4ZXUUIO36BYFXC63SFFU7K2GS2VSTEXL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi
+On Fri, Feb 12, 2021 at 02:25:35PM -0800, Ben Widawsky wrote:
+> From: Dan Williams <dan.j.williams@intel.com>
+> 
+> Create the /sys/bus/cxl hierarchy to enumerate:
+> 
+> * Memory Devices (per-endpoint control devices)
+> 
+> * Memory Address Space Devices (platform address ranges with
+>   interleaving, performance, and persistence attributes)
+> 
+> * Memory Regions (active provisioned memory from an address space device
+>   that is in use as System RAM or delegated to libnvdimm as Persistent
+>   Memory regions).
+> 
+> For now, only the per-endpoint control devices are registered on the
+> 'cxl' bus. However, going forward it will provide a mechanism to
+> coordinate cross-device interleave.
+> 
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> (v2)
 
-I announce a new version of NVFS - a filesystem for persistent memory.
-        http://people.redhat.com/~mpatocka/nvfs/
-        git://leontynka.twibright.com/nvfs.git
+arm:allmodconfig, i386:allyesconfig, mips:allmodconfig:
 
-Changes since the last release:
+drivers/cxl/mem.c:335:2: error: implicit declaration of function 'writeq'; did you mean 'writel'? [-Werror=implicit-function-declaration]
+  335 |  writeq(cmd_reg, cxlm->mbox_regs + CXLDEV_MBOX_CMD_OFFSET);
 
-I reworked file read/write handling:
+In file included from <command-line>:
+drivers/cxl/mem.c: In function '__cxl_mem_mbox_send_cmd':
+include/linux/compiler_types.h:320:38: error: call to '__compiletime_assert_266' declared with attribute error: FIELD_GET: mask is zero
 
-* the functions nvfs_read and nvfs_write were deleted beacause it's 
-  unlikely that the upstream kernel will allow them.
+and many similar errors.
 
-* the functions nvfs_read_iter and nvfs_write_iter have a fast path if 
-  there is just one segment in iov_iter - they will call nvfs_read_locked 
-  and nvfs_write_locked directly. This improves performance by 3% on the 
-  read path and 1% on the write path.
-
-* read_iter_locked uses copy_to_iter as suggested by Al Viro.
-
-* write_iter_locked doesn't use copy_from_iter_flushcache, because we need 
-  copy that doesn't advance the iter (the "copy" and "advance" must be two 
-  separate operations). So, I added new operations "iov_iter_map" and 
-  "iov_iter_unmap" - iov_iter_map will map the first segment of iov and 
-  iov_iter_unmap will unmap it.
-
-Do you think that introducing "iov_iter_map" and "iov_iter_unmap" is 
-appropriate? Do you have some other idea how to handle it?
-
-Mikukas
+Guenter
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
