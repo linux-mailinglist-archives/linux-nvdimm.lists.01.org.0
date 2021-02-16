@@ -2,97 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D3931CE55
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 16 Feb 2021 17:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF22931CE5F
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 16 Feb 2021 17:48:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B9311100EB345;
-	Tue, 16 Feb 2021 08:46:01 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 0C951100EB347;
+	Tue, 16 Feb 2021 08:48:47 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B3703100EB33F
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 08:45:58 -0800 (PST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 11GGcjPe025880;
-	Tue, 16 Feb 2021 11:44:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=Q5aHAR7pPlj/atdytcBPZccatqTpy1qm0hvpI6B2Sf0=;
- b=aSu0QIsUki902qrNU04AQuAffNS2rmmkgsvzPX/SqRGj503dHwb0uANR9/3BdjdcUOTr
- a5u+ik+W33ZCsmtUxgwWVAHgOiZ8625M6a9uJEkw5M0bu2XcLPXd+ZZsxLUXrIenOu/d
- IJMvDOwpYRE2a0EWmrznneVzszNnlWCT+VonA6hJOlSqIE/ENo5L4A6mG3mzNFTH5W3W
- vYfcPIlcyeuiYpY+PitOIUSYlhf7/ijhbppqWPgF2sgzNwq3Tdj1awqDTi3lk7pFWD+x
- 7YUipYk80l508mrZJAmUo4t0geEsdokwhvGGU4dlOtVmuxjC7/TzSbCC36zPfRgAJOZ1 WQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 36rhb68s0h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Feb 2021 11:44:29 -0500
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 11GGd9Qa029758;
-	Tue, 16 Feb 2021 11:44:25 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 36rhb68rud-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Feb 2021 11:44:24 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 11GGflQF029695;
-	Tue, 16 Feb 2021 16:44:16 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma04wdc.us.ibm.com with ESMTP id 36p6d8ypak-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Feb 2021 16:44:16 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 11GGiFGX8716868
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Feb 2021 16:44:15 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F8AE78060;
-	Tue, 16 Feb 2021 16:44:15 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EE9578063;
-	Tue, 16 Feb 2021 16:44:05 +0000 (GMT)
-Received: from jarvis.int.hansenpartnership.com (unknown [9.85.199.127])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Feb 2021 16:44:05 +0000 (GMT)
-Message-ID: <000cfaa0a9a09f07c5e50e573393cda301d650c9.camel@linux.ibm.com>
-Subject: Re: [PATCH v17 07/10] mm: introduce memfd_secret system call to
- create "secret" memory areas
-From: James Bottomley <jejb@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>
-Date: Tue, 16 Feb 2021 08:44:04 -0800
-In-Reply-To: <dfd7db5c-a8c7-0676-59f8-70aa6bcaabe7@redhat.com>
-References: <20210214091954.GM242749@kernel.org>
-	 <052DACE9-986B-424C-AF8E-D6A4277DE635@redhat.com>
-	 <244f86cba227fa49ca30cd595c4e5538fe2f7c2b.camel@linux.ibm.com>
-	 <YCo7TqUnBdgJGkwN@dhcp22.suse.cz>
-	 <be1d821d3f0aec24ad13ca7126b4359822212eb0.camel@linux.ibm.com>
-	 <YCrJjYmr7A2nO6lA@dhcp22.suse.cz>
-	 <12c3890b233c8ec8e3967352001a7b72a8e0bfd0.camel@linux.ibm.com>
-	 <dfd7db5c-a8c7-0676-59f8-70aa6bcaabe7@redhat.com>
-User-Agent: Evolution 3.34.4 
+	by ml01.01.org (Postfix) with ESMTPS id 7A400100EB345
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 08:48:44 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id y26so17540096eju.13
+        for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 08:48:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+ecI3AnraXxD8s3/KbtK83ACA5HZ+x4/w5NBzKVHXCM=;
+        b=Wm4E81qbjZm4Ote4+krHtLMT/Sg47muTNtm9HAKUxuG6Ynbpz/zx9MMwTAxRVTsgVJ
+         /dzzWYIWuocSvGpYzRWHIensXSKdcLuR4nL7RXCE+p8DgFHIcvSeX0wcN5u7/JmCK0qp
+         acnyO5VrRzp2jteOXYfH01EwKQRMekKGfugDte/4je+KFj4VmoylnLVz45G4U+t/SrpB
+         iZWqFLwHhLLKfGymiYFRCCxGZPBfX3wrdFNwaXAyieuKeokwaE98+EHOUIK5WC+f3xUs
+         9De32myHYjeq1IRoGAK7DkzalOxPCkwfTVMLHCtzioAjkOxq3Tp1syboSAYFWZtlM49Y
+         /hvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+ecI3AnraXxD8s3/KbtK83ACA5HZ+x4/w5NBzKVHXCM=;
+        b=S44yT/6LfEJMQLb8xypiEpuPOG85FU0Hp95UZlJG/oUHOvPJDiwxGuO1tFauY5xCk0
+         E9hkNA1STFBSnvshCg6kC8XpmSj2PIUl3P7K/Slw9VNIsQRiwoQASIFXJ4axfo9sgXkU
+         iVvU6ehlO0DmykMNJK4PMmsiU3ayyuk0l7jU3NmBopHKifde3E0Q2D+CPKs4Ehzh72Ij
+         tDNKsWv+TIiqq0R8l2hNAIU5kXKLqF4ASCxXtDuxOSWnZOE2KFIcBaUWopuMXOk/JDkL
+         acBr85p35Xo4FZNCBu5bzcgODNORL/AU4Ro2kStO+KLL4xUDNuNFYKQRjW4grnXwHoI5
+         9BsQ==
+X-Gm-Message-State: AOAM533/LrPdeR/rEQwfGsW7qLNaG6cGlQDFweQJgAsc2r9q+8hIAjDT
+	rOqsHFlnDJ8kS2sbAFsj55+lNJEmhTprAS7c8VGcLw==
+X-Google-Smtp-Source: ABdhPJw7/a6RtFAeh/ix7sMWO3UbzMvUPTqfzkV9KVjhDzFN7lG80bkPRoVGizFBbZxeH5ml2XKSfBwSVxENdDqxJEM=
+X-Received: by 2002:a17:906:5655:: with SMTP id v21mr3112272ejr.264.1613494122365;
+ Tue, 16 Feb 2021 08:48:42 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-02-16_07:2021-02-16,2021-02-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- clxscore=1015 priorityscore=1501 mlxlogscore=398 spamscore=0
- suspectscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102160146
-Message-ID-Hash: GYCF7S23CIG2MFQZTCR3RWENMHJNOZYJ
-X-Message-ID-Hash: GYCF7S23CIG2MFQZTCR3RWENMHJNOZYJ
-X-MailFrom: jejb@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <wil
- l@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+References: <20210216014538.268106-1-ben.widawsky@intel.com>
+ <20210216014538.268106-10-ben.widawsky@intel.com> <20210216154857.0000261d@Huawei.com>
+In-Reply-To: <20210216154857.0000261d@Huawei.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 16 Feb 2021 08:48:32 -0800
+Message-ID: <CAPcyv4j+DZq7fkRTW+_O1-AtAQwOPD65A8M5AWg7XU9N+TksRA@mail.gmail.com>
+Subject: Re: [PATCH v4 9/9] cxl/mem: Add payload dumping for debug
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-ID-Hash: 5V72HLYHI7FTE7IBIXBV5ZCIVPPN5CX2
+X-Message-ID-Hash: 5V72HLYHI7FTE7IBIXBV5ZCIVPPN5CX2
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux PCI <linux-pci@vger.kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jejb@linux.ibm.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GYCF7S23CIG2MFQZTCR3RWENMHJNOZYJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5V72HLYHI7FTE7IBIXBV5ZCIVPPN5CX2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -101,67 +68,34 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, 2021-02-16 at 17:34 +0100, David Hildenbrand wrote:
-> On 16.02.21 17:25, James Bottomley wrote:
-> > On Mon, 2021-02-15 at 20:20 +0100, Michal Hocko wrote:
-> > [...]
-> > > > >    What kind of flags are we talking about and why would that
-> > > > > be a problem with memfd_create interface? Could you be more
-> > > > > specific please?
-> > > > 
-> > > > You mean what were the ioctl flags in the patch series linked
-> > > > above? They were SECRETMEM_EXCLUSIVE and SECRETMEM_UNCACHED in
-> > > > patch 3/5.
-> > > 
-> > > OK I see. How many potential modes are we talking about? A few or
-> > > potentially many?
-> >   
-> > Well I initially thought there were two (uncached or not) until you
-> > came up with the migratable or non-migratable, which affects the
-> > security properties.  But now there's also potential for hardware
-> > backing, like mktme,  described by flags as well.  I suppose you
-> > could also use RDT to restrict which cache the data goes into: say
-> > L1 but not L2 on to lessen the impact of fully uncached (although
-> > the big thrust of uncached was to blunt hyperthread side
-> > channels).  So there is potential for quite a large expansion even
-> > though I'd be willing to bet that a lot of the modes people have
-> > thought about turn out not to be very effective in the field.
-> 
-> Thanks for the insight. I remember that even the "uncached" parts
-> was effectively nacked by x86 maintainers (I might be wrong).
+On Tue, Feb 16, 2021 at 7:50 AM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Mon, 15 Feb 2021 17:45:38 -0800
+> Ben Widawsky <ben.widawsky@intel.com> wrote:
+>
+> > It's often useful in debug scenarios to see what the hardware has dumped
+> > out. As it stands today, any device error will result in the payload not
+> > being copied out, so there is no way to triage commands which weren't
+> > expected to fail (and sometimes the payload may have that information).
+> >
+> > The functionality is protected by normal kernel security mechanisms as
+> > well as a CONFIG option in the CXL driver.
+> >
+> > This was extracted from the original version of the CXL enabling patch
+> > series.
+> >
+> > Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+>
+> My gut feeling here is use a tracepoint rather than spamming the kernel
+> log.  Alternatively just don't bother merging this patch - it's on the list
+> now anyway so trivial for anyone doing such debug to pick it up.
+>
 
-It wasn't liked by x86 maintainers, no.  Plus there's no
-architecturally standard mechanism for making a page uncached and, as
-the arm people pointed out, sometimes no way of ensuring it's never
-cached.
-
->  For the other parts, the question is what we actually want to let
-> user space configure.
-> 
-> Being able to specify "Very secure" "maximum secure" "average
-> secure"  all doesn't really make sense to me.
-
-Well, it doesn't to me either unless the user feels a cost/benefit, so
-if max cost $100 per invocation and average cost nothing, most people
-would chose average unless they had a very good reason not to.  In your
-migratable model, if we had separate limits for non-migratable and
-migratable, with non-migratable being set low to prevent exhaustion,
-max secure becomes a highly scarce resource, whereas average secure is
-abundant then having the choice might make sense.
-
->  The discussion regarding migratability only really popped up because
-> this is a user-visible thing and not being able to migrate can be a
-> real problem (fragmentation, ZONE_MOVABLE, ...).
-
-I think the biggest use will potentially come from hardware
-acceleration.  If it becomes simple to add say encryption to a secret
-page with no cost, then no flag needed.  However, if we only have a
-limited number of keys so once we run out no more encrypted memory then
-it becomes a costly resource and users might want a choice of being
-backed by encryption or not.
-
-James
-
+I've long wanted to make dev_dbg() a way to declare trace-points. With
+that, enabling it as a log message, or a trace-point is user policy.
+The value of this is having it readily available, not digging up a
+patch off the list for a debug session.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
