@@ -2,54 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31E231CAE8
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 16 Feb 2021 14:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF9731CB59
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 16 Feb 2021 14:43:47 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9625C100EBB6A;
-	Tue, 16 Feb 2021 05:13:59 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=dsterba@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C824C100EB839;
+	Tue, 16 Feb 2021 05:43:45 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=brgl@bgdev.pl; receiver=<UNKNOWN> 
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AC3F1100EBBC1
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 05:13:53 -0800 (PST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 9D362ACBF;
-	Tue, 16 Feb 2021 13:13:51 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-	id 8C951DA6EF; Tue, 16 Feb 2021 14:11:54 +0100 (CET)
-Date: Tue, 16 Feb 2021 14:11:54 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [PATCH 4/7] fsdax: Replace mmap entry in case of CoW
-Message-ID: <20210216131154.GN1993@twin.jikos.cz>
-Mail-Followup-To: dsterba@suse.cz,
-	Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>,
-	linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org,
-	darrick.wong@oracle.com, dan.j.williams@intel.com,
-	willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
-	linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-	david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de,
-	Goldwyn Rodrigues <rgoldwyn@suse.com>
-References: <20210207170924.2933035-1-ruansy.fnst@cn.fujitsu.com>
- <20210207170924.2933035-5-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTPS id EB695100EBB6A
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 05:43:42 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id do6so6173131ejc.3
+        for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 05:43:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=L4aIEOUjOCrSjLDXb3mtmGNuNkXiSZIhPKzU5zM+aPQ=;
+        b=buncBvKPoDgi0mDnNxcMtJUW4SBhK1bNmdC5f+v/hQTv8lmNwxCoBI4WE2VR3MNGuA
+         N+qnbz2mtngGoLCQiJMUWBKoVLmqQH8Dkw0rER13qkahBHeXieNixC1cS/4+I9PB62RS
+         KQV+HChSOcQy0VTzRbiEytQMJiO56rKxjjqJgnauyxWGA4uf+09V+otQ+Ek5foCRuxp1
+         WafmVcb7Prh/18Kw+8tv7XOaCHyvz5uKczY+84ard8unxSMnu0RiALTRoaLWs82Mv1Vn
+         kqZgu2+9+4vRj5kMyiM7/c/34S0pm3DGa3h6NS7fm2FJhZLCdr4k5UXt68Y3hQrgLQ20
+         0YvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=L4aIEOUjOCrSjLDXb3mtmGNuNkXiSZIhPKzU5zM+aPQ=;
+        b=LwqIPnIBYKHlq5eQsQVHhemlIoVy5NaoBQAHIeYuRnxxfBwKFiUlrtdIbcWpBd6mXx
+         etdnVYWnr8eeowrCvAj1C8svUjyfS7PUQky8K0QKycSGmE4yOFTUKh84jbxloH9vEySP
+         mDFE9l06J0jgYcCNxq1cVApfLcKBgGnKdRHetNsKfxHigLWtI2ii+OQMxDkYnn4Eape2
+         +NuswJUpmvpl50co6G4Fx/teeafAkzcm45ppX1W45LF1mLRln4XqsHcdVOu+a3lDJuqt
+         y4ek/z5IX7/okS7vzfu0oMCO7a80VMK+5NLEzmQYTxBWc7A3lwY4sjH8KrKMXtiOKTVG
+         AM6A==
+X-Gm-Message-State: AOAM531wwMM5NVMTG9euPw+qUJ3t/CjhN4rWbwJ5YD/AttF8bfo6Ac9R
+	d27S3MQalYDtghTIX2sAvNA2RUY9ps4ZNrd0XFI9aw==
+X-Google-Smtp-Source: ABdhPJwNiuPUvaLufGG9a0tPuHT7VrdTNyIONpTy7saz/PN9GNeWzcq1nq86MBlPBPSx6AlQhTFZdN7QElpujVjK1Do=
+X-Received: by 2002:a17:906:4a8e:: with SMTP id x14mr17745633eju.445.1613483020380;
+ Tue, 16 Feb 2021 05:43:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210207170924.2933035-5-ruansy.fnst@cn.fujitsu.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-Message-ID-Hash: BHLYE7RMH3BDEKNTF2V5NP2A2BYL75BP
-X-Message-ID-Hash: BHLYE7RMH3BDEKNTF2V5NP2A2BYL75BP
-X-MailFrom: dsterba@suse.cz
+References: <20210210000259.635748-1-ben.widawsky@intel.com>
+ <20210210000259.635748-7-ben.widawsky@intel.com> <20210211120215.00007d3d@Huawei.com>
+In-Reply-To: <20210211120215.00007d3d@Huawei.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 16 Feb 2021 14:43:29 +0100
+Message-ID: <CAMRc=MfhKMH+CcGxo_8j58c-NT_gQsZRqSjeH5mV3vCKUTWvhQ@mail.gmail.com>
+Subject: Re: [PATCH v2 6/8] cxl/mem: Enable commands via CEL
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-ID-Hash: J5VNW3YG36HHLSM3KFWGLCVCCS7KQMZS
+X-Message-ID-Hash: J5VNW3YG36HHLSM3KFWGLCVCCS7KQMZS
+X-MailFrom: brgl@bgdev.pl
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, Goldwyn Rodrigues <rgoldwyn@suse.com>
+CC: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: dsterba@suse.cz
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BHLYE7RMH3BDEKNTF2V5NP2A2BYL75BP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J5VNW3YG36HHLSM3KFWGLCVCCS7KQMZS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,141 +69,33 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 08, 2021 at 01:09:21AM +0800, Shiyang Ruan wrote:
-> We replace the existing entry to the newly allocated one
-> in case of CoW. Also, we mark the entry as PAGECACHE_TAG_TOWRITE
-> so writeback marks this entry as writeprotected. This
-> helps us snapshots so new write pagefaults after snapshots
-> trigger a CoW.
-> 
-> Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-> ---
->  fs/dax.c | 31 +++++++++++++++++++++++--------
->  1 file changed, 23 insertions(+), 8 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index b2195cbdf2dc..29698a3d2e37 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -722,6 +722,9 @@ static int copy_cow_page_dax(struct block_device *bdev, struct dax_device *dax_d
->  	return 0;
->  }
->  
-> +#define DAX_IF_DIRTY		(1ULL << 0)
-> +#define DAX_IF_COW		(1ULL << 1)
+On Thu, Feb 11, 2021 at 1:12 PM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
 
-The constants are ULL, but I see other flags only 'unsigned long'
+[snip!]
 
-> +
->  /*
->   * By this point grab_mapping_entry() has ensured that we have a locked entry
->   * of the appropriate size so we don't have to worry about downgrading PMDs to
-> @@ -731,14 +734,16 @@ static int copy_cow_page_dax(struct block_device *bdev, struct dax_device *dax_d
->   */
->  static void *dax_insert_entry(struct xa_state *xas,
->  		struct address_space *mapping, struct vm_fault *vmf,
-> -		void *entry, pfn_t pfn, unsigned long flags, bool dirty)
-> +		void *entry, pfn_t pfn, unsigned long flags, bool insert_flags)
+> >
+> > @@ -869,6 +891,14 @@ static struct cxl_mem *cxl_mem_create(struct pci_dev *pdev, u32 reg_lo,
+> >       mutex_init(&cxlm->mbox_mutex);
+> >       cxlm->pdev = pdev;
+> >       cxlm->regs = regs + offset;
+> > +     cxlm->enabled_cmds =
+> > +             devm_kmalloc_array(dev, BITS_TO_LONGS(cxl_cmd_count),
+> > +                                sizeof(unsigned long),
+> > +                                GFP_KERNEL | __GFP_ZERO);
+>
+> Hmm. There doesn't seem to be a devm_bitmap_zalloc
+>
 
-insert_flags is bool
+FYI I've implemented both devm_bitmap_zalloc() as well as
+devm_bitmap_alloc() and made them part of a series I sent out to
+linux-gpio two weeks ago (surprisingly - it's nowhere to be found on
+lkml or spinics or even patchwork :/). The patches didn't make it for
+v5.12 but I'll respin them after the merge window, so we'll have those
+devres helpers for v5.13.
 
->  {
->  	void *new_entry = dax_make_entry(pfn, flags);
-> +	bool dirty = insert_flags & DAX_IF_DIRTY;
-
-"insert_flags & DAX_IF_DIRTY" is "bool & ULL", this can't be right
-
-> +	bool cow = insert_flags & DAX_IF_COW;
-
-Same
-
->  
->  	if (dirty)
->  		__mark_inode_dirty(mapping->host, I_DIRTY_PAGES);
->  
-> -	if (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE)) {
-> +	if (cow || (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE))) {
->  		unsigned long index = xas->xa_index;
->  		/* we are replacing a zero page with block mapping */
->  		if (dax_is_pmd_entry(entry))
-> @@ -750,7 +755,7 @@ static void *dax_insert_entry(struct xa_state *xas,
->  
->  	xas_reset(xas);
->  	xas_lock_irq(xas);
-> -	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
-> +	if (cow || dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
->  		void *old;
->  
->  		dax_disassociate_entry(entry, mapping, false);
-> @@ -774,6 +779,9 @@ static void *dax_insert_entry(struct xa_state *xas,
->  	if (dirty)
->  		xas_set_mark(xas, PAGECACHE_TAG_DIRTY);
->  
-> +	if (cow)
-> +		xas_set_mark(xas, PAGECACHE_TAG_TOWRITE);
-> +
->  	xas_unlock_irq(xas);
->  	return entry;
->  }
-> @@ -1319,6 +1327,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  	void *entry;
->  	pfn_t pfn;
->  	void *kaddr;
-> +	unsigned long insert_flags = 0;
->  
->  	trace_dax_pte_fault(inode, vmf, ret);
->  	/*
-> @@ -1444,8 +1453,10 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  
->  		goto finish_iomap;
->  	case IOMAP_UNWRITTEN:
-> -		if (write && iomap.flags & IOMAP_F_SHARED)
-> +		if (write && (iomap.flags & IOMAP_F_SHARED)) {
-> +			insert_flags |= DAX_IF_COW;
-
-Here's an example of 'unsigned long = unsigned long long', though it'll
-work, it would be better to unify all the types.
-
->  			goto cow;
-> +		}
->  		fallthrough;
->  	case IOMAP_HOLE:
->  		if (!write) {
-> @@ -1555,6 +1566,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  	int error;
->  	pfn_t pfn;
->  	void *kaddr;
-> +	unsigned long insert_flags = 0;
->  
->  	/*
->  	 * Check whether offset isn't beyond end of file now. Caller is
-> @@ -1670,14 +1682,17 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  		result = vmf_insert_pfn_pmd(vmf, pfn, write);
->  		break;
->  	case IOMAP_UNWRITTEN:
-> -		if (write && iomap.flags & IOMAP_F_SHARED)
-> +		if (write && (iomap.flags & IOMAP_F_SHARED)) {
-> +			insert_flags |= DAX_IF_COW;
->  			goto cow;
-> +		}
->  		fallthrough;
->  	case IOMAP_HOLE:
-> -		if (WARN_ON_ONCE(write))
-> +		if (!write) {
-> +			result = dax_pmd_load_hole(&xas, vmf, &iomap, &entry);
->  			break;
-> -		result = dax_pmd_load_hole(&xas, vmf, &iomap, &entry);
-> -		break;
-> +		}
-> +		fallthrough;
->  	default:
->  		WARN_ON_ONCE(1);
->  		break;
-> -- 
-> 2.30.0
-> 
-> 
+Bartosz
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
