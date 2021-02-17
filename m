@@ -2,90 +2,54 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23A1315A81
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 01:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF12315ABB
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Feb 2021 01:12:08 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6652B100EAB0E;
-	Tue,  9 Feb 2021 16:03:33 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D1C6A100EAAEA
-	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 16:03:27 -0800 (PST)
-IronPort-SDR: UW6FDPH77xSkih8WivaN/Zs0l0wReBDLUTRI7xDEmQtOKuFo5AK4Fh8l9tmty4vppRvSLDKtJQ
- +2mTsjWRAVQg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9890"; a="201079169"
-X-IronPort-AV: E=Sophos;i="5.81,166,1610438400";
-   d="scan'208";a="201079169"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2021 16:03:19 -0800
-IronPort-SDR: RgDAq7rbdWEJyPimPAB/eix2qjwkUU2IkUZVZMfnXtB8PpeQi/gdZ86YE17/u5Sxkvk544yYzr
- mjPiZKJ1IK8Q==
-X-IronPort-AV: E=Sophos;i="5.81,166,1610438400";
-   d="scan'208";a="419865880"
-Received: from sitira7x-mobl1.gar.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.134.68])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2021 16:03:18 -0800
-From: Ben Widawsky <ben.widawsky@intel.com>
-To: linux-cxl@vger.kernel.org
-Subject: [PATCH v2 8/8] MAINTAINERS: Add maintainers of the CXL driver
-Date: Tue,  9 Feb 2021 16:02:59 -0800
-Message-Id: <20210210000259.635748-9-ben.widawsky@intel.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210210000259.635748-1-ben.widawsky@intel.com>
-References: <20210210000259.635748-1-ben.widawsky@intel.com>
+	by ml01.01.org (Postfix) with ESMTP id 4C8D5100EAAFD;
+	Tue,  9 Feb 2021 16:12:06 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=120.228.161.42; helo=cbgt.com; envelope-from=ajrp@cbgt.com; receiver=<UNKNOWN> 
+Received: from cbgt.com (unknown [120.228.161.42])
+	by ml01.01.org (Postfix) with ESMTP id 4A1B5100EAAEA
+	for <linux-nvdimm@lists.01.org>; Tue,  9 Feb 2021 16:12:02 -0800 (PST)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Wed, 17 Feb 2021 08:17:14 +0800
+Message-ID: 4bfa7e17-54dd-482c-9040-43e2c69ec8d3
 MIME-Version: 1.0
-Message-ID-Hash: CECXODF4H6IWAJ5E3YWDBXCAZSEB3UCN
-X-Message-ID-Hash: CECXODF4H6IWAJ5E3YWDBXCAZSEB3UCN
-X-MailFrom: ben.widawsky@intel.com
+Sender: =?utf-8?Q?=E4=B8=93=E4=B8=9A=E5=8A=9E=E7=90=86=E9=A6?=
+ =?utf-8?Q?=99=E6=B8=AF=E5=BA=A7=E6=9C=BA---=E6=8C=89=E5=B9=B4=E6=94=B6?=
+ =?utf-8?Q?=E8=B4=B9=EF=BC=8C=E4=BD=8E=E8=87=B3300=E5=85=83=E4=B8=80=E6?=
+ =?utf-8?Q?=9C=88?=
+ <ajrp@cbgt.com>
+From: =?utf-8?Q?=E4=B8=93=E4=B8=9A=E5=8A=9E=E7=90=86=E9=A6=99?=
+ =?utf-8?Q?=E6=B8=AF=E5=BA=A7=E6=9C=BA---=E6=8C=89=E5=B9=B4=E6=94=B6=E8?=
+ =?utf-8?Q?=B4=B9=EF=BC=8C=E4=BD=8E=E8=87=B3300=E5=85=83=E4=B8=80=E6=9C?=
+ =?utf-8?Q?=88?=
+ <hktel852@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 17 Feb 2021 08:17:14 +0800
+Subject: =?utf-8?B?5LiT5Lia5Yqe55CG6aaZ5riv5bqn5py6LS0t5oyJ5bm05pS2?=
+ =?utf-8?B?6LS577yM5L2O6IezMzAw5YWD5LiA5pyI?=
+Message-ID-Hash: 2OSPIB7JBRBQ5EUBKJRFQT2UO5IYBLEK
+X-Message-ID-Hash: 2OSPIB7JBRBQ5EUBKJRFQT2UO5IYBLEK
+X-MailFrom: ajrp@cbgt.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Ben Widawsky <ben.widawsky@intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, Alison Schofield <alison.schofield@intel.com>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CECXODF4H6IWAJ5E3YWDBXCAZSEB3UCN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2OSPIB7JBRBQ5EUBKJRFQT2UO5IYBLEK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6eff4f720c72..93c8694a8f04 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4444,6 +4444,17 @@ M:	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
- S:	Maintained
- F:	include/linux/compiler_attributes.h
- 
-+COMPUTE EXPRESS LINK (CXL)
-+M:	Alison Schofield <alison.schofield@intel.com>
-+M:	Vishal Verma <vishal.l.verma@intel.com>
-+M:	Ira Weiny <ira.weiny@intel.com>
-+M:	Ben Widawsky <ben.widawsky@intel.com>
-+M:	Dan Williams <dan.j.williams@intel.com>
-+L:	linux-cxl@vger.kernel.org
-+S:	Maintained
-+F:	drivers/cxl/
-+F:	include/uapi/linux/cxl_mem.h
-+
- CONEXANT ACCESSRUNNER USB DRIVER
- L:	accessrunner-general@lists.sourceforge.net
- S:	Orphan
--- 
-2.30.0
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQrkuJPkuJrlip7nkIbpppnmuK/luqfmnLrlnKjlpKfpmYbkuqvnlKjpppnmuK/kv6Hl
+j7fkuI3pmZDliLYt6YCa6K+d5pe26Ze05bqn5py65aWX6aSQ5oyJ5bm05pS26LS5DQombmJzcDsg
+USZuYnNwOyZuYnNwOyBRJm5ic3A7Jm5ic3A777yaNDgzNDU2NjY1Jm5ic3A755S1ICZuYnNwO+iv
+ne+8mjE1OTkyODkzMTg3Jm5ic3A7RS1tYWlsIO+8mmhrdGVsODUyQGhvdG1haWwuY29tDQombmJz
+cDsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
+bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
+c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
