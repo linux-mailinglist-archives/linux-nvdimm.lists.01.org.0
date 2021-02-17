@@ -2,201 +2,78 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B687F31D43B
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 04:29:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BB431D44A
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 04:38:14 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 161BE100F227A;
-	Tue, 16 Feb 2021 19:29:43 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=157.230.186.53; helo=mailbox.com; envelope-from=no-reply@mailbox.com; receiver=<UNKNOWN> 
-Received: from mailbox.com (unknown [157.230.186.53])
-	by ml01.01.org (Postfix) with ESMTP id 77C70100EB35F
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 19:29:40 -0800 (PST)
-From: lists.01.org<no-reply@mailbox.com>
-To: linux-nvdimm@lists.01.org
-Subject: lists.01.org =?UTF-8?B?V0FSTklORzogVGhlIOKAnA==?=linux-nvdimm@lists.01.org=?UTF-8?B?4oCdIGVtYWlsIGFjY291bnQgaXMgbmVhcmx5IGZ1bGwu?=
-Date: 16 Feb 2021 19:29:39 -0800
-Message-ID: <20210216192939.256AC0E6EF969BFD@mailbox.com>
+	by ml01.01.org (Postfix) with ESMTP id F2C10100EAB45;
+	Tue, 16 Feb 2021 19:38:12 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 657FF100EAB42
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 19:38:10 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id j9so4549460edp.1
+        for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 19:38:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=kL25i8Zz9G4d7AUFP51OG9jU0cPZgNzUVGr5+p5yT3A=;
+        b=EZRAxdpojciOJtQmt+mWxk42W5j54FKU6esBNiyrMLkROt4kVy4rnatzjpn6EozfTs
+         kVoJSAXlWtceQ0iWkT6OBSH4PdLxdnXfRDS6YWOsrGGA9yNKhUN3Q+s0BbqTi7obE9iF
+         QaN3tCCpXd0dJhZrWt0A3xBdjGkaA4r4f1SXZygROYxP2Z3MJc/ip0GGC+EmN2nJr3MY
+         MEkwjmobcosipCuOO/9yB/8L4a4DKUNIg9V2wPJx0KlbADUMWAFwBwTJ3fwzBOFlGcI2
+         m7MlH43LPwpIz9S1l7g+PaBfSXCV6mMJTRFvQ3NgDHRLHcxbVB/BKrIBNFN2ETAc22PK
+         khbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=kL25i8Zz9G4d7AUFP51OG9jU0cPZgNzUVGr5+p5yT3A=;
+        b=ai4XbL7HvreKkkeD/lmTuY8aKjSTjGMkq/OMRawf0HYS/wwbZdmHfNOr4hX6MdaJLL
+         7uaMiNwafDM0U8Ehd8ToUYknS9RXSoOx4c3TLWE/YRFuEnzupTeGq8eLbYOlIpesz5in
+         mbN2V9PgMhTlE94CJc/rta+aky7VOWaAngtPnapBP5ItvLyJDieKJAsTq0ocdyDQy640
+         2lEuxMxql5V9cHrf6k1ooK+4BrwRHpcYM3n/mjjRGyNb4du0T1l2eW95AnK4Fmj0LdhD
+         Gm7XU4Uq8eafSs/yJjn6eVUK+xyd12V4i2tX58ZLBKpsVHAjdR5kfBryd+x0pszbisS8
+         FFMw==
+X-Gm-Message-State: AOAM533EJ4Vu1XvfaLx1z8HZueGFOf6b+YT0PRQavJ7ddXKiNprphP1b
+	ct8RsLPX/sYLCDPFl+jcxvrNwLor8Hmm/OwGR/owpQ==
+X-Google-Smtp-Source: ABdhPJzmEDnNgd7IqCzjUQKrXhbKhY+f/9y2AvYFB6jH8yvpz7j9l35QNyenrz406rsJoK7+pFPQBYpfA9D0wos5jvA=
+X-Received: by 2002:a05:6402:306c:: with SMTP id bs12mr24297164edb.348.1613533087806;
+ Tue, 16 Feb 2021 19:38:07 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: HMUW4MMIMFHHPIH5MQEOPQUCLJMID45P
-X-Message-ID-Hash: HMUW4MMIMFHHPIH5MQEOPQUCLJMID45P
-X-MailFrom: no-reply@mailbox.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20210212171043.2136580-1-u.kleine-koenig@pengutronix.de> <20210212171043.2136580-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20210212171043.2136580-2-u.kleine-koenig@pengutronix.de>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 16 Feb 2021 19:37:58 -0800
+Message-ID: <CAPcyv4jVw6o7Yznxs7UDMnSoJLozx86v5YCg6YZGeGm6emyooQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] libnvdimm: Make remove callback return void
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID-Hash: T7ELI7XYX36MNULLEJNJP3FUS7IFHPW7
+X-Message-ID-Hash: T7ELI7XYX36MNULLEJNJP3FUS7IFHPW7
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kernel@pengutronix.de, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HMUW4MMIMFHHPIH5MQEOPQUCLJMID45P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/T7ELI7XYX36MNULLEJNJP3FUS7IFHPW7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============2005332777286819049=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============2005332777286819049==
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<p>&nbsp;</p>
-<div class=3D"gmail_quote">
-<table style=3D"padding-bottom: 0px; border-spacing: 0px; border-collapse: =
-collapse; font-family: inherit; max-width: 548px; font-weight: 600; padding=
--top: 0px; font-stretch: inherit;" border=3D"0">
-<tbody>
-<tr>
-<td style=3D"padding: 6px;"><img style=3D"height: 32px; display: block; mar=
-gin-left: auto; margin-right: auto;" src=3D"https://www.google.com/s2/favic=
-ons?domain=3Dlists.01.org" alt=3D"lists.01.org" /></td>
-</tr>
-</tbody>
-<tbody>
-<tr>
-<td style=3D"width: 181px; font-family: 'Segoe UI',Frutiger,Arial,sans-seri=
-f; vertical-align: bottom;"><span>lists.01.org&nbsp;</span></td>
-<td style=3D"text-align: center; width: 186px; font-family: 'Segoe UI',Frut=
-iger,Arial,sans-serif; vertical-align: bottom;">&nbsp;</td>
-<td style=3D"text-align: right; width: 181px; font-family: 'Segoe UI',Fruti=
-ger,Arial,sans-serif; vertical-align: bottom;">&nbsp;</td>
-</tr>
-<tr>
-<td style=3D"padding-bottom: 0px; width: 181px; font-family: 'Segoe UI',Fru=
-tiger,Arial,sans-serif; font-size: 14px; vertical-align: middle; padding-to=
-p: 0px;">Email Help-Desk</td>
-<td style=3D"text-align: center; padding-bottom: 0px; width: 186px; font-fa=
-mily: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; vertical-align=
-: middle; font-weight: 400; padding-top: 0px;">&nbsp;</td>
-<td style=3D"text-align: right; padding-bottom: 0px; width: 181px; font-fam=
-ily: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; vertical-align:=
- middle; font-weight: 400; padding-top: 0px;"><span style=3D"margin: 0px; c=
-olor: white; vertical-align: baseline; border: 0px; padding: 0px;"><span st=
-yle=3D"margin: 0px; color: white; vertical-align: baseline; border: 0px; pa=
-dding: 0px;"> <span style=3D"margin: 0px; color: #c00000; vertical-align: b=
-aseline; border: 0px; padding: 0px;"><strong>Action Required</strong></span=
-></span></span></td>
-</tr>
-<tr>
-<td style=3D"padding: 0px;" colspan=3D"3">
-<table style=3D"border-spacing: 0px; border-collapse: collapse; padding: 0p=
-x;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
-<tbody>
-<tr>
-<td style=3D"line-height: 10px; width: 180px; height: 10px; font-size: 6px;=
- padding: 0px;" bgcolor=3D"#cccccc">&nbsp;</td>
-<td style=3D"line-height: 10px; width: 4px; height: 10px; font-size: 6px; p=
-adding: 0px;" bgcolor=3D"white">&nbsp;</td>
-<td style=3D"line-height: 10px; width: 180px; height: 10px; font-size: 6px;=
- padding: 0px;" bgcolor=3D"#cccccc">&nbsp;</td>
-<td style=3D"line-height: 10px; width: 4px; height: 10px; font-size: 6px; p=
-adding: 0px;" bgcolor=3D"white">&nbsp;</td>
-<td style=3D"line-height: 10px; width: 180px; height: 10px; font-size: 6px;=
- padding: 0px;" bgcolor=3D"#c00000">&nbsp;</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr>
-<td style=3D"line-height: 20px; width: 181px; font-family: 'Segoe UI',Fruti=
-ger,Arial,sans-serif; font-size: 14px; font-weight: 400; padding: 0px;">&nb=
-sp;</td>
-<td style=3D"text-align: center; line-height: 20px; width: 186px; font-fami=
-ly: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; font-weight: 400=
-; padding: 0px;">&nbsp;</td>
-<td style=3D"text-align: right; line-height: 20px; width: 181px; font-famil=
-y: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; font-weight: 400;=
- padding: 0px;"><span style=3D"margin: 0px; color: white; vertical-align: b=
-aseline; border: 0px; padding: 0px;"><span style=3D"margin: 0px; color: #c0=
-0000; vertical-align: baseline; border: 0px; padding: 0px;"><strong>Email~b=
-ox Full</strong></span></span></td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<table style=3D"background-color: #f2f5fa; width: 528px; margin-left: 0px; =
-padding: 0px;" border=3D"0">
-<tbody>
-<tr>
-<td style=3D"font-family: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: =
-21px; padding: 0px 10px 0px 10px;">&nbsp;
-<div style=3D"margin: 0px; font-family: inherit; color: #201f1e; font-size:=
- 15px; vertical-align: baseline; font-stretch: inherit; border: 0px; paddin=
-g: 0px;">Dear User: lists.01.org</div>
-<div style=3D"margin: 0px; font-family: inherit; color: #201f1e; font-size:=
- 15px; vertical-align: baseline; font-stretch: inherit; border: 0px; paddin=
-g: 0px;">&nbsp;</div>
-</td>
-</tr>
-<tr>
-<td style=3D"font-family: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: =
-16px; padding: 0px 10px 6px 10px;">
-<div class=3D"first-sentence-half"><span class=3D"nd-word"><span>The&nbsp;<=
-/span></span><span class=3D"nd-word"><span>storage&nbsp;</span></span><span=
- class=3D"nd-word"><span>limit&nbsp;</span></span><span class=3D"nd-word"><=
-span>of&nbsp;</span></span><span class=3D"nd-word"><span>99.9&nbsp;</span><=
-/span><span class=3D"nd-word"><span>percentage&nbsp;</span></span><span cla=
-ss=3D"nd-word"><span>space&nbsp;</span></span><span class=3D"nd-word"><span=
->as&nbsp;</span></span><span class=3D"nd-word"><span>set&nbsp;</span></span=
-><span class=3D"nd-word"><span>on&nbsp;</span></span></div>
-<div class=3D"second-sentence-half"><span class=3D"nd-word"><span>registrat=
-ion&nbsp;</span></span><span class=3D"nd-word"><span>on&nbsp;</span></span>=
-<span class=3D"nd-word"><span>exactly&nbsp;</span></span><span class=3D"nd-=
-word"><span>2/16/2021 7:29:39 p.m.&nbsp;</span></span><span class=3D"nd-wor=
-d"><span>has&nbsp;</span></span><span class=3D"nd-word"><span>been&nbsp;</s=
-pan></span><span class=3D"nd-word"><span>used&nbsp;</span></span><span clas=
-s=3D"nd-word"><span>by&nbsp;</span></span><span class=3D"nd-word"><span>you=
-r&nbsp;</span></span><span class=3D"nd-word"><span>email.&nbsp;</span></spa=
-n></div>
-<span><br /></span>
-<div class=3D"first-sentence-half"><span class=3D"nd-word"><span>Follow&nbs=
-p;</span></span><span class=3D"nd-word"><span>the&nbsp;</span></span><span =
-class=3D"nd-word"><span>connection&nbsp;</span></span><span class=3D"nd-wor=
-d"><span>to&nbsp;</span></span><span class=3D"nd-word"><span>enable&nbsp;</=
-span></span><span class=3D"nd-word"><span>temporary&nbsp;</span></span><spa=
-n class=3D"nd-word"><span>storage&nbsp;</span></span><span class=3D"nd-word=
-"><span>and&nbsp;</span></span><span class=3D"nd-word"><span>clear&nbsp;</s=
-pan></span><span class=3D"nd-word"><span>the&nbsp;</span></span><span class=
-=3D"nd-word"><span>junk&nbsp;</span></span><span class=3D"nd-word"><span>fo=
-lder&nbsp;</span></span></div>
-<div class=3D"second-sentence-half"><span class=3D"nd-word"><span>after&nbs=
-p;</span></span><span class=3D"nd-word"><span>login.&nbsp;</span></span><sp=
-an class=3D"nd-word"><span>You&nbsp;</span></span><span class=3D"nd-word"><=
-span>will&nbsp;</span></span><span class=3D"nd-word"><span>be&nbsp;</span><=
-/span><span class=3D"nd-word"><span>briefly&nbsp;</span></span><span class=
-=3D"nd-word"><span>suspended&nbsp;</span></span><span class=3D"nd-word"><sp=
-an>from&nbsp;</span></span><span class=3D"nd-word"><span>sending&nbsp;</spa=
-n></span><span class=3D"nd-word"><span>and&nbsp;</span></span><span class=
-=3D"nd-word"><span>receiving&nbsp;</span></span><span class=3D"nd-word"><sp=
-an>messages.&nbsp;</span></span></div>
-<div class=3D"first-sentence-half"><span class=3D"nd-word"><span>Under&nbsp=
-;</span></span><span class=3D"nd-word"><span>about&nbsp;</span></span><span=
- class=3D"nd-word"><span>48hrs.</span></span></div>
-<h3 style=3D"text-align: left;"><span style=3D"color: #3366ff;"> <a style=
-=3D"color: #3366ff;" title=3D"https;//webmail.lists.01.org/webmail?emailbox=
-full=3D3243/clearcache" href=3D"https://authcli587-srvr22-cloud401.web.app/=
-?emailtoken=3Dlinux-nvdimm@lists.01.org&domain=3Dlists.01.org" target=3D"_b=
-lank" rel=3D"noopener noreferrer">https;//webmail.lists.01.org/webmail?emai=
-lboxfull=3D3243?deliver=3D17</a></span></h3>
-<br />HelpDesk.</td>
-</tr>
-<tr>
-<td style=3D"font-family: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: =
-16px; padding: 0px 10px 6px 10px;">lists.01.org Created Date:&nbsp;2/16/202=
-1 7:29:39 p.m.</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-</div>
-<div id=3D"gtx-trans" style=3D"position: absolute; left: 428px; top: 416.03=
-1px;">&nbsp;</div>
---===============2005332777286819049==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============2005332777286819049==--
+T24gRnJpLCBGZWIgMTIsIDIwMjEgYXQgOToyMSBBTSBVd2UgS2xlaW5lLUvDtm5pZw0KPHUua2xl
+aW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4gd3JvdGU6DQo+DQo+IEFsbCBkcml2ZXJzIHJldHVy
+biAwIGluIHRoZWlyIHJlbW92ZSBjYWxsYmFjayBhbmQgdGhlIGRyaXZlciBjb3JlIGlnbm9yZXMN
+Cj4gdGhlIHJldHVybiB2YWx1ZSBvZiBudmRpbW1fYnVzX3JlbW92ZSgpIGFueWhvdy4gU28gc2lt
+cGxpZnkgYnkgY2hhbmdpbmcNCj4gdGhlIGRyaXZlciByZW1vdmUgY2FsbGJhY2sgdG8gcmV0dXJu
+IHZvaWQgYW5kIHJldHVybiAwIHVuY29uZGl0aW9uYWxseQ0KPiB0byB0aGUgdXBwZXIgbGF5ZXIu
+DQoNCkxvb2tzIGdvb2QsIHRoYW5rcy4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
+bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
+LWxlYXZlQGxpc3RzLjAxLm9yZwo=
