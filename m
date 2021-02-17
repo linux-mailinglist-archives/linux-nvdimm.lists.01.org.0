@@ -2,77 +2,104 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A5331D5A5
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 08:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD3B31D724
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 10:57:54 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9C8AA100EAAE3;
-	Tue, 16 Feb 2021 23:14:42 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.74.12; helo=vpass.ne.jp; envelope-from=vza@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (v118-27-74-12.eqwx.static.cnode.io [118.27.74.12])
-	by ml01.01.org (Postfix) with ESMTP id 4EF76100EAAE0
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 23:14:32 -0800 (PST)
-Sender: vza@vpass.ne.jp
-Message-ID: <5EC637A593E0D1CB2B1CD4722A4DF965@vpass.ne.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CO44CQ6YeN6KaB44CR5LiJ5LqV5L2P5Y+L44Kr44O844OJ5qCq5byP5Lya56S+44GL44KJ44Gu57eK?=
-	=?utf-8?B?5oCl44Gu44GU6YCj57Wh44CPIA==?=
-Date: Wed, 17 Feb 2021 16:14:18 +0900
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: FUMGKG5EWFLQKRTS6AUJ5FW5H4YRTOHC
-X-Message-ID-Hash: FUMGKG5EWFLQKRTS6AUJ5FW5H4YRTOHC
-X-MailFrom: vza@vpass.ne.jp
+	by ml01.01.org (Postfix) with ESMTP id 51E64100EC1C8;
+	Wed, 17 Feb 2021 01:57:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN> 
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 818F8100ED4A4
+	for <linux-nvdimm@lists.01.org>; Wed, 17 Feb 2021 01:56:34 -0800 (PST)
+Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.201])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4DgY545pj4z67nyq;
+	Wed, 17 Feb 2021 17:51:20 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Wed, 17 Feb 2021 10:56:31 +0100
+Received: from localhost (10.47.29.73) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2106.2; Wed, 17 Feb
+ 2021 09:56:30 +0000
+Date: Wed, 17 Feb 2021 09:55:24 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v4 4/9] cxl/mem: Add basic IOCTL interface
+Message-ID: <20210217095524.000071f5@Huawei.com>
+In-Reply-To: <20210216183432.lf2uj63uckogfad4@intel.com>
+References: <20210216014538.268106-1-ben.widawsky@intel.com>
+	<20210216014538.268106-5-ben.widawsky@intel.com>
+	<20210216152223.000009e8@Huawei.com>
+	<20210216175314.ut2dn5ujayj57zp2@intel.com>
+	<20210216182849.00002c8c@Huawei.com>
+	<20210216183432.lf2uj63uckogfad4@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+X-Originating-IP: [10.47.29.73]
+X-ClientProxiedBy: lhreml704-chm.china.huawei.com (10.201.108.53) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+Message-ID-Hash: J3XQQWQIC4ENMSDPBYSDWHDBRZN4WPX6
+X-Message-ID-Hash: J3XQQWQIC4ENMSDPBYSDWHDBRZN4WPX6
+X-MailFrom: jonathan.cameron@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, "Chris Browy  <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>,  Dan Williams  <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>, David Rientjes" <rientjes@google.com>, "Jon Masters  <jcm@jonmasters.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap" <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, kernel test robot <lkp@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FUMGKG5EWFLQKRTS6AUJ5FW5H4YRTOHC/>
-List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
+Archived-At: <>
+List-Archive: <>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IA0KDQogDQogDQoNCiANCg0KIA0KIA0KDQogDQoNCiANCg0KDQoNCuOBhOOBpOOCguW8iuekvuOC
-q+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOB
-vuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPliKnnlKjjga7mgKXlopfjgavkvLTj
-gYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Poppbjgrfjgrnjg4bjg6DjgI3jgpLl
-sI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OCq+ODvOODieOBruOBlOWIqeeUqOOB
-q+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOBo+OBpuOBiuOCiuOBvuOBmeOAgg0K
-DQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTliKnnlKjjgYvjganjgYbjgYvjgpLn
-orroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrlj5blvJXjgYzjgYLjgorjgb7jgZfj
-gZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHjgqvjg7zjg4njga7jgZTliKnnlKjj
-gpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgIHjgZTpgKPntaHjgZXjgZvjgabj
-gYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
-44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
-5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQoNCuOBlOWbnuetlOOCkuOBhOOBn+OBoOOB
-keOBquOBhOWgtOWQiOOAgeOCq+ODvOODieOBruOBlOWIqeeUqOWItumZkOOBjOe2mee2muOBleOC
-jOOCi+OBk+OBqOOCguOBlOOBluOBhOOBvuOBmeOAgg0KDQrkuojjgoHjgZTkuobmib/kuIvjgZXj
-gYTjgIINCg0KDQoNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pagIOOBlOWIqeeUqOeiuuiqjeOB
-r+OBk+OBoeOCiQ0K4pSB4pSB4pSB4pSB4pSB4pSB4pSBDQogaHR0cHM6Ly9zbWJjLWNhcmQuY3Ry
-cnIuY29tDQrilIHilIHilIHilIHilIHilIHilIENCuKWoCDms6jmhI/kuovpoIUNCuKUgeKUgeKU
-geKUgeKUgeKUgeKUgQ0K4oC75pys44Oh44O844Or44Gv44GU55m76Yyy44GE44Gf44Gg44GE44Gf
-44Oh44O844Or44Ki44OJ44Os44K55a6b44Gr6Ieq5YuV55qE44Gr6YCB5L+h44GV44KM44Gm44GE
-44G+44GZ44CCDQrigLvmnKzjg6Hjg7zjg6vjga/pgIHkv6HlsILnlKjjgafjgZnjgILjgZTov5Tk
-v6HjgYTjgZ/jgaDjgY3jgb7jgZfjgabjgoLjgYrnrZTjgYjjgafjgY3jgb7jgZvjgpPjga7jgafj
-gZTkuobmib/jgY/jgaDjgZXjgYTjgIINCuKAu+WkieabtOW+jOOAgTQ45pmC6ZaT5Lul5YaF44Gr
-55m65Yq544GZ44KL5b+F6KaB44GM44GC44KK44CB5pyf6ZaT5Lit44Gv5L2/55So44Gn44GN44G+
-44Gb44KT44CCDQrigLvjgqvjg7zjg4njga7lgIvkurrmg4XloLHjgavjgojjgaPjgabjga/pm7vo
-qbHjgafpgKPntaHjgZnjgovloLTlkIjjgoLjgZTjgZbjgYTjgb7jgZnjgIINCuKAu+ato+eiuuOB
-quaDheWgseOBr+W/heOBmuiomOWFpeOBl+OBpuOBj+OBoOOBleOBhOOAgiANCuKUgeKUgeKUgeKU
-geKUgeKUgeKUgQ0K4pag55m66KGM6ICFDQrilIHilIHilIHilIHilIHilIHilIENCuS4ieS6leS9
-j+WPi+OCq+ODvOODieagquW8j+S8muekvg0KaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbQ0K44CS
-MTA1LTgwMTEg5p2x5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLnlaoyMOWPtyDmsZDnlZnjg5Pj
-g6vjg4fjgqPjg7PjgrANCg0KDQoNCiANCkNvcHlyaWdodCAoQykgMjAyMSBTdW1pdG9tbyBNaXRz
-dWkgQ2FyZCBDby4sIEx0ZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
-MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
-QGxpc3RzLjAxLm9yZwo=
+On Tue, 16 Feb 2021 10:34:32 -0800
+Ben Widawsky <ben.widawsky@intel.com> wrote:
+
+...
+
+> > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+> > > index 237b956f0be0..4ca4f5afd9d2 100644
+> > > --- a/drivers/cxl/mem.c
+> > > +++ b/drivers/cxl/mem.c
+> > > @@ -686,7 +686,11 @@ static int cxl_validate_cmd_from_user(struct cxl_mem *cxlm,
+> > > 
+> > >         memcpy(out_cmd, c, sizeof(*c));
+> > >         out_cmd->info.size_in = send_cmd->in.size;
+> > > -       out_cmd->info.size_out = send_cmd->out.size;
+> > > +       /*
+> > > +        * XXX: out_cmd->info.size_out will be controlled by the driver, and the
+> > > +        * specified number of bytes @send_cmd->out.size will be copied back out
+> > > +        * to userspace.
+> > > +        */
+> > > 
+> > >         return 0;
+> > >  }  
+> > 
+> > This deals with the buffer overflow being triggered from userspace.
+> > 
+> > I'm still nervous.  I really don't like assuming hardware will do the right
+> > thing and never send us more data than we expect.
+> > 
+> > Given the check that it will fit in the target buffer is simple,
+> > I'd prefer to harden it and know we can't have a problem.
+> > 
+> > Jonathan  
+> 
+> I'm working on hardening __cxl_mem_mbox_send_cmd now per your request. With
+> that, I think this solves the issue, right?
+
+Should do.  Thanks,
+
+Jonathan
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
