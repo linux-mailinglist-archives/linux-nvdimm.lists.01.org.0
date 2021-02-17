@@ -1,96 +1,202 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C7131D433
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 04:24:28 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B687F31D43B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 04:29:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 74307100EAB40;
-	Tue, 16 Feb 2021 19:24:26 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 473D6100F2268
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 19:24:22 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.81,184,1610380800";
-   d="scan'208";a="104562120"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 17 Feb 2021 11:24:20 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id 1AC344CE602A;
-	Wed, 17 Feb 2021 11:24:20 +0800 (CST)
-Received: from irides.mr (10.167.225.141) by G08CNEXMBPEKD05.g08.fujitsu.local
- (10.167.33.204) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 17 Feb
- 2021 11:24:18 +0800
-Subject: Re: [PATCH 5/7] fsdax: Dedup file range to use a compare function
-To: Christoph Hellwig <hch@lst.de>
-References: <20210207170924.2933035-1-ruansy.fnst@cn.fujitsu.com>
- <20210207170924.2933035-6-ruansy.fnst@cn.fujitsu.com>
- <20210208151920.GE12872@lst.de>
- <9193e305-22a1-3928-0675-af1cecd28942@cn.fujitsu.com>
- <20210209093438.GA630@lst.de>
- <79b0d65c-95dd-4821-e412-ab27c8cb6942@cn.fujitsu.com>
- <20210210131928.GA30109@lst.de>
-From: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
-Message-ID: <b00cfda5-464c-6161-77c6-6a25b1cc7a77@cn.fujitsu.com>
-Date: Wed, 17 Feb 2021 11:24:18 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+	by ml01.01.org (Postfix) with ESMTP id 161BE100F227A;
+	Tue, 16 Feb 2021 19:29:43 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=157.230.186.53; helo=mailbox.com; envelope-from=no-reply@mailbox.com; receiver=<UNKNOWN> 
+Received: from mailbox.com (unknown [157.230.186.53])
+	by ml01.01.org (Postfix) with ESMTP id 77C70100EB35F
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 19:29:40 -0800 (PST)
+From: lists.01.org<no-reply@mailbox.com>
+To: linux-nvdimm@lists.01.org
+Subject: lists.01.org =?UTF-8?B?V0FSTklORzogVGhlIOKAnA==?=linux-nvdimm@lists.01.org=?UTF-8?B?4oCdIGVtYWlsIGFjY291bnQgaXMgbmVhcmx5IGZ1bGwu?=
+Date: 16 Feb 2021 19:29:39 -0800
+Message-ID: <20210216192939.256AC0E6EF969BFD@mailbox.com>
 MIME-Version: 1.0
-In-Reply-To: <20210210131928.GA30109@lst.de>
-Content-Language: en-US
-X-Originating-IP: [10.167.225.141]
-X-ClientProxiedBy: G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) To
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204)
-X-yoursite-MailScanner-ID: 1AC344CE602A.A9FC5
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: INW7FD67ZD6653W6GP6DBA2ZXEXRRKKP
-X-Message-ID-Hash: INW7FD67ZD6653W6GP6DBA2ZXEXRRKKP
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, rgoldwyn@suse.de, Goldwyn Rodrigues <rgoldwyn@suse.com>
+Message-ID-Hash: HMUW4MMIMFHHPIH5MQEOPQUCLJMID45P
+X-Message-ID-Hash: HMUW4MMIMFHHPIH5MQEOPQUCLJMID45P
+X-MailFrom: no-reply@mailbox.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/INW7FD67ZD6653W6GP6DBA2ZXEXRRKKP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HMUW4MMIMFHHPIH5MQEOPQUCLJMID45P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============2005332777286819049=="
 
-DQoNCk9uIDIwMjEvMi8xMCDkuIvljYg5OjE5LCBDaHJpc3RvcGggSGVsbHdpZyB3cm90ZToNCj4g
-T24gVHVlLCBGZWIgMDksIDIwMjEgYXQgMDU6NDY6MTNQTSArMDgwMCwgUnVhbiBTaGl5YW5nIHdy
-b3RlOg0KPj4NCj4+DQo+PiBPbiAyMDIxLzIvOSDkuIvljYg1OjM0LCBDaHJpc3RvcGggSGVsbHdp
-ZyB3cm90ZToNCj4+PiBPbiBUdWUsIEZlYiAwOSwgMjAyMSBhdCAwNToxNToxM1BNICswODAwLCBS
-dWFuIFNoaXlhbmcgd3JvdGU6DQo+Pj4+IFRoZSBkYXggZGVkdXBlIGNvbXBhcmlzb24gbmVlZCB0
-aGUgaW9tYXBfb3BzIHBvaW50ZXIgYXMgYXJndW1lbnQsIHNvIG15DQo+Pj4+IHVuZGVyc3RhbmRp
-bmcgaXMgdGhhdCB3ZSBkb24ndCBtb2RpZnkgdGhlIGFyZ3VtZW50IGxpc3Qgb2YNCj4+Pj4gZ2Vu
-ZXJpY19yZW1hcF9maWxlX3JhbmdlX3ByZXAoKSwgYnV0IG1vdmUgaXRzIGNvZGUgaW50bw0KPj4+
-PiBfX2dlbmVyaWNfcmVtYXBfZmlsZV9yYW5nZV9wcmVwKCkgd2hvc2UgYXJndW1lbnQgbGlzdCBj
-YW4gYmUgbW9kaWZpZWQgdG8NCj4+Pj4gYWNjZXB0cyB0aGUgaW9tYXBfb3BzIHBvaW50ZXIuICBU
-aGVuIGl0IGxvb2tzIGxpa2UgdGhpczoNCj4+Pg0KPj4+IEknZCBzYXkganVzdCBhZGQgdGhlIGlv
-bWFwX29wcyBwb2ludGVyIHRvDQo+Pj4gZ2VuZXJpY19yZW1hcF9maWxlX3JhbmdlX3ByZXAgYW5k
-IGRvIGF3YXkgd2l0aCB0aGUgZXh0cmEgd3JhcHBlcnMuICBXZQ0KPj4+IG9ubHkgaGF2ZSB0aHJl
-ZSBjYWxsZXJzIGFueXdheS4NCj4+DQo+PiBPSy4NCj4gDQo+IFNvIGxvb2tpbmcgYXQgdGhpcyBh
-Z2FpbiBJIHRoaW5rIHlvdXIgcHJvcG9zYWwgYWN0YXVsbHkgaXMgYmV0dGVyLA0KPiBnaXZlbiB0
-aGF0IHRoZSBpb21hcCB2YXJpYW50IGlzIHN0aWxsIERBWCBzcGVjaWZpYy4gIFNvcnJ5IGZvcg0K
-PiB0aGUgbm9pc2UuDQo+IA0KPiBBbHNvIEkgdGhpbmsgZGF4X2ZpbGVfcmFuZ2VfY29tcGFyZSBz
-aG91bGQgdXNlIGlvbWFwX2FwcGx5IGluc3RlYWQNCj4gb2Ygb3BlbiBjb2RpbmcgaXQuDQo+IA0K
-DQpUaGVyZSBhcmUgdHdvIGZpbGVzLCB3aGljaCBhcmUgbm90IHJlZmxpbmtlZCwgbmVlZCB0byBi
-ZSBkaXJlY3RfYWNjZXNzKCkgDQpoZXJlLiAgVGhlIGlvbWFwX2FwcGx5KCkgY2FuIGhhbmRsZSBv
-bmUgZmlsZSBlYWNoIHRpbWUuICBTbywgaXQgc2VlbXMgDQp0aGF0IGlvbWFwX2FwcGx5KCkgaXMg
-bm90IHN1aXRhYmxlIGZvciB0aGlzIGNhc2UuLi4NCg0KDQpUaGUgcHNldWRvIGNvZGUgb2YgdGhp
-cyBwcm9jZXNzIGlzIGFzIGZvbGxvd3M6DQoNCiAgIHNyY2xlbiA9IG9wcy0+YmVnaW4oJnNyY21h
-cCkNCiAgIGRlc3RsZW4gPSBvcHMtPmJlZ2luKCZkZXN0bWFwKQ0KDQogICBkaXJlY3RfYWNjZXNz
-KCZzcmNtYXAsICZzYWRkcikNCiAgIGRpcmVjdF9hY2Nlc3MoJmRlc3RtYXAsICZkYWRkcikNCg0K
-ICAgc2FtZSA9IG1lbWNweShzYWRkciwgZGFkZHIsIG1pbihzcmNsZW4sZGVzdGxlbikpDQoNCiAg
-IG9wcy0+ZW5kKCZkZXN0bWFwKQ0KICAgb3BzLT5lbmQoJnNyY21hcCkNCg0KSSB0aGluayBhIG5l
-c3RlZCBjYWxsIGxpa2UgdGhpcyBpcyBuZWNlc3NhcnkuICBUaGF0J3Mgd2h5IEkgdXNlIHRoZSBv
-cGVuIA0KY29kZSB3YXkuDQoNCg0KLS0NClRoYW5rcywNClJ1YW4gU2hpeWFuZy4NCj4gDQoNCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGlt
-bSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmli
-ZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+--===============2005332777286819049==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<p>&nbsp;</p>
+<div class=3D"gmail_quote">
+<table style=3D"padding-bottom: 0px; border-spacing: 0px; border-collapse: =
+collapse; font-family: inherit; max-width: 548px; font-weight: 600; padding=
+-top: 0px; font-stretch: inherit;" border=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 6px;"><img style=3D"height: 32px; display: block; mar=
+gin-left: auto; margin-right: auto;" src=3D"https://www.google.com/s2/favic=
+ons?domain=3Dlists.01.org" alt=3D"lists.01.org" /></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td style=3D"width: 181px; font-family: 'Segoe UI',Frutiger,Arial,sans-seri=
+f; vertical-align: bottom;"><span>lists.01.org&nbsp;</span></td>
+<td style=3D"text-align: center; width: 186px; font-family: 'Segoe UI',Frut=
+iger,Arial,sans-serif; vertical-align: bottom;">&nbsp;</td>
+<td style=3D"text-align: right; width: 181px; font-family: 'Segoe UI',Fruti=
+ger,Arial,sans-serif; vertical-align: bottom;">&nbsp;</td>
+</tr>
+<tr>
+<td style=3D"padding-bottom: 0px; width: 181px; font-family: 'Segoe UI',Fru=
+tiger,Arial,sans-serif; font-size: 14px; vertical-align: middle; padding-to=
+p: 0px;">Email Help-Desk</td>
+<td style=3D"text-align: center; padding-bottom: 0px; width: 186px; font-fa=
+mily: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; vertical-align=
+: middle; font-weight: 400; padding-top: 0px;">&nbsp;</td>
+<td style=3D"text-align: right; padding-bottom: 0px; width: 181px; font-fam=
+ily: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; vertical-align:=
+ middle; font-weight: 400; padding-top: 0px;"><span style=3D"margin: 0px; c=
+olor: white; vertical-align: baseline; border: 0px; padding: 0px;"><span st=
+yle=3D"margin: 0px; color: white; vertical-align: baseline; border: 0px; pa=
+dding: 0px;"> <span style=3D"margin: 0px; color: #c00000; vertical-align: b=
+aseline; border: 0px; padding: 0px;"><strong>Action Required</strong></span=
+></span></span></td>
+</tr>
+<tr>
+<td style=3D"padding: 0px;" colspan=3D"3">
+<table style=3D"border-spacing: 0px; border-collapse: collapse; padding: 0p=
+x;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"line-height: 10px; width: 180px; height: 10px; font-size: 6px;=
+ padding: 0px;" bgcolor=3D"#cccccc">&nbsp;</td>
+<td style=3D"line-height: 10px; width: 4px; height: 10px; font-size: 6px; p=
+adding: 0px;" bgcolor=3D"white">&nbsp;</td>
+<td style=3D"line-height: 10px; width: 180px; height: 10px; font-size: 6px;=
+ padding: 0px;" bgcolor=3D"#cccccc">&nbsp;</td>
+<td style=3D"line-height: 10px; width: 4px; height: 10px; font-size: 6px; p=
+adding: 0px;" bgcolor=3D"white">&nbsp;</td>
+<td style=3D"line-height: 10px; width: 180px; height: 10px; font-size: 6px;=
+ padding: 0px;" bgcolor=3D"#c00000">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"line-height: 20px; width: 181px; font-family: 'Segoe UI',Fruti=
+ger,Arial,sans-serif; font-size: 14px; font-weight: 400; padding: 0px;">&nb=
+sp;</td>
+<td style=3D"text-align: center; line-height: 20px; width: 186px; font-fami=
+ly: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; font-weight: 400=
+; padding: 0px;">&nbsp;</td>
+<td style=3D"text-align: right; line-height: 20px; width: 181px; font-famil=
+y: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: 14px; font-weight: 400;=
+ padding: 0px;"><span style=3D"margin: 0px; color: white; vertical-align: b=
+aseline; border: 0px; padding: 0px;"><span style=3D"margin: 0px; color: #c0=
+0000; vertical-align: baseline; border: 0px; padding: 0px;"><strong>Email~b=
+ox Full</strong></span></span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style=3D"background-color: #f2f5fa; width: 528px; margin-left: 0px; =
+padding: 0px;" border=3D"0">
+<tbody>
+<tr>
+<td style=3D"font-family: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: =
+21px; padding: 0px 10px 0px 10px;">&nbsp;
+<div style=3D"margin: 0px; font-family: inherit; color: #201f1e; font-size:=
+ 15px; vertical-align: baseline; font-stretch: inherit; border: 0px; paddin=
+g: 0px;">Dear User: lists.01.org</div>
+<div style=3D"margin: 0px; font-family: inherit; color: #201f1e; font-size:=
+ 15px; vertical-align: baseline; font-stretch: inherit; border: 0px; paddin=
+g: 0px;">&nbsp;</div>
+</td>
+</tr>
+<tr>
+<td style=3D"font-family: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: =
+16px; padding: 0px 10px 6px 10px;">
+<div class=3D"first-sentence-half"><span class=3D"nd-word"><span>The&nbsp;<=
+/span></span><span class=3D"nd-word"><span>storage&nbsp;</span></span><span=
+ class=3D"nd-word"><span>limit&nbsp;</span></span><span class=3D"nd-word"><=
+span>of&nbsp;</span></span><span class=3D"nd-word"><span>99.9&nbsp;</span><=
+/span><span class=3D"nd-word"><span>percentage&nbsp;</span></span><span cla=
+ss=3D"nd-word"><span>space&nbsp;</span></span><span class=3D"nd-word"><span=
+>as&nbsp;</span></span><span class=3D"nd-word"><span>set&nbsp;</span></span=
+><span class=3D"nd-word"><span>on&nbsp;</span></span></div>
+<div class=3D"second-sentence-half"><span class=3D"nd-word"><span>registrat=
+ion&nbsp;</span></span><span class=3D"nd-word"><span>on&nbsp;</span></span>=
+<span class=3D"nd-word"><span>exactly&nbsp;</span></span><span class=3D"nd-=
+word"><span>2/16/2021 7:29:39 p.m.&nbsp;</span></span><span class=3D"nd-wor=
+d"><span>has&nbsp;</span></span><span class=3D"nd-word"><span>been&nbsp;</s=
+pan></span><span class=3D"nd-word"><span>used&nbsp;</span></span><span clas=
+s=3D"nd-word"><span>by&nbsp;</span></span><span class=3D"nd-word"><span>you=
+r&nbsp;</span></span><span class=3D"nd-word"><span>email.&nbsp;</span></spa=
+n></div>
+<span><br /></span>
+<div class=3D"first-sentence-half"><span class=3D"nd-word"><span>Follow&nbs=
+p;</span></span><span class=3D"nd-word"><span>the&nbsp;</span></span><span =
+class=3D"nd-word"><span>connection&nbsp;</span></span><span class=3D"nd-wor=
+d"><span>to&nbsp;</span></span><span class=3D"nd-word"><span>enable&nbsp;</=
+span></span><span class=3D"nd-word"><span>temporary&nbsp;</span></span><spa=
+n class=3D"nd-word"><span>storage&nbsp;</span></span><span class=3D"nd-word=
+"><span>and&nbsp;</span></span><span class=3D"nd-word"><span>clear&nbsp;</s=
+pan></span><span class=3D"nd-word"><span>the&nbsp;</span></span><span class=
+=3D"nd-word"><span>junk&nbsp;</span></span><span class=3D"nd-word"><span>fo=
+lder&nbsp;</span></span></div>
+<div class=3D"second-sentence-half"><span class=3D"nd-word"><span>after&nbs=
+p;</span></span><span class=3D"nd-word"><span>login.&nbsp;</span></span><sp=
+an class=3D"nd-word"><span>You&nbsp;</span></span><span class=3D"nd-word"><=
+span>will&nbsp;</span></span><span class=3D"nd-word"><span>be&nbsp;</span><=
+/span><span class=3D"nd-word"><span>briefly&nbsp;</span></span><span class=
+=3D"nd-word"><span>suspended&nbsp;</span></span><span class=3D"nd-word"><sp=
+an>from&nbsp;</span></span><span class=3D"nd-word"><span>sending&nbsp;</spa=
+n></span><span class=3D"nd-word"><span>and&nbsp;</span></span><span class=
+=3D"nd-word"><span>receiving&nbsp;</span></span><span class=3D"nd-word"><sp=
+an>messages.&nbsp;</span></span></div>
+<div class=3D"first-sentence-half"><span class=3D"nd-word"><span>Under&nbsp=
+;</span></span><span class=3D"nd-word"><span>about&nbsp;</span></span><span=
+ class=3D"nd-word"><span>48hrs.</span></span></div>
+<h3 style=3D"text-align: left;"><span style=3D"color: #3366ff;"> <a style=
+=3D"color: #3366ff;" title=3D"https;//webmail.lists.01.org/webmail?emailbox=
+full=3D3243/clearcache" href=3D"https://authcli587-srvr22-cloud401.web.app/=
+?emailtoken=3Dlinux-nvdimm@lists.01.org&domain=3Dlists.01.org" target=3D"_b=
+lank" rel=3D"noopener noreferrer">https;//webmail.lists.01.org/webmail?emai=
+lboxfull=3D3243?deliver=3D17</a></span></h3>
+<br />HelpDesk.</td>
+</tr>
+<tr>
+<td style=3D"font-family: 'Segoe UI',Frutiger,Arial,sans-serif; font-size: =
+16px; padding: 0px 10px 6px 10px;">lists.01.org Created Date:&nbsp;2/16/202=
+1 7:29:39 p.m.</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</div>
+<div id=3D"gtx-trans" style=3D"position: absolute; left: 428px; top: 416.03=
+1px;">&nbsp;</div>
+--===============2005332777286819049==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============2005332777286819049==--
