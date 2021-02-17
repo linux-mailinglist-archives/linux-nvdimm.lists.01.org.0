@@ -2,210 +2,334 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB6731D462
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 05:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A0731D463
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 05:10:11 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BBE69100EAB53;
+	by ml01.01.org (Postfix) with ESMTP id D6121100EAB58;
 	Tue, 16 Feb 2021 20:10:08 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E33D0100EAB52
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 20:10:05 -0800 (PST)
-IronPort-SDR: cg/0cZRlp3VV6y5fqDCZxCPzdBHtm9AfX9xeBtirCwAll8QF1yh4SvhxawycP+aaM6cQXpVQ6V
- fJp1iMP4wtew==
-X-IronPort-AV: E=McAfee;i="6000,8403,9897"; a="170229428"
+	by ml01.01.org (Postfix) with ESMTPS id 9EFFA100EAB52
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 20:10:06 -0800 (PST)
+IronPort-SDR: jc7jc1oIjrCC7lu6jDZkcejuiXRHwp1O6fNcOn8fO10QV6ewpnxKjZhoQuJFCOZC8GHlm9aFhW
+ DtOH4NZbGJjg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9897"; a="170229430"
 X-IronPort-AV: E=Sophos;i="5.81,184,1610438400";
-   d="scan'208";a="170229428"
+   d="scan'208";a="170229430"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 20:10:05 -0800
-IronPort-SDR: 5bLMSbQoMP5uFKbdJvlT+REImQxEIlJ0aHFJAZY+v0AIYJfXoNzNJtWrsxTescVpNTTP47v+JS
- ZolgZBBXEH6w==
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 20:10:06 -0800
+IronPort-SDR: zO4Z8qPBlkmIKZO3HlhH2sv5GjP0KiztRhX9Ssn3v4rN9F7ZdneGa+cysa6+kMNMFJ/NvOAP6i
+ kKfjtSlLuh/w==
 X-IronPort-AV: E=Sophos;i="5.81,184,1610438400";
-   d="scan'208";a="384948752"
+   d="scan'208";a="384948775"
 Received: from yxie-mobl.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.134.141])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 20:10:03 -0800
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 20:10:04 -0800
 From: Ben Widawsky <ben.widawsky@intel.com>
 To: linux-cxl@vger.kernel.org
-Subject: [PATCH v5 0/9] CXL 2.0 Support
-Date: Tue, 16 Feb 2021 20:09:49 -0800
-Message-Id: <20210217040958.1354670-1-ben.widawsky@intel.com>
+Subject: [PATCH v5 1/9] cxl/mem: Introduce a driver for CXL-2.0-Type-3 endpoints
+Date: Tue, 16 Feb 2021 20:09:50 -0800
+Message-Id: <20210217040958.1354670-2-ben.widawsky@intel.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210217040958.1354670-1-ben.widawsky@intel.com>
+References: <20210217040958.1354670-1-ben.widawsky@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: HPFCE5TWJCLASXMEF55XMQH6QLRZYIFU
-X-Message-ID-Hash: HPFCE5TWJCLASXMEF55XMQH6QLRZYIFU
+Message-ID-Hash: B7ZV55DINLONJNGJDCLQBDBX6N4TLFQR
+X-Message-ID-Hash: B7ZV55DINLONJNGJDCLQBDBX6N4TLFQR
 X-MailFrom: ben.widawsky@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Ben Widawsky <ben.widawsky@intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>
+CC: Ben Widawsky <ben.widawsky@intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, Jonathan Corbet <corbet@lwn.net>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HPFCE5TWJCLASXMEF55XMQH6QLRZYIFU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B7ZV55DINLONJNGJDCLQBDBX6N4TLFQR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IyBDaGFuZ2VzIHNpbmNlIHY0IFsxXQ0KDQoqIFVzZSB2bWVtZHVwX3VzZXIgaW5zdGVhZCBvZiBv
-cGVuLWNvZGVkIChBbCBWaXJvKQ0KKiBGaXggd2hlbiBrZXJuZWwgZG9jcyBnZXQgaW50cm9kdWNl
-ZCAoQmVuKQ0KICAqIEZpeCB1bmhhcHB5IHNwaGlueCAnJS0qJyAoc2ZyKQ0KKiBSZW1vdmUgcmVk
-dW5kYW50IGluaXRpYWxpemF0aW9uIChDb2xpbiwgRGFuIEMpDQoqIE1ha2UgY3hsX21lbV9tYm94
-X3NlbmRfY21kIGVuZm9yY2Ugc2l6ZSAoRGFuLCBKb25hdGhhbikNCiAgKiBFeGNlcHQgZm9yIHZh
-cmlhYmxlIHNpemVkIG91dHB1dCAoQmVuKQ0KKiBGaXggb2ZmIGJ5IG9uZSBpbiByZWdpc3RlciBi
-bG9jayBlbnVtZXJhdGlvbiAoSm9uYXRoYW4pDQoqIFVzZSBGSUVMRF9HRVQgZm9yIGNhcGFiaWxp
-dHkgSUQgKEpvbmF0aGFuKQ0KKiBGaXggcG90ZW50aWFsIG92ZXJmbG93cyBvbiBvdXRwdXQgYnVm
-ZmVyIChKb25hdGhhbikNCiAgKiBHbyBiYWNrIHRvIHVzaW5nIHNpemVfb3V0IHRvIHZlcmlmeSBt
-ZW1jcHlfZnJvbWlvIHNpemUNCiAgKiBBZGQgb3V0X3NpemUgdG8gY3hsX21lbV9tYm94X3NlbmRf
-Y21kDQoqIFVBUEkgY2hhbmdlIChEYW4pDQogICogTWFrZSBvdXQuc2l6ZSByZXByZXNlbnQgdGhl
-IGFjdHVhbCBhbW91bnQgd3JpdHRlbiBhcyBvcHBvc2VkIHRvIGhvdyBtdWNoDQogICAgaGFyZHdh
-cmUgd3JvdGUuIFRoZSBrZXJuZWwgZG9jcyBhbHJlYWR5IHJlZmxlY3RlZCB0aGlzIGJlaGF2aW9y
-LCBzbyBpdCdzDQogICAgZmFpciB0byBzYXkgdGhlIGNoYW5nZSBpcyBhIGJ1ZyBmaXggcmF0aGVy
-IHRoYW4gVUFQSSBjaGFuZ2UuDQoNCkV4Y2x1ZGluZyB0aGUgYnVnIGZpeCB0aGVyZSBoYXZlIGJl
-ZW4gbm8gVUFQSSBjaGFuZ2VzIHNpbmNlIHYxLg0KDQotLS0NCg0KSW4gYWRkaXRpb24gdG8gdGhl
-IG1haWxpbmcgbGlzdCwgcGxlYXNlIGZlZWwgZnJlZSB0byB1c2UgI2N4bCBvbiBvZnRjIElSQyBm
-b3INCmRpc2N1c3Npb24uDQoNCi0tLQ0KDQojIFN1bW1hcnkNCg0KSW50cm9kdWNlIHN1cHBvcnQg
-Zm9yIOKAnHR5cGUtM+KAnSBtZW1vcnkgZGV2aWNlcyBkZWZpbmVkIGluIHRoZSBDb21wdXRlIEV4
-cHJlc3MNCkxpbmsgKENYTCkgMi4wIHNwZWNpZmljYXRpb24gWzJdLiBTcGVjaWZpY2FsbHksIHRo
-ZXNlIGFyZSB0aGUgbWVtb3J5IGRldmljZXMNCmRlZmluZWQgYnkgc2VjdGlvbiA4LjIuOC41IG9m
-IHRoZSBDWEwgMi4wIHNwZWMuIEEgcmVmZXJlbmNlIGltcGxlbWVudGF0aW9uDQplbXVsYXRpbmcg
-dGhlc2UgZGV2aWNlcyBoYXMgYmVlbiBzdWJtaXR0ZWQgdG8gdGhlIFFFTVUgbWFpbGluZyBsaXN0
-IFszXSBhbmQgaXMNCmF2YWlsYWJsZSBvbiBnaXRsYWIgWzRdLCBidXQgd2lsbCBtb3ZlIHRvIGEg
-c2hhcmVkIHRyZWUgb24ga2VybmVsLm9yZyBhZnRlcg0KaW5pdGlhbCBhY2NlcHRhbmNlLiDigJxU
-eXBlLTPigJ0gaXMgYSBDWEwgZGV2aWNlIHRoYXQgYWN0cyBhcyBhIG1lbW9yeSBleHBhbmRlciBm
-b3INClJBTSBvciBQZXJzaXN0ZW50IE1lbW9yeS4gVGhlIGRldmljZSBtaWdodCBiZSBpbnRlcmxl
-YXZlZCB3aXRoIG90aGVyIENYTCBkZXZpY2VzDQppbiBhIGdpdmVuIHBoeXNpY2FsIGFkZHJlc3Mg
-cmFuZ2UuDQoNCkluIGFkZGl0aW9uIHRvIHRoZSBjb3JlIGZ1bmN0aW9uYWxpdHkgb2YgZGlzY292
-ZXJpbmcgdGhlIHNwZWMgZGVmaW5lZCByZWdpc3RlcnMNCmFuZCByZXNvdXJjZXMsIGludHJvZHVj
-ZSBhIENYTCBkZXZpY2UgbW9kZWwgdGhhdCB3aWxsIGJlIHRoZSBmb3VuZGF0aW9uIGZvcg0KdHJh
-bnNsYXRpbmcgQ1hMIGNhcGFiaWxpdGllcyBpbnRvIGV4aXN0aW5nIExpbnV4IGluZnJhc3RydWN0
-dXJlIGZvciBQZXJzaXN0ZW50DQpNZW1vcnkgYW5kIG90aGVyIG1lbW9yeSBkZXZpY2VzLiBGb3Ig
-bm93LCB0aGlzIG9ubHkgaW5jbHVkZXMgc3VwcG9ydCBmb3IgdGhlDQptYW5hZ2VtZW50IGNvbW1h
-bmQgbWFpbGJveCB0aGUgc3VyZmFjaW5nIG9mIHR5cGUtMyBkZXZpY2VzLiBUaGVzZSBjb250cm9s
-DQpkZXZpY2VzIGZpbGwgdGhlIHJvbGUgb2Yg4oCcRElNTXPigJ0gLyBubWVtWCBtZW1vcnktZGV2
-aWNlcyBpbiBMSUJOVkRJTU0gdGVybXMuDQoNCiMjIFVzZXJzcGFjZSBJbnRlcmFjdGlvbg0KDQpJ
-bnRlcmFjdGlvbiB3aXRoIHRoZSBkcml2ZXIgYW5kIHR5cGUtMyBkZXZpY2VzIHZpYSB0aGUgQ1hM
-IGRyaXZlcnMgaXMgaW50cm9kdWNlZA0KaW4gdGhpcyBwYXRjaCBzZXJpZXMgYW5kIGNvbnNpZGVy
-ZWQgc3RhYmxlIEFCSS4gVGhleSBpbmNsdWRlDQoNCiAgICogc3lzZnMgLSBEb2N1bWVudGF0aW9u
-L0FCSS90ZXN0aW5nL3N5c2ZzLWJ1cy1jeGwNCiAgICogSU9DVEwgLSBEb2N1bWVudGF0aW9uL2Ry
-aXZlci1hcGkvY3hsL21lbW9yeS1kZXZpY2VzLnJzdA0KICAgKiBkZWJ1Z2ZzIC0gRG9jdW1lbnRh
-dGlvbi9BQkkvdGVzdGluZy9kZWJ1Z2ZzLWRlYnVnDQoNCldvcmsgaXMgaW4gcHJvY2VzcyB0byBh
-ZGQgc3VwcG9ydCBmb3IgQ1hMIGludGVyYWN0aW9ucyB0byB0aGUgbmRjdGwgcHJvamVjdCBbNV0N
-Cg0KIyMjIERldmVsb3BtZW50IHBsYW5zDQoNCk9uZSBvZiB0aGUgdW5pcXVlIGNoYWxsZW5nZXMg
-dGhhdCBDWEwgaW1wb3NlcyBvbiB0aGUgTGludXggZHJpdmVyIG1vZGVsIGlzIHRoYXQNCml0IHJl
-cXVpcmVzIHRoZSBvcGVyYXRpbmcgc3lzdGVtIHRvIHBlcmZvcm0gcGh5c2ljYWwgYWRkcmVzcyBz
-cGFjZSBtYW5hZ2VtZW50DQppbnRlcmxlYXZlZCBhY3Jvc3MgZGV2aWNlcyBhbmQgYnJpZGdlcy4g
-V2hlcmVhcyBMSUJOVkRJTU0gaGFuZGxlcyBhIGxpc3Qgb2YNCmVzdGFibGlzaGVkIHN0YXRpYyBw
-ZXJzaXN0ZW50IG1lbW9yeSBhZGRyZXNzIHJhbmdlcyAoZm9yIGV4YW1wbGUgZnJvbSB0aGUgQUNQ
-SQ0KTkZJVCksIENYTCBpbnRyb2R1Y2VzIGhvdHBsdWcgYW5kIHRoZSBjb25jZXB0IG9mIGFsbG9j
-YXRpbmcgYWRkcmVzcyBzcGFjZSB0bw0KaW5zdGFudGlhdGUgcGVyc2lzdGVudCBtZW1vcnkgcmFu
-Z2VzLiBUaGlzIGlzIHNpbWlsYXIgdG8gUENJIGluIHRoZSBzZW5zZSB0aGF0DQp0aGUgcGxhdGZv
-cm0gZXN0YWJsaXNoZXMgdGhlIE1NSU8gcmFuZ2UgZm9yIFBDSSBCQVJzIHRvIGJlIGFsbG9jYXRl
-ZCwgYnV0IGl0IGlzDQpzaWduaWZpY2FudGx5IGNvbXBsaWNhdGVkIGJ5IHRoZSBmYWN0IHRoYXQg
-YSBnaXZlbiBkZXZpY2UgY2FuIG9wdGlvbmFsbHkgYmUNCmludGVybGVhdmVkIHdpdGggb3RoZXIg
-ZGV2aWNlcyBhbmQgY2FuIHBhcnRpY2lwYXRlIGluIHNldmVyYWwgaW50ZXJsZWF2ZS1zZXRzIGF0
-DQpvbmNlLiBMSUJOVkRJTU0gaGFuZGxlZCBzb21ldGhpbmcgbGlrZSB0aGlzIHdpdGggdGhlIGFs
-aWFzaW5nIGJldHdlZW4gUE1FTSBhbmQNCkJMT0NLLVdJTkRPVyBtb2RlLCBidXQgQ1hMIGFkZHMg
-ZmxleGliaWxpdHkgdG8gYWxpYXMgREVWSUNFIE1FTU9SWSB0aHJvdWdoIHVwIHRvDQoxMCBkZWNv
-ZGVycyBwZXIgZGV2aWNlLg0KDQpBbGwgb2YgdGhlIGFib3ZlIG5lZWRzIHRvIGJlIGVuYWJsZWQg
-d2l0aCByZXNwZWN0IHRvIFBDSSBob3RwbHVnIGV2ZW50cyBvbg0KVHlwZS0zIG1lbW9yeSBkZXZp
-Y2Ugd2hpY2ggbmVlZHMgaG9va3MgdG8gZGV0ZXJtaW5lIGlmIGEgZ2l2ZW4gZGV2aWNlIGlzDQpj
-b250cmlidXRpbmcgdG8gYSAiU3lzdGVtIFJBTSIgYWRkcmVzcyByYW5nZSB0aGF0IGlzIHVuYWJs
-ZSB0byBiZSB1bnBsdWdnZWQuIEluDQpvdGhlciB3b3JkcyBDWEwgdGllcyBQQ0kgaG90cGx1ZyB0
-byBNZW1vcnkgSG90cGx1ZyBhbmQgUENJIGhvdHBsdWcgbmVlZHMgdG8gYmUNCmFibGUgdG8gbmVn
-b3RpYXRlIHdpdGggbWVtb3J5IGhvdHBsdWcuICBJbiB0aGUgbWVkaXVtIHRlcm0gdGhlIGltcGxp
-Y2F0aW9ucyBvZg0KQ1hMIGhvdHBsdWcgdnMgQUNQSSBTUkFUL1NMSVQvSE1BVCBuZWVkIHRvIGJl
-IHJlY29uY2lsZWQuIE9uZSBjYXBhYmlsaXR5IHRoYXQNCnNlZW1zIHRvIGJlIG5lZWRlZCBpcyBl
-aXRoZXIgdGhlIGR5bmFtaWMgYWxsb2NhdGlvbiBvZiBuZXcgbWVtb3J5IG5vZGVzLCBvcg0KZGVm
-YXVsdCBpbml0aWFsaXppbmcgZXh0cmEgcGdkYXQgaW5zdGFuY2VzIGJleW9uZCB3aGF0IGlzIGVu
-dW1lcmF0ZWQgaW4gQUNQSQ0KU1JBVCB0byBhY2NvbW1vZGF0ZSBob3QtYWRkZWQgQ1hMIG1lbW9y
-eS4NCg0KUGF0Y2hlcyB3ZWxjb21lLCBxdWVzdGlvbnMgd2VsY29tZSBhcyB0aGUgZGV2ZWxvcG1l
-bnQgZWZmb3J0IG9uIHRoZSBwb3N0IHY1LjEyDQpjYXBhYmlsaXRpZXMgcHJvY2VlZHMuDQoNCiMj
-IFJ1bm5pbmcgaW4gUUVNVQ0KDQpUaGUgaW5jYW50YXRpb24gdG8gZ2V0IENYTCBzdXBwb3J0IGlu
-IFFFTVUgWzRdIGlzIGNvbnNpZGVyZWQgdW5zdGFibGUgYXQgdGhpcw0KdGltZS4gRnV0dXJlIHJl
-YWRlcnMgb2YgdGhpcyBjb3ZlciBsZXR0ZXIgc2hvdWxkIHZlcmlmeSBpZiBhbnkgY2hhbmdlcyBh
-cmUNCm5lZWRlZC4gRm9yIHRoZSBub3ZpY2UgUUVNVSB1c2VyLCB0aGUgZm9sbG93aW5nIGNhbiBi
-ZSBjb3B5L3Bhc3RlZCBpbnRvIGENCndvcmtpbmcgUUVNVSBjb21tYW5kbGluZS4gSXQgaXMgZW5v
-dWdoIHRvIG1ha2UgdGhlIHNpbXBsZXN0IHRvcG9sb2d5IHBvc3NpYmxlLg0KVGhlIHRvcG9sb2d5
-IHdvdWxkIGNvbnNpc3Qgb2YgYSBzaW5nbGUgbWVtb3J5IHdpbmRvdywgc2luZ2xlIHR5cGUzIGRl
-dmljZSwNCnNpbmdsZSByb290IHBvcnQsIGFuZCBzaW5nbGUgaG9zdCBicmlkZ2UuDQoNCiAgICAr
-LS0tLS0tLS0tLS0tLSsNCiAgICB8ICAgQ1hMIFBYQiAgIHwNCiAgICB8ICAgICAgICAgICAgIHwN
-CiAgICB8ICArLS0tLS0tLSsgIHw8LS0tLS0tLS0tLSsNCiAgICB8ICB8Q1hMIFJQIHwgIHwgICAg
-ICAgICAgIHwNCiAgICArLS0rLS0tLS0tLSstLSsgICAgICAgICAgIHYNCiAgICAgICAgICAgfCAg
-ICAgICAgICAgICstLS0tLS0tLS0tKw0KICAgICAgICAgICB8ICAgICAgICAgICAgfCAid2luZG93
-IiB8DQogICAgICAgICAgIHwgICAgICAgICAgICArLS0tLS0tLS0tLSsNCiAgICAgICAgICAgdiAg
-ICAgICAgICAgICAgICAgIF4NCiAgICArLS0tLS0tLS0tLS0tLSsgICAgICAgICAgIHwNCiAgICB8
-ICBDWEwgVHlwZSAzIHwgICAgICAgICAgIHwNCiAgICB8ICAgRGV2aWNlICAgIHw8LS0tLS0tLS0t
-LSsNCiAgICArLS0tLS0tLS0tLS0tLSsNCg0KLy8gTWVtb3J5IGJhY2tlbmQgZm9yICJ3aW5kb3ci
-DQotb2JqZWN0IG1lbW9yeS1iYWNrZW5kLWZpbGUsaWQ9Y3hsLW1lbTEsc2hhcmUsbWVtLXBhdGg9
-Y3hsLXR5cGUzLHNpemU9NTEyTQ0KDQovLyBNZW1vcnkgYmFja2VuZCBmb3IgTFNBDQotb2JqZWN0
-IG1lbW9yeS1iYWNrZW5kLWZpbGUsaWQ9Y3hsLW1lbTEtbHNhLHNoYXJlLG1lbS1wYXRoPWN4bC1t
-ZW0xLWxzYSxzaXplPTFLDQoNCi8vIEhvc3QgQnJpZGdlDQotZGV2aWNlIHB4Yi1jeGwgaWQ9Y3hs
-LjAsYnVzPXBjaWUuMCxidXNfbnI9NTIsdWlkPTAgbGVuLXdpbmRvdy1iYXNlPTEsd2luZG93LWJh
-c2VbMF09MHg0YzAwMDAwMDAgbWVtZGV2WzBdPWN4bC1tZW0xDQoNCi8vIFNpbmdsZSByb290IHBv
-cnQNCi1kZXZpY2UgY3hsIHJwLGlkPXJwMCxidXM9Y3hsLjAsYWRkcj0wLjAsY2hhc3Npcz0wLHNs
-b3Q9MCxtZW1kZXY9Y3hsLW1lbTENCg0KLy8gU2luZ2xlIHR5cGUzIGRldmljZQ0KLWRldmljZSBj
-eGwtdHlwZTMsYnVzPXJwMCxtZW1kZXY9Y3hsLW1lbTEsaWQ9Y3hsLXBtZW0wLHNpemU9MjU2TSAt
-ZGV2aWNlIGN4bC10eXBlMyxidXM9cnAxLG1lbWRldj1jeGwtbWVtMSxpZD1jeGwtcG1lbTEsc2l6
-ZT0yNTZNLGxzYT1jeGwtbWVtMS1sc2ENCg0KLS0tDQoNClsxXTogaHR0cHM6Ly9sb3JlLmtlcm5l
-bC5vcmcvbGludXgtY3hsLzIwMjEwMjE2MDE0NTM4LjI2ODEwNi0xLWJlbi53aWRhd3NreUBpbnRl
-bC5jb20vDQpbMl06IGh0dHBzOi8vd3d3LmNvbXB1dGVleHByZXNzbGluay5vcmcvXShodHRwczov
-L3d3dy5jb21wdXRlZXhwcmVzc2xpbmsub3JnLw0KWzNdOiBodHRwczovL2xvcmUua2VybmVsLm9y
-Zy9xZW11LWRldmVsLzIwMjEwMjAyMDA1OTQ4LjI0MTY1NS0xLWJlbi53aWRhd3NreUBpbnRlbC5j
-b20vDQpbNF06IGh0dHBzOi8vZ2l0bGFiLmNvbS9id2lkYXdzay9xZW11Ly0vdHJlZS9jeGwtMi4w
-djQNCls1XTogaHR0cHM6Ly9naXRodWIuY29tL3BtZW0vbmRjdGwvdHJlZS9jeGwtMi4wdjINCg0K
-Q2M6IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwub3JnDQpDYzogbGludXgta2VybmVsQHZnZXIua2Vy
-bmVsLm9yZw0KQ2M6IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcNCkNjOiBsaW51eC1wY2lAdmdl
-ci5rZXJuZWwub3JnDQpDYzogQmpvcm4gSGVsZ2FhcyA8aGVsZ2Fhc0BrZXJuZWwub3JnPg0KQ2M6
-IENocmlzIEJyb3d5IDxjYnJvd3lAYXZlcnktZGVzaWduLmNvbT4NCkNjOiBDaHJpc3RvcGggSGVs
-bHdpZyA8aGNoQGluZnJhZGVhZC5vcmc+DQpDYzogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFt
-c0BpbnRlbC5jb20+DQpDYzogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQpD
-YzogRGF2aWQgUmllbnRqZXMgPHJpZW50amVzQGdvb2dsZS5jb20+DQpDYzogSXJhIFdlaW55IDxp
-cmEud2VpbnlAaW50ZWwuY29tPg0KQ2M6IEpvbiBNYXN0ZXJzIDxqY21Aam9ubWFzdGVycy5vcmc+
-DQpDYzogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4uQ2FtZXJvbkBIdWF3ZWkuY29tPg0KQ2M6
-IFJhZmFlbCBXeXNvY2tpIDxyYWZhZWwuai53eXNvY2tpQGludGVsLmNvbT4NCkNjOiBSYW5keSBE
-dW5sYXAgPHJkdW5sYXBAaW5mcmFkZWFkLm9yZz4NCkNjOiBWaXNoYWwgVmVybWEgPHZpc2hhbC5s
-LnZlcm1hQGludGVsLmNvbT4NCkNjOiAiSm9obiBHcm92ZXMgKGpncm92ZXMpIiA8amdyb3Zlc0Bt
-aWNyb24uY29tPg0KQ2M6ICJLZWxsZXksIFNlYW4gViIgPHNlYW4udi5rZWxsZXlAaW50ZWwuY29t
-Pg0KDQotLS0NCg0KQmVuIFdpZGF3c2t5ICg3KToNCiAgY3hsL21lbTogRmluZCBkZXZpY2UgY2Fw
-YWJpbGl0aWVzDQogIGN4bC9tZW06IEFkZCBiYXNpYyBJT0NUTCBpbnRlcmZhY2UNCiAgY3hsL21l
-bTogQWRkIGEgIlJBVyIgc2VuZCBjb21tYW5kDQogIGN4bC9tZW06IEVuYWJsZSBjb21tYW5kcyB2
-aWEgQ0VMDQogIGN4bC9tZW06IEFkZCBzZXQgb2YgaW5mb3JtYXRpb25hbCBjb21tYW5kcw0KICBN
-QUlOVEFJTkVSUzogQWRkIG1haW50YWluZXJzIG9mIHRoZSBDWEwgZHJpdmVyDQogIGN4bC9tZW06
-IEFkZCBwYXlsb2FkIGR1bXBpbmcgZm9yIGRlYnVnDQoNCkRhbiBXaWxsaWFtcyAoMik6DQogIGN4
-bC9tZW06IEludHJvZHVjZSBhIGRyaXZlciBmb3IgQ1hMLTIuMC1UeXBlLTMgZW5kcG9pbnRzDQog
-IGN4bC9tZW06IFJlZ2lzdGVyIENYTCBtZW1YIGRldmljZXMNCg0KIC5jbGFuZy1mb3JtYXQgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgKw0KIERvY3VtZW50YXRpb24vQUJJ
-L3Rlc3Rpbmcvc3lzZnMtYnVzLWN4bCAgICAgICB8ICAgMjYgKw0KIERvY3VtZW50YXRpb24vZHJp
-dmVyLWFwaS9jeGwvaW5kZXgucnN0ICAgICAgICB8ICAgMTIgKw0KIC4uLi9kcml2ZXItYXBpL2N4
-bC9tZW1vcnktZGV2aWNlcy5yc3QgICAgICAgICB8ICAgNDYgKw0KIERvY3VtZW50YXRpb24vZHJp
-dmVyLWFwaS9pbmRleC5yc3QgICAgICAgICAgICB8ICAgIDEgKw0KIC4uLi91c2Vyc3BhY2UtYXBp
-L2lvY3RsL2lvY3RsLW51bWJlci5yc3QgICAgICB8ICAgIDEgKw0KIE1BSU5UQUlORVJTICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMTEgKw0KIGRyaXZlcnMvS2NvbmZpZyAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgKw0KIGRyaXZlcnMvTWFrZWZpbGUg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgKw0KIGRyaXZlcnMvY3hsL0tjb25m
-aWcgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNjYgKw0KIGRyaXZlcnMvY3hsL01ha2Vm
-aWxlICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDcgKw0KIGRyaXZlcnMvY3hsL2J1cy5j
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMjkgKw0KIGRyaXZlcnMvY3hsL2N4bC5o
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOTUgKw0KIGRyaXZlcnMvY3hsL21lbS5j
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDE1NTMgKysrKysrKysrKysrKysrKysNCiBk
-cml2ZXJzL2N4bC9wY2kuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDMxICsNCiBp
-bmNsdWRlL2xpbnV4L3BjaV9pZHMuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgICAxICsNCiBp
-bmNsdWRlL3VhcGkvbGludXgvY3hsX21lbS5oICAgICAgICAgICAgICAgICAgfCAgMTcyICsrDQog
-MTcgZmlsZXMgY2hhbmdlZCwgMjA1NCBpbnNlcnRpb25zKCspDQogY3JlYXRlIG1vZGUgMTAwNjQ0
-IERvY3VtZW50YXRpb24vQUJJL3Rlc3Rpbmcvc3lzZnMtYnVzLWN4bA0KIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBEb2N1bWVudGF0aW9uL2RyaXZlci1hcGkvY3hsL2luZGV4LnJzdA0KIGNyZWF0ZSBtb2Rl
-IDEwMDY0NCBEb2N1bWVudGF0aW9uL2RyaXZlci1hcGkvY3hsL21lbW9yeS1kZXZpY2VzLnJzdA0K
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2N4bC9LY29uZmlnDQogY3JlYXRlIG1vZGUgMTAw
-NjQ0IGRyaXZlcnMvY3hsL01ha2VmaWxlDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvY3hs
-L2J1cy5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvY3hsL2N4bC5oDQogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGRyaXZlcnMvY3hsL21lbS5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMv
-Y3hsL3BjaS5oDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvdWFwaS9saW51eC9jeGxfbWVt
-LmgNCg0KLS0gDQoyLjMwLjENCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3Rz
-LjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2
-ZUBsaXN0cy4wMS5vcmcK
+From: Dan Williams <dan.j.williams@intel.com>
+
+The CXL.mem protocol allows a device to act as a provider of "System
+RAM" and/or "Persistent Memory" that is fully coherent as if the memory
+was attached to the typical CPU memory controller.
+
+With the CXL-2.0 specification a PCI endpoint can implement a "Type-3"
+device interface and give the operating system control over "Host
+Managed Device Memory". See section 2.3 Type 3 CXL Device.
+
+The memory range exported by the device may optionally be described by
+the platform firmware memory map, or by infrastructure like LIBNVDIMM to
+provision persistent memory capacity from one, or more, CXL.mem devices.
+
+A pre-requisite for Linux-managed memory-capacity provisioning is this
+cxl_mem driver that can speak the mailbox protocol defined in section
+8.2.8.4 Mailbox Registers.
+
+For now just land the initial driver boiler-plate and Documentation/
+infrastructure.
+
+Link: https://www.computeexpresslink.org/download-the-specification
+Cc: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+Acked-by: David Rientjes <rientjes@google.com> (v1)
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ Documentation/driver-api/cxl/index.rst        | 12 ++++
+ .../driver-api/cxl/memory-devices.rst         | 15 +++++
+ Documentation/driver-api/index.rst            |  1 +
+ drivers/Kconfig                               |  1 +
+ drivers/Makefile                              |  1 +
+ drivers/cxl/Kconfig                           | 35 +++++++++++
+ drivers/cxl/Makefile                          |  4 ++
+ drivers/cxl/mem.c                             | 62 +++++++++++++++++++
+ drivers/cxl/pci.h                             | 17 +++++
+ include/linux/pci_ids.h                       |  1 +
+ 10 files changed, 149 insertions(+)
+ create mode 100644 Documentation/driver-api/cxl/index.rst
+ create mode 100644 Documentation/driver-api/cxl/memory-devices.rst
+ create mode 100644 drivers/cxl/Kconfig
+ create mode 100644 drivers/cxl/Makefile
+ create mode 100644 drivers/cxl/mem.c
+ create mode 100644 drivers/cxl/pci.h
+
+diff --git a/Documentation/driver-api/cxl/index.rst b/Documentation/driver-api/cxl/index.rst
+new file mode 100644
+index 000000000000..036e49553542
+--- /dev/null
++++ b/Documentation/driver-api/cxl/index.rst
+@@ -0,0 +1,12 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++====================
++Compute Express Link
++====================
++
++.. toctree::
++   :maxdepth: 1
++
++   memory-devices
++
++.. only::  subproject and html
+diff --git a/Documentation/driver-api/cxl/memory-devices.rst b/Documentation/driver-api/cxl/memory-devices.rst
+new file mode 100644
+index 000000000000..71617e9002f1
+--- /dev/null
++++ b/Documentation/driver-api/cxl/memory-devices.rst
+@@ -0,0 +1,15 @@
++.. SPDX-License-Identifier: GPL-2.0
++.. include:: <isonum.txt>
++
++===================================
++Compute Express Link Memory Devices
++===================================
++
++A Compute Express Link Memory Device is a CXL component that implements the
++CXL.mem protocol. It contains some amount of volatile memory, persistent memory,
++or both. It is enumerated as a PCI device for configuration and passing
++messages over an MMIO mailbox. Its contribution to the System Physical
++Address space is handled via HDM (Host Managed Device Memory) decoders
++that optionally define a device's contribution to an interleaved address
++range across multiple devices underneath a host-bridge or interleaved
++across host-bridges.
+diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/index.rst
+index 2456d0a97ed8..d246a18fd78f 100644
+--- a/Documentation/driver-api/index.rst
++++ b/Documentation/driver-api/index.rst
+@@ -35,6 +35,7 @@ available subsections can be seen below.
+    usb/index
+    firewire
+    pci/index
++   cxl/index
+    spi
+    i2c
+    ipmb
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index dcecc9f6e33f..62c753a73651 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -6,6 +6,7 @@ menu "Device Drivers"
+ source "drivers/amba/Kconfig"
+ source "drivers/eisa/Kconfig"
+ source "drivers/pci/Kconfig"
++source "drivers/cxl/Kconfig"
+ source "drivers/pcmcia/Kconfig"
+ source "drivers/rapidio/Kconfig"
+ 
+diff --git a/drivers/Makefile b/drivers/Makefile
+index fd11b9ac4cc3..678ea810410f 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -73,6 +73,7 @@ obj-$(CONFIG_NVM)		+= lightnvm/
+ obj-y				+= base/ block/ misc/ mfd/ nfc/
+ obj-$(CONFIG_LIBNVDIMM)		+= nvdimm/
+ obj-$(CONFIG_DAX)		+= dax/
++obj-$(CONFIG_CXL_BUS)		+= cxl/
+ obj-$(CONFIG_DMA_SHARED_BUFFER) += dma-buf/
+ obj-$(CONFIG_NUBUS)		+= nubus/
+ obj-y				+= macintosh/
+diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+new file mode 100644
+index 000000000000..9e80b311e928
+--- /dev/null
++++ b/drivers/cxl/Kconfig
+@@ -0,0 +1,35 @@
++# SPDX-License-Identifier: GPL-2.0-only
++menuconfig CXL_BUS
++	tristate "CXL (Compute Express Link) Devices Support"
++	depends on PCI
++	help
++	  CXL is a bus that is electrically compatible with PCI Express, but
++	  layers three protocols on that signalling (CXL.io, CXL.cache, and
++	  CXL.mem). The CXL.cache protocol allows devices to hold cachelines
++	  locally, the CXL.mem protocol allows devices to be fully coherent
++	  memory targets, the CXL.io protocol is equivalent to PCI Express.
++	  Say 'y' to enable support for the configuration and management of
++	  devices supporting these protocols.
++
++if CXL_BUS
++
++config CXL_MEM
++	tristate "CXL.mem: Memory Devices"
++	help
++	  The CXL.mem protocol allows a device to act as a provider of
++	  "System RAM" and/or "Persistent Memory" that is fully coherent
++	  as if the memory was attached to the typical CPU memory
++	  controller.
++
++	  Say 'y/m' to enable a driver (named "cxl_mem.ko" when built as
++	  a module) that will attach to CXL.mem devices for
++	  configuration, provisioning, and health monitoring. This
++	  driver is required for dynamic provisioning of CXL.mem
++	  attached memory which is a prerequisite for persistent memory
++	  support. Typically volatile memory is mapped by platform
++	  firmware and included in the platform memory map, but in some
++	  cases the OS is responsible for mapping that memory. See
++	  Chapter 2.3 Type 3 CXL Device in the CXL 2.0 specification.
++
++	  If unsure say 'm'.
++endif
+diff --git a/drivers/cxl/Makefile b/drivers/cxl/Makefile
+new file mode 100644
+index 000000000000..4a30f7c3fc4a
+--- /dev/null
++++ b/drivers/cxl/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_CXL_MEM) += cxl_mem.o
++
++cxl_mem-y := mem.o
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+new file mode 100644
+index 000000000000..ce33c5ee77c9
+--- /dev/null
++++ b/drivers/cxl/mem.c
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <linux/io.h>
++#include "pci.h"
++
++static int cxl_mem_dvsec(struct pci_dev *pdev, int dvsec)
++{
++	int pos;
++
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DVSEC);
++	if (!pos)
++		return 0;
++
++	while (pos) {
++		u16 vendor, id;
++
++		pci_read_config_word(pdev, pos + PCI_DVSEC_HEADER1, &vendor);
++		pci_read_config_word(pdev, pos + PCI_DVSEC_HEADER2, &id);
++		if (vendor == PCI_DVSEC_VENDOR_ID_CXL && dvsec == id)
++			return pos;
++
++		pos = pci_find_next_ext_capability(pdev, pos,
++						   PCI_EXT_CAP_ID_DVSEC);
++	}
++
++	return 0;
++}
++
++static int cxl_mem_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct device *dev = &pdev->dev;
++	int regloc;
++
++	regloc = cxl_mem_dvsec(pdev, PCI_DVSEC_ID_CXL_REGLOC_OFFSET);
++	if (!regloc) {
++		dev_err(dev, "register location dvsec not found\n");
++		return -ENXIO;
++	}
++
++	return 0;
++}
++
++static const struct pci_device_id cxl_mem_pci_tbl[] = {
++	/* PCI class code for CXL.mem Type-3 Devices */
++	{ PCI_DEVICE_CLASS((PCI_CLASS_MEMORY_CXL << 8 | CXL_MEMORY_PROGIF), ~0)},
++	{ /* terminate list */ },
++};
++MODULE_DEVICE_TABLE(pci, cxl_mem_pci_tbl);
++
++static struct pci_driver cxl_mem_driver = {
++	.name			= KBUILD_MODNAME,
++	.id_table		= cxl_mem_pci_tbl,
++	.probe			= cxl_mem_probe,
++	.driver	= {
++		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
++	},
++};
++
++MODULE_LICENSE("GPL v2");
++module_pci_driver(cxl_mem_driver);
+diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
+new file mode 100644
+index 000000000000..e464bea3f4d3
+--- /dev/null
++++ b/drivers/cxl/pci.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright(c) 2020 Intel Corporation. All rights reserved. */
++#ifndef __CXL_PCI_H__
++#define __CXL_PCI_H__
++
++#define CXL_MEMORY_PROGIF	0x10
++
++/*
++ * See section 8.1 Configuration Space Registers in the CXL 2.0
++ * Specification
++ */
++#define PCI_DVSEC_VENDOR_ID_CXL		0x1E98
++#define PCI_DVSEC_ID_CXL		0x0
++
++#define PCI_DVSEC_ID_CXL_REGLOC_OFFSET		0x8
++
++#endif /* __CXL_PCI_H__ */
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index d8156a5dbee8..766260a9b247 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -51,6 +51,7 @@
+ #define PCI_BASE_CLASS_MEMORY		0x05
+ #define PCI_CLASS_MEMORY_RAM		0x0500
+ #define PCI_CLASS_MEMORY_FLASH		0x0501
++#define PCI_CLASS_MEMORY_CXL		0x0502
+ #define PCI_CLASS_MEMORY_OTHER		0x0580
+ 
+ #define PCI_BASE_CLASS_BRIDGE		0x06
+-- 
+2.30.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
