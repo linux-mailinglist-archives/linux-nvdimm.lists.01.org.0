@@ -2,134 +2,77 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBC431D565
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 07:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A5331D5A5
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 08:14:46 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 31896100F2250;
-	Tue, 16 Feb 2021 22:39:21 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=94.130.110.236; helo=antares.kleine-koenig.org; envelope-from=uwe@kleine-koenig.org; receiver=<UNKNOWN> 
-Received: from antares.kleine-koenig.org (antares.kleine-koenig.org [94.130.110.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 04CA3100F2243
-	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 22:39:17 -0800 (PST)
-Received: from antares.kleine-koenig.org (localhost [127.0.0.1])
-	by antares.kleine-koenig.org (Postfix) with ESMTP id B7D5FB03DF5;
-	Wed, 17 Feb 2021 07:39:14 +0100 (CET)
-Received: from antares.kleine-koenig.org ([94.130.110.236])
-	by antares.kleine-koenig.org (antares.kleine-koenig.org [94.130.110.236]) (amavisd-new, port 10024)
-	with ESMTP id S8ReJb4Xkcck; Wed, 17 Feb 2021 07:39:13 +0100 (CET)
-Received: from taurus.defre.kleine-koenig.org (unknown [IPv6:2a02:8071:b5ad:2000:7867:997:4a55:eb43])
-	by antares.kleine-koenig.org (Postfix) with ESMTPSA;
-	Wed, 17 Feb 2021 07:39:13 +0100 (CET)
-Subject: Re: [PATCH v2 0/5] dax-device: Some cleanups
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20210205222842.34896-1-uwe@kleine-koenig.org>
- <CAPcyv4gMg7ksLS6vWR3Ya=bZd5wBiRLtSGxf6mc3yqf+3rA_TQ@mail.gmail.com>
- <CAPcyv4jq_8as=qUL8LJnNcM2UsrqEJqjc7+EHjs8XwuWCVZKPw@mail.gmail.com>
-From: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <uwe@kleine-koenig.org>
-Message-ID: <d1891be1-9345-9d2b-edcc-2a5ce2ac9360@kleine-koenig.org>
-Date: Wed, 17 Feb 2021 07:39:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
-MIME-Version: 1.0
-In-Reply-To: <CAPcyv4jq_8as=qUL8LJnNcM2UsrqEJqjc7+EHjs8XwuWCVZKPw@mail.gmail.com>
-Message-ID-Hash: RYMCZFDTSFL7BMTR27DEMDTNFB5OOXVC
-X-Message-ID-Hash: RYMCZFDTSFL7BMTR27DEMDTNFB5OOXVC
-X-MailFrom: uwe@kleine-koenig.org
+	by ml01.01.org (Postfix) with ESMTP id 9C8AA100EAAE3;
+	Tue, 16 Feb 2021 23:14:42 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.74.12; helo=vpass.ne.jp; envelope-from=vza@vpass.ne.jp; receiver=<UNKNOWN> 
+Received: from vpass.ne.jp (v118-27-74-12.eqwx.static.cnode.io [118.27.74.12])
+	by ml01.01.org (Postfix) with ESMTP id 4EF76100EAAE0
+	for <linux-nvdimm@lists.01.org>; Tue, 16 Feb 2021 23:14:32 -0800 (PST)
+Sender: vza@vpass.ne.jp
+Message-ID: <5EC637A593E0D1CB2B1CD4722A4DF965@vpass.ne.jp>
+From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CO44CQ6YeN6KaB44CR5LiJ5LqV5L2P5Y+L44Kr44O844OJ5qCq5byP5Lya56S+44GL44KJ44Gu57eK?=
+	=?utf-8?B?5oCl44Gu44GU6YCj57Wh44CPIA==?=
+Date: Wed, 17 Feb 2021 16:14:18 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: FUMGKG5EWFLQKRTS6AUJ5FW5H4YRTOHC
+X-Message-ID-Hash: FUMGKG5EWFLQKRTS6AUJ5FW5H4YRTOHC
+X-MailFrom: vza@vpass.ne.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RYMCZFDTSFL7BMTR27DEMDTNFB5OOXVC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FUMGKG5EWFLQKRTS6AUJ5FW5H4YRTOHC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============3442369609691983668=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============3442369609691983668==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="NVYrnRlgCQ2dWcNf6WA1OxAcEomB67SXn"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---NVYrnRlgCQ2dWcNf6WA1OxAcEomB67SXn
-Content-Type: multipart/mixed; boundary="hBBVWP2Xum3ONlVJRDp4uyuSeD8Sa6qHy";
- protected-headers="v1"
-From: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <uwe@kleine-koenig.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang
- <dave.jiang@intel.com>, Andrew Morton <akpm@linux-foundation.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Message-ID: <d1891be1-9345-9d2b-edcc-2a5ce2ac9360@kleine-koenig.org>
-Subject: Re: [PATCH v2 0/5] dax-device: Some cleanups
-References: <20210205222842.34896-1-uwe@kleine-koenig.org>
- <CAPcyv4gMg7ksLS6vWR3Ya=bZd5wBiRLtSGxf6mc3yqf+3rA_TQ@mail.gmail.com>
- <CAPcyv4jq_8as=qUL8LJnNcM2UsrqEJqjc7+EHjs8XwuWCVZKPw@mail.gmail.com>
-In-Reply-To: <CAPcyv4jq_8as=qUL8LJnNcM2UsrqEJqjc7+EHjs8XwuWCVZKPw@mail.gmail.com>
-
---hBBVWP2Xum3ONlVJRDp4uyuSeD8Sa6qHy
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-
-Hello Dan,
-
-On 2/17/21 4:55 AM, Dan Williams wrote:
->> One small comment on patch5, otherwise looks good.
->=20
-> I take it back, patch5 looks good. I was going to ask about the return
-> value removal for dax_bus_remove(), but that would need struct
-> bus_type to change prototypes.
-
-Changing struct bus_type::remove to return void is the eventual plan. To =
-
-make this a pretty and easily reviewable patch I currently go through=20
-all buses and make sure that for the prototype change I only have to do=20
-one s/int/void/ and drop a "return 0" per bus.
-
-> All merged to the nvdimm tree.
-
-Great, thanks
-Uwe
-
-
---hBBVWP2Xum3ONlVJRDp4uyuSeD8Sa6qHy--
-
---NVYrnRlgCQ2dWcNf6WA1OxAcEomB67SXn
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmAsugYACgkQwfwUeK3K
-7Anipwf+MQUO3Q+0QPOYdHW2iyztwa/+y2PBB7JgXTg7BWm3X0WiJ7B2ZUj9NKSx
-2Z1oyu79E1w/mNFeXeVKJ/9HGEsClUCaag1AA2om/gKvSJmVFU48N4STJAZ5LAX/
-tL6lLx4HDn1/mLXgIhsk3bdLQg959Q2BaBYmXFA/DOM+wRRYrnzI734WS/Vwst4b
-50SijYxZSheaEJWVOT9cpK35C2qMifgs8dB9MyC2LmmD5P1rGL0BtztcmQSC3KSh
-U5AvMnCnS9F+PAHWIbiAJKZxevIxDuOAMv7TyV7S2AY+KGW5wQS2isMHy8KhFRYm
-1x8qvSbWvETF2H/4rzKM3s9yWg1S5w==
-=lL31
------END PGP SIGNATURE-----
-
---NVYrnRlgCQ2dWcNf6WA1OxAcEomB67SXn--
-
---===============3442369609691983668==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============3442369609691983668==--
+IA0KDQogDQogDQoNCiANCg0KIA0KIA0KDQogDQoNCiANCg0KDQoNCuOBhOOBpOOCguW8iuekvuOC
+q+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOB
+vuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPliKnnlKjjga7mgKXlopfjgavkvLTj
+gYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Poppbjgrfjgrnjg4bjg6DjgI3jgpLl
+sI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OCq+ODvOODieOBruOBlOWIqeeUqOOB
+q+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOBo+OBpuOBiuOCiuOBvuOBmeOAgg0K
+DQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTliKnnlKjjgYvjganjgYbjgYvjgpLn
+orroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrlj5blvJXjgYzjgYLjgorjgb7jgZfj
+gZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHjgqvjg7zjg4njga7jgZTliKnnlKjj
+gpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgIHjgZTpgKPntaHjgZXjgZvjgabj
+gYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G4
+44Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U
+5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQoNCuOBlOWbnuetlOOCkuOBhOOBn+OBoOOB
+keOBquOBhOWgtOWQiOOAgeOCq+ODvOODieOBruOBlOWIqeeUqOWItumZkOOBjOe2mee2muOBleOC
+jOOCi+OBk+OBqOOCguOBlOOBluOBhOOBvuOBmeOAgg0KDQrkuojjgoHjgZTkuobmib/kuIvjgZXj
+gYTjgIINCg0KDQoNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pagIOOBlOWIqeeUqOeiuuiqjeOB
+r+OBk+OBoeOCiQ0K4pSB4pSB4pSB4pSB4pSB4pSB4pSBDQogaHR0cHM6Ly9zbWJjLWNhcmQuY3Ry
+cnIuY29tDQrilIHilIHilIHilIHilIHilIHilIENCuKWoCDms6jmhI/kuovpoIUNCuKUgeKUgeKU
+geKUgeKUgeKUgeKUgQ0K4oC75pys44Oh44O844Or44Gv44GU55m76Yyy44GE44Gf44Gg44GE44Gf
+44Oh44O844Or44Ki44OJ44Os44K55a6b44Gr6Ieq5YuV55qE44Gr6YCB5L+h44GV44KM44Gm44GE
+44G+44GZ44CCDQrigLvmnKzjg6Hjg7zjg6vjga/pgIHkv6HlsILnlKjjgafjgZnjgILjgZTov5Tk
+v6HjgYTjgZ/jgaDjgY3jgb7jgZfjgabjgoLjgYrnrZTjgYjjgafjgY3jgb7jgZvjgpPjga7jgafj
+gZTkuobmib/jgY/jgaDjgZXjgYTjgIINCuKAu+WkieabtOW+jOOAgTQ45pmC6ZaT5Lul5YaF44Gr
+55m65Yq544GZ44KL5b+F6KaB44GM44GC44KK44CB5pyf6ZaT5Lit44Gv5L2/55So44Gn44GN44G+
+44Gb44KT44CCDQrigLvjgqvjg7zjg4njga7lgIvkurrmg4XloLHjgavjgojjgaPjgabjga/pm7vo
+qbHjgafpgKPntaHjgZnjgovloLTlkIjjgoLjgZTjgZbjgYTjgb7jgZnjgIINCuKAu+ato+eiuuOB
+quaDheWgseOBr+W/heOBmuiomOWFpeOBl+OBpuOBj+OBoOOBleOBhOOAgiANCuKUgeKUgeKUgeKU
+geKUgeKUgeKUgQ0K4pag55m66KGM6ICFDQrilIHilIHilIHilIHilIHilIHilIENCuS4ieS6leS9
+j+WPi+OCq+ODvOODieagquW8j+S8muekvg0KaHR0cHM6Ly93d3cuc21iYy1jYXJkLmNvbQ0K44CS
+MTA1LTgwMTEg5p2x5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLnlaoyMOWPtyDmsZDnlZnjg5Pj
+g6vjg4fjgqPjg7PjgrANCg0KDQoNCiANCkNvcHlyaWdodCAoQykgMjAyMSBTdW1pdG9tbyBNaXRz
+dWkgQ2FyZCBDby4sIEx0ZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
+MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
+QGxpc3RzLjAxLm9yZwo=
