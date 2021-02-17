@@ -2,73 +2,85 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA69431DD5E
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 17:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1286331DF0B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Feb 2021 19:22:07 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F0DDF100EAAEF;
-	Wed, 17 Feb 2021 08:31:55 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=194.201.253.66; helo=outbound.kenyaweb.com; envelope-from=songthuyhk@songthuyhk.com; receiver=<UNKNOWN> 
-Received: from outbound.kenyaweb.com (unknown [194.201.253.66])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9A55A100EBB81;
+	Wed, 17 Feb 2021 10:22:05 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.77.33.216; helo=ceo1.ceoemailfinder.info; envelope-from=info-linux+2dnvdimm=lists.01.org@ceoemailfinder.info; receiver=<UNKNOWN> 
+Received: from ceo1.ceoemailfinder.info (ip216.ip-51-77-33.eu [51.77.33.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9D9AD100F2250
-	for <linux-nvdimm@lists.01.org>; Wed, 17 Feb 2021 08:31:51 -0800 (PST)
-Received: from mail2.kenyaweb.com ([194.201.253.113] helo=User)
-	by outbound.kenyaweb.com with smtp (Exim 4.63)
-	(envelope-from <songthuyhk@songthuyhk.com>)
-	id 1lCPGC-0001vz-PN; Wed, 17 Feb 2021 19:01:05 +0300
-From: "Ms. Reem"<songthuyhk@songthuyhk.com>
-Subject: Investment
-Date: Wed, 17 Feb 2021 16:29:56 -0000
+	by ml01.01.org (Postfix) with ESMTPS id F126C100EBBDB
+	for <linux-nvdimm@lists.01.org>; Wed, 17 Feb 2021 10:22:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=ceoemailfinder.info;
+ h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=info@ceoemailfinder.info;
+ bh=pdc3MxiHKjJqBSLkUD1u8B5X9ug=;
+ b=Q99LzyijElAQxOkv7jZn/U2gDqoHBV0pAYoL4Ig3B9aHGc3Ld/22YVd3nqb85xFYKQgg558Q0pYR
+   /yHAKgHmG2bQf9zDrO5ffZoCfU83LIooTZ6nt2zzeCkQgRAlg/I5EncECWoEqx4y0lRLDB/V+Vcu
+   QC5dHMNtUY0gNWZfW1L5Mwj6W8FJBwV7LZU3uCYOHadY8LcR24C5226L3+cQoq3kkAJGmSlek+In
+   jc8d5AZh81m/dHxeR4PBuhsZl9WxUBpOq3buApz4hF6LCEiwYYt31zpxQCJjamypSs+OjqEcM5GA
+   bqMH/6MpkPz/00xLWIkQP/J+cUUwfybdC6qPaQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=ceoemailfinder.info;
+ b=aejVTtyVl/4oFr3gbil2NxwidIaezmceReBLHoM9BBzO14EnExNVa+SaL4eMtsqR6bDJBMrOM/oC
+   ZtiR9KQYwfP4OtqMGrg1yRtP7Q2e+7XNq5dHBTp9xzHF/oHhgBLs92Ipcxbv21ieGmwmR+oO4GEb
+   9sxPLP+UdL1jNjFDfcpGVhoAKfusp+oWAAzyE7JeWEVI7HsfNVtp+5tQNBkjIeBHmLKd8EFgfURg
+   PvqFtg2DiKEjvJvkv08PPfjMYY7yww4ou+/XywNn5babb/9wD3kYvLEHHI8QYqoNBmlWMYrFoTE5
+   zDRvmPd6fDS2RP6PJw3soDmduK/sWgpgBMI6uw==;
+Received: from ceoemailfinder.info (127.0.0.1) by ceo1.ceoemailfinder.info id h5lfcni19tk6 for <linux-nvdimm@lists.01.org>; Wed, 17 Feb 2021 18:21:57 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@ceoemailfinder.info>)
+Message-ID: <b8246e6791b09ab4bbfa990cfcde6eb8@ceoemailfinder.info>
+Date: Wed, 17 Feb 2021 18:21:57 +0000
+Subject: RE: 100k at 250
+From: Rachel Griffin <info@ceoemailfinder.info>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <E1lCPGC-0001vz-PN@outbound.kenyaweb.com>
-Message-ID-Hash: GUIBKPNUULXQASZMNI23PRIQ4J3GOS6Z
-X-Message-ID-Hash: GUIBKPNUULXQASZMNI23PRIQ4J3GOS6Z
-X-MailFrom: songthuyhk@songthuyhk.com
+X-Sender: info@ceoemailfinder.info
+X-Report-Abuse: Please report abuse for this campaign here:
+ http://ceoemailfinder.info/app/index.php/campaigns/ep324g713pe89/report-abuse/vt3541rbjs34d/zt837z15co2f7
+X-Receiver: linux-nvdimm@lists.01.org
+X-Cfhh-Tracking-Did: 0
+X-Cfhh-Subscriber-Uid: zt837z15co2f7
+X-Cfhh-Mailer: SwiftMailer - 5.4.x
+X-Cfhh-EBS: http://ceoemailfinder.info/app/index.php/lists/block-address
+X-Cfhh-Delivery-Sid: 1
+X-Cfhh-Customer-Uid: on987d5f1x791
+X-Cfhh-Customer-Gid: 0
+X-Cfhh-Campaign-Uid: ep324g713pe89
+Precedence: bulk
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Feedback-ID: ep324g713pe89:zt837z15co2f7:vt3541rbjs34d:on987d5f1x791
+Message-ID-Hash: GNEYGSQGSDUWWMEWLWUTFAMUSPSVUOAB
+X-Message-ID-Hash: GNEYGSQGSDUWWMEWLWUTFAMUSPSVUOAB
+X-MailFrom: info-linux+2Dnvdimm=lists.01.org@ceoemailfinder.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
-Reply-To: reem9999@naver.com
+Reply-To: Rachel Griffin <rachelgriffinmail@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GUIBKPNUULXQASZMNI23PRIQ4J3GOS6Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GNEYGSQGSDUWWMEWLWUTFAMUSPSVUOAB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hello,
-
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "two (2) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home on their behalf and
-for our "Mutual Benefits".
-
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Turkish Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-reem2018@daum.net
-
-Regards,
-Ms. Reem.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+RW1haWwgbWFya2V0aW5nIHRvIHlvdXIgdGFyZ2V0IGF1ZGllbmNlKGFueSBjaXR5L2FueSBjb3Vu
+dHJ5KSBmcm9tIG91cg0KZGF0YWJhc2Ugd2lsbCBnZW5lcmF0ZSBtYXNzaXZlIGxlYWRzIGFuZCBz
+ZXQgYXBwb2ludG1lbnRzLCB3ZSBoYXZlDQp2ZXJpZmllZCBhbmQgdGFyZ2V0ZWQgNjBNaWwgQjJC
+IGFuZCAxODAgTWlsIEIyQyBkYXRhIGZvciBhbGwNCmNhdGVnb3JpZXMgZ2xvYmFsbHkuIFdlIHdp
+bGwgc2hhcmUgb3BlbnMgYW5kIGNsaWNrcyBhbHNvIHdpdGggdGhlDQpjb21wbGV0ZcKgcmVwb3J0
+DQrCoCAqwqAgwqBCYXNpYyBQbGFuOiBBdMKgJDI1MMKgd2Ugd2lsbCBzZW5kIDEwMCwwMDAgRW1h
+aWxzIHdpdGhpbiBhDQptb250aCB0byB5b3VyIHRhcmdldCBhdWRpZW5jZQ0KwqAgKsKgIMKgU3Rh
+bmRhcmQgUGxhbjogQXQgJDc1MCB3ZSB3aWxsIHNlbmQgMU1pbCBFbWFpbHMgd2l0aGluIGENCm1v
+bnRoIHRvIHlvdXIgdGFyZ2V0IGF1ZGllbmNlDQrCoCAqwqAgwqBQcmVtaXVtIHBsYW46IEF0ICQx
+LDk5OSB3ZSB3aWxsIHNlbmQgNU1pbCBFbWFpbHMgd2l0aGluIGENCm1vbnRoIHRvIHlvdXIgdGFy
+Z2V0IGF1ZGllbmNlDQpUaGFua3MgYW5kIGxldCBtZSBrbm93IGlmIHlvdSB3aXNoIHRvIGtub3cg
+bW9yZS4NClJhY2hlbCBHcmlmZmluDQpFbWFpbCBNYXJrZXRpbmcNCisxLSg2NzgpIDc0NS04Mzg1
+DQpVbnN1YnNjcmliZQ0KaHR0cDovL2Nlb2VtYWlsZmluZGVyLmluZm8vYXBwL2luZGV4LnBocC9s
+aXN0cy92dDM1NDFyYmpzMzRkL3Vuc3Vic2NyaWJlL3p0ODM3ejE1Y28yZjcvZXAzMjRnNzEzcGU4
+OQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
+bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
+c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
