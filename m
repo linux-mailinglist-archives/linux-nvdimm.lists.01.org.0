@@ -1,195 +1,119 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7FA320732
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 20 Feb 2021 22:21:44 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22028320775
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 20 Feb 2021 22:57:02 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C5724100EF275;
-	Sat, 20 Feb 2021 13:21:42 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=66.163.185.181; helo=sonic305-55.consmr.mail.ne1.yahoo.com; envelope-from=webtt@bcjao.in; receiver=<UNKNOWN> 
-Received: from sonic305-55.consmr.mail.ne1.yahoo.com (sonic305-55.consmr.mail.ne1.yahoo.com [66.163.185.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 49DD3100EC1EB;
+	Sat, 20 Feb 2021 13:57:00 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C3D91100EF265
-	for <linux-nvdimm@lists.01.org>; Sat, 20 Feb 2021 13:21:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1613856098; bh=PlTgu8w5TOpNgyOuEO0KBfn1oEx3jWVKSacjkbt6OLo=; h=Date:From:Reply-To:In-Reply-To:References:Subject:From:Subject:Reply-To; b=SeVDGJiXd0dmUKukPnLTiq4QGJD3Su74Kvnv5GD/31RIbU9jw7drlK3Oz+T2Ny4gBXJeI4rD/lLR7ux6Qb7kK3KRPBI30Tuq2n1uj48Z4AfR3wphB0yfkXq0L7b2BIx9pHPL6hXX6or1xnt7pNCvdxjppkmSSM5AlRCz4ZF9mWr69lYQewWCYvHjntbXiEcv1Fcl32b1ZiIBKu0bzcJIMnyh07dM15NCi3Q4E8TCRg66dvuFzLYrR9bX27Z9jxTloxEnAfkreS2c9t1Iexoq5SSJFUhMCmN3Qfkk1je3EL4YEXdeMvRQF8yilWUJgEiCFJnk54z2Ah93HWS+OeigrQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1613856098; bh=UMeUKVWCOlgBKS/xj4NJRisSyvrxkWVP16bPP9gJQFj=; h=X-Sonic-MF:Date:From:Subject:From:Subject; b=I4KYKqyJ7Z0l+unsCQEo/ghXrptHTSQLGGeszgJz+xF1XWMVgF/RinsCHaiuMnnu53G7rjuNDGNE+1Y5T5efZV/Ch0+cN9p1yaMR076/8/+BPFjuoIoHGeh6Gov33tl0Otk641jdUck2O99LCOhnMyNAzVAuSQTV44BKkpN42787mnY+aNyMkZyBjydRA7ClAqe0oK+3OaqR1f0KriNkojFED3LNDbcWLAqBR6Kf9cn0NbROl9sTIbS/zVD3K1kZTpZFaiBS/JSEcBywBzF3pvF7cMdfaxlZ8ANFwTnnUE9ImzgpIPXlHM5XKcVtLlmO4KyenHkPskUMwGg0dr8gzw==
-X-YMail-OSG: b9IOO7kVM1lvo0qnkmqZ77QCndGZ9Mm6yhXzbmBl7w4gnNyGIuKQQ8wUwdrRTbJ
- 6Ylp6tdAWeO2zB48QrLCNcOz9pPW2E1AWGH.jQbg0gI.V88vYOYqk.J4GdWOVVgQTxEAap1cwcSv
- CwNa74dBklLHsVBzoqBmJV7ebCvXAUaEKkOFEtg6lhhr5jFBEaFZgC7XPB6OGRiOCczymSf1c6WY
- 9gClcVNBJASGgVRC70epoBBxuBwkTQB56Lt8629BIzRuEttirysajmcXm53ZoewAv4SFW3xy7Bgl
- CB8VRHdbi5.mwUoy6x6X5SXK2Ca8vwLyq.JiwWftFhGnwfI59CvOw25N.aH3OEFUSO2olDi3ynVQ
- LHfpd0QVWL5QCvvkRHDGFskUn4edLOv_BhOyghHT0OSGA66z10devwVO.dTFuZIx6xo_uvwQ7i1O
- ReFqJgooqG.escQM0HcDNJdlnmJY8uIJysg1IX9.uy9pO7NQQpwmzpasEkMPrvXcBoUk5CTKGIT5
- qtt06zSYT_l4cdpLuBcoVZAc0ElRgS5YBkZZhTrWj3a2WovKbjLjqtgJKieNPM6U0QJcLfWdnglM
- fs6iQm_jGFBXa7uuYaTsmzRCbzrrWZgTxJ3Np.O8f7b8W0EMxOT5fOyJdMtx6lb1s_ZscN8mp3qa
- Z2pkW8VEhkzhGpijck62_u93hC0tXZYWw9YK.z9Tvlb19gokJ5s6EW5zZsSB6Fvzvc6FHhn.qHim
- 3tXpgU420xs80Gk8BzfQXMI4vYiemXbCf7MgQ2eRDy.Vxrcp_lSJwJwidnS_oky99kmQVJ5naNV5
- xVeSV48vbSsJS.vWpJY40FXdyrO1fl9JLv_yvWB8w.aHE7x_OJNu.Na0I5UQWjwEL4WRoQmu4UU0
- Jo7xyfd49UwxIYXRGNE1Vyp2yDTOTA2Gt1qOZFIOeyK4_GPHVYrNj7NpMj4WhkdSfitxoFjqNbBt
- cM8kDZUe2BUDcuKIV2BUZeSUw4H7q93xcoOz3sFkmpMAPtMYxObWoFN8BzNBuEtoJmiR7CSALjIb
- kQ96a03ZOKO8ACBLw6f1DsAz_G9HWoUjbTw553CfajNkK7m.HzCzSVN9ct3YNHzEkmnszG5LMtlM
- 6haTtLXYAkPyrXp7ESD98tVPk68UZZ83m2GcsKsVoCMeI_vkj5LPiNXTT1qgO78IuOD7rSOT0U1r
- kVWcF4g_h32KroacUKVjcPtNAPMEsuHgFQMhLtVRrLJQwGX8W1._Hfqe_yyMW3Lhohri5DUlpvEA
- kslFDz5mNooo0ik5SNLhN.GudCNDT6N8oUbhOZs7e2KgbGXDSuKX.KRz3cDmIWrVbJEmc9e0O5Ee
- 2Vzv0fLc3IpU0BITSxXnh6qRaV7Swv6NnPnPa0cwbG2ySF.fzVyZLCffq.OijS5y8Z.PUFPq0d1v
- BcicZ.jvLvHgsIil31V1yo6lxT07OG5RIzKwGBjWGAb6Z1leaGrw5vbsLhGTPii5q_Px9ZPrZzrZ
- aNF6AEsx2RamFM3n4wY6qrH5cavLK9Y4aIGbnhcBkbOHN.NqC6eCbRph6ibikkephnepjXd7m1aw
- 59tu6YGLu9LUT2OceqADE7Gh3cJI.4EM2MF.gGB13F_YS5pOhqOVQTbU89S.M9aZfTC.bPeybYif
- 6gSrRH.Evv6LW0BEIMzoClAX5rxH37jlBcGv4OVsE02yqGi8K6WLLsVy7s9jrCdMpJc7gl6OLulN
- Th1dGV7cWU7jfenR_EIxZ_.P59cs8MRlHsPGPeEy6noV4d8vhuOR0z3pYqDTX9gs9DAgIzj5DiQc
- msXs7.RoaUV.I3JMpW597lZaoIp9bez088wOuWSPHhljrPoHQX4656uv8zeIjmnTc32SQGJ5Ryzp
- Em0y0t.wdevi33tJppTocsbk3mYJmAy32fiHPuP2rsfl6FFzRSk1p2c91zZ42gdElyirijJqB5rC
- 3akTbnTDkdWHEQCUZBW79JLlemEXj1JjULWQ45ySpBLpwHPQG0xaSXR8EUIjtt5j0KV1XNCWXzXr
- Uig.wKJsm059pFQysiPSBx23cm7ejbZplNRlt9aIG963fhFPh48sTpIGMfa_OP708F8XjMIhQQdl
- thL_vqD5QEVmkP.K5teQfnyKHf3EUXB8ZuGYSTM1tQyvNyE.RHA9YFwXvckz65Sg9Qf99Sk2HMfp
- R3bkmXRTW8WI6MJ_r.8sjBRuSIoQ3AicgtryjCDQIcH34JyXV29zGI9QsjXbew49XxRqmCkB3tl9
- Q0NiVdQmkhsaaw05xN.8_4L77m7MKFKJk2347Zcim3qosM2bGDGC9y6tP2VUpz9uJ_2FcaVMdSra
- _T2jSGry8NRzqOs1s1C71jSwPg2bJZQNyVshwH3AAc88dsdUxQKdarDX4zOnPXur9jWqMqicrLeV
- D3VgMH4gr1V91gOYqh9HLXB0VH3V9e5OuLsBWWYWhOriIkbSQwivZdVwSuOaSJW2NCZad1gCB_E2
- 8myCbxtldNYasiSnunWj04gi4ISGfZ4zyaB4jVgZKtLltkOHPdajohVEDvKSa9tZCl5j1ZmfSa2B
- tGkTZhIsz1UeWd421RiqB_H51zafQNZGeLeTke3cXU5Xr2EZIe4ZV7d2atA30aKQA6qoxRJDfwWh
- QCRb1VmNcjbuLRc9A6LySyRcfvVWd2mxE7je0Bk2OU5W0g_gbXKzDN2LVcQhS7JaLX5JkCOZSuMw
- Prmso7eJLBHabWHzYkG8qR73cO47JCLDCtJep38Epn3sWLD41.UDgQrEMmLgiKQGmVvzP1fhq7pI
- t9eE5qKsdci4704PjOdnBpRAzLT7W8sf5FVn69SoiNuBkMQS7_hDPgL9b1.G2bSnqxptml6tCCOm
- YNRMSF5N5EynPKwXebHVl4vZ6KUtK955OXFmz2C8C8jnJapXFxrvpLPWXXsLr575uVqiYkg_qx5k
- DA14NX6uI60Zf4lY.12NqnLOBFDT.MVs0wVxO4w1hp8MalXRzh2.vm.tWoY75L6GKMvLvecdQW1L
- 6E0yD6T9p1rEl1oG1ZII20bK8aVN7tgzHJURKc4rjHmSimpUdJXREZcGWPb0UVYRcHWOX584FrQn
- 7QvRyjqeSqYh0FrOxeRFNnr0pCSL2QYXYRxKhsaa6ueWU4V8U5lb_pzSjRTAa1NNhX6TEiWITwmZ
- WWNQ7soQyiiPhqngYkp.HbmgICVsv3zPRQCXMXqeQhfH3AffBhrdDIs1fInNfxCMVO0sVIKkg1if
- gGUKFYAlTPKh_eThSiAJXE.Qdik8Yy1AW0_QJMoeKntvGx6uLqtQMUSI_Fvy0HwHCGa3lR_l48Bb
- XxOdsS6ggysEXWdzDM5tFOJGTWcgk3LSzbJ0HkSMnANPdTw4wd4nXeIjtvjJ_oiyOklqywSFJb6S
- v6RQn4xH2BRUrM4WP6afRE1H5xZq7X6pFxvXl6EwAb75QeG4.mZyGSDHxf.3SAsffqNr0KSMoLQD
- u37XG4k2p6npunFFAdbkawEojALepSZ5LXXkLbcRO5DoyqQvg6m1TUkooRg8aD1NUg7dgIvLQueQ
- PcF7JEb_vAqLASxYafbVhBhQC7vx.QzBdfQhIMgOL_pjUoJzllXArxRJFmDPOqvl7veoBSSZPwE4
- 32AfZe5AkWz51nWZuxXCkwVW4BkAb9QlLLxEqWmZn3UsbsIRKJAatHFN_CUmE37bdcZmDu.iDIAa
- .fsY9uf7ENKBdqUrNQNRT0kV_fEQr.oThZprJ3OlGK2Bg.j.YkC6cRSOKAKSiTeybPfSmVXqba8j
- wwNg.VyD6lggjEXWWnjEwdctDdg2J9k.FpVqbztToqTtaFeN1HjnDIPEfaT9LDBBt3pzmjlGAk8s
- lApBLKDz83LIaZWUxddO209J2DgmAJrpLwIG4sQbQReiWrByeA4LwJwkm54R_NkMyXeiOdBrO8R5
- LZ_oSALAJFHlTkiBpgs6KuqCpVgCD5y51mElUaeCYUaD8eJldDCDW7u0lauOA2stod_I6XTpqNlV
- _Qd8vdkvMTFpvbxbU8LwFTPrhlPXLZpBQZiKE_NIMKeZc_SLxyqlg5v3IzsQuNBJlUfIhdTBCIqq
- O5KuyZXEuWwyjoMFlkKk6gsbymlk0vkjQl2kSJA6LBrSG5J3lmN65G_HjQJajL2sw7ynZ9Dz5B80
- DMJFADh9xW_8INXpuH2MCt1pZvwfHP0WTIeSEBqdsNJb.GK.9BQXi6pVzSjPI5Q907NoIChGT28b
- 0912qhvqpfWYSZEHKXG1z1t8q5EsGzDlExWiqZg_SEXOftNYPjoeM37J4G0jLls25I1xi201PuNd
- WQA_7cMgOWPLGSw9bwMRq9zLV4BmAaaJUj0snc9RQP1qglItYBdmfDx8kmPYiSRn1dBchaQ2sWuF
- OrDr_p468EmWYWKWKmw_1Au91snyYrpKoboZ0SBkh9lZoI1Y_YBFbtykMg.gfLKWKucSzWVMcI6l
- KM0COc0nuER9srbo19pSfX2OAzgizQVu6pyYF1uN9oosCHxbfYGSLp_JJsChzbtKP4MHYzuhLaTH
- ecuWtkhD5Mql7p_7OYzlMne_ycCj6nvXFhIX64lYKUoR3aGsYbM0OikrMZHtRPt2OVl_awLORn9p
- yboCDRU.6jUjuKwPh6alPQT8kxY5kidysFKE_7RQlMdGHucurofpTpbgcJzLz_Uyi2YF8Hp5_tOc
- r68W8lUH3cgrE9xV6A2ocjOrec3PyAUSn1uEau5al6iT5b1.MYfNQJ.GkgMtYR.BAsdeurQiZcOp
- EtfX2lf3PeEeOcglh4kRrmFCTcVJxxYb9Pt47ti5aWR0aMJl_FJB1GJ9kuoA2s3ZZbjpquBqtPdx
- 2SWOE4B.pbHdcO76_5KxCMZ02dnq0HF7CDvg8gkOOg7jIIqbDDtAdI5lklEjHYf6nNZrzfhCFVKk
- XKK5FGFcrEvqKKEnqQFRNfDdebLbUupwd8gljU1IlPVQ5rdE2XPW2snfi5iIGL2oLVIdshge3iVD
- WqZOPZMKm1NRpMWdnCgNatwh_vIl5mWVa0dz8UOmZ0TQg63EiLZTAZISEbTfppVKfBo6Sr6P.VUG
- a97IF5Ve4i0evl5MdPir8L0gLJRKEnHaDTRwSi9Pz9jfbtScw310hRm3lDR6zygTCxUydhxA70sZ
- 7ClfxGnfOG6Ab3em4oiNR0HX8dgTlWVqZcXdt.Ver3N9WJdcy4oBoRcqsp6AdevYdgQMQioLfn6b
- hWtNZoFkgYr6zJ04BW0cX3MmEEkb6AP.XRmeqoUwyolJD_n.an0RC4jpLKjTskKa73h0.LeNV.HI
- wktSSNK5XPwX3uAZl3A5_ZXpdI3EF0fLQ0CB_Fv7i7nQi5OLOKP51mceN37mYqENb6kJ2R6Fq5tJ
- I_6L73kFq8VdeTqwHhwu_rYLM1wVjGKMuLwRIR4ijoyOyEtU2JXT_6bi8_ppaodHhZ4fJb8Tpit_
- msSQcv8cHvU9455k7jTakT8iOOh8HJcwCzAj2RXdBQjYcNpeLi_rTyk28NjnIcFh_N_voAO9Uq32
- fTS.T8xruflW22EC.J0r6PPrQYOqA7QEetxX2Ltxe2Q.62p.3ZyOOaZ5A4zk7BSNnXyb_7F7IfUk
- kyVKAdDF2TIwtbRZU3jH2Fq3MkQ8v8J1gsCZud45BW7TpNFVr40t3ioCKLOVR8fV0I1MYBEYXbNs
- 5VQURLQw9.EV0hOnMYoYEUI7mKHLUHQUAny3cKQ.1kv9OZh2qJzb6Nq3G9Qr9AaKvwC3A.urafwB
- VI67P8lFPDHlI3kOU8rs_yPmChzxKt4.iWSJ4_FkvRC.Y7HKJ1GcVeZ8ja6769kKLBlURm9ikohZ
- YLWPJYfHdTdabpjyc.8I.ALMaber8nnL3AbRACTh7Nhuhzx_MsEBDlksEFVPAJftJeFklLzxnnpv
- 6iKoRDfwxSrL2yDJsKHNN1jJqZ7yxukXNgt.047w3jGHnqiliDmRlIeLB9p97LsgNZqSdi9rWci9
- unxMKA4uO8lYZtr79uUxNBsNBpAIsEYLThbBMB7TolRd_EgxlXZPoj2GL62IhjTsLgRphSK9mRqR
- EF.ezU3cJK6GTVQj5ZG0bV0cq9gLLc1E57gmnYJzH0QJ6AoBFcPIYA40YNtcfsRzr4UegVBW8FuR
- hHBSMuYD7HjCL6AlmsL4h5fI_0c6nWs7dFI7f9piOL6Bt5KP1K7ax4UusfmEFouFs5KOk28ft3Cm
- cyPGJH34yq9JYj9ndYZBQ.wTD2BRDMYXhbR7lRms61xEv03YragdZKujNN9GIN_1wy0ttOtYJij6
- DwdYOy3mdfU1N1PhDBMuIGZom6wyMW.iHBroSobw1HRj3xKq1sJBepS95CSKorihAnS.NQOdjQD6
- iffkImxyQLzo.wqwFJmkBKJc1UNjtnq48UbIK944hC7KNKkyyJqUpk6GdGN0BUnO4VEkJytoBNhj
- Zujf.R4ZWLBRUSZIJIKkN79eix0t9DXGZAASSjqkpTCiVhZ3lw54iuxb3L6QUMxRwKIwG83ouM9h
- NgMi3AiBkSd9lUiYmcs6Z_vlV3Q0uGlHcYJf5mQTiIMWqKxLY3oWPxvUGDWFKt9oaBsDzLEFVQXE
- BkRclecBWVBzDgy3tnb7O3J2kTkOSM.NJ7sTBkQjbU0uCAQLPlhsYnOu2mPLDvJ2DnpRqeOyHO3k
- 53_6KK9WyWR1CgPpWwrnNJ83ngwVfwpdsRchz5b9rkN5PvPCXIEjFKJ16ks9BMEaXCCxU8cfSB.w
- npXo.YWhlBjQ2p1XKrqgbvn5DV47AF8AlMmWrtAWa5XP1NRFhLZAk5sfsHMO616fm97vooazO_e2
- xuQXzZGgTRoWOfIAv5aANol0c.9aFSqwdfUzLImCGOzmTsB1hkTSml3Te4t7nAuCw9GxUTFO4tuD
- rMv_FxSCztXXsk2Ar4nkprVHwMd0EbfZ3R6XKTOkMKS6H_EnirKVsCNrMi3xc8JC9q6CCcA2SIP4
- 9_THY3TvPZWkBH51yS_uky68GDo17IZczlKJgM5e7aRhamPePvgsMCPcaTQAXmbmBqBJNsBHem0K
- 3A2kZVFVmvRJO_rdVamMXzbonhus9alyOsuI2QwXWwZW8I0LT53EgariI.J3udqj3UGPdn2EGzEu
- XM0GsykFeZqfg8dS79LueddVIyeDYY_E8MpiMJInC4Kb6y8_dlbJdpgItIb3iU6EZhOMlBwFtuBb
- FVoeZZ5v8ZOT82cer4d6sK0vGp5BSnCymEkkABboFCKvYJGOjfc6KOs8i_Gx9gYHquNN9rLOY_QX
- U8JQhCxm5.5rJnrE0SO5sdc58HsuEmCw366MLGcYFmwJDS5ofdyavgEzrzm0EZfhPG86wTFmHS2Y
- G5hC_zEyKE.axbhwqzvh4xhUrCJ3DOH2v7jA._ovD_bTfXm9FGQULDj83LG7j2D9uDS4eazm2uj3
- D80LjamAiCVAqAvSETwCKT6QkoSrW48TJHyNyaMLrhfG.FXmkB8x3lvirbC8Vac0gBJuEQ7qbIGA
- 8an3D5cdZLFB8CAdC9bB9ULGIJUvDpIsHFtY97MRvP0sQynxMt2r7byiPp44gRU98t6TisdAZg8M
- MtJlnQYCqcIMdGQllP5GZZ_72pfpCQc2ZQbZ5h.1tHt1WZVrq8XpJAXu_AQs.3LSl4PdyZsSDocV
- LjhoH3tcatY.YhLZRr_OK6FqzbneB4Ih3zq4e0jQjOthuNMfau7QGZGddmiDyf7bpK_dfQEf9nYG
- edjEXNvGnyasN9wzMZuEnEvRyFyZCDWvLa8Vhm06WSsmU9QL7DLKZwe0x08AMPMp0lypThInFwGq
- fsR3ro_YNupZHjI6OTzN30fFTTHc4e0I9zi8OJ2aBtA6s6Wa8DUNzYkr5k4vdp5Ugp.ws5Wo_X0j
- 0DLdtUzSNsFPQazUIUOnco6BhcMnWkaVfdkj_tFj5YjE_SBZts3VmSmrMR4M54jhzrirOxG6TJ6O
- 0Xaz.EFjutbulSxWteJ99neSzTQQLxvrKKjHvYVM1hfsCAxBDL51iybOrxXIy55nK1sInxDeu77a
- J_f0wkO9qcI8MsVDOPgC330PWoTg3wzO.vmFIu7ehSAxZL.6._QyQxhcntKMiAxaatgDTgHVokw_
- UioXu55YXIBq3kKgVBeHdG.JByj0Pcf49HAYn2SKH3zN9SnTaPW_R4Xkrdu36Zq1MYH4p4sIyvd2
- .zI2KwktldXi_ji7UPtA4kHmPizBkBl.QeuN__UDJeiDLZM8P62Vz1eSklLt5Rp9h_h21Iz6FGFp
- Ze1SGdhMwYBVN8XSuAF_YRKJUiaZQMr_sCjYuC2R4PWlswPQ9RPm2F9Tfwb6BJckH663DHRYkFr3
- 2Gf_4Cd02ct3Cmdx9Ml5X3JIOY4nMfn89ujIbsy34Q6YraaOLQ_a0246JwQM.BECdsSnsi661V50
- e7k41Xq0VuLWQaqOTrsqeUCJCAAlynPFG9ZN.fLpDY5Kk5UBhk0x0ckC5l1_vV.PphRJPm7FyPOK
- TuPzRGIPYomZt7VheGbucTXuoq38HblJmwMJA2S0ZjFz_XoPYpzqy3t0e8RKxydXTYuYwndFIFqq
- FvjQ0nfd0eMz5Ww0VjSK.8AlvMYJHolwHbjZPsDiGPEjq0ZsO1zdiHpWUVESYTBAs3v0cdoe99gH
- cgQXMVF3s00vA31WPf0E6RJUK3QcV_rFmpZJe2SMCPBNq.p6Xk1KYziegF09jR00yGKV9nVKX73J
- LhTbgLBIjhsOGWZX4BUB4w_lboINuLgAMgJJPTskacCLJEQaw57MU_C2_A1uMlMwYQWYhMnhOkfP
- 5n4V_0igpCVvrkUE.I7pQDj8opgKi4CN41Rv5n7iZxle8q17JT2X5ypoFZHRWWlcqlFCqv4qmt1_
- pITME1aQVzlaxHIo.lW7E15MEA_g5ab7yx7RAc0Gj5wb312jNos19c79ydmDoF9jvGpvPRf87fMQ
- 6GWiadlFoxJW4JQwGUaVS.LQx0W.7ZUr_0jZ2l8X7Tfj6fBX8JIH2ZhPYEna3GnptqViOCLnFDGJ
- dJsr4aUAEkbHqapfE5O_Cp56fLMojDI_SY6knt78DyKVSbBtNVga4ssTxuPEGczZL3SaIdLckWWz
- eozIsGCyUuUyOJZnLdOlQ5g--
-X-Sonic-MF: <webtt@bcjao.in>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Sat, 20 Feb 2021 21:21:38 +0000
-Date: Sat, 20 Feb 2021 21:19:37 +0000 (UTC)
-From: Global Financial Services SA <webtt@bcjao.in>
-Message-ID: <1549399378.654079.1613855977480@mail.yahoo.com>
-In-Reply-To: <1690931966.571681.1613838430721@mail.yahoo.com>
-References: <1690931966.571681.1613838430721.ref@mail.yahoo.com> <1690931966.571681.1613838430721@mail.yahoo.com>
-Subject: We Offer 3.5% Interest Rate On Personal loans
+	by ml01.01.org (Postfix) with ESMTPS id 9814D100EF275
+	for <linux-nvdimm@lists.01.org>; Sat, 20 Feb 2021 13:56:57 -0800 (PST)
+IronPort-SDR: 1VfPVEKpzDH6xq+TDxh7NCYIT2/4uXZnxw4dwq5F56r68PdZEU+BktNi3TlIXEBgNxrIkjOsNs
+ X7v/GrRD6DRw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9901"; a="203480424"
+X-IronPort-AV: E=Sophos;i="5.81,193,1610438400";
+   d="scan'208";a="203480424"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2021 13:56:56 -0800
+IronPort-SDR: ikalQYO+NUG6LwPKxGUsVz2zehEYdZR8tpl7eBur99Bat7zOpmrK1Nv8jo4zm7iE2GYSTCnpYi
+ Y1RHgj88+DOg==
+X-IronPort-AV: E=Sophos;i="5.81,193,1610438400";
+   d="scan'208";a="379397680"
+Received: from aevangel-mobl.amr.corp.intel.com (HELO bwidawsk-mobl5.local) ([10.252.134.76])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2021 13:56:56 -0800
+From: Ben Widawsky <ben.widawsky@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+	linux-cxl@vger.kernel.org,
+	linux-nvdimm@lists.01.org
+Subject: [PATCH] cxl/mem: Fixes to IOCTL interface
+Date: Sat, 20 Feb 2021 13:56:41 -0800
+Message-Id: <20210220215641.604535-1-ben.widawsky@intel.com>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-X-Mailer: WebService/1.1.17712 YMailNorrin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36
-Message-ID-Hash: KAMZAZZAJISTAMSP6TMEAKREVB52MAAR
-X-Message-ID-Hash: KAMZAZZAJISTAMSP6TMEAKREVB52MAAR
-X-MailFrom: webtt@bcjao.in
+Message-ID-Hash: SLM35BIM5IDYTVKSJPNYX7FUOMRN234E
+X-Message-ID-Hash: SLM35BIM5IDYTVKSJPNYX7FUOMRN234E
+X-MailFrom: ben.widawsky@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Alison Schofield <alison.schofield@intel.com>, Ben Widawsky <ben.widawsky@intel.com>, Al Viro <viro@zeniv.linux.org.uk>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Global Financial Services SA <global.fs.za@webmail.co.za>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KAMZAZZAJISTAMSP6TMEAKREVB52MAAR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SLM35BIM5IDYTVKSJPNYX7FUOMRN234E/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-IEdyZWV0aW5ncywNCg0KDQoNCsKgDQoNClRvIFdob20gSXQgTWF5IENvbmNlcm4sDQoNCsKgDQoN
-CldlLCB0aGUgR2xvYmFsIEZpbmFuY2lhbCBTZXJ2aWNlcyBhcmVvZmZlcmluZyBsb2FucyBhdCBh
-IHZlcnkgbG93IGludGVyZXN0IHJhdGUgb2bCoDMuNSXCoHBlciB5ZWFyLldlIG9mZmVyIFBlcnNv
-bmFsIGxvYW5zLCBEZWJ0IENvbnNvbGlkYXRpb24gTG9hbiwgVmVudHVyZSBDYXBpdGFsLCBCdXNp
-bmVzc0xvYW4sIEVkdWNhdGlvbiBMb2FuLCBIb21lIExvYW4gb3IgIkxvYW4gZm9yIGFueSByZWFz
-b24gYW5kIGZvciBhbGxjaXRpemVucyBhbmQgbm9uLWNpdGl6ZW5zIHdpdGggZWl0aGVyIGEgZ29v
-ZCBvciBiYWQgY3JlZGl0IGhpc3RvcnkuDQoNCsKgDQoNCkhhdmUgeW91IGJlZW4gdHVybmVkIGRv
-d24gYnkgeW91ciBiYW5rPyBEb3lvdSBoYXZlIGJhZCBjcmVkaXQ/IERvIHlvdSBoYXZlIHVucGFp
-ZCBiaWxscz8gQXJlIHlvdSBpbiBkZWJ0PyBCbGFja2xpc3RlZD9BcmUgeW91IHVuZGVyIERlYnQg
-cmV2aWV3PyBEbyB5b3UgbmVlZCB0byBzZXQgdXAgYSBidXNpbmVzcz8gV29ycnkgbm8gbW9yZSBh
-c3dlIGFyZSBoZXJlIHRvIG9mZmVyIHlvdSBhIGxvdyBpbnRlcmVzdCBsb2FuLg0KDQrCoA0KDQpP
-dXIgbG9hbiByYW5nZXMgZnJvbcKgVVMkMiwgMDAwLjAwwqAoVHdvIFRob3VzYW5kVW5pdGVkIFN0
-YXRlcyBEb2xsYXJzKSB0b8KgVVMkMjUsMDAwLDAwMC4wMMKgKFR3ZW50eSBGaXZlIE1pbGxpb24g
-VW5pdGVkIFN0YXRlcyBEb2xsYXJzKS4NCg0KwqANCg0KTG9jYWxseSBvdXIgbG9hbiByYW5nZXMg
-ZnJvbcKgUjE1LCAwMDAuMDDCoChGaWZ0ZWVuVGhvdXNhbmQgUmFuZCkgdXAgdG8gdGhlIHN1bSBv
-ZsKgUjI1LCAwMDAsMDAwLjAwKHR3ZW50eS1GaXZlTWlsbGlvbiBSYW5kKS4NCg0KwqANCg0KwqAN
-Cg0KSWYgeW91IGFyZSBpbnRlcmVzdGVkIGtpbmRseWNvbnRhY3QgdXMgd2l0aCB5b3VyOg0KDQox
-LiBGdWxsIE5hbWVzDQoNCjIuIENvbnRhY3QgQWRkcmVzcw0KDQozLiBPY2N1cGF0aW9uDQoNCjQu
-IENvbnRhY3QgVGVsZXBob25lTnVtYmVycw0KDQo1LiBUeXBlIG9mIGxvYW4NCg0KNi4gTG9hbiBB
-bW91bnQNCg0KNy4gRHVyYXRpb24gb2YgcmVwYXltZW50DQoNCsKgDQoNCkRvIG5vdCBoZXNpdGF0
-ZSB0byBjb250YWN0IHVzIG9uIHRoZXRlbGVwaG9uZSBhbmQgZW1haWwgYWRkcmVzcyBiZWxvdyBm
-b3IgZnVydGhlciBjbGFyaWZpY2F0aW9uKHMpIGVtYWlsIHVzYXQ6wqBnbG9iYWwuZnMuemFAY29u
-c3VsdGFudC5jb23CoA0KDQpNcnNNaWNoZWxsZSBBbGluZGE6DQoNClRlbC9XaGF0c0FwcDrCoMKg
-KzI3IDcxwqA4MTc4MTk0Lg0KDQrCoA0KDQpXYXJtIFJlZ2FyZHMsDQoNCkN1c3RvbWVyIFNlcnZp
-Y2UNCg0KR2xvYmFsIEZpbmFuY2lhbCBTZXJ2aWNlc1B0eSBTb3V0aCBBZnJpY2EuDQoNCiAgCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGlt
-bSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmli
-ZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+When submitting a command for userspace, input and output payload bounce
+buffers are allocated. For a given command, both input and output
+buffers may exist and so when allocation of the input buffer fails, the
+output buffer must be freed. As far as I can tell, userspace can't
+easily exploit the leak to OOM a machine unless the machine was already
+near OOM state.
+
+This bug was introduced in v5 of the patch and did not exist in prior
+revisions.
+
+While here, adjust the variable 'j' found in patch review by Konrad.
+
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com> (v2)
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/cxl/mem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+index df895bcca63a..626fd7066f4f 100644
+--- a/drivers/cxl/mem.c
++++ b/drivers/cxl/mem.c
+@@ -514,8 +514,10 @@ static int handle_mailbox_cmd_from_user(struct cxl_mem *cxlm,
+ 	if (cmd->info.size_in) {
+ 		mbox_cmd.payload_in = vmemdup_user(u64_to_user_ptr(in_payload),
+ 						   cmd->info.size_in);
+-		if (IS_ERR(mbox_cmd.payload_in))
++		if (IS_ERR(mbox_cmd.payload_in)) {
++			kvfree(mbox_cmd.payload_out);
+ 			return PTR_ERR(mbox_cmd.payload_in);
++		}
+ 	}
+ 
+ 	rc = cxl_mem_mbox_get(cxlm);
+@@ -696,7 +698,7 @@ static int cxl_query_cmd(struct cxl_memdev *cxlmd,
+ 	struct device *dev = &cxlmd->dev;
+ 	struct cxl_mem_command *cmd;
+ 	u32 n_commands;
+-	int j = 0;
++	int cmds = 0;
+ 
+ 	dev_dbg(dev, "Query IOCTL\n");
+ 
+@@ -714,10 +716,10 @@ static int cxl_query_cmd(struct cxl_memdev *cxlmd,
+ 	cxl_for_each_cmd(cmd) {
+ 		const struct cxl_command_info *info = &cmd->info;
+ 
+-		if (copy_to_user(&q->commands[j++], info, sizeof(*info)))
++		if (copy_to_user(&q->commands[cmds++], info, sizeof(*info)))
+ 			return -EFAULT;
+ 
+-		if (j == n_commands)
++		if (cmds == n_commands)
+ 			break;
+ 	}
+ 
+-- 
+2.30.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
