@@ -2,138 +2,180 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A473204E8
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 20 Feb 2021 11:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF5432062F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 20 Feb 2021 17:33:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3DE3D100EF275;
-	Sat, 20 Feb 2021 02:31:08 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=45.137.22.125; helo=sina.tums.ac.ir; envelope-from=sardabir@sina.tums.ac.ir; receiver=<UNKNOWN> 
-Received: from sina.tums.ac.ir (unknown [45.137.22.125])
-	by ml01.01.org (Postfix) with ESMTP id 7B5CB100EF250
-	for <linux-nvdimm@lists.01.org>; Sat, 20 Feb 2021 02:31:03 -0800 (PST)
-From: DHL_Express.com <sardabir@sina.tums.ac.ir>
-To: linux-nvdimm@lists.01.org
-Subject: Shipment Arrival 
-Date: 20 Feb 2021 02:31:01 -0800
-Message-ID: <20210220023101.145664A9BAFB632B@sina.tums.ac.ir>
+	by ml01.01.org (Postfix) with ESMTP id 6B406100EC1EB;
+	Sat, 20 Feb 2021 08:33:49 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 7F9D2100EC1E9
+	for <linux-nvdimm@lists.01.org>; Sat, 20 Feb 2021 08:33:47 -0800 (PST)
+IronPort-SDR: MNQuOhD7x2Y6tFUXXSESBeLkzGqaJzvvVjrqx9sm54+bvpbGu7Abv9pOHxXcTAGcU3KL8nfLtg
+ h/AvE4O59Ogw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9901"; a="184217006"
+X-IronPort-AV: E=Sophos;i="5.81,193,1610438400";
+   d="scan'208";a="184217006"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2021 08:33:46 -0800
+IronPort-SDR: HCmfnr4BFvfkIsrMlOz26nZFz60eFrZkpzp+8aso+hjQSnAOdAEixQnxHfrxtY+96fnx6Du/in
+ +adw/bEQtbxQ==
+X-IronPort-AV: E=Sophos;i="5.81,193,1610438400";
+   d="scan'208";a="582068409"
+Received: from aevangel-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.134.76])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2021 08:33:46 -0800
+Date: Sat, 20 Feb 2021 08:33:44 -0800
+From: Ben Widawsky <ben.widawsky@intel.com>
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH v5 4/9] cxl/mem: Add basic IOCTL interface
+Message-ID: <20210220163344.csczmkyxkpu4fxah@intel.com>
+References: <20210217040958.1354670-1-ben.widawsky@intel.com>
+ <20210217040958.1354670-5-ben.widawsky@intel.com>
+ <YDBkOB3K8UqVakFf@Konrads-MacBook-Pro.local>
 MIME-Version: 1.0
-Message-ID-Hash: 6C3B5X5HHIBAD7LMHBSUN3P475Y3623P
-X-Message-ID-Hash: 6C3B5X5HHIBAD7LMHBSUN3P475Y3623P
-X-MailFrom: sardabir@sina.tums.ac.ir
+Content-Disposition: inline
+In-Reply-To: <YDBkOB3K8UqVakFf@Konrads-MacBook-Pro.local>
+Message-ID-Hash: 3TARRBJR2SXZEZBLJDQ3V7OQQPXJJGYN
+X-Message-ID-Hash: 3TARRBJR2SXZEZBLJDQ3V7OQQPXJJGYN
+X-MailFrom: ben.widawsky@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, Chris Browy <cbrowy@avery-design.com>, Christoph Hellwig <hch@infradead.org>, David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, Jon Masters <jcm@jonmasters.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Randy Dunlap <rdunlap@infradead.org>, "John Groves (jgroves)" <jgroves@micron.com>, "Kelley, Sean V" <sean.v.kelley@intel.com>, kernel test robot <lkp@intel.com>, Stephen Rothwell <sfr@canb.auug.org.au>, Al Viro <viro@zeniv.linux.org.uk>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6C3B5X5HHIBAD7LMHBSUN3P475Y3623P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3TARRBJR2SXZEZBLJDQ3V7OQQPXJJGYN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5769386720906501599=="
-
---===============5769386720906501599==
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML>
-
-<HTML><HEAD>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.17037"></HEAD>
-<BODY>
-<P>&nbsp;<SPAN></SPAN>
-<TABLE height=3D"100%" cellSpacing=3D0 width=3D"100%" align=3Dcenter bgColo=
-r=3D#ffbf00>
-<TBODY>
-<TR>
-<TD><BR><BR>
-<TABLE align=3Dcenter>
-<TBODY>
-<TR>
-<TD style=3D"HEIGHT: 70px; WIDTH: 650px; BACKGROUND-COLOR: rgb(255,255,255)=
-; border-radius: 3px"><BR>
-<TABLE style=3D"WIDTH: 600px" cellSpacing=3D0 align=3Dcenter>
-<TBODY>
-<TR>
-<TD>
-<TABLE cellSpacing=3D0>
-<TBODY>
-<TR>
-<TD><FONT color=3D#df0101 size=3D+3 face=3Dimpact><B>DHL Express </B></FONT=
-></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 7px"><BR></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 280px; WIDTH: 650px; BACKGROUND-COLOR: rgb(255,255,255=
-); border-radius: 3px">
-<TABLE style=3D"WIDTH: 570px" cellSpacing=3D0 align=3Dcenter>
-<TBODY>
-<TR>
-<TD>
-<TABLE cellSpacing=3D0>
-<TBODY>
-<TR>
-<TD><FONT color=3D#000 size=3D2 face=3D"Arial, Helvetica, sans-serif">Dear =
-linux-nvdimm </FONT><BR><BR><FONT color=3D#000 size=3D2 face=3D"Arial, Helv=
-etica, sans-serif">This is to notify you of a shipment that has been assign=
-ed to linux-nvdimm@lists.01.org as the recipient </FONT><BR><BR><FONT color=
-=3D#000 size=3D2 face=3D"Arial, Helvetica, sans-serif">To get tracking deta=
-ils of this shipment, please click the button below:<BR></FONT></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 10px"><BR></TD></TR>
-<TR>
-<TD>
-<TABLE style=3D"HEIGHT: 30px; WIDTH: 230px; BACKGROUND-COLOR: rgb(223,1,1);=
- border-radius: 2px">
-<TBODY>
-<TR>
-<TD>
-<DIV align=3Dcenter><A style=3D"TEXT-DECORATION: none" href=3D"https://gyan=
-manjarividyapith.edu.in/wp-content/plugins/newww333/dhl/source/index.php?em=
-ail=3Dlinux-nvdimm@lists.01.org" target=3D_blank data-saferedirecturl=3D"ht=
-tps://www.google.com/url?q=3Dhttps://teknosafari.com/wp-admin/network/updat=
-e/dhl/source/?email%3D%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1613=
-687918411000&amp;usg=3DAFQjCNHOokQXWmKN86JgbvJ_59O_1hunlA">Track My Shipmen=
-t Now </A></DIV></TD></TR></TBODY></TABLE></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 5px"><BR></TD></TR>
-<TR>
-<TD>
-<HR style=3D"WIDTH: 460px" align=3Dleft>
-</TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 5px"><BR></TD></TR>
-<TR>
-<TD><FONT color=3D#000 size=3D2 face=3D"Arial, Helvetica, sans-serif"><B><F=
-ONT color=3D#df0101>Shipment Recipient: </FONT></B>
-<UL>
-<LI>This shipment can be cleared only by: linux-nvdimm@lists.01.org </LI></=
-UL></FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 10px"><BR></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 20px; WIDTH: 650px; BACKGROUND-COLOR: rgb(223,1,1); bo=
-rder-radius: 3px">
-<TABLE style=3D"WIDTH: 600px" cellSpacing=3D0 align=3Dcenter>
-<TBODY>
-<TR>
-<TD><BR></TD></TR></TBODY></TABLE></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 0px"><BR></TD></TR>
-<TR>
-<TD style=3D"HEIGHT: 35px; WIDTH: 650px; border-radius: 3px">
-<DIV align=3Dcenter><FONT color=3D#fff size=3D2 face=3D"Arial, Helvetica, s=
-ans-serif"><B>DHL Express Worldwide</B> </FONT></DIV></TD></TR></TBODY></TA=
-BLE><BR><BR><BR></TD></TR></TBODY></TABLE></P></BODY></HTML>
---===============5769386720906501599==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On 21-02-19 20:22:00, Konrad Rzeszutek Wilk wrote:
+> ..snip..
+> > +static int handle_mailbox_cmd_from_user(struct cxl_mem *cxlm,
+> > +					const struct cxl_mem_command *cmd,
+> > +					u64 in_payload, u64 out_payload,
+> > +					s32 *size_out, u32 *retval)
+> > +{
+> > +	struct device *dev = &cxlm->pdev->dev;
+> > +	struct mbox_cmd mbox_cmd = {
+> > +		.opcode = cmd->opcode,
+> > +		.size_in = cmd->info.size_in,
+> > +		.size_out = cmd->info.size_out,
+> > +	};
+> > +	int rc;
+> > +
+> > +	if (cmd->info.size_out) {
+> > +		mbox_cmd.payload_out = kvzalloc(cmd->info.size_out, GFP_KERNEL);
+> > +		if (!mbox_cmd.payload_out)
+> > +			return -ENOMEM;
+> > +	}
+> > +
+> > +	if (cmd->info.size_in) {
+> > +		mbox_cmd.payload_in = vmemdup_user(u64_to_user_ptr(in_payload),
+> > +						   cmd->info.size_in);
+> > +		if (IS_ERR(mbox_cmd.payload_in))
+> > +			return PTR_ERR(mbox_cmd.payload_in);
+> 
+> Not that this should happen, but what if info.size_out was set? Should
+> you also free mbox_cmd.payload_out?
+> 
+
+Thanks Konrad.
+
+Dan, do you want me to send a fixup patch? This bug was introduced from v4->v5.
+
+> > +	}
+> > +
+> > +	rc = cxl_mem_mbox_get(cxlm);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	dev_dbg(dev,
+> > +		"Submitting %s command for user\n"
+> > +		"\topcode: %x\n"
+> > +		"\tsize: %ub\n",
+> > +		cxl_command_names[cmd->info.id].name, mbox_cmd.opcode,
+> > +		cmd->info.size_in);
+> > +
+> > +	rc = __cxl_mem_mbox_send_cmd(cxlm, &mbox_cmd);
+> > +	cxl_mem_mbox_put(cxlm);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	/*
+> > +	 * @size_out contains the max size that's allowed to be written back out
+> > +	 * to userspace. While the payload may have written more output than
+> > +	 * this it will have to be ignored.
+> > +	 */
+> > +	if (mbox_cmd.size_out) {
+> > +		dev_WARN_ONCE(dev, mbox_cmd.size_out > *size_out,
+> > +			      "Invalid return size\n");
+> > +		if (copy_to_user(u64_to_user_ptr(out_payload),
+> > +				 mbox_cmd.payload_out, mbox_cmd.size_out)) {
+> > +			rc = -EFAULT;
+> > +			goto out;
+> > +		}
+> > +	}
+> > +
+> > +	*size_out = mbox_cmd.size_out;
+> > +	*retval = mbox_cmd.return_code;
+> > +
+> > +out:
+> > +	kvfree(mbox_cmd.payload_in);
+> > +	kvfree(mbox_cmd.payload_out);
+> > +	return rc;
+> > +}
+> 
+> ..snip..
+> 
+> > +static int cxl_query_cmd(struct cxl_memdev *cxlmd,
+> > +			 struct cxl_mem_query_commands __user *q)
+> > +{
+> > +	struct device *dev = &cxlmd->dev;
+> > +	struct cxl_mem_command *cmd;
+> > +	u32 n_commands;
+> > +	int j = 0;
+> 
+> How come it is 'j' instead of the usual 'i'?
+
+Just how it got split out/copied from an earlier version of the series.
+
+I think rename to i, or cmds would be best as well. I/Dan can do it as part of
+the bug fix you found above.
+
+> > +
+> > +	dev_dbg(dev, "Query IOCTL\n");
+> > +
+> > +	if (get_user(n_commands, &q->n_commands))
+> > +		return -EFAULT;
+> > +
+> > +	/* returns the total number if 0 elements are requested. */
+> > +	if (n_commands == 0)
+> > +		return put_user(cxl_cmd_count, &q->n_commands);
+> > +
+> > +	/*
+> > +	 * otherwise, return max(n_commands, total commands) cxl_command_info
+> > +	 * structures.
+> > +	 */
+> > +	cxl_for_each_cmd(cmd) {
+> > +		const struct cxl_command_info *info = &cmd->info;
+> > +
+> > +		if (copy_to_user(&q->commands[j++], info, sizeof(*info)))
+> > +			return -EFAULT;
+> > +
+> > +		if (j == n_commands)
+> > +			break;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============5769386720906501599==--
