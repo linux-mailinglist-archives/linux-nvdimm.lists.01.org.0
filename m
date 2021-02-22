@@ -2,61 +2,44 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89F7321E8A
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Feb 2021 18:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 784DE321F1F
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Feb 2021 19:27:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E3D1100EB83D;
-	Mon, 22 Feb 2021 09:53:18 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::144; helo=mail-lf1-x144.google.com; envelope-from=davidheiser4568@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id DFA85100EB842;
+	Mon, 22 Feb 2021 10:27:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=176.126.240.207; helo=cavan.codon.org.uk; envelope-from=mjg59@codon.org.uk; receiver=<UNKNOWN> 
+Received: from cavan.codon.org.uk (cavan.codon.org.uk [176.126.240.207])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4AA4E100EB83C
-	for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 09:53:15 -0800 (PST)
-Received: by mail-lf1-x144.google.com with SMTP id p21so7028028lfu.11
-        for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 09:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=n3eH8fc7c63400pMFay9v4NYcLZ+o0vJKsl88V8S4Zg=;
-        b=Lc5cM7iHAG/fCwsxyCBON+72NWRqTjdcXQ37KsesMNQRSSqNi3GhZA06aF1nxK3cW2
-         KPSnjozIEcDr9CWyO5IS0zipNGSBseUiUIOwrKTS1SqMuIWeODYOhc+I2c3c0D3MgQRA
-         q2OEsOAf0A3SnerfXsx/9hYim8LP8rPGr7EDK8jpxqZRjIhp2nrvoEhU6ZjzxVG5E+o+
-         DZo0ENCEE39N/ReWySWodt1T7mo1fc7v36I8byNj3ZHkXJdDch+tnVVryKmVKthYku2J
-         2HXfq0fPwrZoUGEQUXTVUJsWDj2/PIJRpYXoAsgIocCkDvA+qNBZAqLzwILBcLeoEJ/b
-         G2Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=n3eH8fc7c63400pMFay9v4NYcLZ+o0vJKsl88V8S4Zg=;
-        b=LsOiJ6zqqvKcgW/3fkYItv+kuJULATnbw11wn36jQzqsRl0ugM3KuzRP+2gQqBydnU
-         R5YyCfMcJ8UYiypS/guDQqk6bDF/lXX3v42kBrVYFmUTsORw9m0jhTmlo/vc9RJg9Ffa
-         mQZ0awybcJYvuHvibVsxo2nuPNEdal08ZhJ1vfGT5nWGvffePAN64CdTlwaanx3Y08ln
-         p53PYNvGcEjcGhAqL7n+T0ugg+0obUavLKjLT7CNt8cGKnyeqpdFePVHgukxK9Nof7Tv
-         pY7o2363oYP2ShGBObifk+MjKfMoTppZ74QWFBhvksIac47g8yVOF/9i/75MS9223LWE
-         Fzew==
-X-Gm-Message-State: AOAM532Vl80HCVBoaVO4edob6firZBZaw+OxzId3r+jTol+TBsWcbPF2
-	0wnP5btIvv7WZZJTaP2UQvNU2OFp0efDIV4V06A=
-X-Google-Smtp-Source: ABdhPJx9G8NgrdU1VtDNaZfSe4+hVzo3Crdz1mFUHTb6REXg42OHt+i19FBLJd0S9ecA+NsvAVs6nKKmwGdpIVIwlCM=
-X-Received: by 2002:a05:6512:3194:: with SMTP id i20mr14633840lfe.283.1614016393316;
- Mon, 22 Feb 2021 09:53:13 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id CB2DE100EB831
+	for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 10:27:20 -0800 (PST)
+Received: by cavan.codon.org.uk (Postfix, from userid 1000)
+	id 2000340A21; Mon, 22 Feb 2021 18:27:18 +0000 (UTC)
+Date: Mon, 22 Feb 2021 18:27:18 +0000
+From: Matthew Garrett <mjg59@srcf.ucam.org>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v17 08/10] PM: hibernate: disable when there are active
+ secretmem users
+Message-ID: <20210222182718.GA15105@codon.org.uk>
+References: <20210208084920.2884-1-rppt@kernel.org>
+ <20210208084920.2884-9-rppt@kernel.org>
+ <20210222073452.GA30403@codon.org.uk>
+ <20210222102359.GE1447004@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a19:7dc2:0:0:0:0:0 with HTTP; Mon, 22 Feb 2021 09:53:12
- -0800 (PST)
-From: Mark Jackson <davidheiser4568@gmail.com>
-Date: Mon, 22 Feb 2021 09:53:12 -0800
-Message-ID: <CABH_sfJEcnGnLbgED+zHQh559sb7sSU6Jvm4xwkASVwt5GicWw@mail.gmail.com>
-Subject: Your ATM CARD For Compensation
-To: undisclosed-recipients:;
-Message-ID-Hash: KRT7T4CBQF2R4KLQEENRDEV3K27LKUFS
-X-Message-ID-Hash: KRT7T4CBQF2R4KLQEENRDEV3K27LKUFS
-X-MailFrom: davidheiser4568@gmail.com
+Content-Disposition: inline
+In-Reply-To: <20210222102359.GE1447004@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: KF5C5BPBMZB4DIFVJN5WPONXUBBPKNQB
+X-Message-ID-Hash: KF5C5BPBMZB4DIFVJN5WPONXUBBPKNQB
+X-MailFrom: mjg59@codon.org.uk
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleix
+ ner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KRT7T4CBQF2R4KLQEENRDEV3K27LKUFS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KF5C5BPBMZB4DIFVJN5WPONXUBBPKNQB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -65,44 +48,22 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-My Dear Friend
+On Mon, Feb 22, 2021 at 12:23:59PM +0200, Mike Rapoport wrote:
+> On Mon, Feb 22, 2021 at 07:34:52AM +0000, Matthew Garrett wrote:
+> > On Mon, Feb 08, 2021 at 10:49:18AM +0200, Mike Rapoport wrote:
+> > 
+> > > It is unsafe to allow saving of secretmem areas to the hibernation
+> > > snapshot as they would be visible after the resume and this essentially
+> > > will defeat the purpose of secret memory mappings.
+> > 
+> > Sorry for being a bit late to this - from the point of view of running
+> > processes (and even the kernel once resume is complete), hibernation is
+> > effectively equivalent to suspend to RAM. Why do they need to be handled
+> > differently here?
+> 
+> Hibernation leaves a copy of the data on the disk which we want to prevent.
 
-This letter is to acknowledge the substantial contributions of time and
-energy you have made in trying to assist to claim the fund through
-your account, despite that it failed us because of your inability to
-continue financing the transaction.
-
-Besides I'm happy to inform you that I have succeeded in transferring
-the fund out of my home Country with the help of a new partner from
-Tuvalu.
-
-I am now in Tuvalu for investment and Tuvalu is composed of 9 coral
-atolls along a 360 mile chain in Polynesia. They gained independence
-in 1978 the former Ellice Islands.
-
-Therefore in appreciation of your earlier assistance, I have decided to
-compensate you with the sum of $850.000.00 USD which I raised in ATM
-CARD on your favour.
-
-This fund I have given to you has been deposited with a bank which has
-already opened an account and issued to you ATM CARD worth
-US$850.000.00 (Eight Hundred and Fifty Thousand United States Dollars)
-The ATM CARD is withdrawable from any ATM Machine in the world.
-
-So feel free and contact my Personal assistance (PA) in Benin
-Republic, his name is Mr.Stephen Pena
-
-Address: Carre 1299, Ste Rita City
-Cotonou,Benin Republic
-
-Email: ( spenaneoris@gmail.com )
-
-and instruct him to send the ATM CARD to you.
-
-Please do let me know immediately you receive it.
-
-Regards,
-Mr.Mark Jackson
+Who are you worried about seeing it, and at what points in time?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
