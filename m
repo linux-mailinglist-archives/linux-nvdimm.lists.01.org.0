@@ -2,78 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43D6321A60
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Feb 2021 15:32:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F689321C77
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Feb 2021 17:12:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1FF92100EB82B;
-	Mon, 22 Feb 2021 06:32:28 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.79; helo=aserp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E1193100EB833;
+	Mon, 22 Feb 2021 08:12:20 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0E58B100EBB62
-	for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 06:32:24 -0800 (PST)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11MEOrhM169678;
-	Mon, 22 Feb 2021 14:32:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- cc : references : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=2wEpOLBLEvqyWBLRlyo2oyjO8rpsGnpavVUMVu9O5jU=;
- b=PbJVQuI9Spl8Zg5ReN4mTdiPcgLixoc/ZSFknmtrs1xSpAUY+1u7Y/VwnJFRAMKWMIy6
- mahIk5vG86gGArnGvoJB9z9dVH8ntpq90cngPvxq/CE/FrThOQ7UuvOAe54DW/u/nQ06
- S1AD50rSyfIDoFH90vF1/9tZWogTKBfvMhaElA0x4iTRLZQaTU0xfbeAF8L1W6HYS3IG
- bqpDKedl3S+bueJYAnbh1LfbByMxdO1CneRn77bj8TJ7ikQsGG0cJCYNiJS2QlF/2ErK
- c0AbWxXeHupzv6hUC4lVDoLI1NJ3cuIiuJsqbUJX6A5yhgaVhBCmFeUijVZ6KCJ/0Bza vg==
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-	by aserp2130.oracle.com with ESMTP id 36tqxbbwmd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Feb 2021 14:32:15 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 11MEQPoQ189482;
-	Mon, 22 Feb 2021 14:32:13 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by userp3030.oracle.com with ESMTP id 36ucbw5mep-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Feb 2021 14:32:13 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 11MEW80c028890;
-	Mon, 22 Feb 2021 14:32:09 GMT
-Received: from [10.175.205.179] (/10.175.205.179)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Mon, 22 Feb 2021 06:32:08 -0800
-Subject: Re: [PATCH RFC 0/9] mm, sparse-vmemmap: Introduce compound pagemaps
-From: Joao Martins <joao.m.martins@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20201208172901.17384-1-joao.m.martins@oracle.com>
- <CAPcyv4gQQ03-nhBNwLK6KDc953SVD1rOs7HFBo_Mu9LFTkXRgw@mail.gmail.com>
- <ca888299-c576-567b-e6c3-5df3bcd8ca51@oracle.com>
-Message-ID: <872eec38-3c18-72dd-c5c6-147c02ae33d1@oracle.com>
-Date: Mon, 22 Feb 2021 14:32:04 +0000
+	by ml01.01.org (Postfix) with ESMTPS id 15AFA100EB82B
+	for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 08:12:18 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id h25so9077898eds.4
+        for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 08:12:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=emGlnXqclXarc6XinJzjsJwBcr9ep89p4hBrZ50PBUk=;
+        b=HOfGy23TaiAXDhDXx6MF/w8gWpPG5jL9XO/SQfdnS4xfWn53XErZxVptHXfiEmec1z
+         1DL2H5n6TC3X5AkERzAoWecGjOK425BHGyQv25Yu/R7rBRkka6KdGkaTmfa1USmK+zlz
+         LrLDQuvbedGO2basfUH4ot9xU2OdYcWFLNK2W9qpB8Gcy1YnZBPCF5+9SRzg3eNHXwCg
+         ib8Cb2IlOp18alWhJMP8n0+wMF1zfkeVf3z29yAaBJ+fo9vyFAIjcBAnF/wnB11NJeYF
+         K7dKdfH6nZjrd3LCTLDa/rYV2/o6HNzPhlOtiWVceN58xD1AIy/U/OXUjmKnJhstuGti
+         eYUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=emGlnXqclXarc6XinJzjsJwBcr9ep89p4hBrZ50PBUk=;
+        b=sm3MilJRj5Clf4MEuLlr6YjqE9C1U8Mw3glDSeetevk+2c5h+PFg/qTZskOqzjSblJ
+         SiRg6VdtAZzq6zhxeGv4LtNggnqU3/hqGb8FT8P/ddztKIdBn+U5NPOjkABmRuOzkGQc
+         WG+0mw4MaFcom33+AVoQ/Xk/tN1ZVZpmIl1AX3QxPa/TCUco50CjPfscfVHvGF5WidC9
+         U5ExwqVbHgXE74pagFmCd2Si9E+a93yqL3X5RhdeOSo1lJDT3KKKPmPrueMFQ5AwK4K6
+         WJz48hMG699h9yzfkrm81YNDU0AVfaJ/IzhVmcVezjsdylVNCufROtPjEUDJYJjh7Y8T
+         /fEg==
+X-Gm-Message-State: AOAM533OosqOCS1DpPBWNKWzaa7FsQ5pmYvFDShDvE6mwQ6EGL5q4JAx
+	xV3L5cVng7RjPAntrW8wIWxu1edIcHTMDrE7fJX+rQ==
+X-Google-Smtp-Source: ABdhPJzkbvr0lPYEuSyq3XzUq/hFn7o16di5v9Gr3bliZj4j+tNNJhDD+5mQGRMaYPMJBCwjYSnLAXoc2rxZaBbgCa0=
+X-Received: by 2002:aa7:d315:: with SMTP id p21mr21752804edq.300.1614010337292;
+ Mon, 22 Feb 2021 08:12:17 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <ca888299-c576-567b-e6c3-5df3bcd8ca51@oracle.com>
-Content-Language: en-US
-X-Proofpoint-IMR: 1
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9902 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- phishscore=0 spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102220134
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9902 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0 phishscore=0
- mlxlogscore=999 malwarescore=0 clxscore=1015 suspectscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2102220134
-Message-ID-Hash: JIHA5YBI3KWTQUO5WQALUK4M4VLHEX73
-X-Message-ID-Hash: JIHA5YBI3KWTQUO5WQALUK4M4VLHEX73
-X-MailFrom: joao.m.martins@oracle.com
+References: <20210220215641.604535-1-ben.widawsky@intel.com>
+ <CAPcyv4gfoe=QGuKV19ay51D-cqzRqTMLpD-p5whnJbYkKoGtBA@mail.gmail.com> <20210221034703.ncetonon7iseqd72@intel.com>
+In-Reply-To: <20210221034703.ncetonon7iseqd72@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 22 Feb 2021 08:12:12 -0800
+Message-ID: <CAPcyv4jx67uyiypbkM-Yd-yTMw-tcrKkkH3YdjkjBa3m2XXF0g@mail.gmail.com>
+Subject: Re: [PATCH] cxl/mem: Fixes to IOCTL interface
+To: Ben Widawsky <ben.widawsky@intel.com>
+Message-ID-Hash: DWTUJKD2OCXJLTEY3QAHBAHDIM5QCLVM
+X-Message-ID-Hash: DWTUJKD2OCXJLTEY3QAHBAHDIM5QCLVM
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+CC: linux-cxl@vger.kernel.org, linux-nvdimm <linux-nvdimm@lists.01.org>, Alison Schofield <alison.schofield@intel.com>, Al Viro <viro@zeniv.linux.org.uk>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JIHA5YBI3KWTQUO5WQALUK4M4VLHEX73/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DWTUJKD2OCXJLTEY3QAHBAHDIM5QCLVM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -82,102 +68,44 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Sat, Feb 20, 2021 at 7:47 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+>
+> On 21-02-20 18:38:36, Dan Williams wrote:
+> > On Sat, Feb 20, 2021 at 1:57 PM Ben Widawsky <ben.widawsky@intel.com> wrote:
+> > >
+> > > When submitting a command for userspace, input and output payload bounce
+> > > buffers are allocated. For a given command, both input and output
+> > > buffers may exist and so when allocation of the input buffer fails, the
+> > > output buffer must be freed. As far as I can tell, userspace can't
+> > > easily exploit the leak to OOM a machine unless the machine was already
+> > > near OOM state.
+> > >
+> > > This bug was introduced in v5 of the patch and did not exist in prior
+> > > revisions.
+> > >
+> >
+> > Thanks for the quick turnaround, but I think that speed introduced
+> > some issues...
+> >
+> > > While here, adjust the variable 'j' found in patch review by Konrad.
+> >
+> > Please split this pure cleanup to its own patch. The subject says
+> > "Fixes", but it's only the one fix.
+> >
+>
+> This was intentional. I pinged you internally to just drop it if you don't like
+> to combine these kind of things.
 
+Apologies, I've been offline this weekend and missed that. I will
+point out though that in general I will not change patch contents on
+the way upstream. The adjusted patch must appear on the mailing list.
+The new korg support for attaching attestation to patches requires
+they all be on the list, so even small adjustments need new postings.
 
-On 2/22/21 11:06 AM, Joao Martins wrote:
-> On 2/20/21 1:18 AM, Dan Williams wrote:
->> On Tue, Dec 8, 2020 at 9:32 AM Joao Martins <joao.m.martins@oracle.com> wrote:
->>>
->>> The link above describes it quite nicely, but the idea is to reuse tail
->>> page vmemmap areas, particular the area which only describes tail pages.
->>> So a vmemmap page describes 64 struct pages, and the first page for a given
->>> ZONE_DEVICE vmemmap would contain the head page and 63 tail pages. The second
->>> vmemmap page would contain only tail pages, and that's what gets reused across
->>> the rest of the subsection/section. The bigger the page size, the bigger the
->>> savings (2M hpage -> save 6 vmemmap pages; 1G hpage -> save 4094 vmemmap pages).
->>>
->>> In terms of savings, per 1Tb of memory, the struct page cost would go down
->>> with compound pagemap:
->>>
->>> * with 2M pages we lose 4G instead of 16G (0.39% instead of 1.5% of total memory)
->>> * with 1G pages we lose 8MB instead of 16G (0.0007% instead of 1.5% of total memory)
->>
->> Nice!
->>
-> 
-> I failed to mention this in the cover letter but I should say that with this trick we will
-> need to build the vmemmap page tables with basepages for 2M align, as opposed to hugepages
-> in the vmemmap page tables (as you probably could tell from the patches). 
+> It didn't feel worthwhile to introduce a new
+> patch to change the 'j'.
 
-Also to be clear: by "we will need to build the vmemmap page tables with basepages for 2M
-align" I strictly refer to the ZONE_DEVICE range we are mapping the struct pages. It's not
-the enterity of the vmemmap!
-
-> This means that
-> we have to allocate a PMD page, and that costs 2GB per 1Tb (as opposed to 4M). This is
-> fixable for 1G align by reusing PMD pages (albeit I haven't done that in this RFC series).
-> 
-> The footprint reduction is still big, so to iterate the numbers above (and I will fix this
-> in the v2 cover letter):
-> 
-> * with 2M pages we lose 4G instead of 16G (0.39% instead of 1.5% of total memory)
-> * with 1G pages we lose 8MB instead of 16G (0.0007% instead of 1.5% of total memory)
-> 
-> For vmemmap page tables, we need to use base pages for 2M pages. So taking that into
-> account, in this RFC series:
-> 
-> * with 2M pages we lose 6G instead of 16G (0.586% instead of 1.5% of total memory)
-> * with 1G pages we lose ~2GB instead of 16G (0.19% instead of 1.5% of total memory)
-> 
-> For 1G align, we are able to reuse vmemmap PMDs that only point to tail pages, so
-> ultimately we can get the page table overhead from 2GB to 12MB:
-> 
-> * with 1G pages we lose 20MB instead of 16G (0.0019% instead of 1.5% of total memory)
-> 
->>>
->>> The RDMA patch (patch 8/9) is to demonstrate the improvement for an existing
->>> user. For unpin_user_pages() we have an additional test to demonstrate the
->>> improvement.  The test performs MR reg/unreg continuously and measuring its
->>> rate for a given period. So essentially ib_mem_get and ib_mem_release being
->>> stress tested which at the end of day means: pin_user_pages_longterm() and
->>> unpin_user_pages() for a scatterlist:
->>>
->>>     Before:
->>>     159 rounds in 5.027 sec: 31617.923 usec / round (device-dax)
->>>     466 rounds in 5.009 sec: 10748.456 usec / round (hugetlbfs)
->>>
->>>     After:
->>>     305 rounds in 5.010 sec: 16426.047 usec / round (device-dax)
->>>     1073 rounds in 5.004 sec: 4663.622 usec / round (hugetlbfs)
->>
->> Why does hugetlbfs get faster for a ZONE_DEVICE change? Might answer
->> that question myself when I get to patch 8.
->>
-> Because the unpinning improvements aren't ZONE_DEVICE specific.
-> 
-> FWIW, I moved those two offending patches outside of this series:
-> 
->   https://lore.kernel.org/linux-mm/20210212130843.13865-1-joao.m.martins@oracle.com/
-> 
->>>
->>> Patch 9: Improves {pin,get}_user_pages() and its longterm counterpart. It
->>> is very experimental, and I imported most of follow_hugetlb_page(), except
->>> that we do the same trick as gup-fast. In doing the patch I feel this batching
->>> should live in follow_page_mask() and having that being changed to return a set
->>> of pages/something-else when walking over PMD/PUDs for THP / devmap pages. This
->>> patch then brings the previous test of mr reg/unreg (above) on parity
->>> between device-dax and hugetlbfs.
->>>
->>> Some of the patches are a little fresh/WIP (specially patch 3 and 9) and we are
->>> still running tests. Hence the RFC, asking for comments and general direction
->>> of the work before continuing.
->>
->> Will go look at the code, but I don't see anything scary conceptually
->> here. The fact that pfn_to_page() does not need to change is among the
->> most compelling features of this approach.
->>
-> Glad to hear that :D
-> 
+Janitorial patches happen all the time, so I think it's ok.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
