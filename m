@@ -1,44 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A870532219E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Feb 2021 22:41:18 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8C13221DA
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Feb 2021 22:55:47 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EC5D6100EB320;
-	Mon, 22 Feb 2021 13:41:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	by ml01.01.org (Postfix) with ESMTP id 1D5AD100EB323;
+	Mon, 22 Feb 2021 13:55:45 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ben.widawsky@intel.com; receiver=<UNKNOWN> 
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A0A76100EB85C
-	for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 13:41:13 -0800 (PST)
-IronPort-SDR: 3gjVMsAmBft6JJh6yke4GCQYRMWpqm7pDXVhY+XDxeyesCW2KWDJ0jR1gB50iGB25xh86m8qFs
- Q1DtsnBd80yA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9903"; a="204012507"
+	by ml01.01.org (Postfix) with ESMTPS id 58A7E100EB322
+	for <linux-nvdimm@lists.01.org>; Mon, 22 Feb 2021 13:55:42 -0800 (PST)
+IronPort-SDR: nLOzR5eMEWOBYg/MzPjWuhllUse751GgoMjEv2aQ50G+N7X4EK37gKq94+RJBisag342jxXkya
+ qTSZmHMS6lCw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9903"; a="181161492"
 X-IronPort-AV: E=Sophos;i="5.81,198,1610438400";
-   d="scan'208";a="204012507"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2021 13:41:08 -0800
-IronPort-SDR: 0ckPDhRhKnZTcayX+JFJcTg3Fiic/fNHlmWVvnQ+iKYHi867JsmXnT4ez4lBBIofBf64AotELf
- ZsE9viOHuMqw==
+   d="scan'208";a="181161492"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2021 13:55:41 -0800
+IronPort-SDR: PZmPVAKBb/BFWXbc7WRcymoH2IqpK063iN+qi4oAc3/3c4qu74FUsd9UJ8L5s/Z2V7qsJzjVe5
+ f09Bj1wLzPeg==
 X-IronPort-AV: E=Sophos;i="5.81,198,1610438400";
-   d="scan'208";a="596134749"
+   d="scan'208";a="390038610"
 Received: from hlgebhar-mobl.amr.corp.intel.com (HELO intel.com) ([10.252.134.144])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2021 13:41:08 -0800
-Date: Mon, 22 Feb 2021 13:41:06 -0800
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2021 13:55:41 -0800
+Date: Mon, 22 Feb 2021 13:55:39 -0800
 From: Ben Widawsky <ben.widawsky@intel.com>
 To: Vishal Verma <vishal.l.verma@intel.com>
-Subject: Re: [ndctl PATCH v2 02/13] cxl: add a local copy of the cxl_mem UAPI
- header
-Message-ID: <20210222214106.pz5f3czykq3r7ojw@intel.com>
+Subject: Re: [ndctl PATCH v2 03/13] libcxl: add support for command query and
+ submission
+Message-ID: <20210222215539.s3n6yj5lgmdohypt@intel.com>
 References: <20210219020331.725687-1-vishal.l.verma@intel.com>
- <20210219020331.725687-3-vishal.l.verma@intel.com>
+ <20210219020331.725687-4-vishal.l.verma@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20210219020331.725687-3-vishal.l.verma@intel.com>
-Message-ID-Hash: KUK3Q4MLBZCU3ERPVJ52XIWWEDFB6IRU
-X-Message-ID-Hash: KUK3Q4MLBZCU3ERPVJ52XIWWEDFB6IRU
+In-Reply-To: <20210219020331.725687-4-vishal.l.verma@intel.com>
+Message-ID-Hash: P3G23JJW4M7WC534DNTZLZOF22QH3DXC
+X-Message-ID-Hash: P3G23JJW4M7WC534DNTZLZOF22QH3DXC
 X-MailFrom: ben.widawsky@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -46,7 +46,7 @@ CC: linux-cxl@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KUK3Q4MLBZCU3ERPVJ52XIWWEDFB6IRU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P3G23JJW4M7WC534DNTZLZOF22QH3DXC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,259 +55,559 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 21-02-18 19:03:20, Vishal Verma wrote:
-> While CXL functionality is under development, it is useful to have a
-> local copy of the UAPI header for cxl_mem definitions. This allows
-> building cxl and libcxl on systems where the appropriate kernel headers
-> are not installed in the usual locations.
-
-It it meant to be able to use a system, or dev copy of cxl_mem.h? Could you
-maybe spell out in the commit message how one could select between the two?
-
+On 21-02-18 19:03:21, Vishal Verma wrote:
+> Add a set of APIs around 'cxl_cmd' for querying the kernel for supported
+> commands, allocating and validating command structures against the
+> supported set, and submitting the commands.
+> 
+> 'Query Commands' and 'Send Command' are implemented as IOCTLs in the
+> kernel. 'Query Commands' returns information about each supported
+> command, such as flags governing its use, or input and output payload
+> sizes. This information is used to validate command support, as well as
+> set up input and output buffers for command submission.
 > 
 > Cc: Ben Widawsky <ben.widawsky@intel.com>
 > Cc: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 > ---
->  Makefile.am         |   3 +-
->  Makefile.am.in      |   1 +
->  cxl/cxl_mem.h       | 181 ++++++++++++++++++++++++++++++++++++++++++++
->  cxl/lib/Makefile.am |   2 +-
->  4 files changed, 185 insertions(+), 2 deletions(-)
->  create mode 100644 cxl/cxl_mem.h
+>  cxl/lib/private.h  |  33 ++++
+>  cxl/lib/libcxl.c   | 393 +++++++++++++++++++++++++++++++++++++++++++++
+>  cxl/libcxl.h       |  11 ++
+>  cxl/lib/libcxl.sym |  13 ++
+>  4 files changed, 450 insertions(+)
 > 
-> diff --git a/Makefile.am b/Makefile.am
-> index 428fd40..4904ee7 100644
-> --- a/Makefile.am
-> +++ b/Makefile.am
-> @@ -89,4 +89,5 @@ libutil_a_SOURCES = \
+> diff --git a/cxl/lib/private.h b/cxl/lib/private.h
+> index fc88fa1..87ca17e 100644
+> --- a/cxl/lib/private.h
+> +++ b/cxl/lib/private.h
+> @@ -4,6 +4,9 @@
+>  #define _LIBCXL_PRIVATE_H_
 >  
->  nobase_include_HEADERS = \
->  	daxctl/libdaxctl.h \
-> -	cxl/libcxl.h
-> +	cxl/libcxl.h \
-> +	cxl/cxl_mem.h
-> diff --git a/Makefile.am.in b/Makefile.am.in
-> index aaeee53..a748128 100644
-> --- a/Makefile.am.in
-> +++ b/Makefile.am.in
-> @@ -11,6 +11,7 @@ AM_CPPFLAGS = \
->  	-DNDCTL_MAN_PATH=\""$(mandir)"\" \
->  	-I${top_srcdir}/ndctl/lib \
->  	-I${top_srcdir}/ndctl \
-> +	-I${top_srcdir}/cxl \
->  	-I${top_srcdir}/ \
->  	$(KMOD_CFLAGS) \
->  	$(UDEV_CFLAGS) \
-> diff --git a/cxl/cxl_mem.h b/cxl/cxl_mem.h
-> new file mode 100644
-> index 0000000..be9c7ad
-> --- /dev/null
-> +++ b/cxl/cxl_mem.h
-> @@ -0,0 +1,181 @@
-> +/* SPDX-License-Identifier: LGPL-2.1 */
-> +/* Copyright (C) 2020-2021, Intel Corporation. All rights reserved. */
-> +/*
-> + * CXL IOCTLs for Memory Devices
-> + */
-> +
-> +#ifndef _UAPI_CXL_MEM_H_
-> +#define _UAPI_CXL_MEM_H_
-> +
-> +#include <linux/types.h>
-> +#include <sys/user.h>
-> +#include <unistd.h>
-> +
-> +#define __user
-> +
-> +/**
-> + * DOC: UAPI
-> + *
-> + * CXL memory devices expose UAPI to have a standard user interface.
-> + * Userspace can refer to these structure definitions and UAPI formats
-> + * to communicate to driver. The commands themselves are somewhat obfuscated
-> + * with macro magic. They have the form CXL_MEM_COMMAND_ID_<name>.
-> + *
-> + * For example "CXL_MEM_COMMAND_ID_INVALID"
-> + *
-> + * Not all of all commands that the driver supports are always available for use
-> + * by userspace. Userspace must check the results from the QUERY command in
-> + * order to determine the live set of commands.
-> + */
-> +
-> +#define CXL_MEM_QUERY_COMMANDS _IOR(0xCE, 1, struct cxl_mem_query_commands)
-> +#define CXL_MEM_SEND_COMMAND _IOWR(0xCE, 2, struct cxl_send_command)
-> +
-> +#define CXL_CMDS                                                          \
-> +	___C(INVALID, "Invalid Command"),                                 \
-> +	___C(IDENTIFY, "Identify Command"),                               \
-> +	___C(RAW, "Raw device command"),                                  \
-> +	___C(GET_SUPPORTED_LOGS, "Get Supported Logs"),                   \
-> +	___C(GET_FW_INFO, "Get FW Info"),                                 \
-> +	___C(GET_PARTITION_INFO, "Get Partition Information"),            \
-> +	___C(GET_LSA, "Get Label Storage Area"),                          \
-> +	___C(GET_HEALTH_INFO, "Get Health Info"),                         \
-> +	___C(GET_LOG, "Get Log"),                                         \
-> +	___C(MAX, "Last command")
-> +
-> +#define ___C(a, b) CXL_MEM_COMMAND_ID_##a
-> +enum { CXL_CMDS };
-> +
-> +#undef ___C
-> +#define ___C(a, b) { b }
-> +static const struct {
-> +	const char *name;
-> +} cxl_command_names[] = { CXL_CMDS };
-> +#undef ___C
-> +
-> +/**
-> + * struct cxl_command_info - Command information returned from a query.
-> + * @id: ID number for the command.
-> + * @flags: Flags that specify command behavior.
-> + *
-> + *  * %CXL_MEM_COMMAND_FLAG_KERNEL: This command is reserved for exclusive
-> + *    kernel use.
-> + *  * %CXL_MEM_COMMAND_FLAG_MUTEX: This command may require coordination with
-> + *    the kernel in order to complete successfully.
-> + *
-> + * @size_in: Expected input size, or -1 if variable length.
-> + * @size_out: Expected output size, or -1 if variable length.
-> + *
-> + * Represents a single command that is supported by both the driver and the
-> + * hardware. This is returned as part of an array from the query ioctl. The
-> + * following would be a command named "foobar" that takes a variable length
-> + * input and returns 0 bytes of output.
-> + *
-> + *  - @id = 10
-> + *  - @flags = CXL_MEM_COMMAND_FLAG_MUTEX
-> + *  - @size_in = -1
-> + *  - @size_out = 0
-> + *
-> + * See struct cxl_mem_query_commands.
-> + */
-> +struct cxl_command_info {
-> +	__u32 id;
-> +
-> +	__u32 flags;
-> +#define CXL_MEM_COMMAND_FLAG_NONE 0
-> +#define CXL_MEM_COMMAND_FLAG_KERNEL BIT(0)
-> +#define CXL_MEM_COMMAND_FLAG_MUTEX BIT(1)
-> +#define CXL_MEM_COMMAND_FLAG_MASK GENMASK(1, 0)
-
-This is changed upstream, but shouldn't effect much.
-
-> +
-> +	__s32 size_in;
-> +	__s32 size_out;
+>  #include <libkmod.h>
+> +#include <cxl/cxl_mem.h>
+> +#include <ccan/endian/endian.h>
+> +#include <ccan/short_types/short_types.h>
+>  
+>  #define CXL_EXPORT __attribute__ ((visibility("default")))
+>  
+> @@ -21,6 +24,36 @@ struct cxl_memdev {
+>  	struct kmod_module *module;
+>  };
+>  
+> +enum cxl_cmd_query_status {
+> +	CXL_CMD_QUERY_NOT_RUN = 0,
+> +	CXL_CMD_QUERY_OK,
+> +	CXL_CMD_QUERY_UNSUPPORTED,
 > +};
 > +
 > +/**
-> + * struct cxl_mem_query_commands - Query supported commands.
-> + * @n_commands: In/out parameter. When @n_commands is > 0, the driver will
-> + *		return min(num_support_commands, n_commands). When @n_commands
-> + *		is 0, driver will return the number of total supported commands.
-> + * @rsvd: Reserved for future use.
-> + * @commands: Output array of supported commands. This array must be allocated
-> + *            by userspace to be at least min(num_support_commands, @n_commands)
-> + *
-> + * Allow userspace to query the available commands supported by both the driver,
-> + * and the hardware. Commands that aren't supported by either the driver, or the
-> + * hardware are not returned in the query.
-> + *
-> + * Examples:
-> + *
-> + *  - { .n_commands = 0 } // Get number of supported commands
-> + *  - { .n_commands = 15, .commands = buf } // Return first 15 (or less)
-> + *    supported commands
-> + *
-> + *  See struct cxl_command_info.
+> + * struct cxl_cmd - CXL memdev command
+> + * @memdev: the memory device to which the command is being sent
+> + * @query_cmd: structure for the Linux 'Query commands' ioctl
+> + * @send_cmd: structure for the Linux 'Send command' ioctl
+> + * @input_payload: buffer for input payload managed by libcxl
+> + * @output_payload: buffer for output payload managed by libcxl
+> + * @refcount: reference for passing command buffer around
+> + * @query_status: status from query_commands
+> + * @query_idx: index of 'this' command in the query_commands array
+> + * @status: command return status from the device
 > + */
-> +struct cxl_mem_query_commands {
-> +	/*
-> +	 * Input: Number of commands to return (space allocated by user)
-> +	 * Output: Number of commands supported by the driver/hardware
-> +	 *
-> +	 * If n_commands is 0, kernel will only return number of commands and
-> +	 * not try to populate commands[], thus allowing userspace to know how
-> +	 * much space to allocate
-> +	 */
-> +	__u32 n_commands;
-> +	__u32 rsvd;
-> +
-> +	struct cxl_command_info __user commands[]; /* out: supported commands */
+> +struct cxl_cmd {
+> +	struct cxl_memdev *memdev;
+> +	struct cxl_mem_query_commands *query_cmd;
+> +	struct cxl_send_command *send_cmd;
+> +	void *input_payload;
+> +	void *output_payload;
+> +	int refcount;
+> +	int query_status;
+> +	int query_idx;
+> +	int status;
 > +};
 > +
-> +/**
-> + * struct cxl_send_command - Send a command to a memory device.
-> + * @id: The command to send to the memory device. This must be one of the
-> + *	commands returned by the query command.
-> + * @flags: Flags for the command (input).
-> + * @raw: Special fields for raw commands
-> + * @raw.opcode: Opcode passed to hardware when using the RAW command.
-> + * @raw.rsvd: Must be zero.
-> + * @rsvd: Must be zero.
-> + * @retval: Return value from the memory device (output).
-> + * @in.size: Size of the payload to provide to the device (input).
-> + * @in.rsvd: Must be zero.
-> + * @in.payload: Pointer to memory for payload input (little endian order).
-> + * @out.size: Size of the payload received from the device (input/output). This
-> + *	      field is filled in by userspace to let the driver know how much
-> + *	      space was allocated for output. It is populated by the driver to
-> + *	      let userspace know how large the output payload actually was.
-> + * @out.rsvd: Must be zero.
-> + * @out.payload: Pointer to memory for payload output (little endian order).
-> + *
-> + * Mechanism for userspace to send a command to the hardware for processing. The
-> + * driver will do basic validation on the command sizes. In some cases even the
-> + * payload may be introspected. Userspace is required to allocate large
-> + * enough buffers for size_out which can be variable length in certain
-> + * situations.
-> + */
-> +struct cxl_send_command {
-> +	__u32 id;
-> +	__u32 flags;
-> +	union {
-> +		struct {
-> +			__u16 opcode;
-> +			__u16 rsvd;
-> +		} raw;
-> +		__u32 rsvd;
-> +	};
-> +	__u32 retval;
-> +
-> +	struct {
-> +		__s32 size;
-> +		__u32 rsvd;
-> +		__u64 payload;
-> +	} in;
-> +
-> +	struct {
-> +		__s32 size;
-> +		__u32 rsvd;
-> +		__u64 payload;
-> +	} out;
-> +};
-> +
-> +#endif
-> diff --git a/cxl/lib/Makefile.am b/cxl/lib/Makefile.am
-> index 277f0cd..72c9ccd 100644
-> --- a/cxl/lib/Makefile.am
-> +++ b/cxl/lib/Makefile.am
-> @@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.am.in
->  %.pc: %.pc.in Makefile
->  	$(SED_PROCESS)
+>  static inline int check_kmod(struct kmod_ctx *kmod_ctx)
+>  {
+>  	return kmod_ctx ? 0 : -ENXIO;
+> diff --git a/cxl/lib/libcxl.c b/cxl/lib/libcxl.c
+> index d34e7d0..f1155a1 100644
+> --- a/cxl/lib/libcxl.c
+> +++ b/cxl/lib/libcxl.c
+> @@ -9,6 +9,7 @@
+>  #include <unistd.h>
+>  #include <sys/stat.h>
+>  #include <sys/types.h>
+> +#include <sys/ioctl.h>
+>  #include <sys/sysmacros.h>
+>  #include <uuid/uuid.h>
+>  #include <ccan/list/list.h>
+> @@ -17,6 +18,7 @@
+>  #include <util/log.h>
+>  #include <util/sysfs.h>
+>  #include <util/bitmap.h>
+> +#include <cxl/cxl_mem.h>
+>  #include <cxl/libcxl.h>
+>  #include "private.h"
 >  
-> -pkginclude_HEADERS = ../libcxl.h
-> +pkginclude_HEADERS = ../libcxl.h ../cxl_mem.h
+> @@ -343,3 +345,394 @@ CXL_EXPORT const char *cxl_memdev_get_firmware_verison(struct cxl_memdev *memdev
+>  {
+>  	return memdev->firmware_version;
+>  }
+> +
+> +CXL_EXPORT void cxl_cmd_unref(struct cxl_cmd *cmd)
+> +{
+> +	if (!cmd)
+> +		return;
+> +	if (--cmd->refcount == 0) {
+> +		free(cmd->query_cmd);
+> +		free(cmd->send_cmd);
+> +		free(cmd->input_payload);
+> +		free(cmd->output_payload);
+> +		free(cmd);
+> +	}
+> +}
+> +
+> +CXL_EXPORT void cxl_cmd_ref(struct cxl_cmd *cmd)
+> +{
+> +	cmd->refcount++;
+> +}
+> +
+> +static int cxl_cmd_alloc_query(struct cxl_cmd *cmd, int num_cmds)
+> +{
+> +	size_t size;
+> +
+> +	if (!cmd)
+> +		return -EINVAL;
+> +
+> +	if (cmd->query_cmd != NULL)
+> +		free(cmd->query_cmd);
+> +
+> +	size = sizeof(struct cxl_mem_query_commands) +
+> +			(num_cmds * sizeof(struct cxl_command_info));
+> +	cmd->query_cmd = calloc(1, size);
+> +	if (!cmd->query_cmd)
+> +		return -ENOMEM;
+> +
+> +	cmd->query_cmd->n_commands = num_cmds;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct cxl_cmd *cxl_cmd_new(struct cxl_memdev *memdev)
+> +{
+> +	struct cxl_cmd *cmd;
+> +	size_t size;
+> +
+> +	size = sizeof(*cmd);
+> +	cmd = calloc(1, size);
+> +	if (!cmd)
+> +		return NULL;
+> +
+> +	cxl_cmd_ref(cmd);
+> +	cmd->memdev = memdev;
+> +
+> +	return cmd;
+> +}
+> +
+> +static int __do_cmd(struct cxl_cmd *cmd, int ioctl_cmd, int fd)
+> +{
+> +	void *cmd_buf;
+> +	int rc;
+> +
+> +	switch (ioctl_cmd) {
+> +	case CXL_MEM_QUERY_COMMANDS:
+> +		cmd_buf = cmd->query_cmd;
+> +		break;
+> +	case CXL_MEM_SEND_COMMAND:
+> +		cmd_buf = cmd->send_cmd;
+> +		break;
+> +	default:
+> +		return -EINVAL;
 
-Do you do this for ndctl? It seems weird to install a Linux UAPI header via
-libcxl. You will end up with potentially divergent:
-/usr/include/libcxl/cxl_mem.h
-/usr/include/linux/cxl_mem.h
+__builtin_unreachable? I don't see other uses in this project, so perhaps no..
 
->  lib_LTLIBRARIES = libcxl.la
+> +	}
+> +
+> +	rc = ioctl(fd, ioctl_cmd, cmd_buf);
+> +	if (rc < 0)
+> +		rc = -errno;
+> +
+> +	return rc;
+> +}
+> +
+> +static int do_cmd(struct cxl_cmd *cmd, int ioctl_cmd)
+> +{
+> +	char *path;
+> +	struct stat st;
+> +	unsigned int major, minor;
+> +	int rc = 0, fd;
+> +	struct cxl_memdev *memdev = cmd->memdev;
+> +	struct cxl_ctx *ctx = cxl_memdev_get_ctx(memdev);
+> +	const char *devname = cxl_memdev_get_devname(memdev);
+> +
+> +	major = cxl_memdev_get_major(memdev);
+> +	minor = cxl_memdev_get_minor(memdev);
+> +
+> +	if (asprintf(&path, "/dev/cxl/%s", devname) < 0)
+> +		return -ENOMEM;
+> +
+> +	fd = open(path, O_RDWR);
+> +	if (fd < 0) {
+> +		err(ctx, "failed to open %s: %s\n", path, strerror(errno));
+> +		rc = -errno;
+> +		goto out;
+> +	}
+> +
+> +	if (fstat(fd, &st) >= 0 && S_ISCHR(st.st_mode)
+> +			&& major(st.st_rdev) == major
+> +			&& minor(st.st_rdev) == minor) {
+> +		rc = __do_cmd(cmd, ioctl_cmd, fd);
+
+I don't see anything wrong with this, but could you explain a case where
+major/minor would not be the right thing? Is this just like super paranoid
+guarding?
+
+I mean, if you ended up with the wrong device types, your IOCTLs will fail
+anyway.
+
+> +	} else {
+> +		err(ctx, "failed to validate %s as a CXL memdev node\n", path);
+> +		rc = -ENXIO;
+> +	}
+> +	close(fd);
+> +out:
+> +	free(path);
+> +	return rc;
+> +}
+> +
+> +static int alloc_do_query(struct cxl_cmd *cmd, int num_cmds)
+> +{
+> +	struct cxl_ctx *ctx = cxl_memdev_get_ctx(cmd->memdev);
+> +	int rc;
+> +
+> +	rc = cxl_cmd_alloc_query(cmd, num_cmds);
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc = do_cmd(cmd, CXL_MEM_QUERY_COMMANDS);
+> +	if (rc < 0)
+> +		err(ctx, "%s: query commands failed: %s\n",
+> +			cxl_memdev_get_devname(cmd->memdev),
+> +			strerror(-rc));
+> +	return rc;
+> +}
+> +
+> +static int cxl_cmd_do_query(struct cxl_cmd *cmd)
+> +{
+> +	struct cxl_memdev *memdev = cmd->memdev;
+> +	struct cxl_ctx *ctx = cxl_memdev_get_ctx(memdev);
+> +	const char *devname = cxl_memdev_get_devname(memdev);
+> +	int rc, n_commands;
+> +
+> +	switch (cmd->query_status) {
+> +	case CXL_CMD_QUERY_OK:
+> +		return 0;
+> +	case CXL_CMD_QUERY_UNSUPPORTED:
+> +		return -EOPNOTSUPP;
+
+This makes me a little bit nervous. I've been leaving open the possibility that
+command support might be transient. For instance, perhaps at boot a command is
+not supported, but you change some device state and then it later becomes
+supported. Or perhaps you have a command available and you go into some sort of
+degraded performance mode which removes a set of commands.
+
+Thoughts?
+
+> +	case CXL_CMD_QUERY_NOT_RUN:
+> +		break;
+> +	default:
+> +		err(ctx, "%s: Unknown query_status %d\n",
+> +			devname, cmd->query_status);
+> +		return -EINVAL;
+
+Same about unreachable...
+
+> +	}
+> +
+> +	rc = alloc_do_query(cmd, 0);
+> +	if (rc)
+> +		return rc;
+> +
+> +	n_commands = cmd->query_cmd->n_commands;
+> +	dbg(ctx, "%s: supports %d commands\n", devname, n_commands);
+> +
+> +	return alloc_do_query(cmd, n_commands);
+> +}
+> +
+> +static int cxl_cmd_validate(struct cxl_cmd *cmd, u32 cmd_id)
+> +{
+> +	struct cxl_memdev *memdev = cmd->memdev;
+> +	struct cxl_mem_query_commands *query = cmd->query_cmd;
+> +	const char *devname = cxl_memdev_get_devname(memdev);
+> +	struct cxl_ctx *ctx = cxl_memdev_get_ctx(memdev);
+> +	u32 i;
+> +
+> +	for (i = 0; i < query->n_commands; i++) {
+> +		struct cxl_command_info *cinfo = &query->commands[i];
+> +		const char *cmd_name = cxl_command_names[cinfo->id].name;
+> +
+> +		if (cinfo->id != cmd_id)
+> +			continue;
+> +
+> +		dbg(ctx, "%s: %s: in: %d, out %d, flags: %#08x\n",
+> +			devname, cmd_name, cinfo->size_in,
+> +			cinfo->size_out, cinfo->flags);
+> +
+> +		if (cinfo->flags & CXL_MEM_COMMAND_FLAG_KERNEL) {
+> +			err(ctx, "%s: %s: reserved for kernel use\n",
+> +				devname, cmd_name);
+> +			return -EPERM;
+> +		}
+> +		cmd->query_idx = i;
+> +		cmd->query_status = CXL_CMD_QUERY_OK;
+> +		return 0;
+> +	}
+> +	cmd->query_status = CXL_CMD_QUERY_UNSUPPORTED;
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +CXL_EXPORT int cxl_cmd_set_input_payload(struct cxl_cmd *cmd, void *buf,
+> +		int size)
+> +{
+> +	struct cxl_memdev *memdev = cmd->memdev;
+> +
+> +	if (size > memdev->payload_max || size < 0)
+> +		return -EINVAL;
+> +
+> +	if (!buf) {
+> +
+> +		/* If the user didn't supply a buffer, allocate it */
+> +		cmd->input_payload = calloc(1, size);
+> +		if (!cmd->input_payload)
+> +			return -ENOMEM;
+> +		cmd->send_cmd->in.payload = (u64)cmd->input_payload;
+> +	} else {
+> +		/*
+> +		 * Use user-buffer as is. If an automatic allocation was
+> +		 * previously made (based on a fixed size from query),
+> +		 * it will get freed during unref.
+> +		 */
+> +		cmd->send_cmd->in.payload = (u64)buf;
+> +	}
+> +	cmd->send_cmd->in.size = size;
+> +
+> +	return 0;
+> +}
+> +
+> +CXL_EXPORT int cxl_cmd_set_output_payload(struct cxl_cmd *cmd, void *buf,
+> +		int size)
+> +{
+> +	struct cxl_memdev *memdev = cmd->memdev;
+> +
+> +	if (size > memdev->payload_max || size < 0)
+> +		return -EINVAL;
+> +
+> +	if (!buf) {
+> +
+> +		/* If the user didn't supply a buffer, allocate it */
+> +		cmd->output_payload = calloc(1, size);
+> +		if (!cmd->output_payload)
+> +			return -ENOMEM;
+> +		cmd->send_cmd->out.payload = (u64)cmd->output_payload;
+> +	} else {
+> +		/*
+> +		 * Use user-buffer as is. If an automatic allocation was
+> +		 * previously made (based on a fixed size from query),
+> +		 * it will get freed during unref.
+> +		 */
+> +		cmd->send_cmd->out.payload = (u64)buf;
+> +	}
+> +	cmd->send_cmd->out.size = size;
+> +
+> +	return 0;
+> +}
+> +
+> +static int cxl_cmd_alloc_send(struct cxl_cmd *cmd, u32 cmd_id)
+> +{
+> +	struct cxl_mem_query_commands *query = cmd->query_cmd;
+> +	struct cxl_command_info *cinfo = &query->commands[cmd->query_idx];
+> +	size_t size;
+> +
+> +	if (!query)
+> +		return -EINVAL;
+> +
+> +	size = sizeof(struct cxl_send_command);
+> +	cmd->send_cmd = calloc(1, size);
+> +	if (!cmd->send_cmd)
+> +		return -ENOMEM;
+> +
+> +	if (cinfo->id != cmd_id)
+> +		return -EINVAL;
+> +
+> +	cmd->send_cmd->id = cmd_id;
+> +
+> +	if (cinfo->size_in > 0) {
+> +		cmd->input_payload = calloc(1, cinfo->size_in);
+> +		if (!cmd->input_payload)
+> +			return -ENOMEM;
+> +		cmd->send_cmd->in.payload = (u64)cmd->input_payload;
+> +		cmd->send_cmd->in.size = cinfo->size_in;
+> +	}
+> +	if (cinfo->size_out > 0) {
+> +		cmd->output_payload = calloc(1, cinfo->size_out);
+> +		if (!cmd->output_payload)
+> +			return -ENOMEM;
+> +		cmd->send_cmd->out.payload = (u64)cmd->output_payload;
+> +		cmd->send_cmd->out.size = cinfo->size_out;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static struct cxl_cmd *cxl_cmd_new_generic(struct cxl_memdev *memdev,
+> +		u32 cmd_id)
+> +{
+> +	const char *devname = cxl_memdev_get_devname(memdev);
+> +	struct cxl_ctx *ctx = cxl_memdev_get_ctx(memdev);
+> +	struct cxl_cmd *cmd;
+> +	int rc;
+> +
+> +	cmd = cxl_cmd_new(memdev);
+> +	if (!cmd)
+> +		return NULL;
+> +
+> +	rc = cxl_cmd_do_query(cmd);
+> +	if (rc) {
+> +		err(ctx, "%s: query returned: %s\n", devname, strerror(-rc));
+> +		goto fail;
+> +	}
+> +
+> +	rc = cxl_cmd_validate(cmd, cmd_id);
+> +	if (rc) {
+> +		errno = -rc;
+> +		goto fail;
+> +	}
+> +
+> +	rc = cxl_cmd_alloc_send(cmd, cmd_id);
+> +	if (rc) {
+> +		errno = -rc;
+> +		goto fail;
+> +	}
+> +
+> +	return cmd;
+> +
+> +fail:
+> +	cxl_cmd_unref(cmd);
+> +	return NULL;
+> +}
+> +
+> +CXL_EXPORT const char *cxl_cmd_get_devname(struct cxl_cmd *cmd)
+> +{
+> +	return cxl_memdev_get_devname(cmd->memdev);
+> +}
+> +
+> +CXL_EXPORT struct cxl_cmd *cxl_cmd_new_raw(struct cxl_memdev *memdev,
+> +		int opcode)
+> +{
+> +	struct cxl_cmd *cmd;
+> +
+> +	/* opcode '0' is reserved */
+> +	if (opcode <= 0) {
+> +		errno = EINVAL;
+> +		return NULL;
+> +	}
+> +
+> +	cmd = cxl_cmd_new_generic(memdev, CXL_MEM_COMMAND_ID_RAW);
+> +	if (!cmd)
+> +		return NULL;
+> +
+> +	cmd->send_cmd->raw.opcode = opcode;
+> +	return cmd;
+> +}
+> +
+> +CXL_EXPORT int cxl_cmd_submit(struct cxl_cmd *cmd)
+> +{
+> +	struct cxl_memdev *memdev = cmd->memdev;
+> +	const char *devname = cxl_memdev_get_devname(memdev);
+> +	struct cxl_ctx *ctx = cxl_memdev_get_ctx(memdev);
+> +	int rc;
+> +
+> +	switch (cmd->query_status) {
+> +	case CXL_CMD_QUERY_OK:
+> +		break;
+> +	case CXL_CMD_QUERY_UNSUPPORTED:
+> +		return -EOPNOTSUPP;
+> +	case CXL_CMD_QUERY_NOT_RUN:
+> +		return -EINVAL;
+> +	default:
+> +		err(ctx, "%s: Unknown query_status %d\n",
+> +			devname, cmd->query_status);
+> +		return -EINVAL;
+> +	}
+> +
+> +	dbg(ctx, "%s: submitting SEND cmd: in: %d, out: %d\n", devname,
+> +		cmd->send_cmd->in.size, cmd->send_cmd->out.size);
+> +	rc = do_cmd(cmd, CXL_MEM_SEND_COMMAND);
+> +	if (rc < 0)
+> +		err(ctx, "%s: send command failed: %s\n",
+> +			devname, strerror(-rc));
+> +	cmd->status = cmd->send_cmd->retval;
+> +	dbg(ctx, "%s: got SEND cmd: in: %d, out: %d, retval: %d\n", devname,
+> +		cmd->send_cmd->in.size, cmd->send_cmd->out.size, cmd->status);
+> +
+> +	return rc;
+> +}
+> +
+> +CXL_EXPORT int cxl_cmd_get_mbox_status(struct cxl_cmd *cmd)
+> +{
+> +	return cmd->status;
+> +}
+> +
+> +CXL_EXPORT int cxl_cmd_get_out_size(struct cxl_cmd *cmd)
+> +{
+> +	return cmd->send_cmd->out.size;
+> +}
+> diff --git a/cxl/libcxl.h b/cxl/libcxl.h
+> index fd06790..6e87b80 100644
+> --- a/cxl/libcxl.h
+> +++ b/cxl/libcxl.h
+> @@ -48,6 +48,17 @@ const char *cxl_memdev_get_firmware_verison(struct cxl_memdev *memdev);
+>               memdev != NULL; \
+>               memdev = cxl_memdev_get_next(memdev))
 >  
->  libcxl_la_SOURCES =\
+> +struct cxl_cmd;
+> +const char *cxl_cmd_get_devname(struct cxl_cmd *cmd);
+> +struct cxl_cmd *cxl_cmd_new_raw(struct cxl_memdev *memdev, int opcode);
+> +int cxl_cmd_set_input_payload(struct cxl_cmd *cmd, void *in, int size);
+> +int cxl_cmd_set_output_payload(struct cxl_cmd *cmd, void *out, int size);
+> +void cxl_cmd_ref(struct cxl_cmd *cmd);
+> +void cxl_cmd_unref(struct cxl_cmd *cmd);
+> +int cxl_cmd_submit(struct cxl_cmd *cmd);
+> +int cxl_cmd_get_mbox_status(struct cxl_cmd *cmd);
+> +int cxl_cmd_get_out_size(struct cxl_cmd *cmd);
+> +
+>  #ifdef __cplusplus
+>  } /* extern "C" */
+>  #endif
+> diff --git a/cxl/lib/libcxl.sym b/cxl/lib/libcxl.sym
+> index 0f6ecad..493429c 100644
+> --- a/cxl/lib/libcxl.sym
+> +++ b/cxl/lib/libcxl.sym
+> @@ -27,3 +27,16 @@ global:
+>  	cxl_memdev_get_ram_size;
+>  	cxl_memdev_get_firmware_verison;
+>  } LIBCXL_1;
+> +
+> +LIBCXL_3 {
+> +global:
+> +	cxl_cmd_get_devname;
+> +	cxl_cmd_new_raw;
+> +	cxl_cmd_set_input_payload;
+> +	cxl_cmd_set_output_payload;
+> +	cxl_cmd_ref;
+> +	cxl_cmd_unref;
+> +	cxl_cmd_submit;
+> +	cxl_cmd_get_mbox_status;
+> +	cxl_cmd_get_out_size;
+> +} LIBCXL_2;
 > -- 
 > 2.29.2
 > 
