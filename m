@@ -2,198 +2,117 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674C632476B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 00:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B4B3247A5
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 00:48:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 77605100EB353;
-	Wed, 24 Feb 2021 15:14:42 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:f940:2:1:2::a6b; helo=194-67-112-151.ovz.vps.regruhosting.ru; envelope-from=www-data@194-67-112-151.ovz.vps.regruhosting.ru; receiver=<UNKNOWN> 
-Received: from 194-67-112-151.ovz.vps.regruhosting.ru (unknown [IPv6:2a00:f940:2:1:2::a6b])
-	by ml01.01.org (Postfix) with ESMTP id 916F7100EB34A
-	for <linux-nvdimm@lists.01.org>; Wed, 24 Feb 2021 15:14:39 -0800 (PST)
-Received: by 194-67-112-151.ovz.vps.regruhosting.ru (Postfix, from userid 33)
-	id 13D381EA47A0; Wed, 24 Feb 2021 23:14:36 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTP id 4D339100EB346;
+	Wed, 24 Feb 2021 15:48:31 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=erwin.tsaur@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 94C04100EC1D5
+	for <linux-nvdimm@lists.01.org>; Wed, 24 Feb 2021 15:48:29 -0800 (PST)
+IronPort-SDR: VtT3alBYpKHn1pXR1Jo4QboGPCwHDYvJrPZEIn9E6ApfACSxMrAGll7SoACLTcnzQr7vIV/zhs
+ vptQZRwnSJZg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9905"; a="185464392"
+X-IronPort-AV: E=Sophos;i="5.81,203,1610438400";
+   d="scan'208";a="185464392"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2021 15:48:28 -0800
+IronPort-SDR: o86VkoNu65+aHA2VHimRvgdxJ+cQ9ddgscMGXQ0mwxtpJYQ+1jACpfx/Y7oHU9S58iJbgPoDz6
+ NlDVC/a0xy2Q==
+X-IronPort-AV: E=Sophos;i="5.81,203,1610438400";
+   d="scan'208";a="391821210"
+Received: from etsaur-mobl1.amr.corp.intel.com ([10.209.131.141])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2021 15:48:28 -0800
+From: "Tsaur, Erwin" <erwin.tsaur@intel.com>
 To: linux-nvdimm@lists.01.org
-Subject: ultima advertencia - Envio de Burofax Online - [ id 449514292  ]
-X-PHP-Originating-Script: 0:espanha.php
+Subject: [ndctl PATCH] Expose ndctl_bus_nfit_translate_spa as a public function.
+Date: Wed, 24 Feb 2021 15:48:14 -0800
+Message-Id: <20210224234814.1021-1-erwin.tsaur@intel.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-From: Notificados.com <notificados_one@outlook.com>
-Message-Id: <20210224231436.13D381EA47A0@194-67-112-151.ovz.vps.regruhosting.ru>
-Date: Wed, 24 Feb 2021 23:14:36 +0000 (UTC)
-Message-ID-Hash: P66HS3GSPHKSNWCJDDDPP63XMIEZAYMT
-X-Message-ID-Hash: P66HS3GSPHKSNWCJDDDPP63XMIEZAYMT
-X-MailFrom: www-data@194-67-112-151.ovz.vps.regruhosting.ru
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: MHUJEUXEYESGKAWYQWI2JKWI3RJU4ZNS
+X-Message-ID-Hash: MHUJEUXEYESGKAWYQWI2JKWI3RJU4ZNS
+X-MailFrom: erwin.tsaur@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Tsaur, Erwin" <erwin.tsaur@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P66HS3GSPHKSNWCJDDDPP63XMIEZAYMT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MHUJEUXEYESGKAWYQWI2JKWI3RJU4ZNS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5378565396776382517=="
-
---===============5378565396776382517==
-Content-type: text/html; charset=iso-8859-1
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<style>
-    .centro{
-        margin: 0 auto;
-        height: 50px;
-        width: 650px;
-		background-color:#ccc;
-       
-    }
-
-    .banner{
-        background-color:#ccc;
-        height: 50px;
-    }
-
-    .letf{
-        font-size: 30px;
-        font-weight: 100;
-        margin-left: 40px;
-        float: left;
-    }
-  .pequena{
-      font-size: 15px;
-  }
-
-  .banner2{
-      float:right;
-      margin-top: 30px;;
-      
-  }
-
-  .dep{
-    float:right;
-    text-align: right;
-  }
-
-.imagem{
-   
-    font-size: 15px;
-
-}
-
-.imagem2{
-    margin-left: 55%;
- 
-   
-}
- 
- .imagem2 .nomes{
-    font-size: 15px;
-    float: left;
- }
-
- .buro{
-     font-size: 15px;
-     margin-top: 20%;
-     text-align: center;
-     text-decoration: none;
-	 
- }
-
- .buro a{
-    text-decoration:none; 
-    color: #0E16D6;
-	font-size: 19px;
-	
- }
-
- .final{
-     font-weight: bold;
-     font-size: 13px;
-	 background-color:#ccc;
- }
- 
- .img-right{
-	float:right;
-
-
-	margin-right:-90px;
-	
- }
- </style>
-<body>
-    
- <div alt="centro" class="centro">
-    <hr>
-    <div alt="banner" class="banner">
-        <div class="letf">
-            <strong>Notificados</strong>
-            <br>
-           <div class="pequena">
-            www.notificados.com
-           </div>
-    </div>
-
-<div alt="banner2" class="banner2">
-   <strong> Comunicaciones fehacientes - Burofax Online</strong>
-</div>
-<BR>
-</BR>
-
-
-<br/>
-<br/>
- <div alt="buro" class="buro">
-     <strong>
-         <a href="http://megaguardiandigital.com/?email=linux-ima-devel@lists.sourceforge.net
-">Descargar todos archivos adjuntos ( 128 kb)</a>
-		 <hr/>
-     </strong>
- </div>
-
- <br>
- <br>
- <br>
-
-        <div alt="final" class="final">
-        
-            <span>
-                Fecha y hora del envio: martes, 09 da febrero de 2021, 07:20 hs,
-            </span>
-            <br/>
-            <span>
-                Remitente: DEPARTAMENTO JURIDICO ABOGADOS VINAR DOGARIA VERDU CALLE LIMA
-            </span>
-            <br/>
-            <span>
-                20 28006 MADRID (MADRID)
-            </span>
-            <br/>
-            <span>
-                Numero de paginas 1
-            </span>
-        </div>
-<hr>
-</div>
-
- </div>
-    
-</body>
-</html>24/02/2021 11:14:36
---===============5378565396776382517==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+The motivation is to allow access to ACPI defined NVDIMM Root Device _DSM Function Index 5(Translate SPA).  The rest of the _DSM functions, which are mostly ARS related, are already public.
+
+Basically move ndctl_bus_nfit_translate_spa declaration from private.h to libndctl.h.
+---
+ ndctl/lib/libndctl.sym | 4 ++++
+ ndctl/lib/nfit.c       | 2 +-
+ ndctl/lib/private.h    | 2 --
+ ndctl/libndctl.h       | 2 ++
+ 4 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/ndctl/lib/libndctl.sym b/ndctl/lib/libndctl.sym
+index 0a82616..58afb74 100644
+--- a/ndctl/lib/libndctl.sym
++++ b/ndctl/lib/libndctl.sym
+@@ -451,3 +451,7 @@ LIBNDCTL_25 {
+ 	ndctl_bus_clear_fw_activate_nosuspend;
+ 	ndctl_bus_activate_firmware;
+ } LIBNDCTL_24;
++
++LIBNDCTL_26 {
++	ndctl_bus_nfit_translate_spa;
++} LIBNDCTL_25;
+diff --git a/ndctl/lib/nfit.c b/ndctl/lib/nfit.c
+index 6f68fcf..d85682f 100644
+--- a/ndctl/lib/nfit.c
++++ b/ndctl/lib/nfit.c
+@@ -114,7 +114,7 @@ static int is_valid_spa(struct ndctl_bus *bus, unsigned long long spa)
+  *
+  * If success, returns zero, store dimm's @handle, and @dpa.
+  */
+-int ndctl_bus_nfit_translate_spa(struct ndctl_bus *bus,
++NDCTL_EXPORT int ndctl_bus_nfit_translate_spa(struct ndctl_bus *bus,
+ 	unsigned long long address, unsigned int *handle, unsigned long long *dpa)
+ {
+ 
+diff --git a/ndctl/lib/private.h b/ndctl/lib/private.h
+index ede1300..8f4510e 100644
+--- a/ndctl/lib/private.h
++++ b/ndctl/lib/private.h
+@@ -370,8 +370,6 @@ static inline int check_kmod(struct kmod_ctx *kmod_ctx)
+ 	return kmod_ctx ? 0 : -ENXIO;
+ }
+ 
+-int ndctl_bus_nfit_translate_spa(struct ndctl_bus *bus, unsigned long long addr,
+-		unsigned int *handle, unsigned long long *dpa);
+ struct ndctl_cmd *ndctl_bus_cmd_new_err_inj(struct ndctl_bus *bus);
+ struct ndctl_cmd *ndctl_bus_cmd_new_err_inj_clr(struct ndctl_bus *bus);
+ struct ndctl_cmd *ndctl_bus_cmd_new_err_inj_stat(struct ndctl_bus *bus,
+diff --git a/ndctl/libndctl.h b/ndctl/libndctl.h
+index 60e1288..ee517a7 100644
+--- a/ndctl/libndctl.h
++++ b/ndctl/libndctl.h
+@@ -237,6 +237,8 @@ unsigned long long ndctl_cmd_clear_error_get_cleared(
+ 		struct ndctl_cmd *clear_err);
+ unsigned int ndctl_cmd_ars_cap_get_clear_unit(struct ndctl_cmd *ars_cap);
+ int ndctl_cmd_ars_stat_get_flag_overflow(struct ndctl_cmd *ars_stat);
++int ndctl_bus_nfit_translate_spa(struct ndctl_bus *bus, unsigned long long addr,
++		unsigned int *handle, unsigned long long *dpa);
+ 
+ /*
+  * Note: ndctl_cmd_smart_get_temperature is an alias for
+-- 
+2.30.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============5378565396776382517==--
