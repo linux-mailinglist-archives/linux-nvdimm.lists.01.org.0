@@ -2,32 +2,32 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493833255F9
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 20:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AC932548B
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 18:31:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 99C14100EAB4C;
-	Thu, 25 Feb 2021 11:01:00 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.219; helo=minif56.com; envelope-from=yuimedyleniox@mindysmusikids.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 8635A100EAB41;
+	Thu, 25 Feb 2021 09:31:00 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.219; helo=minif56.com; envelope-from=yuimseyleniox@mingdunh.com; receiver=<UNKNOWN> 
 Received: from minif56.com (unknown [188.72.187.219])
-	by ml01.01.org (Postfix) with ESMTP id 1C987100EAB44
-	for <linux-nvdimm@lists.01.org>; Thu, 25 Feb 2021 11:00:55 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 66D50100F227A
+	for <linux-nvdimm@lists.01.org>; Thu, 25 Feb 2021 09:30:57 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: photo shooting for your products
-Message-ID: <062ba1f683bfe6381a007a554e3ac216@rentmyphotobooth.com>
-Date: Thu, 25 Feb 2021 11:26:54 +0100
-From: "Jason" <yuimeyfleniox@mindysmusikids.com>
+Subject: product photography
+Message-ID: <80b14ce9fd2b258761b916ca1c3c96aa@rentmyphotobooth.com>
+Date: Thu, 25 Feb 2021 11:53:05 +0100
+From: "Jason" <yuimedyleniox@mingdunh.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: MWYALOP7MVWXYU6BO5IT66OMR4GBOJMD
-X-Message-ID-Hash: MWYALOP7MVWXYU6BO5IT66OMR4GBOJMD
-X-MailFrom: yuimedyleniox@mindysmusikids.com
+Message-ID-Hash: 5EU66APNFDR2GHRLJRAY6VFYIKE6ZXTM
+X-Message-ID-Hash: 5EU66APNFDR2GHRLJRAY6VFYIKE6ZXTM
+X-MailFrom: yuimseyleniox@mingdunh.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: wouredichedep@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MWYALOP7MVWXYU6BO5IT66OMR4GBOJMD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5EU66APNFDR2GHRLJRAY6VFYIKE6ZXTM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
