@@ -1,71 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC144324A42
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 06:53:18 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FE5324A45
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 06:54:18 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EEF5B100EBB9E;
-	Wed, 24 Feb 2021 21:53:16 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+	by ml01.01.org (Postfix) with ESMTP id 1E7BA100EB84F;
+	Wed, 24 Feb 2021 21:54:17 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C501F100EBB95
-	for <linux-nvdimm@lists.01.org>; Wed, 24 Feb 2021 21:53:14 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id n10so3064967pgl.10
-        for <linux-nvdimm@lists.01.org>; Wed, 24 Feb 2021 21:53:14 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 1507C100EBB9E
+	for <linux-nvdimm@lists.01.org>; Wed, 24 Feb 2021 21:54:15 -0800 (PST)
+Received: by mail-pl1-x633.google.com with SMTP id u11so2583100plg.13
+        for <linux-nvdimm@lists.01.org>; Wed, 24 Feb 2021 21:54:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fossix-org.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:in-reply-to:references:date:message-id
          :mime-version;
-        bh=tDtgnNetCa0Rr4gcVkiGZBijVJNLZPXX/yIyvvgw5f0=;
-        b=aAoFxMUVxGcKEa7IJzZuwHHx1CwgJWvSzVFz3qCR+TAvASF9PfK7we6+qam4LCQglf
-         PEZLXZLRmN0EnNDvuHxOLZeRhWXr9m7E9r8u6+0HQmr/aXvOEuWjs+HcNzMrpfYwaSWV
-         w5R6lRYW518GmmoFcPYHwBh90fozjXujp1ca52oUNdZIEfk/O1R3U3o6oFGpfFA2lh+T
-         NNNFFWGqwyyRtm8o0NThsouVMM5BRaXPVaZ3dKmk+3SiVaFNUPabItkaBbuuPslO6QJc
-         xjNRifZsDEeVuoz4tCOVPh8oDWZy98S0V4bdF0Mh41FsbH+sfFPUwFgsvErElo7Ztr0Q
-         rIFA==
+        bh=z3BFKlLrB2F3Rs5Q4n2tzT3dBYARhDurxzpYyTA3R0A=;
+        b=Zpvl13jxHxQGNksSTZcRWqDtbeiCh+UlZXb97zkMW2e6g7w2zAvr4Fg0yppweDJg8v
+         BkhEb+RkL4cWDTj3hJwuE1T4UwWv2XbKsxaMGJJ2LCF5fztemRch5ZBULJs+vHb+2gcw
+         IdajCuGplDAK5/1ecD6SWsYqjno8QKnQCUiKh75qTCy2q0NAoL4ocJ9ddYNEj+yOpkEp
+         1SO9ghGVh47+hleS1IJTdHao2H/I6AO+7otF4NQYuIbjrk+CdJevOT/ljfVUPORPkkFq
+         f3lqjWHRLxm4SzxjP6CfulxwWXlGvoRnuZh8FVD2UzBxLhOEFdKe/ZgJO/r3sTv8UZbL
+         Vvig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
          :message-id:mime-version;
-        bh=tDtgnNetCa0Rr4gcVkiGZBijVJNLZPXX/yIyvvgw5f0=;
-        b=GP6WVQ1uv3eaSHSTeFKMmtrUYH4fnXQLLsabRfPUF5tTEo3w0UMVni5w7Zt+IsqQjz
-         knnTPUrbZb+M9hWap73KTxup1YKLGa7c8zKJpk3eL4d4HrWaQVpDfUeDnS+0977Wr3Zm
-         j0lbdb3OzUHMrSSWsFanoxziSc9ln9AKXkbxLpAGh7fBVeTQ5oIORvxCYxGKS3Gm/ToT
-         diXXogOsMj8nTKEZTEYIygSFBcYQ4qOyQ40dNtbDjc2NxoP+YQxRkQ2gNQAaQWvpDt1a
-         UGZ/6SbQghaZJ66259ik4KWvMT0pEoJ0u7hUKPuGH6/4/OKb2sLJ4k2rrAoGBNbKK6D+
-         LlVg==
-X-Gm-Message-State: AOAM533j8v2jWQHTI0j89LQhjUB3a97id+/txSE19fHOP9XmBcbk7d0n
-	2sJC811XEkJdeZMUiCjLT9SZwg==
-X-Google-Smtp-Source: ABdhPJxFvCaPxz0QZvgSQC0VqTejE0AW2J+JVUKMpFq6GE6cSGqit3B5VgGz+litslWaIdGkIutVgQ==
-X-Received: by 2002:aa7:9298:0:b029:1ed:fd64:e6b7 with SMTP id j24-20020aa792980000b02901edfd64e6b7mr1664271pfa.5.1614232394069;
-        Wed, 24 Feb 2021 21:53:14 -0800 (PST)
+        bh=z3BFKlLrB2F3Rs5Q4n2tzT3dBYARhDurxzpYyTA3R0A=;
+        b=eeVwiERqd9fQ/VGZc4p8dH9N4ILewYJ5SIHlfsH5UjSfFQfxUFhuxlznTXMlIstzIJ
+         xyDLI+SR0/3Ihh8xlgxBpcO9L3N7w/Xm5y/NukmGIhV83ZNy0EkXr1CKmpnjcHlqkW9E
+         sPy2TVRV/lw6QLBmQseCE65L6m2W7RWJJC9U8aWRq6JAr16mUx7pvg6VC0t8+uI6/ERV
+         eyxB1vGkURqALQAwU0sOKMEmiTsgJpWQGudoP4mtANB1oD0HQM661fzj9jhhow1PbrN4
+         B2O2phd4O4a5CMdtrcKUU1Esac3bz8PgbbxnhpeA2cQnYkB45TEzpgCW9mYArOyNKBQG
+         uYmw==
+X-Gm-Message-State: AOAM531+XKMqMA7Hkytbwz6K1amzX6/opefvD34USZNWpPsgIR8iThHl
+	tteJ2oGEpEH5a6BbqHm5BoRnxw==
+X-Google-Smtp-Source: ABdhPJw3SVBfNYciv1teFRHgt4I7HM1Zl4YUpNmh7XsdInIQxi2qS8owQXWzpLeCa7k9g0iwIPTXBg==
+X-Received: by 2002:a17:902:9304:b029:e4:12f4:bdb0 with SMTP id bc4-20020a1709029304b02900e412f4bdb0mr1682919plb.55.1614232454653;
+        Wed, 24 Feb 2021 21:54:14 -0800 (PST)
 Received: from localhost ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id m5sm4210784pgj.11.2021.02.24.21.53.12
+        by smtp.gmail.com with ESMTPSA id b188sm4952000pfg.179.2021.02.24.21.54.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Feb 2021 21:53:13 -0800 (PST)
+        Wed, 24 Feb 2021 21:54:14 -0800 (PST)
 From: Santosh Sivaraj <santosh@fossix.org>
 To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [ndctl 3/5] papr: Add support to parse save_fail flag for dimm
-In-Reply-To: <CAPcyv4jv-+gFP68RKD57+=QhT_SUWqXPJ4qFgmVZfVgNkVESCg@mail.gmail.com>
+Subject: Re: [ndctl 5/5] Use page size as alignment value
+In-Reply-To: <CAPcyv4inaEKt4s5vNGsbfidCz+biWJk6QTLyOMWB05iFreOMfA@mail.gmail.com>
 References: <20201222042240.2983755-1-santosh@fossix.org>
  <20201222042516.2984348-1-santosh@fossix.org>
- <20201222042516.2984348-3-santosh@fossix.org>
- <CAPcyv4jv-+gFP68RKD57+=QhT_SUWqXPJ4qFgmVZfVgNkVESCg@mail.gmail.com>
-Date: Thu, 25 Feb 2021 11:23:10 +0530
-Message-ID: <87pn0oelrt.fsf@santosiv.in.ibm.com>
+ <20201222042516.2984348-5-santosh@fossix.org>
+ <CAPcyv4inaEKt4s5vNGsbfidCz+biWJk6QTLyOMWB05iFreOMfA@mail.gmail.com>
+Date: Thu, 25 Feb 2021 11:24:12 +0530
+Message-ID: <87mtvselq3.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: DO72BUGOI3PULOJH54MRYQVLHNJO4CDE
-X-Message-ID-Hash: DO72BUGOI3PULOJH54MRYQVLHNJO4CDE
+Message-ID-Hash: K3XLVXWEY6BCCEVIUQLYOQU63UQQKPIQ
+X-Message-ID-Hash: K3XLVXWEY6BCCEVIUQLYOQU63UQQKPIQ
 X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DO72BUGOI3PULOJH54MRYQVLHNJO4CDE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K3XLVXWEY6BCCEVIUQLYOQU63UQQKPIQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -78,50 +78,94 @@ Dan Williams <dan.j.williams@intel.com> writes:
 
 > On Mon, Dec 21, 2020 at 8:26 PM Santosh Sivaraj <santosh@fossix.org> wrote:
 >>
->> This will help in getting the dimm fail tests to run on papr family too.
->> Also add nvdimm_test compatibility string for recognizing the test module.
+>> The alignment sizes passed to ndctl in the tests are all hardcoded to 4k,
+>> the default page size on x86. Change those to the default page size on that
+>> architecture (sysconf/getconf). No functional changes otherwise.
 >>
 >> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 >> ---
->>  ndctl/lib/libndctl.c | 5 ++++-
->>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>  test/dpa-alloc.c    | 23 ++++++++++++++---------
+>>  test/multi-dax.sh   |  6 ++++--
+>>  test/sector-mode.sh |  4 +++-
+>>  3 files changed, 21 insertions(+), 12 deletions(-)
 >>
->> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
->> index 5f09628..3fb3aed 100644
->> --- a/ndctl/lib/libndctl.c
->> +++ b/ndctl/lib/libndctl.c
->> @@ -815,6 +815,8 @@ static void parse_papr_flags(struct ndctl_dimm *dimm, char *flags)
->>                         dimm->flags.f_restore = 1;
->>                 else if (strcmp(start, "smart_notify") == 0)
->>                         dimm->flags.f_smart = 1;
->> +               else if (strcmp(start, "save_fail") == 0)
->> +                       dimm->flags.f_save = 1;
->>                 start = end + 1;
+>> diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
+>> index 10af189..ff6143e 100644
+>> --- a/test/dpa-alloc.c
+>> +++ b/test/dpa-alloc.c
+>> @@ -48,12 +48,13 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>>         struct ndctl_region *region, *blk_region = NULL;
+>>         struct ndctl_namespace *ndns;
+>>         struct ndctl_dimm *dimm;
+>> -       unsigned long size;
+>> +       unsigned long size, page_size;
+>>         struct ndctl_bus *bus;
+>>         char uuid_str[40];
+>>         int round;
+>>         int rc;
+>>
+>> +       page_size = sysconf(_SC_PAGESIZE);
+>>         /* disable nfit_test.1, not used in this test */
+>>         bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
+>>         if (!bus)
+>> @@ -134,11 +135,11 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>>                         return rc;
+>>                 }
+>>                 ndctl_namespace_disable_invalidate(ndns);
+>> -               rc = ndctl_namespace_set_size(ndns, SZ_4K);
+>> +               rc = ndctl_namespace_set_size(ndns, page_size);
+>>                 if (rc) {
+>> -                       fprintf(stderr, "failed to init %s to size: %d\n",
+>> +                       fprintf(stderr, "failed to init %s to size: %lu\n",
+>>                                         ndctl_namespace_get_devname(ndns),
+>> -                                       SZ_4K);
+>> +                                       page_size);
+>>                         return rc;
+>>                 }
+>>                 namespaces[i].ndns = ndns;
+>> @@ -160,7 +161,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>>                 ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
+>>                 if (i % ARRAY_SIZE(namespaces) == 0)
+>>                         round++;
+>> -               size = SZ_4K * round;
+>> +               size = page_size * round;
+>>                 rc = ndctl_namespace_set_size(ndns, size);
+>>                 if (rc) {
+>>                         fprintf(stderr, "%s: set_size: %lx failed: %d\n",
+>> @@ -176,7 +177,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>>         i--;
+>>         round++;
+>>         ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
+>> -       size = SZ_4K * round;
+>> +       size = page_size * round;
+>>         rc = ndctl_namespace_set_size(ndns, size);
+>>         if (rc) {
+>>                 fprintf(stderr, "%s failed to update while labels full\n",
+>> @@ -185,7 +186,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
 >>         }
->>         if (end != start)
->> @@ -1044,7 +1046,8 @@ NDCTL_EXPORT int ndctl_bus_is_papr_scm(struct ndctl_bus *bus)
->>         if (sysfs_read_attr(bus->ctx, bus->bus_buf, buf) < 0)
->>                 return 0;
 >>
->> -       return (strcmp(buf, "ibm,pmemory") == 0);
->> +       return (strcmp(buf, "ibm,pmemory") == 0 ||
->> +               strcmp(buf, "nvdimm_test") == 0);
+>>         round--;
+>> -       size = SZ_4K * round;
+>> +       size = page_size * round;
+>>         rc = ndctl_namespace_set_size(ndns, size);
+>>         if (rc) {
+>>                 fprintf(stderr, "%s failed to reduce size while labels full\n",
+>> @@ -279,8 +280,12 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>>
+>>         available_slots = ndctl_dimm_get_available_labels(dimm);
+>>         if (available_slots != default_available_slots - 1) {
+>> -               fprintf(stderr, "mishandled slot count\n");
+>> -               return -ENXIO;
+>> +               fprintf(stderr, "mishandled slot count (%u, %u)\n",
+>> +                       available_slots, default_available_slots - 1);
+>> +
+>> +               /* TODO: fix it on non-acpi platforms */
+>> +               if (ndctl_bus_has_nfit(bus))
+>> +                       return -ENXIO;
 >
-> A bit unfortunate to leak test details into the production path,
-> especially when nvdimm_test is meant to be generic. It seems what you
-> really want is a generic way to determine if dimm supports the common
-> error state flags, right? I'd add an api for that and say yes for nfit
-> and papr.
+> This change seems unrelated to page size fixups. Care to break it out?
 
-Sorry to get to this late.
-
-Though I would like it to be generic, there is some advantage of code reuse if
-it's part of the PAPR_FAMILY.
-
-So the idea in the above code is to determine which flag parsing code to call,
-either parse_nfit_mem_flags or parse_papr_flags. Or I could write a new function
-if the bus is of neither type. But that would again want me to duplicate error
-inject related code, and may be other paths too.
+This change is not required, I have already fixed this up. Refactoring residue.
 
 Thanks,
 Santosh
