@@ -1,49 +1,76 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68EC324D2D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 10:53:17 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493833255F9
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Feb 2021 20:01:02 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E74E5100F2274;
-	Thu, 25 Feb 2021 01:53:15 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=45.137.22.101; helo=drsulaimanalhabib.com; envelope-from=ajith.bandara@drsulaimanalhabib.com; receiver=<UNKNOWN> 
-Received: from drsulaimanalhabib.com (unknown [45.137.22.101])
-	by ml01.01.org (Postfix) with ESMTP id 336CA100F2270
-	for <linux-nvdimm@lists.01.org>; Thu, 25 Feb 2021 01:53:05 -0800 (PST)
-From: "HSBC Advising Service" <Ajith.Bandara@drsulaimanalhabib.com>
+	by ml01.01.org (Postfix) with ESMTP id 99C14100EAB4C;
+	Thu, 25 Feb 2021 11:01:00 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.219; helo=minif56.com; envelope-from=yuimedyleniox@mindysmusikids.com; receiver=<UNKNOWN> 
+Received: from minif56.com (unknown [188.72.187.219])
+	by ml01.01.org (Postfix) with ESMTP id 1C987100EAB44
+	for <linux-nvdimm@lists.01.org>; Thu, 25 Feb 2021 11:00:55 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: Payment Advice - Advice Ref:[GLV225445686] / ACH credits / Customer Ref:[SUPPYT] / Second Party Ref:[20210221]
-Date: 25 Feb 2021 01:53:04 -0800
-Message-ID: <20210225015303.20A6110C299A0B00@drsulaimanalhabib.com>
+Subject: photo shooting for your products
+Message-ID: <062ba1f683bfe6381a007a554e3ac216@rentmyphotobooth.com>
+Date: Thu, 25 Feb 2021 11:26:54 +0100
+From: "Jason" <yuimeyfleniox@mindysmusikids.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0012_A8B00FA8.CD319165"
-Message-ID-Hash: L332CGHWB443ZEPTPANOJGHSM6SI4NCT
-X-Message-ID-Hash: L332CGHWB443ZEPTPANOJGHSM6SI4NCT
-X-MailFrom: Ajith.Bandara@drsulaimanalhabib.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: MWYALOP7MVWXYU6BO5IT66OMR4GBOJMD
+X-Message-ID-Hash: MWYALOP7MVWXYU6BO5IT66OMR4GBOJMD
+X-MailFrom: yuimedyleniox@mindysmusikids.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: wouredichedep@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/L332CGHWB443ZEPTPANOJGHSM6SI4NCT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MWYALOP7MVWXYU6BO5IT66OMR4GBOJMD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0012_A8B00FA8.CD319165
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+Content-Type: text/plain; format="flowed"; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Hi,
+
+Hope all is well.
+I am reaching you to check if you have photo shooting needs for your
+products.
+
+Our product photography studio is specially designed and outfitted with
+professional cameras, lighting, reflectors, diffusers, soft boxes, props,
+and all the tools needed to allow our team to take the product photos.
+
+When our ecommerce photography studio is combined with the experience and
+passion
+of our product photographers, and post production team we have everything
+needed to make your product looks good.
+
+Our studio utilizes the latest in photographic and digital technology.
+Our fully streamlined process allows us to produce a high quality product
+in a streamlined process, which in turn allows us to pass on the savings to
+you.
+Our post production editing process is state of the art.
+
+We use professional-grade displays and calibrate our monitors regularly
+using
+the very latest in advanced color calibration tools. Our photo studio is
+setup to provide highly accurate color reproduction which is essential for
+creating the product pictures.
+
+Our product shoot photographers have extensive experience with all types of
+products, to deliver
+high quality product photos.
+
+Looking forward to start cooperation with your company.
+
+Thanks and Regards,
+Jason Miller
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
-------=_NextPart_000_0012_A8B00FA8.CD319165--
