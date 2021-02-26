@@ -1,53 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6065325ABA
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Feb 2021 01:21:40 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93298325C6B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Feb 2021 05:14:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 82794100EAAE3;
-	Thu, 25 Feb 2021 16:21:39 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 57583100EAAE0
-	for <linux-nvdimm@lists.01.org>; Thu, 25 Feb 2021 16:21:37 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.81,207,1610380800";
-   d="scan'208";a="104882848"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 26 Feb 2021 08:21:36 +0800
-Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
-	by cn.fujitsu.com (Postfix) with ESMTP id 5D38D4CE76EF;
-	Fri, 26 Feb 2021 08:21:32 +0800 (CST)
-Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
- G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Fri, 26 Feb 2021 08:21:33 +0800
-Received: from irides.mr.mr.mr (10.167.225.141) by
- G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Fri, 26 Feb 2021 08:21:32 +0800
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-fsdevel@vger.kernel.org>
-Subject: [PATCH v2 10/10] fs/xfs: Add dedupe support for fsdax
-Date: Fri, 26 Feb 2021 08:20:30 +0800
-Message-ID: <20210226002030.653855-11-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id E046F100EC1E9;
+	Thu, 25 Feb 2021 20:14:48 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=djwong@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D8A90100EC1CC
+	for <linux-nvdimm@lists.01.org>; Thu, 25 Feb 2021 20:14:46 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9227864EDC;
+	Fri, 26 Feb 2021 04:14:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1614312885;
+	bh=sgWuxqBTz4uJmSaPMNWjznkck8E4uzq3eRWOtth4/Pk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GaKlhVvbTBQ10wmdG8lJGORHMFm7ED+I2ZQh6j3TMj5vcfdLDA91LE6NAJU6sYUAQ
+	 PLQ/fdnQyVxpFDdaGoY8MBdg+9xQznfx/6tHoJIAPnTa5XymqVuRDgGDR9woUdGIt1
+	 qR9bvxbSIdjDrVgZMmBG3RdSwbrzz2s14VpCvmDDxQir6273b544lhaey0J9JohhGF
+	 /F9PfucDLwp+H/egWwJ0jCumTfHCKrfrAlR7rN1QEeK4gDR++yhSE51klT4tcnTvSp
+	 QGkqBbHSLvEQYMwJNM9436fxTtc2kUqBJVmlSHPW//XR7cYfGQxa9nqGz78tOJbvah
+	 n5IabVC/GXYtw==
+Date: Thu, 25 Feb 2021 20:14:46 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Subject: Re: [PATCH v2 07/10] iomap: Introduce iomap_apply2() for operations
+ on two files
+Message-ID: <20210226041446.GV7272@magnolia>
 References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+ <20210226002030.653855-8-ruansy.fnst@fujitsu.com>
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 5D38D4CE76EF.A5A74
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: 73Z5USDNKJS4THFJ4GLXTPLPFRY4EZIR
-X-Message-ID-Hash: 73Z5USDNKJS4THFJ4GLXTPLPFRY4EZIR
-X-MailFrom: ruansy.fnst@fujitsu.com
+Content-Disposition: inline
+In-Reply-To: <20210226002030.653855-8-ruansy.fnst@fujitsu.com>
+Message-ID-Hash: OG2SOD7AXIE6UOTWJPSC6ULEPZYEMHXT
+X-Message-ID-Hash: OG2SOD7AXIE6UOTWJPSC6ULEPZYEMHXT
+X-MailFrom: djwong@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/73Z5USDNKJS4THFJ4GLXTPLPFRY4EZIR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OG2SOD7AXIE6UOTWJPSC6ULEPZYEMHXT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,114 +54,108 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add xfs_break_two_dax_layouts() to break layout for tow dax files.  Then
-call compare range function only when files are both DAX or not.
+On Fri, Feb 26, 2021 at 08:20:27AM +0800, Shiyang Ruan wrote:
+> Some operations, such as comparing a range of data in two files under
+> fsdax mode, requires nested iomap_open()/iomap_end() on two file.  Thus,
+> we introduce iomap_apply2() to accept arguments from two files and
+> iomap_actor2_t for actions on two files.
+> 
+> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+> ---
+>  fs/iomap/apply.c      | 51 +++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/iomap.h |  7 +++++-
+>  2 files changed, 57 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/iomap/apply.c b/fs/iomap/apply.c
+> index 26ab6563181f..fd2f8bde5791 100644
+> --- a/fs/iomap/apply.c
+> +++ b/fs/iomap/apply.c
+> @@ -97,3 +97,54 @@ iomap_apply(struct inode *inode, loff_t pos, loff_t length, unsigned flags,
+>  
+>  	return written ? written : ret;
+>  }
+> +
+> +loff_t
+> +iomap_apply2(struct inode *ino1, loff_t pos1, struct inode *ino2, loff_t pos2,
+> +		loff_t length, unsigned int flags, const struct iomap_ops *ops,
+> +		void *data, iomap_actor2_t actor)
+> +{
+> +	struct iomap smap = { .type = IOMAP_HOLE };
+> +	struct iomap dmap = { .type = IOMAP_HOLE };
+> +	loff_t written = 0, ret;
+> +
+> +	ret = ops->iomap_begin(ino1, pos1, length, 0, &smap, NULL);
+> +	if (ret)
+> +		goto out_src;
+> +	if (WARN_ON(smap.offset > pos1)) {
+> +		written = -EIO;
+> +		goto out_src;
+> +	}
+> +	if (WARN_ON(smap.length == 0)) {
+> +		written = -EIO;
+> +		goto out_src;
+> +	}
+> +
+> +	ret = ops->iomap_begin(ino2, pos2, length, 0, &dmap, NULL);
+> +	if (ret)
+> +		goto out_dest;
+> +	if (WARN_ON(dmap.offset > pos2)) {
+> +		written = -EIO;
+> +		goto out_dest;
+> +	}
+> +	if (WARN_ON(dmap.length == 0)) {
+> +		written = -EIO;
+> +		goto out_dest;
+> +	}
+> +
+> +	/* make sure extent length of two file is equal */
+> +	if (WARN_ON(smap.length != dmap.length)) {
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
----
- fs/xfs/xfs_file.c    | 20 ++++++++++++++++++++
- fs/xfs/xfs_inode.c   |  8 +++++++-
- fs/xfs/xfs_inode.h   |  1 +
- fs/xfs/xfs_reflink.c |  5 +++--
- 4 files changed, 31 insertions(+), 3 deletions(-)
+Why not set smap.length and dmap.length to min(smap.length, dmap.length) ?
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index 1987d15eab61..82467d08e3ce 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -784,6 +784,26 @@ xfs_break_dax_layouts(
- 			0, 0, xfs_wait_dax_page(inode));
- }
- 
-+int
-+xfs_break_two_dax_layouts(
-+	struct inode		*src,
-+	struct inode		*dest)
-+{
-+	int			error;
-+	bool			retry = false;
-+
-+retry:
-+	error = xfs_break_dax_layouts(src, &retry);
-+	if (error || retry)
-+		goto retry;
-+
-+	error = xfs_break_dax_layouts(dest, &retry);
-+	if (error || retry)
-+		goto retry;
-+
-+	return error;
-+}
-+
- int
- xfs_break_layouts(
- 	struct inode		*inode,
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index b7352bc4c815..c11b11e59a83 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -3651,8 +3651,10 @@ xfs_ilock2_io_mmap(
- 	struct xfs_inode	*ip2)
- {
- 	int			ret;
-+	struct inode		*inode1 = VFS_I(ip1);
-+	struct inode		*inode2 = VFS_I(ip2);
- 
--	ret = xfs_iolock_two_inodes_and_break_layout(VFS_I(ip1), VFS_I(ip2));
-+	ret = xfs_iolock_two_inodes_and_break_layout(inode1, inode2);
- 	if (ret)
- 		return ret;
- 	if (ip1 == ip2)
-@@ -3660,6 +3662,10 @@ xfs_ilock2_io_mmap(
- 	else
- 		xfs_lock_two_inodes(ip1, XFS_MMAPLOCK_EXCL,
- 				    ip2, XFS_MMAPLOCK_EXCL);
-+
-+	if (IS_DAX(inode1) && IS_DAX(inode2))
-+		ret = xfs_break_two_dax_layouts(inode1, inode2);
-+
- 	return 0;
- }
- 
-diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
-index eca333f5f715..9ed7a2895602 100644
---- a/fs/xfs/xfs_inode.h
-+++ b/fs/xfs/xfs_inode.h
-@@ -431,6 +431,7 @@ enum xfs_prealloc_flags {
- 
- int	xfs_update_prealloc_flags(struct xfs_inode *ip,
- 				  enum xfs_prealloc_flags flags);
-+int	xfs_break_two_dax_layouts(struct inode *inode1, struct inode *inode2);
- int	xfs_break_layouts(struct inode *inode, uint *iolock,
- 		enum layout_break_reason reason);
- 
-diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
-index dfe4e1912ff9..9a6374550560 100644
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -29,6 +29,7 @@
- #include "xfs_iomap.h"
- #include "xfs_sb.h"
- #include "xfs_ag_resv.h"
-+#include <linux/dax.h>
- 
- /*
-  * Copy on Write of Shared Blocks
-@@ -1306,8 +1307,8 @@ xfs_reflink_remap_prep(
- 	if (XFS_IS_REALTIME_INODE(src) || XFS_IS_REALTIME_INODE(dest))
- 		goto out_unlock;
- 
--	/* Don't share DAX file data for now. */
--	if (IS_DAX(inode_in) || IS_DAX(inode_out))
-+	/* Don't share DAX file data with non-DAX file. */
-+	if (IS_DAX(inode_in) != IS_DAX(inode_out))
- 		goto out_unlock;
- 
- 	if (IS_DAX(inode_in))
--- 
-2.30.1
+--D
 
-
+> +		written = -EIO;
+> +		goto out_dest;
+> +	}
+> +
+> +	written = actor(ino1, pos1, ino2, pos2, length, data, &smap, &dmap);
+> +
+> +out_dest:
+> +	if (ops->iomap_end)
+> +		ret = ops->iomap_end(ino2, pos2, length, 0, 0, &dmap);
+> +out_src:
+> +	if (ops->iomap_end)
+> +		ret = ops->iomap_end(ino1, pos1, length, 0, 0, &smap);
+> +
+> +	return ret;
+> +}
+> diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+> index 5bd3cac4df9c..913f98897a77 100644
+> --- a/include/linux/iomap.h
+> +++ b/include/linux/iomap.h
+> @@ -148,10 +148,15 @@ struct iomap_ops {
+>   */
+>  typedef loff_t (*iomap_actor_t)(struct inode *inode, loff_t pos, loff_t len,
+>  		void *data, struct iomap *iomap, struct iomap *srcmap);
+> -
+> +typedef loff_t (*iomap_actor2_t)(struct inode *ino1, loff_t pos1,
+> +		struct inode *ino2, loff_t pos2, loff_t len, void *data,
+> +		struct iomap *smap, struct iomap *dmap);
+>  loff_t iomap_apply(struct inode *inode, loff_t pos, loff_t length,
+>  		unsigned flags, const struct iomap_ops *ops, void *data,
+>  		iomap_actor_t actor);
+> +loff_t iomap_apply2(struct inode *ino1, loff_t pos1, struct inode *ino2,
+> +		loff_t pos2, loff_t length, unsigned int flags,
+> +		const struct iomap_ops *ops, void *data, iomap_actor2_t actor);
+>  
+>  ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
+>  		const struct iomap_ops *ops);
+> -- 
+> 2.30.1
+> 
+> 
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
