@@ -2,63 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F7F32675B
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Feb 2021 20:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11795326769
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Feb 2021 20:25:10 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D5336100EAB78;
-	Fri, 26 Feb 2021 11:20:54 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+	by ml01.01.org (Postfix) with ESMTP id 3CEC2100EAB78;
+	Fri, 26 Feb 2021 11:25:08 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1E14C100EAB70
-	for <linux-nvdimm@lists.01.org>; Fri, 26 Feb 2021 11:20:51 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id b13so3153545edx.1
-        for <linux-nvdimm@lists.01.org>; Fri, 26 Feb 2021 11:20:51 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 3F007100EC1E7
+	for <linux-nvdimm@lists.01.org>; Fri, 26 Feb 2021 11:25:06 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id g5so16664612ejt.2
+        for <linux-nvdimm@lists.01.org>; Fri, 26 Feb 2021 11:25:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=IhM0tVQWF8kzr3/IcadJQ+8qdq1XtQmOXaLGMkTtePw=;
-        b=FlPQwrTAoaNGYMFZQvI9fBh2dvf4F9S0O3OxF/Erg+JoJ8RTKBcX1uAoKkxTcKzxem
-         uOEtSEtzBkJWDAXKPNfAbGVQW+Q1USi66//Wt/85rTYnED6qm2LWs8jlcmvOu3Y4QAFd
-         NAmL9nrHdfdDXARigxJtNu0UAp/R2kRG1cbv0UAGyoJAZOQFPxfX8yXUgNbFfStCJuZL
-         YdGfVIArV8IOAiRdjk29NIxn5oQCayBFNF8S7z0E9DrzBzI5nTXrnHWHkx5o17/OWtHx
-         Xbe2Pzzf9XQ/xWg5I2PYrsd5QPl0RUN5d0fF5ND8WWJNB/SMA+xOVL0vYpJL1XHx2/dV
-         cQtA==
+        bh=AdceXkUat0y3I1W10TQaOb2nva8EpX5XfJ5IibDVBuM=;
+        b=DPa6Vh392csOE5ijiNRTWgG7GUi3kKjY8LOBEhxF6H7gF7J8KahKgnxLlU4iYgfSeY
+         Pbs8Vc17TTolZLRSHhw5iCYfpNtd2t1xcYFFKQ3fO0G0P2fg3i+ZYVYW+wfvE3qrVPet
+         2E/m7gPkNFcdJheH9N9j50LssiHOaF6yNI0g6wZFo6yWh/hSm23Riv3KyIzgVx7k/Ls4
+         o1Y4ydnYLrl3SjoziD977quqS+lhcudZ1ex+w4C30hrZA/3+lOd2xJK7KGuApblCVUbP
+         zyMwzpY2cHE2rR0/qLP0kT+5zg0IYM1Io+3P8b8kf1zp5BxfcTw8rv+QxLhplFhOrvcR
+         Yw/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IhM0tVQWF8kzr3/IcadJQ+8qdq1XtQmOXaLGMkTtePw=;
-        b=gpesFkeSJf6sM3urSWEniYEwFUrzo92oSAaymoevWX47zYEAoHgBAPDxhjWiijL0rM
-         OEHgf8zbGnaQKwIv0p7RpQCTLenIlGWYp5Cgg1iK32cz8c+SF06YSRbDNQm4urMJfplR
-         YSjRQZpnp8UETC/Xhs0M8/RBh1FHfJmnz1sdKuDOW0UMyAZpf1iR8R1OmtqZbWiAlKkl
-         GjSFlgMynfR7Z8oCuHDa75qcr2wn24SAcAcOGK6ErHxIFnQpWkZasS04XJ4ZGGIKXxbR
-         FGo7JIeCsUGwmNoQjPIZU2VUMKl1Cwxd+sPSv06p8RDkKLAyJQbA9ebCxdH8waDzBBd/
-         nsgg==
-X-Gm-Message-State: AOAM530rOEGCt7nWK6Sp/zUpmTR4NDSpUIB8HKoDcVjR5/huTcuj83m3
-	fd4yvSC/6OlThcdPRT76AYhhCQmQ6gaE1fZUdFQNhJOIxLxTnw==
-X-Google-Smtp-Source: ABdhPJzTF95rWcMrenF566dYnxcuI0CzJPIK7LK9Pxu01B72JTzOdyX8nKKAEkePfvYUdBEEQFKf0U/ux4FU2DpKERU=
-X-Received: by 2002:a05:6402:3585:: with SMTP id y5mr4997867edc.97.1614367250184;
- Fri, 26 Feb 2021 11:20:50 -0800 (PST)
+        bh=AdceXkUat0y3I1W10TQaOb2nva8EpX5XfJ5IibDVBuM=;
+        b=GQP8mpQ7PYGGVAA5fyHOcGB/uKDd8ZfNHdfAMud5++PuhsK1RQG/+XLlfc2S4q4vui
+         xSEqaoKAtonLMxJ4EtZp0P2t4UlToD9WN8hCY+azhmNFZZu5n8uhDwceWM5goEOlNyXa
+         0THomOibc2k0ANhRQbv4mFf52/kXnuoGyUF7UJRMpR6kALt4dnj343F7dxKq/BKRzj63
+         yVIB+0jkWjqc6zMWJ5OHdQnZ6OGn8SdQXZJktUE34/2/1JCPcMOw4gaxqUJ89QC5f8Bj
+         IK/dwuGszQoiAfFIIqc+4G0lv+MGmx6Qr3v8+ySJl3pcA+XQBQt9Q4TCeIEbFkIRqg/8
+         BbvQ==
+X-Gm-Message-State: AOAM532WuXfXUsrY+1wxEkKJ8s97Y37Vqf9zx47ygXmNyz3CkOnDBmzu
+	IKJa+M1gP72EThzQnvsWKAkGMs0je+zHvSiEZVON9A==
+X-Google-Smtp-Source: ABdhPJzUZ1ukwr7S7OH8h0lWao0WUwN2w4vieDP+yhbhYknurSEDgZngirw/nE+KWvrmB7T8lvwVfPOXST5nKZQzUdo=
+X-Received: by 2002:a17:906:6088:: with SMTP id t8mr5106839ejj.323.1614367504798;
+ Fri, 26 Feb 2021 11:25:04 -0800 (PST)
 MIME-Version: 1.0
-References: <20210224234814.1021-1-erwin.tsaur@intel.com>
-In-Reply-To: <20210224234814.1021-1-erwin.tsaur@intel.com>
+References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+ <OSBPR01MB2920899F1D71E7B054A04E39F49D9@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+ <20210226190454.GD7272@magnolia>
+In-Reply-To: <20210226190454.GD7272@magnolia>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 26 Feb 2021 11:20:39 -0800
-Message-ID: <CAPcyv4gNddAb0+_q4srSnchGPEda7nD2=0rJR=20_bHUxGeuwg@mail.gmail.com>
-Subject: Re: [ndctl PATCH] Expose ndctl_bus_nfit_translate_spa as a public function.
-To: "Tsaur, Erwin" <erwin.tsaur@intel.com>
-Message-ID-Hash: BTZHYP2V4Z74BCXEMHG7SPBBJ5YFWNBQ
-X-Message-ID-Hash: BTZHYP2V4Z74BCXEMHG7SPBBJ5YFWNBQ
+Date: Fri, 26 Feb 2021 11:24:53 -0800
+Message-ID: <CAPcyv4iJiYsM5FQdpMvCi24aCi7RqUnnxC6sM0umFqiN+Q59cg@mail.gmail.com>
+Subject: Re: Question about the "EXPERIMENTAL" tag for dax in XFS
+To: "Darrick J. Wong" <djwong@kernel.org>
+Message-ID-Hash: CEMSWUWB5DYRAOMR7SDHLW7TVWQRWAUN
+X-Message-ID-Hash: CEMSWUWB5DYRAOMR7SDHLW7TVWQRWAUN
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "david@fromorbit.com" <david@fromorbit.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "y-goto@fujitsu.com" <y-goto@fujitsu.com>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "fnstml-iaas@cn.fujitsu.com" <fnstml-iaas@cn.fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BTZHYP2V4Z74BCXEMHG7SPBBJ5YFWNBQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CEMSWUWB5DYRAOMR7SDHLW7TVWQRWAUN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,26 +69,50 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 24, 2021 at 3:48 PM Tsaur, Erwin <erwin.tsaur@intel.com> wrote:
+On Fri, Feb 26, 2021 at 11:05 AM Darrick J. Wong <djwong@kernel.org> wrote:
 >
-> The motivation is to allow access to ACPI defined NVDIMM Root Device _DSM Function Index 5(Translate SPA).  The rest of the _DSM functions, which are mostly ARS related, are already public.
+> On Fri, Feb 26, 2021 at 09:45:45AM +0000, ruansy.fnst@fujitsu.com wrote:
+> > Hi, guys
+> >
+> > Beside this patchset, I'd like to confirm something about the
+> > "EXPERIMENTAL" tag for dax in XFS.
+> >
+> > In XFS, the "EXPERIMENTAL" tag, which is reported in waring message
+> > when we mount a pmem device with dax option, has been existed for a
+> > while.  It's a bit annoying when using fsdax feature.  So, my initial
+> > intention was to remove this tag.  And I started to find out and solve
+> > the problems which prevent it from being removed.
+> >
+> > As is talked before, there are 3 main problems.  The first one is "dax
+> > semantics", which has been resolved.  The rest two are "RMAP for
+> > fsdax" and "support dax reflink for filesystem", which I have been
+> > working on.
+>
+> <nod>
+>
+> > So, what I want to confirm is: does it means that we can remove the
+> > "EXPERIMENTAL" tag when the rest two problem are solved?
+>
+> Yes.  I'd keep the experimental tag for a cycle or two to make sure that
+> nothing new pops up, but otherwise the two patchsets you've sent close
+> those two big remaining gaps.  Thank you for working on this!
+>
+> > Or maybe there are other important problems need to be fixed before
+> > removing it?  If there are, could you please show me that?
+>
+> That remains to be seen through QA/validation, but I think that's it.
+>
+> Granted, I still have to read through the two patchsets...
 
-For future reference you'll want to fix your editor to make sure it
-wraps at 72 columns for commit messages. If you're a vim user, I have
-the following in my .vimrc
+I've been meaning to circle back here as well.
 
-set tw=72
+My immediate concern is the issue Jason recently highlighted [1] with
+respect to invalidating all dax mappings when / if the device is
+ripped out from underneath the fs. I don't think that will collide
+with Ruan's implementation, but it does need new communication from
+driver to fs about removal events.
 
-...and then you can use the 'gq' command to fixup line wrapping after the fact.
-
-Otherwise, looks good to me. I was worried that you needed to double
-check that the bus argument actually is an nfit bus, but
-bus_has_translate_spa() already takes care of that, so I think we're
-good to go. Longer term if other buses grow the ability to return the
-DPA we can add a proper generic wrapper for that, to date I have not
-seen much support for RAS brewing in other buses.
-
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+[1]: http://lore.kernel.org/r/CAPcyv4i+PZhYZiePf2PaH0dT5jDfkmkDX-3usQy1fAhf6LPyfw@mail.gmail.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
