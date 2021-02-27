@@ -1,140 +1,126 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF1332783F
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Mar 2021 08:26:56 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 222FE327CBD
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Mar 2021 12:01:35 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 91CC4100EBBDA;
-	Sun, 28 Feb 2021 23:26:53 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=139.138.37.100; helo=esa12.hc1455-7.c3s2.iphmx.com; envelope-from=y-goto@fujitsu.com; receiver=<UNKNOWN> 
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 51868100EBB6B;
+	Mon,  1 Mar 2021 03:01:33 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=216.117.144.139; helo=mail.aymbus.com; envelope-from=aahfoffice@gmail.com; receiver=<UNKNOWN> 
+Received: from mail.aymbus.com (unknown [216.117.144.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A4570100EBBD9
-	for <linux-nvdimm@lists.01.org>; Sun, 28 Feb 2021 23:26:49 -0800 (PST)
-IronPort-SDR: DVtVqV9RvQenjDB/8JSDdZSg4zEKJtKi/C1kuq7AAYt5Z+kk5S76TZSH9WZ35SCOEn/PyX16c3
- Q+02Mencbt3Uzk3kwh7g6tw6G3vXJ3VSY+osO8Ln5tq9zAdnJBDazrl34CTEVpBhimwJdsUfd9
- 2y96kLCLdW+lLRN+L6MeMFEJz0u7PDlvzteKTIvMkNbuiHdmaUQa6900Hi1WieOZDP4pew1ohm
- MfRCJxFkiIJ9XKBuSCTsA3CyWE5IgJ3g2gBboDozfyZgf38wMrNWmjTRC3e94CFkcPAGuKScZe
- ZwY=
-X-IronPort-AV: E=McAfee;i="6000,8403,9909"; a="1487715"
-X-IronPort-AV: E=Sophos;i="5.81,214,1610377200";
-   d="scan'208";a="1487715"
-Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP; 01 Mar 2021 16:26:47 +0900
-Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com [192.168.83.66])
-	by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 85719A80C1
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Mar 2021 16:26:46 +0900 (JST)
-Received: from m3050.s.css.fujitsu.com (msm.b.css.fujitsu.com [10.134.21.208])
-	by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id BA7EC1558C
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Mar 2021 16:26:45 +0900 (JST)
-Received: from [10.133.113.145] (VPC-Y08P0560117.g01.fujitsu.local [10.133.113.145])
-	by m3050.s.css.fujitsu.com (Postfix) with ESMTP id A473F2A7;
-	Mon,  1 Mar 2021 16:26:45 +0900 (JST)
-Subject: Re: Question about the "EXPERIMENTAL" tag for dax in XFS
-To: Dan Williams <dan.j.williams@intel.com>,
- "Darrick J. Wong" <djwong@kernel.org>
-References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
- <OSBPR01MB2920899F1D71E7B054A04E39F49D9@OSBPR01MB2920.jpnprd01.prod.outlook.com>
- <20210226190454.GD7272@magnolia>
- <CAPcyv4iJiYsM5FQdpMvCi24aCi7RqUnnxC6sM0umFqiN+Q59cg@mail.gmail.com>
-From: Yasunori Goto <y-goto@fujitsu.com>
-Message-ID: <556921a1-456c-c24d-6d47-e8b15c1d9972@fujitsu.com>
-Date: Mon, 1 Mar 2021 16:26:45 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+	by ml01.01.org (Postfix) with ESMTPS id 83899100EBB6A;
+	Mon,  1 Mar 2021 03:01:29 -0800 (PST)
+X-Spam-Checker-Version: SpamAssassin 3.4.3 (2019-12-06) on aymbuscom
+X-Spam-Flag: YES
+X-Spam-Level: **********************************
+X-Spam-Status: Yes, score=34.7 required=7.0 tests=ADVANCE_FEE_5_NEW,
+	AXB_XMAILER_MIMEOLE_OL_024C2,BAYES_99,BAYES_999,DOS_OE_TO_MX,
+	FORGED_GMAIL_RCVD,FORGED_MUA_OUTLOOK,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+	FREEMAIL_REPLYTO_END_DIGIT,FROM_MISSPACED,FROM_MISSP_FREEMAIL,
+	FROM_MISSP_MSFT,FROM_MISSP_REPLYTO,FROM_MISSP_USER,FROM_MISSP_XPRIO,
+	FSL_CTYPE_WIN1251,FSL_HELO_NON_FQDN_1,FSL_NEW_HELO_USER,HELO_NO_DOMAIN,
+	MALFORMED_FREEMAIL,MIMEOLE_DIRECT_TO_MX,MISSING_HEADERS,
+	NSL_RCVD_FROM_USER,RDNS_NONE,REPLYTO_WITHOUT_TO_CC,SPOOFED_FREEMAIL,
+	SPOOFED_FREEMAIL_NO_RDNS,SPOOFED_FREEM_REPTO,TO_NO_BRKTS_FROM_MSSP,
+	TO_NO_BRKTS_MSFT,XPRIO autolearn=no autolearn_force=no version=3.4.3
+X-Spam-Report: 
+	*  3.8 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+	*      [score: 1.0000]
+	*  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+	*      [score: 1.0000]
+	*  0.0 NSL_RCVD_FROM_USER Received from User
+	*  0.0 FSL_CTYPE_WIN1251 Content-Type only seen in 419 spam
+	*  1.8 FSL_HELO_NON_FQDN_1 No description available.
+	*  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+	*      provider
+	*      [aahfoffice[at]gmail.com]
+	*  1.2 MISSING_HEADERS Missing To: header
+	*  1.0 FORGED_GMAIL_RCVD 'From' gmail.com does not match 'Received'
+	*      headers
+	*  0.3 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+	*      digit
+	*      [aahf1971[at]gmail.com]
+	*  0.9 FSL_NEW_HELO_USER Spam's using Helo and User
+	*  3.1 MALFORMED_FREEMAIL Bad headers on message from free email
+	*      service
+	*  0.0 FROM_MISSP_XPRIO Misspaced FROM + X-Priority
+	*  0.0 FROM_MISSP_MSFT From misspaced + supposed Microsoft tool
+	*  1.2 RDNS_NONE Delivered to internal network by a host with no rDNS
+	*  0.0 HELO_NO_DOMAIN Relay reports its domain incorrectly
+	*  0.0 FROM_MISSP_USER From misspaced, from "User"
+	*  0.6 REPLYTO_WITHOUT_TO_CC No description available.
+	*  0.0 AXB_XMAILER_MIMEOLE_OL_024C2 Yet another X header trait
+	*  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+	*      different freemails
+	*  0.0 FROM_MISSP_REPLYTO From misspaced, has Reply-To
+	*  2.5 TO_NO_BRKTS_FROM_MSSP Multiple header formatting problems
+	*  0.0 FROM_MISSPACED From: missing whitespace
+	*  2.0 MIMEOLE_DIRECT_TO_MX MIMEOLE + direct-to-MX
+	*  1.5 SPOOFED_FREEMAIL_NO_RDNS From SPOOFED_FREEMAIL and no rDNS
+	*  2.3 DOS_OE_TO_MX Delivered direct to MX with OE headers
+	*  0.0 SPOOFED_FREEMAIL No description available.
+	*  2.5 TO_NO_BRKTS_MSFT To: lacks brackets and supposed Microsoft tool
+	*  2.2 XPRIO Has X-Priority header
+	*  0.0 SPOOFED_FREEM_REPTO Forged freemail sender with freemail
+	*      reply-to
+	*  2.5 FORGED_MUA_OUTLOOK Forged mail pretending to be from MS Outlook
+	*  3.1 FROM_MISSP_FREEMAIL From misspaced + freemail provider
+	*  1.0 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
+	*      419)
+Received: from User ([185.215.151.154]) by aymbus.com with
+ MailEnable ESMTP; Fri, 26 Feb 2021 17:51:50 -0800
+From: "AAHF"<aahfoffice@gmail.com>
+Subject: ***SPAM*** Dear Supporter
+Date: Fri, 26 Feb 2021 17:51:40 -0800
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4iJiYsM5FQdpMvCi24aCi7RqUnnxC6sM0umFqiN+Q59cg@mail.gmail.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-Message-ID-Hash: MDWTRTJIUXBKY6RZIGL627BHHXMFVBDM
-X-Message-ID-Hash: MDWTRTJIUXBKY6RZIGL627BHHXMFVBDM
-X-MailFrom: y-goto@fujitsu.com
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <5FFF0D3B282F48369BAECDE2324F970D.MAI@aymbus.com>
+X-Spam-Prev-Subject: Dear Supporter
+Message-ID-Hash: HOMFTX4D5EJJEXT47RDOVJG2W75QWHYC
+X-Message-ID-Hash: HOMFTX4D5EJJEXT47RDOVJG2W75QWHYC
+X-MailFrom: aahfoffice@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "david@fromorbit.com" <david@fromorbit.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "fnstml-iaas@cn.fujitsu.com" <fnstml-iaas@cn.fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: aahf1971@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MDWTRTJIUXBKY6RZIGL627BHHXMFVBDM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HOMFTX4D5EJJEXT47RDOVJG2W75QWHYC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hello, Dan-san,
+Dear Supporter
 
-On 2021/02/27 4:24, Dan Williams wrote:
-> On Fri, Feb 26, 2021 at 11:05 AM Darrick J. Wong <djwong@kernel.org> wrote:
->>
->> On Fri, Feb 26, 2021 at 09:45:45AM +0000, ruansy.fnst@fujitsu.com wrote:
->>> Hi, guys
->>>
->>> Beside this patchset, I'd like to confirm something about the
->>> "EXPERIMENTAL" tag for dax in XFS.
->>>
->>> In XFS, the "EXPERIMENTAL" tag, which is reported in waring message
->>> when we mount a pmem device with dax option, has been existed for a
->>> while.  It's a bit annoying when using fsdax feature.  So, my initial
->>> intention was to remove this tag.  And I started to find out and solve
->>> the problems which prevent it from being removed.
->>>
->>> As is talked before, there are 3 main problems.  The first one is "dax
->>> semantics", which has been resolved.  The rest two are "RMAP for
->>> fsdax" and "support dax reflink for filesystem", which I have been
->>> working on.
->>
->> <nod>
->>
->>> So, what I want to confirm is: does it means that we can remove the
->>> "EXPERIMENTAL" tag when the rest two problem are solved?
->>
->> Yes.  I'd keep the experimental tag for a cycle or two to make sure that
->> nothing new pops up, but otherwise the two patchsets you've sent close
->> those two big remaining gaps.  Thank you for working on this!
->>
->>> Or maybe there are other important problems need to be fixed before
->>> removing it?  If there are, could you please show me that?
->>
->> That remains to be seen through QA/validation, but I think that's it.
->>
->> Granted, I still have to read through the two patchsets...
-> 
-> I've been meaning to circle back here as well.
-> 
-> My immediate concern is the issue Jason recently highlighted [1] with
-> respect to invalidating all dax mappings when / if the device is
-> ripped out from underneath the fs. I don't think that will collide
-> with Ruan's implementation, but it does need new communication from
-> driver to fs about removal events.
-> 
-> [1]: http://lore.kernel.org/r/CAPcyv4i+PZhYZiePf2PaH0dT5jDfkmkDX-3usQy1fAhf6LPyfw@mail.gmail.com
-> 
+RE: LETTER OF INTRODUCTION AND REQUEST FOR PARTNERSHIP/SUPPORT-THE COMPLETE STRUGGLE TO BRING HAPPINESS TO THE ORPHANS, LESS PRIVILEGED AND THE HELPLESS OLDER PEOPLE.
 
-I'm not sure why there is a race condition between unbinding operation 
-and accessing mmaped file on filesystem dax yet.
+We are happily contacting you for this course because you are a kind-heartily fellow and a promoter of the welfare of the less privileged, here may not your focus site for charity or you may not have an interest in such as an individual, but I beg of you, rethink, we are all human-being and the people of this part of the world totally need your partnership/support.
 
-May be silly question, but could you tell me why the "unbinding" 
-operation of the namespace which is mounted by filesystem dax must be
-allowed?
-If "unbinding" is rejected when the filesystem is mounted with dax 
-enabled, what is inconvenience?
+The Asadu Amagu Humanitarian Foundation (AAHF) is a registered NGO and all government authorize operational approval documents are available for your perusal and/or verification, we start in early 2018 and our aim and objectives are to promote the well-being of the helpless/sick older people and for Godly upbringing of orphan children, less privileged and to fight against internet scammer and fraudsters and crimes in Sub-Saharan African and the world since our search proved beyond a reasonable doubt that bad government policies and abuses of public offices born crime around Africa.
 
-I can imagine if a device like usb memory stick is removed surprisingly, 
-kernel/filesystem need to reject writeback at the time, and discard page 
-cache. Then, I can understand that unbinding operation is essential for 
-such case.
-But I don't know why PMEM device/namespace allows unbinding operation 
-like surprising removal event.
+Your partnership/support with AAHF stands a chance to save souls and make our world a better place for an inhabitant, AAHF, is not against any region/s we are against immoralities and crime. To make our world crime free, please party with AAHF. I assure you no advice, mainstream or financial support you give to AAHF will not be misused, your partnership with AAHF is needed and we will be accountable to you.
 
-Thanks,
+An adage says! In every twelve (12) there must be Judas Iscariot, that betrayed Jesus and in every thirteen (13) there must be Jesus Christ the savior of the world, please do not think everybody in Nigeria, West Africa is bad, many are good people, but unfortunately bad people are more because of hardship, please work with us to give the downtrodden a better life and save souls. The entire management of (AAHF)  Asadu Amagu Humanitarian humbly asks now for your personal donation support, we appreciate any amount, we need money for human empowerment and to buy medicine, food items and clothes, etc., to put a smile on the face of the Orphans and unprivileged and the helpless sick older people.
 
--- 
-Yasunori Goto
+Please upon your willingness for freewill donation, kindly contact us banking detail:
+
+Yours faithfully,
+Miss. Ogechukwu Agashi
+Public Record, Officer,
+ASADU AMAGU HUMANITARIAN FOUNDATION (AAHF)
+Direct Telephone: (+234) 7036585426    
+E-mail:  info@aahfoundation.com.
+ngwebsite: https://aahfoundation.com.ng
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
