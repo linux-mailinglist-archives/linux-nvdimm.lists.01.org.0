@@ -1,67 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2B43293AA
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Mar 2021 22:35:07 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50793294FC
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Mar 2021 23:46:54 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 485C6100ED4AE;
-	Mon,  1 Mar 2021 13:35:05 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 40E03100ED49C
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Mar 2021 13:35:02 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id f6so6941027edd.12
-        for <linux-nvdimm@lists.01.org>; Mon, 01 Mar 2021 13:35:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S5eQqZgOuAzrBI1ZGPeaiXwFuA8MI7ck2ex1o4+Zhi4=;
-        b=GsgUGnSh6XCM33kX1YqttSd0KUcHsr80+hSKtWCibszAfGFuVyoxIXC+cudRfZnEyL
-         jFH0+RPqUvsQwAvjT5XJwBt5pQuHcaGCA/Feko97ZuD1PMjrJ8hMLEHi1SchA998kROw
-         UxPATs7C/17JV7vMmPWCU0/Cq8DeK9RmormTicDEINXX6EXW8+Qep3kfC331ztEFSzZ8
-         bw9+S7FYGY4+AkXPXKG2NEE4JfhXF3kMVFhfWhSrSe352obZ3SIJ8AsGdgXReUr/NbEz
-         WxFs1esX13EoIG/CvJs1unIoGIX7b4I9BK7Xd42Qj0vnCaDuJwD4PX0OJKgCRqq4oI6R
-         hnoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S5eQqZgOuAzrBI1ZGPeaiXwFuA8MI7ck2ex1o4+Zhi4=;
-        b=lrDAugGpY0s+QU1t77mfUaWe61OJ3NF+fZ/HPA2n5gEuylIYXNmCv/+Nj2x5+jqMhX
-         idS53HkgD1uOmmyKubcohGmshJuOHSyT0ptSk/Mde1PkN9psecwsoslmYSWuIEtsRAWe
-         J8RSGnANrqX9Pg8Llr9VkiPb8o5dkOGBfUPGx49Sv2l1JJyAmMP5UDqE62QklHbLmCxu
-         Ep/2bJDxLpffHUOjfs7C8PNggG9nuqx7peqDqqTxgjUaU2wB/sT1FrIZ4VMAwA5sPCsh
-         kLYnQb6Uq0qKClFHqmcH7K8D7WTb3LrQgxxfF/uLAb9KVo5qQe7oDvl1tC1R9d5YQSzl
-         2WXw==
-X-Gm-Message-State: AOAM531o2fqgHYP/ZlSskCvA3ISYaZCvxBe4qINgvzPIy19D/2EadYXt
-	yhZaBOOfWvsZ3oHXdIAT78THHIxhlEEQ+VvEWWdaDw==
-X-Google-Smtp-Source: ABdhPJwE9duJauuJj63Z2mtoHxQXFJwkwdtiBTnboqNDobSDSZ5Ru3/ng679otfZJBNziIAzFv6Zba+Xj6ySXe7YUC0=
-X-Received: by 2002:a05:6402:10ce:: with SMTP id p14mr18013748edu.348.1614634501187;
- Mon, 01 Mar 2021 13:35:01 -0800 (PST)
-MIME-Version: 1.0
-References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
- <OSBPR01MB2920899F1D71E7B054A04E39F49D9@OSBPR01MB2920.jpnprd01.prod.outlook.com>
- <20210226190454.GD7272@magnolia> <CAPcyv4iJiYsM5FQdpMvCi24aCi7RqUnnxC6sM0umFqiN+Q59cg@mail.gmail.com>
- <556921a1-456c-c24d-6d47-e8b15c1d9972@fujitsu.com>
-In-Reply-To: <556921a1-456c-c24d-6d47-e8b15c1d9972@fujitsu.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 1 Mar 2021 13:34:52 -0800
-Message-ID: <CAPcyv4g3ZwbdLFx8bqMcNvXyrob8y6sBXXu=xPTmTY0VSk5HCw@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTP id D10BC100EC1D9;
+	Mon,  1 Mar 2021 14:46:52 -0800 (PST)
+Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.42; helo=mail106.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
+Received: from mail106.syd.optusnet.com.au (mail106.syd.optusnet.com.au [211.29.132.42])
+	by ml01.01.org (Postfix) with ESMTP id 798A6100EC1D4
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Mar 2021 14:46:49 -0800 (PST)
+Received: from dread.disaster.area (pa49-179-130-210.pa.nsw.optusnet.com.au [49.179.130.210])
+	by mail106.syd.optusnet.com.au (Postfix) with ESMTPS id 96FFC78B08D;
+	Tue,  2 Mar 2021 09:46:41 +1100 (AEDT)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+	(envelope-from <david@fromorbit.com>)
+	id 1lGrJI-00AYOj-RV; Tue, 02 Mar 2021 09:46:40 +1100
+Date: Tue, 2 Mar 2021 09:46:40 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Dan Williams <dan.j.williams@intel.com>
 Subject: Re: Question about the "EXPERIMENTAL" tag for dax in XFS
-To: Yasunori Goto <y-goto@fujitsu.com>
-Message-ID-Hash: CA46UZCNTF2EYO7MM6XWGENQGLEKXGZ3
-X-Message-ID-Hash: CA46UZCNTF2EYO7MM6XWGENQGLEKXGZ3
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Darrick J. Wong" <djwong@kernel.org>, "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "david@fromorbit.com" <david@fromorbit.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "fnstml-iaas@cn.fujitsu.com" <fnstml-iaas@cn.fujitsu.com>
+Message-ID: <20210301224640.GG4662@dread.disaster.area>
+References: <20210226190454.GD7272@magnolia>
+ <CAPcyv4iJiYsM5FQdpMvCi24aCi7RqUnnxC6sM0umFqiN+Q59cg@mail.gmail.com>
+ <20210226205126.GX4662@dread.disaster.area>
+ <CAPcyv4iDefA3Y0wUW=p080SYAsM_2TPJba-V-sxdK_BeJMkmsw@mail.gmail.com>
+ <20210226212748.GY4662@dread.disaster.area>
+ <CAPcyv4jryJ32R5vOwwEdoU3V8C0B7zu_pCt=7f6A3Gk-9h6Dfg@mail.gmail.com>
+ <20210227223611.GZ4662@dread.disaster.area>
+ <CAPcyv4h7XA3Jorcy_J+t9scw0A4KdT2WEwAhE-Nbjc=C2qmkMw@mail.gmail.com>
+ <20210228223846.GA4662@dread.disaster.area>
+ <CAPcyv4jzV2RUij2BEvDJLLiK_67Nf1v3M6-jRLKf32x4iOzqng@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jzV2RUij2BEvDJLLiK_67Nf1v3M6-jRLKf32x4iOzqng@mail.gmail.com>
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.3 cv=YKPhNiOx c=1 sm=1 tr=0 cx=a_idp_d
+	a=JD06eNgDs9tuHP7JIKoLzw==:117 a=JD06eNgDs9tuHP7JIKoLzw==:17
+	a=kj9zAlcOel0A:10 a=dESyimp9J3IA:10 a=7-415B0cAAAA:8
+	a=A7xB1iZnyS4vYbptKj0A:9 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+Message-ID-Hash: 7AAHZIFPDUQ6NUD723S7DFZCZGTROURB
+X-Message-ID-Hash: 7AAHZIFPDUQ6NUD723S7DFZCZGTROURB
+X-MailFrom: david@fromorbit.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Darrick J. Wong" <djwong@kernel.org>, "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "y-goto@fujitsu.com" <y-goto@fujitsu.com>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "fnstml-iaas@cn.fujitsu.com" <fnstml-iaas@cn.fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CA46UZCNTF2EYO7MM6XWGENQGLEKXGZ3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7AAHZIFPDUQ6NUD723S7DFZCZGTROURB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,106 +58,210 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sun, Feb 28, 2021 at 11:27 PM Yasunori Goto <y-goto@fujitsu.com> wrote:
->
-> Hello, Dan-san,
->
-> On 2021/02/27 4:24, Dan Williams wrote:
-> > On Fri, Feb 26, 2021 at 11:05 AM Darrick J. Wong <djwong@kernel.org> wrote:
-> >>
-> >> On Fri, Feb 26, 2021 at 09:45:45AM +0000, ruansy.fnst@fujitsu.com wrote:
-> >>> Hi, guys
-> >>>
-> >>> Beside this patchset, I'd like to confirm something about the
-> >>> "EXPERIMENTAL" tag for dax in XFS.
-> >>>
-> >>> In XFS, the "EXPERIMENTAL" tag, which is reported in waring message
-> >>> when we mount a pmem device with dax option, has been existed for a
-> >>> while.  It's a bit annoying when using fsdax feature.  So, my initial
-> >>> intention was to remove this tag.  And I started to find out and solve
-> >>> the problems which prevent it from being removed.
-> >>>
-> >>> As is talked before, there are 3 main problems.  The first one is "dax
-> >>> semantics", which has been resolved.  The rest two are "RMAP for
-> >>> fsdax" and "support dax reflink for filesystem", which I have been
-> >>> working on.
-> >>
-> >> <nod>
-> >>
-> >>> So, what I want to confirm is: does it means that we can remove the
-> >>> "EXPERIMENTAL" tag when the rest two problem are solved?
-> >>
-> >> Yes.  I'd keep the experimental tag for a cycle or two to make sure that
-> >> nothing new pops up, but otherwise the two patchsets you've sent close
-> >> those two big remaining gaps.  Thank you for working on this!
-> >>
-> >>> Or maybe there are other important problems need to be fixed before
-> >>> removing it?  If there are, could you please show me that?
-> >>
-> >> That remains to be seen through QA/validation, but I think that's it.
-> >>
-> >> Granted, I still have to read through the two patchsets...
+On Mon, Mar 01, 2021 at 12:55:53PM -0800, Dan Williams wrote:
+> On Sun, Feb 28, 2021 at 2:39 PM Dave Chinner <david@fromorbit.com> wrote:
 > >
-> > I've been meaning to circle back here as well.
+> > On Sat, Feb 27, 2021 at 03:40:24PM -0800, Dan Williams wrote:
+> > > On Sat, Feb 27, 2021 at 2:36 PM Dave Chinner <david@fromorbit.com> wrote:
+> > > > On Fri, Feb 26, 2021 at 02:41:34PM -0800, Dan Williams wrote:
+> > > > > On Fri, Feb 26, 2021 at 1:28 PM Dave Chinner <david@fromorbit.com> wrote:
+> > > > > > On Fri, Feb 26, 2021 at 12:59:53PM -0800, Dan Williams wrote:
+> > > > it points to, check if it points to the PMEM that is being removed,
+> > > > grab the page it points to, map that to the relevant struct page,
+> > > > run collect_procs() on that page, then kill the user processes that
+> > > > map that page.
+> > > >
+> > > > So why can't we walk the ptescheck the physical pages that they
+> > > > map to and if they map to a pmem page we go poison that
+> > > > page and that kills any user process that maps it.
+> > > >
+> > > > i.e. I can't see how unexpected pmem device unplug is any different
+> > > > to an MCE delivering a hwpoison event to a DAX mapped page.
+> > >
+> > > I guess the tradeoff is walking a long list of inodes vs walking a
+> > > large array of pages.
 > >
-> > My immediate concern is the issue Jason recently highlighted [1] with
-> > respect to invalidating all dax mappings when / if the device is
-> > ripped out from underneath the fs. I don't think that will collide
-> > with Ruan's implementation, but it does need new communication from
-> > driver to fs about removal events.
+> > Not really. You're assuming all a filesystem has to do is invalidate
+> > everything if a device goes away, and that's not true. Finding if an
+> > inode has a mapping that spans a specific device in a multi-device
+> > filesystem can be a lot more complex than that. Just walking inodes
+> > is easy - determining whihc inodes need invalidation is the hard
+> > part.
+> 
+> That inode-to-device level of specificity is not needed for the same
+> reason that drop_caches does not need to be specific. If the wrong
+> page is unmapped a re-fault will bring it back, and re-fault will fail
+> for the pages that are successfully removed.
+> 
+> > That's where ->corrupt_range() comes in - the filesystem is already
+> > set up to do reverse mapping from physical range to inode(s)
+> > offsets...
+> 
+> Sure, but what is the need to get to that level of specificity with
+> the filesystem for something that should rarely happen in the course
+> of normal operation outside of a mistake?
+
+Dan, you made this mistake with the hwpoisoning code that we're
+trying to fix that here. Hard coding a 1:1 physical address to
+inode/offset into the DAX mapping was a bad mistake. It's also one
+that should never have occurred because it's *obviously wrong* to
+filesystem developers and has been for a long time.
+
+Now we have the filesytem people providing a mechanism for the pmem
+devices to tell the filesystems about physical device failures so
+they can handle such failures correctly themselves. Having the
+device go away unexpectedly from underneath a mounted and active
+filesystem is a *device failure*, not an "unplug event".
+
+The mistake you made was not understanding how filesystems work,
+nor actually asking filesystem developers what they actually needed.
+You're doing the same thing here - you're telling us what you think
+the solution filesystems need is. Please listen when we say "that is
+not sufficient" because we don't want to be backed into a corner
+that we have to fix ourselves again before we can enable some basic
+filesystem functionality that we should have been able to support on
+DAX from the start...
+
+> > > There's likely always more pages than inodes, but perhaps it's more
+> > > efficient to walk the 'struct page' array than sb->s_inodes?
 > >
-> > [1]: http://lore.kernel.org/r/CAPcyv4i+PZhYZiePf2PaH0dT5jDfkmkDX-3usQy1fAhf6LPyfw@mail.gmail.com
+> > I really don't see you seem to be telling us that invalidation is an
+> > either/or choice. There's more ways to convert physical block
+> > address -> inode file offset and mapping index than brute force
+> > inode cache walks....
+> 
+> Yes, but I was trying to map it to an existing mechanism and the
+> internals of drop_pagecache_sb() are, in coarse terms, close to what
+> needs to happen here.
+
+No.
+
+drop_pagecache_sb() is not a relevant model for telling a filesystem
+that the block device underneath has gone away, nor for a device to
+ensure that access protections that *are managed by the filesystem*
+are enforced/revoked sanely.
+
+drop_pagecache_sb() is a brute-force model for invalidating user
+data mappings that the filesystem performs in response to such a
+notification. It only needs this brute-force approach if it has no
+other way to find active DAX mappings across the range of the device
+that has gone away.
+
+But this model doesn't work for direct mapped metadata, journals or
+any other internal direct filesystem mappings that aren't referenced
+by inodes that the filesytem might be using. The filesystem still
+needs to invalidate all those mappings and prevent further access to
+them, even from within the kernel itself.
+
+Filesystems are way more complex than pure DAX devices, and hence
+handle errors and failure events differently. Unlike DAX devices, we
+have both internal and external references to the DAX device, and we
+can have both external and internal direct maps.  Invalidating user
+data mappings is all dax devices need to do on unplug, but for
+filesystems it is only a small part of what we have to do when a
+range of a device goes bad.
+
+IOWs, there is no "one size fits all" approach that works for all
+filesystems, nor is there one strategy that is is optimal for all
+filesystems. Failure handling in a filesystem is almost always
+filesystem specific...
+
+> > > Ok, I think I set this discussion in the wrong direction implying any
+> > > mapping of this action to a "filesystem dead" event. It's just a "zap
+> > > all ptes" event and upper layers recover from there.
 > >
->
-> I'm not sure why there is a race condition between unbinding operation
-> and accessing mmaped file on filesystem dax yet.
->
-> May be silly question, but could you tell me why the "unbinding"
-> operation of the namespace which is mounted by filesystem dax must be
-> allowed?
+> > Yes, that's exactly what ->corrupt_range() is intended for. It
+> > allows the filesystem to lock out access to the bad range
+> > and then recover the data. Or metadata, if that's where the bad
+> > range lands. If that recovery fails, it can then report a data
+> > loss/filesystem shutdown event to userspace and kill user procs that
+> > span the bad range...
+> >
+> > FWIW, is this notification going to occur before or after the device
+> > has been physically unplugged?
+> 
+> Before. This will be operations that happen in the pmem driver
+> ->remove() callback.
+> 
+> > i.e. what do we do about the
+> > time-of-unplug-to-time-of-invalidation window where userspace can
+> > still attempt to access the missing pmem though the
+> > not-yet-invalidated ptes? It may not be likely that people just yank
+> > pmem nvdimms out of machines, but with NVMe persistent memory
+> > spaces, there's every chance that someone pulls the wrong device...
+> 
+> The physical removal aspect is only theoretical today.
 
-The unbind operation is used to switch the mode of a namespace between
-fsdax and devdax. There is no way to fail unbind. At most it can be
-delayed for a short while to perform cleanup, but it can't be blocked
-indefinitely. There is the option to specify 'suppress_bind_attrs' to
-the driver to preclude software triggered device removal, but that
-would disable mode changes for the device.
+For actual pmem, maybe. But hotplug RAM is a thing; big numa
+machines that can hotplug nodes into their fabric and so have CPUs
+and memory able to come and go from a live machine. It's not a small
+stretch to extend that to having PMEM in those nodes. So it's a
+practical design concern right now, even ignoring that NVMe is
+hotplug....
 
-> If "unbinding" is rejected when the filesystem is mounted with dax
-> enabled, what is inconvenience?
+> While the pmem
+> driver has a ->remove() path that's purely a software unbind
+> operation. That said the vulnerability window today is if a process
+> acquires a dax mapping, the pmem device hosting that filesystem goes
+> through an unbind / bind cycle, and then a new filesystem is created /
+> mounted. That old pte may be able to access data that is outside its
+> intended protection domain.
 
-It would be interesting (read difficult) to introduce the concept of
-dynamic 'suppress_bind_attrs'. Today the decision is static at driver
-registration time, not in response to how the device is being used.
+So what is being done to prevent stale DAX mappings from being
+leaked this way right now, seeing as the leak you mention here
+doesn't appear in any way to be filesystem related?
 
-I think global invalidation of all inodes that might be affected by a
-dax-capable device being ripped away from the filesystem is sufficient
-and avoids per-fs enabling, but I'm willing to be convinced that
-->corrupted_range() is the proper vehicle for this.
+> Going forward, for buses like CXL, there will be a managed physical
+> remove operation via PCIE native hotplug. The flow there is that the
+> PCIE hotplug driver will notify the OS of a pending removal, trigger
+> ->remove() on the pmem driver, and then notify the technician (slot
+> status LED) that the card is safe to pull.
 
->
-> I can imagine if a device like usb memory stick is removed surprisingly,
-> kernel/filesystem need to reject writeback at the time, and discard page
-> cache. Then, I can understand that unbinding operation is essential for
-> such case.
+That doesn't protect against pulling the wrong device, or having
+someone pull the device without first running an admin command that
+makes systems using DAX safe to pull the device....
 
-For usb the system is protected by the fact that all future block-i/o
-submissions to the old block-device will fail, and a new usb-device
-being plugged in will get a new block-device. I.e. the old security
-model is invalidated / all holes are closed by blk_cleanup_queue().
+And once you take into account that "pulling the wrong device" can
+happen, how does the filesystem tell tell the difference between a
+device being pulled and a drive cage just dying and so the drive
+just disappear from the system? How are these accidental vs real
+failures any different from the perspective of a filesystem mounted
+on that device?
 
-> But I don't know why PMEM device/namespace allows unbinding operation
-> like surprising removal event.
+And then there is the elephant in the room: if there's a "human in
+the loop" step needed to hot unplug a pmem device safely, then
+why the hell is the filesystem on that device still mounted and the
+DAX applications still running?
 
-DAX hands direct mappings to physical pages, if the security model
-fronting those physical pages changes the mappings attained via the
-old security model need to be invalidated. blk_cleanup_queue() does
-not invalidate DAX mappings.
+This just makes no sense at all from an operations perspective - if
+you know that you are about to do an unplug that will result in all
+your DAX apps and filesystems being killed (i.e. fatal production
+environment failure) then why haven't they all been stopped by the
+admin before the device unplug is done? Why does this "human in the
+loop" admin task require the applications and filesystems to handle
+this without warning and have to treat it as a "device failure"
+event when this can all be avoided for normal, scheduled, controlled
+unplug operations? The "unexpected unplug" is a catastrophic failure
+event which may have severe side effects on system operation and
+stability. Why would you design an unplug process that does not
+start with a clean, a controlled shutdown process from the top down?
+If we make the assumption that planned unplugs are well planned,
+organised and scheduled, then the only thing that an unplug event
+needs to mean to a filesystem is "catastrophic device failure has
+occurred".
 
-The practical value of fixing that hole is small given that physical
-unplug is not implemented for NVDIMMs today, but the get_user_pages()
-path can be optimized if this invalidation is implemented, and future
-hotplug-capable NVDIMM buses like CXL will need this.
+So from a system level, the way you are describing the way hot
+unplug events are supposed to occur and work looks completely
+screwed up to me. Exactly what use case do you have for pmem device
+hot-unplug from under a live filesystem that isn't considered a
+*catastrophic runtime device failure* by the filesystem?
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
