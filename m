@@ -2,69 +2,54 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1512329609
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Mar 2021 06:20:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 856DE32963C
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Mar 2021 06:38:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 128CA100EB834;
-	Mon,  1 Mar 2021 21:20:54 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 50661100EB832
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Mar 2021 21:20:52 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id l2so13136023pgb.1
-        for <linux-nvdimm@lists.01.org>; Mon, 01 Mar 2021 21:20:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=kmtPXq6M62BY/Onb9JbO5BZzweWyCKjCHOkJ/cLGpjc=;
-        b=uuj3oEqXP2ujZxWDuKTj6iom3No2Ceyake+1BGVD+xMqKIAMbN3KWulWaRKuB1gHkB
-         b/WmQ7dUDDblAB+C+oHiMumzNaSM6wo1uK7cx9x/kh4oUGTzdfoxhRfmm64tTmvLY2LX
-         Q9twI6dh/vPggLTGpAXEk6QtXupyH1XerbcSH5g2ZOx7s6Pyw8t1NV5PXxiAzByKjCDM
-         d0WZEVYRsQeEUZZznSsMlrTYS6g4hcVQhTdjbijhj9BuObzpVMZPMfhJaAYdUwijEQBK
-         2Bv20SXgpzpwvvE74fcKOfv5/ps2Lw7whyiduao/kvZaJx68HSIwNzXU5PLeXfTKBiLt
-         oH4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=kmtPXq6M62BY/Onb9JbO5BZzweWyCKjCHOkJ/cLGpjc=;
-        b=UcfchMfHq77p+gHLm82f3VDGJlxw44DtSM6lChgZafu6NsTqIYfF1WWS2vlGNfPV0Y
-         CTwG6AS6w/jxgo/p8mzdZBEZ0KcK2+LI5kofnfMvk61vvmgYkRcc0yonDXrnqJBTzgTh
-         0H+g5Nbc9rsJ0nG8HiAUciCzIJ+tJ3WaX6e7ZmurKVq6L8ct+zzLoDmjRJB4OYJWk9mK
-         UEPJniHEXQs9G2pXnxhBB1x4Bf/9rn1vxKdhFGssrl2e5EDzLE1oggE4+7++do+1BazZ
-         IucFKjC9L9oeXNet8wSfFxJc8g/PWqgnslRWiTUDUDXn5UnfOx7kQXe/o4jspQvUOaDg
-         yh5A==
-X-Gm-Message-State: AOAM530unID+/axamrCcxTNw5VW9VTa0yfVtF87fhMbHMar3q2DrlxQA
-	zSoD3FoW2v2eJT+aAupTz98hlQ==
-X-Google-Smtp-Source: ABdhPJzuc2eD6Yb+UEdKn8VPQmqGSuQdF7IX2cZlU0eUOe27NaZlj/i8Y3y2Irhqfdy2epFcqEnXiw==
-X-Received: by 2002:a62:8051:0:b029:1ed:d704:1f11 with SMTP id j78-20020a6280510000b02901edd7041f11mr1770670pfd.41.1614662451740;
-        Mon, 01 Mar 2021 21:20:51 -0800 (PST)
-Received: from localhost ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id x6sm17658763pfd.12.2021.03.01.21.20.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Mar 2021 21:20:51 -0800 (PST)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: QI Fuli <fukuri.sai@gmail.com>, linux-nvdimm@lists.01.org
-Subject: Re: [ndctl PATCH 2/2] ndctl/test: add checking the presence of jq
- command ahead
-In-Reply-To: <20210301172540.1511-2-qi.fuli@fujitsu.com>
-References: <20210301172540.1511-1-qi.fuli@fujitsu.com>
- <20210301172540.1511-2-qi.fuli@fujitsu.com>
-Date: Tue, 02 Mar 2021 10:50:48 +0530
-Message-ID: <87lfb6w2q7.fsf@santosiv.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTP id C4AD3100EB839;
+	Mon,  1 Mar 2021 21:38:36 -0800 (PST)
+Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.53; helo=mail107.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
+Received: from mail107.syd.optusnet.com.au (mail107.syd.optusnet.com.au [211.29.132.53])
+	by ml01.01.org (Postfix) with ESMTP id 99458100EB838
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Mar 2021 21:38:34 -0800 (PST)
+Received: from dread.disaster.area (pa49-179-130-210.pa.nsw.optusnet.com.au [49.179.130.210])
+	by mail107.syd.optusnet.com.au (Postfix) with ESMTPS id 6C9E4FA8629;
+	Tue,  2 Mar 2021 16:38:30 +1100 (AEDT)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+	(envelope-from <david@fromorbit.com>)
+	id 1lGxjo-00AzkM-R6; Tue, 02 Mar 2021 16:38:28 +1100
+Date: Tue, 2 Mar 2021 16:38:28 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: Question about the "EXPERIMENTAL" tag for dax in XFS
+Message-ID: <20210302053828.GI4662@dread.disaster.area>
+References: <20210226212748.GY4662@dread.disaster.area>
+ <CAPcyv4jryJ32R5vOwwEdoU3V8C0B7zu_pCt=7f6A3Gk-9h6Dfg@mail.gmail.com>
+ <20210227223611.GZ4662@dread.disaster.area>
+ <CAPcyv4h7XA3Jorcy_J+t9scw0A4KdT2WEwAhE-Nbjc=C2qmkMw@mail.gmail.com>
+ <20210228223846.GA4662@dread.disaster.area>
+ <CAPcyv4jzV2RUij2BEvDJLLiK_67Nf1v3M6-jRLKf32x4iOzqng@mail.gmail.com>
+ <20210301224640.GG4662@dread.disaster.area>
+ <CAPcyv4iTqDJApZY0o_Q0GKn93==d2Gta2NM5x=upf=3JtTia7Q@mail.gmail.com>
+ <20210302024227.GH4662@dread.disaster.area>
+ <CAPcyv4ja8gnTR1E-Ge5etm+y69cHwdWN6Bg79wPPF4M=C-w79A@mail.gmail.com>
 MIME-Version: 1.0
-Message-ID-Hash: AY5IKZDBOGDE6T2DMO5LDJ3PXRKED7B7
-X-Message-ID-Hash: AY5IKZDBOGDE6T2DMO5LDJ3PXRKED7B7
-X-MailFrom: santosh@fossix.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: QI Fuli <qi.fuli@fujitsu.com>
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4ja8gnTR1E-Ge5etm+y69cHwdWN6Bg79wPPF4M=C-w79A@mail.gmail.com>
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.3 cv=YKPhNiOx c=1 sm=1 tr=0 cx=a_idp_d
+	a=JD06eNgDs9tuHP7JIKoLzw==:117 a=JD06eNgDs9tuHP7JIKoLzw==:17
+	a=kj9zAlcOel0A:10 a=dESyimp9J3IA:10 a=7-415B0cAAAA:8
+	a=OJFMFRqHYWYmYpl_lvQA:9 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+Message-ID-Hash: OGSI56236YZ5O6DCLTPAAEPPO2AR572Z
+X-Message-ID-Hash: OGSI56236YZ5O6DCLTPAAEPPO2AR572Z
+X-MailFrom: david@fromorbit.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Darrick J. Wong" <djwong@kernel.org>, "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "y-goto@fujitsu.com" <y-goto@fujitsu.com>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "fnstml-iaas@cn.fujitsu.com" <fnstml-iaas@cn.fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AY5IKZDBOGDE6T2DMO5LDJ3PXRKED7B7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGSI56236YZ5O6DCLTPAAEPPO2AR572Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -73,138 +58,122 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-QI Fuli <fukuri.sai@gmail.com> writes:
+On Mon, Mar 01, 2021 at 07:33:28PM -0800, Dan Williams wrote:
+> On Mon, Mar 1, 2021 at 6:42 PM Dave Chinner <david@fromorbit.com> wrote:
+> [..]
+> > We do not need a DAX specific mechanism to tell us "DAX device
+> > gone", we need a generic block device interface that tells us "range
+> > of block device is gone".
+> 
+> This is the crux of the disagreement. The block_device is going away
+> *and* the dax_device is going away.
 
-> Due to the lack of jq command, the result of the test will be 'fail'.
-> This patch adds checking the presence of jq commmand ahead.
-> If there is no jq command in the system, the test will be marked as 'skip'.
->
-> Signed-off-by: QI Fuli <qi.fuli@fujitsu.com>
-> Link: https://github.com/pmem/ndctl/issues/141
+No, that is not the disagreement I have with what you are saying.
+You still haven't understand that it's even more basic and generic
+than devices going away. At the simplest form, all the filesystem
+wants is to be notified of is when *unrecoverable media errors*
+occur in the persistent storage that underlies the filesystem.
 
-Though it looks slightly redundant after having the check in configure.ac, not
-against having additional checks.
+The filesystem does not care what that media is build from - PMEM,
+flash, corroded spinning disks, MRAM, or any other persistent media
+you can think off. It just doesn't matter.
 
-Reviewed-by: Santosh Sivaraj <santosh@fossix.org>
+What we care about is that the contents of a *specific LBA range* no
+longer contain *valid data*. IOWs, the data in that range of the
+block device has been lost, cannot be retreived and/or cannot be
+written to any more.
 
-Thanks,
-Santosh
+PMEM taking a MCE because ECC tripped is a media error because data
+is lost and inaccessible until recovery actions are taken.
 
-> ---
->  test/daxdev-errors.sh           | 1 +
->  test/inject-error.sh            | 2 ++
->  test/inject-smart.sh            | 1 +
->  test/label-compat.sh            | 1 +
->  test/max_available_extent_ns.sh | 1 +
->  test/monitor.sh                 | 2 ++
->  test/multi-dax.sh               | 1 +
->  test/sector-mode.sh             | 2 ++
->  8 files changed, 11 insertions(+)
->
-> diff --git a/test/daxdev-errors.sh b/test/daxdev-errors.sh
-> index 6281f32..9547d78 100755
-> --- a/test/daxdev-errors.sh
-> +++ b/test/daxdev-errors.sh
-> @@ -9,6 +9,7 @@ rc=77
->  . $(dirname $0)/common
->
->  check_min_kver "4.12" || do_skip "lacks dax dev error handling"
-> +check_prereq "jq"
->
->  trap 'err $LINENO' ERR
->
-> diff --git a/test/inject-error.sh b/test/inject-error.sh
-> index c636033..7d0b826 100755
-> --- a/test/inject-error.sh
-> +++ b/test/inject-error.sh
-> @@ -11,6 +11,8 @@ err_count=8
->
->  . $(dirname $0)/common
->
-> +check_prereq "jq"
-> +
->  trap 'err $LINENO' ERR
->
->  # sample json:
-> diff --git a/test/inject-smart.sh b/test/inject-smart.sh
-> index 94705df..4ca83b8 100755
-> --- a/test/inject-smart.sh
-> +++ b/test/inject-smart.sh
-> @@ -166,6 +166,7 @@ do_tests()
->  }
->
->  check_min_kver "4.19" || do_skip "kernel $KVER may not support smart (un)injection"
-> +check_prereq "jq"
->  modprobe nfit_test
->  rc=1
->
-> diff --git a/test/label-compat.sh b/test/label-compat.sh
-> index 340b93d..8ab2858 100755
-> --- a/test/label-compat.sh
-> +++ b/test/label-compat.sh
-> @@ -10,6 +10,7 @@ BASE=$(dirname $0)
->  . $BASE/common
->
->  check_min_kver "4.11" || do_skip "may not provide reliable isetcookie values"
-> +check_prereq "jq"
->
->  trap 'err $LINENO' ERR
->
-> diff --git a/test/max_available_extent_ns.sh b/test/max_available_extent_ns.sh
-> index 14d741d..343f3c9 100755
-> --- a/test/max_available_extent_ns.sh
-> +++ b/test/max_available_extent_ns.sh
-> @@ -9,6 +9,7 @@ rc=77
->  trap 'err $LINENO' ERR
->
->  check_min_kver "4.19" || do_skip "kernel $KVER may not support max_available_size"
-> +check_prereq "jq"
->
->  init()
->  {
-> diff --git a/test/monitor.sh b/test/monitor.sh
-> index cdab5e1..28c5541 100755
-> --- a/test/monitor.sh
-> +++ b/test/monitor.sh
-> @@ -13,6 +13,8 @@ smart_supported_bus=""
->
->  . $(dirname $0)/common
->
-> +check_prereq "jq"
-> +
->  trap 'err $LINENO' ERR
->
->  check_min_kver "4.15" || do_skip "kernel $KVER may not support monitor service"
-> diff --git a/test/multi-dax.sh b/test/multi-dax.sh
-> index e932569..8496619 100755
-> --- a/test/multi-dax.sh
-> +++ b/test/multi-dax.sh
-> @@ -9,6 +9,7 @@ rc=77
->  . $(dirname $0)/common
->
->  check_min_kver "4.13" || do_skip "may lack multi-dax support"
-> +check_prereq "jq"
->
->  trap 'err $LINENO' ERR
->
-> diff --git a/test/sector-mode.sh b/test/sector-mode.sh
-> index dd7013e..54fa806 100755
-> --- a/test/sector-mode.sh
-> +++ b/test/sector-mode.sh
-> @@ -6,6 +6,8 @@ rc=77
->
->  . $(dirname $0)/common
->
-> +check_prereq "jq"
-> +
->  set -e
->  trap 'err $LINENO' ERR
->
-> --
-> 2.29.2
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+MD RAID failing a scrub is a media error and data is lost and
+unrecoverable at that layer.
+
+A device disappearing is a media error because the storage media is
+now permanently inaccessible to the higher layers.
+
+This "media error" categorisation is a fundamental property of
+persistent storage and, as such, is a property of the block devices
+used to access said persistent storage.
+
+That's the disagreement here - that you and Christoph are saying
+->corrupted_range is not a block device property because only a
+pmem/DAX device currently generates it.
+
+You both seem to be NACKing a generic interface because it's only
+implemented for the first subsystem that needs it. AFAICT, you
+either don't understand or are completely ignoring the architectural
+need for it to be provided across the rest of the storage stack that
+*block device based filesystems depend on*.
+
+Sure, there might be dax device based fielsystems around the corner.
+They just require a different pmem device ->corrupted_range callout
+to implement the notification - one that directs to the dax device
+rather than the block device. That's simple and trivial to
+implement, but such functionaity for DAX devices  does not replace
+the need for the same generic functionality to be provided across a
+*range of different block devices* as required by *block device
+based filesystems*.
+
+And that's fundamentally the problem. XFS is block device based, not
+DAX device based. We require errors to be reported through block
+device mechanisms. fs-dax does not change this - it is based on pmem
+being presented as a primarily as a block device to the block device
+based filesystems and only secondarily as a dax device. Hence if it
+can be trivially implemented as a block device interface, that's
+where it should go, because then all the other block devices that
+the filesytem runs on can provide the same functionality for similar
+media error events....
+
+> The dax_device removal implies one
+> set of actions (direct accessed pfns invalid) the block device removal
+> implies another (block layer sector access offline).
+
+There you go again, saying DAX requires an action, while the block
+device notification is a -state change- (i.e. goes offline).
+
+This is exactly what I said was wrong in my last email.
+
+> corrupted_range
+> is blurring the notification for 2 different failure domains. Look at
+> the nascent idea to mount a filesystem on dax sans a block device.
+> Look at the existing plumbing for DM to map dax_operations through a
+> device stack.
+
+Ummm, it just maps the direct_access call to the underlying device
+and calls it's ->direct_access method. All it's doing is LBA
+mapping. That's all it needs to do for ->corrupted_range, too.
+I have no clue why you think this is a problem for error
+notification...
+
+> Look at the pushback Ruan got for adding a new
+> block_device operation for corrupted_range().
+
+one person said "no". That's hardly pushback. Especially as I think
+Christoph's objection about this being dax specific functionality
+is simply wrong, as per above.
+
+> > This is why we need to communicate what error occurred, not what
+> > action a device driver thinks needs to be taken.
+> 
+> The driver is only an event producer in this model, whatever the
+> consumer does at the other end is not its concern. There may be a
+> generic consumer and a filesystem specific consumer.
+
+<sigh>
+
+That's why these are all ops functions that can provide multiple
+implementations to different device types. So that when we get a new
+use case, the ops function structure can be replaced with one that
+directs the notification to the new user instead of to the existing
+one. It's a design pattern we use all over the kernel code.
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
