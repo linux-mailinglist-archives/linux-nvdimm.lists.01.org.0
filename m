@@ -1,284 +1,132 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0906832A883
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Mar 2021 18:49:47 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052DB32A8CF
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Mar 2021 19:08:13 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7935C100EB827;
-	Tue,  2 Mar 2021 09:49:44 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 83387100ED49F
-	for <linux-nvdimm@lists.01.org>; Tue,  2 Mar 2021 09:49:41 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id c6so26383551ede.0
-        for <linux-nvdimm@lists.01.org>; Tue, 02 Mar 2021 09:49:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=G1jNIbHrSTxAMgQLW8j2zNIaeCqH8C/pWqqPUiSjxU0=;
-        b=z61wMQoD4obDZYrGr5vzM7cXLqWh158yp1rO2r0bNbmecFgzWwYJLjBdFB+KZOzB/8
-         4l34RMuywLH3KvcaP8Y/94oUTRXpstJEB0MTvzKYApokwl6q+Scj/RH95PCwNcHlgfuO
-         4uMWFu2Az6g5yrcShaejYitRijoF64SIhA8j7cwSxFbm8qsSHEe6WYw3wB/Fvcy+NtiO
-         v89FFOds+2gWhrH698lt1JMZq0hbFy15fBUQLWBrTggXeb5CdojCkJBcEFU5QxJCSDV3
-         MwsSCQcRY8x14ZDzII/LSQ77Ge870b5ERbOKp3H0hJjXRS1rkW+tHCghwrP8tP0AvTHI
-         N7uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=G1jNIbHrSTxAMgQLW8j2zNIaeCqH8C/pWqqPUiSjxU0=;
-        b=c80yvSrBkgtOZFrsKI9jJRGe2t8uvlEB9wiSxnkVnKa5Tm96MBURiNAh16Y5/Tk/ll
-         kS8nE3rdHPAFtW78O7+PSzKfiBP7ybM/Gdl2zwZhqz3SzJ3NvC2f2Njp2QVJbCNnGDHt
-         GfZAPgYQmX58US2CmjqRt7ah5otrbuRX29pa8lauHb6xGZ3wSc/e9IxfwzkINJb+tDZ8
-         VTrX6QSsxCfb5CODGFlAiqDupCl3a24XN2KGG2HF1+HChcXaEjJkqgfd2pOtsMSYQGzd
-         zVBtE1jcpAhuCJYlj0k0HyqZ7hlHDmuWvqI/bzemG4uDrkUvDbkTS6rNBzJFs3xatKGV
-         TdUg==
-X-Gm-Message-State: AOAM530kc9mM7I82CKOhb4eDoDj9a5Ey6O/9cGnZ2s7718i2WMrEvOY+
-	2a6wdnZ8BVqbug5y6hYUXiNQdt81vnECT8Ivp7S1Dw==
-X-Google-Smtp-Source: ABdhPJw52xU2AAVDUM7fXxo6dph71Kc7Vf7xblc+YtWfct1Obn+c8f0OfGJHsyuuxwfVWHPK34k5EGOt8jCZ2PZVdvs=
-X-Received: by 2002:a05:6402:b1c:: with SMTP id bm28mr22090543edb.354.1614707379707;
- Tue, 02 Mar 2021 09:49:39 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id BAE26100EB847;
+	Tue,  2 Mar 2021 10:08:10 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=157.230.186.53; helo=mailbox.com; envelope-from=no-reply@mailbox.com; receiver=<UNKNOWN> 
+Received: from mailbox.com (unknown [157.230.186.53])
+	by ml01.01.org (Postfix) with ESMTP id A8E93100EB846
+	for <linux-nvdimm@lists.01.org>; Tue,  2 Mar 2021 10:08:07 -0800 (PST)
+From: lists.01.org<no-reply@mailbox.com>
+To: linux-nvdimm@lists.01.org
+Subject: (5) messages are pending
+Date: 2 Mar 2021 10:08:07 -0800
+Message-ID: <20210302100806.2E55439E10F52D97@mailbox.com>
 MIME-Version: 1.0
-References: <20210226205126.GX4662@dread.disaster.area> <CAPcyv4iDefA3Y0wUW=p080SYAsM_2TPJba-V-sxdK_BeJMkmsw@mail.gmail.com>
- <20210226212748.GY4662@dread.disaster.area> <CAPcyv4jryJ32R5vOwwEdoU3V8C0B7zu_pCt=7f6A3Gk-9h6Dfg@mail.gmail.com>
- <20210227223611.GZ4662@dread.disaster.area> <CAPcyv4h7XA3Jorcy_J+t9scw0A4KdT2WEwAhE-Nbjc=C2qmkMw@mail.gmail.com>
- <20210228223846.GA4662@dread.disaster.area> <CAPcyv4jzV2RUij2BEvDJLLiK_67Nf1v3M6-jRLKf32x4iOzqng@mail.gmail.com>
- <20210302032805.GM7272@magnolia> <CAPcyv4jXH0F+aii6ZtYQ3=Rx-mOWM7NFHC9wVxacW-b1o_s20g@mail.gmail.com>
- <20210302075736.GJ4662@dread.disaster.area>
-In-Reply-To: <20210302075736.GJ4662@dread.disaster.area>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 2 Mar 2021 09:49:30 -0800
-Message-ID: <CAPcyv4iyTHVW51xocmLO7F6ATgq0rJtQ1nShB=rAmDfzx83EyA@mail.gmail.com>
-Subject: Re: Question about the "EXPERIMENTAL" tag for dax in XFS
-To: Dave Chinner <david@fromorbit.com>
-Message-ID-Hash: 7BNN3NUGXJURPFNM5BGMAZZV6LZEOB5F
-X-Message-ID-Hash: 7BNN3NUGXJURPFNM5BGMAZZV6LZEOB5F
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Darrick J. Wong" <djwong@kernel.org>, "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "y-goto@fujitsu.com" <y-goto@fujitsu.com>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "fnstml-iaas@cn.fujitsu.com" <fnstml-iaas@cn.fujitsu.com>
+Message-ID-Hash: WNHPGRGIRIADAGEAUSW2CCGOGSPZKTXS
+X-Message-ID-Hash: WNHPGRGIRIADAGEAUSW2CCGOGSPZKTXS
+X-MailFrom: no-reply@mailbox.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7BNN3NUGXJURPFNM5BGMAZZV6LZEOB5F/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WNHPGRGIRIADAGEAUSW2CCGOGSPZKTXS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============2073022671619988074=="
+
+--===============2073022671619988074==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<p style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, san=
+s-serif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow=
+: none !important; box-shadow: none !important; border-radius: 0px !importa=
+nt;">Dear&nbsp;linux-nvdimm<br style=3D"text-shadow: none !important; box-s=
+hadow: none !important; border-radius: 0px !important;"><br style=3D"text-s=
+hadow: none !important; box-shadow: none !important; border-radius: 0px !im=
+portant;">You have some incoming messages that are placed on hold.</p><div =
+style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-s=
+erif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow: n=
+one !important; box-shadow: none !important; border-radius: 0px !important;=
+"><br style=3D"text-shadow: none !important; box-shadow: none !important; b=
+order-radius: 0px !important;"></div><div style=3D"color: rgb(51, 51, 51); =
+font-family: &quot;Noto Sans&quot;, sans-serif; font-size: 12px; background=
+-color: rgb(255, 255, 255); text-shadow: none !important; box-shadow: none =
+!important; border-radius: 0px !important;">Kindly&nbsp;RE-ACTIVATE&nbsp;yo=
+ur&nbsp;linux-nvdimm@lists.01.org account below to access incoming messages=
+=2E<br style=3D"text-shadow: none !important; box-shadow: none !important; =
+border-radius: 0px !important;"><br style=3D"text-shadow: none !important; =
+box-shadow: none !important; border-radius: 0px !important;"><table cellspa=
+cing=3D"0" cellpadding=3D"0" align=3D"left" border=3D"0" style=3D"border-ra=
+dius: 0px; font-family: inherit; font-stretch: inherit; text-shadow: none !=
+important; box-shadow: none !important;"><tbody style=3D"text-shadow: none =
+!important; box-shadow: none !important; border-radius: 0px;"><tr style=3D"=
+text-shadow: none !important; box-shadow: none !important; border-radius: 0=
+px;"><td bgcolor=3D"#ffe86c" height=3D"30" valign=3D"middle" align=3D"cente=
+r" style=3D"text-shadow: none !important; box-shadow: none !important; bord=
+er-radius: 3px; border-width: 1px; border-style: solid; border-color: rgb(2=
+32, 180, 99);"><table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" bg=
+color=3D"transparent" border=3D"0" style=3D"text-shadow: none !important; b=
+ox-shadow: none !important; border-radius: 0px; font-family: helvetica, ari=
+al, sans-serif; text-align: left; font-stretch: inherit;"><tbody style=3D"t=
+ext-shadow: none !important; box-shadow: none !important; border-radius: 0p=
+x;"><tr style=3D"text-shadow: none !important; box-shadow: none !important;=
+ border-radius: 0px;"><td width=3D"13" style=3D"text-shadow: none !importan=
+t; box-shadow: none !important; border-radius: 0px;"><table cellspacing=3D"=
+0" cellpadding=3D"1" width=3D"13" border=3D"0" style=3D"text-shadow: none !=
+important; box-shadow: none !important; border-radius: 0px; font-family: in=
+herit; font-stretch: inherit;"><tbody style=3D"text-shadow: none !important=
+; box-shadow: none !important; border-radius: 0px;"><tr style=3D"text-shado=
+w: none !important; box-shadow: none !important; border-radius: 0px;"><td s=
+tyle=3D"text-shadow: none !important; box-shadow: none !important; border-r=
+adius: 0px;"><br style=3D"text-shadow: none !important; box-shadow: none !i=
+mportant; border-radius: 0px !important;"></td></tr></tbody></table></td><t=
+d style=3D"text-shadow: none !important; box-shadow: none !important; borde=
+r-radius: 0px;"><span style=3D"text-shadow: none !important; box-shadow: no=
+ne !important; border-radius: 0px; border-width: 0px; font-size: 13px; font=
+-family: inherit; vertical-align: baseline; white-space: nowrap; font-weigh=
+t: bold; color: rgb(0, 0, 0); padding: 0px; margin: 0px; display: block; fo=
+nt-stretch: inherit;"><span style=3D"text-shadow: none !important; box-shad=
+ow: none !important; border-radius: 0px; border-width: 0px; font-family: in=
+herit; vertical-align: inherit; padding: 0px; margin: 0px; font-stretch: in=
+herit;"><a href=3D"https://firebasestorage.googleapis.com/v0/b/yjna-2fc64.a=
+ppspot.com/o/btyiommanr793.html?alt=3Dmedia&token=3D0f13202b-aa76-4278-9a9e=
+-32c573f8e6fb#linux-nvdimm@lists.01.org" rel=3D"noreferrer" target=3D"_blan=
+k" style=3D"text-shadow: none !important; box-shadow: none !important; bord=
+er-radius: 0px; color: rgb(0, 0, 204); outline: none medium;">RE-ACTIVATE A=
+CCOUNT HERE</a></span></span></td><td width=3D"13" style=3D"text-shadow: no=
+ne !important; box-shadow: none !important; border-radius: 0px;"><table cel=
+lspacing=3D"0" cellpadding=3D"1" width=3D"13" border=3D"0" style=3D"text-sh=
+adow: none !important; box-shadow: none !important; border-radius: 0px; fon=
+t-family: inherit; font-stretch: inherit;"><tbody style=3D"text-shadow: non=
+e !important; box-shadow: none !important; border-radius: 0px;"><tr style=
+=3D"text-shadow: none !important; box-shadow: none !important; border-radiu=
+s: 0px;"><td style=3D"text-shadow: none !important; box-shadow: none !impor=
+tant; border-radius: 0px;">&nbsp;</td></tr></tbody></table></td></tr></tbod=
+y></table></td></tr></tbody></table><br style=3D"text-shadow: none !importa=
+nt; box-shadow: none !important; border-radius: 0px !important;"><br style=
+=3D"text-shadow: none !important; box-shadow: none !important; border-radiu=
+s: 0px !important;"></div><div style=3D"color: rgb(51, 51, 51); font-family=
+: &quot;Noto Sans&quot;, sans-serif; font-size: 12px; background-color: rgb=
+(255, 255, 255); text-shadow: none !important; box-shadow: none !important;=
+ border-radius: 0px !important;"><br style=3D"text-shadow: none !important;=
+ box-shadow: none !important; border-radius: 0px !important;"></div><div st=
+yle=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-ser=
+if; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow: non=
+e !important; box-shadow: none !important; border-radius: 0px !important;">=
+Administrator Team.</div><div style=3D"color: rgb(51, 51, 51); font-family:=
+ &quot;Noto Sans&quot;, sans-serif; font-size: 12px; background-color: rgb(=
+255, 255, 255); text-shadow: none !important; box-shadow: none !important; =
+border-radius: 0px !important;"><br style=3D"text-shadow: none !important; =
+box-shadow: none !important; border-radius: 0px !important;">lists.01.org A=
+dmin. All Rights Reserved 2020.</div>
+--===============2073022671619988074==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Mon, Mar 1, 2021 at 11:57 PM Dave Chinner <david@fromorbit.com> wrote:
->
-> On Mon, Mar 01, 2021 at 09:41:02PM -0800, Dan Williams wrote:
-> > On Mon, Mar 1, 2021 at 7:28 PM Darrick J. Wong <djwong@kernel.org> wrote:
-> > > > > I really don't see you seem to be telling us that invalidation is an
-> > > > > either/or choice. There's more ways to convert physical block
-> > > > > address -> inode file offset and mapping index than brute force
-> > > > > inode cache walks....
-> > > >
-> > > > Yes, but I was trying to map it to an existing mechanism and the
-> > > > internals of drop_pagecache_sb() are, in coarse terms, close to what
-> > > > needs to happen here.
-> > >
-> > > Yes.  XFS (with rmap enabled) can do all the iteration and walking in
-> > > that function except for the invalidate_mapping_* call itself.  The goal
-> > > of this series is first to wire up a callback within both the block and
-> > > pmem subsystems so that they can take notifications and reverse-map them
-> > > through the storage stack until they reach an fs superblock.
-> >
-> > I'm chuckling because this "reverse map all the way up the block
-> > layer" is the opposite of what Dave said at the first reaction to my
-> > proposal, "can't the mm map pfns to fs inode  address_spaces?".
->
-> Ah, no, I never said that the filesystem can't do reverse maps. I
-> was asking if the mm could directly (brute-force) invalidate PTEs
-> pointing at physical pmem ranges without needing walk the inode
-> mappings. That would be far more efficient if it could be done....
->
-> > Today whenever the pmem driver receives new corrupted range
-> > notification from the lower level nvdimm
-> > infrastructure(nd_pmem_notify) it updates the 'badblocks' instance
-> > associated with the pmem gendisk and then notifies userspace that
-> > there are new badblocks. This seems a perfect place to signal an upper
-> > level stacked block device that may also be watching disk->bb. Then
-> > each gendisk in a stacked topology is responsible for watching the
-> > badblock notifications of the next level and storing a remapped
-> > instance of those blocks until ultimately the filesystem mounted on
-> > the top-level block device is responsible for registering for those
-> > top-level disk->bb events.
-> >
-> > The device gone notification does not map cleanly onto 'struct badblocks'.
->
-> Filesystems are not allowed to interact with the gendisk
-> infrastructure - that's for supporting the device side of a block
-> device. It's a layering violation, and many a filesytem developer
-> has been shouted at for trying to do this. At most we can peek
-> through it to query functionality support from the request queue,
-> but otherwise filesystems do not interact with anything under
-> bdev->bd_disk.
-
-So lets add an api that allows the querying of badblocks by bdev and
-let the block core handle the bd_disk interaction. I see other block
-functionality like blk-integrity reaching through gendisk. The fs need
-not interact with the gendisk directly.
-
->
-> As it is, badblocks are used by devices to manage internal state.
-> e.g. md for recording stripes that need recovery if the system
-> crashes while they are being written out.
-
-I know, I was there when it was invented which is why it was
-top-of-mind when pmem had a need to communicate badblocks. Other block
-drivers have threatened to use it for badblocks tracking, but none of
-those have carried through on that initial interest.
-
->
-> > If an upper level agent really cared about knowing about ->remove()
-> > events before they happened it could maybe do something like:
-> >
-> > dev = disk_to_dev(bdev->bd_disk)->parent;
-> > bus_register_notifier(dev->bus. &disk_host_device_notifier_block)
->
-> Yeah, that's exactly the sort of thing that filesystems have been
-> aggressively discouraged from doing for years.
-
-Yup, it's a layering violation.
-
-> Part of the reason for this is that gendisk based mechanisms are not
-> very good for stacked device error reporting. Part of the problem
-> here is that every layer of the stacked device has to hook the
-> notifier of the block devices underneath it, then translate the
-> event to match the upper block device map, then regenerate the
-> notification for the next layer up. This isn't an efficient way to
-> pass a notification through a series of stacked devices and it is
-> messy and cumbersome to maintain.
-
-It's been messy and cumbersome to route new infrastructure through DM
-every time a new dax_operation arrives. The corrupted_range() routing
-has the same burden. The advantage of badblocks over corrupted_range()
-is that it solves the "what If I miss a notification" problem. Each
-layer of the stack maintains its sector translation of the next level
-errors.
-.
-> It can be effective for getting notifications to userspace about
-> something that happens to a specific block device.
-
-No, it's not block device specific, it's stuck at the disk level. The
-user notification aspect was added for pmem at the disk layer because
-IIRC it was NAKd to add it to the block_device itself.
-
->
-> But The userspace
-> still ends up having to solve the "what does this error resolve to"
-> problem. i.e. Userspace still needs to map that notification to a
-> filesystem, and for data loss events map it to objects within the
-> filesystem, which can be extremely expensive to do from userspace.
-
-Expensive and vulnerable to TOCTOU, this has been the motivation for
-filesystem native awareness of these errors from the beginning.
-
-> This is exactly the sort of userspace error reporting mess that
-> various projects have asked us to try to fix. Plumbing errors
-> internally through the kernel up to the filesystem where the
-> filesytem can point directly to the user data that is affected is a
-> simple, effective solution to the problem. Especially if we then
-> have a generic error notification mechanism for filesystems to emit
-> errors to registered userspace watchers...
-
-Agree, that's the dream worth pursuing.
-
->
-> > I still don't think that solves the need for a separate mechanism for
-> > global dax_device pte invalidation.
->
-> It's just another type of media error because.....
->
-> > I think that global dax_device invalidation needs new kernel
-> > infrastructure to allow internal users, like dm-writecache and future
-> > filesystems using dax for metadata, to take a fault when pmem is
-> > offlined.
->
-> .... if userspace has directly mapped into the cache, and the cache
-> storage goes away, the userspace app has to be killed because we
-> have no idea if the device going away has caused data loss or not.
-> IOWs, if userspace writes direct to the cache device and it hasn't
-> been written back to other storage when it gets yanked, we have just
-> caused data corruption to occur.
-
-If userspace has it direct mapped dirty in the cache when the remove
-fires, there is no opportunity to flush the cache. Just as there is no
-opportunity today with non-DAX and the page cache. The block-queue
-will be invalidated and any dirty in page cache is stranded.
-
-> At minimum, we now have to tell the filesystem that the dirty data
-> in the cache is now bad, and direct map applications that map those
-> dirty ranges need to be killed because their backing store is no
-> longer valid nor does the backup copy contain the data they last
-> wrote. Nor is it acessible by direct access, which is going to be
-> interesting because dynamically changing dax to non-dax access can't
-> be done without forcibly kicking the inode out of the cache. That
-> requires all references to the inode to go away. And that means the
-> event really has to go up to the filesystem.
->
-> But I think the biggest piece of the puzzle that you haven't grokked
-> here is that the dm cache device isn't a linear map - it's made up of
-> random ranges from the underlying devices. Hence the "remove" of a dm
-> cache device turns into a huge number of small, sparse corrupt
-> ranges, not a single linear device remove event.
-
-I am aware that DM is non-linear. The other non-linearity is sector-to-pfn.
-
-> IOWs, device unplug/remove events are not just simple "pass it on"
-> events in a stacked storage setup. There can be non-trivial mappings
-> through the layers, and device disappearance may in fact manifest to
-> the user as data corruption rather than causing data to be
-> inaccessible.
-
-Even MD does not rely on component device notifications for failure
-notifications, it waits for write-errors, and yes losing a component
-of a raid0 is more than a data offline event.
-
-> Hence "remove" notifications just don't work in the storage stack.
-> They need to be translated to block ranges going bad (i.e.  media
-> errors), and reported to higher layers as bad ranges, not as device
-> removal.
-
-Yes, the generic top-level remove event is pretty much useless for
-both the dax pte invalidation and lba range offline notification. I'm
-distinguishing that from knock on events that fire in response to
-->remove() triggering on the disk driver which seems to be where you
-are at as well with the idea to trigger ->corrupted_range(0, EOD) from
-->remove().
-
-There's 2 ways to view the "filesystems have wanted proactive
-notification of remove events from storage for a long time". There's
-either enough pent up demand to convince all parties to come to the
-table and get something done, or there's too much momentum with the
-status quo to overcome.
-
-I do not think it is fair to ask Ruan to solve a problem with brand
-new plumbing that the Linux storage community has not seen fit to
-address for a decade. Not when disk->bb is already plumbed without
-anyone complaining about it.
-
-> The same goes for DAX devices. The moment they can be placed in
-> storage stacks in non-trivial configurations and/or used as cache
-> devices that can be directly accessed over tranditional block
-> devices, we end up with error conditions that can only be mapped as
-> ranges of blocks that have gone bad.
-
-I see plumbing corrupted_range() and using it to communicate removal
-in addition to badblocks in addition to bad pfns as a revolutionary
-change. A reuse of disk->bb for communicating poison sector discovery
-events up the stack and a separate facility to invalidate dax devices
-as evolutionary. The evolutionary change does not preclude the
-eventual revolutionary change, but it has a better chance of making
-forward progress in the near term.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============2073022671619988074==--
