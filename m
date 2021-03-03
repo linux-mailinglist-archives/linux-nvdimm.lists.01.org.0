@@ -1,50 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE6232B92F
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Mar 2021 17:23:52 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C841B32B930
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Mar 2021 17:24:05 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5580B100EB343;
-	Wed,  3 Mar 2021 08:23:51 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 80457100EB343;
+	Wed,  3 Mar 2021 08:24:03 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C698E100EB343
-	for <linux-nvdimm@lists.01.org>; Wed,  3 Mar 2021 08:23:48 -0800 (PST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DB23664ED7;
-	Wed,  3 Mar 2021 16:23:37 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id 180A3100EB33C
+	for <linux-nvdimm@lists.01.org>; Wed,  3 Mar 2021 08:24:00 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 38CA164F0B;
+	Wed,  3 Mar 2021 16:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1614788628;
-	bh=xidrDhecGP6CNp1WbvEb+2by3BdO1w+m3Yqw9X4ZQKU=;
+	s=k20201202; t=1614788640;
+	bh=7ndTfn1vdqt9I8oDU4Ea6KToerL5bd9SCci8L9xbMtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNtqLs272LmTWPImnmDa7KBFiBC4TQdgRv5ieOdhPBuHU24cUpJwgDIVa9ImRcXt3
-	 +D2Xxn5mu/dwiyPTikLZ5WG4U7s65gMHWJykrawzmFFidQhAKbnweVAqzciIBa39AD
-	 bYPlnC3hRVLouSLXMvsRBKwz0Iy7A/ijcH2oe23eJvFvszDee+tjwhIi2+bKWMlQzU
-	 YOHSBPEQ8gSb/pzaj9f9YN3GFKIay3FczR7H8ummNW0+C1JuKXErey1KetJ+dkH9cX
-	 kE+eqSxeOTl8oCNXuoIFCC7JHT245VfX3hHSy/RQvhEbT9h6U1em9Nr+1+X3euExO5
-	 DuFp/dFKedl7g==
+	b=QGjrtZJYx4y4XeCYU84ychj6BhZ55P7ePo8ZzEMH1BATfdizjKqDrDzoAuQQijCwT
+	 rhu2TPYolqofmKMtv/sCeukfjygv3ZXrLWe4cvS2cWvHRbsR0BX7c2pspxQHOAC5vK
+	 1L+9wEpT7zmeFuiLxXU87SGYzni6QrUmwYM0AJGyegU9qzasO+AMXlPc+/0xD72Mhe
+	 AEfB/dYY/b93rOUDlXSqAn6CjgdUN7h3rRqy0Xn8dD7Oe8yvwwMcm1MF2l41yO7sHB
+	 vUPYcllTIAzeXNx7KNSQJBSbEFddIdob0xwAQi2TfrgX4MxmYMbc/HUtCOzKYVTg1z
+	 2TyWqmWXlhkug==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v18 7/9] PM: hibernate: disable when there are active secretmem users
-Date: Wed,  3 Mar 2021 18:22:07 +0200
-Message-Id: <20210303162209.8609-8-rppt@kernel.org>
+Subject: [PATCH v18 8/9] arch, mm: wire up memfd_secret system call where relevant
+Date: Wed,  3 Mar 2021 18:22:08 +0200
+Message-Id: <20210303162209.8609-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20210303162209.8609-1-rppt@kernel.org>
 References: <20210303162209.8609-1-rppt@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: SYOO5Q5BPDLEVUHWTBV6XHORFECPI36L
-X-Message-ID-Hash: SYOO5Q5BPDLEVUHWTBV6XHORFECPI36L
+Message-ID-Hash: DJIRGSWSFCWPLMAYBT65EJTFZ47NCOFX
+X-Message-ID-Hash: DJIRGSWSFCWPLMAYBT65EJTFZ47NCOFX
 X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel B
- utt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Hagen Paul Pfeifer <hagen@jauu.net>, Palmer Dabbelt <palmerdabbelt@google.com>
+ utt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Palmer Dabbelt <palmerdabbelt@google.com>, Hagen Paul Pfeifer <hagen@jauu.net>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SYOO5Q5BPDLEVUHWTBV6XHORFECPI36L/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DJIRGSWSFCWPLMAYBT65EJTFZ47NCOFX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,18 +55,16 @@ Content-Transfer-Encoding: 7bit
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-It is unsafe to allow saving of secretmem areas to the hibernation
-snapshot as they would be visible after the resume and this essentially
-will defeat the purpose of secret memory mappings.
-
-Prevent hibernation whenever there are active secret memory users.
+Wire up memfd_secret system call on architectures that define
+ARCH_HAS_SET_DIRECT_MAP, namely arm64, risc-v and x86.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Acked-by: Palmer Dabbelt <palmerdabbelt@google.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>
 Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Christopher Lameter <cl@linux.com>
 Cc: Dan Williams <dan.j.williams@intel.com>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>
@@ -81,7 +79,6 @@ Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Matthew Wilcox <willy@infradead.org>
 Cc: Michael Kerrisk <mtk.manpages@gmail.com>
 Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmerdabbelt@google.com>
 Cc: Paul Walmsley <paul.walmsley@sifive.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -92,105 +89,105 @@ Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Tycho Andersen <tycho@tycho.ws>
 Cc: Will Deacon <will@kernel.org>
 ---
- include/linux/secretmem.h |  6 ++++++
- kernel/power/hibernate.c  |  5 ++++-
- mm/secretmem.c            | 15 +++++++++++++++
- 3 files changed, 25 insertions(+), 1 deletion(-)
+ arch/arm64/include/uapi/asm/unistd.h   | 1 +
+ arch/riscv/include/asm/unistd.h        | 1 +
+ arch/x86/entry/syscalls/syscall_32.tbl | 1 +
+ arch/x86/entry/syscalls/syscall_64.tbl | 1 +
+ include/linux/syscalls.h               | 1 +
+ include/uapi/asm-generic/unistd.h      | 6 +++++-
+ scripts/checksyscalls.sh               | 4 ++++
+ 7 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
-index 70e7db9f94fe..907a6734059c 100644
---- a/include/linux/secretmem.h
-+++ b/include/linux/secretmem.h
-@@ -6,6 +6,7 @@
+diff --git a/arch/arm64/include/uapi/asm/unistd.h b/arch/arm64/include/uapi/asm/unistd.h
+index f83a70e07df8..ce2ee8f1e361 100644
+--- a/arch/arm64/include/uapi/asm/unistd.h
++++ b/arch/arm64/include/uapi/asm/unistd.h
+@@ -20,5 +20,6 @@
+ #define __ARCH_WANT_SET_GET_RLIMIT
+ #define __ARCH_WANT_TIME32_SYSCALLS
+ #define __ARCH_WANT_SYS_CLONE3
++#define __ARCH_WANT_MEMFD_SECRET
  
- bool vma_is_secretmem(struct vm_area_struct *vma);
- bool page_is_secretmem(struct page *page);
-+bool secretmem_active(void);
+ #include <asm-generic/unistd.h>
+diff --git a/arch/riscv/include/asm/unistd.h b/arch/riscv/include/asm/unistd.h
+index 977ee6181dab..6c316093a1e5 100644
+--- a/arch/riscv/include/asm/unistd.h
++++ b/arch/riscv/include/asm/unistd.h
+@@ -9,6 +9,7 @@
+  */
  
- #else
+ #define __ARCH_WANT_SYS_CLONE
++#define __ARCH_WANT_MEMFD_SECRET
  
-@@ -19,6 +20,11 @@ static inline bool page_is_secretmem(struct page *page)
- 	return false;
- }
+ #include <uapi/asm/unistd.h>
  
-+static inline bool secretmem_active(void)
-+{
-+	return false;
-+}
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index a1c9f496fca6..34f04076a140 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -447,3 +447,4 @@
+ 440	i386	process_madvise		sys_process_madvise
+ 441	i386	epoll_pwait2		sys_epoll_pwait2		compat_sys_epoll_pwait2
+ 442	i386	mount_setattr		sys_mount_setattr
++443	i386	memfd_secret		sys_memfd_secret
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index 7bf01cbe582f..bd3783edf27f 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -364,6 +364,7 @@
+ 440	common	process_madvise		sys_process_madvise
+ 441	common	epoll_pwait2		sys_epoll_pwait2
+ 442	common	mount_setattr		sys_mount_setattr
++443	common	memfd_secret		sys_memfd_secret
+ 
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 2839dc9a7c01..4b87a2b3f442 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1041,6 +1041,7 @@ asmlinkage long sys_pidfd_send_signal(int pidfd, int sig,
+ 				       siginfo_t __user *info,
+ 				       unsigned int flags);
+ asmlinkage long sys_pidfd_getfd(int pidfd, int fd, unsigned int flags);
++asmlinkage long sys_memfd_secret(unsigned long flags);
+ 
+ /*
+  * Architecture-specific system calls
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index ce58cff99b66..7ac0732dbaa4 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -863,9 +863,13 @@ __SYSCALL(__NR_process_madvise, sys_process_madvise)
+ __SC_COMP(__NR_epoll_pwait2, sys_epoll_pwait2, compat_sys_epoll_pwait2)
+ #define __NR_mount_setattr 442
+ __SYSCALL(__NR_mount_setattr, sys_mount_setattr)
++#ifdef __ARCH_WANT_MEMFD_SECRET
++#define __NR_memfd_secret 443
++__SYSCALL(__NR_memfd_secret, sys_memfd_secret)
++#endif
+ 
+ #undef __NR_syscalls
+-#define __NR_syscalls 443
++#define __NR_syscalls 444
+ 
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/scripts/checksyscalls.sh b/scripts/checksyscalls.sh
+index a18b47695f55..b7609958ee36 100755
+--- a/scripts/checksyscalls.sh
++++ b/scripts/checksyscalls.sh
+@@ -40,6 +40,10 @@ cat << EOF
+ #define __IGNORE_setrlimit	/* setrlimit */
+ #endif
+ 
++#ifndef __ARCH_WANT_MEMFD_SECRET
++#define __IGNORE_memfd_secret
++#endif
 +
- #endif /* CONFIG_SECRETMEM */
+ /* Missing flags argument */
+ #define __IGNORE_renameat	/* renameat2 */
  
- #endif /* _LINUX_SECRETMEM_H */
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index da0b41914177..559acef3fddb 100644
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -31,6 +31,7 @@
- #include <linux/genhd.h>
- #include <linux/ktime.h>
- #include <linux/security.h>
-+#include <linux/secretmem.h>
- #include <trace/events/power.h>
- 
- #include "power.h"
-@@ -81,7 +82,9 @@ void hibernate_release(void)
- 
- bool hibernation_available(void)
- {
--	return nohibernate == 0 && !security_locked_down(LOCKDOWN_HIBERNATION);
-+	return nohibernate == 0 &&
-+		!security_locked_down(LOCKDOWN_HIBERNATION) &&
-+		!secretmem_active();
- }
- 
- /**
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index fa6738e860c2..f2ae3f32a193 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -40,6 +40,13 @@ module_param_named(enable, secretmem_enable, bool, 0400);
- MODULE_PARM_DESC(secretmem_enable,
- 		 "Enable secretmem and memfd_secret(2) system call");
- 
-+static atomic_t secretmem_users;
-+
-+bool secretmem_active(void)
-+{
-+	return !!atomic_read(&secretmem_users);
-+}
-+
- static vm_fault_t secretmem_fault(struct vm_fault *vmf)
- {
- 	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
-@@ -94,6 +101,12 @@ static const struct vm_operations_struct secretmem_vm_ops = {
- 	.fault = secretmem_fault,
- };
- 
-+static int secretmem_release(struct inode *inode, struct file *file)
-+{
-+	atomic_dec(&secretmem_users);
-+	return 0;
-+}
-+
- static int secretmem_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	unsigned long len = vma->vm_end - vma->vm_start;
-@@ -116,6 +129,7 @@ bool vma_is_secretmem(struct vm_area_struct *vma)
- }
- 
- static const struct file_operations secretmem_fops = {
-+	.release	= secretmem_release,
- 	.mmap		= secretmem_mmap,
- };
- 
-@@ -212,6 +226,7 @@ SYSCALL_DEFINE1(memfd_secret, unsigned long, flags)
- 	file->f_flags |= O_LARGEFILE;
- 
- 	fd_install(fd, file);
-+	atomic_inc(&secretmem_users);
- 	return fd;
- 
- err_put_fd:
 -- 
 2.28.0
 _______________________________________________
