@@ -2,152 +2,88 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC86C32B5E7
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Mar 2021 09:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB6832B5E6
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Mar 2021 09:20:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 92F77100EBBCD;
-	Wed,  3 Mar 2021 00:20:22 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=216.40.44.81; helo=smtprelay.hostedemail.com; envelope-from=joe@perches.com; receiver=<UNKNOWN> 
-Received: from smtprelay.hostedemail.com (smtprelay0081.hostedemail.com [216.40.44.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A6E0F100EB84B;
+	Wed,  3 Mar 2021 00:20:23 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F3BFB100EBBBB
+	by ml01.01.org (Postfix) with ESMTPS id 08D6C100EBBCD
 	for <linux-nvdimm@lists.01.org>; Wed,  3 Mar 2021 00:20:19 -0800 (PST)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-	by smtprelay06.hostedemail.com (Postfix) with ESMTP id 3F59F180CE5FF;
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id 2075AAD57;
 	Wed,  3 Mar 2021 08:20:18 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:960:968:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:2731:2736:2828:3138:3139:3140:3141:3142:3354:3622:3865:3866:3867:3868:3871:3874:4321:4605:5007:6119:6742:7652:10004:10400:10848:11026:11232:11473:11658:11914:12043:12048:12296:12297:12438:12740:12895:13439:13894:14096:14097:14659:14721:21080:21451:21611:21627:21939:21990:30012:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: snake87_191524c276c3
-X-Filterd-Recvd-Size: 3585
-Received: from [192.168.1.159] (unknown [47.151.137.21])
-	(Authenticated sender: joe@perches.com)
-	by omf04.hostedemail.com (Postfix) with ESMTPA;
-	Wed,  3 Mar 2021 08:20:15 +0000 (UTC)
-Message-ID: <aed5d2b78c4ac121ca0cf46107334673a3c9a586.camel@perches.com>
-Subject: Re: [PATCH v2 08/10] fsdax: Dedup file range to use a compare
- function
-From: Joe Perches <joe@perches.com>
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org,
-	linux-fsdevel@vger.kernel.org
-Date: Wed, 03 Mar 2021 00:20:14 -0800
-In-Reply-To: <20210226002030.653855-9-ruansy.fnst@fujitsu.com>
-References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
-	 <20210226002030.653855-9-ruansy.fnst@fujitsu.com>
-User-Agent: Evolution 3.38.1-1 
+Subject: Re: [RFC PATCH v1 1/6] badblocks: add more helper structure and
+ routines in badblocks.h
+To: Coly Li <colyli@suse.de>, linux-block@vger.kernel.org, axboe@kernel.dk,
+ dan.j.williams@intel.com, vishal.l.verma@intel.com, neilb@suse.de
+References: <20210302040252.103720-1-colyli@suse.de>
+ <20210302040252.103720-2-colyli@suse.de>
+From: Hannes Reinecke <hare@suse.de>
+Message-ID: <96a899a9-151e-ff8c-c61c-900df1122357@suse.de>
+Date: Wed, 3 Mar 2021 09:20:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Message-ID-Hash: HSHGQFAN5D35CYISIZ4GMB6RLMZDAEWI
-X-Message-ID-Hash: HSHGQFAN5D35CYISIZ4GMB6RLMZDAEWI
-X-MailFrom: joe@perches.com
+In-Reply-To: <20210302040252.103720-2-colyli@suse.de>
+Content-Language: en-US
+Message-ID-Hash: WU7AWXI7U2FDOCP67SEJSISPMD56NYMY
+X-Message-ID-Hash: WU7AWXI7U2FDOCP67SEJSISPMD56NYMY
+X-MailFrom: hare@suse.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, Goldwyn Rodrigues <rgoldwyn@suse.com>
+CC: antlists@youngman.org.uk, linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HSHGQFAN5D35CYISIZ4GMB6RLMZDAEWI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WU7AWXI7U2FDOCP67SEJSISPMD56NYMY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Fri, 2021-02-26 at 08:20 +0800, Shiyang Ruan wrote:
-> With dax we cannot deal with readpage() etc. So, we create a dax
-> comparison funciton which is similar with
-> vfs_dedupe_file_range_compare().
-> And introduce dax_remap_file_range_prep() for filesystem use.
-[]
-> diff --git a/fs/dax.c b/fs/dax.c
-[]
-> @@ -1856,3 +1856,54 @@ vm_fault_t dax_finish_sync_fault(struct vm_fault *=
-vmf,l
-> =A0	return dax_insert_pfn_mkwrite(vmf, pfn, order);
-> =A0}
-> =A0EXPORT_SYMBOL_GPL(dax_finish_sync_fault);
-> +
-> +static loff_t dax_range_compare_actor(struct inode *ino1, loff_t pos1,
-> +		struct inode *ino2, loff_t pos2, loff_t len, void *data,
-> +		struct iomap *smap, struct iomap *dmap)
-> +{
-> +	void *saddr, *daddr;
-> +	bool *same =3D data;
-> +	int ret;
-> +
-> +	while (len) {
-> +		if (smap->type =3D=3D IOMAP_HOLE && dmap->type =3D=3D IOMAP_HOLE)
-> +			goto next;
-> +
-> +		if (smap->type =3D=3D IOMAP_HOLE || dmap->type =3D=3D IOMAP_HOLE) {
-> +			*same =3D false;
-> +			break;
-> +		}
-> +
-> +		ret =3D dax_iomap_direct_access(smap, pos1,
-> +			ALIGN(pos1 + len, PAGE_SIZE), &saddr, NULL);
-> +		if (ret < 0)
-> +			return -EIO;
-> +
-> +		ret =3D dax_iomap_direct_access(dmap, pos2,
-> +			ALIGN(pos2 + len, PAGE_SIZE), &daddr, NULL);
-> +		if (ret < 0)
-> +			return -EIO;
-> +
-> +		*same =3D !memcmp(saddr, daddr, len);
-> +		if (!*same)
-> +			break;
-> +next:
-> +		len -=3D len;
-> +	}
-> +
-> +	return 0;
-> +}
-
-This code looks needlessly complex.
-
-len is never decremented inside the while loop so the while loop
-itself looks unnecessary.  Is there some missing decrement of len
-or some other reason to use a while loop?
-
-Is dax_iomap_direct_access some ugly macro that modifies a hidden len?
-
-Why not remove the while loop and use straightforward code without
-unnecessary indentatation?
-
-{
-	void *saddr;
-	void *daddr;
-	bool *same =3D data;
-	int ret;
-
-	if (!len ||
-	    (smap->type =3D=3D IOMAP_HOLE && dmap->type =3D=3D IOMAP_HOLE))
-		return 0;
-
-	if (smap->type =3D=3D IOMAP_HOLE || dmap->type =3D=3D IOMAP_HOLE) {
-		*same =3D false;
-		return 0;
-	}
-
-	ret =3D dax_iomap_direct_access(smap, pos1, ALIGN(pos1 + len, PAGE_SIZE),
-				      &saddr, NULL);
-	if (ret < 0)
-		return -EIO;
-
-	ret =3D dax_iomap_direct_access(dmap, pos2, ALIGN(pos2 + len, PAGE_SIZE),
-				      &daddr, NULL);
-	if (ret < 0)
-		return -EIO;
-
-	*same =3D !memcmp(saddr, daddr, len);
-
-	return 0;
-}=09
-
-I didn't look at the rest.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gMy8yLzIxIDU6MDIgQU0sIENvbHkgTGkgd3JvdGU6DQo+IFRoaXMgcGF0Y2ggYWRkcyB0aGUg
+Zm9sbG93aW5nIGhlbHBlciBzdHJ1Y3R1cmUgYW5kIHJvdXRpbmVzIGludG8NCj4gYmFkYmxvY2tz
+LmgsDQo+IC0gc3RydWN0IGJhZF9jb250ZXh0DQo+ICAgVGhpcyBzdHJ1Y3R1cmUgaXMgdXNlZCBp
+biBpbXByb3ZlZCBiYWRibG9ja3MgY29kZSBmb3IgYmFkIHRhYmxlDQo+ICAgaXRlcmF0aW9uLg0K
+PiAtIEJCX0VORCgpDQo+ICAgVGhlIG1hY3JvIHRvIGN1bGN1bGF0ZSBlbmQgTEJBIG9mIGEgYmFk
+IHJhbmdlIHJlY29yZCBmcm9tIGJhZA0KPiAgIHRhYmxlLg0KPiAtIGJhZGJsb2Nrc19mdWxsKCkg
+YW5kIGJhZGJsb2Nrc19lbXB0eSgpDQo+ICAgVGhlIGlubGluZSByb3V0aW5lcyB0byBjaGVjayB3
+aGV0aGVyIGJhZCB0YWJsZSBpcyBmdWxsIG9yIGVtcHR5Lg0KPiAtIHNldF9jaGFuZ2VkKCkgYW5k
+IGNsZWFyX2NoYW5nZWQoKQ0KPiAgIFRoZSBpbmxpbmUgcm91dGluZXMgdG8gc2V0IGFuZCBjbGVh
+ciAnY2hhbmdlZCcgdGFnIGZyb20gc3RydWN0DQo+ICAgYmFkYmxvY2tzLg0KPiANCj4gVGhlc2Ug
+bmV3IGhlbHBlciBzdHJ1Y3R1cmUgYW5kIHJvdXRpbmVzIGNhbiBoZWxwIHRvIG1ha2UgdGhlIGNv
+ZGUgbW9yZQ0KPiBjbGVhciwgdGhleSB3aWxsIGJlIHVzZWQgaW4gdGhlIGltcHJvdmVkIGJhZGJs
+b2NrcyBjb2RlIGluIGZvbGxvd2luZw0KPiBwYXRjaGVzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTog
+Q29seSBMaSA8Y29seWxpQHN1c2UuZGU+DQo+IC0tLQ0KPiAgaW5jbHVkZS9saW51eC9iYWRibG9j
+a3MuaCB8IDMyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICAxIGZpbGUgY2hh
+bmdlZCwgMzIgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgv
+YmFkYmxvY2tzLmggYi9pbmNsdWRlL2xpbnV4L2JhZGJsb2Nrcy5oDQo+IGluZGV4IDI0MjYyNzZi
+OWJkMy4uMTY2MTYxODQyZDFmIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2JhZGJsb2Nr
+cy5oDQo+ICsrKyBiL2luY2x1ZGUvbGludXgvYmFkYmxvY2tzLmgNCj4gQEAgLTE1LDYgKzE1LDcg
+QEANCj4gICNkZWZpbmUgQkJfT0ZGU0VUKHgpCSgoKHgpICYgQkJfT0ZGU0VUX01BU0spID4+IDkp
+DQo+ICAjZGVmaW5lIEJCX0xFTih4KQkoKCh4KSAmIEJCX0xFTl9NQVNLKSArIDEpDQo+ICAjZGVm
+aW5lIEJCX0FDSyh4KQkoISEoKHgpICYgQkJfQUNLX01BU0spKQ0KPiArI2RlZmluZSBCQl9FTkQo
+eCkJKEJCX09GRlNFVCh4KSArIEJCX0xFTih4KSkNCj4gICNkZWZpbmUgQkJfTUFLRShhLCBsLCBh
+Y2spICgoKGEpPDw5KSB8ICgobCktMSkgfCAoKHU2NCkoISEoYWNrKSkgPDwgNjMpKQ0KPiAgDQo+
+ICAvKiBCYWQgYmxvY2sgbnVtYmVycyBhcmUgc3RvcmVkIHNvcnRlZCBpbiBhIHNpbmdsZSBwYWdl
+Lg0KPiBAQCAtNDEsNiArNDIsMTQgQEAgc3RydWN0IGJhZGJsb2NrcyB7DQo+ICAJc2VjdG9yX3Qg
+c2l6ZTsJCS8qIGluIHNlY3RvcnMgKi8NCj4gIH07DQo+ICANCj4gK3N0cnVjdCBiYWRfY29udGV4
+dCB7DQo+ICsJc2VjdG9yX3QJc3RhcnQ7DQo+ICsJc2VjdG9yX3QJbGVuOw0KPiArCWludAkJYWNr
+Ow0KPiArCXNlY3Rvcl90CW9yaWdfc3RhcnQ7DQo+ICsJc2VjdG9yX3QJb3JpZ19sZW47DQo+ICt9
+Ow0KPiArDQpNYXliZSByZW5hbWUgaXQgdG8gJ2JhZGJsb2Nrc19jb250ZXh0Jy4NCkl0J3Mgbm90
+IHRoZSBjb250ZXh0IHdoaWNoIGlzIGJhZCAuLi4NCg0KQ2hlZXJzLA0KDQpIYW5uZXMNCi0tIA0K
+RHIuIEhhbm5lcyBSZWluZWNrZQkJICAgICAgICAgICBLZXJuZWwgU3RvcmFnZSBBcmNoaXRlY3QN
+CmhhcmVAc3VzZS5kZQkJCSAgICAgICAgICAgICAgICAgICs0OSA5MTEgNzQwNTMgNjg4DQpTVVNF
+IFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgsIE1heGZlbGRzdHIuIDUsIDkwNDA5IE7D
+vHJuYmVyZw0KSFJCIDM2ODA5IChBRyBOw7xybmJlcmcpLCBHRjogRmVsaXggSW1lbmTDtnJmZmVy
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52
+ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNj
+cmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
