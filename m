@@ -2,67 +2,112 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF77C32D194
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Mar 2021 12:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8576F32D360
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Mar 2021 13:38:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0B3BC100EC1D7;
-	Thu,  4 Mar 2021 03:11:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.2.187.25; helo=mail187-25.suw11.mandrillapp.com; envelope-from=bounce-md_30187493.6040c04f.v1-f05341f340e2406bbdeb38240cc42e29@mandrillapp.com; receiver=<UNKNOWN> 
-Received: from mail187-25.suw11.mandrillapp.com (mail187-25.suw11.mandrillapp.com [198.2.187.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 38FBD100ED4A3
-	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2021 03:11:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=mandrill; d=ebillity.com;
- h=From:Subject:Reply-To:To:Message-Id:Date:MIME-Version:Content-Type; i=noreply@ebillity.com;
- bh=+0oVMc8mz7BCX8sLSuHBAgPfkbkv+SjT3LwEj8nm/BA=;
- b=EqMmS42fJIC7U+subFs9uWIC/CnMrLUskc9PoWLp38DpXS3tdamnh+JF9laeR5DW15eP9By1rAP0
-   x5f00bGKD9+/zdVY9cerODFDxFTRcKjnqxL+lQ5YgWacswYf96x1Pux1yjWjKt4NS7mr54iz1xPq
-   JT+jQpMxNhy4z6AysHM=
-Received: from pmta01.mandrill.prod.suw01.rsglab.com (127.0.0.1) by mail187-25.suw11.mandrillapp.com id h83052174i49 for <linux-nvdimm@lists.01.org>; Thu, 4 Mar 2021 11:11:11 +0000 (envelope-from <bounce-md_30187493.6040c04f.v1-f05341f340e2406bbdeb38240cc42e29@mandrillapp.com>)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
- i=@mandrillapp.com; q=dns/txt; s=mandrill; t=1614856271; h=From :
- Subject : Reply-To : To : Message-Id : Date : MIME-Version :
- Content-Type : From : Subject : Date : X-Mandrill-User :
- List-Unsubscribe; bh=+0oVMc8mz7BCX8sLSuHBAgPfkbkv+SjT3LwEj8nm/BA=;
- b=YYuM4zyRJOBhywxBmqQjb6/sNyeJxBa0Wv3ipwqIJqC0ta1ipLR1oCYkyFDM/Acv7G9Inq
- m0Gnyl3lM19xqoC70NrX2k71MfgYgLfW0Iiw5j90mv50I8rpcakIPPDXuhfh2KsSoqHkgfuO
- T3sRFX1VrVxTs2mh1qgIZjjL++YZY=
-From: Time Tracker by eBillity <noreply@ebillity.com>
-Subject: From Mrs Maria Willasey
-Received: from [75.101.156.236] by mandrillapp.com id f05341f340e2406bbdeb38240cc42e29; Thu, 04 Mar 2021 11:11:11 +0000
-To: willaseymaria@gmail.com
-X-Report-Abuse: Please forward a copy of this message, including all headers, to abuse@mandrill.com
-X-Report-Abuse: You can also report abuse here: http://mandrillapp.com/contact/abuse?id=30187493.f05341f340e2406bbdeb38240cc42e29
-X-Mandrill-User: md_30187493
-Message-Id: <30187493.20210304111111.6040c04fdaffe0.18308421@mail187-25.suw11.mandrillapp.com>
-Date: Thu, 04 Mar 2021 11:11:11 +0000
+	by ml01.01.org (Postfix) with ESMTP id D170F100EC1D7;
+	Thu,  4 Mar 2021 04:38:26 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.12; helo=modes4u.com; envelope-from=aolmedyhtyioz@momsandcrafters.com; receiver=<UNKNOWN> 
+Received: from modes4u.com (unknown [188.72.187.12])
+	by ml01.01.org (Postfix) with ESMTP id 99B9D100ED4AC
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2021 04:38:24 -0800 (PST)
+To: linux-nvdimm@lists.01.org
+Subject: robot vacuum cleaner for your office
+Message-ID: <d35431e334b3f2258aca7debc97e0e8e@sharkclean.com>
+Date: Thu, 04 Mar 2021 12:58:18 +0100
+From: "Jenson Tayler" <aolmeyfhtyioz@momsandcrafters.com>
 MIME-Version: 1.0
-Message-ID-Hash: PDFTTMOPWSIOOEPMDYH46EN5N6OCP5DV
-X-Message-ID-Hash: PDFTTMOPWSIOOEPMDYH46EN5N6OCP5DV
-X-MailFrom: bounce-md_30187493.6040c04f.v1-f05341f340e2406bbdeb38240cc42e29@mandrillapp.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: R4WYUMRSRK46SYGPUTRXLTXNTMY5FNAP
+X-Message-ID-Hash: R4WYUMRSRK46SYGPUTRXLTXNTMY5FNAP
+X-MailFrom: aolmedyhtyioz@momsandcrafters.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: willaseymaria@gmail.com
+Reply-To: voudistimsion@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PDFTTMOPWSIOOEPMDYH46EN5N6OCP5DV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R4WYUMRSRK46SYGPUTRXLTXNTMY5FNAP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============2982277271941463764=="
+
+--===============2982277271941463764==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+Hi,<br /><br />How are you doing?<br /><span style=3D"display: block;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;">I ho=
+pe
+this email finds you well.<br /><br />I am sending you an email today to
+let you know we've got a new robot vacuum cleaner in our warehouse, ready
+to send to our customers.<br /><br
+/></span></span></span></span></span><span style=3D"display: block;
+text-align: left;">Features:<br />1.Soft cotton water absorbent cloth,
+water absorbent cloth can effectively lock moisture to prevent the wet
+sticky floor.<br />2.Large capacity, 120 minutes long endurance<br
+/>3.Black technology anti-lock design, to avoid the motor winding caused =
+by
+idle motor burning phenomenon.<br />4.Bottom cleaning experts, ultra-thin
+fuselage can be just-right' to clean the bottom of the home.<br
+/>5.ultraviolet sterilization, while sweeping sterilization, let your lif=
+e
+full of health.<br />6.Intelligent to prevent drop sensing, to the edge c=
+an
+sense the height drop, know self-protection.<br />7.One key to start the
+operation, convenient and fast, press open the key cleaning task to the
+sweeper, clean after the completion of the press on the key to close the
+machine.<br /><br />Specifications:<br />- Interface type: USB output<br
+/>- Charging time: about 3 hours<br />- Endurance': about 120 minutes<br
+/>- Working voltage: 3.7V /1500mAh<br />- Product size:
+25x25x7cm/9.8x9.8x2.8''</span><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><br /></span></span></span></span>Prices for different
+quantity: includes shipping.<br />1-5 units - 129.99&nbsp;each<br />6-10
+units - 119.99 each<br />11-50 units - 109.99&nbsp;each<br />51-100 units=
+ -
+99.99&nbsp;each<br />u s d<br />&nbsp;<br />Request to order it today?
+Simply send address of transportation, we will arrange shipment quick for
+you.<br /><br /><br /><br /><img
+src=3D"https://ae01.alicdn.com/kf/H7da1275277964316ad8ff2d54f1f1984e.jpg"
+width=3D"435" height=3D"545" /><img
+src=3D"https://ae01.alicdn.com/kf/H912f5c89f1054880ac1cac150213e992M.jpg"
+width=3D"435" height=3D"391" /><br /><img
+src=3D"https://ae01.alicdn.com/kf/Hd4741cb5aa7c4ed4acddff5d615f4f61U.jpg"
+width=3D"435" height=3D"434" /><img
+src=3D"https://ae01.alicdn.com/kf/H9b827a67c4ca47ae9eab0e392aa3f026B.jpg"
+width=3D"435" height=3D"429" /><br /><br /><img
+src=3D"https://ae01.alicdn.com/kf/H7fb8b7ee248d4067b9424b78ecb1460ab.jpg"
+width=3D"435" height=3D"435" /><img
+src=3D"https://ae01.alicdn.com/kf/H6df1137e4a704508a47780aa3b6638efs.jpg"
+width=3D"435" height=3D"435" /><br /><br /><br /><br />Request to order i=
+t
+today? Simply send address of transportation, we will arrange shipment
+quick for you.<br /><br />Thanks,<br />Jenson Tayler
+</body>
+</html>
+
+--===============2982277271941463764==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-{{ email_body_html|safe }}
-
-
-
-Account statement created and sent by Time Tracker. 
-Try it free here. [www.ebillity.com/?utm_source=transactional%20emails&utm_medium=application%20emails&utm_campaign=Sendwithus]
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============2982277271941463764==--
