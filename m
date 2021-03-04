@@ -2,112 +2,103 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A9132D95B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Mar 2021 19:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2215B32DD47
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Mar 2021 23:42:59 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EC649100F225C;
-	Thu,  4 Mar 2021 10:22:40 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.12; helo=modes4u.com; envelope-from=aolmeayhtyioz@montagut.com; receiver=<UNKNOWN> 
-Received: from modes4u.com (unknown [188.72.187.12])
-	by ml01.01.org (Postfix) with ESMTP id DB867100F2251
-	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2021 10:22:37 -0800 (PST)
-To: linux-nvdimm@lists.01.org
-Subject: robot vacuum cleaner 120 minutes long endurance
-Message-ID: <f713b209b4ab7bb426b552b737fb1ae0@sharkclean.com>
-Date: Thu, 04 Mar 2021 13:08:22 +0100
-From: "Jenson Tayler" <aolmseyhtyioz@montagut.com>
+	by ml01.01.org (Postfix) with ESMTP id B8A79100ED4BC;
+	Thu,  4 Mar 2021 14:42:56 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=djwong@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 76C44100EF271
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2021 14:42:53 -0800 (PST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EF7D764FF4;
+	Thu,  4 Mar 2021 22:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1614897773;
+	bh=qnYCVH7kx24HUZZshVhHK698ZWbn+eQJdMYwdeGcWq0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eYsnshJoXNs+g8S9T7aTiyRoV0yR8Ehs3mX5Q6zzwfnNBAJYRW6kKqPw3gRtYTjMk
+	 jyEFsMVzPFKMm3Xedx1PcOQ7h8IYUSN07FvNXZ6taEoSdNtbZbfzoFUARiVa0bVjgC
+	 VSbUSwfKmshPg+4n/d3zrWObdOG05ZEHw74lZUa2sAxIs5JMcY1VrqGFhtT7/cXVOE
+	 aAHmLHHQCDsF2bL252guTmnUemMWkbBTfvb5hX73TyyIyTbTNrHsFQeSIWDon7v693
+	 lGyQfLIvsQTV6PzG0VCZnHkzkQXXuiG5O/zRiZhgetPvnOMXfdxsmp0WpeJzQyTQrv
+	 NFFwjzKElG5iw==
+Date: Thu, 4 Mar 2021 14:42:50 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v3 02/11] blk: Introduce ->corrupted_range() for block
+ device
+Message-ID: <20210304224250.GF3419940@magnolia>
+References: <20210208105530.3072869-1-ruansy.fnst@cn.fujitsu.com>
+ <20210208105530.3072869-3-ruansy.fnst@cn.fujitsu.com>
+ <20210210132139.GC30109@lst.de>
 MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: 66LZSQLOCX53EOYSCQ7C7NXHCA3NXULV
-X-Message-ID-Hash: 66LZSQLOCX53EOYSCQ7C7NXHCA3NXULV
-X-MailFrom: aolmeayhtyioz@montagut.com
+Content-Disposition: inline
+In-Reply-To: <20210210132139.GC30109@lst.de>
+Message-ID-Hash: WNWEJAWSFC46NNQCD6CXI7WAI6YCGQP6
+X-Message-ID-Hash: WNWEJAWSFC46NNQCD6CXI7WAI6YCGQP6
+X-MailFrom: djwong@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, dm-devel@redhat.com, darrick.wong@oracle.com, david@fromorbit.com, agk@redhat.com, snitzer@redhat.com, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: voudistimsion@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/66LZSQLOCX53EOYSCQ7C7NXHCA3NXULV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WNWEJAWSFC46NNQCD6CXI7WAI6YCGQP6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============3741367880536719300=="
-
---===============3741367880536719300==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-Hi,<br /><br />How are you doing?<br /><span style=3D"display: block;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;">I ho=
-pe
-this email finds you well.<br /><br />I am sending you an email today to
-let you know we've got a new robot vacuum cleaner in our warehouse, ready
-to send to our customers.<br /><br
-/></span></span></span></span></span><span style=3D"display: block;
-text-align: left;">Features:<br />1.Soft cotton water absorbent cloth,
-water absorbent cloth can effectively lock moisture to prevent the wet
-sticky floor.<br />2.Large capacity, 120 minutes long endurance<br
-/>3.Black technology anti-lock design, to avoid the motor winding caused =
-by
-idle motor burning phenomenon.<br />4.Bottom cleaning experts, ultra-thin
-fuselage can be just-right' to clean the bottom of the home.<br
-/>5.ultraviolet sterilization, while sweeping sterilization, let your lif=
-e
-full of health.<br />6.Intelligent to prevent drop sensing, to the edge c=
-an
-sense the height drop, know self-protection.<br />7.One key to start the
-operation, convenient and fast, press open the key cleaning task to the
-sweeper, clean after the completion of the press on the key to close the
-machine.<br /><br />Specifications:<br />- Interface type: USB output<br
-/>- Charging time: about 3 hours<br />- Endurance': about 120 minutes<br
-/>- Working voltage: 3.7V /1500mAh<br />- Product size:
-25x25x7cm/9.8x9.8x2.8''</span><span style=3D"display: block; text-align:
-left;"><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><br /></span></span></span></span>Prices for different
-quantity: includes shipping.<br />1-5 units - 129.99&nbsp;each<br />6-10
-units - 119.99 each<br />11-50 units - 109.99&nbsp;each<br />51-100 units=
- -
-99.99&nbsp;each<br />u s d<br />&nbsp;<br />Request to order it today?
-Simply send address of transportation, we will arrange shipment quick for
-you.<br /><br /><br /><br /><img
-src=3D"https://ae01.alicdn.com/kf/H7da1275277964316ad8ff2d54f1f1984e.jpg"
-width=3D"435" height=3D"545" /><img
-src=3D"https://ae01.alicdn.com/kf/H912f5c89f1054880ac1cac150213e992M.jpg"
-width=3D"435" height=3D"391" /><br /><img
-src=3D"https://ae01.alicdn.com/kf/Hd4741cb5aa7c4ed4acddff5d615f4f61U.jpg"
-width=3D"435" height=3D"434" /><img
-src=3D"https://ae01.alicdn.com/kf/H9b827a67c4ca47ae9eab0e392aa3f026B.jpg"
-width=3D"435" height=3D"429" /><br /><br /><img
-src=3D"https://ae01.alicdn.com/kf/H7fb8b7ee248d4067b9424b78ecb1460ab.jpg"
-width=3D"435" height=3D"435" /><img
-src=3D"https://ae01.alicdn.com/kf/H6df1137e4a704508a47780aa3b6638efs.jpg"
-width=3D"435" height=3D"435" /><br /><br /><br /><br />Request to order i=
-t
-today? Simply send address of transportation, we will arrange shipment
-quick for you.<br /><br />Thanks,<br />Jenson Tayler
-</body>
-</html>
-
---===============3741367880536719300==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Wed, Feb 10, 2021 at 02:21:39PM +0100, Christoph Hellwig wrote:
+> On Mon, Feb 08, 2021 at 06:55:21PM +0800, Shiyang Ruan wrote:
+> > In fsdax mode, the memory failure happens on block device.  So, it is
+> > needed to introduce an interface for block devices.  Each kind of block
+> > device can handle the memory failure in ther own ways.
+> 
+> As told before: DAX operations please do not add anything to the block
+> device.  We've been working very hard to decouple DAX from the block
+> device, and while we're not done regressing the split should not happen.
+
+I agree with you (Christoph) that (strictly speaking) within the scope of
+the DAX work this isn't needed; xfs should be able to consume the
+->memory_failure events directly and DTRT.
+
+My vision here, however, is to establish upcalls for /both/ types of
+stroage.
+
+Regular block devices can use ->corrupted_range to push error
+notifications upwards through the block stack to a filesystem, and we
+can finally do a teensy bit more with scsi sense data about media
+errors, or thinp wanting to warn the filesystem that it's getting low on
+space and maybe this would be an agreeable time to self-FITRIM, or raid
+noticing that a mirror is inconsistent and can the fs do something to
+resolve the dispute, etc.  Maybe we can use this mechanism to warn a
+filesystem that someone did "echo 1 > /sys/block/sda/device/delete" and
+we had better persist everything while we still can.
+
+Memory devices will use ->memory_failure to tell us about ADR errors,
+and I guess upcoming and past hotremove events.  For fsdax you'd
+probably have to send the announcement and invalidate the current ptes
+to force filesystem pagefaults and the like.
+
+Either way, I think this piece is fine, but I would change the dax
+side to send the ->memory_failure events directly to xfs.
+
+A gap here is that xfs can attach to rt/log devices but we don't
+currently plumb in enough information that get_active_super can find
+the correct filesystem.
+
+I dunno, maybe we should add this to the thread here[1]?
+
+[1] https://lore.kernel.org/linux-xfs/CAPcyv4g3ZwbdLFx8bqMcNvXyrob8y6sBXXu=xPTmTY0VSk5HCw@mail.gmail.com/T/#m55a5c67153d0d10f3ff05a69d7e502914d97ac9d
+
+--D
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============3741367880536719300==--
