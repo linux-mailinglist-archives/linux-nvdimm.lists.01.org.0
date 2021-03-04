@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8576F32D360
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Mar 2021 13:38:30 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A9132D95B
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Mar 2021 19:22:42 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D170F100EC1D7;
-	Thu,  4 Mar 2021 04:38:26 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.12; helo=modes4u.com; envelope-from=aolmedyhtyioz@momsandcrafters.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id EC649100F225C;
+	Thu,  4 Mar 2021 10:22:40 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.12; helo=modes4u.com; envelope-from=aolmeayhtyioz@montagut.com; receiver=<UNKNOWN> 
 Received: from modes4u.com (unknown [188.72.187.12])
-	by ml01.01.org (Postfix) with ESMTP id 99B9D100ED4AC
-	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2021 04:38:24 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id DB867100F2251
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2021 10:22:37 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: robot vacuum cleaner for your office
-Message-ID: <d35431e334b3f2258aca7debc97e0e8e@sharkclean.com>
-Date: Thu, 04 Mar 2021 12:58:18 +0100
-From: "Jenson Tayler" <aolmeyfhtyioz@momsandcrafters.com>
+Subject: robot vacuum cleaner 120 minutes long endurance
+Message-ID: <f713b209b4ab7bb426b552b737fb1ae0@sharkclean.com>
+Date: Thu, 04 Mar 2021 13:08:22 +0100
+From: "Jenson Tayler" <aolmseyhtyioz@montagut.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: R4WYUMRSRK46SYGPUTRXLTXNTMY5FNAP
-X-Message-ID-Hash: R4WYUMRSRK46SYGPUTRXLTXNTMY5FNAP
-X-MailFrom: aolmedyhtyioz@momsandcrafters.com
+Message-ID-Hash: 66LZSQLOCX53EOYSCQ7C7NXHCA3NXULV
+X-Message-ID-Hash: 66LZSQLOCX53EOYSCQ7C7NXHCA3NXULV
+X-MailFrom: aolmeayhtyioz@montagut.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: voudistimsion@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R4WYUMRSRK46SYGPUTRXLTXNTMY5FNAP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/66LZSQLOCX53EOYSCQ7C7NXHCA3NXULV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============2982277271941463764=="
+Content-Type: multipart/mixed; boundary="===============3741367880536719300=="
 
---===============2982277271941463764==
+--===============3741367880536719300==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -100,7 +100,7 @@ quick for you.<br /><br />Thanks,<br />Jenson Tayler
 </body>
 </html>
 
---===============2982277271941463764==
+--===============3741367880536719300==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -110,4 +110,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============2982277271941463764==--
+--===============3741367880536719300==--
