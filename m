@@ -1,117 +1,157 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A48C331F5A
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Mar 2021 07:39:18 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2709C331F8C
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Mar 2021 07:54:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A1317100EBB90;
-	Mon,  8 Mar 2021 22:39:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.57; helo=out30-57.freemail.mail.aliyun.com; envelope-from=xiaoguang.wang@linux.alibaba.com; receiver=<UNKNOWN> 
-Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 33B04100EBB94;
+	Mon,  8 Mar 2021 22:54:26 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F34EE100EBB8F
-	for <linux-nvdimm@lists.01.org>; Mon,  8 Mar 2021 22:39:06 -0800 (PST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=alimailimapcm10staff010182156082;MF=xiaoguang.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0UR3PFCN_1615271941;
-Received: from 30.225.32.219(mailfrom:xiaoguang.wang@linux.alibaba.com fp:SMTPD_---0UR3PFCN_1615271941)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 09 Mar 2021 14:39:01 +0800
-Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>, linux-kernel@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org,
- linux-fsdevel@vger.kernel.org
-References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
-From: Xiaoguang Wang <xiaoguang.wang@linux.alibaba.com>
-Message-ID: <5e7766f9-0224-10be-6810-2e516e610191@linux.alibaba.com>
-Date: Tue, 9 Mar 2021 14:36:13 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+	by ml01.01.org (Postfix) with ESMTPS id 1C0DE100EBB90
+	for <linux-nvdimm@lists.01.org>; Mon,  8 Mar 2021 22:54:22 -0800 (PST)
+IronPort-SDR: z+3no13qbkrupTlYFCFGqZDIO52Hn7RXot3v2onPrOOAXw8mMobNEkB2Q/qyZGT+UdZpFlBPlS
+ pvpmMI2H2L0Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9917"; a="167444906"
+X-IronPort-AV: E=Sophos;i="5.81,234,1610438400";
+   d="scan'208";a="167444906"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2021 22:54:22 -0800
+IronPort-SDR: dAdWMk+JmlDxVk9M4A/URs+ost3nLPKwcJrq77fVg6oR6mQ2pIIvTAH8qM+HEUGr7z6MhnKkF+
+ bBc0A5Z9L0jg==
+X-IronPort-AV: E=Sophos;i="5.81,234,1610438400";
+   d="scan'208";a="437569479"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2021 22:54:22 -0800
+Subject: [PATCH] libnvdimm: Let revalidate_disk() revalidate region read-only
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Mon, 08 Mar 2021 22:54:22 -0800
+Message-ID: <161527286194.446794.5215036039655765042.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-In-Reply-To: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
-Message-ID-Hash: QICJJVR66JYPWQGXSVYTWLCYNKJO6UNO
-X-Message-ID-Hash: QICJJVR66JYPWQGXSVYTWLCYNKJO6UNO
-X-MailFrom: xiaoguang.wang@linux.alibaba.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
+Message-ID-Hash: X427XFEGWGNQ5BCKDFIWONQRMDAFSYMJ
+X-Message-ID-Hash: X427XFEGWGNQ5BCKDFIWONQRMDAFSYMJ
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@lst.de>, Ming Lei <ming.lei@redhat.com>, Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>, kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QICJJVR66JYPWQGXSVYTWLCYNKJO6UNO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X427XFEGWGNQ5BCKDFIWONQRMDAFSYMJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-hi,
+Previous kernels allowed the BLKROSET to override the disk's read-only
+status. With that situation fixed the pmem driver needs to rely on
+revalidate_disk() to clear the disk read-only status after the host
+region has been marked read-write.
 
-First thanks for your patchset.
-I'd like to know whether your patchset pass fstests? Thanks.
+Recall that when libnvdimm determines that the persistent memory has
+lost persistence (for example lack of energy to flush from DRAM to FLASH
+on an NVDIMM-N device) it marks the region read-only, but that state can
+be overridden by the user via:
 
-Regards,
-Xiaoguang Wang
+   echo 0 > /sys/bus/nd/devices/regionX/read_only
 
-> This patchset is attempt to add CoW support for fsdax, and take XFS,
-> which has both reflink and fsdax feature, as an example.
-> 
-> Changes from V1:
->   - Factor some helper functions to simplify dax fault code
->   - Introduce iomap_apply2() for dax_dedupe_file_range_compare()
->   - Fix mistakes and other problems
->   - Rebased on v5.11
-> 
-> One of the key mechanism need to be implemented in fsdax is CoW.  Copy
-> the data from srcmap before we actually write data to the destance
-> iomap.  And we just copy range in which data won't be changed.
-> 
-> Another mechanism is range comparison.  In page cache case, readpage()
-> is used to load data on disk to page cache in order to be able to
-> compare data.  In fsdax case, readpage() does not work.  So, we need
-> another compare data with direct access support.
-> 
-> With the two mechanism implemented in fsdax, we are able to make reflink
-> and fsdax work together in XFS.
-> 
-> 
-> Some of the patches are picked up from Goldwyn's patchset.  I made some
-> changes to adapt to this patchset.
-> 
-> (Rebased on v5.11)
-> ==
-> 
-> Shiyang Ruan (10):
->    fsdax: Factor helpers to simplify dax fault code
->    fsdax: Factor helper: dax_fault_actor()
->    fsdax: Output address in dax_iomap_pfn() and rename it
->    fsdax: Introduce dax_iomap_cow_copy()
->    fsdax: Replace mmap entry in case of CoW
->    fsdax: Add dax_iomap_cow_copy() for dax_iomap_zero
->    iomap: Introduce iomap_apply2() for operations on two files
->    fsdax: Dedup file range to use a compare function
->    fs/xfs: Handle CoW for fsdax write() path
->    fs/xfs: Add dedupe support for fsdax
-> 
->   fs/dax.c               | 532 +++++++++++++++++++++++++++--------------
->   fs/iomap/apply.c       |  51 ++++
->   fs/iomap/buffered-io.c |   2 +-
->   fs/remap_range.c       |  45 +++-
->   fs/xfs/xfs_bmap_util.c |   3 +-
->   fs/xfs/xfs_file.c      |  29 ++-
->   fs/xfs/xfs_inode.c     |   8 +-
->   fs/xfs/xfs_inode.h     |   1 +
->   fs/xfs/xfs_iomap.c     |  30 ++-
->   fs/xfs/xfs_iomap.h     |   1 +
->   fs/xfs/xfs_iops.c      |  11 +-
->   fs/xfs/xfs_reflink.c   |  16 +-
->   include/linux/dax.h    |   7 +-
->   include/linux/fs.h     |  15 +-
->   include/linux/iomap.h  |   7 +-
->   15 files changed, 550 insertions(+), 208 deletions(-)
-> 
+...to date there is no notification that the region has restored
+persistence, so the user override is the only recovery.
+
+Fixes: 52f019d43c22 ("block: add a hard-readonly flag to struct gendisk")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Jens Axboe <axboe@kernel.dk>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/nvdimm/btt.c  |    7 +++++++
+ drivers/nvdimm/bus.c  |   14 ++++++--------
+ drivers/nvdimm/pmem.c |    7 +++++++
+ 3 files changed, 20 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
+index 41aa1f01fc07..73d3bf5aa208 100644
+--- a/drivers/nvdimm/btt.c
++++ b/drivers/nvdimm/btt.c
+@@ -1508,11 +1508,18 @@ static int btt_getgeo(struct block_device *bd, struct hd_geometry *geo)
+ 	return 0;
+ }
+ 
++static int btt_revalidate(struct gendisk *disk)
++{
++	nvdimm_check_and_set_ro(disk);
++	return 0;
++}
++
+ static const struct block_device_operations btt_fops = {
+ 	.owner =		THIS_MODULE,
+ 	.submit_bio =		btt_submit_bio,
+ 	.rw_page =		btt_rw_page,
+ 	.getgeo =		btt_getgeo,
++	.revalidate_disk =	btt_revalidate,
+ };
+ 
+ static int btt_blk_init(struct btt *btt)
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 48f0985ca8a0..3a777d0073b7 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -631,16 +631,14 @@ void nvdimm_check_and_set_ro(struct gendisk *disk)
+ 	struct nd_region *nd_region = to_nd_region(dev->parent);
+ 	int disk_ro = get_disk_ro(disk);
+ 
+-	/*
+-	 * Upgrade to read-only if the region is read-only preserve as
+-	 * read-only if the disk is already read-only.
+-	 */
+-	if (disk_ro || nd_region->ro == disk_ro)
++	/* catch the disk up with the region ro state */
++	if (disk_ro == nd_region->ro)
+ 		return;
+ 
+-	dev_info(dev, "%s read-only, marking %s read-only\n",
+-			dev_name(&nd_region->dev), disk->disk_name);
+-	set_disk_ro(disk, 1);
++	dev_info(dev, "%s read-%s, marking %s read-%s\n",
++		 dev_name(&nd_region->dev), nd_region->ro ? "only" : "write",
++		 disk->disk_name, nd_region->ro ? "only" : "write");
++	set_disk_ro(disk, nd_region->ro);
+ }
+ EXPORT_SYMBOL(nvdimm_check_and_set_ro);
+ 
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index b8a85bfb2e95..af204fce1b1c 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -276,10 +276,17 @@ __weak long __pmem_direct_access(struct pmem_device *pmem, pgoff_t pgoff,
+ 	return PHYS_PFN(pmem->size - pmem->pfn_pad - offset);
+ }
+ 
++static int pmem_revalidate(struct gendisk *disk)
++{
++	nvdimm_check_and_set_ro(disk);
++	return 0;
++}
++
+ static const struct block_device_operations pmem_fops = {
+ 	.owner =		THIS_MODULE,
+ 	.submit_bio =		pmem_submit_bio,
+ 	.rw_page =		pmem_rw_page,
++	.revalidate_disk =	pmem_revalidate,
+ };
+ 
+ static int pmem_dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
