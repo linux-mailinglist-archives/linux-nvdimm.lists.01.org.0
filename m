@@ -1,86 +1,107 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8D6333B44
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 12:24:05 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615B4333CA0
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 13:31:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 09987100EB32A;
-	Wed, 10 Mar 2021 03:24:04 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=212.227.17.24; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN> 
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id BE588100EB32D;
+	Wed, 10 Mar 2021 04:31:21 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=ngompa13@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6FEE3100EB325
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 03:24:01 -0800 (PST)
-Received: from mail-ot1-f42.google.com ([209.85.210.42]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MNbxN-1l5SKb22l1-00P5Yu for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021
- 12:23:58 +0100
-Received: by mail-ot1-f42.google.com with SMTP id r24so8946270otq.13
-        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 03:23:57 -0800 (PST)
-X-Gm-Message-State: AOAM533nvBDuprLUgEBMYmKaov+JWSxzF7MvRIPwuZCHg1s5VPdDxkN4
-	dLGsdZ/Bz3sMXd5qxLihjsOuAEARoBnLLb0AfsU=
-X-Google-Smtp-Source: ABdhPJzSi9rQjVmQMcCdC3Ugc0EWFLl//ABE/fGqmyUE3BjBZcH2sAsjResUueB/qNZ0M5JXaPsoktuZzqJxAH31rsg=
-X-Received: by 2002:a05:6830:14c1:: with SMTP id t1mr2167623otq.305.1615375436800;
- Wed, 10 Mar 2021 03:23:56 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 27208100EB32A
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 04:31:19 -0800 (PST)
+Received: by mail-yb1-xb34.google.com with SMTP id x19so17692195ybe.0
+        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 04:31:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=atKgvCAVpItHVZX4pm9LPMJMeABJeY6Z3gkRYABn5yM=;
+        b=CqUqoL9kkvx+9GPDQrx/onWS2YqBsmUkD9RdH3kHKTKq0Cer4EZT4m88Jw1x4Fr3ay
+         TiaLyhLOVS3KIjiESjXT/yUrAY3W1sZdEm6TSmA+7EtxpUAPl9UGLAHN1LPhHptz8M4W
+         awatnKWJUohL/31zVJXD5w/KHKFHyP/tXqk0Ma2sIXDK6kPy8Zt1D+Va9Mfmvz7UOItG
+         5/DBwezK/etsdPHs3GV7GnvF0RLpA9aHGTPlINFPjl6Ceem8bSrdhpjAxCNFrmKNSnM1
+         3zAQJZQbW2rR8gGM7xa5X45SmKRn206FsjxUb9Z4X7woqN6A1P+KAmARKYNbS/6aUl9Z
+         5FIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=atKgvCAVpItHVZX4pm9LPMJMeABJeY6Z3gkRYABn5yM=;
+        b=RGPserkyaBugDjfeb7BdrCWiS4wrkAGt9BIbc3/dDIUyUUjWnxlTGJH4UjEYh2MlGE
+         wtN3KjK3FLbqkQ6kq8NYL8Mgcao5LxXbmEcJkUUdKVFDIagIOz5v5+hqAuJ+je6pclwW
+         86CTbfaguh2s8kuCugmfBzs+iHOe8pBekBWPMUYsPAQSw56rSjxdgP/Z0mfYOY2yHsRr
+         mTwLrb1O7dhADdrgoGv9VKGkcOeNXX+VnqBesHAsO9aMlnG+At2B26QwlYNIZIFkNeb1
+         K5LW3wTgDFUFMMhDO1TqKKK4mrgDd2X7B8m5vvoHRSrNe58EOLakan42ZtBEwqDNXnIv
+         CfIQ==
+X-Gm-Message-State: AOAM531c4wpQZBrdkrZeSARi9jpUXcsF3H9SzENWMKzu9XLgtgtanxVQ
+	rWc3b7L3YWJ+TxsamuS2fDajPGaVOeFkvX4A3oc=
+X-Google-Smtp-Source: ABdhPJx2QY4l9cQe75nptZ7Pf1Zho+J5rcKWrpKzrd9BmVRKh3Mvj6bvtkk6JVBRVJMnA8nldnylsisoMg5a0XbleWs=
+X-Received: by 2002:a05:6902:1001:: with SMTP id w1mr3859288ybt.176.1615379477739;
+ Wed, 10 Mar 2021 04:31:17 -0800 (PST)
 MIME-Version: 1.0
-References: <20210309181533.231573-1-willy@infradead.org>
-In-Reply-To: <20210309181533.231573-1-willy@infradead.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 10 Mar 2021 12:23:40 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a31=gJkF+GypnaznfhKCYSnwU1yF4u0tem==YSpz3pwXw@mail.gmail.com>
-Message-ID: <CAK8P3a31=gJkF+GypnaznfhKCYSnwU1yF4u0tem==YSpz3pwXw@mail.gmail.com>
-Subject: Re: [PATCH] include: Remove pagemap.h from blkdev.h
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-X-Provags-ID: V03:K1:OXnu0ucA1wyi7+lsio3wJ7anxEE+Dfl9WxSWkiji74vJmQV/e+z
- /UuE19runp+N+cWAwFxoNV/Oxqmy80PT6FRUX2/Qqm83lhmHvaDTABHTNEs98pkXpsofEST
- zJ6c0FPdemYuWeYyN4EVvC27hauj3JLuq1aYSBCN63RNjnReoBBn/nBMC5yBGdAc4meIF7e
- zLEbPd4YgzDiGisZXhMqQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4cAS9hei4/U=:V6coH8Au1+F7SdZmUZCI2R
- /CvDSYC2NPktfWwYM6nrnwY9UampXaxfGBn3jE4gl/XpwW5PmFd1hfCQySoyGcizrkDr5j7wD
- fAceosamEm8lbg2wylPUYsYkKitaWJIH8hLSugV4bR/9F+Qft6hovYEIfuNImtk2hz6c66s8H
- mTyq66QehLFmQqPE5nWdPpk54sFK9obgBewLY+biKTdo25zHP140QEK3qCPkG6XTUku178f28
- tyuw6RHN47b4MhQQhziecSgqogC4JjRsVKvYsEVo+9HSVaEC1iqwOnWe56oaLdo4X12G5EtBd
- aRSOpKXL/elmAeCtWlv7p7AjLu1m8UzfdPvsNja0ghmlMloPWIAF2lzRuFxzaWS0N7B5VuUed
- +FoTi99O3vI//IwesK/i30Dql+C7RxF1cXGKw7BJv62MF0WFBOcvJf86Z018v
-Message-ID-Hash: LY2MVZHORRYPXVFPE47TTPUBXKNDKLUX
-X-Message-ID-Hash: LY2MVZHORRYPXVFPE47TTPUBXKNDKLUX
-X-MailFrom: arnd@arndb.de
+References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+In-Reply-To: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+From: Neal Gompa <ngompa13@gmail.com>
+Date: Wed, 10 Mar 2021 07:30:41 -0500
+Message-ID: <CAEg-Je-OLidbfzHCJvY55x+-cOfiUxX8CJ1AeN8VxXAVuVyxKQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Message-ID-Hash: K7EJCFIHVRN7NS65GUR5Z2AJF2OIOA4Y
+X-Message-ID-Hash: K7EJCFIHVRN7NS65GUR5Z2AJF2OIOA4Y
+X-MailFrom: ngompa13@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Linux-MM <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, linux-block <linux-block@vger.kernel.org>, linux-bcache@vger.kernel.org, linux-nvdimm@lists.01.org, linux-scsi <linux-scsi@vger.kernel.org>
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, Btrfs BTRFS <linux-btrfs@vger.kernel.org>, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LY2MVZHORRYPXVFPE47TTPUBXKNDKLUX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K7EJCFIHVRN7NS65GUR5Z2AJF2OIOA4Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, Mar 9, 2021 at 7:15 PM Matthew Wilcox (Oracle)
-<willy@infradead.org> wrote:
->
-> My UEK-derived config has 1030 files depending on pagemap.h before
-> this change.  Afterwards, just 240 files need to be rebuilt when I
-> touch pagemap.h.  I think blkdev.h is probably included too widely,
-> but untangling that dependency is harder and this solves my problem.
-> x86 allmodconfig builds, but there may be implicit include problems
-> on other architectures.
->
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-Good catch!
-
-With the build regression fixed (I suppose you now need to include
-pagemap.h in swap.h):
-
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gVGh1LCBGZWIgMjUsIDIwMjEgYXQgNzoyMyBQTSBTaGl5YW5nIFJ1YW4gPHJ1YW5zeS5mbnN0
+QGZ1aml0c3UuY29tPiB3cm90ZToNCj4NCj4gVGhpcyBwYXRjaHNldCBpcyBhdHRlbXB0IHRvIGFk
+ZCBDb1cgc3VwcG9ydCBmb3IgZnNkYXgsIGFuZCB0YWtlIFhGUywNCj4gd2hpY2ggaGFzIGJvdGgg
+cmVmbGluayBhbmQgZnNkYXggZmVhdHVyZSwgYXMgYW4gZXhhbXBsZS4NCj4NCj4gQ2hhbmdlcyBm
+cm9tIFYxOg0KPiAgLSBGYWN0b3Igc29tZSBoZWxwZXIgZnVuY3Rpb25zIHRvIHNpbXBsaWZ5IGRh
+eCBmYXVsdCBjb2RlDQo+ICAtIEludHJvZHVjZSBpb21hcF9hcHBseTIoKSBmb3IgZGF4X2RlZHVw
+ZV9maWxlX3JhbmdlX2NvbXBhcmUoKQ0KPiAgLSBGaXggbWlzdGFrZXMgYW5kIG90aGVyIHByb2Js
+ZW1zDQo+ICAtIFJlYmFzZWQgb24gdjUuMTENCj4NCj4gT25lIG9mIHRoZSBrZXkgbWVjaGFuaXNt
+IG5lZWQgdG8gYmUgaW1wbGVtZW50ZWQgaW4gZnNkYXggaXMgQ29XLiAgQ29weQ0KPiB0aGUgZGF0
+YSBmcm9tIHNyY21hcCBiZWZvcmUgd2UgYWN0dWFsbHkgd3JpdGUgZGF0YSB0byB0aGUgZGVzdGFu
+Y2UNCj4gaW9tYXAuICBBbmQgd2UganVzdCBjb3B5IHJhbmdlIGluIHdoaWNoIGRhdGEgd29uJ3Qg
+YmUgY2hhbmdlZC4NCj4NCj4gQW5vdGhlciBtZWNoYW5pc20gaXMgcmFuZ2UgY29tcGFyaXNvbi4g
+IEluIHBhZ2UgY2FjaGUgY2FzZSwgcmVhZHBhZ2UoKQ0KPiBpcyB1c2VkIHRvIGxvYWQgZGF0YSBv
+biBkaXNrIHRvIHBhZ2UgY2FjaGUgaW4gb3JkZXIgdG8gYmUgYWJsZSB0bw0KPiBjb21wYXJlIGRh
+dGEuICBJbiBmc2RheCBjYXNlLCByZWFkcGFnZSgpIGRvZXMgbm90IHdvcmsuICBTbywgd2UgbmVl
+ZA0KPiBhbm90aGVyIGNvbXBhcmUgZGF0YSB3aXRoIGRpcmVjdCBhY2Nlc3Mgc3VwcG9ydC4NCj4N
+Cj4gV2l0aCB0aGUgdHdvIG1lY2hhbmlzbSBpbXBsZW1lbnRlZCBpbiBmc2RheCwgd2UgYXJlIGFi
+bGUgdG8gbWFrZSByZWZsaW5rDQo+IGFuZCBmc2RheCB3b3JrIHRvZ2V0aGVyIGluIFhGUy4NCj4N
+Cj4NCj4gU29tZSBvZiB0aGUgcGF0Y2hlcyBhcmUgcGlja2VkIHVwIGZyb20gR29sZHd5bidzIHBh
+dGNoc2V0LiAgSSBtYWRlIHNvbWUNCj4gY2hhbmdlcyB0byBhZGFwdCB0byB0aGlzIHBhdGNoc2V0
+Lg0KPg0KPiAoUmViYXNlZCBvbiB2NS4xMSkNCg0KRm9yZ2l2ZSBteSBpZ25vcmFuY2UsIGJ1dCBp
+cyB0aGVyZSBhIHJlYXNvbiB3aHkgdGhpcyBpc24ndCB3aXJlZCB1cCB0bw0KQnRyZnMgYXQgdGhl
+IHNhbWUgdGltZT8gSXQgc2VlbXMgd2VpcmQgdG8gbWUgdGhhdCBhZGRpbmcgYSBmZWF0dXJlDQps
+aWtlIERBWCB0byB3b3JrIHdpdGggQ29XIGZpbGVzeXN0ZW1zIGlzIG5vdCBiZWluZyB3aXJlZCBp
+bnRvICp0aGUqDQpDb1cgZmlsZXN5c3RlbSBpbiB0aGUgTGludXgga2VybmVsIHRoYXQgZnVsbHkg
+dGFrZXMgYWR2YW50YWdlIG9mDQpjb3B5LW9uLXdyaXRlLiBJJ20gYXdhcmUgdGhhdCBYRlMgc3Vw
+cG9ydHMgcmVmbGlua3MgYW5kIGRvZXMgc29tZQ0KZGF0YWNvdyBzdHVmZiwgYnV0IEkgZG9uJ3Qg
+a25vdyBpZiBJIHdvdWxkIGNvbnNpZGVyIFhGUyBpbnRlZ3JhdGlvbg0Kc3VmZmljaWVudCBmb3Ig
+aW50ZWdyYXRpbmcgdGhpcyBmZWF0dXJlIG5vdywgZXNwZWNpYWxseSBpZiBpdCdzDQpwb3NzaWJs
+ZSB0aGF0IHRoZSBkZXNpZ24gbWlnaHQgbm90IHdvcmsgd2l0aCBCdHJmcyAoSSBoYWRuJ3Qgc2Vl
+biBhbnkNCmZlZWRiYWNrIGZyb20gQnRyZnMgZGV2ZWxvcGVycywgdGhvdWdoIGdpdmVuIGhvdyBt
+dWNoIGVtYWlsIHRoZXJlIGlzDQpoZXJlLCBpdCdzIGVudGlyZWx5IHBvc3NpYmxlIHRoYXQgSSBt
+aXNzZWQgaXQpLg0KDQoNCi0tIA0K55yf5a6f44Gv44GE44Gk44KC5LiA44Gk77yBLyBBbHdheXMs
+IHRoZXJlJ3Mgb25seSBvbmUgdHJ1dGghCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
+QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
+bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
