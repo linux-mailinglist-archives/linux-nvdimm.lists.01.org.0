@@ -1,303 +1,88 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F1B3346B7
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 19:29:15 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DF0334C89
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 00:30:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2E43E100F2242;
-	Wed, 10 Mar 2021 10:29:13 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=william.kucharski@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 165FC100F2249;
+	Wed, 10 Mar 2021 15:30:19 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3D6B4100EB341
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 10:29:11 -0800 (PST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12AIEk2I015412;
-	Wed, 10 Mar 2021 18:28:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=phYaTADnsArsxeED7694g+AgeLzfJshSdz79W67BHUw=;
- b=osY7Wys0EYtALiZjzmRAdVS1QEjbgP820sJ03KUXw0r+QFrjafj6ThB8lLpxRih8zYVh
- 4ivQWNosBNZZqPpeyy39BqL+6QR9ttn+7k6e2fNyGTIVwXMSBBzpzmFqliEGzGUI1qcR
- zh7z6xoSeXlyPQky1mQGShZmmuuYJHKOI6V7TG3eHl1S3Is/SCqWw+07kVtgURhM1GpP
- ymEinINTwL4cCbsXbHCWkexfsNmLWrCaR3Ah0N1jlCVCPyH/KuwGk7l8gPjQE9bTACcb
- fOTXEximhHXyKUJrBnF+pAl4REhmfpm8IOQ0LH72hFM6Y7edKe6VjxEsu3BwSJmFHIDf Xg==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by aserp2120.oracle.com with ESMTP id 3741pmm00y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Mar 2021 18:28:43 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12AIFXKQ007845;
-	Wed, 10 Mar 2021 18:28:43 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2108.outbound.protection.outlook.com [104.47.58.108])
-	by aserp3020.oracle.com with ESMTP id 374kn1bs7k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Mar 2021 18:28:43 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h4EFvDulXjCOZTIgkCenKowqG5EI64B8cC6c1sTJ9oF3i+8w/uyM2OHDfBPhDsjHY7erq1sFhI83r7zwbhDkgfWIK51kEdwCO9O42q5PnZkP1pXrnFUHupF53yufN0V3Y6TQ1XCyHuwKKPzzQsUgIlpYDtwrWZcRHlNoYKR6aOgLwWzdcETzyn/ihy5DrK1d8Qt4JPrpzgUrzU0p56UKr5fI7QEvaiZFwc8cfat94IHjKSe+Zjl8At+jyy3RkEVCTvumvlHHkhvqZDqXEDG0u7dDTFrF5bNvHVYiXkEnY65UdMts31Wj77LhdLJVKeiQwxUt5ntTrgCznbXRNjSqzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=phYaTADnsArsxeED7694g+AgeLzfJshSdz79W67BHUw=;
- b=Q3+PSQbMccEQxfrrLrEK2SkZ0Ye2prYtqXG1dWfKpz5eNAe0HqEr1la6RkoT2r1GNAsWUcdTzklUbdGGuVYabg9f4SK/tOHLsMZHu+Sr0ew6ZZQL/Fa67YOr+9qZeghxchW7H5JSVJ2PFz5HFa7ipLIevSNKK0x2pKAbJEIEXSy6jim5g9SHVZPbhKvtBFLjd2f2+eDUr73cZGQUSxt+U8MtTuT8iamCfygZp7E8bj2qgfr5cC/rqpmXgOTQsf8YtE+xC1PQaC9muR3vuRl4dkd5x6tRnigEVj6P8QhBQwqEVVhuJmfswwUqQ7q/hRhhK36pOB7zPBV57Iq/gEd/XQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by ml01.01.org (Postfix) with ESMTPS id 5C06E100EB82C
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 15:30:16 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id w9so273663edt.13
+        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 15:30:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=phYaTADnsArsxeED7694g+AgeLzfJshSdz79W67BHUw=;
- b=jknUGUKhX3hG6ntEbdeS/F0SeLOSkyhyvHc2lXEe/05KOeZR0J7gqS6pDSEGW1DzhsmX6nGkuQa21C5ULnixrdg5e1SQ3l+EmPjWEJufsOm9Q3v7QcG6AIBV29FEnoBMEZc/kjM38gj69WSxFgFHZhHMDUtzSBpFBP57orQVLMA=
-Received: from CY4PR1001MB2357.namprd10.prod.outlook.com
- (2603:10b6:910:42::14) by CY4PR1001MB2261.namprd10.prod.outlook.com
- (2603:10b6:910:41::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3890.28; Wed, 10 Mar
- 2021 18:28:41 +0000
-Received: from CY4PR1001MB2357.namprd10.prod.outlook.com
- ([fe80::2419:5987:3a8f:f376]) by CY4PR1001MB2357.namprd10.prod.outlook.com
- ([fe80::2419:5987:3a8f:f376%6]) with mapi id 15.20.3890.040; Wed, 10 Mar 2021
- 18:28:41 +0000
-From: William Kucharski <william.kucharski@oracle.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH v2] include: Remove pagemap.h from blkdev.h
-Thread-Topic: [PATCH v2] include: Remove pagemap.h from blkdev.h
-Thread-Index: AQHXFR6V9lQ5KyJS8UGx0ZyPgBlEuap9jCUA
-Date: Wed, 10 Mar 2021 18:28:41 +0000
-Message-ID: <1776D861-AEC7-417E-89E2-24F1FBFEB30D@oracle.com>
-References: <20210309195747.283796-1-willy@infradead.org>
-In-Reply-To: <20210309195747.283796-1-willy@infradead.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: infradead.org; dkim=none (message not signed)
- header.d=none;infradead.org; dmarc=none action=none header.from=oracle.com;
-x-originating-ip: [2601:285:8200:4089:486a:88fe:ca01:b371]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7463f76e-7da1-42e6-a622-08d8e3f2548b
-x-ms-traffictypediagnostic: CY4PR1001MB2261:
-x-microsoft-antispam-prvs: 
- <CY4PR1001MB2261D5B7D6231964ED7A17FE81919@CY4PR1001MB2261.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:962;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- u//niyytfvdcSc8ncQ+tJTG20dYwISm/Xe5A4hclXHHMCVZS4mX9ArMsTVqsUiAKxL06DXis6I1SDB/Ao7g473oLP12P12LF8OXtNCij22rTq3GzimFdfbmiJJ1DcpkkYW4skqPioNaVJTvZ6OJ0FGR7akMd4oATI/3l/xHfHiDvSGTZjDQGpGNObCJxsQeqnlmnSdLDGjRnRjQ5FR2sphnKfhO/tZZfJNazZZNzNqhs6DUXNrs6FZLHbeXzeQKQj2mDBmieptp01s0Go52fLYktWItApqkw4c8350yNtyHE0Nhx3sxf0RVa11YMvHpt3VgPk/V0i8Gdp32ZUzQtPrDGnzv4CqmmFo6zQVgkGu/G8wH/AQeE8grvS0L8SBL1GR2flwzyqxsONUmCrf+oDmvTvl+kRz7v7q7iRx40Mh4olNSNaet2HJIEtogtvYD4EJXy54x107LtvgE6fa9iCUHkmz+xuUBBKyiDIQnK+W9fG9cdLP0pwtMdY/qi8FMwo3aHEZWzGSaOkmVxlZzsHzLh0upsZa4VLsBjU6wyRSeJf1bwHNfdeoH5IPRsHXJ+ehYe/KFXvxzcdte0U2EjFw==
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR1001MB2357.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(396003)(366004)(346002)(39860400002)(136003)(83380400001)(66476007)(6916009)(5660300002)(71200400001)(8676002)(6512007)(66946007)(2906002)(76116006)(33656002)(6506007)(53546011)(316002)(86362001)(36756003)(64756008)(4326008)(66446008)(66556008)(8936002)(6486002)(2616005)(54906003)(44832011)(478600001)(186003)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 
- =?us-ascii?Q?w77EzarjfwLzfxAmHiZ2nFXALp8SK1k7Hn+Y0yRNU+vzFXrihFzXgi8NSrPu?=
- =?us-ascii?Q?pfflOoBxzqImngu1d1RTCUXWVcG93mTANMOwi5WRPae9YT+FQ3p6Ibqd4T7f?=
- =?us-ascii?Q?O883s8Z2eXGobG3Ce4IebqiqJz7G2JF2DZtwtcrOCMdXxuzJ3DHzp9uBNPxW?=
- =?us-ascii?Q?NcnCUtqY4JcXWbyX13xzz6aqd0zbmAVM3bJOs9qDpH4nm9IUmUteCuMt8qMG?=
- =?us-ascii?Q?whk6U40r0JiLmS9QcjvPOp8eVST7cVJHAA+0etpM5O0PnS2xUbgoObOh8UuF?=
- =?us-ascii?Q?yTe/tYgBt+F+aZMLGIS2uhwLeNMow8JcqDHS8/h73K/5gQCKc3I3Puf3fLHh?=
- =?us-ascii?Q?T09Fjy5nZmqzt6rERXYihdTSJtICdZu3K63vdUAnkcmNLBKFmKe6j8/u1jql?=
- =?us-ascii?Q?piLVeuyAyuOdXMCQO7iAll/KZ0cZRL6exyb6kyYeDK+tcfMzA4r5HGoru8pv?=
- =?us-ascii?Q?bDP39VvpxrDdMHDQB7KNVuAFskC3GLV4cvNKEe9f0Ty21gtsh2UtqYoLngBH?=
- =?us-ascii?Q?8TSiZKdSKK6YeOkbjd9XXAvqpoM8loBKjr1fbhMsJqrkwBtN1NgRv44Aezux?=
- =?us-ascii?Q?u0a7p4fL3W6whhxpbZdxn6bwkb2i6ViRxB+edC0SaGhsG9IwSod4E6RT8Sbf?=
- =?us-ascii?Q?zXSE5YdEljSABrAei7PU5iK4WYj2449IcglE1tCwb1fMs6TCxZWIrvd3TsSy?=
- =?us-ascii?Q?xZeUYuBKg+XM/UJuV+SnH4hpgUs77laq3J94IhANGi4NG47b4wjMNIx9ROoN?=
- =?us-ascii?Q?XbBg/CpMakzLt+N4aBD4/aYUl1GBiO5uBjMGj17l5H1YKAe5wnC8QJTCSrYU?=
- =?us-ascii?Q?/ngApf64UHmFHd6odp5z2lhRKVn/SCSGyvaFsYBJzTrqEeVPc7zdqsexW11E?=
- =?us-ascii?Q?9K3dqxuPbDAFTPvYMtOvpMbhwLpEs33chYd5bE18suQpGhjhEHcJQQfV6CLC?=
- =?us-ascii?Q?4dKJs1kb7Jjlw6mwX1iqxXJ6UjDXVqv74nVafqodUoQJIOd3tYb453JK4jmG?=
- =?us-ascii?Q?tRTlNcADKpyG/Cb1GqbwwotqDK9S3raLEtWtjxHoHdy2xmvvUQ9sFDfWN4NQ?=
- =?us-ascii?Q?tNSni395A/Uut6hXpkToX8kppNbSwPR4Sql+9KfxY4+rDDq3HRcOHoBlheuA?=
- =?us-ascii?Q?kJBgmnl8jCKzQu//JxyKAEuWxY7OErOk8sxn7T4v2ZI4jX7kzhFvnX+TQXTx?=
- =?us-ascii?Q?kut2rFRbsqU5n/zgkCcn08OJRoWqlRNxZkckmKCJFFWZbf4N2cQAGQI3ndYf?=
- =?us-ascii?Q?tulmiKmZJq/TM8JnY3atWDG9SiuhJX6ChiPjbc6anhl47Zw1UPLoxbMVNmMH?=
- =?us-ascii?Q?eNk/wIN+Wx5YsVIEVWL3/Rl5F2jDjQcSnv4GoHSewZ+MNs6DElNmi/lOnNdW?=
- =?us-ascii?Q?uNK4x04DDVEZERgHjrs7ysITGrwBGzyQMNk9ARAoGZiksTEQaw=3D=3D?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <29F834C9EC58704AAD9B730F40D60E24@namprd10.prod.outlook.com>
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Vuj/D7o1+/AE9t3wM/vQsuPf0MOJqhA/d5cfPutvQfU=;
+        b=o2uQ9nbLBO9R5FOm8KE2FiXDRix0GjxEoucgtHfPLR/wQNZblGYKZeUbZaB3a3gVls
+         j5myReVOVSv8e+2as+yWYoc126H5rXjnDz1S/XKEZZqyjP5CjOuJtJdCXwtvh1gGajGB
+         AttnNRUhzEiJr3aYXULMyxlHaZvK4tQR2BqqciENC5bZuYnHlM/sDf07rKUZp/9ev5Cl
+         YaTNrQmG9WizlGQCUI2TAeuVaoqvCRRHdWDslVQgyQLqCWkKN4ZG/iNSyYEhHzvH3WFj
+         K4JoRLLeA8DgfDKV+deTn3ktf5nSBZdM2H3ftPJJGmo54eTR0tvDEMLQuNJeSgoQMGGN
+         ngGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Vuj/D7o1+/AE9t3wM/vQsuPf0MOJqhA/d5cfPutvQfU=;
+        b=CgjZ5rl7kOamZg/dbkR//4ugZF7i5uWg1wihRu7yOEiEcRBz2YgFea2XyNYRkoxn3u
+         hFsPIQ+ew1oMqFnIkS0vjydyEq5kpfzKhkySef2z6Ms7g6zMUMZdeVta3oXV0A1ZT/DT
+         aRuoeCzRsxhtK0MDB2GrEdjbv2dfluuL6Uu4h9oxRYn1fZbnujkT67FyfsgW1Nys33ss
+         JacYS3HCjmqRtF7Z8/Ug562tDpZ4SFnE7tXrEF4r9GKdhuE6TyRWgVAMxtlngEMSU6Dz
+         t5gxoEZ3y6gfqwqX4p0sMMj8l0QFjn+YyQvz+5bcpMnlhPegaIgvDZrdRf9CMz7YPNrw
+         vUPQ==
+X-Gm-Message-State: AOAM532j8nGRdXM76+S8fXc6Z8RmOtJv7IIj6Ijxieqw0q+toUIrQWJG
+	ycTjFMnWfewRxLx7OxaiQFozIETlWJGRXQN46TG2pA==
+X-Google-Smtp-Source: ABdhPJyAUtjsQZeO+IyfOJ0D71CMa4kn2W9c7sy/JaW+YXPD6tUcwvd9d32TJu/3+N1X9rS+ufsB+LKVJeI/Uw+LbQg=
+X-Received: by 2002:aa7:c3cd:: with SMTP id l13mr5720329edr.52.1615419014504;
+ Wed, 10 Mar 2021 15:30:14 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR1001MB2357.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7463f76e-7da1-42e6-a622-08d8e3f2548b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2021 18:28:41.1145
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PD4o1tpgZ72IJml4F2fFLLyyQT3hwj8n9v9sOCMLET3kVnNgdIo1aNCoqUMw3p7A2HE6sOTLKrf+dw6dNxhqFRGDsETiNl+MKRD/Y2NP370=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1001MB2261
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9919 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 malwarescore=0
- spamscore=0 mlxlogscore=999 phishscore=0 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103100088
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9919 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 mlxlogscore=999
- adultscore=0 impostorscore=0 suspectscore=0 clxscore=1011 malwarescore=0
- priorityscore=1501 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2103100088
-Message-ID-Hash: KQR3VZHM4MQOW5LIKUCC42GHV56GDVI5
-X-Message-ID-Hash: KQR3VZHM4MQOW5LIKUCC42GHV56GDVI5
-X-MailFrom: william.kucharski@oracle.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-bcache@vger.kernel.org" <linux-bcache@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>
+References: <161534060720.528671.2341213328968989192.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20210310065425.GA1794@lst.de>
+In-Reply-To: <20210310065425.GA1794@lst.de>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 10 Mar 2021 15:30:02 -0800
+Message-ID: <CAPcyv4i4SUEd_zg7HyuqpE3_KUQU=4Pci40CKX7aM6NNsy9wew@mail.gmail.com>
+Subject: Re: [PATCH v2] libnvdimm: Notify disk drivers to revalidate region read-only
+To: Christoph Hellwig <hch@lst.de>
+Message-ID-Hash: KMS35UHJIRZ7F3KNAEFWEH76UOHG2BTS
+X-Message-ID-Hash: KMS35UHJIRZ7F3KNAEFWEH76UOHG2BTS
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Ming Lei <ming.lei@redhat.com>, Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>, kernel test robot <lkp@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-block@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KQR3VZHM4MQOW5LIKUCC42GHV56GDVI5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KMS35UHJIRZ7F3KNAEFWEH76UOHG2BTS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Nice cleanup, IMHO.
+On Tue, Mar 9, 2021 at 10:54 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Looks good to me:
+>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>
+> Question on the pre-existing code: given that nvdimm_check_and_set_ro is
+> the only caller of set_disk_ro for nvdimm devices, we'll also get
+> the message when initially setting up any read-only disk.  Is that
+> intentional?
 
-Reviewed-by: William Kucharski <william.kucharski@oracle.com>
-
-> On Mar 9, 2021, at 12:57 PM, Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
-> 
-> My UEK-derived config has 1030 files depending on pagemap.h before
-> this change.  Afterwards, just 326 files need to be rebuilt when I
-> touch pagemap.h.  I think blkdev.h is probably included too widely,
-> but untangling that dependency is harder and this solves my problem.
-> x86 allmodconfig builds, but there may be implicit include problems
-> on other architectures.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
-> v2: Fix CONFIG_SWAP=n implicit use of pagemap.h by swap.h.  Increases
->    the number of files from 240, but that's still a big win -- 68%
->    reduction instead of 77%.
-> 
-> block/blk-settings.c      | 1 +
-> drivers/block/brd.c       | 1 +
-> drivers/block/loop.c      | 1 +
-> drivers/md/bcache/super.c | 1 +
-> drivers/nvdimm/btt.c      | 1 +
-> drivers/nvdimm/pmem.c     | 1 +
-> drivers/scsi/scsicam.c    | 1 +
-> include/linux/blkdev.h    | 1 -
-> include/linux/swap.h      | 1 +
-> 9 files changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/block/blk-settings.c b/block/blk-settings.c
-> index b4aa2f37fab6..976085a44fb8 100644
-> --- a/block/blk-settings.c
-> +++ b/block/blk-settings.c
-> @@ -7,6 +7,7 @@
-> #include <linux/init.h>
-> #include <linux/bio.h>
-> #include <linux/blkdev.h>
-> +#include <linux/pagemap.h>
-> #include <linux/memblock.h>	/* for max_pfn/max_low_pfn */
-> #include <linux/gcd.h>
-> #include <linux/lcm.h>
-> diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-> index 18bf99906662..2a5a1933826b 100644
-> --- a/drivers/block/brd.c
-> +++ b/drivers/block/brd.c
-> @@ -18,6 +18,7 @@
-> #include <linux/bio.h>
-> #include <linux/highmem.h>
-> #include <linux/mutex.h>
-> +#include <linux/pagemap.h>
-> #include <linux/radix-tree.h>
-> #include <linux/fs.h>
-> #include <linux/slab.h>
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index a370cde3ddd4..d58d68f3c7cd 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -53,6 +53,7 @@
-> #include <linux/moduleparam.h>
-> #include <linux/sched.h>
-> #include <linux/fs.h>
-> +#include <linux/pagemap.h>
-> #include <linux/file.h>
-> #include <linux/stat.h>
-> #include <linux/errno.h>
-> diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-> index 71691f32959b..f154c89d1326 100644
-> --- a/drivers/md/bcache/super.c
-> +++ b/drivers/md/bcache/super.c
-> @@ -16,6 +16,7 @@
-> #include "features.h"
-> 
-> #include <linux/blkdev.h>
-> +#include <linux/pagemap.h>
-> #include <linux/debugfs.h>
-> #include <linux/genhd.h>
-> #include <linux/idr.h>
-> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-> index 41aa1f01fc07..18a267d5073f 100644
-> --- a/drivers/nvdimm/btt.c
-> +++ b/drivers/nvdimm/btt.c
-> @@ -6,6 +6,7 @@
-> #include <linux/highmem.h>
-> #include <linux/debugfs.h>
-> #include <linux/blkdev.h>
-> +#include <linux/pagemap.h>
-> #include <linux/module.h>
-> #include <linux/device.h>
-> #include <linux/mutex.h>
-> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-> index b8a85bfb2e95..16760b237229 100644
-> --- a/drivers/nvdimm/pmem.c
-> +++ b/drivers/nvdimm/pmem.c
-> @@ -8,6 +8,7 @@
->  */
-> 
-> #include <linux/blkdev.h>
-> +#include <linux/pagemap.h>
-> #include <linux/hdreg.h>
-> #include <linux/init.h>
-> #include <linux/platform_device.h>
-> diff --git a/drivers/scsi/scsicam.c b/drivers/scsi/scsicam.c
-> index f1553a453616..0ffdb8f2995f 100644
-> --- a/drivers/scsi/scsicam.c
-> +++ b/drivers/scsi/scsicam.c
-> @@ -17,6 +17,7 @@
-> #include <linux/genhd.h>
-> #include <linux/kernel.h>
-> #include <linux/blkdev.h>
-> +#include <linux/pagemap.h>
-> #include <linux/msdos_partition.h>
-> #include <asm/unaligned.h>
-> 
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index c032cfe133c7..1e2a95599390 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -11,7 +11,6 @@
-> #include <linux/minmax.h>
-> #include <linux/timer.h>
-> #include <linux/workqueue.h>
-> -#include <linux/pagemap.h>
-> #include <linux/backing-dev-defs.h>
-> #include <linux/wait.h>
-> #include <linux/mempool.h>
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 4cc6ec3bf0ab..ae194bb7ddb4 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -10,6 +10,7 @@
-> #include <linux/sched.h>
-> #include <linux/node.h>
-> #include <linux/fs.h>
-> +#include <linux/pagemap.h>
-> #include <linux/atomic.h>
-> #include <linux/page-flags.h>
-> #include <asm/page.h>
-> -- 
-> 2.30.0
-> 
-> 
+Yeah, that's intentional. There's no other notification that userspace
+would be looking for by default besides the kernel log, and the block
+device name is more meaningful than the region name, or the nvdimm
+device status for that matter.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
