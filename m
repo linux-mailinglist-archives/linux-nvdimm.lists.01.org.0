@@ -1,136 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55C83332BA
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 02:26:34 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706C43332D9
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 02:43:47 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C414D100EBBAF;
-	Tue,  9 Mar 2021 17:26:31 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=68.232.159.76; helo=esa5.fujitsucc.c3s2.iphmx.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
-Received: from esa5.fujitsucc.c3s2.iphmx.com (esa5.fujitsucc.c3s2.iphmx.com [68.232.159.76])
+	by ml01.01.org (Postfix) with ESMTP id B6E01100EBBAF;
+	Tue,  9 Mar 2021 17:43:45 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 13901100EC1C6
-	for <linux-nvdimm@lists.01.org>; Tue,  9 Mar 2021 17:26:26 -0800 (PST)
-IronPort-SDR: LWInBUYQ8CWi3LwMRJ3fKcoaMpKZsODLPFQNfc+zqQrsrlEB83UbqF7xjYBDhuKauad6X9ylBQ
- /JgATPkW6hH3myUjERRQjy/S56pYvfwQodzdBJwDUN9wqMaaLkaJQQgwoGHJWx/pD0qQ02RdSx
- bwx+MYA8HMKeqB0WJcM2RMe+dKC9bZyrtE9OoYaBa6iQl9LZNIsZHdHgR3paR17KjQTkXUoAKD
- KucQ2DtJXCvo8HclTuba4g0/G48XCeGv26MEeytHCbBen7lmFPG9x03cNxWzL3vSNHasTUjzM7
- +a4=
-X-IronPort-AV: E=McAfee;i="6000,8403,9917"; a="27600398"
-X-IronPort-AV: E=Sophos;i="5.81,236,1610377200";
-   d="scan'208";a="27600398"
-Received: from mail-os2jpn01lp2051.outbound.protection.outlook.com (HELO JPN01-OS2-obe.outbound.protection.outlook.com) ([104.47.92.51])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2021 10:26:22 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g3y8KvJ5D59XF6F/8DrQF8/2nYbx1drREoXTym0TGuVukB98zDJwz3YkxC+lIlO4VK7V/2l9TlUWYDJFe1QxaHfKaBxhKuw0q81uZxJNkhXyvWWu058jSMFdJt7Xjy399W/dcyPz09dl/AeyrdLJWMmCQOuIlkeqWvAO2fPa1WWrUMptUzuLf09Qc98pgtc4kRwlxRSEll7p92PuPZzAoYG58eqV5HsJbviStXxIKb6gdmUqwe0rWf01tLOvdbMGKtpj8MglFOnBkb+8oxjafAGqL/FGXnctdK4WN880Yxl7/yaaboIOeCygu34k+0L2rYrJkz0jQjYYRVCUiXUAXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zq9HdTG07oaMRe3NW2euFPhU/i2me455X/Evfi/9dq4=;
- b=XUwV9D6hm3xll4Ir9SDKUNIJTEEyv3ihtLgnFSxmSHpXoEh/23UDj8yGgelEbkKoebF7Cq2w4Q5zl/HRWfXtZ5jV523ZpugoIug9XnbznJrW1Bc/6t2/gyAfKjIis5TK0+bTJgzUFei7G9YBZq/Z6w1JMm/U769IZVhjJ9Ig2iko2AxL67ZM1XRRUycxsgeCWPCIPZ5HbLgsrjWyxebqxYaGMHCgykY8NucjTvuBXcxbhmDArRc09yigGUhvWZzyi9JKJhY8PP1rJtSTQqq8MjvIZvzq+TTsmtJz1kDtROW6Z2ui2Rt3iKNuk0kMTLNio7LFnvg8ihcXcQ6wJ2H+ag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zq9HdTG07oaMRe3NW2euFPhU/i2me455X/Evfi/9dq4=;
- b=QsJzOCg6oYUlMGNp5MZ34hfbohoKdZubgsPXVCk5lyKSpE4HFMf4rKdjIkV66tzYtEO62ZfvKGz7m19edUa8mimJk9VRzhLMTI7VTXqDMCYzIbiKNiBu+WYZ/zMfH/G9n1Yssx0IF7w83eHiTUKolLFjhsGxYDWk/Y0/ZSa30No=
-Received: from OSBPR01MB2920.jpnprd01.prod.outlook.com (2603:1096:604:18::16)
- by OS3PR01MB6194.jpnprd01.prod.outlook.com (2603:1096:604:e4::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.19; Wed, 10 Mar
- 2021 01:26:19 +0000
-Received: from OSBPR01MB2920.jpnprd01.prod.outlook.com
- ([fe80::c482:fa93:9877:5063]) by OSBPR01MB2920.jpnprd01.prod.outlook.com
- ([fe80::c482:fa93:9877:5063%3]) with mapi id 15.20.3912.027; Wed, 10 Mar 2021
- 01:26:19 +0000
-From: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>
-To: Goldwyn Rodrigues <rgoldwyn@suse.de>
-Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
-Thread-Topic: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
-Thread-Index: AQHXC9VDEDtEjiYaB0es2cWhy94QfKp76C8AgACWrXM=
-Date: Wed, 10 Mar 2021 01:26:18 +0000
-Message-ID: 
- <OSBPR01MB2920E8385E22C0DBBC5283B6F4919@OSBPR01MB2920.jpnprd01.prod.outlook.com>
-References: 
- <20210226002030.653855-1-ruansy.fnst@fujitsu.com>,<20210309161906.jjd7iw2y6hcst5c3@fiona>
-In-Reply-To: <20210309161906.jjd7iw2y6hcst5c3@fiona>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: suse.de; dkim=none (message not signed)
- header.d=none;suse.de; dmarc=none action=none header.from=fujitsu.com;
-x-originating-ip: [49.74.142.24]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ec4afb0a-1d41-47d2-05bd-08d8e36381c3
-x-ms-traffictypediagnostic: OS3PR01MB6194:
-x-microsoft-antispam-prvs: 
- <OS3PR01MB6194E918B2A3C7F67C3B78C9F4919@OS3PR01MB6194.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- P+tmAtSxz7f0Fl71slNw82CjEcprY5qY8dNbGWsRRC0HKX9cIag5gV4yagxpE+DqritmQMLgamKn53ZO5NFylPf9XejLDXyp8hnxiKh7C+XYRR/YloAyLUVresYnME+7vconc/KGcjdGRJ2kejQkPjLsOCHW8V+lJcXkhovyQw+CKDexl5IexFSFp50mz0I+wnqBhpZvfxrreuI6Lbz47cm0y/Czl7mLDBQvqfeYOUlbxhw/OA9X8zlDpNE62y41ZiaMXc0sRHsQt2dQYFCGcFWf7O5PibwkTZOJFJRz3g/yR5Z6IEsEQiXkt2exPG3WuTHJ9H6mHcHoWqXnd00fGZp/mqOB3232LJh6zFrjmdwrkWBTGvanOD2oDrAmrL6H7CWsNNCgO+DmRlsgLHSOMICSRs3Eu6+8LuPJNniKn0Lrgp3Znsn3nxCHyZw95PtQjuIwtd5bJ57KI15nPUieLJynt5+4Rtz7J1fhwGHgFKX7ycsnyder4CgbKo1XsyWOiW8ESB5WED12g4GdjSMsO+DuymLg63LK7eA3Wt59Vby5zsc6f43kMEHhe4BbEceSekXrxzeSB6+Tw0HHqvaH7FzMmA/m2Bnl2Jqbp0IetmY=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSBPR01MB2920.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(346002)(366004)(396003)(376002)(64756008)(52536014)(7416002)(186003)(8936002)(26005)(2906002)(316002)(76116006)(66446008)(66946007)(478600001)(7696005)(6506007)(66556008)(33656002)(71200400001)(85182001)(4326008)(54906003)(5660300002)(4744005)(9686003)(86362001)(66476007)(8676002)(55016002)(966005)(6916009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 
- =?gb2312?B?QmZWL2tPV3U4YldyZm1jSmRDYmZ4U0ZxVlYycjI1ekJSMEVqV0dZSnVBZ2Ja?=
- =?gb2312?B?NDRuZXV4S2dSUkNxZm9iWi9NczAxT1pYRnJ5VGRnSUI3djhNWHNOVzY3TnlC?=
- =?gb2312?B?QkVTemZjMlQxMXcydXM0T0RiN3J0cjNpODR0K20wRTB0QktWeGppQndPdkh1?=
- =?gb2312?B?WEQ3TkJFcVZHczNnMExiTlN3OEFYQUhQU3lnZDlSQlV6NWlGSFZYaFNVZWtL?=
- =?gb2312?B?WmJzT3RNNzB5OGpXYmVxcWkvTVkwcGdFOFhiUnN5c20rMFJ1TTlpN2ZMVEt3?=
- =?gb2312?B?QWlreXhYejMwR0h5N0huR0p1VDM2Q1QrT3FJdmxhSGFWSCtkYXloeWJaTUtv?=
- =?gb2312?B?S0VhVkNrUC9wZDFkQlBPV3Y0a2hiblZTdDkrelZpbG94MnpOenZFSDcybTQ5?=
- =?gb2312?B?S3JvZk9VSWxGVmdNQmllM2Z0eFdLRHZseDFXU1AwRWQ0UFlDaFN5QythV1RD?=
- =?gb2312?B?RHhzZVp4enh0aXM0Qm1MSWRRTG5ISDFiWFVrZFN0TWNiYUhaVGM5RUM3SFpz?=
- =?gb2312?B?YWFrdEdWUG9BM3ZSY1haeGNrMkFNMXVpcGdsRkIwZnhSRlJqcTJ0ZFB3VHBq?=
- =?gb2312?B?L1Z6azdIdUVIQWtlaTVCZ2xvTW85TUNCaGs3aURoM3JWczdrTVVFNVhpQm1W?=
- =?gb2312?B?ZnlXMTI1VnFnMDRycXNpMjFsdEo3QlA3MEF3TGFzNjZMKy9OYUkvWitrRE1L?=
- =?gb2312?B?MFE4MnFsQ21TZTVEV0NBRXV6WU14ajJiKzFmeU0ydWVaeGtSOUk3cTNKNkdC?=
- =?gb2312?B?aWJ1eXp0Y3BWeEE3UWowNWRKZFN6T3oyY0tQZXQvUHQ3K2dRSmxvQjlQUUtv?=
- =?gb2312?B?TWlsZlpDUWZHMXYyWmJiT0JERllNcE5ZaDZQd3NCQ3hOSE1XcE9Fb3JwQ2o0?=
- =?gb2312?B?UHl3cTBHQXdhRlBJdzhhMi9BS3lVTEI3RjQ5R3hTOXB3T01vVlVxZi9nTUxp?=
- =?gb2312?B?ZnJrS2lmRzRpcWJkZkhhanRUQWRqTFFTdFdGSXE1VFBCbjVnYmhaRVdlMlRP?=
- =?gb2312?B?Q0lGdVZnM1dYTCtPTnRnNjhwbVNOUk1mZElVNDJOa05lRmpVZFUwUjdpS2lT?=
- =?gb2312?B?RTNqcGV1YUlYaTc1RElmUG1iaG5wR3pNL3FyV21pa000ZGJrOGRIZE1zRjVr?=
- =?gb2312?B?MGtDdDJaNWVHTk9RcktWUWdnSVVPYlA4VlBrTEtIK2NadXRkWk5JT1krd3pI?=
- =?gb2312?B?alhpR1ZKQXhEejh5akJPekhDKzVJa0N5em16RnZRM05WUGgvdUcxWTN6dkJs?=
- =?gb2312?B?ZXlVR2ViT042Y2lteEUraDFIOWNPS0tRTzFPS29ZcjBScWVSNVNsMWgzbnBz?=
- =?gb2312?B?Y09TRm5QVnVMVWJhdVpjQUgybWJoN1RCd293ai8zUkZjVUlOS2VCblZmWHgv?=
- =?gb2312?B?N2poQk5VKzlaY0F5RTg5ZkhQbmVncjU3aGpTNkpWcG9JOEptN01UcUx0TGFY?=
- =?gb2312?B?bHJTVFBucmZQT2d1eXV2WUVhYS95eVhyekM5UUUwU1UyWktUa3QzR2FWaERo?=
- =?gb2312?B?aUUwakFKMkw4cVlQS2N3ZDI3WlRQL1AxU3V4ZnlXMGxxalA4V1dFOUJPT3Nn?=
- =?gb2312?B?dDRWRGJTQm84eU1ySmV2REtiMEh3Z3pWZVpWNmF0K0NEdkdGdXJJYzFXSHJs?=
- =?gb2312?B?NzNMZ1hDM09PL2dEMlpyOCsxTTM3T3FaY0IvdkcveVdibGdkdFlkVkxMdWRE?=
- =?gb2312?B?VTJlTU5zSTRMd3FiZmVXd2pNdzJyQzJzRzdUZmM2cytBZW9wV0NianZNYVY3?=
- =?gb2312?Q?M5MNbdBVpxYhQIXD6w=3D?=
-x-ms-exchange-transport-forked: True
+	by ml01.01.org (Postfix) with ESMTPS id 08845100ED480
+	for <linux-nvdimm@lists.01.org>; Tue,  9 Mar 2021 17:43:40 -0800 (PST)
+IronPort-SDR: TtoOY+0Afg/Iioi5ONARMg/x+fGC2/1GhkgmRq5VZDU+/fejclzwqL4PQUJtZP/oQQWQadAVD5
+ 9E0TMvA7qcug==
+X-IronPort-AV: E=McAfee;i="6000,8403,9917"; a="208157544"
+X-IronPort-AV: E=Sophos;i="5.81,236,1610438400";
+   d="scan'208";a="208157544"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2021 17:43:38 -0800
+IronPort-SDR: Y7+W9Tom12E92Bku2I5dnJLtcYucyCcPGg1e9R0eUmX++VmOvYAoe74ImkoAF04m6TxXJHyD+q
+ JzwsFQh5Lx0Q==
+X-IronPort-AV: E=Sophos;i="5.81,236,1610438400";
+   d="scan'208";a="409973299"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2021 17:43:38 -0800
+Subject: [PATCH v2] libnvdimm: Notify disk drivers to revalidate region
+ read-only
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Tue, 09 Mar 2021 17:43:38 -0800
+Message-ID: <161534060720.528671.2341213328968989192.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OSBPR01MB2920.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec4afb0a-1d41-47d2-05bd-08d8e36381c3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2021 01:26:18.9985
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aG/EIe7Du/iRN3/MVdpH16kQ5SyJ7lYd5mhwqCkHii8TlOgzclAn9Swau5XbWkWtnY0EwdNkOmDusOq+D6klkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB6194
-Message-ID-Hash: JIZUZYEAM4MM4UQDGFQLIAYHZSJSD2TG
-X-Message-ID-Hash: JIZUZYEAM4MM4UQDGFQLIAYHZSJSD2TG
-X-MailFrom: ruansy.fnst@fujitsu.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "david@fromorbit.com" <david@fromorbit.com>, "hch@lst.de" <hch@lst.de>
+Message-ID-Hash: ROWXVEJWLBAFHVY2I2C7PIIWSZVLDYKG
+X-Message-ID-Hash: ROWXVEJWLBAFHVY2I2C7PIIWSZVLDYKG
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@lst.de>, Ming Lei <ming.lei@redhat.com>, Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>, kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6AEMEVIHIFFHHSMSSYGB4HK5TTLYDPY4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ROWXVEJWLBAFHVY2I2C7PIIWSZVLDYKG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -139,38 +51,176 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
->
-> Hi Shiang,
-> 
-> Thanks for picking up this work.
-> 
-> On  8:20 26/02, Shiyang Ruan wrote:
-> > This patchset is attempt to add CoW support for fsdax, and take XFS,
-> > which has both reflink and fsdax feature, as an example.
-> 
-> How does this work for read sequence for two different files
-> mapped to the same extent, both residing in DAX?
-> 
-> If two different files read the same shared extent, which file
-> would resultant page->mapping->host point to?
-> 
-> This problem is listed as a TODO over dax_associate_entry() and is
-> still not fixed.
+Previous kernels allowed the BLKROSET to override the disk's read-only
+status. With that situation fixed the pmem driver needs to rely on
+notification events to reevaluate the disk read-only status after the
+host region has been marked read-write.
 
-I have posted another patchset which I called "fix dax-rmap"[1]. It is a
-try to solve this problem, but still in disscussion for now.
+Recall that when libnvdimm determines that the persistent memory has
+lost persistence (for example lack of energy to flush from DRAM to FLASH
+on an NVDIMM-N device) it marks the region read-only, but that state can
+be overridden by the user via:
 
-[1] https://lkml.org/lkml/2021/2/8/347
+   echo 0 > /sys/bus/nd/devices/regionX/read_only
 
---
-Thanks,
-Ruan Shiyang.
+...to date there is no notification that the region has restored
+persistence, so the user override is the only recovery.
 
-> 
-> <snip>
-> 
-> --
-> Goldwyn
+Fixes: 52f019d43c22 ("block: add a hard-readonly flag to struct gendisk")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Jens Axboe <axboe@kernel.dk>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+Changes since v1 [1]:
+- Move from the sinking ship of revalidate_disk() to the local hotness
+  of nd_pmem_notify() (hch).
+
+[1]: http://lore.kernel.org/r/161527286194.446794.5215036039655765042.stgit@dwillia2-desk3.amr.corp.intel.com
+
+ drivers/nvdimm/bus.c         |   14 ++++++--------
+ drivers/nvdimm/pmem.c        |   37 +++++++++++++++++++++++++++++++++----
+ drivers/nvdimm/region_devs.c |    7 +++++++
+ include/linux/nd.h           |    1 +
+ 4 files changed, 47 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 48f0985ca8a0..3a777d0073b7 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -631,16 +631,14 @@ void nvdimm_check_and_set_ro(struct gendisk *disk)
+ 	struct nd_region *nd_region = to_nd_region(dev->parent);
+ 	int disk_ro = get_disk_ro(disk);
+ 
+-	/*
+-	 * Upgrade to read-only if the region is read-only preserve as
+-	 * read-only if the disk is already read-only.
+-	 */
+-	if (disk_ro || nd_region->ro == disk_ro)
++	/* catch the disk up with the region ro state */
++	if (disk_ro == nd_region->ro)
+ 		return;
+ 
+-	dev_info(dev, "%s read-only, marking %s read-only\n",
+-			dev_name(&nd_region->dev), disk->disk_name);
+-	set_disk_ro(disk, 1);
++	dev_info(dev, "%s read-%s, marking %s read-%s\n",
++		 dev_name(&nd_region->dev), nd_region->ro ? "only" : "write",
++		 disk->disk_name, nd_region->ro ? "only" : "write");
++	set_disk_ro(disk, nd_region->ro);
+ }
+ EXPORT_SYMBOL(nvdimm_check_and_set_ro);
+ 
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index b8a85bfb2e95..7daac795db39 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -26,6 +26,7 @@
+ #include <linux/mm.h>
+ #include <asm/cacheflush.h>
+ #include "pmem.h"
++#include "btt.h"
+ #include "pfn.h"
+ #include "nd.h"
+ 
+@@ -585,7 +586,7 @@ static void nd_pmem_shutdown(struct device *dev)
+ 	nvdimm_flush(to_nd_region(dev->parent), NULL);
+ }
+ 
+-static void nd_pmem_notify(struct device *dev, enum nvdimm_event event)
++static void pmem_revalidate_poison(struct device *dev)
+ {
+ 	struct nd_region *nd_region;
+ 	resource_size_t offset = 0, end_trunc = 0;
+@@ -595,9 +596,6 @@ static void nd_pmem_notify(struct device *dev, enum nvdimm_event event)
+ 	struct range range;
+ 	struct kernfs_node *bb_state;
+ 
+-	if (event != NVDIMM_REVALIDATE_POISON)
+-		return;
+-
+ 	if (is_nd_btt(dev)) {
+ 		struct nd_btt *nd_btt = to_nd_btt(dev);
+ 
+@@ -635,6 +633,37 @@ static void nd_pmem_notify(struct device *dev, enum nvdimm_event event)
+ 		sysfs_notify_dirent(bb_state);
+ }
+ 
++static void pmem_revalidate_region(struct device *dev)
++{
++	struct pmem_device *pmem;
++
++	if (is_nd_btt(dev)) {
++		struct nd_btt *nd_btt = to_nd_btt(dev);
++		struct btt *btt = nd_btt->btt;
++
++		nvdimm_check_and_set_ro(btt->btt_disk);
++		return;
++	}
++
++	pmem = dev_get_drvdata(dev);
++	nvdimm_check_and_set_ro(pmem->disk);
++}
++
++static void nd_pmem_notify(struct device *dev, enum nvdimm_event event)
++{
++	switch (event) {
++	case NVDIMM_REVALIDATE_POISON:
++		pmem_revalidate_poison(dev);
++		break;
++	case NVDIMM_REVALIDATE_REGION:
++		pmem_revalidate_region(dev);
++		break;
++	default:
++		dev_WARN_ONCE(dev, 1, "notify: unknown event: %d\n", event);
++		break;
++	}
++}
++
+ MODULE_ALIAS("pmem");
+ MODULE_ALIAS_ND_DEVICE(ND_DEVICE_NAMESPACE_IO);
+ MODULE_ALIAS_ND_DEVICE(ND_DEVICE_NAMESPACE_PMEM);
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index ef23119db574..51870eb51da6 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -518,6 +518,12 @@ static ssize_t read_only_show(struct device *dev,
+ 	return sprintf(buf, "%d\n", nd_region->ro);
+ }
+ 
++static int revalidate_read_only(struct device *dev, void *data)
++{
++	nd_device_notify(dev, NVDIMM_REVALIDATE_REGION);
++	return 0;
++}
++
+ static ssize_t read_only_store(struct device *dev,
+ 		struct device_attribute *attr, const char *buf, size_t len)
+ {
+@@ -529,6 +535,7 @@ static ssize_t read_only_store(struct device *dev,
+ 		return rc;
+ 
+ 	nd_region->ro = ro;
++	device_for_each_child(dev, NULL, revalidate_read_only);
+ 	return len;
+ }
+ static DEVICE_ATTR_RW(read_only);
+diff --git a/include/linux/nd.h b/include/linux/nd.h
+index cec526c8043d..ee9ad76afbba 100644
+--- a/include/linux/nd.h
++++ b/include/linux/nd.h
+@@ -11,6 +11,7 @@
+ 
+ enum nvdimm_event {
+ 	NVDIMM_REVALIDATE_POISON,
++	NVDIMM_REVALIDATE_REGION,
+ };
+ 
+ enum nvdimm_claim_class {
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
