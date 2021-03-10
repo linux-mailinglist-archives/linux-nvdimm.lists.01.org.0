@@ -2,94 +2,90 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7ACE333E8C
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 14:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE46333FB2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Mar 2021 14:55:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B1894100EB334;
-	Wed, 10 Mar 2021 05:36:46 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=ngompa13@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7F101100EB338;
+	Wed, 10 Mar 2021 05:55:47 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4E45C100EB331
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 05:36:44 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id x19so17895506ybe.0
-        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 05:36:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=2aYptJ+Gov2C+oARQmlRLopxW2URRuwXw1AKwLGZv1E=;
-        b=lpoFJtg+RfBaF3k+0slfbJr1UD9yvARkoMbBl9MWr5rmcJvOHNz8P65bPDF0DzSKLZ
-         A3QopQpfSEcP9hG6NFxwAymzBtPvh9QtuREgkj9DQjN9L8S9GwxojaVH5XTEDnVF4bQA
-         sMnKkKxuoVoJRr9q12QkvPO1QPeOriCBtg4BBD7uVIji+3DiHwzqJJj7m+b17VLR6Y0I
-         q9ykpG9dwvTB05YeMwCb59uPHELbo+jaZKbPrWda81m5JAPQL+ZZ1OluKZ7IDbefl91g
-         9ceIqeicNGysV//j//GKZJRSGU2l1tIS6W2s+tKKgHsfQeKrQgjbRQJws2xtrkEhX9Kt
-         ZXxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2aYptJ+Gov2C+oARQmlRLopxW2URRuwXw1AKwLGZv1E=;
-        b=rLaPO10Z0ueGCYONPssJIr0SwAKOc36VyDShXk3Wy97JcqkBQ2+4M1Pw3aS3BRWvGw
-         VPrbovzw1P4YwrpGoTRdmWM2m9q1zwbgDBtCTkKqyABeeFKlAo3xxYT6SLPputLYNp0q
-         Gge2LfIPyZBrCMyN/5aqtFSvxXA7zOkMMQFrCbD57x84ldhvrA65S116GSLWC7P1OPw5
-         75DRKxLYZmpEPkvTE/SaqEz8yr41BUpHRlZs4naW8zoE5RMjlF9VPgzPIe2Qdm55ISl0
-         peVhX5/vNr1B4VDEThcg5ZRSdlQAjdB2P/wG8oh/awrbxV0ZoZ3lDWtLSUiPaOaQb8CI
-         XWYg==
-X-Gm-Message-State: AOAM531LZH1Vs90qg2Df4EJIz1hipSWaHEYfKg1/HsJ+CuSzlZCJjo+9
-	t3i+Ecv7AHRCZhjpJlvsa34FQsQJ6QlEr7x852w=
-X-Google-Smtp-Source: ABdhPJz1jxdINaxIIQwiE1/7TJj4kvjkB1loYv97hj60cdpiwpI1AFhO8/qRMCL4/0SP4ps/aG+kQlYilaoS6/0nAb8=
-X-Received: by 2002:a25:d8f:: with SMTP id 137mr1981743ybn.47.1615383402310;
- Wed, 10 Mar 2021 05:36:42 -0800 (PST)
-MIME-Version: 1.0
-References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
- <CAEg-Je-OLidbfzHCJvY55x+-cOfiUxX8CJ1AeN8VxXAVuVyxKQ@mail.gmail.com> <20210310130227.GN3479805@casper.infradead.org>
-In-Reply-To: <20210310130227.GN3479805@casper.infradead.org>
-From: Neal Gompa <ngompa13@gmail.com>
-Date: Wed, 10 Mar 2021 08:36:06 -0500
-Message-ID: <CAEg-Je-F6ybPPV22-hq9=cuUCA7cw2xAA7Y-97tKhYUX1+fDwg@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id D2A83100EB335
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 05:55:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ASkeCYNO3dhrSyJuXDJUBfebpEQzrlHM2DpTFAkPLVI=; b=Tt7ayNXNWXK2bTVKrYTcEgnkh+
+	f1XcrJPHapkQa44CIKSbezQvxwWp57snh9ZQwPdTMAk8AB48/hoKyAYsV3ZU4LGI3DP+I6nECBWbe
+	mY8h829FSnSMNv/PCAsrzVymOeG/qWx13tFKzswafFltkt9XHyX7vptRhmgxV+4sHHs8TT+u96GSL
+	4nlKgrcNvpOFZWyOF3okP7Uk5+XNkqMtBb7NgFccqDeLTOWWgoQL+VFa7b1Ix9secQvnL/Gs/rzb7
+	Aq26qRzbQFKc31DbCj6H7qdLZAgtko2Pd9+6RYYvXLu4N3eSeb9hz4Wf+6HZD9JmGcZZiCUZ26U0N
+	zLJxPIow==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1lJzJD-003a9C-NN; Wed, 10 Mar 2021 13:55:32 +0000
+Date: Wed, 10 Mar 2021 13:55:31 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Neal Gompa <ngompa13@gmail.com>
 Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
-To: Matthew Wilcox <willy@infradead.org>
-Message-ID-Hash: QJTJNVTJCMIDQFITQGCG2N2WZ3N4N6KT
-X-Message-ID-Hash: QJTJNVTJCMIDQFITQGCG2N2WZ3N4N6KT
-X-MailFrom: ngompa13@gmail.com
+Message-ID: <20210310135531.GP3479805@casper.infradead.org>
+References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+ <CAEg-Je-OLidbfzHCJvY55x+-cOfiUxX8CJ1AeN8VxXAVuVyxKQ@mail.gmail.com>
+ <20210310130227.GN3479805@casper.infradead.org>
+ <CAEg-Je-F6ybPPV22-hq9=cuUCA7cw2xAA7Y-97tKhYUX1+fDwg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAEg-Je-F6ybPPV22-hq9=cuUCA7cw2xAA7Y-97tKhYUX1+fDwg@mail.gmail.com>
+Message-ID-Hash: J7FMDJBCSX5RQM7BNRZUKZPA6YNWRUSG
+X-Message-ID-Hash: J7FMDJBCSX5RQM7BNRZUKZPA6YNWRUSG
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Shiyang Ruan <ruansy.fnst@fujitsu.com>, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>, darrick.wong@oracle.com, jack@suse.cz, viro@zeniv.linux.org.uk, Btrfs BTRFS <linux-btrfs@vger.kernel.org>, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QJTJNVTJCMIDQFITQGCG2N2WZ3N4N6KT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J7FMDJBCSX5RQM7BNRZUKZPA6YNWRUSG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCBNYXIgMTAsIDIwMjEgYXQgODowMiBBTSBNYXR0aGV3IFdpbGNveCA8d2lsbHlAaW5m
-cmFkZWFkLm9yZz4gd3JvdGU6DQo+DQo+IE9uIFdlZCwgTWFyIDEwLCAyMDIxIGF0IDA3OjMwOjQx
-QU0gLTA1MDAsIE5lYWwgR29tcGEgd3JvdGU6DQo+ID4gRm9yZ2l2ZSBteSBpZ25vcmFuY2UsIGJ1
-dCBpcyB0aGVyZSBhIHJlYXNvbiB3aHkgdGhpcyBpc24ndCB3aXJlZCB1cCB0bw0KPiA+IEJ0cmZz
-IGF0IHRoZSBzYW1lIHRpbWU/IEl0IHNlZW1zIHdlaXJkIHRvIG1lIHRoYXQgYWRkaW5nIGEgZmVh
-dHVyZQ0KPg0KPiBidHJmcyBkb2Vzbid0IHN1cHBvcnQgREFYLiAgb25seSBleHQyLCBleHQ0LCBY
-RlMgYW5kIEZVU0UgaGF2ZSBEQVggc3VwcG9ydC4NCj4NCj4gSWYgeW91IHRoaW5rIGFib3V0IGl0
-LCBidHJmcyBhbmQgREFYIGFyZSBkaWFtZXRyaWNhbGx5IG9wcG9zaXRlIHRoaW5ncy4NCj4gREFY
-IGlzIGFib3V0IGdpdmluZyByYXcgYWNjZXNzIHRvIHRoZSBoYXJkd2FyZS4gIGJ0cmZzIGlzIGFi
-b3V0IG9mZmVyaW5nDQo+IGV4dHJhIHZhbHVlIChSQUlELCBjaGVja3N1bXMsIC4uLiksIG5vbmUg
-b2Ygd2hpY2ggY2FuIGJlIGRvbmUgaWYgdGhlDQo+IGZpbGVzeXN0ZW0gaXNuJ3QgaW4gdGhlIHJl
-YWQvd3JpdGUgcGF0aC4NCj4NCj4gVGhhdCdzIHdoeSB0aGVyZSdzIG5vIERBWCBzdXBwb3J0IGlu
-IGJ0cmZzLiAgSWYgeW91IHdhbnQgREFYLCB5b3UgaGF2ZQ0KPiB0byBnaXZlIHVwIGFsbCB0aGUg
-ZmVhdHVyZXMgeW91IGxpa2UgaW4gYnRyZnMuICBTbyB5b3UgbWF5IGFzIHdlbGwgdXNlDQo+IGEg
-ZGlmZmVyZW50IGZpbGVzeXN0ZW0uDQoNClNvIGRvZXMgdGhhdCBtZWFuIHRoYXQgREFYIGlzIGlu
-Y29tcGF0aWJsZSB3aXRoIHRob3NlIGZpbGVzeXN0ZW1zIHdoZW4NCmxheWVyZWQgb24gRE0gKGUu
-Zy4gdGhyb3VnaCBMVk0pPw0KDQpBbHNvLCBiYXNlZCBvbiB3aGF0IHlvdSdyZSBzYXlpbmcsIHRo
-YXQgbWVhbnMgdGhhdCBEQVgnZCByZXNvdXJjZXMNCndvdWxkIG5vdCBiZSBhYmxlIHRvIHVzZSBy
-ZWZsaW5rcyBvbiBYRlMsIHJpZ2h0PyBUaGF0J2QgcHV0IGl0IGluDQpzaW1pbGFyIHRlcnJpdG9y
-eSBhcyBzd2FwIGZpbGVzIG9uIEJ0cmZzLCBJIHdvdWxkIHRoaW5rLg0KDQoNCg0KLS0NCuecn+Wu
-n+OBr+OBhOOBpOOCguS4gOOBpO+8gS8gQWx3YXlzLCB0aGVyZSdzIG9ubHkgb25lIHRydXRoIQpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRp
-bW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3Jp
-YmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Wed, Mar 10, 2021 at 08:36:06AM -0500, Neal Gompa wrote:
+> On Wed, Mar 10, 2021 at 8:02 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Wed, Mar 10, 2021 at 07:30:41AM -0500, Neal Gompa wrote:
+> > > Forgive my ignorance, but is there a reason why this isn't wired up to
+> > > Btrfs at the same time? It seems weird to me that adding a feature
+> >
+> > btrfs doesn't support DAX.  only ext2, ext4, XFS and FUSE have DAX support.
+> >
+> > If you think about it, btrfs and DAX are diametrically opposite things.
+> > DAX is about giving raw access to the hardware.  btrfs is about offering
+> > extra value (RAID, checksums, ...), none of which can be done if the
+> > filesystem isn't in the read/write path.
+> >
+> > That's why there's no DAX support in btrfs.  If you want DAX, you have
+> > to give up all the features you like in btrfs.  So you may as well use
+> > a different filesystem.
+> 
+> So does that mean that DAX is incompatible with those filesystems when
+> layered on DM (e.g. through LVM)?
+
+Yes.  It might be possible to work through RAID-0 or read-only through
+RAID-1, but I'm not sure anybody's bothered to do that work.
+
+> Also, based on what you're saying, that means that DAX'd resources
+> would not be able to use reflinks on XFS, right? That'd put it in
+> similar territory as swap files on Btrfs, I would think.
+
+You can use DAX with reflinks because the CPU can do read-only mmaps.
+On a write fault, we break the reflink, copy the data and put in a
+writable PTE.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
