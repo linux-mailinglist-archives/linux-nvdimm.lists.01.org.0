@@ -2,64 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DF0334C89
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 00:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD26336945
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 01:53:34 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 165FC100F2249;
-	Wed, 10 Mar 2021 15:30:19 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+	by ml01.01.org (Postfix) with ESMTP id 6080E100F2249;
+	Wed, 10 Mar 2021 16:53:31 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5C06E100EB82C
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 15:30:16 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id w9so273663edt.13
-        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 15:30:15 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id C3C70100EB85D
+	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 16:53:28 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id bf3so251655edb.6
+        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 16:53:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Vuj/D7o1+/AE9t3wM/vQsuPf0MOJqhA/d5cfPutvQfU=;
-        b=o2uQ9nbLBO9R5FOm8KE2FiXDRix0GjxEoucgtHfPLR/wQNZblGYKZeUbZaB3a3gVls
-         j5myReVOVSv8e+2as+yWYoc126H5rXjnDz1S/XKEZZqyjP5CjOuJtJdCXwtvh1gGajGB
-         AttnNRUhzEiJr3aYXULMyxlHaZvK4tQR2BqqciENC5bZuYnHlM/sDf07rKUZp/9ev5Cl
-         YaTNrQmG9WizlGQCUI2TAeuVaoqvCRRHdWDslVQgyQLqCWkKN4ZG/iNSyYEhHzvH3WFj
-         K4JoRLLeA8DgfDKV+deTn3ktf5nSBZdM2H3ftPJJGmo54eTR0tvDEMLQuNJeSgoQMGGN
-         ngGQ==
+        bh=q4/XB1NjVzkcassvGF9k8OOkOtHMefsYgpLIOhbHN44=;
+        b=VytBblI4nb9JtqHcpg5PYs38jajnTR0u0JS6jpl3x32VbN+1FmkpQKztC6QGh/owq5
+         OKZtrVWvRSAAgZSa52MpRCKaSLrn8M/wS7+lpN3thB2qy4x5ASseSLbpttO55PtkZRcg
+         Usu+VKGsxFUTs0UMAmVvtsOBETR54kARgVDHg+jieLrIMe5HoGU7jO+WFaXqB1/Shadj
+         acLiBoL+9rXMHYN4h5kBD34GepJ6XoGwLlBU74peSFTH4olLLWwe877BUouMrPF9vqxz
+         iTkHZTfI/P5BPtXD8Ih2GVWaZnwQK2AMiro/XIrqqU/ujd/Qp2vrSZYPEp61VpSaQc8f
+         2Qpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Vuj/D7o1+/AE9t3wM/vQsuPf0MOJqhA/d5cfPutvQfU=;
-        b=CgjZ5rl7kOamZg/dbkR//4ugZF7i5uWg1wihRu7yOEiEcRBz2YgFea2XyNYRkoxn3u
-         hFsPIQ+ew1oMqFnIkS0vjydyEq5kpfzKhkySef2z6Ms7g6zMUMZdeVta3oXV0A1ZT/DT
-         aRuoeCzRsxhtK0MDB2GrEdjbv2dfluuL6Uu4h9oxRYn1fZbnujkT67FyfsgW1Nys33ss
-         JacYS3HCjmqRtF7Z8/Ug562tDpZ4SFnE7tXrEF4r9GKdhuE6TyRWgVAMxtlngEMSU6Dz
-         t5gxoEZ3y6gfqwqX4p0sMMj8l0QFjn+YyQvz+5bcpMnlhPegaIgvDZrdRf9CMz7YPNrw
-         vUPQ==
-X-Gm-Message-State: AOAM532j8nGRdXM76+S8fXc6Z8RmOtJv7IIj6Ijxieqw0q+toUIrQWJG
-	ycTjFMnWfewRxLx7OxaiQFozIETlWJGRXQN46TG2pA==
-X-Google-Smtp-Source: ABdhPJyAUtjsQZeO+IyfOJ0D71CMa4kn2W9c7sy/JaW+YXPD6tUcwvd9d32TJu/3+N1X9rS+ufsB+LKVJeI/Uw+LbQg=
-X-Received: by 2002:aa7:c3cd:: with SMTP id l13mr5720329edr.52.1615419014504;
- Wed, 10 Mar 2021 15:30:14 -0800 (PST)
+        bh=q4/XB1NjVzkcassvGF9k8OOkOtHMefsYgpLIOhbHN44=;
+        b=dquFkYJVwdoA4gKc9rOY9FhdXzu7VXiWIIPb7iwT+j8tpAJSvPAWsMyc9R7iQHL+aZ
+         DMnwjEY/R7o7b57SkgEwJX7iQNmJGtPCQIZREgZ/dPKyqNxAe4ekRPxbejbjb1qR99H8
+         4L+r9f6/LA8EGicDbK176pztFcXc8dSZ+cFbjNQMGHN3o87XDZOjnvUM4ojJIj9H0p8A
+         nGQxw7bSPQUgyy0ORGbFPI08qiULLO7p47xsqBTwSfrx39xxRqEp4Y5VitrMO//QWIuT
+         qXr/h6Ru8jwB5MgbVVfvNFFvMoG4Hh9sIluzb+Lrhkbhgdl5fNvaHtZKNtmgolQm2hiZ
+         byeQ==
+X-Gm-Message-State: AOAM533104vaee86SzsJ75GreSkjbP44A7FH6GcAoCo/Gfxl+7F6Pvxm
+	ThuT/gpVb0R2fgGQgHd3OwCNFjNhRUoi/1PMZHbFRg==
+X-Google-Smtp-Source: ABdhPJypQ8GemOXeRAlB5nBwa/LaXTEzwLO62LM4I6+2OuCpeLVCa5nLj+566PgoZJjKJzgw0+xwotjje7pT9PlLG2A=
+X-Received: by 2002:aa7:dd05:: with SMTP id i5mr6011841edv.300.1615424006716;
+ Wed, 10 Mar 2021 16:53:26 -0800 (PST)
 MIME-Version: 1.0
-References: <161534060720.528671.2341213328968989192.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20210310065425.GA1794@lst.de>
-In-Reply-To: <20210310065425.GA1794@lst.de>
+References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+ <CAEg-Je-OLidbfzHCJvY55x+-cOfiUxX8CJ1AeN8VxXAVuVyxKQ@mail.gmail.com>
+ <20210310130227.GN3479805@casper.infradead.org> <20210310142159.kudk7q2ogp4yqn36@fiona>
+ <20210310142643.GQ3479805@casper.infradead.org>
+In-Reply-To: <20210310142643.GQ3479805@casper.infradead.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 10 Mar 2021 15:30:02 -0800
-Message-ID: <CAPcyv4i4SUEd_zg7HyuqpE3_KUQU=4Pci40CKX7aM6NNsy9wew@mail.gmail.com>
-Subject: Re: [PATCH v2] libnvdimm: Notify disk drivers to revalidate region read-only
-To: Christoph Hellwig <hch@lst.de>
-Message-ID-Hash: KMS35UHJIRZ7F3KNAEFWEH76UOHG2BTS
-X-Message-ID-Hash: KMS35UHJIRZ7F3KNAEFWEH76UOHG2BTS
+Date: Wed, 10 Mar 2021 16:53:15 -0800
+Message-ID: <CAPcyv4i80GXjjoAD9G0AaRDWPbcTSLogJE9NokO4Eqpzt6UMkA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
+To: Matthew Wilcox <willy@infradead.org>
+Message-ID-Hash: YK2TLOL3LHAV4Z5ZKXPCMZCXFQW5NDVP
+X-Message-ID-Hash: YK2TLOL3LHAV4Z5ZKXPCMZCXFQW5NDVP
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Ming Lei <ming.lei@redhat.com>, Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>, kernel test robot <lkp@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-block@vger.kernel.org
+CC: Goldwyn Rodrigues <rgoldwyn@suse.de>, Neal Gompa <ngompa13@gmail.com>, Shiyang Ruan <ruansy.fnst@fujitsu.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-xfs <linux-xfs@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.cz>, Al Viro <viro@zeniv.linux.org.uk>, Btrfs BTRFS <linux-btrfs@vger.kernel.org>, ocfs2-devel@oss.oracle.com, david <david@fromorbit.com>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KMS35UHJIRZ7F3KNAEFWEH76UOHG2BTS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YK2TLOL3LHAV4Z5ZKXPCMZCXFQW5NDVP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,21 +70,35 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 9, 2021 at 10:54 PM Christoph Hellwig <hch@lst.de> wrote:
+On Wed, Mar 10, 2021 at 6:27 AM Matthew Wilcox <willy@infradead.org> wrote:
 >
-> Looks good to me:
+> On Wed, Mar 10, 2021 at 08:21:59AM -0600, Goldwyn Rodrigues wrote:
+> > On 13:02 10/03, Matthew Wilcox wrote:
+> > > On Wed, Mar 10, 2021 at 07:30:41AM -0500, Neal Gompa wrote:
+> > > > Forgive my ignorance, but is there a reason why this isn't wired up to
+> > > > Btrfs at the same time? It seems weird to me that adding a feature
+> > >
+> > > btrfs doesn't support DAX.  only ext2, ext4, XFS and FUSE have DAX support.
+> > >
+> > > If you think about it, btrfs and DAX are diametrically opposite things.
+> > > DAX is about giving raw access to the hardware.  btrfs is about offering
+> > > extra value (RAID, checksums, ...), none of which can be done if the
+> > > filesystem isn't in the read/write path.
+> > >
+> > > That's why there's no DAX support in btrfs.  If you want DAX, you have
+> > > to give up all the features you like in btrfs.  So you may as well use
+> > > a different filesystem.
+> >
+> > DAX on btrfs has been attempted[1]. Of course, we could not
 >
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
->
-> Question on the pre-existing code: given that nvdimm_check_and_set_ro is
-> the only caller of set_disk_ro for nvdimm devices, we'll also get
-> the message when initially setting up any read-only disk.  Is that
-> intentional?
+> But why?  A completeness fetish?  I don't understand why you decided
+> to do this work.
 
-Yeah, that's intentional. There's no other notification that userspace
-would be looking for by default besides the kernel log, and the block
-device name is more meaningful than the region name, or the nvdimm
-device status for that matter.
+Isn't DAX useful for pagecache minimization on read even if it is
+awkward for a copy-on-write fs?
+
+Seems it would be a useful case to have COW'd VM images on BTRFS that
+don't need superfluous page cache allocations.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
