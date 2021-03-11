@@ -1,203 +1,107 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCE8336D48
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 08:48:59 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24656336DCA
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 09:26:53 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 45628100F2262;
-	Wed, 10 Mar 2021 23:48:58 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+	by ml01.01.org (Postfix) with ESMTP id 7AE62100EBB7F;
+	Thu, 11 Mar 2021 00:26:51 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=ngompa13@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 696CA100F225F
-	for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 23:48:55 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id x7-20020a17090a2b07b02900c0ea793940so8655927pjc.2
-        for <linux-nvdimm@lists.01.org>; Wed, 10 Mar 2021 23:48:55 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 73E8B100ED4BA
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Mar 2021 00:26:48 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id f145so4453662ybg.11
+        for <linux-nvdimm@lists.01.org>; Thu, 11 Mar 2021 00:26:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Z/02gceZ1C0cKDMZLMP47TLUCBsj2Ofi71U1k6wsKoE=;
-        b=fxRd38LLh52gOvdvKxCvxSVrhgYAAMW0uljTpuLcMJI16zB6CW5gnuzn7oAwB5crOg
-         1yJ/kczVZUQR9NFSg6dJIYsGDCVMs1r1cXsrXkvngfHm18BYb3FhAdJB7a9Oyq3qOzhE
-         5ERswLCF0f8Pl7IlGYOI2y/k9E0x/ZOG6zDC5uvH9cflUs6Af2hhuqNh1t1m5DAKjFuj
-         NhM0lNd1R3cPpAmj+v13j6n8Erl7kny7Kz0+uvU4OEl//PH+SxnC/JGbVNHfCR63+Lyn
-         bHZyvWnRs7dYdeQK+GeH+LPUAcwFDxOTnN97OPsocuCTOfpBHZwVRLbgvDw246X6sNQB
-         vgeQ==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=dcZpA35LpDkKjUY2Q5hXt+oRBTl1Po2J4cSvuFIykJg=;
+        b=DjYTcGueHAZYsfVWcXtNSV5/l9b9KrnYrqF65jNsk2ArqmZWXRS3axR3334xSPnksJ
+         KpInpw14LRvoI0+d1KhzvcgE1CFYNdwTtPm+IPG9P2ikH4U8Y2HwEyqtWWTY4ER9D/Im
+         tKABJcbZPj/+aA08uogzlTecDmN9WzdnpKOTEHUNNs2ygRLg0SrzAX7flrL7Zs5WTL95
+         kw2WWz8GXrociRGMY0y1D/4yVsKqKXYgxPoPv+sNtc5Xm8dDTSFxycSJnXP20MK63TZ6
+         TgvHhcQztSCshrA1MwAHkYghauzH0gTLgczXbJccIkQGqcS726u4gIP0X3z9vKk7vBSX
+         mPvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Z/02gceZ1C0cKDMZLMP47TLUCBsj2Ofi71U1k6wsKoE=;
-        b=EKXZWfgsyVoFBUMFjs6zXS42DsCarErXcitwx5z0BqZOKGh1+d3x9yhxgqecBeWZTM
-         I16StwT5dahZJ/TllAXedQFiTVnx1DNeSZ7KB2eZOAQbeSLRkgGG7X7ajoDSUb4LhNde
-         Iw9f607kxcS5/K6dqsLvUVhA0DxcwteRN/IdCwUhnice1W/9Er60Fdk2Gwa8Rz0riLdu
-         6cRdcLDyBW3JodZ3R7tTQhS6RoVcgN1Z48XoJ23/1gsZGNnPTtQ73TXBbMc6zEgvsXKr
-         RwBk36ad3aLNLjjqjRVDM8cHVVq8DxSbO38I8ehKpSNJDBV9502t7d+j9WXxuFXzq7NI
-         fAOw==
-X-Gm-Message-State: AOAM531A1YSEVZqCRfmWf+6XPWpQxENw3NLbgABk+1w78QEI1RB8K7pn
-	YxNbgNKZz49v+q13wQTJ4QS1r8Mr6QYsOw==
-X-Google-Smtp-Source: ABdhPJxM4vTJpu5uJFoIZjTQL8CgZpSGMuhXxJFfpBGbiT3d8xur54Cv9th2C84q/9S/EG1yUas0HA==
-X-Received: by 2002:a17:902:8c97:b029:e2:8c58:153f with SMTP id t23-20020a1709028c97b02900e28c58153fmr6904755plo.79.1615448934494;
-        Wed, 10 Mar 2021 23:48:54 -0800 (PST)
-Received: from localhost.localdomain ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id t13sm1528580pfe.161.2021.03.10.23.48.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Mar 2021 23:48:54 -0800 (PST)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Harish Sriram <harish@linux.ibm.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Cc: Santosh Sivaraj <santosh@fossix.org>
-Subject: [ndctl PATCH v3 4/4] Use page size as alignment value
-Date: Thu, 11 Mar 2021 13:16:52 +0530
-Message-Id: <20210311074652.2783560-4-santosh@fossix.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210311074652.2783560-1-santosh@fossix.org>
-References: <20210311074652.2783560-1-santosh@fossix.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=dcZpA35LpDkKjUY2Q5hXt+oRBTl1Po2J4cSvuFIykJg=;
+        b=PxfI9yWXqa1kcrOYDCxXZgFkYaXiPzNdNQ50UYoPPnJufNjrD14zarjXcaJoa8gIt/
+         O3BBIChvYnNOo8/6vMm2aodTIlddcw2xozaSggNcobbi8UVyvzquRIXRS89a4/5s6U7i
+         yGFxGu0vj7Eo+SW9jA+XdYLVfjoo6ZUQNlivG0yaG7VusMSN+imtbLq1/uGX36ZcD+7Y
+         L6cJ3NZqSUZxzs1eQNFalNV1RtQ3BKkT4jTmwvTC6xxsfMvpxmE2O/RYQ7jm7rWjxX+X
+         T/32q9Iw7LHkbMjLoJbdHuMNj0b3gR38111oskxQEczsKMV9EyLAKNT9ibM+1FNwUXNq
+         JpxA==
+X-Gm-Message-State: AOAM531XysTm6Kl0szg/jkdIYsoyIiW/8FUjYH/HEeGne2J6Fncj+oVP
+	XVl1p2VOBdHkNh6XB2rZa+qH7u2dau8XLK9/7Rc=
+X-Google-Smtp-Source: ABdhPJxDi0GRK2/QkVfeTJCzVq2zudoeSp/hgMaL164lMJ0uHqYkS0fpHT+H5oc1+Mf9DUZcBDo/d2853Fvi8jdJEdg=
+X-Received: by 2002:a25:cc13:: with SMTP id l19mr9850423ybf.260.1615451207278;
+ Thu, 11 Mar 2021 00:26:47 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: K7UTQVUT2MKKJOLY5P4BK7CKKEEVQ6NA
-X-Message-ID-Hash: K7UTQVUT2MKKJOLY5P4BK7CKKEEVQ6NA
-X-MailFrom: santosh@fossix.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+ <CAEg-Je-OLidbfzHCJvY55x+-cOfiUxX8CJ1AeN8VxXAVuVyxKQ@mail.gmail.com>
+ <20210310130227.GN3479805@casper.infradead.org> <20210310142159.kudk7q2ogp4yqn36@fiona>
+ <20210310142643.GQ3479805@casper.infradead.org> <CAPcyv4i80GXjjoAD9G0AaRDWPbcTSLogJE9NokO4Eqpzt6UMkA@mail.gmail.com>
+In-Reply-To: <CAPcyv4i80GXjjoAD9G0AaRDWPbcTSLogJE9NokO4Eqpzt6UMkA@mail.gmail.com>
+From: Neal Gompa <ngompa13@gmail.com>
+Date: Thu, 11 Mar 2021 03:26:11 -0500
+Message-ID: <CAEg-Je9e1R2NAqtZfryM99+Z98SGjxTSQjt-CMyKRMxvDwtsyg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: NNAQCUQHSKGQJH3JFOCDJYWCSAFCHK2V
+X-Message-ID-Hash: NNAQCUQHSKGQJH3JFOCDJYWCSAFCHK2V
+X-MailFrom: ngompa13@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Matthew Wilcox <willy@infradead.org>, Goldwyn Rodrigues <rgoldwyn@suse.de>, Shiyang Ruan <ruansy.fnst@fujitsu.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-xfs <linux-xfs@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.cz>, Al Viro <viro@zeniv.linux.org.uk>, Btrfs BTRFS <linux-btrfs@vger.kernel.org>, ocfs2-devel@oss.oracle.com, david <david@fromorbit.com>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K7UTQVUT2MKKJOLY5P4BK7CKKEEVQ6NA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NNAQCUQHSKGQJH3JFOCDJYWCSAFCHK2V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The alignment sizes passed to ndctl in the tests are all hardcoded to 4k,
-the default page size on x86. Change those to the default page size on that
-architecture (sysconf/getconf). No functional changes otherwise.
-
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
----
- test/dpa-alloc.c    | 15 ++++++++-------
- test/multi-dax.sh   |  6 ++++--
- test/sector-mode.sh |  4 +++-
- 3 files changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
-index 0b3bb7a..59185cf 100644
---- a/test/dpa-alloc.c
-+++ b/test/dpa-alloc.c
-@@ -38,12 +38,13 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
- 	struct ndctl_region *region, *blk_region = NULL;
- 	struct ndctl_namespace *ndns;
- 	struct ndctl_dimm *dimm;
--	unsigned long size;
-+	unsigned long size, page_size;
- 	struct ndctl_bus *bus;
- 	char uuid_str[40];
- 	int round;
- 	int rc;
- 
-+	page_size = sysconf(_SC_PAGESIZE);
- 	/* disable nfit_test.1, not used in this test */
- 	bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
- 	if (!bus)
-@@ -124,11 +125,11 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
- 			return rc;
- 		}
- 		ndctl_namespace_disable_invalidate(ndns);
--		rc = ndctl_namespace_set_size(ndns, SZ_4K);
-+		rc = ndctl_namespace_set_size(ndns, page_size);
- 		if (rc) {
--			fprintf(stderr, "failed to init %s to size: %d\n",
-+			fprintf(stderr, "failed to init %s to size: %lu\n",
- 					ndctl_namespace_get_devname(ndns),
--					SZ_4K);
-+					page_size);
- 			return rc;
- 		}
- 		namespaces[i].ndns = ndns;
-@@ -150,7 +151,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
- 		ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
- 		if (i % ARRAY_SIZE(namespaces) == 0)
- 			round++;
--		size = SZ_4K * round;
-+		size = page_size * round;
- 		rc = ndctl_namespace_set_size(ndns, size);
- 		if (rc) {
- 			fprintf(stderr, "%s: set_size: %lx failed: %d\n",
-@@ -166,7 +167,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
- 	i--;
- 	round++;
- 	ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
--	size = SZ_4K * round;
-+	size = page_size * round;
- 	rc = ndctl_namespace_set_size(ndns, size);
- 	if (rc) {
- 		fprintf(stderr, "%s failed to update while labels full\n",
-@@ -175,7 +176,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
- 	}
- 
- 	round--;
--	size = SZ_4K * round;
-+	size = page_size * round;
- 	rc = ndctl_namespace_set_size(ndns, size);
- 	if (rc) {
- 		fprintf(stderr, "%s failed to reduce size while labels full\n",
-diff --git a/test/multi-dax.sh b/test/multi-dax.sh
-index e932569..9451ed0 100755
---- a/test/multi-dax.sh
-+++ b/test/multi-dax.sh
-@@ -12,6 +12,8 @@ check_min_kver "4.13" || do_skip "may lack multi-dax support"
- 
- trap 'err $LINENO' ERR
- 
-+ALIGN_SIZE=`getconf PAGESIZE`
-+
- # setup (reset nfit_test dimms)
- modprobe nfit_test
- $NDCTL disable-region -b $NFIT_TEST_BUS0 all
-@@ -22,9 +24,9 @@ rc=1
- query=". | sort_by(.available_size) | reverse | .[0].dev"
- region=$($NDCTL list -b $NFIT_TEST_BUS0 -t pmem -Ri | jq -r "$query")
- 
--json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a 4096 -s 16M)
-+json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a $ALIGN_SIZE -s 16M)
- chardev1=$(echo $json | jq ". | select(.mode == \"devdax\") | .daxregion.devices[0].chardev")
--json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a 4096 -s 16M)
-+json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a $ALIGN_SIZE -s 16M)
- chardev2=$(echo $json | jq ". | select(.mode == \"devdax\") | .daxregion.devices[0].chardev")
- 
- _cleanup
-diff --git a/test/sector-mode.sh b/test/sector-mode.sh
-index dd7013e..d03c0ca 100755
---- a/test/sector-mode.sh
-+++ b/test/sector-mode.sh
-@@ -9,6 +9,8 @@ rc=77
- set -e
- trap 'err $LINENO' ERR
- 
-+ALIGN_SIZE=`getconf PAGESIZE`
-+
- # setup (reset nfit_test dimms)
- modprobe nfit_test
- $NDCTL disable-region -b $NFIT_TEST_BUS0 all
-@@ -25,7 +27,7 @@ NAMESPACE=$($NDCTL list -b $NFIT_TEST_BUS1 -N | jq -r "$query")
- REGION=$($NDCTL list -R --namespace=$NAMESPACE | jq -r "(.[]) | .dev")
- echo 0 > /sys/bus/nd/devices/$REGION/read_only
- $NDCTL create-namespace --no-autolabel -e $NAMESPACE -m sector -f -l 4K
--$NDCTL create-namespace --no-autolabel -e $NAMESPACE -m dax -f -a 4K
-+$NDCTL create-namespace --no-autolabel -e $NAMESPACE -m dax -f -a $ALIGN_SIZE
- $NDCTL create-namespace --no-autolabel -e $NAMESPACE -m sector -f -l 4K
- 
- _cleanup
--- 
-2.29.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gV2VkLCBNYXIgMTAsIDIwMjEgYXQgNzo1MyBQTSBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxp
+YW1zQGludGVsLmNvbT4gd3JvdGU6DQo+DQo+IE9uIFdlZCwgTWFyIDEwLCAyMDIxIGF0IDY6Mjcg
+QU0gTWF0dGhldyBXaWxjb3ggPHdpbGx5QGluZnJhZGVhZC5vcmc+IHdyb3RlOg0KPiA+DQo+ID4g
+T24gV2VkLCBNYXIgMTAsIDIwMjEgYXQgMDg6MjE6NTlBTSAtMDYwMCwgR29sZHd5biBSb2RyaWd1
+ZXMgd3JvdGU6DQo+ID4gPiBPbiAxMzowMiAxMC8wMywgTWF0dGhldyBXaWxjb3ggd3JvdGU6DQo+
+ID4gPiA+IE9uIFdlZCwgTWFyIDEwLCAyMDIxIGF0IDA3OjMwOjQxQU0gLTA1MDAsIE5lYWwgR29t
+cGEgd3JvdGU6DQo+ID4gPiA+ID4gRm9yZ2l2ZSBteSBpZ25vcmFuY2UsIGJ1dCBpcyB0aGVyZSBh
+IHJlYXNvbiB3aHkgdGhpcyBpc24ndCB3aXJlZCB1cCB0bw0KPiA+ID4gPiA+IEJ0cmZzIGF0IHRo
+ZSBzYW1lIHRpbWU/IEl0IHNlZW1zIHdlaXJkIHRvIG1lIHRoYXQgYWRkaW5nIGEgZmVhdHVyZQ0K
+PiA+ID4gPg0KPiA+ID4gPiBidHJmcyBkb2Vzbid0IHN1cHBvcnQgREFYLiAgb25seSBleHQyLCBl
+eHQ0LCBYRlMgYW5kIEZVU0UgaGF2ZSBEQVggc3VwcG9ydC4NCj4gPiA+ID4NCj4gPiA+ID4gSWYg
+eW91IHRoaW5rIGFib3V0IGl0LCBidHJmcyBhbmQgREFYIGFyZSBkaWFtZXRyaWNhbGx5IG9wcG9z
+aXRlIHRoaW5ncy4NCj4gPiA+ID4gREFYIGlzIGFib3V0IGdpdmluZyByYXcgYWNjZXNzIHRvIHRo
+ZSBoYXJkd2FyZS4gIGJ0cmZzIGlzIGFib3V0IG9mZmVyaW5nDQo+ID4gPiA+IGV4dHJhIHZhbHVl
+IChSQUlELCBjaGVja3N1bXMsIC4uLiksIG5vbmUgb2Ygd2hpY2ggY2FuIGJlIGRvbmUgaWYgdGhl
+DQo+ID4gPiA+IGZpbGVzeXN0ZW0gaXNuJ3QgaW4gdGhlIHJlYWQvd3JpdGUgcGF0aC4NCj4gPiA+
+ID4NCj4gPiA+ID4gVGhhdCdzIHdoeSB0aGVyZSdzIG5vIERBWCBzdXBwb3J0IGluIGJ0cmZzLiAg
+SWYgeW91IHdhbnQgREFYLCB5b3UgaGF2ZQ0KPiA+ID4gPiB0byBnaXZlIHVwIGFsbCB0aGUgZmVh
+dHVyZXMgeW91IGxpa2UgaW4gYnRyZnMuICBTbyB5b3UgbWF5IGFzIHdlbGwgdXNlDQo+ID4gPiA+
+IGEgZGlmZmVyZW50IGZpbGVzeXN0ZW0uDQo+ID4gPg0KPiA+ID4gREFYIG9uIGJ0cmZzIGhhcyBi
+ZWVuIGF0dGVtcHRlZFsxXS4gT2YgY291cnNlLCB3ZSBjb3VsZCBub3QNCj4gPg0KPiA+IEJ1dCB3
+aHk/ICBBIGNvbXBsZXRlbmVzcyBmZXRpc2g/ICBJIGRvbid0IHVuZGVyc3RhbmQgd2h5IHlvdSBk
+ZWNpZGVkDQo+ID4gdG8gZG8gdGhpcyB3b3JrLg0KPg0KPiBJc24ndCBEQVggdXNlZnVsIGZvciBw
+YWdlY2FjaGUgbWluaW1pemF0aW9uIG9uIHJlYWQgZXZlbiBpZiBpdCBpcw0KPiBhd2t3YXJkIGZv
+ciBhIGNvcHktb24td3JpdGUgZnM/DQo+DQo+IFNlZW1zIGl0IHdvdWxkIGJlIGEgdXNlZnVsIGNh
+c2UgdG8gaGF2ZSBDT1cnZCBWTSBpbWFnZXMgb24gQlRSRlMgdGhhdA0KPiBkb24ndCBuZWVkIHN1
+cGVyZmx1b3VzIHBhZ2UgY2FjaGUgYWxsb2NhdGlvbnMuDQoNCkkgY291bGQgYWxzbyBzZWUgdGhp
+cyBiZWluZyB1c2VmdWwgZm9yIGRhdGFiYXNlcyAoYW5kIG1heWJlIGV2ZW4gc3dhcA0KZmlsZXMh
+KSBvbiBCdHJmcywgaWYgSSdtIHVuZGVyc3RhbmRpbmcgdGhpcyBmZWF0dXJlIGNvcnJlY3RseS4N
+Cg0KDQotLSANCuecn+Wun+OBr+OBhOOBpOOCguS4gOOBpO+8gS8gQWx3YXlzLCB0aGVyZSdzIG9u
+bHkgb25lIHRydXRoIQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5v
+cmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlz
+dHMuMDEub3JnCg==
