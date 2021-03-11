@@ -1,136 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9FA336DD5
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 09:28:47 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483AF337293
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 11 Mar 2021 13:30:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BC9B2100F2262;
-	Thu, 11 Mar 2021 00:28:45 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.75.37.24; helo=bra5.presidentsummit2021.info; envelope-from=domain-adm-linux+2dnvdimm=lists.01.org@presidentsummit2021.info; receiver=<UNKNOWN> 
-Received: from bra5.presidentsummit2021.info (ip24.ip-51-75-37.eu [51.75.37.24])
+	by ml01.01.org (Postfix) with ESMTP id DA8F1100EB827;
+	Thu, 11 Mar 2021 04:30:09 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=<UNKNOWN> 
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2F727100EBB7F
-	for <linux-nvdimm@lists.01.org>; Thu, 11 Mar 2021 00:28:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=gmail.com;
- h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=addilyn.davis2021@gmail.com;
- bh=RdxylMJwH6xXT9HZXp+q94pXhkI=;
- b=RgE470xZXBQSzkuazC7pExTLke7CmcVoyuzCJjjDt4YmXpHhMpy+N7ALtwInOF5aqoH2JaswP917
-   K2gbaV+PnYecBTpOWumGLEr6SiKEweu67BAbcIN7lR/FPjT7kf1XaDL1Yn1F0df7Va5Eg0LuIx3S
-   juhUtGif7u2F4LbDt8gDjF6BhwT2I5ixtk+jjxTkw3JPUXmBh3/CiYUPBGSZE0fMnfLlmc9XKBd8
-   h5pUm4IPuXGmaAvtfndLyOgHmArJOr9m/PbiEdmVz+bv2Z0gYKR4Y9F7M4L6KsdJ5hH3LF5eb06k
-   ntNH/ynNXwvwexVNhbu6fcymFgN/iJfM2+Zeag==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=gmail.com;
- b=ALMtcBJYx2dpXmwm7Jhh5Cv22hBfb9PNp1QKho8Oza/ud2ml90BU2ye47a2Dje1FTOfmpfkMT8uZ
-   y7OZjAru0/j2vrCVVP5eHrovPw0dL3Z/FJ3MbYsbt/q+H4ff9QC1xG1PQ8HxRj/iOLE7YlulbBNQ
-   JPAU8Zgbwhz1wqbZwdD7XmPPFHIb6fRqwXxOofM1u/xJTe/7JcxCTUC3h5kjelABvU0C4RV+Odkr
-   zYkyfI7V/9D0ODo0Opz8VNpDkr/ury0smgP0afX0AwVQinzyluP/9ApIULQxe0LPB2p6hp6jMGLE
-   BBJTICKxcJHD8LrTnzoUrwkZ/32eWe/7SvhF3A==;
-Received: from brandtrendonline.xyz (127.0.0.1) by bra1.presidentsummit2021.info id h97abni19tkq for <linux-nvdimm@lists.01.org>; Thu, 11 Mar 2021 08:27:56 +0000 (envelope-from <domain-adm-linux+2Dnvdimm=lists.01.org@presidentsummit2021.info>)
-Message-ID: <8df6016a2f8bd6817a76020de9be635c@presidentsummit2021.info>
-Date: Thu, 11 Mar 2021 08:27:56 +0000
-Subject: RE: Follow up
-From: Addilyn Davis <addilyn.davis2021@gmail.com>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTPS id C064A100EBB81
+	for <linux-nvdimm@lists.01.org>; Thu, 11 Mar 2021 04:30:07 -0800 (PST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 98CCA68B05; Thu, 11 Mar 2021 13:30:03 +0100 (CET)
+Date: Thu, 11 Mar 2021 13:30:02 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Subject: Re: [RESEND PATCH v2.1 07/10] iomap: Introduce iomap_apply2() for
+ operations on two files
+Message-ID: <20210311123002.GA18838@lst.de>
+References: <20210226002030.653855-8-ruansy.fnst@fujitsu.com> <20210304054142.1147895-1-ruansy.fnst@fujitsu.com>
 MIME-Version: 1.0
-X-Vmnn-Tracking-Did: 0
-X-Vmnn-Subscriber-Uid: fx948rmjd0228
-X-Vmnn-Mailer: SwiftMailer - 5.4.x
-X-Vmnn-EBS: https://brandtrendonline.xyz/app/index.php/lists/block-address
-X-Vmnn-Delivery-Sid: 1
-X-Vmnn-Customer-Uid: cl2968o8ac47b
-X-Vmnn-Customer-Gid: 0
-X-Vmnn-Campaign-Uid: tb830lj2ox4a1
-X-Sender: domain-adm@presidentsummit2021.info
-X-Report-Abuse: Please report abuse for this campaign here:
- https://brandtrendonline.xyz/app/index.php/campaigns/tb830lj2ox4a1/report-abuse/wh815s19p38b9/fx948rmjd0228
-X-Receiver: linux-nvdimm@lists.01.org
-Precedence: bulk
-Feedback-ID: tb830lj2ox4a1:fx948rmjd0228:wh815s19p38b9:cl2968o8ac47b
-Message-ID-Hash: U7HAOOFPTEFAWBIIDGCAWPPCZQABSZLG
-X-Message-ID-Hash: U7HAOOFPTEFAWBIIDGCAWPPCZQABSZLG
-X-MailFrom: domain-adm-linux+2Dnvdimm=lists.01.org@presidentsummit2021.info
+Content-Disposition: inline
+In-Reply-To: <20210304054142.1147895-1-ruansy.fnst@fujitsu.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Message-ID-Hash: O3O6VAOEUD7E33H5XZ6BCCDYVPEEBFAP
+X-Message-ID-Hash: O3O6VAOEUD7E33H5XZ6BCCDYVPEEBFAP
+X-MailFrom: hch@lst.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
-Reply-To: Addilyn Davis <addilyn.davis2021@gmail.com>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/U7HAOOFPTEFAWBIIDGCAWPPCZQABSZLG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O3O6VAOEUD7E33H5XZ6BCCDYVPEEBFAP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-V291bGQgeW91IGxpa2UgdG8gcHVyY2hhc2UgYW55IG9mIHRoZXNlIGZvbGxvd2luZyBkaXNjb3Vu
-dGVkIDkwJQ0KYWNjdXJhdGUgZGF0YWJhc2VzPw0KKDUwIEZSRUUgc2FtcGxlIGF2YWlsYWJsZSBv
-biByZXF1ZXN0KQ0KMS7CoMKgIMKgMTM3LDQ5MyBBdHRvcm5leXMgYW5kIExhd3llcnMgZW1haWwg
-bGlzdCBhdCAkMSwzNzQNCjIuwqDCoCDCoDEyOCw5NzIgQXJjaGl0ZWN0cyBhbmQgaW50ZXJpb3Ig
-ZGVzaWduZXJzIGVtYWlsIGxpc3QgYXQNCiQxLDI4OQ0KMy7CoMKgIMKgMjAwLDAwMCBCdWlsZGVy
-cywgcHJvcGVydHkgZGV2ZWxvcGVycyBhbmQgY29uc3RydWN0aW9uDQppbmR1c3RyeSBkZWNpc2lv
-biBtYWtlcnMgZW1haWwgbGlzdCBhdCAkMiw1MDANCjQuwqDCoCDCoDFNaWwgQ0VPcywgb3duZXJz
-LCBQcmVzaWRlbnRzIGFuZCBNRHMgZW1haWwgbGlzdCBhdCAkNSwwMDANCjUuwqDCoCDCoDIwMCww
-MDAgQ0ZPLCBDb250cm9sbGVyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEZpbmFuY2UsDQpBY2Nv
-dW50cyBQYXlhYmxlLCBBY2NvdW50cyBSZWNlaXZhYmxlLCBBdWRpdCBtYW5hZ2VycyBlbWFpbCBs
-aXN0IGF0DQokMiwwMDANCjYuwqDCoCDCoDUwMCwwMDAgQ0lPLCBDVE8sIENJU08sIFZQL0RpcmVj
-dG9yL01hbmFnZXIgb2YgSVQsIElUDQpDb21wbGlhbmNlLCBJVCBSaXNrLCBCSSwgQ2xvdWQsIERh
-dGFiYXNlIGFuZCBJVCBTZWN1cml0eSBtYW5hZ2Vycw0KZW1haWwgbGlzdCBhdCAkNSwwMDANCjcu
-wqDCoCDCoDUwLDAwMCBDb21tZXJjaWFsIHByb3BlcnR5IG93bmVycyBlbWFpbCBsaXN0IGF0ICQx
-LDAwMA0KOC7CoMKgIMKgNTAsMDAwIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVudCBtYW5h
-Z2VycyBlbWFpbCBsaXN0IGF0DQokMSwwMDANCjkuwqDCoCDCoDEwMCwwMDAgQ1BBIGFuZCBCb29r
-a2VlcGVycyBlbWFpbCBsaXN0IGF0ICQyLDAwMA0KMTAuwqDCoCDCoDEwMCwwMDAgRGF0YSBzY2ll
-bnRpc3QsIERhdGEgQW5hbHl0aWNzIGFuZCBEYXRhYmFzZQ0KQWRtaW5pc3RyYXRvcnMgZW1haWwg
-bGlzdCBhdCAkMiwwMDANCjExLsKgwqAgwqAxMDAsMDAwIEUtY29tbWVyY2Ugb3Igb25saW5lIHJl
-dGFpbGVycyBlbWFpbCBsaXN0IGF0ICQyLDAwMA0KMTIuwqDCoCDCoDUwMCwwMDAgRWR1Y2F0aW9u
-IGluZHVzdHJ5IGV4ZWN1dGl2ZXMgZW1haWwgbGlzdCBhdCAkNSwwMDAtDQpQcmluY2lwYWxzLCBE
-ZWFuLCBBZG1pbnMgYW5kIHRlYWNoZXJzIGZyb20gU2Nob29scywgQ29sbGVnZXMgYW5kDQpVbml2
-ZXJzaXRpZXMNCjEzLsKgwqAgwqAxMDAsMDAwIEVuZ2luZWVycyBlbWFpbCBsaXN0IGF0ICQyLDAw
-MA0KMTQuwqDCoCDCoDEwMCwwMDAgRXZlbnQgYW5kIE1lZXRpbmcgcGxhbm5lcnMsIG9yZ2FuaXpl
-cnMsIGFuZA0KZXhoaWJpdG9ycyBlbWFpbCBsaXN0IGF0ICQyLDAwMA0KMTUuwqDCoCDCoDEwMCww
-MDAgRmFjaWxpdGllcywgb2ZmaWNlIGFuZCBtYWludGVuYW5jZSBtYW5hZ2VycyBlbWFpbA0KbGlz
-dCBhdCAkMiwwMDANCjE2LsKgwqAgwqAxMDAsMDAwIEZpbmFuY2lhbCBwbGFubmVyL2Fkdmlzb3Jz
-IGVtYWlsIGxpc3QgYXQgJDIsMDAwDQoxNy7CoMKgIMKgNTAsMDAwIEZsZWV0IG1hbmFnZXJzIGFu
-ZCBUcnVja2luZyBjb21wYW55IG93bmVycyBlbWFpbA0KbGlzdCBhdCAkMiwwMDANCjE4LsKgwqAg
-wqAxMDAsMDAwIEdlbmVyYWwgYW5kIGNvcnBvcmF0ZSBjb3Vuc2VscyBlbWFpbCBsaXN0IGF0ICQy
-LDAwMA0KMTkuwqDCoCDCoDUwLDAwMCBHb3Zlcm5tZW50IGRlY2lzaW9uIG1ha2VycyBlbWFpbCBs
-aXN0IGF0ICQxLDAwMA0KMjAuwqDCoCDCoDUwLDAwMCBIZWFsdGgsIGVudmlyb25tZW50ICYgU2Fm
-ZXR5IG1hbmFnZXJzIGVtYWlsIGxpc3QgYXQNCiQxLDAwMA0KMjEuwqDCoCDCoDUwMCwwMDAgSGln
-aCBuZXQgd29ydGggaW5kaXZpZHVhbHMvaW52ZXN0b3JzIGVtYWlsIGxpc3QgYXQNCiQ1LDAwMA0K
-MjIuwqDCoCDCoDJNaWwgSG9tZW93bmVycywgQXBhcnRtZW50IG93bmVycyBhbmQgQnVpbGRpbmcg
-b3duZXJzIGVtYWlsDQpsaXN0IGF0ICQ1LDAwMA0KMjMuwqDCoCDCoDMwMCwwMDAgSG9zcGl0YWxz
-LCBjbGluaWNzLCBwcml2YXRlIHByYWN0aWNlcywNClBoYXJtYWNldXRpY2FsIGFuZCBiaW90ZWNo
-bm9sb2d5IGNvbXBhbnnigJlzIHRvcCBkZWNpc2lvbiBtYWtlcnMgZW1haWwNCmxpc3QgYXQgJDMs
-MDAwDQoyNC7CoMKgIMKgNTAwLDAwIEhSLCBUcmFpbmluZywgTGVhcm5pbmcgJiBEZXZlbG9wbWVu
-dCwgRW1wbG95ZWUNCkJlbmVmaXRzLCBUYWxlbnQgQWNxdWlzaXRpb24sIFJlY3J1aXRpbmcgZGVj
-aXNpb24gbWFrZXJzIGVtYWlsIGxpc3QgYXQNCiQ1LDAwMA0KMjUuwqDCoCDCoDUwLDAwMCBJbmRp
-dmlkdWFsIGluc3VyYW5jZSBhZ2VudHMgZW1haWwgbGlzdCBhdCAkMSwwMDANCjI2LsKgwqAgwqA1
-MCwwMDAgSVNWL1ZBUnMvUmVzZWxsZXJzIGVtYWlsIGxpc3QgYXQgJDEsMDAwDQoyNy7CoMKgIMKg
-NTAsMDAwIExvZ2lzdGljcywgc2hpcHBpbmcsIGFuZCBzdXBwbHkgY2hhaW4gbWFuYWdlcnMgZW1h
-aWwNCmxpc3QgYXQgJDEsMDAwDQoyOC7CoMKgIMKgMU1pbCBNYW51ZmFjdHVyaW5nIEluZHVzdHJ5
-IGRlY2lzaW9uIG1ha2VycyBlbWFpbCBsaXN0IGF0DQokNSwwMDANCjI5LsKgwqAgwqA1MDAsMDAw
-IE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5kIGdlbmVyYXRpb24sDQpMZWFk
-IGdlbmVyYXRpb24gZGVjaXNpb24gbWFrZXJzIGVtYWlsIGxpc3QgYXQgJDUsMDAwDQozMC7CoMKg
-IMKgMjAwLDAwMCBOZXcgJiBVc2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQoz
-MS7CoMKgIMKgNTAwLDAwMCBPaWwsIEdhcyBhbmQgdXRpbGl0eSBpbmR1c3RyeSBkZWNpc2lvbiBt
-YWtlcnMgZW1haWwNCmxpc3QgYXQgJDQsMDAwDQozMi7CoMKgIMKgNTAsMDAwIHBoYXJtYWNpc3Qg
-YW5kIHBoYXJtYWN5IG93bmVycyBlbWFpbCBsaXN0IGF0ICQxLDAwMA0KMzMuwqDCoCDCoDgwMCww
-MDAgUGh5c2ljaWFucywgRG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhlcmFwaXN0cw0KZW1h
-aWwgbGlzdCBhdCAkNCwwMDANCjM0LsKgwqAgwqAxMDAsMDAwIFB1cmNoYXNpbmcgYW5kIFByb2N1
-cmVtZW50IE1hbmFnZXJzIGVtYWlsIGxpc3QgYXQNCiQyLDAwMA0KMzUuwqDCoCDCoDUwMCwwMDAg
-U21hbGwgQnVzaW5lc3Mgb3duZXJzIGVtYWlsIGxpc3QgYXQgJDUsMDAwDQozNi7CoMKgIMKgMTAw
-LDAwMCBUZWxlY29tIG1hbmFnZXJzLCBWT0lQIG1hbmFnZXJzLCBDbG91ZCBhcmNoaXRlY3QsDQpD
-bG91ZCBtYW5hZ2VycywgU3RvcmFnZSBtYW5hZ2VycyBlbWFpbCBsaXN0IGF0ICQyLDAwMA0KMzcu
-wqDCoCDCoDEwMCwwMDAgVHJhZGVyL2ludmVzdG9ycyBlbWFpbCBsaXN0IGF0ICQyLDAwMA0KMzgu
-wqDCoCDCoDEwMCwwMDAgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBDdXN0b21lciBTZXJ2aWNlIGFu
-ZA0KQ3VzdG9tZXIgU3VjY2VzcyBtYW5hZ2VycyBlbWFpbCBsaXN0IGF0ICQyLDAwMA0KUGxlYXNl
-IGxldCBtZSBrbm93IHlvdXIgdGhvdWdodHMuDQpBZGRpbHluIERhdmlzDQpFbWFpbCBEYXRhYmFz
-ZSBQcm92aWRlcg0KKzEtICg2NzgpIDc0NS04Mzg1DQpVbnN1YnNjcmliZQ0KaHR0cHM6Ly9icmFu
-ZHRyZW5kb25saW5lLnh5ei9hcHAvaW5kZXgucGhwL2xpc3RzL3doODE1czE5cDM4YjkvdW5zdWJz
-Y3JpYmUvZng5NDhybWpkMDIyOC90YjgzMGxqMm94NGExDQrCoA0KwqANCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxp
-c3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVt
-YWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On Thu, Mar 04, 2021 at 01:41:42PM +0800, Shiyang Ruan wrote:
+> Some operations, such as comparing a range of data in two files under
+> fsdax mode, requires nested iomap_open()/iomap_end() on two file.  Thus,
+> we introduce iomap_apply2() to accept arguments from two files and
+> iomap_actor2_t for actions on two files.
+
+I still wonder if adding the iter based iomap API that willy proposed
+would be a better fit here.  In that case we might not even need
+a special API for the double iteration.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
