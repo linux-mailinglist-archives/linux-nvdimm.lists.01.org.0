@@ -2,104 +2,129 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7A4339694
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Mar 2021 19:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 553063397E6
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Mar 2021 21:04:07 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D1FE7100ED49F;
-	Fri, 12 Mar 2021 10:33:21 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=173.254.242.218; helo=mycarpe.com; envelope-from=chlmeyfjugekt@mydesignchic.com; receiver=<UNKNOWN> 
-Received: from mycarpe.com (unknown [173.254.242.218])
-	by ml01.01.org (Postfix) with ESMTP id 240EE100EF270
-	for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 10:33:19 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id AB89B100ED49F;
+	Fri, 12 Mar 2021 12:04:05 -0800 (PST)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=2001:bc8:6006:2025:aa1e:84ff:fef2:9f51; helo=cooperatic.fr; envelope-from=support@cooperatic.fr; receiver=<UNKNOWN> 
+Received: from cooperatic.fr (unknown [IPv6:2001:bc8:6006:2025:aa1e:84ff:fef2:9f51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 3C5A8100ED49E
+	for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 12:04:00 -0800 (PST)
 To: linux-nvdimm@lists.01.org
-Subject: check this quadcopter
-Message-ID: <a73b3012265a18ee7abe185c59b3cd75@dronerafts.com>
-Date: Fri, 12 Mar 2021 15:19:27 +0100
-From: "Jimmy Nelson" <chlmseyjugekt@mydesignchic.com>
+Subject: Hallo und Guten Tag,
+Date: Fri, 12 Mar 2021 20:03:57 +0000
+From: El Gordo de la primitiva  lotterie spanien <support@cooperatic.fr>
+Message-ID: <eaa9eb8843749cbd319c1a1de4b1294d@cooperatic.fr>
 MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: YOUBVSTQIZFLATTJN6CWFUITVPINH4EZ
-X-Message-ID-Hash: YOUBVSTQIZFLATTJN6CWFUITVPINH4EZ
-X-MailFrom: chlmeyfjugekt@mydesignchic.com
+Message-ID-Hash: JOHEAKU4APVPULI3VDKRX36GY7XYR7T3
+X-Message-ID-Hash: JOHEAKU4APVPULI3VDKRX36GY7XYR7T3
+X-MailFrom: support@cooperatic.fr
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: dewtonysenio@aliyun.com
+Reply-To: europromo.es.spain@europemail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YOUBVSTQIZFLATTJN6CWFUITVPINH4EZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JOHEAKU4APVPULI3VDKRX36GY7XYR7T3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6398454841685111538=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============6398454841685111538==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-<span style=3D"display: block; text-align: left;"><span style=3D"display:
-block; text-align: left;">Hi,<br /><br />Hope you are doing good today. <=
-br
-/>We would like to tell you that we have got one new quadcopter drone in
-our warehouse.<br /><br /><span>It can fly for 30 minutes continuously an=
-d
-shoot amazing HD videos at 25fps. <br />The quadcopter also boasts an
-excellent video resolution of 2048&times;1080 and picture resolution of
-4096&times;3072.<br /><span>Fix a point and then set the radial distance
-with the joystick and watch the drone take videos encircling the selected
-object.<br /><br /></span></span></span></span><span style=3D"display: bl=
-ock;
-text-align: left;">Remote control distance: about 3000m<br />Remote contr=
-ol
-height: about 120m<br />Gesture recognition shooting: 1-3m<br /><span>Wif=
-i
-frequency: 5G Camera resolution: 4096 * 3072 (APP) <br />Video resolution=
-:
-2048 * 1080 (APP) <br />Transmission frame rate: 25fps</span></span><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><br /></span></span><span style=3D"display: block;
-text-align: left;">Pricing details:<br />1-5 units 229.00 each<br />6-50
-units 219.00 each<br />51 -100 units 189.00 each<br />u s d<br /><br />If
-you would like to order this drone, you can just reply to our email and
-send us your address for shipping, we will prepare the shipment fast for
-you.</span>
-<pre></pre>
-<img
-src=3D"https://ae04.alicdn.com/kf/H77af5d148df5490a9611408a1f00a070B.jpg"
-width=3D"457" height=3D"704" /><img
-src=3D"https://ae04.alicdn.com/kf/Hc2f5f0a619f3423cb3bfc5b6bd7b672al.jpg"
-width=3D"457" height=3D"702" /><br /><img
-src=3D"https://ae04.alicdn.com/kf/Hfc8f3403e61844cba908c7c334917ab6x.jpg"
-width=3D"457" height=3D"700" /><img
-src=3D"https://ae04.alicdn.com/kf/H49cceca0489b454abc933362cbbf272ap.jpg"
-width=3D"457" height=3D"655" /><br /><br /><img
-src=3D"https://ae01.alicdn.com/kf/H62c5fba2256b48c299824abe6fbb5b82T.jpg"
-width=3D"457" height=3D"876" /><img
-src=3D"https://ae04.alicdn.com/kf/H8027181b0dfd48c0805392b7ccbacfbaz.jpg"
-width=3D"457" height=3D"861" /><br /><br /><br /><span style=3D"display: =
-block;
-text-align: left;"><span>If you would like to order this drone, you can
-just reply to our email and send us your address for shipping, we will
-prepare the shipment fast for you.<br /></span><br />Thanks,<br />Jimmy
-Nelson</span>
-</body>
-</html>
-
---===============6398454841685111538==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============6398454841685111538==--
+RWwgR29yZG8gZGUgbGEgcHJpbWl0aXZhICBsb3R0ZXJpZSBzcGFuaWVuICAgICAgICAgICAgICAg
+ICAgICAgICAgDQpBZHJlc3NlOkNhbGxlIGRlbCBQcsOtbmNpcGUgZGUgVmVyZ2FyYSwgMzgsIDI4
+MDAxDQpNYWRyaWQgRXNwYcOxYV0gICAgDQpLb250YWt0IGF1Zm5laG1lbiB1bnRlcjpdIDM0NjAy
+IDgxMCAxODUgZmF4IDM0OTM1NDU3NDkwXQ0KRS1tYWlsOl1hbnNwcnVjaGdld2lubi5tbXQuZXNA
+c3BhaW5tYWlsLmNvbV0NCg0KQWt0ZW56ZWljaGVuOl1QMDkvMDEvMDIvMjAyMS5dDQpMb3NudW1t
+ZXI6XSBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxXQ0KRGF0dW06IDA2LzAzLzIwMjFdDQoNCkhhbGxv
+LCAgICAgICAgDQogICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBPRkZJWklFTExFIE1JVFRFSUxVTkcsDQpEaWVzZSBFbCBHb3JkbyBkZSBsYSBQcmltaXRpdmEg
+Qm9uYW56YSAgTG90dGVyaWUgd3VyZGUgdW5kIE1pbmlzdGVyaW8gZGUgSW5kdXN0cmlhLCBDb21l
+cmNpbyB5IFR1cmlzbW8gIGdlc3BvbnNlcnQgdW0gVG91cmlzbXVzIGluIFNwYW5pZW4gIHp1IGbD
+tnJkZXJuLg0KDQpXaXIgc2luZCBlcmZyZXV0IElobmVuIG1pdCB6dSB0ZWlsZW4sIGRhc3MgZGll
+IEdld2lubmVyIGRlcyBTb25kZXIgU3BhbmlzaCBUb3VyaXNtdXMgUHJvbW90aW9uYWwgRHJhdyBi
+ZWthbm50IGdlZ2ViZW4gd29yZGVuIHNpbmQuIERpZSBvZmZpemllbGxlIExpc3RlIGRlciBHZXdp
+bm5lciAgZXJzY2hpZW4gYW0gIFNhbXN0YWcgZGVyIDI3LzAxLzIwMjEuIA0KDQpJaHJlIGVtYWls
+IGFkcmVzc2UgIG1pdCBkZXIgYW5ow6RuZ2VuZGVuIExvc251bW1lcjogRVNQIDQ0NDcvMTE0NjQx
+MTg4MDIwMSAgdW5kIG1pdCBkZXIgU2VyaWVubnVtbWVyOiBFU1AvMDE4ODExLTIwMjAgem9nIGRp
+ZSBHbMO8Y2tzbnVtbWVyOiA2LjE2LjE4LjMzLjQ3LjUxIEJvbnU6MjksRWwgR29yZG8gZGUgbGEg
+UHJpbWl0aXZhICBMb3R0ZXJpZSAgNiAvNDkgaW4gZGVyIDMuIEthdGVnb3JpZS4NCg0KU2llIHNp
+bmQgZGFtaXQgZ2V3aW5uZXIgdm9uOiDigqw5OTEsMDAwLjAwIEV1cm8uIERpZSBTdW1tZSBlcmdp
+YnQgc2ljaCBhdXMgZWluZXIgR2V3aW5uYXVzc2Now7x0dHVuZyB2b246IOKCrDY5MzcsMDAwLjAw
+IEV1cm8sIGRpZSBkdXJjaCBkaWUgZXJzdGVuIHNpZWJlbiAoNykgR2V3aW5uZXIgYXVzIGRlciBn
+bGVpY2hlbiBLYXRlZ29yaWUgZ2V0ZWlsdCB3dXJkZS4gIERpciBnZXdpbm4gaXN0IGJlaSBlaW5l
+ciBzaWNoZXJoZWl0c2Zpcm1hIGhpbnRlcmxlZ3QgdW5kIGluIGlocmVuIG5hbWVuL2VtYWlsICB2
+ZXJzaWNoZXJ0LiB1bSBrZWluZSBrb21wbGlrYXRpb25lbiBiZWkgZGVyIGFid2lja2x1bmcgZGVy
+IHphaGx1bmcgenUgdmVydXJzYWNoZW4gYml0dGVuIHdpciBzaWUgZGllc2Ugb2ZmaXppZWxsZSBt
+aXR0ZWlsdW5nICwgZGlza3JldCB6dSBiZWhhbmRlbG4uLGVzIGlzdCBlaW4gdGVpbCB1bnNlcmVz
+IHNpY2hlcmhlaXRzcHJvdG9rb2xscyB1bmQgZ2FyYW50aWVydCBpaG5lbiBlaW5lbiByZWlidW5n
+c2xvc2VuIEFibGF1Zi4NCg0KQWxsZSBnZXdpbm5lciB3dXJkZW4gcGVyIGNvbXB1dGVyIGF1cyBV
+cmxhdWJzaG90ZWxzLCBGbHVnZ2VzZWxsc2NoYWZ0ZW4gdW5kIFJlaXNlYsO8cm9zIG1haWxlbiBE
+YXRlbiB2b24gZsO8bmYgTWlsbGlvbmVuICg1MDAwMDAwKSBFbWFpbCBhZHJlc3NlbiBhdXNnZXfD
+pGhsdCwgYWxzIHRlaWwgdW5zZXJlciBJbnRlcm5hdGlvbmFsZW4gdG91cmlzbXVzIHByb21vdGlv
+biBwcm9ncmFtbXMsIHdlbGNoZXMgd2lyIGVpbm1hbCBpbSBqYWhyIHZlcmFuc3RhbHRlbiB1bSBU
+b3VyaXNtdXMgaW4gU3BhbmllbiB6dSBmw7ZyZGVybi4NCg0KQml0dGUga29udGFrdGllcmVuIHNp
+ZSB1bnNlcmVuIGF1c2xhbmRzIHNhY2hiZWFyYmVpdGVyIEhlcnIgR2FicmllbCAgYmVpIGRlciBz
+aWNoZXJoZWl0c2Zpcm1hIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYTpQZXIgRW1haWwgYW46
+ZXVyb3Byb21vLmVzLnNwYWluQGV1cm9wZW1haWwuY29tIG9kZXIgYW5ydWZlbjogMzQgNjAyIDgx
+MCAxODUgJiBGYXg6ICAzNCA5MzEgNzAgMjEyMCwgdW0gSWhyIEdlbGQgc2NobmVsbCB6dSBiZWtv
+bW1lbi4NCg0KRGVua2VuIFNpZSBkYXJhbiwgamVkZXIgZ2V3aW5uYW5zcHJ1Y2ggbXVzcyBiaXMg
+enVtIDMxLzAzLzIwMjEgQW5nZW1lbGRldGUgc2Vpbi4gSmVkZXIgbmljaHQgYW5nZW1lbGRldCBH
+ZXdpbm5hbnNwcnVjaCB2ZXJmw6RsbHQgdW5kIGdlaHQgenVydWNrIGFuIGRhcyBTcGFuaXNjaGUg
+U3RhYXRza2Fzc2UuDQogIA0KV0lDSFRJRzogdW0gdmVyesO2Z2VydW5nZW4gdW5kIGtvbXBsaWth
+dGlvbmVuIHp1IHZlcm1laWRlbiwgYml0dGUgaW1tZXIgQWt0ZW56ZWljaGVuIGFuZ2ViZW4uICBB
+bmJlaSBlaW4gYW5tZWxkZWZvcm11bGFyLCBiaXR0ZSBhdXNmw7xsbGVuIHVuZCB6dXLDvGNrIFBl
+ciBlbWFpbCBhbjpldXJvcHJvbW8uZXMuc3BhaW5AZXVyb3BlbWFpbC5jb20gb2RlciBhbnJ1ZmVu
+OiAgMzQgNjAyIDgxMDE4NSAmIEZheDogIDM0IDkzMSA3MCAyMTIwIGRpZSBzaWNoZXJoZWl0c2Zp
+cm1hIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYS4NCg0KSEVSWkxJQ0hFTiBHTFVDS1dVTlND
+SOKApiENCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4NCk1BUklBIEhJREFMR08NClZJWkVQUsOE
+U0lERU5USU4NCg0KQsOcUk8sU0FOVEFMVUNJQSBTRUdVUk9TIFMuQSBFc3Bhw7FhIA0KUGxhemEg
+RXNwYcOxYSwgMTUgLSAtMTYgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQpNYWRyaWQsIDI4
+MDA4IEVzcGHDsWENCiAgICAgICAgICAgICAgICAgICAgICAgICAgDQoNCkFOTUVMREVGT1JNVUxB
+UiBaVVIgR0VXSU5OQU5TUFJVQ0hTDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18gDQpCaXR0ZSBmw7xsbGVuIFNpZSBkYXMgRm9ybXVsYXIgc29yZ2bDpGx0aWcg
+YXVzIHVuZCBzZW5kZW4gZXMgcGVyIGUgbWFpbDpzYW50YWx1Y2lhLnNnLmVzQHNwYWlubWFpbC5j
+b20gYW4gZGVyIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYSBtaXQgS29waWUgSWhyZXMgUGVy
+c29uYWxhdXN3ZWlzZXMgb2RlciBSZWlzZXBhc3Nlcy4NCg0KDQpHRVdJTk5CRVRSQUcqX19fX19f
+X19fX0FLVEVOWkVJQ0hFTjoqRVNQMDkvMDEvMDIvMjAyMQ0KTkFNRToqX19fX19fX19fX19fX19f
+X19fX19WT1JOQU1FOipfX19fX19fX19fX19fX19fX19fX19fXw0KR0VCVVJUU0RBVFVNOipfX19f
+X19fX19fX19fX19fXypOQVRJT05BTEk6Kl9fX19fX19fX19fX19fX18NCkxPU05VTU1FUipfX19f
+X19fX19fX19fX19fX19fX19fKkdMVUNLU1pBSExFTjoqX19fX19fX19fX19fDQpTVFJBU1NFKl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX18qTlVNTUVSOipfX19fX19fX19fX19fX18NCldPSE5P
+UlQqX19fX19fX19fX19fX19fX1BPU1RMRUlUWkFIKl9fX19fX19fX18qTEFORCpfX19fX19fXw0K
+VEVMRUZPTipfX19fX19fX19fX19IQU5EWSpfX19fX19fX19fX19fRkFYKl9fX19fX19fX19fX19f
+X19fDQpCRUZVRipfX19fX19fX19fRkFNSUVMSUVOU1RBTkQqX19fX19fX19fX19fX19fKiAoR0VT
+Q0hMRUNIVCkNCkVNQUlMKl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18q
+VW50ZXJzY2hyaWZ0Kl8NCiAgDQoNCldFTENIRSBaQUhMVU5HU0ZPUk0gQkVWT1JaVUdFTiBTSUU/
+ICAoQSkgQkFOS8OcQkVSV0VJU1VORzogIChCKSBCQVJTQ0hFQ0sgIA0KQkFOS0RBVEVOIFNJTkQg
+TlVSIE5PVFdFTkRJRyBXRU5OIFNJRSBTSUNIIEbDnFIgRUlORSBCQU5Lw5xCRVJXRUlTVU5HIEVO
+VFNDSElFREVOIEhBQkVOLg0KDQpOQU1FIERFUyBHRUxESU5TVElUVVRTOipfX19fX19fX19fX19f
+X19fX19fX19fX19fXw0KS09OVE9OVU1NRVI6Kl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18NClNXSUZUIENPREU6Kl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fDQpCQU5LIEFERFJFU1M6Kl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0K
+VEVMRUZPTk5VTU1FUjoqX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCkZBWDog
+TlVNTUVSOipfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQoNCg0KICAgIEVS
+S0zDhFJVTkcgREVTIEJFR8OcTlNUSUdURU4NCklDSCBfX19fX19fX19fX19fX19fX19fX19fX19f
+X19CRVNUw4RUSUdFIEhJRVJNSVQsIERBU1MgQUxMRSBJTkZPUk1BVElPTkVOLCBLT1JSRUtUIFNJ
+TkQsIFVORCBESUUgVkVSQU5TVEFMVEVSIERFUiBFbCBTUEFOSVNIIExPVFRFUlkgLyBTQU5UQUxV
+Q0lBIFNJQ0hFUkhFSVRTRklSTUEgTklDSFQgVkVSQU5UV09SVExJQ0ggR0VNQUNIVCBXRVJERU4s
+IFdFTk4gRVMgWlUgRUlORVIgVU5CRVJFQ0hUSUdURU4gWkFITFVORyBEVVJDSCBVTkdFTkFVRSBJ
+TkZPUk1BVElPTkVOLCBESUUgSUNIIElOIERJRVNFTSBGT1JNVUxBUiBBTkdFQkUgS09NTVQuREFT
+UyAxMCUgUFJPVklTSU9OIERFUiBTQU5UQSBMVUNJQSBTRUNVUklUWSBDT01QQU5ZIEdFSD9SRU4s
+IFNPQkFMRCBTSUUgSUhSRU4gR0VXSU5OIEZPTkRTIEVSSEFMVEVOLiBESUVTRSBaRUhOIFBST1pF
+TlQgV0VSREVOIElITkVOIFNPRk9SVCBaVVLDnENLR0VHRUJFTiwgU0lFIEVSSEFMVEVOIElIUkVO
+IEdFV0lOTiBBVUYgSUhSRU0gS09OVE8uIChBQ0hUVU5HIFdpciBiaXR0ZW4gU2llLCBhdWYgZGll
+c2UgRS1NYWlsLUFkcmVzc2UgenUgYW50d29ydGVuKHNhbnRhbHVjaWEuc2cuZXNAc3BhaW5tYWls
+LmNvbSkgQsOcUk8tS09OVE9JTkZPUk1BVElPTkVOLUlCQU4gRVMxNyAyMTAwIDU2MjQgMTEwMiAw
+MDExIDc3MTkgU1dJRlQgQ09ERTogQ0FJWEVTQkJYWFguICBLT05UT05BTUUsTEEgUExBQ0lUQSBE
+RUwgTUlSQURPUiBTLkwgU1BBSU4uDQpVcmhlYmVycmVjaHTCqSAyMDIwLTIwMjEgTXVsdGktU3Rh
+YXQgTG90dGVyaWUgVmVyYmFuZC4gQWxsZSBSZWNodGUNCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGlu
+dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxp
+bnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
