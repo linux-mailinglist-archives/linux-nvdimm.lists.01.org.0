@@ -2,137 +2,136 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9133387F4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Mar 2021 09:53:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48915338831
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Mar 2021 10:04:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 31587100EAB4D;
-	Fri, 12 Mar 2021 00:53:32 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4D389100EAB58;
+	Fri, 12 Mar 2021 01:04:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.75.37.24; helo=bra5.presidentsummit2021.info; envelope-from=domain-adm-linux+2dnvdimm=lists.01.org@presidentsummit2021.info; receiver=<UNKNOWN> 
+Received: from bra5.presidentsummit2021.info (ip24.ip-51-75-37.eu [51.75.37.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D20B8100EC1D5
-	for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 00:53:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1615539208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aRwrXGJxMq+pYmK820MBZhCTt+haXKGrGPdMmRxI0UE=;
-	b=i9ikN8d2a8ip2lilyflcobtRR8dlVb8c7IoSajA6YOinnuWQ7iblSv9dj014SnECc2kzYO
-	QJuH0vDJoAJy9EIDIfFOf9hkGGbseY4rpuBa6CUvgHfStscdwTkTpzVQgd4TbonuM0JqnT
-	QsL6Qn+WqWnFJ58j7GUXJQUROKZLQBQ=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-88-QlZlJlPZOFyd5hptCQo_cQ-1; Fri, 12 Mar 2021 03:53:24 -0500
-X-MC-Unique: QlZlJlPZOFyd5hptCQo_cQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8B4BB100C663;
-	Fri, 12 Mar 2021 08:53:22 +0000 (UTC)
-Received: from [10.36.114.197] (ovpn-114-197.ams2.redhat.com [10.36.114.197])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 85B4059466;
-	Fri, 12 Mar 2021 08:53:10 +0000 (UTC)
-Subject: Re: [RFC 0/2] virtio-pmem: Asynchronous flush
-To: Dan Williams <dan.j.williams@intel.com>,
- Pankaj Gupta <pankaj.gupta@cloud.ionos.com>
-References: <20200420131947.41991-1-pankaj.gupta.linux@gmail.com>
- <7e55abc4-5c91-efb8-1b32-87570dde62cc@redhat.com>
- <CALzYo33i5nBuPj4c3cJCZB9qEwfjypDqXf9vtn2wJdTYCFxg8g@mail.gmail.com>
- <CAPcyv4i4=2zT65Ym-sQv4gSa421q7FUAcX6Un3hf8=FW5qi3yw@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <e28be6b8-a6d4-996a-094a-830db1ab5f22@redhat.com>
-Date: Fri, 12 Mar 2021 09:53:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+	by ml01.01.org (Postfix) with ESMTPS id A9800100EAB4D
+	for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 01:04:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=gmail.com;
+ h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=addilyn.davis2021@gmail.com;
+ bh=7oIg77nbXJ8QUeq72ZFclDuHp5w=;
+ b=ChR9w9rhAtbNDxZEMkm1vrLMTSEkHumDi/+91RCh9Ob2r2W1wPftu0VrhIw7fnhSRC8nlpY9Egz5
+   C1aRhvbKd6P82yu/kz9aADC54FMppohzTVV5AJux1cQsQiWL++XzKLaQ0AzSisfkQrxvixGZG2Y4
+   yCwMEeWVeQZ02iibwnjEoBepnCD0gE7Fki0uGSPWUfSKRK4hjPw9seBNBlg1qK/Uaj3kW6YVvwlE
+   +LXrsGBmfNmFwSPmL8tg2zZ6e58xUIvt/1SiKg4v21YIWFJdgTQn9+F8B+ac+39JWasK02SoMbMP
+   FdRcXvft1zKsr4Q4XRJctBYlISObrKT5wE5OtQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=gmail.com;
+ b=MOyVqeWPFEwAhEycaaH9SOLRoroGe2BA+0adPYwio7eiC75+qrdO6/OZGjRVZjqo7WzK8C2DDS9O
+   e7IcutIP4SBR0FLt7iFpCi6rt5yIuH7nQHqh8ACn+gSbYqo9xQ2OpqIprJykfdi/9odjHqEgvv3R
+   ozfQJDtN85lWh51W+/Ehso8REQilIOurQMszANVsWcdYMQ5JoNcaycwSKQ+kadRREjtUK6rcil2e
+   G9yqK1GuWq1ajuNaIVs0rj9HRjjflBaueG8XOsUJ/PAnolpF9absAd2mzshRGCUq0fBSKFDsCyrX
+   ddsETyWHJa0d1rOYNOQFOz8UegcjIvI3IL55ag==;
+Received: from brandtrendonline.xyz (127.0.0.1) by bra1.presidentsummit2021.info id h9cn99i19tkg for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 07:04:01 +0000 (envelope-from <domain-adm-linux+2Dnvdimm=lists.01.org@presidentsummit2021.info>)
+Message-ID: <fa80fe8c72325d6017446f5c3c46bf5f@presidentsummit2021.info>
+Date: Fri, 12 Mar 2021 07:04:01 +0000
+Subject: RE: follow up
+From: Addilyn Davis <addilyn.davis2021@gmail.com>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4i4=2zT65Ym-sQv4gSa421q7FUAcX6Un3hf8=FW5qi3yw@mail.gmail.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: RBLNFNAXV7FE4ZBW2KV7W2BVGTLJQO5D
-X-Message-ID-Hash: RBLNFNAXV7FE4ZBW2KV7W2BVGTLJQO5D
-X-MailFrom: david@redhat.com
+X-Vmnn-Tracking-Did: 0
+X-Vmnn-Subscriber-Uid: rq915xxmxp8f7
+X-Vmnn-Mailer: SwiftMailer - 5.4.x
+X-Vmnn-EBS: https://brandtrendonline.xyz/app/index.php/lists/block-address
+X-Vmnn-Delivery-Sid: 1
+X-Vmnn-Customer-Uid: cl2968o8ac47b
+X-Vmnn-Customer-Gid: 0
+X-Vmnn-Campaign-Uid: md1677zwfwc87
+X-Sender: domain-adm@presidentsummit2021.info
+X-Report-Abuse: Please report abuse for this campaign here:
+ https://brandtrendonline.xyz/app/index.php/campaigns/md1677zwfwc87/report-abuse/ry381vynw7a4b/rq915xxmxp8f7
+X-Receiver: linux-nvdimm@lists.01.org
+Precedence: bulk
+Feedback-ID: md1677zwfwc87:rq915xxmxp8f7:ry381vynw7a4b:cl2968o8ac47b
+Message-ID-Hash: LBDPPO4TPVJFQHSYL5IWCIOHVOBULQ2P
+X-Message-ID-Hash: LBDPPO4TPVJFQHSYL5IWCIOHVOBULQ2P
+X-MailFrom: domain-adm-linux+2Dnvdimm=lists.01.org@presidentsummit2021.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, "Michael S. Tsirkin" <mst@redhat.com>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Addilyn Davis <addilyn.davis2021@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RBLNFNAXV7FE4ZBW2KV7W2BVGTLJQO5D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LBDPPO4TPVJFQHSYL5IWCIOHVOBULQ2P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 12.03.21 07:02, Dan Williams wrote:
-> On Thu, Mar 11, 2021 at 8:21 PM Pankaj Gupta
-> <pankaj.gupta@cloud.ionos.com> wrote:
->>
->> Hi David,
->>
->>>>    Jeff reported preflush order issue with the existing implementation
->>>>    of virtio pmem preflush. Dan suggested[1] to implement asynchronous flush
->>>>    for virtio pmem using work queue as done in md/RAID. This patch series
->>>>    intends to solve the preflush ordering issue and also makes the flush
->>>>    asynchronous from the submitting thread POV.
->>>>
->>>>    Submitting this patch series for feeback and is in WIP. I have
->>>>    done basic testing and currently doing more testing.
->>>>
->>>> Pankaj Gupta (2):
->>>>     pmem: make nvdimm_flush asynchronous
->>>>     virtio_pmem: Async virtio-pmem flush
->>>>
->>>>    drivers/nvdimm/nd_virtio.c   | 66 ++++++++++++++++++++++++++----------
->>>>    drivers/nvdimm/pmem.c        | 15 ++++----
->>>>    drivers/nvdimm/region_devs.c |  3 +-
->>>>    drivers/nvdimm/virtio_pmem.c |  9 +++++
->>>>    drivers/nvdimm/virtio_pmem.h | 12 +++++++
->>>>    5 files changed, 78 insertions(+), 27 deletions(-)
->>>>
->>>> [1] https://marc.info/?l=linux-kernel&m=157446316409937&w=2
->>>>
->>>
->>> Just wondering, was there any follow up of this or are we still waiting
->>> for feedback? :)
->>
->> Thank you for bringing this up.
->>
->> My apologies I could not followup on this. I have another version in my local
->> tree but could not post it as I was not sure if I solved the problem
->> correctly. I will
->> clean it up and post for feedback as soon as I can.
->>
->> P.S: Due to serious personal/family health issues I am not able to
->> devote much time
->> on this with other professional commitments. I feel bad that I have
->> this unfinished task.
->> Just in last one year things have not been stable for me & my family
->> and still not getting :(
-> 
-> No worries Pankaj. Take care of yourself and your family. The
-> community can handle this for you. I'm open to coaching somebody
-> through what's involved to get this fix landed.
-
-Absolutely, no need to worry for now - take care of yourself and your 
-loved ones! I was merely stumbling over this series while cleaning up my 
-inbox, wondering if this is still stuck waiting for review/feedback. No 
-need to rush anything or be stressed.
-
-In case I have time to look into this in the future, I'd coordinate in 
-this thread (especially, asking for feedback again so I know where this 
-series stands)!
-
--- 
-Thanks,
-
-David / dhildenb
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+V291bGQgeW91IGxpa2UgdG8gcHVyY2hhc2UgYW55IG9mIHRoZXNlIGZvbGxvd2luZyBkaXNjb3Vu
+dGVkIDkwJQ0KYWNjdXJhdGUgZGF0YWJhc2VzPyBXZSBoYXZlIGdsb2JhbCBjb3ZlcmFnZSBvZiB0
+aGVzZSBkYXRhYmFzZXMuDQooNTAgRlJFRSBzYW1wbGUgYXZhaWxhYmxlIG9uIHJlcXVlc3QpDQox
+LsKgwqAgwqAxMzcsNDkzIEF0dG9ybmV5cyBhbmQgTGF3eWVycyBlbWFpbCBsaXN0IGF0ICQxLDM3
+NA0KMi7CoMKgIMKgMTI4LDk3MiBBcmNoaXRlY3RzIGFuZCBpbnRlcmlvciBkZXNpZ25lcnMgZW1h
+aWwgbGlzdCBhdA0KJDEsMjg5DQozLsKgwqAgwqAyMDAsMDAwIEJ1aWxkZXJzLCBwcm9wZXJ0eSBk
+ZXZlbG9wZXJzIGFuZCBjb25zdHJ1Y3Rpb24NCmluZHVzdHJ5IGRlY2lzaW9uIG1ha2VycyBlbWFp
+bCBsaXN0IGF0ICQyLDUwMA0KNC7CoMKgIMKgMU1pbCBDRU9zLCBvd25lcnMsIFByZXNpZGVudHMg
+YW5kIE1EcyBlbWFpbCBsaXN0IGF0ICQ1LDAwMA0KNS7CoMKgIMKgMjAwLDAwMCBDRk8sIENvbnRy
+b2xsZXIsIFZQL0RpcmVjdG9yL01hbmFnZXIgb2YgRmluYW5jZSwNCkFjY291bnRzIFBheWFibGUs
+IEFjY291bnRzIFJlY2VpdmFibGUsIEF1ZGl0IG1hbmFnZXJzIGVtYWlsIGxpc3QgYXQNCiQyLDAw
+MA0KNi7CoMKgIMKgNTAwLDAwMCBDSU8sIENUTywgQ0lTTywgVlAvRGlyZWN0b3IvTWFuYWdlciBv
+ZiBJVCwgSVQNCkNvbXBsaWFuY2UsIElUIFJpc2ssIEJJLCBDbG91ZCwgRGF0YWJhc2UgYW5kIElU
+IFNlY3VyaXR5IG1hbmFnZXJzDQplbWFpbCBsaXN0IGF0ICQ1LDAwMA0KNy7CoMKgIMKgNTAsMDAw
+IENvbW1lcmNpYWwgcHJvcGVydHkgb3duZXJzIGVtYWlsIGxpc3QgYXQgJDEsMDAwDQo4LsKgwqAg
+wqA1MCwwMDAgQ29tcGxpYW5jZSBhbmQgUmlzayBNYW5hZ2VtZW50IG1hbmFnZXJzIGVtYWlsIGxp
+c3QgYXQNCiQxLDAwMA0KOS7CoMKgIMKgMTAwLDAwMCBDUEEgYW5kIEJvb2trZWVwZXJzIGVtYWls
+IGxpc3QgYXQgJDIsMDAwDQoxMC7CoMKgIMKgMTAwLDAwMCBEYXRhIHNjaWVudGlzdCwgRGF0YSBB
+bmFseXRpY3MgYW5kIERhdGFiYXNlDQpBZG1pbmlzdHJhdG9ycyBlbWFpbCBsaXN0IGF0ICQyLDAw
+MA0KMTEuwqDCoCDCoDEwMCwwMDAgRS1jb21tZXJjZSBvciBvbmxpbmUgcmV0YWlsZXJzIGVtYWls
+IGxpc3QgYXQgJDIsMDAwDQoxMi7CoMKgIMKgNTAwLDAwMCBFZHVjYXRpb24gaW5kdXN0cnkgZXhl
+Y3V0aXZlcyBlbWFpbCBsaXN0IGF0ICQ1LDAwMC0NClByaW5jaXBhbHMsIERlYW4sIEFkbWlucyBh
+bmQgdGVhY2hlcnMgZnJvbSBTY2hvb2xzLCBDb2xsZWdlcyBhbmQNClVuaXZlcnNpdGllcw0KMTMu
+wqDCoCDCoDEwMCwwMDAgRW5naW5lZXJzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQoxNC7CoMKgIMKg
+MTAwLDAwMCBFdmVudCBhbmQgTWVldGluZyBwbGFubmVycywgb3JnYW5pemVycywgYW5kDQpleGhp
+Yml0b3JzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQoxNS7CoMKgIMKgMTAwLDAwMCBGYWNpbGl0aWVz
+LCBvZmZpY2UgYW5kIG1haW50ZW5hbmNlIG1hbmFnZXJzIGVtYWlsDQpsaXN0IGF0ICQyLDAwMA0K
+MTYuwqDCoCDCoDEwMCwwMDAgRmluYW5jaWFsIHBsYW5uZXIvYWR2aXNvcnMgZW1haWwgbGlzdCBh
+dCAkMiwwMDANCjE3LsKgwqAgwqA1MCwwMDAgRmxlZXQgbWFuYWdlcnMgYW5kIFRydWNraW5nIGNv
+bXBhbnkgb3duZXJzIGVtYWlsDQpsaXN0IGF0ICQyLDAwMA0KMTguwqDCoCDCoDEwMCwwMDAgR2Vu
+ZXJhbCBhbmQgY29ycG9yYXRlIGNvdW5zZWxzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQoxOS7CoMKg
+IMKgNTAsMDAwIEdvdmVybm1lbnQgZGVjaXNpb24gbWFrZXJzIGVtYWlsIGxpc3QgYXQgJDEsMDAw
+DQoyMC7CoMKgIMKgNTAsMDAwIEhlYWx0aCwgZW52aXJvbm1lbnQgJiBTYWZldHkgbWFuYWdlcnMg
+ZW1haWwgbGlzdCBhdA0KJDEsMDAwDQoyMS7CoMKgIMKgNTAwLDAwMCBIaWdoIG5ldCB3b3J0aCBp
+bmRpdmlkdWFscy9pbnZlc3RvcnMgZW1haWwgbGlzdCBhdA0KJDUsMDAwDQoyMi7CoMKgIMKgMk1p
+bCBIb21lb3duZXJzLCBBcGFydG1lbnQgb3duZXJzIGFuZCBCdWlsZGluZyBvd25lcnMgZW1haWwN
+Cmxpc3QgYXQgJDUsMDAwDQoyMy7CoMKgIMKgMzAwLDAwMCBIb3NwaXRhbHMsIGNsaW5pY3MsIHBy
+aXZhdGUgcHJhY3RpY2VzLA0KUGhhcm1hY2V1dGljYWwgYW5kIGJpb3RlY2hub2xvZ3kgY29tcGFu
+eeKAmXMgdG9wIGRlY2lzaW9uIG1ha2VycyBlbWFpbA0KbGlzdCBhdCAkMywwMDANCjI0LsKgwqAg
+wqA1MDAsMDAgSFIsIFRyYWluaW5nLCBMZWFybmluZyAmIERldmVsb3BtZW50LCBFbXBsb3llZQ0K
+QmVuZWZpdHMsIFRhbGVudCBBY3F1aXNpdGlvbiwgUmVjcnVpdGluZyBkZWNpc2lvbiBtYWtlcnMg
+ZW1haWwgbGlzdCBhdA0KJDUsMDAwDQoyNS7CoMKgIMKgNTAsMDAwIEluZGl2aWR1YWwgaW5zdXJh
+bmNlIGFnZW50cyBlbWFpbCBsaXN0IGF0ICQxLDAwMA0KMjYuwqDCoCDCoDUwLDAwMCBJU1YvVkFS
+cy9SZXNlbGxlcnMgZW1haWwgbGlzdCBhdCAkMSwwMDANCjI3LsKgwqAgwqA1MCwwMDAgTG9naXN0
+aWNzLCBzaGlwcGluZywgYW5kIHN1cHBseSBjaGFpbiBtYW5hZ2VycyBlbWFpbA0KbGlzdCBhdCAk
+MSwwMDANCjI4LsKgwqAgwqAxTWlsIE1hbnVmYWN0dXJpbmcgSW5kdXN0cnkgZGVjaXNpb24gbWFr
+ZXJzIGVtYWlsIGxpc3QgYXQNCiQ1LDAwMA0KMjkuwqDCoCDCoDUwMCwwMDAgTWFya2V0aW5nLCBz
+b2NpYWwgbWVkaWEsIFNhbGVzLCBkZW1hbmQgZ2VuZXJhdGlvbiwNCkxlYWQgZ2VuZXJhdGlvbiBk
+ZWNpc2lvbiBtYWtlcnMgZW1haWwgbGlzdCBhdCAkNSwwMDANCjMwLsKgwqAgwqAyMDAsMDAwIE5l
+dyAmIFVzZWQgQ2FyIERlYWxlcnMgZW1haWwgbGlzdCBhdCAkMiwwMDANCjMxLsKgwqAgwqA1MDAs
+MDAwIE9pbCwgR2FzIGFuZCB1dGlsaXR5IGluZHVzdHJ5IGRlY2lzaW9uIG1ha2VycyBlbWFpbA0K
+bGlzdCBhdCAkNCwwMDANCjMyLsKgwqAgwqA1MCwwMDAgcGhhcm1hY2lzdCBhbmQgcGhhcm1hY3kg
+b3duZXJzIGVtYWlsIGxpc3QgYXQgJDEsMDAwDQozMy7CoMKgIMKgODAwLDAwMCBQaHlzaWNpYW5z
+LCBEb2N0b3JzLCBOdXJzZXMsIERlbnRpc3RzLCBUaGVyYXBpc3RzDQplbWFpbCBsaXN0IGF0ICQ0
+LDAwMA0KMzQuwqDCoCDCoDEwMCwwMDAgUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQgTWFuYWdl
+cnMgZW1haWwgbGlzdCBhdA0KJDIsMDAwDQozNS7CoMKgIMKgNTAwLDAwMCBTbWFsbCBCdXNpbmVz
+cyBvd25lcnMgZW1haWwgbGlzdCBhdCAkNSwwMDANCjM2LsKgwqAgwqAxMDAsMDAwIFRlbGVjb20g
+bWFuYWdlcnMsIFZPSVAgbWFuYWdlcnMsIENsb3VkIGFyY2hpdGVjdCwNCkNsb3VkIG1hbmFnZXJz
+LCBTdG9yYWdlIG1hbmFnZXJzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQozNy7CoMKgIMKgMTAwLDAw
+MCBUcmFkZXIvaW52ZXN0b3JzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQozOC7CoMKgIMKgMTAwLDAw
+MCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3RvbWVyIFNlcnZpY2UgYW5kDQpDdXN0b21lciBT
+dWNjZXNzIG1hbmFnZXJzIGVtYWlsIGxpc3QgYXQgJDIsMDAwDQpQbGVhc2UgbGV0IG1lIGtub3cg
+eW91ciB0aG91Z2h0cy4NCkFkZGlseW4gRGF2aXMNCkVtYWlsIERhdGFiYXNlIFByb3ZpZGVyDQor
+MS0gKDY3OCkgNzQ1LTgzODUNClVuc3Vic2NyaWJlDQpodHRwczovL2JyYW5kdHJlbmRvbmxpbmUu
+eHl6L2FwcC9pbmRleC5waHAvbGlzdHMvcnkzODF2eW53N2E0Yi91bnN1YnNjcmliZS9ycTkxNXh4
+bXhwOGY3L21kMTY3N3p3ZndjODcNCsKgDQrCoA0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1u
+dmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgt
+bnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
