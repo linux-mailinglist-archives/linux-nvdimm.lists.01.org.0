@@ -1,137 +1,143 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F56033881F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Mar 2021 10:01:29 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D963389DE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Mar 2021 11:19:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DD37A100EAB4D;
-	Fri, 12 Mar 2021 01:01:26 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.71.158.62; helo=esa19.fujitsucc.c3s2.iphmx.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
-Received: from esa19.fujitsucc.c3s2.iphmx.com (esa19.fujitsucc.c3s2.iphmx.com [216.71.158.62])
+	by ml01.01.org (Postfix) with ESMTP id 94192100ED48C;
+	Fri, 12 Mar 2021 02:19:18 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=68.232.151.212; helo=esa3.fujitsucc.c3s2.iphmx.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
+Received: from esa3.fujitsucc.c3s2.iphmx.com (esa3.fujitsucc.c3s2.iphmx.com [68.232.151.212])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3F4A1100EAB4C
-	for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 01:01:23 -0800 (PST)
-IronPort-SDR: XwMPvmtS+QhyaW0mgQMq0tkoYtWMwLEccBeT5Iy7LTixvkSgUmj7X822rXwLF+vphUfE12FweD
- ftJvoOIwyaEycQrePYSc9Bya4t1OsBRyVgurx4wVpM2blv5xkhpLu4qh9a8SZ5g7EdkJZIgfgS
- A/ycrOONk+qTZ5WyhrPbiARNsC8jLdIo6ElpfT5Qjuxstv9vT3mWExkKkTcPM9IUyc24x8Pyja
- QU164iKOGM3ShCxXZkrcKxFK1M+cuHc3rHd+rAS4EAX548gktDDN72/qE4/n2Ni4GGwT4ZAAGP
- KYg=
-X-IronPort-AV: E=McAfee;i="6000,8403,9920"; a="27513876"
+	by ml01.01.org (Postfix) with ESMTPS id C52C0100EF264
+	for <linux-nvdimm@lists.01.org>; Fri, 12 Mar 2021 02:19:14 -0800 (PST)
+IronPort-SDR: BE2kqCUOs+YbkO4/TfSI2mmOojSUF5CJrJYiQamO0sI0APOg/iE5xsvJAtjI/uvkMY0tMi3MiG
+ kSU7Po0gumyjlMFHYbzEGws4HXXVihAUkRWQRGI6sQgI6ri4p8ptYlOxxFB54exDQ1f8DwIDWZ
+ 7Zu+59skBnN8Sh4WsL5Ki2AImhrN6yyAbMyqBkILa0DSgHCE7Zso5ZXUH9YWgMqvcfXhdVdHEX
+ Ln2qXqYj/VDzmW6Q2MEwgPZa+MKbO0MAZtK+4Gd+3cn0CWFH5o7VqG8ExPvt05CdgYtKmX+OFH
+ ovE=
+X-IronPort-AV: E=McAfee;i="6000,8403,9920"; a="35826815"
 X-IronPort-AV: E=Sophos;i="5.81,243,1610377200";
-   d="scan'208";a="27513876"
+   d="scan'208";a="35826815"
 Received: from mail-ty1jpn01lp2054.outbound.protection.outlook.com (HELO JPN01-TY1-obe.outbound.protection.outlook.com) ([104.47.93.54])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2021 18:01:19 +0900
+  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2021 19:19:09 +0900
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=J6Vn/9orDAW5RAPYuf7Pbk/luxrTHBcAoBq/ROqQKVvVFoZeQMoJUQZcmowzrIaQz+S/YZXZI/M797IZzZFuBrcRdXWFHbsk6CeAmf4Iv8SZQGm29pfowxTYC+xKS40fuZB9U0wx2wTxONx1mMIPK1wgAJ4uCUFtZMh6oT25lgig9PnpIquZYBHt784lmRllBx+Wzm8topnWX9Wu6/yjpLUcJ+kPOVVHE0Xiz8LXf3PIiJHAE/mZTf/jhHU3o7g2+r4SjVWo4Y7kNlmFsgXIQVa/LRuEweQqt4KcJkVqRuGCFIUc3fUtJbMvMJpA9BRRs2uouUaOUNzffrfSVQ8sBA==
+ b=bOVl0PBlvOINu+7h2pT++bhSeoxC8nJMmGVLA42gSJfVd4We/sXSv2fzXGoAv9FPguhzryAPHbN9YYcC3Z6XrXBy6o34XlZguMGEucCgbmzxkyCsudkvCZ1eH+9gONqHe91SSF1pr0drqNdAh8q176/LDJKUZJTzyE8apTUPkq5D3DhkiaFS6ji3F2BNiVMgLwmcMN5Onc5fXkjSbeNdzHB4CZrYRfD/S0UYfBz9Ef2uK/NoV6e6n0uVURJxhLkNZUPBK95Ms7PWHf46RT915QFk/1lUm9w9CtkohpuGlLy+1er1gZg6GNfWbKBfUnSlzaLCmObjkrSDO/6srFm5XA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yk+YTFH8WKhgYZ09EllwyG/0uEjhEVlJiYWnTzQ+u3U=;
- b=Wd4sM+KpTBbr8mxvBHYhDUoN6RTZYDI1nHUo0RnYAQqob/iNow9j8dM068+nBBCqR8OpeWYxjShpj3DDOVGybL4AWczHfcf/oi1zU/zrkUopAQII1B/VvQBheeydbgA3avwDnq4rKs+CT/UcRmr4V81zcQSyMFmYcZP1JL3prm0n3BYQFgrI5eusDXBzEIY0W+xcxPuBU6TvripgMPC6+W3/G6nRdWLIMfA88aMyDiJrxrjM8bIAdgNItgiKPahoAlE5RlYF1zalLAxDST44i7oiRv39R0coTTJXgap+D0p9gHqC0Eif21t+UAPYMi3kOITZDR/g/pgU2YDP4nHo/g==
+ bh=5A+q/LIVtl8nw4QRQMucXxYfNJLCAqe3llPGRr2TjfE=;
+ b=OodlpXl9f3281NwYpJ3Q8SHdNuePhycQXOG2N30zDFbwmddPtWg88zOKIrU7y5fFYLbnsznPgWz0vt83INGXC2AoMLwtAw8HkU4jyWYb3pYkxKYJ8ed1UmQEHusZFKi81rHGO2/9FKYMIlUBx/qyRWSVlX9XrIBG3VF6oKA0+7UjODd1YfscjABVAP2y6moeEeS0iF9FTfd79TrUm1zJEt6AfqxOcLM9z4l9jRRLnoQXFTf0zMpbZe9B1+WpXaptv9HBJnUD+qHRIwsQI5qvD7oneB84tWjSKt9R+PUmeemJQbBLpW4AFWjRdASHOjYiQE+Bz5vXlKgCvf1F9w4MjQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
  dkim=pass header.d=fujitsu.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yk+YTFH8WKhgYZ09EllwyG/0uEjhEVlJiYWnTzQ+u3U=;
- b=IGD1f4Zicqe2N4bRNe4UAD2tHEEXwFYsj6IZHz9Xb1wSWjlNsb6MSBDIJ+T5HEBG0etXA+6GAlKEFW82CGXsEc4nQ7RVbcPwJNlmBFGDVe803j/XjnLd6114F7qe6yEJE3y8q7kY+Pbe0KWdKM11f6ziCXsOikaH2t9stxIgV+8=
+ bh=5A+q/LIVtl8nw4QRQMucXxYfNJLCAqe3llPGRr2TjfE=;
+ b=S+HSMrYcSBXyPkW63VZ0pXOkK5+KfW+NBWZZAsrw/HYpl4wVEy4R/PEEVWlHkHDsDNcQIP8uFhRjiGA0renGkZaVkLpuNOxRMIWaXbWV4aO7LvvuB02tNTjCE4PIGxZE4rXjVtmDHotdFhDWg8lKtuV4itvmzh8XF20TO88mJ00=
 Received: from OSBPR01MB2920.jpnprd01.prod.outlook.com (2603:1096:604:18::16)
- by OS3PR01MB6008.jpnprd01.prod.outlook.com (2603:1096:604:d7::6) with
+ by OSBPR01MB3285.jpnprd01.prod.outlook.com (2603:1096:604:1f::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.17; Fri, 12 Mar
- 2021 09:01:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3912.19; Fri, 12 Mar
+ 2021 10:18:59 +0000
 Received: from OSBPR01MB2920.jpnprd01.prod.outlook.com
  ([fe80::c482:fa93:9877:5063]) by OSBPR01MB2920.jpnprd01.prod.outlook.com
  ([fe80::c482:fa93:9877:5063%3]) with mapi id 15.20.3912.027; Fri, 12 Mar 2021
- 09:01:16 +0000
+ 10:18:59 +0000
 From: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: RE: [PATCH v2 02/10] fsdax: Factor helper: dax_fault_actor()
-Thread-Topic: [PATCH v2 02/10] fsdax: Factor helper: dax_fault_actor()
-Thread-Index: AQHXC9VNT4eMfybPE02XhaXtAzw9EqpyB2AAgA4UeOA=
-Date: Fri, 12 Mar 2021 09:01:15 +0000
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: RE: [PATCH v3 01/11] pagemap: Introduce ->memory_failure()
+Thread-Topic: [PATCH v3 01/11] pagemap: Introduce ->memory_failure()
+Thread-Index: 
+ AQHW/gjzAa5hnh6PaUq187fVBTbxkqp3lL+AgAIDAHSAACKcgIAARgh1gACNxwCABb8rEA==
+Date: Fri, 12 Mar 2021 10:18:58 +0000
 Message-ID: 
- <OSBPR01MB29207FE4814F0FDA5C08676AF46F9@OSBPR01MB2920.jpnprd01.prod.outlook.com>
-References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
- <20210226002030.653855-3-ruansy.fnst@fujitsu.com>
- <20210303092808.GC12784@lst.de>
-In-Reply-To: <20210303092808.GC12784@lst.de>
+ <OSBPR01MB2920E46CBE4816CDF711E004F46F9@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+References: <20210208105530.3072869-1-ruansy.fnst@cn.fujitsu.com>
+ <20210208105530.3072869-2-ruansy.fnst@cn.fujitsu.com>
+ <CAPcyv4jqEdPoF5YM+jSYJd74KqRTwbbEum7=moa3=Wyn6UyU9g@mail.gmail.com>
+ <OSBPR01MB29207A1C06968705C2FEBACFF4939@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+ <CAPcyv4iBnWbG0FYw6-K0MaH--rq62s7RY_yoT9rOYWMa94Yakw@mail.gmail.com>
+ <OSBPR01MB29203F891F9584CC53616FB8F4939@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+ <CAPcyv4gn_AvT6BA7g4jLKRFODSpt7_ORowVd3KgyWxyaFG0k9g@mail.gmail.com>
+In-Reply-To: 
+ <CAPcyv4gn_AvT6BA7g4jLKRFODSpt7_ORowVd3KgyWxyaFG0k9g@mail.gmail.com>
 Accept-Language: en-US, zh-CN
 Content-Language: zh-CN
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-authentication-results: lst.de; dkim=none (message not signed)
- header.d=none;lst.de; dmarc=none action=none header.from=fujitsu.com;
+authentication-results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=fujitsu.com;
 x-originating-ip: [180.96.28.100]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 54a9c150-8c32-497a-d769-08d8e53564e2
-x-ms-traffictypediagnostic: OS3PR01MB6008:
+x-ms-office365-filtering-correlation-id: 035cdfb5-f722-4166-77e7-08d8e5404029
+x-ms-traffictypediagnostic: OSBPR01MB3285:
+x-ms-exchange-transport-forked: True
 x-microsoft-antispam-prvs: 
- <OS3PR01MB60088C492D598BD1204E6352F46F9@OS3PR01MB6008.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
+ <OSBPR01MB3285FF7DDC5D33573D21ABDCF46F9@OSBPR01MB3285.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info: 
- 7kmmeD4H5zkV3RVC1U5hnXEtyF6PDsktGhQgqN5r/YZM21UJKxyD2b4buhjuIZKD9zD5hc7MQYqv6oh3MV0S6U65/lCWiRMFtfuGEAy5nn1ZzeZ66CQNUPce4tSXJIVCTjw9XALK1JbI3jYglIFiX/VwUlRMeWIjtMU483g/K2obv69V3swFm7m0oP9R/4yOl2vT8fteU6KxqGJZgUkpngmJ+lVWqTBq89wq7H+MMt9+d/XIIBg+OW8UfOJzfaBEPHnlAwc4pimTfxgmkoTa1ZyKharcMDAiNW1apg+yOaQBVt5tJW4tGTLItkgmS/BVEHOh8QEKQjUn25sLSfDYPL26p1fmXyddc4YHjIPwdkt1UE2NJp2UuICX7XrUU4NVJ72+eP6WK5RCnXd9bYkNGoCzYei4ykY/8T4FFoO+3ox6nbra/QRiPzypU4qzh3Ypg3q58FPiilRVlbWylXMd9p7XTAKsBEChe8tqfS5ShMTysNFnG4825y8Um+GVXjlUfE7ZkiMKuF86cM3kQMlmyA==
+ wezIMGHhX/LzoDNXoLe/G9/AIK8zzdReRQWz+f1UbDjtmXIPQdB48Tq1Kn9EggqNFy3stPHrinDyfBQNGS4QWTWNu5Uqm6OX8euhYU8+vMEaVXbq7g6dyAmZB6ZdkXdqo4bSiATvcrzb20aMmjWyAv5Sjt+gun4WoQ7RslzwcfrX93N1hdGqNxmNKueqfr2uFwyP7z/6GCVWQGAZPD1HlChD4WS6lq95BOizTKdqAQDtDAMA4ZHtHz14qDLv/oJv//1gMN4RpKmHJbVL0NDNQLM6EwAK3RNCUOUVMn3QefoaELd/klyZDZ8a/pR9ICghKfmtqpJsXW4Jr7bnJ+RvQxgocemoWcMkt4CTJTSt6FCxUHdNU/iJkDC8T80fTIu4vhM1mIDNr809R77nqTMmdNWY0qX+O0350WrfAjSZICN5H/wlOj4UXa6UteVgtsPGhdLu3hR7XHo2IUcLb5lCexdg9s6G9Bw3LwFaORLHMLVqrzx/Oqly1yK6hbG5aoluNvrKvOB5ogyviCeEF4JsLw==
 x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSBPR01MB2920.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(376002)(396003)(366004)(346002)(6916009)(7416002)(4326008)(478600001)(6506007)(5660300002)(316002)(71200400001)(55016002)(54906003)(7696005)(33656002)(9686003)(64756008)(26005)(66476007)(66556008)(85182001)(76116006)(66446008)(52536014)(186003)(2906002)(8676002)(86362001)(8936002)(66946007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSBPR01MB2920.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(346002)(396003)(366004)(376002)(39860400002)(33656002)(9686003)(76116006)(52536014)(7416002)(83380400001)(5660300002)(316002)(66556008)(8936002)(26005)(66946007)(6916009)(55016002)(7696005)(66446008)(186003)(6506007)(53546011)(478600001)(71200400001)(54906003)(2906002)(4326008)(86362001)(8676002)(107886003)(85182001)(64756008)(66476007);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata: 
- =?gb2312?B?USttYkl0dE00WWYyMjNzTThsYUh0WWc4WlZKSGtWUzd2N292UzR2R2k5YzM5?=
- =?gb2312?B?cWo3SCtqNHp6RmhXK0dKUlpEdGU5NnQvZ1BweXJld0lDL2JLRnc2VFVtbkIw?=
- =?gb2312?B?ODZLOUR4dER3Yyt1VGo3VzdSYU9mRzlkZ3ZxNmZIRVlDSFpQSXNGSUsvekda?=
- =?gb2312?B?UWtvMld0WnZOMy9XcVdVeEpFZklFUGYyKzV4YXNJTmV6bHAwMzhpNzVnRzVJ?=
- =?gb2312?B?TnVTNzRpWGEzY0l5U1VUNVhWOGhZRDVPbVEzNys4b1lnd0ZHdHJST09BUHZO?=
- =?gb2312?B?K3RBcmJMamtCUVRnQlFIN0o4SmpOWUYwZFp3K3g3aitucjZ4ZHdsbFBldy80?=
- =?gb2312?B?RVRmRkJJOXJjMW8vZE1FNVF0VEFhUzc5aHk2TDk4VTRmeTN1b0swcE1Sc050?=
- =?gb2312?B?cnZPYWlXelVGWnVWNVJBTzA5UjVhbmxuc2JLemNPSXJZdzl2WGVUQk9OMVdO?=
- =?gb2312?B?UzJxVkV5NWVJU0JYdkJjQmpLZVUvdEwrNDJjUGpXb0xXQmNKam1jbDlRbWVu?=
- =?gb2312?B?UkkvQzc1T2l3cUMvUWhWQ3lUZlFpcERiN2M2QVV3c08vZVlBNExaMjVNeGty?=
- =?gb2312?B?aDBqamwvSUNMc3ZNQm5CK0J6WUJ0bTJnaEFPbVNDbVpGWlQzQ3VzMXdDSFVG?=
- =?gb2312?B?b29RNW9CZzZxaWZ5RUxYM2xCcHdkWVBnYncwakxxSjIxdTY2SjFXUi9wcm1S?=
- =?gb2312?B?N3k4V3puNFBOYmp4LzNJRDB5NnpQTWI1K25Mazg2Nk5HMDIxdGhyWEtqeHRW?=
- =?gb2312?B?cFoyOUxvTDBJcHcvOStzUlNjY2JzK3JJK2ovaEw3ZWVuVHVOaTcvdndBNG5K?=
- =?gb2312?B?N1pYYk9UeHVWU1d1c2JDWEF2Tk90V2k1dFNNZVl6U0QvbldFK0dzQXJBVjZD?=
- =?gb2312?B?aGxDZC9Cb2dRamlxZnJTSnp5OW9pZ3ZEQ3RsRC90U2M0OENDYndSMkYxRFZ3?=
- =?gb2312?B?QUZ0ZEdhZDZCNWxURUM1ZTRqZ3JCOE1ZanQvK05YdFN2K3kwY09xSnRoWFBv?=
- =?gb2312?B?bHR1Rm5PYXBXQmhFaXZkR0V1Wko5T1RxTGphRW1RWnE2MlliVmFLVXFoK0Iz?=
- =?gb2312?B?YkttVmJETEdpY0VoQk5FTGwrM2ZZeUFvVnJQREtaUy8wUmFiejV0aVNMdkx0?=
- =?gb2312?B?ZDlJUitJTFQveXdEVUxnRVZMNGJoS0RuYnBSdkZrL2JNdlUxUTZRQkowYmRr?=
- =?gb2312?B?RWJWTEJtb0tYU3Fxd2J4NlpyUnpPMWhhODhrR3A3MktrUWZJM1VYS1V4dDhh?=
- =?gb2312?B?eUFoaWpzbFRxZ1hoaVh1SzlMeHRYQ1NBTzM4MU9rQ2hsWElrWVVoQTRoYTFr?=
- =?gb2312?B?QjVUNVc5V05ONHNueFkzbDZxNUZZUVZOazhiOHZOU0lJWFUwQnpNWHBwWmIx?=
- =?gb2312?B?V3FGTUFOeFJNeFNBLzhmbGxhRnZOZWJQYjcwaFlRMjdqZDExZXJCM3c2SDdv?=
- =?gb2312?B?SEdTeUVnNnp6S3hFWGdqMWdoWmVoYTBWYzV2cUF0ZUFnV1dzTmpnWjg5d0x5?=
- =?gb2312?B?YTZKYlE0bDhwbFFQZm1EblN6VEluSVE4ZmNYdFhscTlEVGV6TWlOOGZJRUs0?=
- =?gb2312?B?bUdXY0VFTFpWZmVuTyszOGdQY0t4RWNMQ0kyYTljeEVSdjRZZm9MU2JFSFBB?=
- =?gb2312?B?cFV5MTZ5R3VIOGh4Y3FNR0o0d2ovR24zc1J3UkJReCtNUFV2TG1icVRkb3M0?=
- =?gb2312?B?T0VNY0lXaEN6bGJqTUVoclFibFExWGw2RXhMUXBPYmVJbUExMDBzOXcrdFZR?=
- =?gb2312?Q?G726GbID3S6M2b1TXWOmXMsOFOR18SIHIUJTo/L?=
-x-ms-exchange-transport-forked: True
+ =?utf-8?B?eVNWV2hnQVNodmswNFdIb0doQlBMbzhqVUsrK3JlcWFWQjR5NmVCY2E4cGhq?=
+ =?utf-8?B?Q3MyZ3dEUk16VEYzU21FMFFyV1pGVUlvSk9IOURESEwyb01oSFkyYzcyeUdr?=
+ =?utf-8?B?czN3L0cveFhQNThUZk11M2VlYW1Wd0hHTzluTEQvUmY5ZDZyQ21DUTE0RG5V?=
+ =?utf-8?B?ZUNLZFlYalBsZngxWGFKem5EcllyUXJjWGNFbFJhbzVYRFJPaDUxa0Znendp?=
+ =?utf-8?B?WW81MGNBRGJjaWFHU0NCbjZUTFR4azZUVHJyQStRZGdudDFwWFlCZmRLUW40?=
+ =?utf-8?B?Qk1zelkxRkRxamE0Q1hwWmZVa3k4bUhSVUZFYjVLcGVJdmYxZUJHbFg4U3Vt?=
+ =?utf-8?B?VXFuYXNZUFg2bElxVFJjVXdXL3pJOVN1NVkramJpZ0xOcHZuQnIvMnN4Q25P?=
+ =?utf-8?B?dnY2TXorK3c3Z0xQdmo4MTZjUlVsS1Zla1Rjd1Nrdm8rbmEzb0UzZGxsOFA2?=
+ =?utf-8?B?Z1RNNVFSY0NwRkttZmV0cXJvWmNxSmVNbU5LM2NrY2N5eG1qUlRSa2FBWUda?=
+ =?utf-8?B?b2QxQktGcVM3NFFyNTVTTStDUTZVUzRZSzI5SUJrYTlrWnpuZjJjeTcxbGl3?=
+ =?utf-8?B?NFFKSUgvUi9oYjYxQ0FOK0VyZ3Vmb1VkbCtNQXFhUzZvNitLUm1welg0Njk3?=
+ =?utf-8?B?em5MeUErVlNFOVNoRnBkekdCcHZIc1BWa2pmeHFHMm1OZHVFV0QwNUJaNlMz?=
+ =?utf-8?B?Z2dqNDdGV2dBUWdYM2lHMjZNT0F6Y0xlbVBEODdycUthNDRBVklZbVV0UG50?=
+ =?utf-8?B?bFRTYlY5QmVIMmRpZXg0dCtNODk3aklaUjMzbnYwQ1dZVWt5TDZTRDF0R0xs?=
+ =?utf-8?B?c3dZcDBnYmJ1YjVPcFlrQ0xJdXgzVGtVR0UraXFyREpxSUora3VHanZoWTMr?=
+ =?utf-8?B?VVFYS204UVB4b3QzUElDdjdWeGlja3hOckZ3TG50SURRdXhOc1pKc2JiWGE5?=
+ =?utf-8?B?MXNKYXV6Vm13RDNpSzduRUROeFhOME5YbDlzRVpxSk41WElxc000RFIrSXRU?=
+ =?utf-8?B?R3FuTEhZcHNqYnRxZDAxaENUTFVteUUwUWhyYW9SVUtxN1drS2ZMa0ZwZGZZ?=
+ =?utf-8?B?WHpzdnJzRmRXY09uQk1kb0FTS2VLb3k1MS9sVTl3T0wwWFlmSXFuc3V0eURl?=
+ =?utf-8?B?aDMydE15V2dOVlNCemlsdmJlTStKaXhuR05YTmZGT1hTT1JMb3g5OEFIdS9M?=
+ =?utf-8?B?NTdtS2h5WW00VHNRaXBFZ0huQVhWNU8zL3RHWjFIdkk0bXRFZjE1b01FeDdt?=
+ =?utf-8?B?T0V0ZWNlK3hZMUoycHRUSWZuTEtQenJFVkxmanhIM3VIeWdIVVYvZHVpcDNx?=
+ =?utf-8?B?eWd6ZGFnMnE0NFpZNE5PdVZBdnFUME83ZER6S0EwZklCZWdrczRRSHAyTnRx?=
+ =?utf-8?B?dGo5VmZRdkhWblBjQlk1Q0RPVXFsVENLSU1sN3JFWmVBOXd5NHBQYTFIUjZQ?=
+ =?utf-8?B?RlJyU2R1MFRQV3NQbms0WEJDV0VRRlRiZUZ2UU9zN3daWUNPT0xXSERtcUc0?=
+ =?utf-8?B?c1R5WGZlcUxGZlJQdlhFUjR1YmFqOVZ4NExkVzA4OE11dmZNbUxQZ0s3L0RZ?=
+ =?utf-8?B?NEkrNG1DdjhablJER2tuWXBndCtQbktLVUdiUmV5dmErZDlseFlDV3Q2ZVp2?=
+ =?utf-8?B?TDJXV25rV2NZRzNrSDNIdlk0NFF3Q1lXbFVXMWludURMbnBoTmpSWHJRS0FF?=
+ =?utf-8?B?dWdZSFZMbDJyeDJzKzdjelJQR3JyRVNwU1FwOXZRMXV2ZGowd0I2c1NGRTVj?=
+ =?utf-8?Q?qSqJb39YAxFfNo1ceMNqst3pS+aZlYkoQRzCdIN?=
 MIME-Version: 1.0
 X-OriginatorOrg: fujitsu.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: OSBPR01MB2920.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54a9c150-8c32-497a-d769-08d8e53564e2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2021 09:01:16.0131
+X-MS-Exchange-CrossTenant-Network-Message-Id: 035cdfb5-f722-4166-77e7-08d8e5404029
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2021 10:18:58.9642
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /AEPTqwh8cAviCA9l1QTBTEbIEEpYpFqlxgzvxG/jmU0FMBZBVhRxH65sLsjCEz0PSdQ62R1uHT6+0QSDcONYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB6008
-Message-ID-Hash: QD2IEHVMGQKIBO7OAGVELUJ2MTPYOECH
-X-Message-ID-Hash: QD2IEHVMGQKIBO7OAGVELUJ2MTPYOECH
+X-MS-Exchange-CrossTenant-userprincipalname: 1eZsFLftvM3Vo++GjOZfyLJ6WHkqfsDwkjPVaPdnZ6qaMSW+ucjusr7wZlwsTmWe9BYyYqfWSBUeuguVUgwwlg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB3285
+Message-ID-Hash: IBAHSAJOYQ6WEWNQXL2AAB6MO4A4CLM2
+X-Message-ID-Hash: IBAHSAJOYQ6WEWNQXL2AAB6MO4A4CLM2
 X-MailFrom: ruansy.fnst@fujitsu.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "ocfs2-devel@oss.oracle.com" <ocfs2-devel@oss.oracle.com>, "david@fromorbit.com" <david@fromorbit.com>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>
+CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-xfs <linux-xfs@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, device-mapper development <dm-devel@redhat.com>, "Darrick J. Wong" <darrick.wong@oracle.com>, david <david@fromorbit.com>, Christoph Hellwig <hch@lst.de>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, Goldwyn Rodrigues <rgoldwyn@suse.de>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "y-goto@fujitsu.com" <y-goto@fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CQTTWPR23PP2BH6BNUK677D6P4IGRE42/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AXZEF7UDSPBDU242H3K4X2JE24V5JHE7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -142,72 +148,119 @@ Content-Transfer-Encoding: 7bit
 
 
 
-> > +	/* if we are reading UNWRITTEN and HOLE, return a hole. */
-> > +	if (!write &&
-> > +	    (iomap->type == IOMAP_UNWRITTEN || iomap->type ==
-> IOMAP_HOLE)) {
-> > +		if (!pmd)
-> > +			return dax_load_hole(xas, mapping, &entry, vmf);
-> > +		else
-> > +			return dax_pmd_load_hole(xas, vmf, iomap, &entry);
-> > +	}
-> > +
-> > +	if (iomap->type != IOMAP_MAPPED) {
-> > +		WARN_ON_ONCE(1);
-> > +		return VM_FAULT_SIGBUS;
-> > +	}
+> -----Original Message-----
+> From: Dan Williams <dan.j.williams@intel.com>
+> Subject: Re: [PATCH v3 01/11] pagemap: Introduce ->memory_failure()
 > 
-> Nit: I'd use a switch statement here for a clarity:
+> On Mon, Mar 8, 2021 at 3:34 AM ruansy.fnst@fujitsu.com
+> <ruansy.fnst@fujitsu.com> wrote:
+> > > > > >  1 file changed, 8 insertions(+)
+> > > > > >
+> > > > > > diff --git a/include/linux/memremap.h
+> > > > > > b/include/linux/memremap.h index 79c49e7f5c30..0bcf2b1e20bd
+> > > > > > 100644
+> > > > > > --- a/include/linux/memremap.h
+> > > > > > +++ b/include/linux/memremap.h
+> > > > > > @@ -87,6 +87,14 @@ struct dev_pagemap_ops {
+> > > > > >          * the page back to a CPU accessible page.
+> > > > > >          */
+> > > > > >         vm_fault_t (*migrate_to_ram)(struct vm_fault *vmf);
+> > > > > > +
+> > > > > > +       /*
+> > > > > > +        * Handle the memory failure happens on one page.  Notify
+> the processes
+> > > > > > +        * who are using this page, and try to recover the data on
+> this page
+> > > > > > +        * if necessary.
+> > > > > > +        */
+> > > > > > +       int (*memory_failure)(struct dev_pagemap *pgmap,
+> unsigned long pfn,
+> > > > > > +                             int flags);
+> > > > > >  };
+> > > > >
+> > > > > After the conversation with Dave I don't see the point of this.
+> > > > > If there is a memory_failure() on a page, why not just call
+> > > > > memory_failure()? That already knows how to find the inode and
+> > > > > the filesystem can be notified from there.
+> > > >
+> > > > We want memory_failure() supports reflinked files.  In this case,
+> > > > we are not able to track multiple files from a page(this broken
+> > > > page) because
+> > > > page->mapping,page->index can only track one file.  Thus, I
+> > > > page->introduce this
+> > > > ->memory_failure() implemented in pmem driver, to call
+> > > > ->->corrupted_range()
+> > > > upper level to upper level, and finally find out files who are
+> > > > using(mmapping) this page.
+> > > >
+> > >
+> > > I know the motivation, but this implementation seems backwards. It's
+> > > already the case that memory_failure() looks up the address_space
+> > > associated with a mapping. From there I would expect a new 'struct
+> > > address_space_operations' op to let the fs handle the case when
+> > > there are multiple address_spaces associated with a given file.
+> > >
+> >
+> > Let me think about it.  In this way, we
+> >     1. associate file mapping with dax page in dax page fault;
 > 
-> 	switch (iomap->type) {
-> 	case IOMAP_MAPPED:
-> 		break;
-> 	case IOMAP_UNWRITTEN:
-> 	case IOMAP_HOLE:
-> 		if (!write) {
-> 			if (!pmd)
-> 				return dax_load_hole(xas, mapping, &entry, vmf);
-> 			return dax_pmd_load_hole(xas, vmf, iomap, &entry);
-> 		}
-> 		break;
-> 	default:
-> 		WARN_ON_ONCE(1);
-> 		return VM_FAULT_SIGBUS;
-> 	}
+> I think this needs to be a new type of association that proxies the representation
+> of the reflink across all involved address_spaces.
 > 
-Hi, Christoph
+> >     2. iterate files reflinked to notify `kill processes signal` by the
+> >           new address_space_operation;
+> >     3. re-associate to another reflinked file mapping when unmmaping
+> >         (rmap qeury in filesystem to get the another file).
+> 
+> Perhaps the proxy object is reference counted per-ref-link. It seems error prone
+> to keep changing the association of the pfn while the reflink is in-tact.
+Hi, Dan
 
-I did not use a switch-case here is because that I still have to introduce a 'goto' for CoW(Writing on IOMAP_UNWRITTEN and the two different iomap indicate that it is a CoW operation. Then goto IOMAP_MAPPED branch to do the data copy and pfn insertion.)  You said the 'goto' makes the code convoluted.  So, I avoided to use it and refactored this part into so much if-else, which looks similar in dax_iomap_actor().  So, what's your opinion now?
+I think my early rfc patchset was implemented in this way:
+ - Create a per-page 'dax-rmap tree' to store each reflinked file's (mapping, offset) when causing dax page fault.
+ - Mount this tree on page->zone_device_data which is not used in fsdax, so that we can iterate reflinked file mappings in memory_failure() easily.
+In my understanding, the dax-rmap tree is the proxy object you mentioned.  If so, I have to say, this method was rejected. Because this will cause huge overhead in some case that every dax page have one dax-rmap tree.
 
 
 --
 Thanks,
 Ruan Shiyang.
-
 > 
-> > +	err = dax_iomap_pfn(iomap, pos, size, &pfn);
-> > +	if (err)
-> > +		goto error_fault;
-> > +
-> > +	entry = dax_insert_entry(xas, mapping, vmf, entry, pfn, 0,
-> > +				 write && !sync);
-> > +
-> > +	if (sync)
-> > +		return dax_fault_synchronous_pfnp(pfnp, pfn);
-> > +
-> > +	ret = dax_fault_insert_pfn(vmf, pfn, pmd, write);
-> > +
-> > +error_fault:
-> > +	if (err)
-> > +		ret = dax_fault_return(err);
-> > +
-> > +	return ret;
+> > It did not handle those dax pages are not in use, because their
+> > ->mapping are not associated to any file.  I didn't think it through
+> > until reading your conversation.  Here is my understanding: this case
+> > should be handled by badblock mechanism in pmem driver.  This badblock
+> > mechanism will call
+> > ->corrupted_range() to tell filesystem to repaire the data if possible.
 > 
-> It seems like the only place that sets err is the dax_iomap_pfn case above.  So
-> I'd move the dax_fault_return there, which then allows a direct return for
-> everyone else, including the open coded version of dax_fault_insert_pfn.
+> There are 2 types of notifications. There are badblocks discovered by the driver
+> (see notify_pmem()) and there are memory_failures() signalled by the CPU
+> machine-check handler, or the platform BIOS. In the case of badblocks that
+> needs to be information considered by the fs block allocator to avoid /
+> try-to-repair badblocks on allocate, and to allow listing damaged files that need
+> repair. The memory_failure() notification needs immediate handling to tear
+> down mappings to that pfn and signal processes that have consumed it with
+> SIGBUS-action-required. Processes that have the poison mapped, but have not
+> consumed it receive SIGBUS-action-optional.
 > 
-> I really like where this is going!
+> > So, we split it into two parts.  And dax device and block device won't be
+> mixed
+> > up again.   Is my understanding right?
+> 
+> Right, it's only the filesystem that knows that the block_device and the
+> dax_device alias data at the same logical offset. The requirements for sector
+> error handling and page error handling are separate like
+> block_device_operations and dax_operations.
+> 
+> > But the solution above is to solve the hwpoison on one or couple
+> > pages, which happens rarely(I think).  Do the 'pmem remove' operation
+> cause hwpoison too?
+> > Call memory_failure() so many times?  I havn't understood this yet.
+> 
+> I'm working on a patch here to call memory_failure() on a wide range for the
+> surprise remove of a dax_device while a filesystem might be mounted. It won't
+> be efficient, but there is no other way to notify the kernel that it needs to
+> immediately stop referencing a page.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
