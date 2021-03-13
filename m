@@ -1,125 +1,80 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6578D339FD6
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 13 Mar 2021 19:28:01 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E0133A18F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 13 Mar 2021 23:05:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0670B100ED480;
-	Sat, 13 Mar 2021 10:27:59 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=77.246.51.158; helo=ironportdmz.econet.co.zw; envelope-from=chawora@econet.co.zw; receiver=<UNKNOWN> 
-Received: from ironportDMZ.econet.co.zw (smtp.econet.co.zw [77.246.51.158])
-	by ml01.01.org (Postfix) with ESMTP id 8FCB1100EF250
-	for <linux-nvdimm@lists.01.org>; Sat, 13 Mar 2021 10:27:54 -0800 (PST)
-IronPort-SDR: 2VH7uDjPUxuRF84kGIuoHHaISSCuqZi+ufUVCFmh+/0u/DCFCtj5VFDT1b4h9dNnVvA6flspH+
- 3h9rw6M4gXRTOO/x00E/RP0IaZ5bJ/VFJjak29BaaBMRsZ8SomhBLF6NshxP1CgwykLJQtbFhT
- f57yb5yFlreJnhCu99okX5fHlhFOs37BIGqeR55agFxRF7WOiDsNKvGtFuzjle44yqE/60PUcB
- eSRuIQK9gCbtZaBXI6W4OKIxrnCmM+n1gcMJCNZUjbl9kcbsSMLo+94gqXFyBTYwkpasFfSfmL
- xM0=
-IronPort-HdrOrdr: A9a23:z3onBKxoaNoCa6u/wVCbKrPwgr1zdoIgy1knxilNYDZSddGVkN
- 3roe8S0gX6hC1UdHYrn92BP6foewK+ybde544NMbC+GDT3oWfAFuFfxKbr3jGIIUPD38FH06
- MIScRDIfnRKXQ/ssrg+gm/FL8boeWv1Kyzn+/RwzNMYGhRGsddxjx0AAqaDUF6LTMubfFSKL
- Om6tNDt36cfx0sA/iTPXUZQ/PF4+TCiZOOW29/Ozcc9AKMgTm0gYSULzGk2H4lIkpy6IZn1V
- Lgmwz9opy5s/ehygLNvlWjiqh+qZ/EwttHCNfksLlwFhzcziKpYIhGfpHqhkFTnMifrG8wkN
- /WowoxVv4DiU/sQg==
-X-IronPort-AV: E=Sophos;i="5.81,245,1610402400";
-   d="scan'208";a="3444522"
-Received: from unknown (HELO WVALE-MB-SVR-05.econetzw.local) ([192.168.101.173])
-  by ironportLAN.econet.co.zw with ESMTP; 13 Mar 2021 20:27:52 +0200
-Received: from WVALE-CAS-SVR-9.econetzw.local (192.168.101.184) by
- WVALE-MB-SVR-05.econetzw.local (192.168.101.173) with Microsoft SMTP Server
- (TLS) id 15.0.1473.3; Sat, 13 Mar 2021 20:27:48 +0200
-Received: from User (165.231.148.189) by WVALE-CAS-SVR-9.econetzw.local
- (10.10.11.230) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Sat, 13 Mar 2021 20:27:59 +0200
-From: "Reem E. A" <chawora@econet.co.zw>
-Subject: Re:
-Date: Sat, 13 Mar 2021 18:27:46 -0800
+	by ml01.01.org (Postfix) with ESMTP id 1B2F3100EC1D2;
+	Sat, 13 Mar 2021 14:05:27 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=51.83.246.204; helo=tartarus.angband.pl; envelope-from=kilobyte@angband.pl; receiver=<UNKNOWN> 
+Received: from tartarus.angband.pl (tartarus.angband.pl [51.83.246.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id DF0A2100EC1CF
+	for <linux-nvdimm@lists.01.org>; Sat, 13 Mar 2021 14:05:24 -0800 (PST)
+Received: from kilobyte by tartarus.angband.pl with local (Exim 4.94)
+	(envelope-from <kilobyte@angband.pl>)
+	id 1lLCJc-00GN3W-3k; Sat, 13 Mar 2021 23:00:56 +0100
+Date: Sat, 13 Mar 2021 23:00:56 +0100
+From: Adam Borowski <kilobyte@angband.pl>
+To: Neal Gompa <ngompa13@gmail.com>
+Subject: Re: [PATCH v2 00/10] fsdax,xfs: Add reflink&dedupe support for fsdax
+Message-ID: <YE02GArtVnwEeJML@angband.pl>
+References: <20210226002030.653855-1-ruansy.fnst@fujitsu.com>
+ <CAEg-Je-OLidbfzHCJvY55x+-cOfiUxX8CJ1AeN8VxXAVuVyxKQ@mail.gmail.com>
+ <20210310130227.GN3479805@casper.infradead.org>
+ <20210310142159.kudk7q2ogp4yqn36@fiona>
+ <20210310142643.GQ3479805@casper.infradead.org>
+ <YEy4+SPUvQkL44PQ@angband.pl>
+ <CAEg-Je-JCW5xa6w5Z9n7+UNnLju251SmqnXiReA2v41fFaXAtw@mail.gmail.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <96f8ff6fe77b4507830ab5cf78a93340@WVALE-CAS-SVR-9.econetzw.local>
-To: Undisclosed recipients:;
-Message-ID-Hash: 6LWN4KXH5GEO7BFHWCCRX2BTRBU5GK4X
-X-Message-ID-Hash: 6LWN4KXH5GEO7BFHWCCRX2BTRBU5GK4X
-X-MailFrom: chawora@econet.co.zw
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <CAEg-Je-JCW5xa6w5Z9n7+UNnLju251SmqnXiReA2v41fFaXAtw@mail.gmail.com>
+X-Junkbait: aaron@angband.pl, zzyx@angband.pl
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
+Message-ID-Hash: ARLG2ESXTQCBWRLRAC5PS4H4DJSCW4LT
+X-Message-ID-Hash: ARLG2ESXTQCBWRLRAC5PS4H4DJSCW4LT
+X-MailFrom: kilobyte@angband.pl
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Matthew Wilcox <willy@infradead.org>, Goldwyn Rodrigues <rgoldwyn@suse.de>, Shiyang Ruan <ruansy.fnst@fujitsu.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-xfs <linux-xfs@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, Jan Kara <jack@suse.cz>, Al Viro <viro@zeniv.linux.org.uk>, Btrfs BTRFS <linux-btrfs@vger.kernel.org>, ocfs2-devel@oss.oracle.com, david <david@fromorbit.com>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: r19772744@daum.net
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6LWN4KXH5GEO7BFHWCCRX2BTRBU5GK4X/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ARLG2ESXTQCBWRLRAC5PS4H4DJSCW4LT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hello,
-
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (2) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home on their behalf and
-for our "Mutual Benefits".
-
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Turkish Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-reem.alhashimi@yandex.com
-
-Regards,
-Ms. Reem.
-This mail was sent through Econet Wireless, a Global telecoms leader.
-
-DISCLAIMER
-
-The information in this message is confidential and is legally privileged. It is intended solely for the addressee. Access to this message by anyone else is unauthorized. If received in error please accept our apologies and notify the sender immediately. You must also delete the original message from your machine. If you are not the intended recipient, any use, disclosure, copying, distribution or action taken in reliance of it, is prohibited and may be unlawful. The information, attachments, opinions or advice contained in this email are not the views or opinions of Econet Wireless, its subsidiaries or affiliates. Econet Wireless therefore accepts no liability for claims, losses, or damages arising from the inaccuracy, incorrectness, or lack of integrity of such information.
-[https://mail.econet.co.zw/OWA/auth/current/themes/resources/Agile/AgileBanner.png]
-WORK ISN'T A PLACE
-IT'S WHAT WE DO
-________________________________
-
-
-
-
-
-[https://mail.econet.co.zw/OWA/auth/current/themes/resources/Agile/telephone.png]
-
-
-
-
-[https://mail.econet.co.zw/OWA/auth/current/themes/resources/Agile/email.png]
-
-<mailto:>
-
-
-[https://mail.econet.co.zw/OWA/auth/current/themes/resources/Agile/location.png]
-
-
-
-
-[https://mail.econet.co.zw/OWA/auth/current/themes/resources/Agile/website.png]
-
-www.econet.co.zw<https://www.econet.co.zw>
-
-
-[https://mail.econet.co.zw/OWA/auth/current/themes/resources/Agile/inspired.jpg]
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gU2F0LCBNYXIgMTMsIDIwMjEgYXQgMTE6MjQ6MDBBTSAtMDUwMCwgTmVhbCBHb21wYSB3cm90
+ZToNCj4gT24gU2F0LCBNYXIgMTMsIDIwMjEgYXQgODowOSBBTSBBZGFtIEJvcm93c2tpIDxraWxv
+Ynl0ZUBhbmdiYW5kLnBsPiB3cm90ZToNCj4gPg0KPiA+IE9uIFdlZCwgTWFyIDEwLCAyMDIxIGF0
+IDAyOjI2OjQzUE0gKzAwMDAsIE1hdHRoZXcgV2lsY294IHdyb3RlOg0KPiA+ID4gT24gV2VkLCBN
+YXIgMTAsIDIwMjEgYXQgMDg6MjE6NTlBTSAtMDYwMCwgR29sZHd5biBSb2RyaWd1ZXMgd3JvdGU6
+DQo+ID4gPiA+IERBWCBvbiBidHJmcyBoYXMgYmVlbiBhdHRlbXB0ZWRbMV0uIE9mIGNvdXJzZSwg
+d2UgY291bGQgbm90DQo+ID4gPg0KPiA+ID4gQnV0IHdoeT8gIEEgY29tcGxldGVuZXNzIGZldGlz
+aD8gIEkgZG9uJ3QgdW5kZXJzdGFuZCB3aHkgeW91IGRlY2lkZWQNCj4gPiA+IHRvIGRvIHRoaXMg
+d29yay4NCj4gPg0KPiA+ICogeGZzIGNhbiBzaGFwc2hvdCBvbmx5IHNpbmdsZSBmaWxlcywgYnRy
+ZnMgZW50aXJlIHN1YnZvbHVtZXMNCj4gPiAqIGJ0cmZzLXNlbmR8cmVjZWl2ZQ0KPiA+ICogZW51
+bWVyYXRpb24gb2YgY2hhbmdlZCBwYXJ0cyBvZiBhIGZpbGUNCj4gDQo+IFhGUyBjYW5ub3QgZG8g
+c25hcHNob3RzIHNpbmNlIGl0IGxhY2tzIG1ldGFkYXRhIENPVy4gWEZTIHJlZmxpbmtpbmcgaXMN
+Cj4gcHJpbWFyaWx5IGZvciBzcGFjZSBlZmZpY2llbmN5Lg0KDQpBIHJlZmxpbmsgaXMgYSBzaW5n
+bGUtZmlsZSBzbmFwc2hvdC4NCg0KTXkgd29yayB0ZWFtIHJlYWxseSB3YW50cyB0aGlzIHZlcnkg
+cGF0Y2hzZXQgLS0gcmVmbGlua3Mgb24gREFYIGFsbG93DQpiYWNrdXBzIGFuZC9vciBjaGVja3Bv
+aW50aW5nLCB3aXRob3V0IHN0b3BwaW5nIHRoZSB3b3JsZCAodGhlcmUncyBhIHNpbmdsZQ0KZmls
+ZSwgInBvb2wiLCBoZXJlKS4NCg0KQmVzaWRlcywgeW91IGNhbiBzdGlsbCBnZXQgcG9vci1tYW4n
+cyB3aG9sZS1zdWJ2b2x1bWUoL2RpcmVjdG9yeSkNCnNuYXBzaG90cyBieSBtYW51YWxseSB3YWxr
+aW5nIHRoZSB0cmVlIGFuZCByZWZsaW5raW5nIGV2ZXJ5dGhpbmcuDQpUaGF0J3Mgbm90IGF0b21p
+YyAtLSBidXQgcnN5bmMgaXNuJ3QgYXRvbWljIGVpdGhlci4gIFRoYXQncyBlbm91Z2ggZm9yDQpl
+Zy4gZG5mL2Rwa2cgcHVycG9zZXMuDQoNCg0KTWVvdyENCi0tIA0K4qKA4qO04qC+4qC74qK24qOm
+4qCADQrio77ioIHiorDioJLioIDio7/ioYENCuKiv+KhhOKgmOKgt+KgmuKgi+KggCBOQURJRSBh
+bnRpY2lwYSBsYSBpbnF1aXNpY2nDs24gZGUgZXNwYcOxYSENCuKgiOKgs+KjhOKggOKggOKggOKg
+gApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
+dmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJz
+Y3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
