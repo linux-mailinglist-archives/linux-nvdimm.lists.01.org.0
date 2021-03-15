@@ -1,30 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA08F33B330
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 15 Mar 2021 14:03:14 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5435433C292
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 15 Mar 2021 17:56:00 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 29CBA100EBBB3;
-	Mon, 15 Mar 2021 06:03:13 -0700 (PDT)
-Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 706F7100EBBAF
-	for <linux-nvdimm@lists.01.org>; Mon, 15 Mar 2021 06:03:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 86511100EBBD9;
+	Mon, 15 Mar 2021 09:55:58 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::12f; helo=mail-lf1-x12f.google.com; envelope-from=mrganuserge@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 074E7100EBBD7
+	for <linux-nvdimm@lists.01.org>; Mon, 15 Mar 2021 09:55:55 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id e7so58028578lft.2
+        for <linux-nvdimm@lists.01.org>; Mon, 15 Mar 2021 09:55:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=NFIKK+nfxU1Bk+3WCrU9O3MGPlJFWuI8pQsA4NO+khcy4IfqkRAKK0AWxN7+EKZoLp
+         ZJdTuC+bpEdcdWNQ48J87QTkicfcXwM5vDqZ8THerD1aG4Htzvz9a8JuF6RyJkH/0P/H
+         YgO1aQNpeqjVVeUnRQEq3uywJyLa3nZEYCEBnu4oOP+0oHYiPqvxycfJjg+Miw3Su0Ly
+         Onkizp0dFVpKsHJYeRS3jOJIv2iHgnLZCWQKktBFLeEPOJEkBM6YPDst3Txzn97hyyCo
+         2L0z4aN/23aR2RV7uI7XCiWyNGs6jwGUBK0c+VJVf2SO//1QRq75v2XWVIep95A54pTN
+         yPCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=nn1W9Wc+k1CJYE8WxkSJGXK0N+qf/mcCb4Whw81sCBc=;
+        b=CtwpVT4o7NyO9jhSFSs1M1zrYIKkkRc4mdTSiLNhFUxCaV53JIbXlfQdcnCG3Pj+Hc
+         4naC6m5qP+uSkkB41glcN0o6h3aWX5T7+iaEwqpvcdTqOC5bIMNGl5IfyrnYmNPqwpL1
+         oRUx6FUnMEiqqAEA8gW5o1HQrDP9Hx5spr3W+V27GfPvTHtf0ZqQ/a/PwFkY2hgiz7Hu
+         jAg4g9MVAXRsfIDu5Fsf+TxF6o0+ZXal55grYxgdsGYV/qBFkzOoshbEgqPQHZXjMp/W
+         3T8ziYvdmtbalwKji7HL3CaDxXV1keM8JE0Ac/mkzk9KklhgG5VARbMlifwavP2uzG0d
+         DWog==
+X-Gm-Message-State: AOAM531nDRkqVsDFL4weGZApSd2FGHCczBKOk/yrnB88fgsQS2+0PKqO
+	jVLrqd/FrWnbNOnnD2VThzLX32Vhempj32Sn3rU=
+X-Google-Smtp-Source: ABdhPJyti9j1xbG7VWGMZ7aPtd7Btkjs1GN0IVYGnPzacRUiAM0k8HHHlBfAb/Fiz24mX/Aiqm6jmarQAvIoeTz7Yr8=
+X-Received: by 2002:a19:c309:: with SMTP id t9mr8176362lff.348.1615827353222;
+ Mon, 15 Mar 2021 09:55:53 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Technical support
-From: wwoman807@gmail.com
-To: linux-nvdimm@lists.01.org
-Date: Mon, 15 Mar 2021 13:03:09 -0000
-Message-ID: <20210315130309.2868.18625@ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://lists.ofono.org/
-Message-ID-Hash: LBMQOJST3OJPRRP3GI37YNEMMC6V6M62
-X-Message-ID-Hash: LBMQOJST3OJPRRP3GI37YNEMMC6V6M62
-X-MailFrom: wwoman807@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Received: by 2002:a05:651c:1382:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:55:52
+ -0700 (PDT)
+From: "Mrs.Glenn" <mrganuserge@gmail.com>
+Date: Mon, 15 Mar 2021 09:55:52 -0700
+Message-ID: <CA+Wfa7YVrx0ws3646y2_O1kPsYemM7JwcJJmf2b35t-FLHsF1g@mail.gmail.com>
+Subject: From Mrs.Glenn
+To: undisclosed-recipients:;
+Message-ID-Hash: VGD2YINY3XPUH2WVOVGQP5XY66DWXELG
+X-Message-ID-Hash: VGD2YINY3XPUH2WVOVGQP5XY66DWXELG
+X-MailFrom: mrganuserge@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: ezbtg22@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LBMQOJST3OJPRRP3GI37YNEMMC6V6M62/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VGD2YINY3XPUH2WVOVGQP5XY66DWXELG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -33,34 +67,37 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-"These days, cyber-attacks are among the most severe threats that businesses have to face. According to the data, 50% of small and medium firms in the US suffer losses because of malware infections. Our Antivirus Support staff helps you take manual & verified services and solutions that facilitate secure mistake-free networks worldwide.
- [url=http://magellanroadmateupdatee.com/]Magellan Roadmate Update[/url]  |  [url=http://garminexpress.xyz/]Garmin Express[/url] | [url=http://rand-mcnally-update.com/]Rand McNally Update[/url] | [url=http://epson-printer-offline.com]Epson printer offline [/url] |  [url=http://ijstartcannons.com]Ij.start.cannon[/url]  |  [url=http://iwebrootcomsafee.com/]www.webroot.com/safe[/url]  |  [url=http://myrokucomlinkk.com/]Roku.com/link[/url]  | [url=http://navmanupdatez.com/]Navman Update[/url] |  [url=http://sites.google.com/site/ijstartcannons/]Ij.start.cannon[/url] |  [url=https://ijstartcannons.com/canon-com-ijsetup/]Canon.com/ijsetup[/url] | [url=http://garminexpress.xyz/]garmin.com/express[/url] | [url=https://ijstartcannons.com/canon-printer-drivers/]Canon Printer Drivers[/url] |  [url=http://camps-intuitcom.com//]Camps.Intuit.Com[/url]"
+-- 
+Dear Beloved,
 
-AOL Mail is considered to be one of the most used web-based email service providers. It is known for providing a fast and reliable emailing experience to all users. But it happens that with time the users get stuck with AOL Mail login issues. So, here we have demonstrated how the user can resolve the AOL Mail login issue.  [url=https://sites.google.com/view/aolmailloginhere]AOL Mail[/url]   | [url=https://bit.ly/3iE49rh]AOL Mail[/url]
+I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
+in a hospital bed in Israel. I am 59 years and childless; my husband
+is dead. I was diagnosed with terminal cancer. And my doctor just
+predicted that I have but very limited time to live due to damages in
+my system and as a result of that I decided to dispose my 10.5 million
+US dollars to a God-fearing one for the continuation of charitable
+work. This is why I located you.My guess about you may not be accurate
+because I came across your contact at the humanitarian calendar event
+of the year but I believe in God who  divinely directed me to you for
+this solemn proposal of charitable work. I wholeheartedly wish to
+bequeath my fortune to you as a God-fearing person for the
+continuation of charitable work anywhere around the world.
 
-Paypal is one of the most utilized online platforms that allow users to send and receive money between different parties. Paypal provides several services that can be used for both personal as well as professional purposes. Also, it allows users to transfer money or make online payments. But to make online payments, the user must have a Paypal login account.[url=https://bit.ly/2KBsj9j]PayPal Login[/url] |  [url=https://sites.google.com/view/paypal-login-us]PayPal Login[/url]
+I shall be going in for a surgery operations soonest and desire this
+money to be transferred to you as I do not wish to leave this money in
+the bank because bankers might misuse it for their own interest after
+my death. As soon as I receive your quick reply assuring me that you
+will utilize the money as I instructed you for the benefit of the less
+privilege, I shall give you more details and also instruct my bank to
+release the money to you for the charity project. I hope you receive
+this mail in good health.
 
-Amazon is a global company that started as an e-marketplace for books and later started providing many services to its users such as Amazon Alexa, Amazon Music, Amazon app store, Amazon.com, Amazon Prime, Amazon prime video, etc. To enjoy all these services in one place, one must register on it first. Firstly, the users need to create an account on Amazon and then register their devices on the Amazon account. In this write-up, we will discuss how to create an account via Amazon.com/code, the devices supported by Amazon, and how to register a device on it. Also, we will provide the steps to Prime music on Echo dot. [url=https://bit.ly/3qQeseV]Amazon.com/code[/url] | [url=https://sites.google.com/view/enter-amazoncomcode]Amazon.com/code[/url]
+Because I don t know what will be my situation in next minute,
 
-The Netgear Extender is an electric device that aims to extend the range of the existing router. People consider using Netgear extender to boost the existing router's speed and provides good network connections to the dead zones. But the users will, first of all, have to execute the Netgear Extender Setup procedure. So, it would get easy for all users to execute the setup process through the information provided here. [url=https://sites.google.com/view/netgearextendersetupusa/]Netgear Extender Setup[/url] |  [url=https://bit.ly/2YGSyOZ/]Netgear Extender Setup[/url]
+I am waiting for your reply.
 
-Bitdefender Central is a platform that provides users an excellent management facility for their Bitdefender products. Using this account, the users can activate and renew their subscriptions. Moreover, the users can access the parental control features, too, using the Bitdefender Central.  [url=https://sites.google.com/view/my-bitdefender-central/]Bitdefender Central[/url] | [url=https://bit.ly/38tLWJk/]Bitdefender Central[/url]
-
-Bitdefender is an outstanding security suite loaded with the most powerful tools like Exploit prevention, Brute Force Protection, and Anomaly Detection. Bitdefender keeps the user's devices safe and secure from existing and new threats with its multi-layered protection. Users can control their Bitdefender products via the Bitdefender login account. It has more than 500 million people who prefer to use it. Bitdefender Consumer products include Bitdefender Total security that offers advanced protection for iOS, Android, macOS, and Windows. Users can access Bitdefender via login.bitdefender.com.   [url=https://bit.ly/3a45dC8]Bitdefender Login[/url] |  [url=https://sites.google.com/view/bitdefenderlogin-now]Bitdefender Login[/url]
-
-Belkin is a multinational brand that is American based. It deals in innovative consumer electronics and networking devices. This brand is considered a pioneer in offering cutting-edge technology to its global users. The products that it offers include user-friendly gadgets. Moreover, Belkin provides an extensive range of electronic products famous for their outstanding performance. [url=https://bit.ly/3ao7Cba]Belkin Setup[/url] | [url=https://sites.google.com/view/mybelkinsetup]Belkin Setup[/url]
-
-Amazon is a multinational company whose primary focus is on e-commerce, digital streaming, cloud computing, and artificial intelligence. It is the world's biggest online marketplace, offering different varieties of products/goods in one place. Amazon offers downloads and music streaming, video, and audiobooks through its Amazon Prime Video, Amazon Music, and Audibles.  [url=https://sites.google.com/view/amazonprimelogindesk/]Amazon Prime Login[/url] | [url=https://bit.ly/3k8AQOv/]Amazon Prime Login[/url]
-
-Roadrunner Email is the simplest and easy to access email service used by millions of people worldwide. It is also one of the most popular email service providers because it gives its users the best emailing experience. Moreover, the users can easily create a roadrunner email account and access the account from any device. However, some users face roadrunner email not working issues. So, the information provided here would help all users fix the roadrunner email not working problem.  [url=https://sites.google.com/view/roadrunneremaillogin-us/]Roadrunner Email[/url] | [url=http://bit.ly/3pSjS87/]Roadrunner Email[/url]
-
-Avast is a renowned provider of world-class cybersecurity software. It develops business and consumer digital security products for desktops, servers, and mobile devices. Avast is a dedicated software provider that aims to create a world where all the users get safety and privacy from cyber threats. You can manage all of your product subscriptions with a single Avast Account. However, you have to perform Avast Login to manage your plans. Therefore, here we have given the guidelines for Avast Login along with the process to connect an Avast product with your Avast account.  [url=https://sites.google.com/view/avastloginguide/]Avast Login[/url] | [url=http://bit.ly/3kmFcBt/]Avast Login[/url]
-
-Mywifiext is a default web address through which Netgear Extender can be configured. Through mywifiext.net, the users can execute various tasks such as installation, configuration, and setting Netgear Range Extender changes. Hence, this write-up includes the list of common mywifiext issues and how to solve the mywifiext connection issue. In addition to this, it also contains the instructions to solve the Netgear Extender keeps disconnecting issue.  [url=https://sites.google.com/view/mywifiextnet-guide/]Mywifiext[/url] | [url=http://bit.ly/3qcZ3EM/]Mywifiext[/url]
-
-Avast is counted amongst the most preferred and trusted antivirus software all across the world. It a feature-loaded software developed by the leading multinational cybersecurity software company- Avast Software. It provides information technology-related products for desktops, servers, as well as for mobile devices. You can easily download or install the Avast antivirus software using the Avast download steps given in this blog.  [url=https://sites.google.com/view/avast-download-here/]Avast Download[/url] |  [url=http://bit.ly/3exuV4S/]Avast Download[/url]
-
-Amazon.com/mytv enables users to stream the latest movies, music, and videos online. The users are recommended to activate their subscription plan via www.amazon.com.mytv. Therefore, all users are suggested to follow the steps instructed below and activate the amazon prime TV from amazon.com/mytv.   [url=https://sites.google.com/view/wwwamazoncommytv-help/]www.amazon.com/mytv[/url] |  [url=http://bit.ly/30E0Gkt/]www.amazon.com/mytv[/url]
+Yours sincerely,
+Mrs Elizabet Glenn.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
