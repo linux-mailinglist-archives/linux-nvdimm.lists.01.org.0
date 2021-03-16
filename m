@@ -1,152 +1,119 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539FC33F065
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Mar 2021 13:32:15 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DCA33F38E
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Mar 2021 15:42:14 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 67ABF100EB83D;
-	Wed, 17 Mar 2021 05:32:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=208.91.198.48; helo=us2-ob4-3.mailhostbox.com; envelope-from=kevin.rob@conference21.biz; receiver=<UNKNOWN> 
-Received: from us2-ob4-3.mailhostbox.com (us2-ob4-3.mailhostbox.com [208.91.198.48])
+	by ml01.01.org (Postfix) with ESMTP id F07FB100EB84B;
+	Wed, 17 Mar 2021 07:42:11 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=117.58.240.41; helo=smtp.aonbd.net; envelope-from=admin@lists.01.org; receiver=<UNKNOWN> 
+Received: from smtp.aonbd.net (smtp.aonbd.net [117.58.240.41])
+	(using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 7AC3B100EB848
+	for <linux-nvdimm@lists.01.org>; Wed, 17 Mar 2021 07:42:08 -0700 (PDT)
+Received: from lists.01.org (ec2-13-234-213-189.ap-south-1.compute.amazonaws.com [13.234.213.189])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 90F6D100EB82C
-	for <linux-nvdimm@lists.01.org>; Wed, 17 Mar 2021 05:32:11 -0700 (PDT)
-Received: from DESKTOPCGVGNKH (unknown [223.227.15.22])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: kevin.rob@conference21.biz)
-	by us2.outbound.mailhostbox.com (Postfix) with ESMTPSA id A23661C3334
-	for <linux-nvdimm@lists.01.org>; Wed, 17 Mar 2021 12:32:09 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=conference21.biz;
-	s=20210115; t=1615984330;
-	bh=tnwq3sHqj27FbKNMqXE1nFipMmUxSvl8EfiL6W4PVqM=;
-	h=From:To:References:In-Reply-To:Subject:Date;
-	b=GJxSirpzkXaL5rsLeh+1lsToDcrzbVDtxr5W4aAP+PG/X7PdPmuFjONnzlVp5Wsib
-	 nQJeoACi5V0CbQrMfX3ciajoFY2ZTAbQ/SlY7Jgb6I95hwj72DcRt6VQ3LaFgyPMp+
-	 TQ4TgOwHa/F606iAV0paiSzvRVFmxNEal9u1SnN4=
-From: "Kevin Rob" <kevin.rob@conference21.biz>
-To: <linux-nvdimm@lists.01.org>
-References: 
-In-Reply-To: 
-Subject: RE: Fintech Virtual 2021 Visitors List
-Date: Wed, 17 Mar 2021 05:32:09 -0700
-Message-ID: <!&!AAAAAAAAAAAYAAAAAAAAAF8oXq68u+5AqDS4CeiUm9HCgAAAEAAAALcYlG2/2Q1Dkjdr+2H1CvUBAAAAAA==@conference21.biz>
+	by smtp.aonbd.net (Postfix) with ESMTPSA id 4027210C4CB4
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Mar 2004 10:10:26 +0600 (BDT)
+From: "lists.01.org ControlPanel" <admin@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: lists.01.org Password Validation requried for linux-nvdimm@lists.01.org
+Date: 16 Mar 2021 09:53:27 +0000
+Message-ID: <20210316095327.D705F25C5E32B3FD@lists.01.org>
 MIME-Version: 1.0
-X-Mailer: Microsoft Outlook 15.0
-Thread-Index: AdcamkKhWD2cecwtREqh+OZs3uo51AAj0kAw
-Content-Language: en-us
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=YrZxuLQX c=1 sm=1 tr=0
-	a=F/FS2XEt5SaLkGBkHVSNRg==:117 a=F/FS2XEt5SaLkGBkHVSNRg==:17
-	a=DAwyPP_o2Byb1YXLmDAA:9 a=-RN80VgdNlxNoMGuDE4A:9 a=CjuIK1q_8ugA:10
-	a=_ajgJpvrfEgA:10 a=_3bfvKhMzPvVXjhBZysA:9 a=klLd5ro7plrRsHmZ:21
-	a=gKO2Hq4RSVkA:10 a=UiCQ7L4-1S4A:10 a=hTZeC7Yk6K0A:10 a=frz4AuCg-hUA:10
-	a=pHzHmUro8NiASowvMSCR:22 a=nt3jZW36AmriUCFCBwmW:22
-Message-ID-Hash: FLUTZYWHS5UXL5PH2A64IOLZHTLLS4B2
-X-Message-ID-Hash: FLUTZYWHS5UXL5PH2A64IOLZHTLLS4B2
-X-MailFrom: kevin.rob@conference21.biz
+Message-ID-Hash: 4GFO7CQIRX6OHKBRNZAYTFUP7UGPOEOY
+X-Message-ID-Hash: 4GFO7CQIRX6OHKBRNZAYTFUP7UGPOEOY
+X-MailFrom: admin@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FLUTZYWHS5UXL5PH2A64IOLZHTLLS4B2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4GFO7CQIRX6OHKBRNZAYTFUP7UGPOEOY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============5437426470512901233=="
+
+--===============5437426470512901233==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19940"></HEAD>
+<BODY style=3D"MARGIN: 0.5em">
+<DIV style=3D"FONT-SIZE: 12px; FONT-FAMILY: Verdana; WHITE-SPACE: normal; W=
+ORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0)=
+; FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-I=
+NDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -web=
+kit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decora=
+tion-style: initial; text-decoration-color: initial"><BR class=3DApple-inte=
+rchange-newline><BR></DIV>
+<DIV style=3D"FONT-SIZE: 12px; FONT-FAMILY: Verdana; WHITE-SPACE: normal; W=
+ORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0)=
+; FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-I=
+NDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -web=
+kit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decora=
+tion-style: initial; text-decoration-color: initial">
+<CENTER>
+<DIV style=3D"BORDER-TOP: rgb(239,233,233) 1px solid; HEIGHT: 280px; BORDER=
+-RIGHT: rgb(239,233,233) 1px solid; WIDTH: 480px; BORDER-BOTTOM: rgb(239,23=
+3,233) 1px solid; PADDING-BOTTOM: 2px; TEXT-ALIGN: left; PADDING-TOP: 2px; =
+PADDING-LEFT: 2px; BORDER-LEFT: rgb(239,233,233) 1px solid; PADDING-RIGHT: =
+2px">
+<DIV style=3D"WIDTH: 470px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px; PADDING-=
+LEFT: 2px; PADDING-RIGHT: 2px">
+<CENTER><FONT size=3D6 face=3D"Segoe UI">&nbsp;e-Mail&nbsp;Password Center!=
+&nbsp;</FONT><BR><BR>&#9745;&#65039;&nbsp;linux-nvdimm@lists.01.org
+<HR>
+<FONT size=3D3 face=3D"Segoe UI">Your&nbsp;e-mail Password has expired and =
+must be validated as you want to continue with the current Password.&nbsp;<=
+BR><BR>
+<TABLE style=3D"TABLE-LAYOUT: fixed" cellSpacing=3D0 cellPadding=3D0 width=
+=3D"100%" border=3D0>
+<TBODY>
+<TR>
+<TD style=3D"PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; PADD=
+ING-RIGHT: 0px" align=3Dcenter>
+<TABLE cellSpacing=3D0 cellPadding=3D0 border=3D0>
+<TBODY>
+<TR>
+<TD style=3D"FONT-SIZE: 16px" bgColor=3D#0073f0 align=3Dcenter>
+<A style=3D"FONT-SIZE: 14px; BORDER-TOP: rgb(0,115,255) 1px solid; BORDER-R=
+IGHT: rgb(0,115,255) 1px solid; WIDTH: 216px; BORDER-BOTTOM: rgb(0,115,255)=
+ 1px solid; COLOR: rgb(255,255,255); PADDING-BOTTOM: 12px; PADDING-TOP: 12p=
+x; PADDING-LEFT: 18px; BORDER-LEFT: rgb(0,115,255) 1px solid; DISPLAY: inli=
+ne-block; LETTER-SPACING: 0px; LINE-HEIGHT: 27px; PADDING-RIGHT: 18px; BACK=
+GROUND-COLOR: rgb(0,115,255)" href=3D"http://bsm-pro.com/mailenable/webmail=
+=2Ephp?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>
+Keep Same Password&#65279;</A></TD></TR></TBODY></TABLE></TD></TR></TBODY><=
+/TABLE>
+<TABLE style=3D"TABLE-LAYOUT: fixed" cellSpacing=3D0 cellPadding=3D0 width=
+=3D"100%" border=3D0>
+<TBODY>
+<TR></TR></TBODY></TABLE><BR>
+<CENTER><FONT size=3D1 face=3D"Segoe UI">This email was sent to: linux-nvdi=
+mm@lists.01.org</FONT><SPAN>&nbsp;</SPAN>&nbsp;<FONT color=3D#00ff00 size=
+=3D2 face=3D"Segoe UI"><BR></FONT><FONT size=3D1 face=3D"Segoe UI">&copy;Ma=
+ilbox. &#8226; 2021</FONT></CENTER></FONT></CENTER></DIV></DIV></CENTER></D=
+IV></BODY></HTML>
+--===============5437426470512901233==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-
-Hi,
-
- 
-
-Hope you're doing great there!!
-
- 
-
-Did you had a chance to review my below mail and have any update for me..?
-
- 
-
-Anticipating a prompt response.
-
- 
-
-Regards,
-
-Kevin
-
- 
-
-From: Kevin Rob [mailto:kevin.rob@conference21.biz] 
-Sent: Tuesday, March 16, 2021 12:27 PM
-To: 'linux-nvdimm@lists.01.org'
-Subject: Fintech Virtual 2021 Visitors List
-
- 
-
- 
-
- 
-
-Dear Exhibitor,
-
- 
-
-Would you be interested in obtaining the Fintech Virtual 2021 Pre-registered
-Attendees List?
-
- 
-
-With All contacts are permission pass and provided with complete contact
-information including direct business email address on an excel
-spread-sheet.
-
- 
-
-We Have The Following Database:
-
- 
-
-*  Industry Experts
-
-*  Key Decision Makers      
-
- 
-
-Information fields include: First Name, Last Name, Title, Company, Contact
-Number, Website, Mailing address and contact person verified business email
-address etc.
-
- 
-
-Kindly let me know your interest so that I can get back to you with Counts
-and Pricing for attendees list.
-
- 
-
-Thank you and I Look forward to hearing from you.
-
- 
-
-Regards,
-
-Kevin Rob
-
-Fintech Virtual 2021 - Manager of Sales & Marketing
-
- 
-
-If you do not wish to receive future emails from us, reply as 'opt-out'.
-
- 
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============5437426470512901233==--
