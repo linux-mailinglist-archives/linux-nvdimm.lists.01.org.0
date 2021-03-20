@@ -2,131 +2,68 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1EE342A50
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 20 Mar 2021 05:09:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B8D342C1F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 20 Mar 2021 12:25:40 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F3C68100EAB45;
-	Fri, 19 Mar 2021 21:09:14 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=194.141.104.12; helo=websites2.vtu.bg; envelope-from=support@tout.vtu.bg; receiver=<UNKNOWN> 
-Received: from websites2.vtu.bg (vtu.bg [194.141.104.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 41400100EAB47
-	for <linux-nvdimm@lists.01.org>; Fri, 19 Mar 2021 21:09:10 -0700 (PDT)
-Received: by websites2.vtu.bg (Postfix, from userid 5008)
-	id D7FBBCB242; Sat, 20 Mar 2021 06:13:56 +0200 (EET)
-To: linux-nvdimm@lists.01.org
-Subject: Hallo und Guten  Morgen,
-Date: Sat, 20 Mar 2021 06:13:56 +0200
-From: El Gordo de la primitiva  lotterie spanien <support@tout.vtu.bg>
-Message-ID: <81989c9f3db3c656f3201c38bbc55536@tout.vtu.bg>
+	by ml01.01.org (Postfix) with ESMTP id 2ABA2100ED4BC;
+	Sat, 20 Mar 2021 04:25:37 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.210.212.61; helo=rigcfgvpn.localdomain; envelope-from=jyahyaw@hotmail.com; receiver=<UNKNOWN> 
+Received: from rigcfgvpn.localdomain (unknown [104.210.212.61])
+	by ml01.01.org (Postfix) with ESMTP id 348C6100EF271
+	for <linux-nvdimm@lists.01.org>; Sat, 20 Mar 2021 04:25:31 -0700 (PDT)
+Received: from WIN-K2RPIC160YA (localhost [127.0.0.1])
+	by rigcfgvpn.localdomain (Postfix) with SMTP id 0DB3F20630C5;
+	Sat, 20 Mar 2021 09:00:09 +0000 (UTC)
+Received: from [58.4.135.153] by WIN-K2RPIC160YA SMTP id rYEy4e6N5Ov8R3; Sat, 20 Mar 2021 10:59:03 +0200
+Message-ID: <a4$60xh066m-h10df9t4vpu190pn@czxc9g09.td>
+From: "Yahya Jammeh." <jyahyaw@hotmail.com>
+To: pbrobinson@gmail.com
+Subject: Hello
+Date: Sat, 20 Mar 21 10:59:03 GMT
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
 MIME-Version: 1.0
-Message-ID-Hash: EUY6CG4V6DMELR3RQ3RFOV2YUT2ZFIIP
-X-Message-ID-Hash: EUY6CG4V6DMELR3RQ3RFOV2YUT2ZFIIP
-X-MailFrom: support@tout.vtu.bg
+X-Priority: 3
+X-MSMail-Priority: Normal
+Message-ID-Hash: 2HEDPD5MJOK6HDFAQYGOVX23UZGUR6DR
+X-Message-ID-Hash: 2HEDPD5MJOK6HDFAQYGOVX23UZGUR6DR
+X-MailFrom: jyahyaw@hotmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: europromo.es.spain@europemail.com
+Reply-To: "Yahya Jammeh." <jyahyaw@hotmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EUY6CG4V6DMELR3RQ3RFOV2YUT2ZFIIP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2HEDPD5MJOK6HDFAQYGOVX23UZGUR6DR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain;; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RWwgR29yZG8gZGUgbGEgcHJpbWl0aXZhICBsb3R0ZXJpZSBzcGFuaWVuICAgICAgICAgICAgICAg
-ICAgICAgICAgDQpBZHJlc3NlOkNhbGxlIGRlbCBQcsOtbmNpcGUgZGUgVmVyZ2FyYSwgMzgsIDI4
-MDAxDQpNYWRyaWQgRXNwYcOxYV0gICAgDQpLb250YWt0IGF1Zm5laG1lbiB1bnRlcjpdIDM0NjAy
-IDgxMCAxODUgZmF4IDM0OTM1NDU3NDkwXQ0KRS1tYWlsOl1hbnNwcnVjaGdld2lubi5tbXQuZXNA
-c3BhaW5tYWlsLmNvbV0NCg0KQWt0ZW56ZWljaGVuOl1QMDkvMDEvMDIvMjAyMS5dDQpMb3NudW1t
-ZXI6XSBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxXQ0KRGF0dW06IDE2LzAzLzIwMjFdDQoNCkhhbGxv
-LCAgICAgICAgDQogICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBPRkZJWklFTExFIE1JVFRFSUxVTkcsDQpEaWVzZSBFbCBHb3JkbyBkZSBsYSBQcmltaXRpdmEg
-Qm9uYW56YSAgTG90dGVyaWUgd3VyZGUgdW5kIE1pbmlzdGVyaW8gZGUgSW5kdXN0cmlhLCBDb21l
-cmNpbyB5IFR1cmlzbW8gIGdlc3BvbnNlcnQgdW0gVG91cmlzbXVzIGluIFNwYW5pZW4gIHp1IGbD
-tnJkZXJuLg0KDQpXaXIgc2luZCBlcmZyZXV0IElobmVuIG1pdCB6dSB0ZWlsZW4sIGRhc3MgZGll
-IEdld2lubmVyIGRlcyBTb25kZXIgU3BhbmlzaCBUb3VyaXNtdXMgUHJvbW90aW9uYWwgRHJhdyBi
-ZWthbm50IGdlZ2ViZW4gd29yZGVuIHNpbmQuIERpZSBvZmZpemllbGxlIExpc3RlIGRlciBHZXdp
-bm5lciAgZXJzY2hpZW4gYW0gIFNhbXN0YWcgZGVyIDI3LzAyLzIwMjEuIA0KDQpJaHJlIGVtYWls
-IGFkcmVzc2UgIG1pdCBkZXIgYW5ow6RuZ2VuZGVuIExvc251bW1lcjogRVNQIDQ0NDcvMTE0NjQx
-MTg4MDIwMSAgdW5kIG1pdCBkZXIgU2VyaWVubnVtbWVyOiBFU1AvMDE4ODExLTIwMjAgem9nIGRp
-ZSBHbMO8Y2tzbnVtbWVyOiA2LjE2LjE4LjMzLjQ3LjUxIEJvbnU6MjksRWwgR29yZG8gZGUgbGEg
-UHJpbWl0aXZhICBMb3R0ZXJpZSAgNiAvNDkgaW4gZGVyIDMuIEthdGVnb3JpZS4NCg0KU2llIHNp
-bmQgZGFtaXQgZ2V3aW5uZXIgdm9uOiDigqw5OTEsMDAwLjAwIEV1cm8uIERpZSBTdW1tZSBlcmdp
-YnQgc2ljaCBhdXMgZWluZXIgR2V3aW5uYXVzc2Now7x0dHVuZyB2b246IOKCrDY5MzcsMDAwLjAw
-IEV1cm8sIGRpZSBkdXJjaCBkaWUgZXJzdGVuIHNpZWJlbiAoNykgR2V3aW5uZXIgYXVzIGRlciBn
-bGVpY2hlbiBLYXRlZ29yaWUgZ2V0ZWlsdCB3dXJkZS4gIERpciBnZXdpbm4gaXN0IGJlaSBlaW5l
-ciBzaWNoZXJoZWl0c2Zpcm1hIGhpbnRlcmxlZ3QgdW5kIGluIGlocmVuIG5hbWVuL2VtYWlsICB2
-ZXJzaWNoZXJ0LiB1bSBrZWluZSBrb21wbGlrYXRpb25lbiBiZWkgZGVyIGFid2lja2x1bmcgZGVy
-IHphaGx1bmcgenUgdmVydXJzYWNoZW4gYml0dGVuIHdpciBzaWUgZGllc2Ugb2ZmaXppZWxsZSBt
-aXR0ZWlsdW5nICwgZGlza3JldCB6dSBiZWhhbmRlbG4uLGVzIGlzdCBlaW4gdGVpbCB1bnNlcmVz
-IHNpY2hlcmhlaXRzcHJvdG9rb2xscyB1bmQgZ2FyYW50aWVydCBpaG5lbiBlaW5lbiByZWlidW5n
-c2xvc2VuIEFibGF1Zi4NCg0KQWxsZSBnZXdpbm5lciB3dXJkZW4gcGVyIGNvbXB1dGVyIGF1cyBV
-cmxhdWJzaG90ZWxzLCBGbHVnZ2VzZWxsc2NoYWZ0ZW4gdW5kIFJlaXNlYsO8cm9zIG1haWxlbiBE
-YXRlbiB2b24gZsO8bmYgTWlsbGlvbmVuICg1MDAwMDAwKSBFbWFpbCBhZHJlc3NlbiBhdXNnZXfD
-pGhsdCwgYWxzIHRlaWwgdW5zZXJlciBJbnRlcm5hdGlvbmFsZW4gdG91cmlzbXVzIHByb21vdGlv
-biBwcm9ncmFtbXMsIHdlbGNoZXMgd2lyIGVpbm1hbCBpbSBqYWhyIHZlcmFuc3RhbHRlbiB1bSBU
-b3VyaXNtdXMgaW4gU3BhbmllbiB6dSBmw7ZyZGVybi4NCg0KQml0dGUga29udGFrdGllcmVuIHNp
-ZSB1bnNlcmVuIGF1c2xhbmRzIHNhY2hiZWFyYmVpdGVyIEhlcnIgR2FicmllbCAgYmVpIGRlciBz
-aWNoZXJoZWl0c2Zpcm1hIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYTpQZXIgRW1haWwgYW46
-ZXVyb3Byb21vLmVzLnNwYWluQGV1cm9wZW1haWwuY29tIG9kZXIgYW5ydWZlbjogMzQgNjAyIDgx
-MCAxODUgJiBGYXg6ICAzNCA5MzEgNzAgMjEyMCwgdW0gSWhyIEdlbGQgc2NobmVsbCB6dSBiZWtv
-bW1lbi4NCg0KRGVua2VuIFNpZSBkYXJhbiwgamVkZXIgZ2V3aW5uYW5zcHJ1Y2ggbXVzcyBiaXMg
-enVtIDEzLzA0LzIwMjEgQW5nZW1lbGRldGUgc2Vpbi4gSmVkZXIgbmljaHQgYW5nZW1lbGRldCBH
-ZXdpbm5hbnNwcnVjaCB2ZXJmw6RsbHQgdW5kIGdlaHQgenVydWNrIGFuIGRhcyBTcGFuaXNjaGUg
-U3RhYXRza2Fzc2UuDQogIA0KV0lDSFRJRzogdW0gdmVyesO2Z2VydW5nZW4gdW5kIGtvbXBsaWth
-dGlvbmVuIHp1IHZlcm1laWRlbiwgYml0dGUgaW1tZXIgQWt0ZW56ZWljaGVuIGFuZ2ViZW4uICBB
-bmJlaSBlaW4gYW5tZWxkZWZvcm11bGFyLCBiaXR0ZSBhdXNmw7xsbGVuIHVuZCB6dXLDvGNrIFBl
-ciBlbWFpbCBhbjpldXJvcHJvbW8uZXMuc3BhaW5AZXVyb3BlbWFpbC5jb20gb2RlciBhbnJ1ZmVu
-OiAgMzQgNjAyIDgxMDE4NSAmIEZheDogIDM0IDkzMSA3MCAyMTIwIGRpZSBzaWNoZXJoZWl0c2Zp
-cm1hIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYS4NCg0KSEVSWkxJQ0hFTiBHTFVDS1dVTlND
-SOKApiENCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4NCk1BUklBIEhJREFMR08NClZJWkVQUsOE
-U0lERU5USU4NCg0KQsOcUk8sU0FOVEFMVUNJQSBTRUdVUk9TIFMuQSBFc3Bhw7FhIA0KUGxhemEg
-RXNwYcOxYSwgMTUgLSAtMTYgICAgICAgICAgICAgICAgICAgICAgICAgICAgDQpNYWRyaWQsIDI4
-MDA4IEVzcGHDsWENCiAgICAgICAgICAgICAgICAgICAgICAgICAgDQoNCkFOTUVMREVGT1JNVUxB
-UiBaVVIgR0VXSU5OQU5TUFJVQ0hTDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fIA0KQml0dGUgZsO8bGxlbiBTaWUgZGFzIEZvcm11bGFyIHNvcmdmw6RsdGlnIGF1
-cyB1bmQgc2VuZGVuIGVzIHBlciBlIG1haWw6c2FudGFsdWNpYS5zZy5lc0BzcGFpbm1haWwuY29t
-IGFuIGRlciBTYW50YWx1Y2lhIFNpY2hlcmhlaXRzZmlybWEgbWl0IEtvcGllIElocmVzIFBlcnNv
-bmFsYXVzd2Vpc2VzIG9kZXIgUmVpc2VwYXNzZXMuDQoNCg0KR0VXSU5OQkVUUkFHKl9fX19fX19f
-X19BS1RFTlpFSUNIRU46KkVTUDA5LzAxLzAyLzIwMjENCk5BTUU6Kl9fX19fX19fX19fX19fX19f
-X19fVk9STkFNRToqX19fX19fX19fX19fX19fX19fX19fX18NCkdFQlVSVFNEQVRVTToqX19fX19f
-X19fX19fX19fX18qTkFUSU9OQUxJOipfX19fX19fX19fX19fX19fDQpMT1NOVU1NRVIqX19fX19f
-X19fX19fX19fX19fX19fXypHTFVDS1NaQUhMRU46Kl9fX19fX19fX19fXw0KU1RSQVNTRSpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fKk5VTU1FUjoqX19fX19fX19fX19fX19fDQpXT0hOT1JU
-Kl9fX19fX19fX19fX19fX19QT1NUTEVJVFpBSCpfX19fX19fX19fKkxBTkQqX19fX19fX18NClRF
-TEVGT04qX19fX19fX19fX19fSEFORFkqX19fX19fX19fX19fX0ZBWCpfX19fX19fX19fX19fX19f
-Xw0KQkVGVUYqX19fX19fX19fX0ZBTUlFTElFTlNUQU5EKl9fX19fX19fX19fX19fXyogKEdFU0NI
-TEVDSFQpDQpFTUFJTCpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fKlVu
-dGVyc2NocmlmdCpfDQogIA0KDQpXRUxDSEUgWkFITFVOR1NGT1JNIEJFVk9SWlVHRU4gU0lFPyAg
-KEEpIEJBTkvDnEJFUldFSVNVTkc6ICAoQikgQkFSU0NIRUNLICANCkJBTktEQVRFTiBTSU5EIE5V
-UiBOT1RXRU5ESUcgV0VOTiBTSUUgU0lDSCBGw5xSIEVJTkUgQkFOS8OcQkVSV0VJU1VORyBFTlRT
-Q0hJRURFTiBIQUJFTi4NCg0KTkFNRSBERVMgR0VMRElOU1RJVFVUUzoqX19fX19fX19fX19fX19f
-X19fX19fX19fX18NCktPTlRPTlVNTUVSOipfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fDQpTV0lGVCBDT0RFOipfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Xw0KQkFOSyBBRERSRVNTOipfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NClRF
-TEVGT05OVU1NRVI6Kl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQpGQVg6IE5V
-TU1FUjoqX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KDQoNCiAgICBFUktM
-w4RSVU5HIERFUyBCRUfDnE5TVElHVEVODQpJQ0ggX19fX19fX19fX19fX19fX19fX19fX19fX19f
-QkVTVMOEVElHRSBISUVSTUlULCBEQVNTIEFMTEUgSU5GT1JNQVRJT05FTiwgS09SUkVLVCBTSU5E
-LCBVTkQgRElFIFZFUkFOU1RBTFRFUiBERVIgRWwgU1BBTklTSCBMT1RURVJZIC8gU0FOVEFMVUNJ
-QSBTSUNIRVJIRUlUU0ZJUk1BIE5JQ0hUIFZFUkFOVFdPUlRMSUNIIEdFTUFDSFQgV0VSREVOLCBX
-RU5OIEVTIFpVIEVJTkVSIFVOQkVSRUNIVElHVEVOIFpBSExVTkcgRFVSQ0ggVU5HRU5BVUUgSU5G
-T1JNQVRJT05FTiwgRElFIElDSCBJTiBESUVTRU0gRk9STVVMQVIgQU5HRUJFIEtPTU1ULkRBU1Mg
-MTAlIFBST1ZJU0lPTiBERVIgU0FOVEEgTFVDSUEgU0VDVVJJVFkgQ09NUEFOWSBHRUg/UkVOLCBT
-T0JBTEQgU0lFIElIUkVOIEdFV0lOTiBGT05EUyBFUkhBTFRFTi4gRElFU0UgWkVITiBQUk9aRU5U
-IFdFUkRFTiBJSE5FTiBTT0ZPUlQgWlVSw5xDS0dFR0VCRU4sIFNJRSBFUkhBTFRFTiBJSFJFTiBH
-RVdJTk4gQVVGIElIUkVNIEtPTlRPLiAoQUNIVFVORyBXaXIgYml0dGVuIFNpZSwgYXVmIGRpZXNl
-IEUtTWFpbC1BZHJlc3NlIHp1IGFudHdvcnRlbihzYW50YWx1Y2lhLnNnLmVzQHNwYWlubWFpbC5j
-b20pIELDnFJPLUtPTlRPSU5GT1JNQVRJT05FTi1JQkFOIEVTMTcgMjEwMCA1NjI0IDExMDIgMDAx
-MSA3NzE5IFNXSUZUIENPREU6IENBSVhFU0JCWFhYLiAgS09OVE9OQU1FLExBIFBMQUNJVEEgREVM
-IE1JUkFET1IgUy5MIFNQQUlOLg0KVXJoZWJlcnJlY2h0wqkgMjAyMC0yMDIxIE11bHRpLVN0YWF0
-IExvdHRlcmllIFZlcmJhbmQuIEFsbGUgUmVjaHRlDQpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4
-LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51
-eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+FROM: FORMER PRESIDENT OF REPUBLIC OF THE GAMBIA,
+MR. YAHYAH JAMMEH.
+
+
+Greetings:
+
+My names are Mr.Yahya Jammeh and I am the former president of Republic
+of the Gambia. I have important business proposal that is going to benefit both of us. Kindly contact me on email 
+address info.diplomat09@gmail.com for more information. Please see the link below: 
+
+https://www.africanews.com/tag/yahya-jammeh/
+
+https://www.africanews.com/2020/01/12/gambia-s-jammeh-seeks-to-return-home//
+
+https://www.bbc.com/news/world-africa-24383225
+
+https://www.dailymotion.com/video/xq45v8
+
+Regards,
+Mr. Yahya Jammeh.
+Former Gambia President.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
