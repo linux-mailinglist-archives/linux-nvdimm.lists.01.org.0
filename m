@@ -2,161 +2,131 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423EB345918
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 08:53:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CF934596D
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 09:15:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8C6BE100EBB82;
-	Tue, 23 Mar 2021 00:53:50 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C3286100EC1E7;
+	Tue, 23 Mar 2021 01:15:49 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.163.191.173; helo=sonic304-47.consmr.mail.ne1.yahoo.com; envelope-from=mariamsterbenc@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic304-47.consmr.mail.ne1.yahoo.com (sonic304-47.consmr.mail.ne1.yahoo.com [66.163.191.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C5CF8100EC1EB
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 00:53:47 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12N7Z27o124537;
-	Tue, 23 Mar 2021 03:53:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=scB0dVeff3XvA4OhUb5UTJEp+fe5hq/ZV3SA57L8xgE=;
- b=QFI9XrQpe4+Bw49WM/8gpNAC6E08fE3DoQrvPDlprd5gCKdC8wGkn64kUQeT6jok3QgJ
- Ayg1qc9fEgudrb8yxeebv+qkzXNR0SBUUpmd2OCiHWbyB+c7hS8hyP+GA9E7+knOAl2g
- Zd67YY4SYhqeXmg4trWjH2cGsOy7AyCACKv6+2Y4mTFgknmKOAfLyZ8VRhCUhlWQi5mX
- EDAaH0dpNwmu0FLpxJinJrk5hYv3qJLLiSKn3Ur3xU48f8r6k/3IAXNiJAoxFcrGCVAm
- D7Wxcc+QrEvSz5EVFI0Sf71RTHlmNccJjJNccH5jkg+sfv/0phdphumbYZ/MIEjr6F9P kQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 37ef6n2rqx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 03:53:40 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12N7Z9lQ124946;
-	Tue, 23 Mar 2021 03:53:40 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 37ef6n2rqa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 03:53:39 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12N7mBCL014250;
-	Tue, 23 Mar 2021 07:53:37 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma01fra.de.ibm.com with ESMTP id 37d99xhm62-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 07:53:37 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12N7rZBI36766096
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Mar 2021 07:53:35 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3D84511C050;
-	Tue, 23 Mar 2021 07:53:35 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9029911C04C;
-	Tue, 23 Mar 2021 07:53:32 +0000 (GMT)
-Received: from [9.199.35.201] (unknown [9.199.35.201])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 23 Mar 2021 07:53:32 +0000 (GMT)
-Subject: Re: [RFC Qemu PATCH v2 1/2] spapr: drc: Add support for async hcalls
- at the drc level
-To: David Gibson <david@gibson.dropbear.id.au>
-References: <160674929554.2492771.17651548703390170573.stgit@lep8c.aus.stglabs.ibm.com>
- <160674938210.2492771.1728601884822491679.stgit@lep8c.aus.stglabs.ibm.com>
- <20201221130853.15c8ddfd@bahia.lan> <20201228083800.GN6952@yekko.fritz.box>
- <3b47312a-217f-8df5-0bfd-1a653598abad@linux.ibm.com>
- <20210208062122.GA40668@yekko.fritz.box>
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Message-ID: <0c3591b8-e2bd-3a7a-112f-e410bca4434f@linux.ibm.com>
-Date: Tue, 23 Mar 2021 13:23:31 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.4.0
+	by ml01.01.org (Postfix) with ESMTPS id E79D3100ED487
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 01:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1616487346; bh=JDwVg1YeWij1bzVg6CXUMNyKMzRE7Mu8E1jiUyK+aHk=; h=Date:From:Reply-To:Subject:References:From:Subject:Reply-To; b=bqstHl1BhFAVj6mgN9cbyOaeLKTKRdsBEsVuqdqB6eFysgmhwvSitGmBI8UwiOclUnlp4UBDUJZzKCs6FRyPBvhJ8v8tzJXiqhC+Kb5D/PVn3qgMZ/mXWsVjhsBrBHn3Un1Y/UeSpjcP9vuHAg6vdLdVoIuPv6rO2Inh+HViS8jVH+d12yd0XL7MVsx/Uvkov/R6xikaZ7n7qW04qpwk1X2hqhrQd1H6kTXvHoMoEktSoCUejQ1WBqoLJ0TjYXS/ONxJ/mQ5+WwYQziBfRuw/b6OxQLGiGvbaTWPsUgTix5NQlGUQjpkpcdwzNCygW5mxfDNs0XIl3aOs5AWRV6BnA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1616487346; bh=9CQnlkWkMI08wo/Wzecki1oz8V6nSlU0ko8yZUKTC/J=; h=X-Sonic-MF:Date:From:Subject:From:Subject; b=TRLBC4ixqoH9wHrbc29D8h+gT3y2MP5tJTYv1y1H2+82MIDy6qpjfGw8K4EOAp4dKchIo8VweKPnAJ3AsvG3FIFeIjGsvn9h7hiMeF1yGPwx5iAWHVN9O1r2eRZEzB/to6JdNlk5+9aivqgkBXRIu1KjEXs6P6rYISOsHZ39r9JOUBAbz5dAQHcaHOt0pSDPR25zfu6JFUkiJVyBjRBJQ0AWSxzLHzsXhCiD6mvOOSWU/gCUJz9G0pNeQjm8eZiTh7HKB6OxR2d7bm65eZSt6RW9wkWkNX/ewnqU1S3KTxM+ptCO13DqIAamD6dL93rTr5OAOFDokTAF2xGYikh7Pw==
+X-YMail-OSG: kvxcCOwVM1niuOE2915OfCQfq1d7ewYQosYKnOSuGjQG_PG.N_e._B_niPFcd8T
+ 8itH1HymQMG8o9ZUdjqzn.5kljl.5xGQtB9mO5LapIvZ2PvBMozpo6WCZE2sTDpICP6SL804jnk1
+ k8D6bUITAAc3U4vKTOyxT5w03cDUgAzea19VvTeWZ1WQ0OLdBFv0daYVj5As5Ief0kYfJ2XDsqaH
+ zhrzIbosuEDZW6q.rvmpTEvXQH6yK2ZU64TB84vvx0S.JgjF_iAzgquIKGo6C0E8AoeFdrbG6FFs
+ MbfDLFJ33xOjCWIvJYJqnRDHvYLE4gPlD1CXqFjCVM6bY8AjSxHukjyBqGAe6AdM78NSw6I7FyhP
+ 8LsiHKaYWtTyjuQXHk10.mabUuGm5ts2qduUfVPq1o99X_np6_myj.fXOlcJw_XZKCuQWiBg64XT
+ KdnjsIVjFRWY7zoKA6th5IoLXu6kERQtgq8yGF_y9LpI9hFpF3DGyMoADab01pGR.LsxBaZ5ymog
+ sJ2nJ_JHHwph2ksJbBJ2OAQYs9L1ISxtaBVew.dccVOagc4PpN.wNrAvS5vopVB5u3Zbx6x8A3ug
+ ugEFzIz9nRDMmc9H3hB82UJ2a0Rr1m..y7T5hw9A43G4AH.n.5Q6yPuczNvsZ4hJWEUlR5rH3w51
+ sOYoQ7q6wL_DgmD4pl.4uyuM6L3nHRWxT0rgRJ5HEx.cXVtc91EaV5vqurm9EMu7fFZbCxuc4wll
+ npFUGAL3J6De_NvnJBWNnjykv5Ack43JXOKeC42KKqDp9pTKebksXTsr9Wsg2qZ5vfonO1k0KXnT
+ jXFrCo6jN5xJldZ8YNhddepwz_4a88dF8NRwXTAxu7DgK.xj7LOIFxxCnTYH9p57US7aNrm2GTMn
+ pbJD0ejHEVEB7w136lm4XII3okm6c_XyfcRGib9nZ7JMDwu7D3cYvLdy8fmat4KrmK2IStmcrkqd
+ 9Zkdlf1ImbnSyKj2gZxv8d4.Dn5.6oapzMpNLOBQP7SzEKNeNiVMGDl7XKH0gyhkDoTYK7eOZMxq
+ G5zhqOXvpzgamMmYYd3B114qBu_YWNkJva6G2JIXePwglRqrFhh2.sGFIFUCuDF2E.FIQOZHzEWV
+ GhpI6Nqkvgu4MI_VYTC6oru9D.rBs2gw3YES_f2_36BlXCKqOwFw3frZxRFZ1pGvveAy7KIczuWL
+ O7KREOeSppNTyeE1iyf.7DyY1iLlqAAZ2ZZEb2S3hnNHCxSdFr5bMOgpHvgWQx9zTI3yy6lzyN9A
+ 0EjEH1wSqZUUhrxuZBHT2m5cM9_AXhDJg21u3avvKGmQIp3byNqrnF5.77hv4O0apaKkpk6HoEVS
+ w.Ze9lw9M19U2WhB7CKvGfsCGOCGQY5iU8aVZ6NhfEQg.3uqgmoKkB.wzql9VCyD1YCMkcolR_rH
+ 0HfXn91pFP1HqjslRwwFGDkvCPGxu_xnTrScXGTm2gucy39PnBuH7E40LYmxhwfnl08weNVOKWxE
+ 8KIZV.vIbqhcz7CNoc4JS02.9nGc0oVVnbGnabNL2pYz2PKCRuTNm5Tch9v7yECAm3UDiQgFUxG1
+ 2LiX1E6qkHx.G3pYlSAGTXlvgshm.U.LXPzxMZ_De2.EhQspuvnhOqlRDtMROjr.czs505QspB4c
+ huF_l78tCYoK75T0r7wDL8q7kBbUXkB4u36rsxFp5vvGZfvHExW8dRlkx89T0e6HK.t49OlXwGwZ
+ R2V5vj.CelSa91snhqNev6T4mYDGgLiKPsNqWyuLvBtsJyFQNEkdAAy5FvwWSxd_5q22ZdKd51Mc
+ rCZygYuYBfu_gYTfzxrDERQLnpbLF.x0lXEJevelOYu5oGN1FHzv7Lnx9wtmSGO.s88_oCnosj39
+ l7pxivRwuYHXjD.fKYqTGCY71aOLYphymUU2l2isnKECkZfB8W8GOQTEt.O325LpNziAE9sDbe_p
+ RKKdIxb6w5UiyYurP1d4rjdGKvCkoE0zikAQNRo_Z3gvFXc3grj6s0u8mfr1Tbs7fI55PTKMzBqA
+ 2fQ2leCcBnruTHm5KOgJxYS5699zcqZsQYXJZBCRifIEJIlik7gRd.Ial9bcihqsoqLAVAQWOel.
+ p2FBvNct33gzdVwVik5_75ZQrVYlYprwmSM_LL65hcB5mVB7Qt761NcuRy_A1BX.FDK4JoxEe.hi
+ UlpyDJB4pF9gsv4YDN6OXZwKDjRRyUh3NuQLabCdLfDdNX6BQokPcuuX.Gqrr6VdNrVD0jWJEl.H
+ DIsOuF7M1YkLX0lkxyAZyCVDMENz5sYgP8lHYqWzLGNtJFOKQIs7Pj66VgTJ24ObNScUKwFIUSkn
+ kIRi3uRMp.5hDZHziuEFAvbuwiDBtRdxTXk1uad6u16yr9FVOT_TqCn20AYi7EJxFgyp9Wx9BgU9
+ lU71jI22CZZJQGyr7_ExEGP.QiSAR7LlbQ6mZjvHvH0GyLf7inoHr3Sx2aXka13kZQMK3b1z25FI
+ bYzFl.mZqaiiDnlnILfi9Fi5kzHcUXcEC.z6PLQF3DjlglF1xSSHPz6HVpcRiBZZesQMJ1KxspR7
+ _vKTdMLDZ11R3xR1_yAEFcWIuSgfO93fw8mKgyM9IZ57ZQNjyiIsGiSG.s1eLwlPqe7kOizRYNCq
+ D0OH1DoBGWtZ9xq2GUrX8HN1YVdt3cjv52eCMlF4WmHJ4N5w672oCsF8pIyTC8raZpjxIkCAcGJi
+ kt5P9vX1wDORtG4R9XFzfsni6utkmmFa6E9vnzTXRoDoxNhku.0CDBpV6pJupVH8L1Kk.QOMMUw7
+ I_QZgxzPxxzD6NrNS8VERVD91W0hHu9PR6yfv2_vr_Yq0rkgh1Zju98XxeTSrhUkjjYzanGdOQAX
+ IOjwLcPGdY_FgUCyRdsKes4cuFQo1mw0biKgxp1wBC9H8mjBg2OOSbUpS8lhRA4zvqayNmtaYL96
+ MK56qofMmRVHw0OswB8.8KjQupy.ZnKxOL.0ywwiFH6amk_Ap9cvBgqvZK6s0.pt0IBUi8IsI4my
+ H23SMt5oElEveyp7s8_CdqXdWtQ2p7frKCqFopgxAqi3InTEE3Bo.2RvyFH29_C84DHhZhXdw6.w
+ Wt.BHn_ocBofw3uiWn4ksmljCvst85j8Gt_8dDKUL4XSIBy9Uvi2eYWQmULz2SRetLpO2Byd.ol2
+ NdVKI912uYuxsjwdFk7XWAljCWSYe8MYfNMifC8V4KdyyqWLpOv.fYDBubsgw58rTM9J.x3_31ye
+ PZtWBl5TNYg9S39SCk7yvIDhikSl_YpzKAIb_yydBao9TUwF490XkVxjfRrDrSX_Nthzp18hTrwO
+ eg6vyy7zWTELQ4mWREhvy7CizTjiAFREXcxpkuSh._gTXz9ejXEM5b6NKkPf1VIHypcg5U4oW.a3
+ dcC93AoQr9.ylXslrkMiVPUr1glxIPIT0m3I8EDGNK82wcPNkzLpsnMJQt5DJmc8_tWQdvyIaXiP
+ yPTZ54V.b4nRPIMEnDtWSoNwITtAO9FOPpybhy_Ik6hNE6P2xEkOktIMbqYptJV0ChZW.hb8F_xc
+ xIf1pPIUpTnvLjFtBU5xBMmgLYT7evJcr5WAMxwwTK.NmoDvBQqsN0njkV5tYPKYFRNdg3YzOS6E
+ J2nHNTUAaQKO9PNl2OHuVLsC9bGZozdgcGRra4O3Brei52dq_i3KSAeNj0ZkyRE0HV9gVIEJz5y2
+ 0_VwJqk3fiGm3hoQG3rViiYIer2pIeaLvnu8ktXG79rAvfcjbAUU6ncBGl142Y_ZfpWQIQz8pl_h
+ _saf.hcp0lq.ymySgyLZXyW1rHxRQFgdagNTKsiaQAG6KJZpWDK9eIS15_UR4wMB42BVIURDcxjt
+ V4G.xlZiJHPAFgVQXUKX67mBR0agiMNWJabBsIRbU6wWfbAr.lujHX2oXPiDIDIj2fIjdvAld1bA
+ obnUPZoIJF4oEoibLIz5gfIbsSS9poF3heOsUI.Jeeyer3Gi_MdQfgU9Iq8gy6Q_PsNcjUqyiRUH
+ q7aTfvlsIWMf7ZgNKJPRJldzd3p7fOi57NvJE6u77AIvoXhuK3ojcbfxhsVq6NGa5WARPgH0rSXV
+ 5nGKYsSVnIBc3otlYm4u0YssFHi86BUwmZ.sl5VD6qZ0F9rpiPbdyexp5ilnSAI_UwgL78W9oJNS
+ 00BbVlb7spcvRsXakbfsE_3hJd_Eqpkc50OQuOTsSvOM1tyRyX3Hr2uK89zNHwYJgEEIvUakDipy
+ Jd1QJBiwGX8bvvpTQ2Yfx2BbN_Gcnpr.JnXSe0Ob.oDGtS5p0rFU4vxiHIN0vzj1rxofszy3WQ_G
+ lp6G0OIz7zS_NwUyQuVoBsUMwwfv1pdhGAfHNvTwXMghDH8jULwAA9WTF8ZXVuEOnbFenoy87C8o
+ EeihoLPm6NgdG4e4n4GNwgHR0SorYdVKEO9uOnd7OAxvRlAkCN9kPVpd4V7RHf0NaiJVrq9xGeIe
+ CuO.dNSrzqa44mUXHZYUz0aIebrKEJWH8.2_lzN8plEK_uefHoj.Uv8kIwaiTLkpfCPRC5dCuYb.
+ LMYW.I_W7eOdcmwRhUcejB5NCrmkyG4RZuP0Brs0m7o79Z7qazNtHNCZE4ytOBuhSwOsBXGi_Nwi
+ B08.Jctl8FlnbnvYUnbBiLRprOVDmny4ButyMOH1oTiMy4hB1GZJAfKAPYvbvX.klUQf433MNPla
+ k3ALAMmBpM8Jgtxh4Fb4ePmdZKJlxJWSha_1vJZtKIuB0WvT_Q9ne6_0Y8N_ECsGwLVjc87l5jNp
+ yzPN6qM8L1AUde_CDaj8cDy_a2W8q4KrxV9WukefFeyd.XiGm52Z02BowZQKydPe1qDgAT_PwuFb
+ 12BVX_dZwuMBVpvhSdFfXDYundPbPDhVaRJYKdIlMq37XI22_9RTneyuAhY90ehFSAh_Xf1YMSpY
+ o6g9kl4yJVcdR96qmq_JAjuPtUsFNya4YN7jmq5lvJ3InNBnGuTv5zTbEBts_9BYAMa8Y07XOsKh
+ MPRdz._heGy9wjGIgbBZ3TllLYPG0Ar5nYxjAYXPlwBGVCqUVnUl03poF93PBgGj7c9DwaeGfbvM
+ U3i73nZMlxWR7f6VSutPSPD5h5ncNMG6S1del78TE7WZ3it614m3Pdr3QSV2bflfJUlBujCz1DJ9
+ STqgYPN8GSVd2aaKehetW3QGAItTKyJ__.WHbmFJT1U8u.orPorR3L6YhI6p7L6jADx2YUdbvQdI
+ oByuwc8KdGXZKkTO0W5.GAqh8wR6oBzr1yHL4MK5.V_FBgR6udLEq6f_5_90FDKVX.voVx2eq60d
+ uV9Bq44iAaEw43tZhluby3ev1MARvy.mQ.y5a5FJu2mT8NI.CMfFqlTUR8YJkpzeXxGyC899KpSQ
+ tx2yK76Q.ZAjx3nCogexrJbPiwjaKFD3nsIz0NfWyhP4H6Q3X1p2o2dtPNY_uZ8l2XHIJlZ075RQ
+ 7hskLfBKA8a47bc3zs3zzE2GQ7e2XlXuIL8wEPHGYqsagz6U_wYjYMJ6vFq3XuPwAIGME5bGLoNZ
+ hCY5UV6zOycueCH3bzWF8zrhrNBKJICbOGHlMj5YjWZKHZIi8WzIXlnN0P5Mi7SLimGk-
+X-Sonic-MF: <mariamsterbenc@yahoo.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ne1.yahoo.com with HTTP; Tue, 23 Mar 2021 08:15:46 +0000
+Date: Tue, 23 Mar 2021 08:13:45 +0000 (UTC)
+From: Peter Florian <mariamsterbenc@yahoo.com>
+Message-ID: <1898585444.4164033.1616487225478@mail.yahoo.com>
+Subject: Hello,
 MIME-Version: 1.0
-In-Reply-To: <20210208062122.GA40668@yekko.fritz.box>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-23_02:2021-03-22,2021-03-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 adultscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- spamscore=0 malwarescore=0 clxscore=1011 bulkscore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103230053
-Message-ID-Hash: 2GDVYPSS2NL4B6P6KROOWSJIIERJ5OXU
-X-Message-ID-Hash: 2GDVYPSS2NL4B6P6KROOWSJIIERJ5OXU
-X-MailFrom: sbhat@linux.ibm.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Greg Kurz <groug@kaod.org>, xiaoguangrong.eric@gmail.com, mst@redhat.com, imammedo@redhat.com, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, linux-nvdimm@lists.01.org, aneesh.kumar@linux.ibm.com, kvm-ppc@vger.kernel.org, shivaprasadbhat@gmail.com, bharata@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+References: <1898585444.4164033.1616487225478.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.17936 YMailNodin Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36
+Message-ID-Hash: XK3U5SMA7YSF4KC3P4YDPYXQLWOQMLLD
+X-Message-ID-Hash: XK3U5SMA7YSF4KC3P4YDPYXQLWOQMLLD
+X-MailFrom: mariamsterbenc@yahoo.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: peterflorian019@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2GDVYPSS2NL4B6P6KROOWSJIIERJ5OXU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XK3U5SMA7YSF4KC3P4YDPYXQLWOQMLLD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi David,
-
-Sorry about the delay.
-
-On 2/8/21 11:51 AM, David Gibson wrote:
-> On Tue, Jan 19, 2021 at 12:40:31PM +0530, Shivaprasad G Bhat wrote:
->> Thanks for the comments!
->>
->>
->> On 12/28/20 2:08 PM, David Gibson wrote:
->>
->>> On Mon, Dec 21, 2020 at 01:08:53PM +0100, Greg Kurz wrote:
->> ...
->>>> The overall idea looks good but I think you should consider using
->>>> a thread pool to implement it. See below.
->>> I am not convinced, however.  Specifically, attaching this to the DRC
->>> doesn't make sense to me.  We're adding exactly one DRC related async
->>> hcall, and I can't really see much call for another one.  We could
->>> have other async hcalls - indeed we already have one for HPT resizing
->>> - but attaching this to DRCs doesn't help for those.
->> The semantics of the hcall made me think, if this is going to be
->> re-usable for future if implemented at DRC level.
-> It would only be re-usable for operations that are actually connected
-> to DRCs.  It doesn't seem to me particularly likely that we'll ever
-> have more asynchronous hcalls that are also associated with DRCs.
-Okay
-
->> Other option
->> is to move the async-hcall-state/list into the NVDIMMState structure
->> in include/hw/mem/nvdimm.h and handle it with machine->nvdimms_state
->> at a global level.
-> I'm ok with either of two options:
->
-> A) Implement this ad-hoc for this specific case, making whatever
-> simplifications you can based on this specific case.
-
-I am simplifying it to nvdimm use-case alone and limiting the scope.
 
 
-> B) Implement a general mechanism for async hcalls that is *not* tied
-> to DRCs.  Then use that for the existing H_RESIZE_HPT_PREPARE call as
-> well as this new one.
->
->> Hope you are okay with using the pool based approach that Greg
-> Honestly a thread pool seems like it might be overkill for this
-> application.
-
-I think its appropriate here as that is what is being done by virtio-pmem
-
-too for flush requests. The aio infrastructure simplifies lot of the
-
-thread handling usage. Please suggest if you think there are better ways.
+Hello,
 
 
-I am sending the next version addressing all the comments from you and Greg.
+My name is Mrs. Peter Florian and I am a British Citizen. My husband died recently on Coronavirus and I am presently in hospital suffering Cancer Disease. My husband has a deposit of 15.200.000 GBP in a prime Bank here in London. Before my husband was taken to Isolation center where he died, he told me to use the funds to establish animal care clinics. We have special love for animals. Due to my present health condition, I will not be able to handle this project. Therefore, I want to donate the 15.200.000.00 GBP to you so that you will set up an animal care Foundation in your country. A clinic where animals will be treated in your country for free. I see in television that people donates funds to orphanage homes and don't care about animals. I and my husband wants to make a difference in the world to let people understand that animals are important to nature. Please let me know your interest so that I will ask my lawyer to prepare a contract Agreement on your name. Please don't forge
+ t that my health condition is bad, therefore I want you to reply this message as soon as possible so you will receive the funds before anything happens to me. I am waiting to hear from you.
 
 
-Thanks,
-
-Shivaprasad
+Thank you,
+Mrs. Peter Florian
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
