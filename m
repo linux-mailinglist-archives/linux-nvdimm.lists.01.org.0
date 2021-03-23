@@ -1,87 +1,87 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EC9345C83
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 12:12:31 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D34534600B
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 14:47:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0974A100EC1E7;
-	Tue, 23 Mar 2021 04:12:30 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.255.22; helo=apc01-hk2-obe.outbound.protection.outlook.com; envelope-from=anupamgoyalseo@outlook.com; receiver=<UNKNOWN> 
-Received: from APC01-HK2-obe.outbound.protection.outlook.com (mail-oln040092255022.outbound.protection.outlook.com [40.92.255.22])
+	by ml01.01.org (Postfix) with ESMTP id 0B5E1100EBBB9;
+	Tue, 23 Mar 2021 06:47:36 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DC2B5100EC1D7
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 04:12:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OZ87QkNu722dpPGZOcQB6/Wr7HZbSxMJvQXeri79uSuGZ6j8o5V5wuhqYttC+O1zn47bp0WH8x8jsvRfw6wyQqoYhZGeui02fFqojXThsXQNfXEj0RpPHdvnmdckmaXtNq4cgCG2Ju1haEufxZb4GxBk4bktwY2qio2DWA4BjzO82fWNr1CkWjQy4sHhnoEjeyJXlNXV3A4F6C/axo3CP885dOM3Vhfwt5cf8t9xLjeYqos2tuf5wsDHFmx/v2gFGpMckEjTGHG7+ola1zBo5kXdS4CxagttUx2Omzyc88qF06eQrjWsJc304t1WGkvtYzDGaSeefm0MtyNtoL/Jyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qsDchYZVQQr2yc4qMDUNRU4kIiYadiBlv95ELa1szK0=;
- b=JHccxQ4xMZZ2Va+R6qD40XTw4cr9Z2SHLj9A8BHRfEE1Bjt9iwxMT5gYi2FgA7pq4Ie9mi4s/ktfiZlFuuUHQgq2sERXMkLwiZ+qgaV8/lFGNqY+0vi33HCdracXz2y5lzPdnlGF99PvczmymtQS2TvNEV4Ue3vzRmYFpBj/ukeRRYqBXoZLRsj/9VCHsKD0tO9idGuNsTragT3VbxNVipZAiXeBMNCVzuvJLZGmDWaeh82tMTO1RNLH02cObN5hOO7XLJNLcjdV5wajJ3wM01v+weZJjj1usvE+EEc3YVdlm9OzllqYc95V6a57gZhPPdhVwTHvhYPjH5qcH4BhVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qsDchYZVQQr2yc4qMDUNRU4kIiYadiBlv95ELa1szK0=;
- b=Ts2ZaRawerf+OdLgg/ULzmODgHy8vXtXwIbrtGH/MowUtqCQfkIfxr/UXWpTxZ1btrfHxSIx5Na2qWQ9Vr8wAw7a3fiha6Ib7JWMtVATp0T4mDsSq+Nl029i+dApN9sBGRcc0BZlxGI9MOZzSBbJ2eXk/bNFmgLKeTMtOvhoD0c7g12iVutaw0+HbjKBsjvlybf1uuAG/96a/p8eEicyb4CTBJeb7WCY73foOc7X2gQC9zTP1OZhKoN1ShmS+kCIS1qa7Z3zHd1BUHg+jULeOP2FlgRJ/K8nkm3nH4aA8ppHHNQw197wSKX4/GwdJE6pbLAYY5fpGswG83bO2yFscw==
-Received: from TYZPR03MB5245.apcprd03.prod.outlook.com (2603:1096:400:36::9)
- by TY2PR03MB3997.apcprd03.prod.outlook.com (2603:1096:404:b8::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3977.9; Tue, 23 Mar
- 2021 11:12:25 +0000
-Received: from TYZPR03MB5245.apcprd03.prod.outlook.com
- ([fe80::f01d:3fa4:efe4:2772]) by TYZPR03MB5245.apcprd03.prod.outlook.com
- ([fe80::f01d:3fa4:efe4:2772%6]) with mapi id 15.20.3977.024; Tue, 23 Mar 2021
- 11:12:25 +0000
-From: "Amit" <anupamgoyalseo@outlook.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: APPs
-Date: Tue, 23 Mar 2021 16:32:59 +0530
-Message-ID: 
- <TYZPR03MB5245E62416057AAB1AD949CDDF649@TYZPR03MB5245.apcprd03.prod.outlook.com>
-X-Mailer: Microsoft Office Outlook 12.0
-Thread-Index: Adcf0/ZYUD1kgRTnQzWEa1+P7VRPMA==
-Content-Language: en-us
-X-TMN: [89RjWA3fb1OsilzmQzLJ24XcSJxg+L7e]
-X-ClientProxiedBy: MAXPR01CA0083.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:49::25) To TYZPR03MB5245.apcprd03.prod.outlook.com
- (2603:1096:400:36::9)
-X-Microsoft-Original-Message-ID: <e97001d71fd5$25d8f6b0$718ae410$@com>
+	by ml01.01.org (Postfix) with ESMTPS id DFD1A100EC1F5
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 06:47:33 -0700 (PDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12NDYKjm191958;
+	Tue, 23 Mar 2021 09:47:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=dS5PYmVbk3H/ors98/PXLwF9D17DN5thsm8ab7PkYIA=;
+ b=FBRU6anTuicw3oZAUHSgNc+5qc91L047GScwsU3bzgrvLr/Zw+as/5lhNmaQXyzfF1tc
+ v6Bm1CzCORfRYlla2OtOuRP4hXUTOFxRtRKr+RIdQ3plX1M7OyG7fczsIt5wTX8B03HV
+ ffiAzUnlWdUpy6rRsy7kutBIQ9F5Gu17HwZF+KZE0pbLZubswO+mf+Q/IELPTB+v4+HO
+ zh/oB5LayXMhp7EJhQdmfZLhFToyTY9Cvy7MStJEq9yfT4U9QZqUqmYX4xkR4iXPxwRj
+ BHerhNMKi6RgEmDMF+88/zdDvH6EX/gOez/9x2jEsn1dtmrW1NN2AyWMCW4XChZlJU70 CQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 37dxjwuxsv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Mar 2021 09:47:19 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 12NDYlBp195919;
+	Tue, 23 Mar 2021 09:47:18 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 37dxjwuxry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Mar 2021 09:47:18 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12NDlFlf031034;
+	Tue, 23 Mar 2021 13:47:16 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03fra.de.ibm.com with ESMTP id 37d9bpss17-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Mar 2021 13:47:16 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12NDkuAn35782988
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Mar 2021 13:46:56 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D93B742042;
+	Tue, 23 Mar 2021 13:47:13 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C7A914203F;
+	Tue, 23 Mar 2021 13:47:11 +0000 (GMT)
+Received: from [172.17.0.2] (unknown [9.40.192.207])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 23 Mar 2021 13:47:11 +0000 (GMT)
+Subject: [PATCH v3 0/3] spapr: nvdimm: Enable sync-dax property for nvdimm
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: sbhat@linux.vnet.ibm.com, david@gibson.dropbear.id.au, groug@kaod.org,
+        qemu-ppc@nongnu.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
+        mst@redhat.com, imammedo@redhat.com, xiaoguangrong.eric@gmail.com
+Date: Tue, 23 Mar 2021 09:47:10 -0400
+Message-ID: <161650723087.2959.8703728357980727008.stgit@6532096d84d3>
+User-Agent: StGit/0.21
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from adminPC (171.48.41.238) by MAXPR01CA0083.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00:49::25) with Microsoft SMTP Server (version=TLS1_0, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA) id 15.20.3955.18 via Frontend Transport; Tue, 23 Mar 2021 11:10:33 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e71af359-663d-4d86-0695-08d8edec4773
-X-MS-TrafficTypeDiagnostic: TY2PR03MB3997:
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	bNbkC7y+tcq7CMWlkq7GaJz3PEnPQrW+xx/LrkBReI6i+SQ/R4+t6mLDi5VeVFhpYPvptmsAKcsrGXLJ7ZE259Dr9k4iKUED+pQY1C7ACINw7zyjPsIf8KBImUs8igVZXwer/GKoS9gjeDnYGHvrXQZVrQ5y9kO9xWndZ/rbV8qlaS4cwSzv8X032duKYYipdZz/lqmjKdJqE7ZWTCrZLxIAcgB65cKSAOmyIDm4bi+5VAcdtJDfNljgKixr8YDWvQk+/oZu5NPwcQRURZ6pM3sa6enF//llLf2lKnEk9hHxy9COGW8Yx6j1ABtD13+d/RaV5vGWoNx/ooWaxaiJG8FKlg4leNkCb2h47VHPiVJE8dPKc1tfumji4HThvY/P/i+3PAoIlTt6DuRY2Js0mw==
-X-MS-Exchange-AntiSpam-MessageData: 
-	QhWfOSNo0AhOl3c59dQQ57PTc3CcCgO2w1Dbi6nx7LZWtzYkf+pLPTB2Y53YzWKVn3D0VVh4s7kbxImtUD2V9gFS3aKADeqgvMoFMW9jW5ByMQcDcik42rV6Us2cSrpc8c/wMGC1alZdWxaZBH+jbA==
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e71af359-663d-4d86-0695-08d8edec4773
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB5245.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2021 11:10:34.2319
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY2PR03MB3997
-Message-ID-Hash: 5CI2KK25LDJFY67GWPNVJX32KY4ST7QH
-X-Message-ID-Hash: 5CI2KK25LDJFY67GWPNVJX32KY4ST7QH
-X-MailFrom: anupamgoyalseo@outlook.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-03-23_06:2021-03-22,2021-03-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103230100
+Message-ID-Hash: L3NVMVAZXGMMKB5DMP4YOFAKCNU7LU3X
+X-Message-ID-Hash: L3NVMVAZXGMMKB5DMP4YOFAKCNU7LU3X
+X-MailFrom: sbhat@linux.ibm.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: qemu-devel@nongnu.org, aneesh.kumar@linux.ibm.com, linux-nvdimm@lists.01.org, kvm-ppc@vger.kernel.org, shivaprasadbhat@gmail.com, bharata@linux.vnet.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IMG5LHJ4ZQWXZYUCVCPPBQL4Q6A5BALH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/L3NVMVAZXGMMKB5DMP4YOFAKCNU7LU3X/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -90,57 +90,90 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi, linux-nvdimm@lists.01.org
+The nvdimm devices are expected to ensure write persistence during power
+failure kind of scenarios.
 
- 
+The libpmem has architecture specific instructions like dcbf on power
+to flush the cache data to backend nvdimm device during normal writes.
 
-Greetings of the day!
+Qemu - virtual nvdimm devices are memory mapped. The dcbf in the guest
+doesn't traslate to actual flush to the backend file on the host in case
+of file backed v-nvdimms. This is addressed by virtio-pmem in case of x86_64
+by making explicit flushes translating to fdatasync at qemu.
 
- 
+On PAPR, the issue is addressed by adding a new hcall to
+request for an explicit flush from the guest ndctl driver when the backend
+nvdimm cannot ensure write persistence with dcbf alone. So, the approach
+here is to convey when the hcall flush is required in a device tree
+property. The guest makes the hcall when the property is found, instead
+of relying on dcbf.
 
-Do you want Mobile Apps (Android/iOS) for your Business?
+The first patch adds the necessary asynchronous hcall support infrastructure
+code at the DRC level. Second patch implements the hcall using the
+infrastructure.
 
- 
+Hcall number and semantics finalized, so dropping the RFC prefix.
 
-We develop mobile applications for global enterprises that help them grow
-their business.
+A new device property sync-dax is added to the nvdimm device. When the 
+sync-dax is off(default), device property "hcall-flush-required" is set,
+and the guest makes hcall H_SCM_FLUSH requesting for an explicit flush. 
 
- 
+By default, sync-dax is "off" on all new pseries machines and prior to
+5.2 its "on",
 
-We have expertise in:
+The below demonstration shows the map_sync behavior with sync-dax on & off.
+(https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c)
 
- 
+The pmem0 is from nvdimm with With sync-dax=on, and pmem1 is from nvdimm with syn-dax=off, mounted as
+/dev/pmem0 on /mnt1 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+/dev/pmem1 on /mnt2 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
 
-. Food Delivery Apps // Restaurant Apps
+[root@atest-guest ~]# ./mapsync /mnt1/newfile    ----> When sync-dax=off
+[root@atest-guest ~]# ./mapsync /mnt2/newfile    ----> when sync-dax=on
+Failed to mmap  with Operation not supported
 
-. E- Commerce apps//M- Commerce Apps// E-learning App
+The first patch does the header file cleanup necessary for the
+subsequent ones. Second patch implements the hcall, adds the necessary
+vmstate properties to spapr machine structure for carrying the hcall
+status during save-restore. The nature of the hcall being asynchronus,
+the patch uses aio utilities to offload the flush. The third patch adds
+the 'sync-dax' device property and enables the device tree property
+for the guest to utilise the hcall.
 
-. Health & Wellness Apps
+---
+v2 - https://lists.gnu.org/archive/html/qemu-devel/2020-11/msg07031.html
+Changes from v2:
+      - Using the thread pool based approach as suggested by Greg
+      - Moved the async hcall handling code to spapr_nvdimm.c along
+        with some simplifications
+      - Added vmstate to preserve the hcall status during save-restore
+        along with pre_save handler code to complete all ongoning flushes.
+      - Added hw_compat magic for sync-dax 'on' on previous machines.
+      - Miscellanious minor fixes.
 
-. Shop & Store APPS
+v1 - https://lists.gnu.org/archive/html/qemu-devel/2020-11/msg06330.html
+Changes from v1
+      - Fixed a missed-out unlock
+      - using QLIST_FOREACH instead of QLIST_FOREACH_SAFE while generating token
 
-. Logistics and Accessibility Apps
+Shivaprasad G Bhat (3):
+      spapr: nvdimm: Forward declare and move the definitions
+      spapr: nvdimm: Impletment scm flush hcall
+      spapr: nvdimm: Enable sync-dax device property for nvdimm
 
-. Taxi and Travel Apps
 
-. Your Business Apps (Billing, buying, booking, finance, tracking Apps
-etc...)
+ hw/core/machine.c             |    1 
+ hw/mem/nvdimm.c               |    1 
+ hw/ppc/spapr.c                |    6 +
+ hw/ppc/spapr_nvdimm.c         |  269 +++++++++++++++++++++++++++++++++++++++++
+ include/hw/mem/nvdimm.h       |   10 ++
+ include/hw/ppc/spapr.h        |   12 ++
+ include/hw/ppc/spapr_nvdimm.h |   34 +++--
+ 7 files changed, 317 insertions(+), 16 deletions(-)
 
-. Lifestyle Apps (Texting, Music, Book & Utility, Shopping Apps etc.)
+--
+Signature
 
- 
-
-Please let us know your Apps idea/exact requirement with us which kinds of
-Apps and for which service you want so that we can provide solutions
-accordingly.
-
- 
-
-Thanks,
-
-Amit
-
-(India)
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
