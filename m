@@ -1,193 +1,220 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171C8346482
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 17:10:17 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7203465E8
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 18:06:37 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 54A80100EB82B;
-	Tue, 23 Mar 2021 09:10:15 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 7B29D100EB833;
+	Tue, 23 Mar 2021 10:06:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=<UNKNOWN> 
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C0295100EB826
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 09:10:12 -0700 (PDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12NG4L4N002219;
-	Tue, 23 Mar 2021 12:10:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4hzvEoyYDV3PN0LKOUT8ny7/qRJ4s6ME03W9y5J/WN0=;
- b=c0WYPQkU2gbVp5NhauTZVS0+4XdMoukaIkCyfbRy6Db1wWna0bHAQVVQ5i5wZ1rnQE4G
- 1iAgkUOCf4U9Cem/EBvJyRT0UxiDsimAI4qu6NWj7zfw4h4uouvLdPRSmd47bhyl4iLa
- Iogd2oAtOpz8mjB6ozrPT2IEe7iSZtC1X4512lUhogU1ljYrn9pp6bRlVCV9zIlY6X3Z
- 4b6jTqAtd/62Tf1D7A8nL3im9Dd613m22nTJO7SF/SuxWowryoP6MMJtnsOGohqCyNSa
- /LRSL3IDxemgn1/Ilm0GLozUQXVa3lntZIzkF4L4z2yTW6/D6laesfDkun4mXcjH2IC7 LA==
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 37fkh28e09-1
+	by ml01.01.org (Postfix) with ESMTPS id E4F41100EB82B
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 10:06:32 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12NH3xXf001480;
+	Tue, 23 Mar 2021 13:06:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=6JBiiubwipK622upUtTmkHf38UHQC7sl7ULXNHJlHcY=;
+ b=Ouai4AGxcFMeH/hwPoIwsjOw4HbYF+0qXD32A18FVdR7OCyoI2f8oqPmr+ayCyNFfC2m
+ 5ugs4nidVsGdG7kfoJiR4z9xWXDttetPuJrC6v/bOIITIq0pbvBGgDgDzs5Ln1m5HorY
+ Rfmee4GrWAMDfSNiN+tLUV0zLvCcPFefkjMTmGKtC/WIeAMxKj551j0WQK1HYXDTChhc
+ EayaYxCdLd8fBm4ieNNvpZUlF9JJbggbFrurFtgK8rX8cJ2Wlu8DK4nzXChcoJEp/XWe
+ w1go329CyFDdfrdtHc/Hhj7z2DIhzlyg5SDaSNeujiTMywqkrxLLTbTOLHd8bvnZONNK 6Q==
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 37fm8cgbkr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 12:10:02 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12NG3oV4016988;
-	Tue, 23 Mar 2021 16:09:05 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma05fra.de.ibm.com with ESMTP id 37d9a6hts4-1
+	Tue, 23 Mar 2021 13:06:31 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12NGvFJp028891;
+	Tue, 23 Mar 2021 17:06:29 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma03fra.de.ibm.com with ESMTP id 37d9bpsuv1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 16:09:05 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12NG8jwv34799932
+	Tue, 23 Mar 2021 17:06:29 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12NH6QSW40763686
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Mar 2021 16:08:45 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2CA67AE057;
-	Tue, 23 Mar 2021 16:09:03 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9CC58AE051;
-	Tue, 23 Mar 2021 16:09:00 +0000 (GMT)
-Received: from [9.199.34.65] (unknown [9.199.34.65])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 23 Mar 2021 16:09:00 +0000 (GMT)
-Subject: Re: [PATCH v3 04/10] fsdax: Introduce dax_iomap_cow_copy()
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>, linux-kernel@vger.kernel.org,
-        linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org,
-        linux-fsdevel@vger.kernel.org
-References: <20210319015237.993880-1-ruansy.fnst@fujitsu.com>
- <20210319015237.993880-5-ruansy.fnst@fujitsu.com>
-From: Ritesh Harjani <riteshh@linux.ibm.com>
-Message-ID: <985f720c-0cf0-5ada-4df4-3405d5969b8d@linux.ibm.com>
-Date: Tue, 23 Mar 2021 21:38:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20210319015237.993880-5-ruansy.fnst@fujitsu.com>
-Content-Language: en-US
+	Tue, 23 Mar 2021 17:06:26 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 74A5F52050;
+	Tue, 23 Mar 2021 17:06:26 +0000 (GMT)
+Received: from [172.17.0.2] (unknown [9.40.192.207])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4BF285204E;
+	Tue, 23 Mar 2021 17:06:25 +0000 (GMT)
+Subject: [PATCH v2] powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+        linux-nvdimm@lists.01.org, aneesh.kumar@linux.ibm.com,
+        ellerman@au1.ibm.com
+Date: Tue, 23 Mar 2021 13:06:24 -0400
+Message-ID: <161651910115.13873.14215644994307713797.stgit@6532096d84d3>
+User-Agent: StGit/0.21
 X-TM-AS-GCONF: 00
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
  definitions=2021-03-23_07:2021-03-22,2021-03-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103230118
-Message-ID-Hash: XVL4PSDJMHZWWW675DLHNCSOELPZCH67
-X-Message-ID-Hash: XVL4PSDJMHZWWW675DLHNCSOELPZCH67
-X-MailFrom: riteshh@linux.ibm.com
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 impostorscore=0 clxscore=1011
+ adultscore=0 suspectscore=0 mlxlogscore=999 spamscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2009150000 definitions=main-2103230126
+Message-ID-Hash: 6ZWT66D6EXFK3WPFG46CQDOCCAPE7WDE
+X-Message-ID-Hash: 6ZWT66D6EXFK3WPFG46CQDOCCAPE7WDE
+X-MailFrom: sbhat@linux.ibm.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, ocfs2-devel@oss.oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
+CC: sbhat@linux.vnet.ibm.com, linux-doc@vger.kernel.org, vaibhav@linux.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XVL4PSDJMHZWWW675DLHNCSOELPZCH67/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ZWT66D6EXFK3WPFG46CQDOCCAPE7WDE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+Add support for ND_REGION_ASYNC capability if the device tree
+indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
+Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
 
+If the flush request failed, the hypervisor is expected to
+to reflect the problem in the subsequent dimm health request call.
 
-On 3/19/21 7:22 AM, Shiyang Ruan wrote:
-> In the case where the iomap is a write operation and iomap is not equal
-> to srcmap after iomap_begin, we consider it is a CoW operation.
-> 
-> The destance extent which iomap indicated is new allocated extent.
-> So, it is needed to copy the data from srcmap to new allocated extent.
-> In theory, it is better to copy the head and tail ranges which is
-> outside of the non-aligned area instead of copying the whole aligned
-> range. But in dax page fault, it will always be an aligned range.  So,
-> we have to copy the whole range in this case.
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> ---
->   fs/dax.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++----
->   1 file changed, 66 insertions(+), 5 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index a70e6aa285bb..181aad97136a 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -1037,6 +1037,51 @@ static int dax_iomap_direct_access(struct iomap *iomap, loff_t pos, size_t size,
->   	return rc;
->   }
->   
-> +/*
-> + * Copy the head and tail part of the pages not included in the write but
-> + * required for CoW, because pos/pos+length are not page aligned.  But in dax
-> + * page fault case, the range is page aligned, we need to copy the whole range
-> + * of data.  Use copy_edge to distinguish these cases.
-> + */
+This patch prevents mmap of namespaces with MAP_SYNC flag if the
+nvdimm requires explicit flush[1].
 
+References:
+[1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
 
-Is this version better? Feel free to update/change.
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+---
+v1 - https://www.spinics.net/lists/kvm-ppc/msg18272.html
+Changes from v1:
+       - Hcall semantics finalized, all changes are to accomodate them.
 
-dax_iomap_cow_copy(): This can be called from two places.
-Either during DAX write fault, to copy the length size data to daddr.
-Or, while doing normal DAX write operation, dax_iomap_actor() might call 
-this to do the copy of either start or end unaligned address. In this 
-case the rest of the copy of aligned ranges is taken care by 
-dax_iomap_actor() itself.
-Also, note DAX fault will always result in aligned pos and pos + length.
+ Documentation/powerpc/papr_hcalls.rst     |   14 ++++++++++
+ arch/powerpc/include/asm/hvcall.h         |    3 +-
+ arch/powerpc/platforms/pseries/papr_scm.c |   39 +++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 1 deletion(-)
 
-* @pos:		address to do copy from.
-* @length:	size of copy operation.
-* @align_size:	aligned w.r.t align_size (either PMD_SIZE or PAGE_SIZE)
-* @srcmap:	iomap srcmap
-* @daddr: 	destination address to copy to.
+diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
+index 48fcf1255a33..648f278eea8f 100644
+--- a/Documentation/powerpc/papr_hcalls.rst
++++ b/Documentation/powerpc/papr_hcalls.rst
+@@ -275,6 +275,20 @@ Health Bitmap Flags:
+ Given a DRC Index collect the performance statistics for NVDIMM and copy them
+ to the resultBuffer.
+ 
++**H_SCM_FLUSH**
++
++| Input: *drcIndex, continue-token*
++| Out: *continue-token*
++| Return Value: *H_SUCCESS, H_Parameter, H_P2, H_BUSY*
++
++Given a DRC Index Flush the data to backend NVDIMM device.
++
++The hcall returns H_BUSY when the flush takes longer time and the hcall needs
++to be issued multiple times in order to be completely serviced. The
++*continue-token* from the output to be passed in the argument list of
++subsequent hcalls to the hypervisor until the hcall is completely serviced
++at which point H_SUCCESS or other error is returned by the hypervisor.
++
+ References
+ ==========
+ .. [1] "Power Architecture Platform Reference"
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index ed6086d57b22..9f7729a97ebd 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -315,7 +315,8 @@
+ #define H_SCM_HEALTH            0x400
+ #define H_SCM_PERFORMANCE_STATS 0x418
+ #define H_RPT_INVALIDATE	0x448
+-#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
++#define H_SCM_FLUSH		0x44C
++#define MAX_HCALL_OPCODE	H_SCM_FLUSH
+ 
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 835163f54244..f0407e135410 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -93,6 +93,7 @@ struct papr_scm_priv {
+ 	uint64_t block_size;
+ 	int metadata_size;
+ 	bool is_volatile;
++	bool hcall_flush_required;
+ 
+ 	uint64_t bound_addr;
+ 
+@@ -117,6 +118,38 @@ struct papr_scm_priv {
+ 	size_t stat_buffer_len;
+ };
+ 
++static int papr_scm_pmem_flush(struct nd_region *nd_region,
++			       struct bio *bio __maybe_unused)
++{
++	struct papr_scm_priv *p = nd_region_provider_data(nd_region);
++	unsigned long ret_buf[PLPAR_HCALL_BUFSIZE];
++	uint64_t token = 0;
++	int64_t rc;
++
++	do {
++		rc = plpar_hcall(H_SCM_FLUSH, ret_buf, p->drc_index, token);
++		token = ret_buf[0];
++
++		/* Check if we are stalled for some time */
++		if (H_IS_LONG_BUSY(rc)) {
++			msleep(get_longbusy_msecs(rc));
++			rc = H_BUSY;
++		} else if (rc == H_BUSY) {
++			cond_resched();
++		}
++
++	} while (rc == H_BUSY);
++
++	if (rc) {
++		dev_err(&p->pdev->dev, "flush error: %lld", rc);
++		rc = -EIO;
++	} else {
++		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete", p->drc_index);
++	}
++
++	return rc;
++}
++
+ static LIST_HEAD(papr_nd_regions);
+ static DEFINE_MUTEX(papr_ndr_lock);
+ 
+@@ -943,6 +976,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	ndr_desc.num_mappings = 1;
+ 	ndr_desc.nd_set = &p->nd_set;
+ 
++	if (p->hcall_flush_required) {
++		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
++		ndr_desc.flush = papr_scm_pmem_flush;
++	}
++
+ 	if (p->is_volatile)
+ 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+ 	else {
+@@ -1088,6 +1126,7 @@ static int papr_scm_probe(struct platform_device *pdev)
+ 	p->block_size = block_size;
+ 	p->blocks = blocks;
+ 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
++	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
+ 
+ 	/* We just need to ensure that set cookies are unique across */
+ 	uuid_parse(uuid_str, (uuid_t *) uuid);
 
-> +static int dax_iomap_cow_copy(loff_t pos, loff_t length, size_t align_size,
-> +		struct iomap *srcmap, void *daddr, bool copy_edge)
-
-do we need bool copy_edge here?
-We can detect non-align case directly if head_off != pos or pd_end != 
-end no?
-
-
-> +{
-> +	loff_t head_off = pos & (align_size - 1);
-> +	size_t size = ALIGN(head_off + length, align_size);
-> +	loff_t end = pos + length;
-> +	loff_t pg_end = round_up(end, align_size);
-> +	void *saddr = 0;
-> +	int ret = 0;
-> +
-> +	ret = dax_iomap_direct_access(srcmap, pos, size, &saddr, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!copy_edge)
-> +		return copy_mc_to_kernel(daddr, saddr, length);
-> +
-> +	/* Copy the head part of the range.  Note: we pass offset as length. */
-> +	if (head_off) {
-> +		if (saddr)
-> +			ret = copy_mc_to_kernel(daddr, saddr, head_off);
-> +		else
-> +			memset(daddr, 0, head_off);
-> +	}
-> +	/* Copy the tail part of the range */
-> +	if (end < pg_end) {
-> +		loff_t tail_off = head_off + length;
-> +		loff_t tail_len = pg_end - end;
-> +
-> +		if (saddr)
-> +			ret = copy_mc_to_kernel(daddr + tail_off,
-> +					saddr + tail_off, tail_len);
-> +		else
-> +			memset(daddr + tail_off, 0, tail_len);
-> +	}
-
-Can you pls help me understand in which case where saddr is 0 and we
-will fall back to memset API ?
-I was thinking shouldn't such restrictions be coded inside 
-copy_mc_to_kernel() function in general?
-
-
--ritesh
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
