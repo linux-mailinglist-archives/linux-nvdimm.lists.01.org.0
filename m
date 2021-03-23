@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58ECF34670B
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 18:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E1D346331
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 16:43:52 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 844F7100EB859;
-	Tue, 23 Mar 2021 10:58:35 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.42; helo=fruittonesstudio.com; envelope-from=plameyfvasiqo@forkliftaction.com; receiver=<UNKNOWN> 
-Received: from fruittonesstudio.com (unknown [188.72.187.42])
-	by ml01.01.org (Postfix) with ESMTP id 54A4E100EB84B
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 10:58:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3BFEE100EB838;
+	Tue, 23 Mar 2021 08:43:51 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=192.161.54.23; helo=fruittonesstudio.com; envelope-from=plameyfvasiqo@forkly.com; receiver=<UNKNOWN> 
+Received: from fruittonesstudio.com (unknown [192.161.54.23])
+	by ml01.01.org (Postfix) with ESMTP id 80FF2100EB82D
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 08:43:45 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
-Subject: ship this robot
-Message-ID: <1fc78a8c48af9186f6ad59061052f3c9@foxracing.com>
-Date: Tue, 23 Mar 2021 15:01:49 +0100
-From: "Jeff Dike" <plamseyvasiqo@forkliftaction.com>
+Subject: shipping will be ready
+Message-ID: <dcc27b60f44f78e98a781f6505e604ca@foxracing.com>
+Date: Tue, 23 Mar 2021 15:19:27 +0100
+From: "Jeff Dike" <plameyfvasiqo@forkly.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: M6LMX55SOMRC6WPAKROGE5SJCFL4DMDH
-X-Message-ID-Hash: M6LMX55SOMRC6WPAKROGE5SJCFL4DMDH
-X-MailFrom: plameyfvasiqo@forkliftaction.com
+Message-ID-Hash: 7NP4XWIQHFUL7QYVQHPGRFJ2ENI5A3RB
+X-Message-ID-Hash: 7NP4XWIQHFUL7QYVQHPGRFJ2ENI5A3RB
+X-MailFrom: plameyfvasiqo@forkly.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: lismokjankou@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/M6LMX55SOMRC6WPAKROGE5SJCFL4DMDH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7NP4XWIQHFUL7QYVQHPGRFJ2ENI5A3RB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6548275812999149419=="
+Content-Type: multipart/mixed; boundary="===============7056964488824833586=="
 
---===============6548275812999149419==
+--===============7056964488824833586==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -106,7 +106,7 @@ will arrange the shipment.<br /><br />Thanks,<br />Jeff Dike</span>
 </body>
 </html>
 
---===============6548275812999149419==
+--===============7056964488824833586==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -116,4 +116,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============6548275812999149419==--
+--===============7056964488824833586==--
