@@ -2,76 +2,70 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7203465E8
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Mar 2021 18:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC23A346F5C
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 24 Mar 2021 03:19:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7B29D100EB833;
-	Tue, 23 Mar 2021 10:06:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C42F1100EB333;
+	Tue, 23 Mar 2021 19:19:42 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E4F41100EB82B
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 10:06:32 -0700 (PDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12NH3xXf001480;
-	Tue, 23 Mar 2021 13:06:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
- : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=6JBiiubwipK622upUtTmkHf38UHQC7sl7ULXNHJlHcY=;
- b=Ouai4AGxcFMeH/hwPoIwsjOw4HbYF+0qXD32A18FVdR7OCyoI2f8oqPmr+ayCyNFfC2m
- 5ugs4nidVsGdG7kfoJiR4z9xWXDttetPuJrC6v/bOIITIq0pbvBGgDgDzs5Ln1m5HorY
- Rfmee4GrWAMDfSNiN+tLUV0zLvCcPFefkjMTmGKtC/WIeAMxKj551j0WQK1HYXDTChhc
- EayaYxCdLd8fBm4ieNNvpZUlF9JJbggbFrurFtgK8rX8cJ2Wlu8DK4nzXChcoJEp/XWe
- w1go329CyFDdfrdtHc/Hhj7z2DIhzlyg5SDaSNeujiTMywqkrxLLTbTOLHd8bvnZONNK 6Q==
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 37fm8cgbkr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 13:06:31 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12NGvFJp028891;
-	Tue, 23 Mar 2021 17:06:29 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma03fra.de.ibm.com with ESMTP id 37d9bpsuv1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Mar 2021 17:06:29 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12NH6QSW40763686
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Mar 2021 17:06:26 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 74A5F52050;
-	Tue, 23 Mar 2021 17:06:26 +0000 (GMT)
-Received: from [172.17.0.2] (unknown [9.40.192.207])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4BF285204E;
-	Tue, 23 Mar 2021 17:06:25 +0000 (GMT)
-Subject: [PATCH v2] powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
-        linux-nvdimm@lists.01.org, aneesh.kumar@linux.ibm.com,
-        ellerman@au1.ibm.com
-Date: Tue, 23 Mar 2021 13:06:24 -0400
-Message-ID: <161651910115.13873.14215644994307713797.stgit@6532096d84d3>
-User-Agent: StGit/0.21
-X-TM-AS-GCONF: 00
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by ml01.01.org (Postfix) with ESMTPS id 7EFEC100EB84F
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 19:19:39 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id k10so30352431ejg.0
+        for <linux-nvdimm@lists.01.org>; Tue, 23 Mar 2021 19:19:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O6pYt7i3ZfjZRsHKNRy9TSnJLBhdXZsjApsl7qVrkWA=;
+        b=RsVkB/Y0CZH9XZzn82erHDDP8QMmPgtgAa2wOWWwpxmakMZJgHzNO7I/+g4m4adiEA
+         /AuXJMSkwTq4YjUQhLPhFDbNlzE2s0z/XuQk4Yg9oVyPlFKtUWFGXz9b0FcDyGFf1ZSx
+         gkTTKLNlXDSjsuh3nOejNfxEfpMWeohC44aSax0AJ/HiZfzuvt5xWllMplzX3LmiyS9+
+         HFcxDA7Y913vpd56MDpHtmf02XWLCE3WdLeUSj4zP1CKL4A7JEBAF9uR9Tj6+4exlzq/
+         /21DNknGe39jAd9gmA5iOuCZzGMbd3mXM7qmNlmeF/yAv6uShf/XV5CbiPngHl/r30am
+         JXMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O6pYt7i3ZfjZRsHKNRy9TSnJLBhdXZsjApsl7qVrkWA=;
+        b=uH5izVIe2y5tI/QH/Eo8d1ztVOZBdt32Gbz2Ch/Q0yszfVxz+OKABLJU3qfOplgg50
+         JEc+RvvCGrpgs6ZEM1OsRpYNRGcMT7ZMNVEpf089K2+m1dtZE41RozEg9LbKDSKPpE8A
+         Ki8f/+gkA0cAl7vweErNseXFbCDlTwK4zecTXBDxHwf6AR8VMsPw0TrVovbdROPxPZWA
+         snRY3aKs4k3LSmvzZ4AW18YNLMed4ypATxE5dsanOCbnthuStn/Bstb5No74Sui2GOIz
+         wA/ZGvpWZnHzn7d2gLVKF0P2gitpSi+EIs9wlle0v0PaUyqPiHYxvW0Y2KwWM0GktoYZ
+         v6YA==
+X-Gm-Message-State: AOAM532Hj1khEAx5xGLpCXMMZ0f0Blkpw5aon44cPFll9QO3knspJ6/r
+	Iuy77W+p7Jzcrtm/zRNZBQ6iOm/gygbxFroBVbE9Kg==
+X-Google-Smtp-Source: ABdhPJxD4PFaqvtvK1VRDwzCV3Hl7JUGp0Ljr770gbmSGeQf+7GIop0/MoqaotWJPaQPZgD8nzvxH/6snKVhCi2Z0VU=
+X-Received: by 2002:a17:906:2ac1:: with SMTP id m1mr1187750eje.472.1616552376639;
+ Tue, 23 Mar 2021 19:19:36 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-23_07:2021-03-22,2021-03-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 mlxscore=0 impostorscore=0 clxscore=1011
- adultscore=0 suspectscore=0 mlxlogscore=999 spamscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103230126
-Message-ID-Hash: 6ZWT66D6EXFK3WPFG46CQDOCCAPE7WDE
-X-Message-ID-Hash: 6ZWT66D6EXFK3WPFG46CQDOCCAPE7WDE
-X-MailFrom: sbhat@linux.ibm.com
+References: <20210208105530.3072869-1-ruansy.fnst@cn.fujitsu.com>
+ <20210208105530.3072869-2-ruansy.fnst@cn.fujitsu.com> <CAPcyv4jqEdPoF5YM+jSYJd74KqRTwbbEum7=moa3=Wyn6UyU9g@mail.gmail.com>
+ <OSBPR01MB29207A1C06968705C2FEBACFF4939@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+ <CAPcyv4iBnWbG0FYw6-K0MaH--rq62s7RY_yoT9rOYWMa94Yakw@mail.gmail.com>
+ <OSBPR01MB29203F891F9584CC53616FB8F4939@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+ <CAPcyv4gn_AvT6BA7g4jLKRFODSpt7_ORowVd3KgyWxyaFG0k9g@mail.gmail.com>
+ <OSBPR01MB2920E46CBE4816CDF711E004F46F9@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+ <OSBPR01MB29208779955B49F84D857F80F4689@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+In-Reply-To: <OSBPR01MB29208779955B49F84D857F80F4689@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 23 Mar 2021 19:19:28 -0700
+Message-ID: <CAPcyv4jhUU3NVD8HLZnJzir+SugB6LnnrgJZ-jP45BZrbJ1dJQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] pagemap: Introduce ->memory_failure()
+To: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>
+Message-ID-Hash: 3H7FZG6GMPWCIT7WYEABNEW6D6GRRZMF
+X-Message-ID-Hash: 3H7FZG6GMPWCIT7WYEABNEW6D6GRRZMF
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: sbhat@linux.vnet.ibm.com, linux-doc@vger.kernel.org, vaibhav@linux.ibm.com
+CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-xfs <linux-xfs@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, device-mapper development <dm-devel@redhat.com>, "Darrick J. Wong" <darrick.wong@oracle.com>, david <david@fromorbit.com>, Christoph Hellwig <hch@lst.de>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, Goldwyn Rodrigues <rgoldwyn@suse.de>, "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>, "y-goto@fujitsu.com" <y-goto@fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ZWT66D6EXFK3WPFG46CQDOCCAPE7WDE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3H7FZG6GMPWCIT7WYEABNEW6D6GRRZMF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -80,141 +74,142 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add support for ND_REGION_ASYNC capability if the device tree
-indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
-Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
+On Thu, Mar 18, 2021 at 7:18 PM ruansy.fnst@fujitsu.com
+<ruansy.fnst@fujitsu.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: ruansy.fnst@fujitsu.com <ruansy.fnst@fujitsu.com>
+> > Subject: RE: [PATCH v3 01/11] pagemap: Introduce ->memory_failure()
+> > > > > > >
+> > > > > > > After the conversation with Dave I don't see the point of this.
+> > > > > > > If there is a memory_failure() on a page, why not just call
+> > > > > > > memory_failure()? That already knows how to find the inode and
+> > > > > > > the filesystem can be notified from there.
+> > > > > >
+> > > > > > We want memory_failure() supports reflinked files.  In this
+> > > > > > case, we are not able to track multiple files from a page(this
+> > > > > > broken
+> > > > > > page) because
+> > > > > > page->mapping,page->index can only track one file.  Thus, I
+> > > > > > page->introduce this
+> > > > > > ->memory_failure() implemented in pmem driver, to call
+> > > > > > ->->corrupted_range()
+> > > > > > upper level to upper level, and finally find out files who are
+> > > > > > using(mmapping) this page.
+> > > > > >
+> > > > >
+> > > > > I know the motivation, but this implementation seems backwards.
+> > > > > It's already the case that memory_failure() looks up the
+> > > > > address_space associated with a mapping. From there I would expect
+> > > > > a new 'struct address_space_operations' op to let the fs handle
+> > > > > the case when there are multiple address_spaces associated with a given
+> > file.
+> > > > >
+> > > >
+> > > > Let me think about it.  In this way, we
+> > > >     1. associate file mapping with dax page in dax page fault;
+> > >
+> > > I think this needs to be a new type of association that proxies the
+> > > representation of the reflink across all involved address_spaces.
+> > >
+> > > >     2. iterate files reflinked to notify `kill processes signal` by the
+> > > >           new address_space_operation;
+> > > >     3. re-associate to another reflinked file mapping when unmmaping
+> > > >         (rmap qeury in filesystem to get the another file).
+> > >
+> > > Perhaps the proxy object is reference counted per-ref-link. It seems
+> > > error prone to keep changing the association of the pfn while the reflink is
+> > in-tact.
+> > Hi, Dan
+> >
+> > I think my early rfc patchset was implemented in this way:
+> >  - Create a per-page 'dax-rmap tree' to store each reflinked file's (mapping,
+> > offset) when causing dax page fault.
+> >  - Mount this tree on page->zone_device_data which is not used in fsdax, so
+> > that we can iterate reflinked file mappings in memory_failure() easily.
+> > In my understanding, the dax-rmap tree is the proxy object you mentioned.  If
+> > so, I have to say, this method was rejected. Because this will cause huge
+> > overhead in some case that every dax page have one dax-rmap tree.
+> >
+>
+> Hi, Dan
+>
+> How do you think about this?  I am still confused.  Could you give me some advice?
 
-If the flush request failed, the hypervisor is expected to
-to reflect the problem in the subsequent dimm health request call.
+So I think the primary driver of this functionality is dax-devices and
+the architectural model for memory failure where several architectures
+and error handlers know how to route pfn failure to the
+memory_failure() frontend.
 
-This patch prevents mmap of namespaces with MAP_SYNC flag if the
-nvdimm requires explicit flush[1].
+Compare that to block-devices where sector failure has no similar
+framework, and despite some initial interest about reusing 'struct
+badblocks' for this type of scenario there has been no real uptake to
+expand 'struct badblocks' outside of the pmem driver.
 
-References:
-[1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
+I think the work you have done for ->corrupted_range() just needs to
+be repurposed away from a block-device operation to dax-device
+infrastructure. Christoph's pushback on extending
+block_device_operations makes sense to me because there is likely no
+other user of this facility than the pmem driver, and the pmem driver
+only needs it for the vestigial reason that filesystems mount on
+block-devices and not dax-devices.
 
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
----
-v1 - https://www.spinics.net/lists/kvm-ppc/msg18272.html
-Changes from v1:
-       - Hcall semantics finalized, all changes are to accomodate them.
+Recently Dave drove home the point that a filesystem can't do anything
+with pfns, it needs LBAs. A dax-device does not have LBA's, but it
+does operate on the concept of device-relative offsets. The filesystem
+is allowed to assume that dax-device:PFN[device_byte_offset >>
+PAGE_SHIFT] aliases the same data as the associated
+block-device:LBA[device_byte_offset >> SECTOR_SHIFT]. He also
+reiterated that this interface should be range based, which you
+already had, but I did not include in my attempt to communicate the
+mass failure of an entire surprise-removed device.
 
- Documentation/powerpc/papr_hcalls.rst     |   14 ++++++++++
- arch/powerpc/include/asm/hvcall.h         |    3 +-
- arch/powerpc/platforms/pseries/papr_scm.c |   39 +++++++++++++++++++++++++++++
- 3 files changed, 55 insertions(+), 1 deletion(-)
+So I think the path forward is:
 
-diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-index 48fcf1255a33..648f278eea8f 100644
---- a/Documentation/powerpc/papr_hcalls.rst
-+++ b/Documentation/powerpc/papr_hcalls.rst
-@@ -275,6 +275,20 @@ Health Bitmap Flags:
- Given a DRC Index collect the performance statistics for NVDIMM and copy them
- to the resultBuffer.
- 
-+**H_SCM_FLUSH**
-+
-+| Input: *drcIndex, continue-token*
-+| Out: *continue-token*
-+| Return Value: *H_SUCCESS, H_Parameter, H_P2, H_BUSY*
-+
-+Given a DRC Index Flush the data to backend NVDIMM device.
-+
-+The hcall returns H_BUSY when the flush takes longer time and the hcall needs
-+to be issued multiple times in order to be completely serviced. The
-+*continue-token* from the output to be passed in the argument list of
-+subsequent hcalls to the hypervisor until the hcall is completely serviced
-+at which point H_SUCCESS or other error is returned by the hypervisor.
-+
- References
- ==========
- .. [1] "Power Architecture Platform Reference"
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index ed6086d57b22..9f7729a97ebd 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -315,7 +315,8 @@
- #define H_SCM_HEALTH            0x400
- #define H_SCM_PERFORMANCE_STATS 0x418
- #define H_RPT_INVALIDATE	0x448
--#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
-+#define H_SCM_FLUSH		0x44C
-+#define MAX_HCALL_OPCODE	H_SCM_FLUSH
- 
- /* Scope args for H_SCM_UNBIND_ALL */
- #define H_UNBIND_SCOPE_ALL (0x1)
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 835163f54244..f0407e135410 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -93,6 +93,7 @@ struct papr_scm_priv {
- 	uint64_t block_size;
- 	int metadata_size;
- 	bool is_volatile;
-+	bool hcall_flush_required;
- 
- 	uint64_t bound_addr;
- 
-@@ -117,6 +118,38 @@ struct papr_scm_priv {
- 	size_t stat_buffer_len;
- };
- 
-+static int papr_scm_pmem_flush(struct nd_region *nd_region,
-+			       struct bio *bio __maybe_unused)
-+{
-+	struct papr_scm_priv *p = nd_region_provider_data(nd_region);
-+	unsigned long ret_buf[PLPAR_HCALL_BUFSIZE];
-+	uint64_t token = 0;
-+	int64_t rc;
-+
-+	do {
-+		rc = plpar_hcall(H_SCM_FLUSH, ret_buf, p->drc_index, token);
-+		token = ret_buf[0];
-+
-+		/* Check if we are stalled for some time */
-+		if (H_IS_LONG_BUSY(rc)) {
-+			msleep(get_longbusy_msecs(rc));
-+			rc = H_BUSY;
-+		} else if (rc == H_BUSY) {
-+			cond_resched();
-+		}
-+
-+	} while (rc == H_BUSY);
-+
-+	if (rc) {
-+		dev_err(&p->pdev->dev, "flush error: %lld", rc);
-+		rc = -EIO;
-+	} else {
-+		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete", p->drc_index);
-+	}
-+
-+	return rc;
-+}
-+
- static LIST_HEAD(papr_nd_regions);
- static DEFINE_MUTEX(papr_ndr_lock);
- 
-@@ -943,6 +976,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	ndr_desc.num_mappings = 1;
- 	ndr_desc.nd_set = &p->nd_set;
- 
-+	if (p->hcall_flush_required) {
-+		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-+		ndr_desc.flush = papr_scm_pmem_flush;
-+	}
-+
- 	if (p->is_volatile)
- 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
- 	else {
-@@ -1088,6 +1126,7 @@ static int papr_scm_probe(struct platform_device *pdev)
- 	p->block_size = block_size;
- 	p->blocks = blocks;
- 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
-+	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
- 
- 	/* We just need to ensure that set cookies are unique across */
- 	uuid_parse(uuid_str, (uuid_t *) uuid);
+- teach memory_failure() to allow for ranged failures
 
+- let interested drivers register for memory failure events via a
+blocking_notifier_head
+
+- teach memory_failure() to optionally let the notifier chain claim
+the event vs its current default of walking page->mapping
+
+- teach the pmem driver to register for memory_failure() events and
+filter the ones that apply to pfns that the driver owns
+
+- drop the nfit driver's usage of the mce notifier chain since
+memory_failure() is a superset of what the mce notifier communicates
+
+- augment the pmem driver's view of badblocks that it gets from
+address range scrub with one's it gets from memory_failure() events
+
+- when pmem handles a memory_failure() event or an address range scrub
+event fire a new event on a new per-dax-device blocking_notifier_head
+indicating the dax-relative offset ranges of the translated PFNs. This
+notification can optionally indicate failure, offline (for removal),
+and online (for repaired ranges).
+
+- teach dm to receive dax-device notifier events from its leaf devices
+and then translate them into dax-device notifications relative to the
+dm-device offset. This would seem to be a straightforward conversion
+of what you have done with ->corrupted_range()
+
+- teach filesystems to register for dax-device notifiers
+
+With all of that in place an interested filesystem can take ownership
+of a memory failure that impacts a range of pfns it is responsible for
+via a dax-device, but it also allows a not interested filesystem to
+default to standard single-pfn-at-a-time error handling and
+assumptions about page->mapping only referring to a single address
+space.
+
+This obviously does not solve Dave's desire to get this type of error
+reporting on block_devices, but I think there's nothing stopping a
+parallel notifier chain from being created for block-devices, but
+that's orthogonal to requirements and capabilities provided by
+dax-devices.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
