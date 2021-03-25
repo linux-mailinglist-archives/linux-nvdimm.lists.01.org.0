@@ -2,82 +2,138 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAB3348964
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Mar 2021 07:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F039C349291
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Mar 2021 14:02:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5FE50100EB35F;
-	Wed, 24 Mar 2021 23:52:15 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=59.111.176.37; helo=mail-m17637.qiye.163.com; envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN> 
-Received: from mail-m17637.qiye.163.com (mail-m17637.qiye.163.com [59.111.176.37])
+	by ml01.01.org (Postfix) with ESMTP id A3585100ED4BB;
+	Thu, 25 Mar 2021 06:02:49 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C4A22100EB343
-	for <linux-nvdimm@lists.01.org>; Wed, 24 Mar 2021 23:52:12 -0700 (PDT)
-Received: from wanjb-virtual-machine.localdomain (unknown [36.152.145.182])
-	by mail-m17637.qiye.163.com (Hmail) with ESMTPA id 4F00E9803C7;
-	Thu, 25 Mar 2021 14:52:07 +0800 (CST)
-From: Wan Jiabing <wanjiabing@vivo.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-nvdimm@lists.01.org,
-	linux-kernel@vger.kernel.org,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH] include: linux: struct device is declared twice
-Date: Thu, 25 Mar 2021 14:51:53 +0800
-Message-Id: <20210325065153.855812-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.25.1
+	by ml01.01.org (Postfix) with ESMTPS id D7300100EF271
+	for <linux-nvdimm@lists.01.org>; Thu, 25 Mar 2021 06:02:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1616677366;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FwWZJPBaAmN+VY9ozn1oVCEcu1CBKTJa99Q0BFn4OQI=;
+	b=Lm/hfgBnHGDLcc/lQOGo+SHEeOmpoha0L2euhWC1xkZ9dI6gsrcYlbX0dB+RG5Bi6oIxsy
+	AnmvbGFyPUHZ9JXmNaLVlJTom7DkS5TrgYuHcs9r9RyEayy/P4gyvghCTRro8rM94iMVKg
+	atm748Yi/WVfFGibDlgsDgP682qkBTU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-515-t0Ss08QpONaeHfc-Em4w5Q-1; Thu, 25 Mar 2021 09:02:43 -0400
+X-MC-Unique: t0Ss08QpONaeHfc-Em4w5Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 84AEE801817;
+	Thu, 25 Mar 2021 13:02:40 +0000 (UTC)
+Received: from [10.36.115.72] (ovpn-115-72.ams2.redhat.com [10.36.115.72])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C7EE25D9CA;
+	Thu, 25 Mar 2021 13:02:35 +0000 (UTC)
+To: Dan Williams <dan.j.williams@intel.com>, linux-mm@kvack.org,
+ linux-nvdimm@lists.01.org
+References: <161604048257.1463742.1374527716381197629.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat GmbH
+Subject: Re: [PATCH 0/3] mm, pmem: Force unmap pmem on surprise remove
+Message-ID: <22545105-d3f1-23b1-948c-8481af839f21@redhat.com>
+Date: Thu, 25 Mar 2021 14:02:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
-	oVCBIfWUFZS08fTR9LHh1KSx9KVkpNSk1NTk5KSUxNSk9VEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
-	FZT0tIVUpKS0hKQ1VLWQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NjI6Pyo4Sz8LKD4hSwwxFEoX
-	QhoKCkNVSlVKTUpNTU5OSklMQ09CVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlI
-	TVVKTklVSk9OVUpDSVlXWQgBWUFKQklCNwY+
-X-HM-Tid: 0a78682793edd992kuws4f00e9803c7
-Message-ID-Hash: 445VBFSLY7EKHDW7RTVCICPHYDA3EFDZ
-X-Message-ID-Hash: 445VBFSLY7EKHDW7RTVCICPHYDA3EFDZ
-X-MailFrom: wanjiabing@vivo.com
+In-Reply-To: <161604048257.1463742.1374527716381197629.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: QVQVW5WVE6X2IQYA7TO6RP72PQ43N3WA
+X-Message-ID-Hash: QVQVW5WVE6X2IQYA7TO6RP72PQ43N3WA
+X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: kael_w@yeah.net, Wan Jiabing <wanjiabing@vivo.com>
+CC: Jason Gunthorpe <jgg@ziepe.ca>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, Matthew Wilcox <willy@infradead.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>, Shiyang Ruan <ruansy.fnst@fujitsu.com>, Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/445VBFSLY7EKHDW7RTVCICPHYDA3EFDZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QVQVW5WVE6X2IQYA7TO6RP72PQ43N3WA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-struct device has been declared at 133rd line. 
-Remove the duplicate.
+On 18.03.21 05:08, Dan Williams wrote:
+> Summary:
+> 
+> A dax_dev can be unbound from its driver at any time. Unbind can not
+> fail. The driver-core will always trigger ->remove() and the result from
+> ->remove() is ignored. After ->remove() the driver-core proceeds to tear
+> down context. The filesystem-dax implementation can leave pfns mapped
+> after ->remove() if it is triggered while the filesystem is mounted.
+> Security and data-integrity is forfeit if the dax_dev is repurposed for
+> another security domain (new filesystem or change device modes), or if
+> the dax_dev is physically replaced. CXL is a hotplug bus that makes
+> dax_dev physical replace a real world prospect.
+> 
+> All dax_dev pfns must be unmapped at remove. Detect the "remove while
+> mounted" case and trigger memory_failure() over the entire dax_dev
+> range.
+> 
+> Details:
+> 
+> The get_user_pages_fast() path expects all synchronization to be handled
+> by the pattern of checking for pte presence, taking a page reference,
+> and then validating that the pte was stable over that event. The
+> gup-fast path for devmap / DAX pages additionally attempts to take/hold
+> a live reference against the hosting pgmap over the page pin. The
+> rational for the pgmap reference is to synchronize against a dax-device
+> unbind / ->remove() event, but that is unnecessary if pte invalidation
+> is guaranteed in the ->remove() path.
+> 
+> Global dax-device pte invalidation *does* happen when the device is in
+> raw "device-dax" mode where there is a single shared inode to unmap at
+> remove, but the filesystem-dax path has a large number of actively
+> mapped inodes unknown to the driver at ->remove() time. So, that unmap
+> does not happen today for filesystem-dax. However, as Jason points out,
+> that unmap / invalidation *needs* to happen not only to cleanup
+> get_user_pages_fast() semantics, but in a future (see CXL) where dax_dev
+> ->remove() is correlated with actual physical removal / replacement the
+> implications of allowing a physical pfn to be exchanged without tearing
+> down old mappings are severe (security and data-integrity).
+> 
+> What is not in this patch set is coordination with the dax_kmem driver
+> to trigger memory_failure() when the dax_dev is onlined as "System
+> RAM". The remove_memory() API was built with the assumption that
+> platform firmware negotiates all removal requests and the OS has a
+> chance to say "no". This is why dax_kmem today simply leaks
+> request_region() to burn that physical address space for any other
+> usage until the next reboot on a manual unbind event if the memory can't
+> be offlined. However a future to make sure that remove_memory() succeeds
+> after memory_failure() of the same range seems a better semantic than
+> permanently burning physical address space.
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
----
- include/linux/libnvdimm.h | 1 -
- 1 file changed, 1 deletion(-)
+I'd have similar requirements for virtio-mem on forced driver unloading 
+(although less of an issue, because in contrast to cxl, it doesn't 
+really happen in sane environments). However, I'm afraid there are 
+absolutely no guarantees that you can actually offline+rip out memory 
+exposed to the buddy, at least in the general case.
 
-diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index 01f251b6e36c..89b69e645ac7 100644
---- a/include/linux/libnvdimm.h
-+++ b/include/linux/libnvdimm.h
-@@ -141,7 +141,6 @@ static inline void __iomem *devm_nvdimm_ioremap(struct device *dev,
- 
- struct nvdimm_bus;
- struct module;
--struct device;
- struct nd_blk_region;
- struct nd_blk_region_desc {
- 	int (*enable)(struct nvdimm_bus *nvdimm_bus, struct device *dev);
+I guess it might be possible to some degree if memory was onlined to 
+ZONE_MOVABLE (there are still no guarantees, though), however, bets are 
+completely off with ZONE_NORMAL. Just imagine the memmap of one dax 
+device being allocated from another dax device. You cannot possibly 
+invalidate via memory_failure() and rip out the memory without crashing 
+the whole system afterwards.
+
 -- 
-2.25.1
+Thanks,
+
+David / dhildenb
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
