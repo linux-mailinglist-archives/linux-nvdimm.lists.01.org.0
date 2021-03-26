@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E051A34B38C
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Mar 2021 02:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EA034AEEA
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Mar 2021 20:05:11 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 14EB4100EAB5D;
-	Fri, 26 Mar 2021 18:35:39 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.12; helo=freckbeauty.com; envelope-from=nsumseykeotmi@gamersyde.com; receiver=<UNKNOWN> 
-Received: from freckbeauty.com (unknown [188.72.187.12])
-	by ml01.01.org (Postfix) with ESMTP id 44733100EAB4C
-	for <linux-nvdimm@lists.01.org>; Fri, 26 Mar 2021 18:35:36 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5E7B5100EAB63;
+	Fri, 26 Mar 2021 12:05:09 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.47; helo=freckbeauty.com; envelope-from=nsumeyfkeotmi@gasbike.net; receiver=<UNKNOWN> 
+Received: from freckbeauty.com (unknown [188.72.187.47])
+	by ml01.01.org (Postfix) with ESMTP id 7F00F100EAB5D
+	for <linux-nvdimm@lists.01.org>; Fri, 26 Mar 2021 12:05:05 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
 Subject: shipping door to door
-Message-ID: <614847ad6ee1935fa0c5018f66642406@ncboats.com>
-Date: Fri, 26 Mar 2021 16:49:26 +0100
-From: "Roy Young" <nsumeaykeotmi@gamersyde.com>
+Message-ID: <032ec9e68dbdbf5222b0ca572ef2456f@ncboats.com>
+Date: Fri, 26 Mar 2021 16:50:02 +0100
+From: "Roy Young" <nsumeyfkeotmi@gasbike.net>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: FAQ676HJIYD4L4UZ4RU7N7R5JVQW2IER
-X-Message-ID-Hash: FAQ676HJIYD4L4UZ4RU7N7R5JVQW2IER
-X-MailFrom: nsumseykeotmi@gamersyde.com
+Message-ID-Hash: YTKIG4S3VUODN2W3UIHXQO5UPX2UH66Y
+X-Message-ID-Hash: YTKIG4S3VUODN2W3UIHXQO5UPX2UH66Y
+X-MailFrom: nsumeyfkeotmi@gasbike.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: rongrobertsi@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FAQ676HJIYD4L4UZ4RU7N7R5JVQW2IER/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YTKIG4S3VUODN2W3UIHXQO5UPX2UH66Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============8394738646972641360=="
+Content-Type: multipart/mixed; boundary="===============6763567371800619087=="
 
---===============8394738646972641360==
+--===============6763567371800619087==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -108,7 +108,7 @@ left;"><span style=3D"display: block; text-align: left;"></span></span>
 </body>
 </html>
 
---===============8394738646972641360==
+--===============6763567371800619087==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -118,4 +118,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============8394738646972641360==--
+--===============6763567371800619087==--
