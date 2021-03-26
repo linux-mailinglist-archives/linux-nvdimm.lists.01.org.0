@@ -1,139 +1,121 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3387734AB6D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Mar 2021 16:27:23 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E051A34B38C
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Mar 2021 02:35:40 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 30E80100EAB4C;
-	Fri, 26 Mar 2021 08:27:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=tyhicks@linux.microsoft.com; receiver=<UNKNOWN> 
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by ml01.01.org (Postfix) with ESMTP id 900CD100EAB45
-	for <linux-nvdimm@lists.01.org>; Fri, 26 Mar 2021 08:27:18 -0700 (PDT)
-Received: from sequoia.work.tihix.com (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 1EE8820B5680;
-	Fri, 26 Mar 2021 08:27:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1EE8820B5680
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1616772437;
-	bh=pjJC8+RuCiRNDhNHwIzgJu6U7+9wO1VcQ0wueos6N2Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Gtq5M7e60kUb3b7t/PCrEEYN56deqD/0jJlgJSgugIK1US8nFGoDlMgdQDvu+GjMn
-	 eNoT7bBhYT6fpBZ917mdNtlALapS++F2ZGPgHezhGuSDuNrVoiA1QYCmjzT2YiFBYY
-	 mZChQi2j4Uu0DYlQIjcCMEX5msTo4GebuA6UHmS8=
-From: Tyler Hicks <tyhicks@linux.microsoft.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH] libnvdimm/region: Allow setting align attribute on regions without mappings
-Date: Fri, 26 Mar 2021 10:26:45 -0500
-Message-Id: <20210326152645.85225-1-tyhicks@linux.microsoft.com>
-X-Mailer: git-send-email 2.25.1
+	by ml01.01.org (Postfix) with ESMTP id 14EB4100EAB5D;
+	Fri, 26 Mar 2021 18:35:39 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.12; helo=freckbeauty.com; envelope-from=nsumseykeotmi@gamersyde.com; receiver=<UNKNOWN> 
+Received: from freckbeauty.com (unknown [188.72.187.12])
+	by ml01.01.org (Postfix) with ESMTP id 44733100EAB4C
+	for <linux-nvdimm@lists.01.org>; Fri, 26 Mar 2021 18:35:36 -0700 (PDT)
+To: linux-nvdimm@lists.01.org
+Subject: shipping door to door
+Message-ID: <614847ad6ee1935fa0c5018f66642406@ncboats.com>
+Date: Fri, 26 Mar 2021 16:49:26 +0100
+From: "Roy Young" <nsumeaykeotmi@gamersyde.com>
 MIME-Version: 1.0
-Message-ID-Hash: PUE53ISOLNNWSHVW6WJMWECEWFZZW7XU
-X-Message-ID-Hash: PUE53ISOLNNWSHVW6WJMWECEWFZZW7XU
-X-MailFrom: tyhicks@linux.microsoft.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: FAQ676HJIYD4L4UZ4RU7N7R5JVQW2IER
+X-Message-ID-Hash: FAQ676HJIYD4L4UZ4RU7N7R5JVQW2IER
+X-MailFrom: nsumseykeotmi@gamersyde.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: rongrobertsi@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PUE53ISOLNNWSHVW6WJMWECEWFZZW7XU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FAQ676HJIYD4L4UZ4RU7N7R5JVQW2IER/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============8394738646972641360=="
+
+--===============8394738646972641360==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"text-align: left;"><span style=3D"text-align:
+left;"><span style=3D"text-align: left;"></span></span></span><span
+style=3D"text-align: left;"><span style=3D"text-align: left;">Hi,<br /><b=
+r
+/>How are you doing?&nbsp;<br />I am sending you an email today to let yo=
+u
+know we have following travel bag, ready to send to global customers.<br
+/><br /></span></span><span style=3D"text-align: left;"><span
+style=3D"text-align: left;"></span></span></span></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align:
+left;"></span></span></span><span style=3D"display: block; text-align:
+left;">Features:<br />1: grid fixed main bag.<br />2: multi-compartment
+space.<br />3: anti-theft hidden zip pocket.<br />4: breathable design on
+the back.<br />5: can be used with trolley case.<br />6: 180 degree open
+luggage structure.<br />7: Large capacity, Multifunctional pocket.<br />8=
+:
+constant temperature side bag design.<br />9: High quality PVC material
+&amp; waterproof, tear-proof practical and beautiful.</span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><br /></span></span><span style=3D"display: block;
+text-align: left;"><span style=3D"display: block; text-align: left;">Pric=
+ing
+details:&nbsp;<br />1 unit 99.90&nbsp; include shipping<br />2 units 179.=
+80
+(89.90 each)<br />3 units 239.70 (79.90 each)<br />5 units 364.50&nbsp;
+(72.90 each)<br />10+ units please contact us for
+quotation</span></span>u&nbsp; &nbsp;s&nbsp; &nbsp;d<br /><br />If you
+would like to order our backpack, please send us your address for shippin=
+g,
+and we will prepare the shipment for you.<br /><br /><br /><span
+style=3D"display: block; text-align: left;"><span style=3D"text-align:
+left;"><img
+src=3D"https://ae01.alicdn.com/kf/H53eff5f2a596417fac53d3966fda292af.jpg"
+width=3D"450" height=3D"549" /><img
+src=3D"https://ae01.alicdn.com/kf/Hf5abb099a33443f4a33abd5cd1ba5cdet.jpg"
+width=3D"450" height=3D"496" /><br /><br /><img
+src=3D"https://ae01.alicdn.com/kf/Hee91c2f0589746f38010538d74ecff58T.jpg"
+width=3D"450" height=3D"416" /><img
+src=3D"https://ae01.alicdn.com/kf/Hab2901a95073497b909c242c68fd1981i.jpg"
+width=3D"450" height=3D"375" /><br /><img
+src=3D"https://ae01.alicdn.com/kf/H0f4db08a35c449f6be2958ed9bc72c94h.jpg"
+width=3D"450" height=3D"659" /><img
+src=3D"https://ae01.alicdn.com/kf/H841f4916764743b0b8c19cdf834ef6c9T.jpg"
+width=3D"450" height=3D"512" /><br /><img
+src=3D"https://ae01.alicdn.com/kf/Hf86f1d02b26d446c9923b31f6ac0a95ce.jpg"
+width=3D"450" height=3D"629" /><img
+src=3D"https://ae01.alicdn.com/kf/H9d4eba6266bd48b79d1454c2eaadc82cX.jpg"
+width=3D"550" height=3D"536" /><br /></span></span><span style=3D"display=
+: block;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"display: block; text-align: left;"><br /><br />If you would like=
+ to
+order our backpack, please send us your address for shipping, and we will
+prepare the shipment for you.<br /><br />Thanks,<br />Roy
+Young</span></span></span><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"></span></span>
+</body>
+</html>
+
+--===============8394738646972641360==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-The alignment constraint for namespace creation in a region was
-increased, from 2M to 16M, for non-PowerPC architectures in v5.7 with
-commit 2522afb86a8c ("libnvdimm/region: Introduce an 'align'
-attribute"). The thought behind the change was that region alignment
-should be uniform across all architectures and, since PowerPC had the
-largest alignment constraint of 16M, all architectures should conform to
-that alignment.
-
-The change regressed namespace creation in pre-defined regions that
-relied on 2M alignment but a workaround was provided in the form of a
-sysfs attribute, named 'align', that could be adjusted to a non-default
-alignment value.
-
-However, the sysfs attribute's store function returned an error (-ENXIO)
-when userspace attempted to change the alignment of a region that had no
-mappings. This affected 2M aligned regions of volatile memory that were
-defined in a device tree using "pmem-region" and created by the
-of_pmem_region_driver, since those regions do not contain mappings
-(ndr_mappings is 0).
-
-Allow userspace to set the align attribute on pre-existing regions that
-do not have mappings so that namespaces can still be within those
-regions, despite not being aligned to 16M.
-
-Fixes: 2522afb86a8c ("libnvdimm/region: Introduce an 'align' attribute")
-Signed-off-by: Tyler Hicks <tyhicks@linux.microsoft.com>
----
- drivers/nvdimm/region_devs.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index ef23119db574..09cff8aa6b40 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -545,29 +545,32 @@ static ssize_t align_store(struct device *dev,
- 		struct device_attribute *attr, const char *buf, size_t len)
- {
- 	struct nd_region *nd_region = to_nd_region(dev);
--	unsigned long val, dpa;
--	u32 remainder;
-+	unsigned long val;
- 	int rc;
- 
- 	rc = kstrtoul(buf, 0, &val);
- 	if (rc)
- 		return rc;
- 
--	if (!nd_region->ndr_mappings)
--		return -ENXIO;
--
--	/*
--	 * Ensure space-align is evenly divisible by the region
--	 * interleave-width because the kernel typically has no facility
--	 * to determine which DIMM(s), dimm-physical-addresses, would
--	 * contribute to the tail capacity in system-physical-address
--	 * space for the namespace.
--	 */
--	dpa = div_u64_rem(val, nd_region->ndr_mappings, &remainder);
--	if (!is_power_of_2(dpa) || dpa < PAGE_SIZE
--			|| val > region_size(nd_region) || remainder)
-+	if (val > region_size(nd_region))
- 		return -EINVAL;
- 
-+	if (nd_region->ndr_mappings) {
-+		unsigned long dpa;
-+		u32 remainder;
-+
-+		/*
-+		 * Ensure space-align is evenly divisible by the region
-+		 * interleave-width because the kernel typically has no facility
-+		 * to determine which DIMM(s), dimm-physical-addresses, would
-+		 * contribute to the tail capacity in system-physical-address
-+		 * space for the namespace.
-+		 */
-+		dpa = div_u64_rem(val, nd_region->ndr_mappings, &remainder);
-+		if (!is_power_of_2(dpa) || dpa < PAGE_SIZE || remainder)
-+			return -EINVAL;
-+	}
-+
- 	/*
- 	 * Given that space allocation consults this value multiple
- 	 * times ensure it does not change for the duration of the
--- 
-2.25.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8394738646972641360==--
