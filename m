@@ -1,38 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1782234B3BB
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Mar 2021 03:22:37 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EF934A671
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Mar 2021 12:27:58 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C9EEA100EAB59;
-	Fri, 26 Mar 2021 19:22:34 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=81.169.201.151; helo=hirtenstrasse.berlin; envelope-from=info@hirtenstrasse.berlin; receiver=<UNKNOWN> 
-Received: from hirtenstrasse.berlin (hirtenstrasse.berlin [81.169.201.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7D5DA100EB355;
+	Fri, 26 Mar 2021 04:27:56 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=59.111.176.37; helo=mail-m17637.qiye.163.com; envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN> 
+Received: from mail-m17637.qiye.163.com (mail-m17637.qiye.163.com [59.111.176.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 59BC0100EBBAF
-	for <linux-nvdimm@lists.01.org>; Fri, 26 Mar 2021 19:22:31 -0700 (PDT)
-Received: from [45.85.90.162] (slot0.goamiony.com [45.85.90.162])
-	by hirtenstrasse.berlin with ESMTP
-	; Fri, 26 Mar 2021 08:33:52 +0100
-Message-ID: <BDAE948B-1520-4D03-AD79-029C497985E7@hirtenstrasse.berlin>
+	by ml01.01.org (Postfix) with ESMTPS id E8B5A100EC1D9
+	for <linux-nvdimm@lists.01.org>; Fri, 26 Mar 2021 04:27:53 -0700 (PDT)
+Received: from wanjb-virtual-machine.localdomain (unknown [36.152.145.182])
+	by mail-m17637.qiye.163.com (Hmail) with ESMTPA id 07D5F9804A3;
+	Fri, 26 Mar 2021 19:27:47 +0800 (CST)
+From: Wan Jiabing <wanjiabing@vivo.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	linux-nvdimm@lists.01.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] nvdimm/nd-core.h: struct nd_region is declared twice
+Date: Fri, 26 Mar 2021 19:26:47 +0800
+Message-Id: <20210326112647.903329-1-wanjiabing@vivo.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Description: Mail message body
-Subject: Nice to meet you 
-To: Recipients <info@hirtenstrasse.berlin>
-From: "Alexander Downer" <info@hirtenstrasse.berlin>
-Date: Fri, 26 Mar 2021 00:33:45 -0700
-Message-ID-Hash: QKXP46NS4UCT2BVQFKHPE7NIZLYRSOAF
-X-Message-ID-Hash: QKXP46NS4UCT2BVQFKHPE7NIZLYRSOAF
-X-MailFrom: info@hirtenstrasse.berlin
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZS1VLWVdZKFlBSE83V1ktWUFJV1kPCR
+	oVCBIfWUFZHUtDGUlOQ05KTx1CVkpNSk1MTkNLTUNJTU1VEwETFhoSFyQUDg9ZV1kWGg8SFR0UWU
+	FZT0tIVUpKS0hKTFVLWQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Oio6MCo*CT8RTzwZDx5NViMt
+	GjcaClFVSlVKTUpNTE5DS01DTUtKVTMWGhIXVQwaFRESGhkSFRw7DRINFFUYFBZFWVdZEgtZQVlI
+	TVVKTklVSk9OVUpDSVlXWQgBWUFKTE1JNwY+
+X-HM-Tid: 0a786e4a53d4d992kuws07d5f9804a3
+Message-ID-Hash: OMXASWCCM7XAPX5WGNCUWIEPHJKY5LGW
+X-Message-ID-Hash: OMXASWCCM7XAPX5WGNCUWIEPHJKY5LGW
+X-MailFrom: wanjiabing@vivo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: kael_w@yeah.net, Wan Jiabing <wanjiabing@vivo.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: downeralexander58@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QKXP46NS4UCT2BVQFKHPE7NIZLYRSOAF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OMXASWCCM7XAPX5WGNCUWIEPHJKY5LGW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -41,12 +53,28 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Good day.
+struct nd_region has been declared at 118th line.
+Remove the duplicate.
 
-My Name is Alexander Downer , I'am a Private  Financial Consultant, I have a client who  has an interest in investing in your country into a joint venture he has funds available meant for investment.The client main interest is in the area of the following: Motor company, Civil Construction, Real Estate Developments,Hospitality, Power/Energy supply,Agriculture,Healthy Sector, Oil and Gas,Happy to inform you that we are going to meet One on One during the process of this discussion.
+Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+---
+ drivers/nvdimm/nd-core.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Regards,
-Mr.Alexander Downer
+diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
+index 564faa36a3ca..e54551caf335 100644
+--- a/drivers/nvdimm/nd-core.h
++++ b/drivers/nvdimm/nd-core.h
+@@ -128,7 +128,6 @@ void __nd_device_register(struct device *dev);
+ struct nd_label_id;
+ char *nd_label_gen_id(struct nd_label_id *label_id, u8 *uuid, u32 flags);
+ bool nd_is_uuid_unique(struct device *dev, u8 *uuid);
+-struct nd_region;
+ struct nvdimm_drvdata;
+ struct nd_mapping;
+ void nd_mapping_free_labels(struct nd_mapping *nd_mapping);
+-- 
+2.25.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
