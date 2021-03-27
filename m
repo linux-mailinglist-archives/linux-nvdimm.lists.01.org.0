@@ -1,52 +1,69 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4C034BE4C
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 28 Mar 2021 20:42:33 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE46934BB6E
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 28 Mar 2021 08:36:32 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 530BA100EF270;
-	Sun, 28 Mar 2021 11:42:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=81.169.201.151; helo=hirtenstrasse.berlin; envelope-from=info@hirtenstrasse.berlin; receiver=<UNKNOWN> 
-Received: from hirtenstrasse.berlin (hirtenstrasse.berlin [81.169.201.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AF651100EF25B
-	for <linux-nvdimm@lists.01.org>; Sun, 28 Mar 2021 11:42:27 -0700 (PDT)
-Received: from [45.85.90.162] (slot0.goamiony.com [45.85.90.162])
-	by hirtenstrasse.berlin with ESMTP
-	; Sat, 27 Mar 2021 06:28:59 +0100
-Message-ID: <0BD73E69-54D6-4656-BC1C-CAB9A5955AF4@hirtenstrasse.berlin>
+	by ml01.01.org (Postfix) with ESMTP id 448FF100EBBD9;
+	Sat, 27 Mar 2021 23:36:30 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=178.128.12.46; helo=187119.cloudwaysapps.com; envelope-from=yjamss@hotmail.com; receiver=<UNKNOWN> 
+Received: from 187119.cloudwaysapps.com (unknown [178.128.12.46])
+	by ml01.01.org (Postfix) with ESMTP id 3C807100EBBC4
+	for <linux-nvdimm@lists.01.org>; Sat, 27 Mar 2021 23:36:26 -0700 (PDT)
+Received: from WIN-K2RPIC160YA (187119.cloudwaysapps.com [127.0.0.1])
+	by 187119.cloudwaysapps.com (Postfix) with SMTP id D068E285A8;
+	Sat, 27 Mar 2021 10:31:55 +0000 (UTC)
+Received: from [32.123.4.165] by WIN-K2RPIC160YA id lNHrht107cGr; Sat, 27 Mar 2021 10:28:37 +0000
+Message-ID: <7$-s-$y-32a4@wae.8.xq8e>
+From: "Mr. Yahya Jammeh." <yjamss@hotmail.com>
+To: akpm@linux-foundation.org
+Subject: Hello
+Date: Sat, 27 Mar 21 10:28:37 GMT
+X-Mailer: QUALCOMM Windows Eudora Version 5.1
 MIME-Version: 1.0
-Content-Description: Mail message body
-Subject: Nice to meet you 
-To: Recipients <info@hirtenstrasse.berlin>
-From: "Alexander Downer" <info@hirtenstrasse.berlin>
-Date: Fri, 26 Mar 2021 22:28:54 -0700
-Message-ID-Hash: BF6KEQSKYYOPWM4I5TVTKWUYXEXAIQK5
-X-Message-ID-Hash: BF6KEQSKYYOPWM4I5TVTKWUYXEXAIQK5
-X-MailFrom: info@hirtenstrasse.berlin
+X-Priority: 3
+X-MSMail-Priority: Normal
+Message-ID-Hash: 7RKHAE6X4Z5ZZZI6ZC7GLYH5ZNYHQA4C
+X-Message-ID-Hash: 7RKHAE6X4Z5ZZZI6ZC7GLYH5ZNYHQA4C
+X-MailFrom: yjamss@hotmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: downeralexander58@gmail.com
+Reply-To: "Mr. Yahya Jammeh." <yjamss@hotmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BF6KEQSKYYOPWM4I5TVTKWUYXEXAIQK5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7RKHAE6X4Z5ZZZI6ZC7GLYH5ZNYHQA4C/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Good day.
+FROM: FORMER PRESIDENT OF REPUBLIC OF THE GAMBIA,
+MR. YAHYAH JAMMEH.
 
-My Name is Alexander Downer , I'am a Private  Financial Consultant, I have a client who  has an interest in investing in your country into a joint venture he has funds available meant for investment.The client main interest is in the area of the following: Motor company, Civil Construction, Real Estate Developments,Hospitality, Power/Energy supply,Agriculture,Healthy Sector, Oil and Gas,Happy to inform you that we are going to meet One on One during the process of this discussion.
+
+Greetings:
+
+My names are Mr.Yahya Jammeh and I am the former president of Republic
+of the Gambia. I have important business proposal that is going to benefit both of us. Kindly contact me on email 
+address info.diplomat07@gmail.com for more information. Please see the link below: 
+
+https://www.africanews.com/tag/yahya-jammeh/
+
+https://www.africanews.com/2020/01/12/gambia-s-jammeh-seeks-to-return-home//
+
+https://www.bbc.com/news/world-africa-24383225
+
+https://www.dailymotion.com/video/xq45v8
 
 Regards,
-Mr.Alexander Downer
+Mr. Yahya Jammeh.
+Former Gambia President.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
