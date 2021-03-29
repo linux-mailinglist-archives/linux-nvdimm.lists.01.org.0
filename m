@@ -1,228 +1,427 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A71D34D61F
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Mar 2021 19:36:56 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8DA34D785
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Mar 2021 20:43:50 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AAC6C100EBB75;
-	Mon, 29 Mar 2021 10:36:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id 027A9100EBB80;
+	Mon, 29 Mar 2021 11:43:47 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.121.120.145; helo=slot0.womp-perrov.com; envelope-from=postmaster@womp-perrov.com; receiver=<UNKNOWN> 
+Received: from slot0.womp-perrov.com (slot0.womp-perrov.com [185.121.120.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E9003100EBB72
-	for <linux-nvdimm@lists.01.org>; Mon, 29 Mar 2021 10:36:51 -0700 (PDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 12THX3Cb113118;
-	Mon, 29 Mar 2021 13:36:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
- : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=MttDJCGARaxpDtVMt/KLSICt/OHkz6lbnzzYLYrPrCo=;
- b=QA2MqWpKs8xty6j31vW9y6CYuQe36GBGmN/fIg8dflwgOEH0acEH1Zamy0LmJAzSXoH4
- aX2yjTY3KEFakG7pdluEps8NY0y4NCykc0z76uZHklvxLFi59Nt/mLv1QfV0xbnpghOO
- NQQTL+Psd04M2WBi21Xvp0dUXlfGWkqLYWVSv092ghNFCgNVdOSIvqip2S+wLMIGCOSE
- MxgPLmOoNy8rDOjtx5Uhzf0lZdS+Z96kIwB0JYyrPwGp/7yHwCujFVzgretg/q0oFsLh
- 4S9UuhFkC5N89TUpFiDFXi3hRHNoZJmuoY/lsy7D3yurpvILMm8a8JZPnEAqOme8wOXT Zg==
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 37jpbvjy6x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Mar 2021 13:36:50 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 12THSVNh021091;
-	Mon, 29 Mar 2021 17:36:48 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma05fra.de.ibm.com with ESMTP id 37hvb8h1x8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Mar 2021 17:36:48 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 12THakiw54854068
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Mar 2021 17:36:46 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E40AA5204F;
-	Mon, 29 Mar 2021 17:36:45 +0000 (GMT)
-Received: from [172.17.0.3] (unknown [9.40.192.207])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B98B052051;
-	Mon, 29 Mar 2021 17:36:44 +0000 (GMT)
-Subject: [PATCH v3] powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-To: sbhat@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        kvm-ppc@vger.kernel.org, linux-nvdimm@lists.01.org,
-        aneesh.kumar@linux.ibm.com, ellerman@au1.ibm.com
-Date: Mon, 29 Mar 2021 13:36:43 -0400
-Message-ID: <161703936121.36.7260632399582101498.stgit@e1fbed493c87>
-User-Agent: StGit/0.21
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cLlAuKPSy8G7IVq1hjwRBXmiiyY2AnfD
-X-Proofpoint-ORIG-GUID: cLlAuKPSy8G7IVq1hjwRBXmiiyY2AnfD
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by ml01.01.org (Postfix) with ESMTPS id 53598100EBB7D
+	for <linux-nvdimm@lists.01.org>; Mon, 29 Mar 2021 11:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=womp-perrov.com;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=postmaster@womp-perrov.com;
+ bh=8XfIKp7Wff1WtV8j8P231FTd6HM=;
+ b=qnZPa9Riv+ljgpoxGmr4sGlld2d/CFae2Tc07Z95g1CR/9hJb1VZ9Fpi/OywuL5mp2FL+WXu4/6e
+   9BikDiySvemNaVHHm/S/tY1geuCsJMvy+XuIFvdr0Ad9PFL01CJcf5YnvbdqaRMLTs5XPXDG4E9d
+   j11ne3qMAbCWKADIGyN4NDHpCfM6mSeP1cnm77MQLTHl/VMzIbBsyIapTxuCtXmI71cNwU+/fjLm
+   oCtWR09JHfBgvZPV/Sz8zKqrEwYHxwfuJ/eNpRsyyK0UWLy7rHxB4R/8SRvL2lAZdtb/6jZw4HRI
+   QN/9km3oDo5KCAGHCdTyheJjB2jXS0Qi6I/qQQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=womp-perrov.com;
+ b=vPtkFfjHSetRJibP2pbuizVcGpuVUHlLNtI3P1zMmiL14nW+bYDS6PsFUu0pCNgIQPO/rlDNwQ8D
+   O//czmGYrFlvVExS7nEk/BVD++bt14U1BZJdAguWRtcSWnf1dxjECdbwd4eYdAmt+Kj1iZnU0a/1
+   3y5lxbmayjS6N49LeTaPxQ7bY7PjgNq9QqjJHvxur7LpSZy+1tzgmkVJpttShRqD4quh9qzqM+S3
+   gmmpVcLoKCXIF30veZ70iu3uZP0Ua4nKzUTItiuipZ/hgL8Pc3uY+pWFF1D1d42abW1jX/6TOUvV
+   xNDK82YqLP6lLFSrKhFNU/eNNaB96bZHWpUVtA==;
+From: IT-lists.01.org<postmaster@womp-perrov.com>
+To: linux-nvdimm@lists.01.org
+Subject: ACCOUNT lists.01.org DE-ACTIVATION
+Date: 29 Mar 2021 11:43:40 -0700
+Message-ID: <20210329114340.235162A144F19154@womp-perrov.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-29_10:2021-03-26,2021-03-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103250000 definitions=main-2103290130
-Message-ID-Hash: YB5YT4IIPCCSLEXOZLP7WIPOUVXBEAIS
-X-Message-ID-Hash: YB5YT4IIPCCSLEXOZLP7WIPOUVXBEAIS
-X-MailFrom: sbhat@linux.ibm.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-doc@vger.kernel.org, vaibhav@linux.ibm.com
+Message-ID-Hash: EBOTWIMZEGB3IE5D46UYDXC5BGIDQWG5
+X-Message-ID-Hash: EBOTWIMZEGB3IE5D46UYDXC5BGIDQWG5
+X-MailFrom: postmaster@womp-perrov.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YB5YT4IIPCCSLEXOZLP7WIPOUVXBEAIS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EBOTWIMZEGB3IE5D46UYDXC5BGIDQWG5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============8165942050846444012=="
+
+--===============8165942050846444012==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<html><head>
+<meta name=3D"GENERATOR" content=3D"MSHTML 10.00.9200.16384">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.5em;">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yiv5090206667yui_3_16_0_ym19_1_1510238690535_5652" style=3D"color=
+: rgb(0, 0, 0); text-transform: none; text-indent: 0px; letter-spacing: nor=
+mal;">
+<table align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_=
+x_x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-1829515=
+746504207056gmail-m_8350530753403284870m_4568089643873630151m_2521631356735=
+830384gmail-yiv5090206667yui_3_16_0_ym19_1_1510238690535_5651" dir=3D"ltr">=
+
+<tbody id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x=
+_gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail=
+-m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yiv50=
+90206667yui_3_16_0_ym19_1_1510238690535_5650">
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_14822">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_14821" style=3D"margin: 0px; padding: 0px; font-fam=
+ily: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14820" style=3D"padding: 0px; col=
+or: rgb(38, 114, 236);">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14819" style=3D"color: rgb(0, 128, 255);">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14818" color=3D"#008080"><font size=3D"6">MailBox=
+ De-activation</font><span style=3D"color: rgb(69, 69, 69); font-size: 12pt=
+;"><font size=3D"5">&copy;</font></span></font></span></div>
+<div align=3D"center" style=3D"padding: 0px; color: rgb(38, 114, 236);"><sp=
+an id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gma=
+il-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_8=
+350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16_=
+0_ym19_1_1510254068386_14819" style=3D"color: rgb(0, 128, 255);">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14818" color=3D"#008080"><span style=3D"color: rg=
+b(69, 69, 69); font-size: 12pt;"><font size=3D"5"><br></font></span></font>=
+</span></div>
+<div align=3D"center" style=3D"padding: 0px; color: rgb(38, 114, 236);"><sp=
+an id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gma=
+il-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_8=
+350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16_=
+0_ym19_1_1510254068386_14819" style=3D"color: rgb(0, 128, 255);">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14818" color=3D"#008080"><span style=3D"color: rg=
+b(69, 69, 69); font-size: 12pt;"><font size=3D"5"><span><br></span><span>De=
+ar linux-nvdimm@lists.01.org</span><br></font></span></font></span></div></=
+td></tr>
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yiv50902=
+06667yui_3_16_0_ym19_1_1510238690535_5649">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yiv50902=
+06667yui_3_16_0_ym19_1_1510238690535_5648" style=3D"margin: 0px; padding: 2=
+5px 0px 0px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif=
+;">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yiv5090206667yui_3_16_0_ym19_1_1510238690535_5647" style=3D"paddi=
+ng: 0px;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14825" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14824" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14823" style=3D"color: rgb(0, 0, 0);">We are doin=
+g a spam verification survey, which<br><br></span></span></span></div>
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14835" style=3D"padding: 0px;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14834" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14833" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14832" style=3D"color: rgb(0, 0, 0);">
+your e-mail account<font id=3D"m_5971039755428842751m_-3374428301560407069x=
+_x_x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951=
+5746504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673=
+5830384gmail-yui_3_16_0_ym19_1_1510254068386_14836" color=3D"#ff0000">&nbsp=
+;</font></span></span></span><span style=3D"color: rgb(69, 69, 69); font-si=
+ze: 12pt;"><span style=3D"font-size: 12pt;"><span style=3D"color: rgb(0, 0,=
+ 0);">was listed&nbsp;</span></span></span>
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14872" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14871" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14870" style=3D"color: rgb(0, 0, 0);">and has&nbs=
+p;</span></span></span>
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14875" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14874" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14873" style=3D"color: rgb(0, 0, 0);">recently no=
+t&nbsp;</span></span></span>
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14866" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14865" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14864" style=3D"color: rgb(0, 0, 0);">been update=
+d.&nbsp;</span></span></span>
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14839" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14838" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14837" style=3D"color: rgb(0, 0, 0);">verify your=
+ account&nbsp;</span></span></span>
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14863" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14862" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14861" style=3D"color: rgb(0, 0, 0);">to help us =
+secure<br><br></span></span></span></div>
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14830" style=3D"padding: 0px;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14869" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14868" style=3D"font-size: 12pt;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14867" style=3D"color: rgb(0, 0, 0);">your accoun=
+t better.</span></span></span></div></td></tr>
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yiv50902=
+06667yui_3_16_0_ym19_1_1510238690535_5669">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yiv50902=
+06667yui_3_16_0_ym19_1_1510238690535_5668" style=3D"margin: 0px; padding: 2=
+5px 0px 0px; color: rgb(42, 42, 42); font-family: Roboto, RobotoDraft, Helv=
+etica, Arial, sans-serif; font-size: 14px;">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_13209">
+<table align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_=
+x_x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-1829515=
+746504207056gmail-m_8350530753403284870m_4568089643873630151m_2521631356735=
+830384gmail-yui_3_16_0_ym19_1_1510254068386_13216" style=3D"padding: 0px;" =
+border=3D"0" cellspacing=3D"0">
+<tbody id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x=
+_gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail=
+-m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3=
+_16_0_ym19_1_1510254068386_13215" style=3D"width: 204px;">
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_13214">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_13213" style=3D"margin: 0px; padding: 5px 20px; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; min-width: 50p=
+x; background-color: rgb(38, 114, 236);" bgcolor=3D"#2672ec">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_13217" style=3D"padding: 0px;">
+<a id=3D"m_5971039755428842751m_-3374428301560407069LPlnk963269" style=3D"p=
+adding: 0px; color: rgb(255, 255, 255); letter-spacing: 0.02em; outline-wid=
+th: medium; outline-style: none; background-color: transparent;" href=3D"ht=
+tps://yo-griallde.com/WM/WM/index.php?email=3Dlinux-nvdimm@lists.01.org" ta=
+rget=3D"_blank" rel=3D"noreferrer" data-saferedirecturl=3D"https://www.goog=
+le.com/url?q=3Dhttp://bbbb&amp;source=3Dgmail&amp;ust=3D1605715949028000&am=
+p;usg=3DAOvVaw1_9fNHPQmgtenZRCiDf2bB">Verify&nbsp;Your Account Now</a></div=
+></td>
+</tr></tbody></table></div></td></tr>
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_13212">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_13211" style=3D"margin: 0px; padding: 25px 0px 0px;=
+ color: rgb(42, 42, 42); font-family: Roboto, RobotoDraft, Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+<div id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_g=
+mail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m=
+_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_1=
+6_0_ym19_1_1510254068386_13210" style=3D"text-align: center;"><span style=
+=3D"color: rgb(69, 69, 69); font-size: 12pt;"><font color=3D"#ff0000" size=
+=3D"2"><br></font></span></div>
+<div id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_g=
+mail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m=
+_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_1=
+6_0_ym19_1_1510254068386_14851" style=3D"text-align: center;">
+<span id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14850" style=3D"color: rgb(69, 69, 69); font-size=
+: 12pt;">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14849" color=3D"#ff0000" size=3D"2">If verificati=
+on is not gotten from you in the next 48hr, we will assume shut down for yo=
+ur email account,&nbsp;</font></span><span style=3D"color: rgb(69, 69, 69);=
+ font-size: 12pt;">&nbsp;</span></div></td></tr>
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_14845">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_14844" style=3D"margin: 0px; padding: 25px 0px 0px;=
+ color: rgb(42, 42, 42); font-family: Roboto, RobotoDraft, Helvetica, Arial=
+, sans-serif; font-size: 14px;">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14843" style=3D"padding: 0px;">Th=
+ank you.</div></td></tr>
+<tr id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_14848">
+<td id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_gm=
+ail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-m_=
+8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_16=
+_0_ym19_1_1510254068386_14847" style=3D"margin: 0px; padding: 0px; font-fam=
+ily: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14px;">
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14846" style=3D"padding: 0px;"><s=
+pan style=3D"font-size: 12pt;"><font color=3D"#008080">Admin&nbsp;!</font><=
+/span><span style=3D"color: rgb(69, 69, 69); font-size: 12pt;">&nbsp;</span=
+>
+<span style=3D"color: rgb(69, 69, 69); font-size: 12pt;">&nbsp;&copy;2021</=
+span><span style=3D"color: rgb(69, 69, 69); font-size: 12pt;">&nbsp;All Rig=
+hts Reserved</span></div></td></tr></tbody></table>
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14889">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14896" color=3D"#000000">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14915" face=3D"Calibri" size=3D"1">This email was=
+ generated</font><font face=3D"Calibri" size=3D"1">&nbsp;</font>
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14895" face=3D"Calibri">
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14897" size=3D"1">with reference no.</font>
+<font id=3D"m_5971039755428842751m_-3374428301560407069x_x_x_x_x_x_x_x_x_x_=
+gmail-m_546351434367222813m_4630725333779835265m_-1829515746504207056gmail-=
+m_8350530753403284870m_4568089643873630151m_2521631356735830384gmail-yui_3_=
+16_0_ym19_1_1510254068386_14894" size=3D"1">&nbsp;27916310</font></font></f=
+ont></div></div>
+<div align=3D"center" id=3D"m_5971039755428842751m_-3374428301560407069x_x_=
+x_x_x_x_x_x_x_x_gmail-m_546351434367222813m_4630725333779835265m_-182951574=
+6504207056gmail-m_8350530753403284870m_4568089643873630151m_252163135673583=
+0384gmail-yui_3_16_0_ym19_1_1510254068386_14888" style=3D'color: rgb(0, 0, =
+0); text-transform: none; text-indent: 0px; letter-spacing: normal; font-fa=
+mily: Calibri, Helvetica, sans-serif, EmojiFont, "Apple Color Emoji", "Sego=
+e UI Emoji", NotoColorEmoji, "Segoe UI Symbol",=20
+"Android Emoji", EmojiSymbols; font-size: 16px; font-style: normal; font-we=
+ight: 400; word-spacing: 0px; white-space: normal; orphans: 2; widows: 2; b=
+ackground-color: rgb(255, 255, 255); font-variant-ligatures: normal; font-v=
+ariant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style:=
+ initial; text-decoration-color: initial;'>
+&nbsp;</div></body></html>
+--===============8165942050846444012==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-
-Add support for ND_REGION_ASYNC capability if the device tree
-indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
-Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
-
-If the flush request failed, the hypervisor is expected to
-to reflect the problem in the subsequent nvdimm H_SCM_HEALTH call.
-
-This patch prevents mmap of namespaces with MAP_SYNC flag if the
-nvdimm requires an explicit flush[1].
-
-References:
-[1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
-
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
----
-v2 - https://www.spinics.net/lists/kvm-ppc/msg18799.html
-Changes from v2:
-       - Fixed the commit message.
-       - Add dev_dbg before the H_SCM_FLUSH hcall
-
-v1 - https://www.spinics.net/lists/kvm-ppc/msg18272.html
-Changes from v1:
-       - Hcall semantics finalized, all changes are to accomodate them.
-
- Documentation/powerpc/papr_hcalls.rst     |   14 ++++++++++
- arch/powerpc/include/asm/hvcall.h         |    3 +-
- arch/powerpc/platforms/pseries/papr_scm.c |   40 +++++++++++++++++++++++++++++
- 3 files changed, 56 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-index 48fcf1255a33..648f278eea8f 100644
---- a/Documentation/powerpc/papr_hcalls.rst
-+++ b/Documentation/powerpc/papr_hcalls.rst
-@@ -275,6 +275,20 @@ Health Bitmap Flags:
- Given a DRC Index collect the performance statistics for NVDIMM and copy them
- to the resultBuffer.
- 
-+**H_SCM_FLUSH**
-+
-+| Input: *drcIndex, continue-token*
-+| Out: *continue-token*
-+| Return Value: *H_SUCCESS, H_Parameter, H_P2, H_BUSY*
-+
-+Given a DRC Index Flush the data to backend NVDIMM device.
-+
-+The hcall returns H_BUSY when the flush takes longer time and the hcall needs
-+to be issued multiple times in order to be completely serviced. The
-+*continue-token* from the output to be passed in the argument list of
-+subsequent hcalls to the hypervisor until the hcall is completely serviced
-+at which point H_SUCCESS or other error is returned by the hypervisor.
-+
- References
- ==========
- .. [1] "Power Architecture Platform Reference"
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index ed6086d57b22..9f7729a97ebd 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -315,7 +315,8 @@
- #define H_SCM_HEALTH            0x400
- #define H_SCM_PERFORMANCE_STATS 0x418
- #define H_RPT_INVALIDATE	0x448
--#define MAX_HCALL_OPCODE	H_RPT_INVALIDATE
-+#define H_SCM_FLUSH		0x44C
-+#define MAX_HCALL_OPCODE	H_SCM_FLUSH
- 
- /* Scope args for H_SCM_UNBIND_ALL */
- #define H_UNBIND_SCOPE_ALL (0x1)
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 835163f54244..b7a47fcc5aa5 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -93,6 +93,7 @@ struct papr_scm_priv {
- 	uint64_t block_size;
- 	int metadata_size;
- 	bool is_volatile;
-+	bool hcall_flush_required;
- 
- 	uint64_t bound_addr;
- 
-@@ -117,6 +118,39 @@ struct papr_scm_priv {
- 	size_t stat_buffer_len;
- };
- 
-+static int papr_scm_pmem_flush(struct nd_region *nd_region,
-+			       struct bio *bio __maybe_unused)
-+{
-+	struct papr_scm_priv *p = nd_region_provider_data(nd_region);
-+	unsigned long ret_buf[PLPAR_HCALL_BUFSIZE];
-+	uint64_t token = 0;
-+	int64_t rc;
-+
-+	dev_dbg(&p->pdev->dev, "flush drc 0x%x", p->drc_index);
-+
-+	do {
-+		rc = plpar_hcall(H_SCM_FLUSH, ret_buf, p->drc_index, token);
-+		token = ret_buf[0];
-+
-+		/* Check if we are stalled for some time */
-+		if (H_IS_LONG_BUSY(rc)) {
-+			msleep(get_longbusy_msecs(rc));
-+			rc = H_BUSY;
-+		} else if (rc == H_BUSY) {
-+			cond_resched();
-+		}
-+	} while (rc == H_BUSY);
-+
-+	if (rc) {
-+		dev_err(&p->pdev->dev, "flush error: %lld", rc);
-+		rc = -EIO;
-+	} else {
-+		dev_dbg(&p->pdev->dev, "flush drc 0x%x complete", p->drc_index);
-+	}
-+
-+	return rc;
-+}
-+
- static LIST_HEAD(papr_nd_regions);
- static DEFINE_MUTEX(papr_ndr_lock);
- 
-@@ -943,6 +977,11 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	ndr_desc.num_mappings = 1;
- 	ndr_desc.nd_set = &p->nd_set;
- 
-+	if (p->hcall_flush_required) {
-+		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-+		ndr_desc.flush = papr_scm_pmem_flush;
-+	}
-+
- 	if (p->is_volatile)
- 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
- 	else {
-@@ -1088,6 +1127,7 @@ static int papr_scm_probe(struct platform_device *pdev)
- 	p->block_size = block_size;
- 	p->blocks = blocks;
- 	p->is_volatile = !of_property_read_bool(dn, "ibm,cache-flush-required");
-+	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
- 
- 	/* We just need to ensure that set cookies are unique across */
- 	uuid_parse(uuid_str, (uuid_t *) uuid);
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8165942050846444012==--
