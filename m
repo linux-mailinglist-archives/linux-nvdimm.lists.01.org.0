@@ -2,46 +2,71 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E7C3507AC
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Mar 2021 21:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A893509C6
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Mar 2021 23:52:26 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A74B2100EB358;
-	Wed, 31 Mar 2021 12:56:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6B371100EB83D;
+	Wed, 31 Mar 2021 14:52:24 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::72b; helo=mail-qk1-x72b.google.com; envelope-from=yury.norov@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 22391100EB355
-	for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 12:56:31 -0700 (PDT)
-IronPort-SDR: t3HuOy9dOf/yBOHMQMkoAKn5M60nB1X+uTdnMLfeSc8juX5cHKYo2yB66vlyvFE1kQAgQMx8GA
- TlcRSJtlMGdQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9940"; a="189849271"
-X-IronPort-AV: E=Sophos;i="5.81,293,1610438400";
-   d="scan'208";a="189849271"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2021 12:56:24 -0700
-IronPort-SDR: St2xoNNGmSJrfuAAaRk5IEbVveJLLIAH48/X+ybA+cHrrOaoo9pwcuFjHPjjd8KTte9sQCozGH
- C5KGNnYcm/nA==
-X-IronPort-AV: E=Sophos;i="5.81,293,1610438400";
-   d="scan'208";a="455655746"
-Received: from ateichma-mobl.amr.corp.intel.com (HELO omniknight.intel.com) ([10.212.50.195])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2021 12:56:24 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH] daxctl: emit counts of total and online memblocks
-Date: Wed, 31 Mar 2021 13:56:19 -0600
-Message-Id: <20210331195619.533491-1-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.30.2
+	by ml01.01.org (Postfix) with ESMTPS id D4AE4100EB838
+	for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 14:52:20 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id y5so289022qkl.9
+        for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 14:52:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=iVgFfy9Gk4TopgDWAZb3OEMFsekIXo3QttoRKgThI1I=;
+        b=LlC/3vOcZu0Rh5837wBCMc/jMQBLoS5tu19QTNj1eof7IhHTCSrowwreYpcEeTbT5X
+         NlWLfUqhbD9HhkHO9DsT4Tyx2dRlg91X71xYeCMm7fKtrUmafIBq7/LrPrNoupfhFp3m
+         GewFfvppFWbs9VRkNf6T/omLtxmxV/Um2gbRVOo+AHZwOoh9mGFiVd9+oTJRsbPr+urV
+         9+SzjFJBATN+dQCPHnqvB4BC59ngCo/QcWw7P40soldfgVxjJkBfgZEWDD018mop0vXZ
+         RHFwc/5vTY5r72yfm8jOOOnGx6oz9cJw+eVDnJnP827bZO8OihlinIME1rTQWHzKsxKK
+         ckUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=iVgFfy9Gk4TopgDWAZb3OEMFsekIXo3QttoRKgThI1I=;
+        b=ZvE+13tO2NWmCVLUQ9yC35cZi8Lc3b7NMvsD+bDABPfpc2ocbrZipbMO0pv9SFyGVD
+         gbPkAyZ0AlhgaNp5oeoq80YRcFXGOVhBrPwyvxjLgB+KnUIj/pyyiKvY0FS7WPsnTKtf
+         bDtMMdX1Kmd88SmVmqchANt3KqAWuLRrpsoBM9+Nw5aM5kZgRRd4KQl58qD7nOIcuYyW
+         5izhB4po/e6/9kSIbhZUxOqvynI9w3PMFmfdd6BCA/ex55OEfzgPZGNBiqbuT9LyTGEy
+         1wt4Z/bDidOHPbLybzS1j22jqWFmRLp1C5v7lSx0Wv5BPOFkzgEGX73Z6AaEkfNmewv0
+         UBWg==
+X-Gm-Message-State: AOAM533mfYJVUK97IBbqXYHTidzu1u8nT/c2ooHLjOEq7+Ac3m6QljLp
+	KQc6YQ1PTFaqN/JTlrwhPPg=
+X-Google-Smtp-Source: ABdhPJwK1AgyeLn7/B6+lfbSP03Q/ohuFDGUVnzdZCNHOlmGfkjpcbj+5GbXHWQQi4iDLVthXpiBHg==
+X-Received: by 2002:a37:78b:: with SMTP id 133mr5361746qkh.109.1617227539232;
+        Wed, 31 Mar 2021 14:52:19 -0700 (PDT)
+Received: from localhost ([207.98.216.60])
+        by smtp.gmail.com with ESMTPSA id d84sm2453310qke.53.2021.03.31.14.52.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Mar 2021 14:52:18 -0700 (PDT)
+Date: Wed, 31 Mar 2021 14:52:18 -0700
+From: Yury Norov <yury.norov@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH] memfd_secret: use unsigned int rather than long as
+ syscall flags type
+Message-ID: <20210331215218.GA3437@yury-ThinkPad>
+References: <20210331142345.27532-1-rppt@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: OB7YI4TXZHRSP6E6PV7AEBEJ5TLYO3QM
-X-Message-ID-Hash: OB7YI4TXZHRSP6E6PV7AEBEJ5TLYO3QM
-X-MailFrom: vishal.l.verma@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Steve Scargall <steve.scargall@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>
+Content-Disposition: inline
+In-Reply-To: <20210331142345.27532-1-rppt@kernel.org>
+Message-ID-Hash: 2E3BCV3JJLFPOWUX3EIRRTEAEASLQ5TB
+X-Message-ID-Hash: 2E3BCV3JJLFPOWUX3EIRRTEAEASLQ5TB
+X-MailFrom: yury.norov@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>,
+  Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OB7YI4TXZHRSP6E6PV7AEBEJ5TLYO3QM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2E3BCV3JJLFPOWUX3EIRRTEAEASLQ5TB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,49 +75,24 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Fir daxctl device listings, if in 'system-ram' mode, it is useful to
-know whether the memory associated with the device is online or not.
-Since the memory is comprised of a number of 'memblocks', and it is
-possible (albeit rare) to have a subset of them online, and the rest
-offline, we can't just use a boolean online-or-offline flag for the
-state.
+On Wed, Mar 31, 2021 at 05:23:45PM +0300, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> Yuri Norov says:
+> 
+>   If parameter size is the same for native and compat ABIs, we may
+>   wire a syscall made by compat client to native handler. This is
+>   true for unsigned int, but not true for unsigned long or pointer.
+> 
+>   That's why I suggest using unsigned int and so avoid creating compat
+>   entry point.
+> 
+> Use unsigned int as the type of the flags parameter in memfd_secret()
+> system call.
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Add a couple of counts, one for the total number of memblocks associated
-with the device, and another for the ones that are online.
-
-Link: https://github.com/pmem/ndctl/issues/139
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Reported-by: Steve Scargall <steve.scargall@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- util/json.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/util/json.c b/util/json.c
-index ca0167b..a8d2412 100644
---- a/util/json.c
-+++ b/util/json.c
-@@ -482,6 +482,17 @@ struct json_object *util_daxctl_dev_to_json(struct daxctl_dev *dev,
- 		json_object_object_add(jdev, "mode", jobj);
- 
- 	if (mem && daxctl_dev_get_resource(dev) != 0) {
-+		int num_sections = daxctl_memory_num_sections(mem);
-+		int num_online = daxctl_memory_is_online(mem);
-+
-+		jobj = json_object_new_int(num_online);
-+		if (jobj)
-+			json_object_object_add(jdev, "online_memblocks", jobj);
-+
-+		jobj = json_object_new_int(num_sections);
-+		if (jobj)
-+			json_object_object_add(jdev, "total_memblocks", jobj);
-+
- 		movable = daxctl_memory_is_movable(mem);
- 		if (movable == 1)
- 			jobj = json_object_new_boolean(true);
--- 
-2.30.2
+Acked-by: Yury Norov <yury.norov@gmail.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
