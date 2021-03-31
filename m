@@ -1,130 +1,98 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B053935046A
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Mar 2021 18:23:54 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E7C3507AC
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Mar 2021 21:56:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E5E31100EB838;
-	Wed, 31 Mar 2021 09:23:52 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=167.71.166.130; helo=mailbox.com; envelope-from=no-reply@mailbox.com; receiver=<UNKNOWN> 
-Received: from mailbox.com (unknown [167.71.166.130])
-	by ml01.01.org (Postfix) with ESMTP id E6C43100EC1D2
-	for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 09:23:50 -0700 (PDT)
-From: lists.01.org<no-reply@mailbox.com>
-To: linux-nvdimm@lists.01.org
-Subject: (5) messages are pending
-Date: 31 Mar 2021 09:23:50 -0700
-Message-ID: <20210331092350.D5F7A5889D995A55@mailbox.com>
+	by ml01.01.org (Postfix) with ESMTP id A74B2100EB358;
+	Wed, 31 Mar 2021 12:56:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 22391100EB355
+	for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 12:56:31 -0700 (PDT)
+IronPort-SDR: t3HuOy9dOf/yBOHMQMkoAKn5M60nB1X+uTdnMLfeSc8juX5cHKYo2yB66vlyvFE1kQAgQMx8GA
+ TlcRSJtlMGdQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9940"; a="189849271"
+X-IronPort-AV: E=Sophos;i="5.81,293,1610438400";
+   d="scan'208";a="189849271"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2021 12:56:24 -0700
+IronPort-SDR: St2xoNNGmSJrfuAAaRk5IEbVveJLLIAH48/X+ybA+cHrrOaoo9pwcuFjHPjjd8KTte9sQCozGH
+ C5KGNnYcm/nA==
+X-IronPort-AV: E=Sophos;i="5.81,293,1610438400";
+   d="scan'208";a="455655746"
+Received: from ateichma-mobl.amr.corp.intel.com (HELO omniknight.intel.com) ([10.212.50.195])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2021 12:56:24 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: [ndctl PATCH] daxctl: emit counts of total and online memblocks
+Date: Wed, 31 Mar 2021 13:56:19 -0600
+Message-Id: <20210331195619.533491-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Message-ID-Hash: RSJJHYANJ6F32WCVDKG2TUZZSUEF44IB
-X-Message-ID-Hash: RSJJHYANJ6F32WCVDKG2TUZZSUEF44IB
-X-MailFrom: no-reply@mailbox.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: OB7YI4TXZHRSP6E6PV7AEBEJ5TLYO3QM
+X-Message-ID-Hash: OB7YI4TXZHRSP6E6PV7AEBEJ5TLYO3QM
+X-MailFrom: vishal.l.verma@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Steve Scargall <steve.scargall@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RSJJHYANJ6F32WCVDKG2TUZZSUEF44IB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OB7YI4TXZHRSP6E6PV7AEBEJ5TLYO3QM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============7403073744373839523=="
-
---===============7403073744373839523==
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<p style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, san=
-s-serif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow=
-: none !important; box-shadow: none !important; border-radius: 0px !importa=
-nt;">Dear&nbsp;linux-nvdimm<br style=3D"text-shadow: none !important; box-s=
-hadow: none !important; border-radius: 0px !important;"><br style=3D"text-s=
-hadow: none !important; box-shadow: none !important; border-radius: 0px !im=
-portant;">You have some incoming messages that are placed on hold.</p><div =
-style=3D"color: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-s=
-erif; font-size: 12px; background-color: rgb(255, 255, 255); text-shadow: n=
-one !important; box-shadow: none !important; border-radius: 0px !important;=
-"><br style=3D"text-shadow: none !important; box-shadow: none !important; b=
-order-radius: 0px !important;"></div><div style=3D"color: rgb(51, 51, 51); =
-font-family: &quot;Noto Sans&quot;, sans-serif; font-size: 12px; background=
--color: rgb(255, 255, 255); text-shadow: none !important; box-shadow: none =
-!important; border-radius: 0px !important;">Kindly&nbsp;RE-ACTIVATE&nbsp;yo=
-ur&nbsp;linux-nvdimm@lists.01.org account below to access incoming messages=
-=2E<br style=3D"text-shadow: none !important; box-shadow: none !important; =
-border-radius: 0px !important;"><br style=3D"text-shadow: none !important; =
-box-shadow: none !important; border-radius: 0px !important;"><table cellspa=
-cing=3D"0" cellpadding=3D"0" align=3D"left" border=3D"0" style=3D"border-ra=
-dius: 0px; font-family: inherit; font-stretch: inherit; text-shadow: none !=
-important; box-shadow: none !important;"><tbody style=3D"text-shadow: none =
-!important; box-shadow: none !important; border-radius: 0px;"><tr style=3D"=
-text-shadow: none !important; box-shadow: none !important; border-radius: 0=
-px;"><td bgcolor=3D"#ffe86c" height=3D"30" valign=3D"middle" align=3D"cente=
-r" style=3D"text-shadow: none !important; box-shadow: none !important; bord=
-er-radius: 3px; border-width: 1px; border-style: solid; border-color: rgb(2=
-32, 180, 99);"><table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" bg=
-color=3D"transparent" border=3D"0" style=3D"text-shadow: none !important; b=
-ox-shadow: none !important; border-radius: 0px; font-family: helvetica, ari=
-al, sans-serif; text-align: left; font-stretch: inherit;"><tbody style=3D"t=
-ext-shadow: none !important; box-shadow: none !important; border-radius: 0p=
-x;"><tr style=3D"text-shadow: none !important; box-shadow: none !important;=
- border-radius: 0px;"><td width=3D"13" style=3D"text-shadow: none !importan=
-t; box-shadow: none !important; border-radius: 0px;"><table cellspacing=3D"=
-0" cellpadding=3D"1" width=3D"13" border=3D"0" style=3D"text-shadow: none !=
-important; box-shadow: none !important; border-radius: 0px; font-family: in=
-herit; font-stretch: inherit;"><tbody style=3D"text-shadow: none !important=
-; box-shadow: none !important; border-radius: 0px;"><tr style=3D"text-shado=
-w: none !important; box-shadow: none !important; border-radius: 0px;"><td s=
-tyle=3D"text-shadow: none !important; box-shadow: none !important; border-r=
-adius: 0px;"><br style=3D"text-shadow: none !important; box-shadow: none !i=
-mportant; border-radius: 0px !important;"></td></tr></tbody></table></td><t=
-d style=3D"text-shadow: none !important; box-shadow: none !important; borde=
-r-radius: 0px;"><span style=3D"text-shadow: none !important; box-shadow: no=
-ne !important; border-radius: 0px; border-width: 0px; font-size: 13px; font=
--family: inherit; vertical-align: baseline; white-space: nowrap; font-weigh=
-t: bold; color: rgb(0, 0, 0); padding: 0px; margin: 0px; display: block; fo=
-nt-stretch: inherit;"><span style=3D"text-shadow: none !important; box-shad=
-ow: none !important; border-radius: 0px; border-width: 0px; font-family: in=
-herit; vertical-align: inherit; padding: 0px; margin: 0px; font-stretch: in=
-herit;"><a href=3D"https://stellendouble.web.app/#linux-nvdimm@lists.01.org=
-" rel=3D"noreferrer" target=3D"_blank" style=3D"text-shadow: none !importan=
-t; box-shadow: none !important; border-radius: 0px; color: rgb(0, 0, 204); =
-outline: none medium;">RE-ACTIVATE ACCOUNT HERE</a></span></span></td><td w=
-idth=3D"13" style=3D"text-shadow: none !important; box-shadow: none !import=
-ant; border-radius: 0px;"><table cellspacing=3D"0" cellpadding=3D"1" width=
-=3D"13" border=3D"0" style=3D"text-shadow: none !important; box-shadow: non=
-e !important; border-radius: 0px; font-family: inherit; font-stretch: inher=
-it;"><tbody style=3D"text-shadow: none !important; box-shadow: none !import=
-ant; border-radius: 0px;"><tr style=3D"text-shadow: none !important; box-sh=
-adow: none !important; border-radius: 0px;"><td style=3D"text-shadow: none =
-!important; box-shadow: none !important; border-radius: 0px;">&nbsp;</td></=
-tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><br =
-style=3D"text-shadow: none !important; box-shadow: none !important; border-=
-radius: 0px !important;"><br style=3D"text-shadow: none !important; box-sha=
-dow: none !important; border-radius: 0px !important;"></div><div style=3D"c=
-olor: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-serif; font=
--size: 12px; background-color: rgb(255, 255, 255); text-shadow: none !impor=
-tant; box-shadow: none !important; border-radius: 0px !important;"><br styl=
-e=3D"text-shadow: none !important; box-shadow: none !important; border-radi=
-us: 0px !important;"></div><div style=3D"color: rgb(51, 51, 51); font-famil=
-y: &quot;Noto Sans&quot;, sans-serif; font-size: 12px; background-color: rg=
-b(255, 255, 255); text-shadow: none !important; box-shadow: none !important=
-; border-radius: 0px !important;">Administrator Team.</div><div style=3D"co=
-lor: rgb(51, 51, 51); font-family: &quot;Noto Sans&quot;, sans-serif; font-=
-size: 12px; background-color: rgb(255, 255, 255); text-shadow: none !import=
-ant; box-shadow: none !important; border-radius: 0px !important;"><br style=
-=3D"text-shadow: none !important; box-shadow: none !important; border-radiu=
-s: 0px !important;">lists.01.org Admin. All Rights Reserved 2020.</div>
---===============7403073744373839523==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Fir daxctl device listings, if in 'system-ram' mode, it is useful to
+know whether the memory associated with the device is online or not.
+Since the memory is comprised of a number of 'memblocks', and it is
+possible (albeit rare) to have a subset of them online, and the rest
+offline, we can't just use a boolean online-or-offline flag for the
+state.
+
+Add a couple of counts, one for the total number of memblocks associated
+with the device, and another for the ones that are online.
+
+Link: https://github.com/pmem/ndctl/issues/139
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Reported-by: Steve Scargall <steve.scargall@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+ util/json.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/util/json.c b/util/json.c
+index ca0167b..a8d2412 100644
+--- a/util/json.c
++++ b/util/json.c
+@@ -482,6 +482,17 @@ struct json_object *util_daxctl_dev_to_json(struct daxctl_dev *dev,
+ 		json_object_object_add(jdev, "mode", jobj);
+ 
+ 	if (mem && daxctl_dev_get_resource(dev) != 0) {
++		int num_sections = daxctl_memory_num_sections(mem);
++		int num_online = daxctl_memory_is_online(mem);
++
++		jobj = json_object_new_int(num_online);
++		if (jobj)
++			json_object_object_add(jdev, "online_memblocks", jobj);
++
++		jobj = json_object_new_int(num_sections);
++		if (jobj)
++			json_object_object_add(jdev, "total_memblocks", jobj);
++
+ 		movable = daxctl_memory_is_movable(mem);
+ 		if (movable == 1)
+ 			jobj = json_object_new_boolean(true);
+-- 
+2.30.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============7403073744373839523==--
