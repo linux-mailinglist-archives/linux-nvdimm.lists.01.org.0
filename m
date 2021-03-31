@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83237350405
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Mar 2021 18:01:28 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266A135040B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Mar 2021 18:02:37 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8AF9F100EB349;
-	Wed, 31 Mar 2021 09:01:26 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.74; helo=gotflagfootball.com; envelope-from=gsimeaylakomu@gialliance.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 45653100EB352;
+	Wed, 31 Mar 2021 09:02:34 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.74; helo=gotflagfootball.com; envelope-from=gsimseylakomu@globalgoodsco.com; receiver=<UNKNOWN> 
 Received: from gotflagfootball.com (tamuja.coltrate.com [188.72.187.74])
-	by ml01.01.org (Postfix) with ESMTP id 8804D100EB348
-	for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 09:01:23 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E2CCE100EB350
+	for <linux-nvdimm@lists.01.org>; Wed, 31 Mar 2021 09:02:31 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
 Subject: globally shipping
-Message-ID: <0e8b34a24ba3c6f90fe9fb316bc08475@globalgrowgear.com>
-Date: Wed, 31 Mar 2021 17:39:45 +0200
-From: "Layne Serrano" <gsimeaylakomu@gialliance.com>
+Message-ID: <060780e4caa837e4fcfcd4055b4833ef@globalgrowgear.com>
+Date: Wed, 31 Mar 2021 17:40:24 +0200
+From: "Layne Serrano" <gsimeaylakomu@globalgoodsco.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: IT3ZJZ24KNG5I7KQSPHZVGTET3P6E6QO
-X-Message-ID-Hash: IT3ZJZ24KNG5I7KQSPHZVGTET3P6E6QO
-X-MailFrom: gsimeaylakomu@gialliance.com
+Message-ID-Hash: X452V7UQTUXOA4POBQTNIY6UET5SNXYE
+X-Message-ID-Hash: X452V7UQTUXOA4POBQTNIY6UET5SNXYE
+X-MailFrom: gsimseylakomu@globalgoodsco.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: clarencebosc@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IT3ZJZ24KNG5I7KQSPHZVGTET3P6E6QO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X452V7UQTUXOA4POBQTNIY6UET5SNXYE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0937293081742849971=="
+Content-Type: multipart/mixed; boundary="===============1923763293348246208=="
 
---===============0937293081742849971==
+--===============1923763293348246208==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -110,7 +110,7 @@ left;"><span style=3D"display: block; text-align: left;"></span></span>
 </body>
 </html>
 
---===============0937293081742849971==
+--===============1923763293348246208==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,4 +120,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============0937293081742849971==--
+--===============1923763293348246208==--
