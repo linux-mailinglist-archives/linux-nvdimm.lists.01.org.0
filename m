@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E759A351604
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Apr 2021 17:16:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2923515F8
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Apr 2021 17:13:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D498B100EAB43;
-	Thu,  1 Apr 2021 08:16:44 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=81.17.30.209; helo=goodsstores.com; envelope-from=theeayjbrz@greencradle.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 06EB4100F227D;
+	Thu,  1 Apr 2021 08:13:17 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=81.17.30.209; helo=goodsstores.com; envelope-from=theedyjbrz@gravitydefyer.com; receiver=<UNKNOWN> 
 Received: from goodsstores.com (unknown [81.17.30.209])
-	by ml01.01.org (Postfix) with ESMTP id B49D1100F227A
-	for <linux-nvdimm@lists.01.org>; Thu,  1 Apr 2021 08:16:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2AB4A100F226D
+	for <linux-nvdimm@lists.01.org>; Thu,  1 Apr 2021 08:13:13 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
 Subject: second reminder
-Message-ID: <7ca15798eeb98cc790726876b43597a4@victorage.com>
-Date: Thu, 01 Apr 2021 13:51:29 +0200
-From: "Jerry Henson" <theseyjbrz@greencradle.com>
+Message-ID: <872e46ed0c02460a735843cf52c4f657@victorage.com>
+Date: Thu, 01 Apr 2021 13:52:30 +0200
+From: "Jerry Henson" <theseyjbrz@gravitydefyer.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: R4JIICGK6XL6S5FVUBMPFPC4P5QESWRA
-X-Message-ID-Hash: R4JIICGK6XL6S5FVUBMPFPC4P5QESWRA
-X-MailFrom: theeayjbrz@greencradle.com
+Message-ID-Hash: R222AOBMW7CWBRWOFIEIQ44ILYXSG4P5
+X-Message-ID-Hash: R222AOBMW7CWBRWOFIEIQ44ILYXSG4P5
+X-MailFrom: theedyjbrz@gravitydefyer.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: bosscaojankes@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R4JIICGK6XL6S5FVUBMPFPC4P5QESWRA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R222AOBMW7CWBRWOFIEIQ44ILYXSG4P5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5373489138572611631=="
+Content-Type: multipart/mixed; boundary="===============4463209904140257591=="
 
---===============5373489138572611631==
+--===============4463209904140257591==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -143,7 +143,7 @@ left;"></span></span>
 </body>
 </html>
 
---===============5373489138572611631==
+--===============4463209904140257591==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -153,4 +153,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============5373489138572611631==--
+--===============4463209904140257591==--
