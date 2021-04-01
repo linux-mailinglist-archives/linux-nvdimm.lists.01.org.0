@@ -1,156 +1,94 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2923515F8
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Apr 2021 17:13:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54788351714
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Apr 2021 19:06:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 06EB4100F227D;
-	Thu,  1 Apr 2021 08:13:17 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=81.17.30.209; helo=goodsstores.com; envelope-from=theedyjbrz@gravitydefyer.com; receiver=<UNKNOWN> 
-Received: from goodsstores.com (unknown [81.17.30.209])
-	by ml01.01.org (Postfix) with ESMTP id 2AB4A100F226D
-	for <linux-nvdimm@lists.01.org>; Thu,  1 Apr 2021 08:13:13 -0700 (PDT)
-To: linux-nvdimm@lists.01.org
-Subject: second reminder
-Message-ID: <872e46ed0c02460a735843cf52c4f657@victorage.com>
-Date: Thu, 01 Apr 2021 13:52:30 +0200
-From: "Jerry Henson" <theseyjbrz@gravitydefyer.com>
+	by ml01.01.org (Postfix) with ESMTP id 3B365100F2250;
+	Thu,  1 Apr 2021 10:06:33 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 9EF4A100F224F
+	for <linux-nvdimm@lists.01.org>; Thu,  1 Apr 2021 10:06:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iCMEzATsTfKSllJ0qHxWkotIZ1LmTIaj9wA1MfQzBRo=; b=mN+K+tNl7VN1Zh9vGb6RBIGpcG
+	URsI4ncd1qpZarWtFWlRAuRNMmA4vxy7ER+6UfyJh91G4FWy3JDQJovHDoLobLdF++cwQE3ixv75u
+	/IpLjAFNZj+qdihlzk21Vt0dXA1rLWBj8S+3sH6KGWY4VF85iEnryKOjm9UL/vAdQqynMq6Q5kEox
+	eNkMRVdwDGqWKaMrPiuEfzUa1aVuZMfSIqyuMRB/tpt0JhwrSc7aukHcJSUTbkxFVJ2Adz5qMYZAG
+	Luv5Z3aHjdby3V6GOV7WPfj/gHcPy8wStsVn0PMG7jk8TY3zmwKa1amIZvDRJodtacJLlETBSOCxU
+	dQkiQCAA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1lS0lr-006OYt-NL; Thu, 01 Apr 2021 17:06:17 +0000
+Date: Thu, 1 Apr 2021 18:06:15 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: BUG_ON(!mapping_empty(&inode->i_data))
+Message-ID: <20210401170615.GH351017@casper.infradead.org>
+References: <alpine.LSU.2.11.2103301654520.2648@eggly.anvils>
+ <20210331024913.GS351017@casper.infradead.org>
+ <alpine.LSU.2.11.2103311413560.1201@eggly.anvils>
 MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: R222AOBMW7CWBRWOFIEIQ44ILYXSG4P5
-X-Message-ID-Hash: R222AOBMW7CWBRWOFIEIQ44ILYXSG4P5
-X-MailFrom: theedyjbrz@gravitydefyer.com
+Content-Disposition: inline
+In-Reply-To: <alpine.LSU.2.11.2103311413560.1201@eggly.anvils>
+Message-ID-Hash: IDP2736AZQ4LWGEDORGTLSTAYUONIUKH
+X-Message-ID-Hash: IDP2736AZQ4LWGEDORGTLSTAYUONIUKH
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: bosscaojankes@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R222AOBMW7CWBRWOFIEIQ44ILYXSG4P5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IDP2736AZQ4LWGEDORGTLSTAYUONIUKH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4463209904140257591=="
-
---===============4463209904140257591==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-<span style=3D"display: block; text-align: left;"><span style=3D"display:
-block; text-align: left;"><span style=3D"display: block; text-align:
-left;"><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"text-align: left;"><span style=3D"text-align: left;"><span
-style=3D"text-align: left;"></span></span></span><span style=3D"text-alig=
-n:
-left;"><span style=3D"text-align: left;">Hi,<br /><br
-/></span></span></span></span></span></span></span></span></span><span
-style=3D"display: block; text-align: left;">How are you doing today?<br
-/>Just want to check with you if you received our email from last week?
-</span><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"text-align: left;"><span style=3D"text-align: left;">Are you
-interested in the following office chairs?<br /><br
-/></span></span></span></span></span></span></span></span></span><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align:
-left;">Specification:</span></span></span></span></span></span></span></s=
-pan><span
-style=3D"display: block; text-align: left;">Color: Black&amp;Red,
-Black&amp;Blue, Black&amp;Gold, Black&amp;White<br />Material:
-PVC=EF=BC=88polyvinyl chloride=EF=BC=89Leather + Elastic Fabric + Steel<b=
-r />Max. Load
-Bearing: 150kg<br />Whole Size: 25.19''x47.24''<br />Sitting
-Size:14.56''x18.11''<br /><br />Feature:<br />90&deg;~150&deg; lying
-design, can be lying down like a bed.<br />Retractable footrest, make you
-more relexed during the break.<br />Quality leather cushion, comfortable
-sitting, scratch resistant.<br />5 claw universal wheel, large bearing an=
-d
-much mute.<br />360&deg; freely rotatable.<br />Height adjustable, to fit
-different people's height.</span><span style=3D"display: block; text-alig=
-n:
-left;"><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><br
-/></span></span></span></span></span></span></span><span style=3D"display=
-:
-block; text-align: left;"><span style=3D"display: block; text-align:
-left;">Costs for different quantity: shipment included<br />195.00 each (=
-1
-unit)<br />185.00 each (2-5 units)<br />175.00 each (6-10 units)<br /><br
-/></span></span><span style=3D"display: block; text-align: left;">Send yo=
-ur
-address for delivery if you would like to place an order today, we will
-prepare the shipment for you quickly.<br /><br /><img
-src=3D"https://ae04.alicdn.com/kf/H67d823f919e4441eb579398701952a9aK.jpeg=
-"
-width=3D"450" height=3D"450" /><img
-src=3D"https://ae04.alicdn.com/kf/Haacca64a7ba8401e937d94df2a70b042w.jpg"
-width=3D"450" height=3D"450" /><br /><img
-src=3D"https://ae04.alicdn.com/kf/Hd5f4cea4ee58499696712df66acaf0aeN.jpg"
-width=3D"450" height=3D"450" /><img
-src=3D"https://ae04.alicdn.com/kf/H2d0d7874f7f34c0192a545b4c5961934j.jpg"
-width=3D"450" height=3D"450" /><br /></span><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"text-align: left;"><br /><br /><img
-src=3D"https://ae04.alicdn.com/kf/Hb437cb286e49498f95063c51d6373e78X.jpeg=
-"
-width=3D"450" height=3D"450" /><img
-src=3D"https://ae04.alicdn.com/kf/H1270ef141f2d41f585c23a0047abaf5c6.jpeg=
-"
-width=3D"450" height=3D"450" /><br /></span></span><span style=3D"display=
-: block;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><br /><br />Send your address=
- for
-delivery if you would like to place an order today, we will prepare the
-shipment for you quickly.<br /><br />Thanks,<br
-/>Jerry&nbsp;Henson</span></span></span><span style=3D"display: block;
-text-align: left;"><span style=3D"display: block; text-align:
-left;"></span></span>
-</body>
-</html>
-
---===============4463209904140257591==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Wed, Mar 31, 2021 at 02:58:12PM -0700, Hugh Dickins wrote:
+> I suspect there's a bug in the XArray handling in collapse_file(),
+> which sometimes leaves empty nodes behind.
+
+Urp, yes, that can easily happen.
+
+        /* This will be less messy when we use multi-index entries */
+        do {
+                xas_lock_irq(&xas);
+                xas_create_range(&xas);
+                if (!xas_error(&xas))
+                        break;
+                if (!xas_nomem(&xas, GFP_KERNEL)) {
+                        result = SCAN_FAIL;
+                        goto out;
+                }
+
+xas_create_range() can absolutely create nodes with zero entries.
+So if we create m/n nodes and then it runs out of memory (or cgroup
+denies it), we can leave nodes in the tree with zero entries.
+
+There are three options for fixing it ...
+ - Switch to using multi-index entries.  We need to do this anyway, but
+   I don't yet have a handle on the bugs that you found last time I
+   pushed this into linux-next.  At -rc5 seems like a late stage to be
+   trying this solution.
+ - Add an xas_prune_range() that gets called on failure.  Should be
+   straightforward to write, but will be obsolete as soon as we do the
+   above and it's a pain for the callers.
+ - Change how xas_create_range() works to merely preallocate the xa_nodes
+   and not insert them into the tree until we're trying to insert data into
+   them.  I favour this option, and this scenario is amenable to writing
+   a test that will simulate failure halfway through.
+
+I'm going to start on option 3 now.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============4463209904140257591==--
