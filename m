@@ -1,83 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E1135202B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Apr 2021 21:54:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0C2352597
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  2 Apr 2021 05:13:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 999DC100F2263;
-	Thu,  1 Apr 2021 12:54:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 574D9100ED484;
+	Thu,  1 Apr 2021 20:13:27 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9EB5E100EB34F
-	for <linux-nvdimm@lists.01.org>; Thu,  1 Apr 2021 12:54:36 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 131Ja0DF117344;
-	Thu, 1 Apr 2021 19:54:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : from : to :
- cc : references : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=Bu04mF2Iams8WUOFDmdgFzU6CR1qrKFZ75icqH6dpDU=;
- b=HKjwp2+aiNZ73xOPttL84CqEZhhtiuw3830Nb2m/Cm8wp9bJG//7dQHeaG+cPA8mS+pc
- aBwdhLkNpc5XBy2CWZO8whUsleWARAP8FeUmJlcc3f/RiRGj93BC56qV8Nbq5F5KG4Lh
- 9Mxy30uYMJKuQEnF+t70/wk4m28DskW9odvLO6ChuYmoevd5/pnB9kdGSOeoMNfC5yZw
- MJyuN3JOmqTtFfMT2nZSlD64RiTTAXVsV+R7md2tITVLIU77e+jVl2MiClE5IwkQl8cA
- dUjmyI0xl52/jr7rrdBgJxTU8idly7gZ8DUDXeMJ0CX8E1rXhy9Qaeyui+v4S6lTZVMv vQ==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by userp2130.oracle.com with ESMTP id 37n30say7r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 01 Apr 2021 19:54:22 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 131JZwla038925;
-	Thu, 1 Apr 2021 19:54:22 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by aserp3030.oracle.com with ESMTP id 37n2asq9bk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 01 Apr 2021 19:54:21 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 131JsGU1030268;
-	Thu, 1 Apr 2021 19:54:16 GMT
-Received: from [10.175.199.243] (/10.175.199.243)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Thu, 01 Apr 2021 12:54:15 -0700
-Subject: Re: [PATCH 3/3] mm/devmap: Remove pgmap accounting in the
- get_user_pages_fast() path
-From: Joao Martins <joao.m.martins@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>
-References: <161604048257.1463742.1374527716381197629.stgit@dwillia2-desk3.amr.corp.intel.com>
- <161604050866.1463742.7759521510383551055.stgit@dwillia2-desk3.amr.corp.intel.com>
- <66514812-6a24-8e2e-7be5-c61e188fecc4@oracle.com>
- <CAPcyv4jidaz=33oWFMB_aBPtYDLe-AA_NP-k_pfGADVt=w5Vng@mail.gmail.com>
- <1c87dc74-335e-c9e2-2ae8-1ec7e0cb44c4@oracle.com>
-Message-ID: <a8c41028-c7f5-9b93-4721-b8ddcf2427da@oracle.com>
-Date: Thu, 1 Apr 2021 20:54:10 +0100
+	by ml01.01.org (Postfix) with ESMTPS id 18F46100EF265
+	for <linux-nvdimm@lists.01.org>; Thu,  1 Apr 2021 20:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ePkApq+eAbci5ih5uu3fsCIhPqtvRqCGqPeCVh/d5TY=; b=b44SXhjJbU77CePf/FjihR1EdV
+	D6RQM0PR6b2PNYbE1D5gmWOEXWQkImvclrbGpKlJCWQFBBxBEDEBxd1KTngIwS5gLASDVmyemjANR
+	AFTafoLjxYafVU7uiMxaWWxyiiakdQIkMPog5vPzwrnBzFefR1ZSO5VFA76kbX+V1oPfrCj1eD9Hs
+	I5BaskiVAktrLxuIoEazU7nSMcJaAahI0WssyRt06ymaee5I/wzV342/UKvIeZIroO3CbiYcEBH3T
+	3ZIuBWePhJhwbpXcYMvx5/Xxl9A31HBZHk+yK0nqAT/QZvk/HF5ZLYDxXjRc80ixi0dzyKSay3MW9
+	+sWil21A==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1lSAF7-0077dJ-AS; Fri, 02 Apr 2021 03:13:07 +0000
+Date: Fri, 2 Apr 2021 04:13:05 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: BUG_ON(!mapping_empty(&inode->i_data))
+Message-ID: <20210402031305.GK351017@casper.infradead.org>
+References: <alpine.LSU.2.11.2103301654520.2648@eggly.anvils>
+ <20210331024913.GS351017@casper.infradead.org>
+ <alpine.LSU.2.11.2103311413560.1201@eggly.anvils>
+ <20210401170615.GH351017@casper.infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <1c87dc74-335e-c9e2-2ae8-1ec7e0cb44c4@oracle.com>
-Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9941 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- suspectscore=0 bulkscore=0 mlxscore=0 adultscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2103310000 definitions=main-2104010126
-X-Proofpoint-GUID: bonOZ_DlGrElDbPILWMqcREQYzPYK6VB
-X-Proofpoint-ORIG-GUID: bonOZ_DlGrElDbPILWMqcREQYzPYK6VB
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9941 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 spamscore=0
- clxscore=1015 mlxlogscore=999 malwarescore=0 adultscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103310000
- definitions=main-2104010126
-Message-ID-Hash: KLELD3ZVUUBXXQMI3LL5S7XC3Y2ETDGX
-X-Message-ID-Hash: KLELD3ZVUUBXXQMI3LL5S7XC3Y2ETDGX
-X-MailFrom: joao.m.martins@oracle.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@lst.de>, Shiyang Ruan <ruansy.fnst@fujitsu.com>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, david <david@fromorbit.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Disposition: inline
+In-Reply-To: <20210401170615.GH351017@casper.infradead.org>
+Message-ID-Hash: RJNWXVO7YRYE4KTTD432YWMAB2UIIYUF
+X-Message-ID-Hash: RJNWXVO7YRYE4KTTD432YWMAB2UIIYUF
+X-MailFrom: willy@infradead.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KLELD3ZVUUBXXQMI3LL5S7XC3Y2ETDGX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RJNWXVO7YRYE4KTTD432YWMAB2UIIYUF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -86,282 +55,301 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 3/24/21 7:00 PM, Joao Martins wrote:
-> On 3/24/21 5:45 PM, Dan Williams wrote:
->> On Thu, Mar 18, 2021 at 3:02 AM Joao Martins <joao.m.martins@oracle.com> wrote:
->>> On 3/18/21 4:08 AM, Dan Williams wrote:
->>>> Now that device-dax and filesystem-dax are guaranteed to unmap all user
->>>> mappings of devmap / DAX pages before tearing down the 'struct page'
->>>> array, get_user_pages_fast() can rely on its traditional synchronization
->>>> method "validate_pte(); get_page(); revalidate_pte()" to catch races with
->>>> device shutdown. Specifically the unmap guarantee ensures that gup-fast
->>>> either succeeds in taking a page reference (lock-less), or it detects a
->>>> need to fall back to the slow path where the device presence can be
->>>> revalidated with locks held.
->>>
->>> [...]
->>>
->>> So for allowing FOLL_LONGTERM[0] would it be OK if we used page->pgmap after
->>> try_grab_page() for checking pgmap type to see if we are in a device-dax
->>> longterm pin?
->>
->> So, there is an effort to add a new pte bit p{m,u}d_special to disable
->> gup-fast for huge pages [1]. I'd like to investigate whether we could
->> use devmap + special as an encoding for "no longterm" and never
->> consult the pgmap in the gup-fast path.
->>
->> [1]: https://lore.kernel.org/linux-mm/a1fa7fa2-914b-366d-9902-e5b784e8428c@shipmail.org/
->>
+On Thu, Apr 01, 2021 at 06:06:15PM +0100, Matthew Wilcox wrote:
+> On Wed, Mar 31, 2021 at 02:58:12PM -0700, Hugh Dickins wrote:
+> > I suspect there's a bug in the XArray handling in collapse_file(),
+> > which sometimes leaves empty nodes behind.
 > 
-> Oh, nice! That would be ideal indeed, as we would skip the pgmap lookup enterily.
+> Urp, yes, that can easily happen.
 > 
-> I suppose device-dax would use pfn_t PFN_MAP while fs-dax memory device would set PFN_MAP
-> | PFN_DEV (provided vmf_insert_pfn_{pmd,pud} calls mkspecial on PFN_DEV).
+>         /* This will be less messy when we use multi-index entries */
+>         do {
+>                 xas_lock_irq(&xas);
+>                 xas_create_range(&xas);
+>                 if (!xas_error(&xas))
+>                         break;
+>                 if (!xas_nomem(&xas, GFP_KERNEL)) {
+>                         result = SCAN_FAIL;
+>                         goto out;
+>                 }
 > 
-> I haven't been following that thread, but for PMD/PUD special in vmf_* these might be useful:
+> xas_create_range() can absolutely create nodes with zero entries.
+> So if we create m/n nodes and then it runs out of memory (or cgroup
+> denies it), we can leave nodes in the tree with zero entries.
 > 
-> https://lore.kernel.org/linux-mm/20200110190313.17144-2-joao.m.martins@oracle.com/
-> https://lore.kernel.org/linux-mm/20200110190313.17144-4-joao.m.martins@oracle.com/
+> There are three options for fixing it ...
+>  - Switch to using multi-index entries.  We need to do this anyway, but
+>    I don't yet have a handle on the bugs that you found last time I
+>    pushed this into linux-next.  At -rc5 seems like a late stage to be
+>    trying this solution.
+>  - Add an xas_prune_range() that gets called on failure.  Should be
+>    straightforward to write, but will be obsolete as soon as we do the
+>    above and it's a pain for the callers.
+>  - Change how xas_create_range() works to merely preallocate the xa_nodes
+>    and not insert them into the tree until we're trying to insert data into
+>    them.  I favour this option, and this scenario is amenable to writing
+>    a test that will simulate failure halfway through.
 > 
+> I'm going to start on option 3 now.
 
-On a second thought, maybe it doesn't need to be that complicated for {fs,dev}dax if the
-added special bit is just a subcase of devmap pte/pmd/puds. See below scsissors mark as a
-rough estimation on the changes (nothing formal/proper as it isn't properly splitted).
-Running gup_test with devdax/fsdax FOLL_LONGTERM and without does the intended. (gup_test
--m 16384 -r 10 -a -S -n 512 -w -f <file> [-F 0x10000]).
+option 3 didn't work out terribly well.  So here's option 4; if we fail
+to allocate memory when creating a node, prune the tree.  This fixes
+(I think) the problem inherited from the radix tree, although the test
+case is only for xas_create_range().  I should add a couple of test cases
+for xas_create() failing, but I just got this to pass and I wanted to
+send it out as soon as possible.
 
-Unless this is about using special PMD/PUD bits without page structs (thus without devmap
-bits) as in the previous two links.
-
--- >8 --
-
-Subject: mm/gup, nvdimm: allow FOLL_LONGTERM for device-dax gup-fast
-
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 47027796c2f9..8b5d68d89cde 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -439,11 +439,16 @@ static inline pmd_t pmd_mkinvalid(pmd_t pmd)
-
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- #define pmd_devmap(pmd)		pte_devmap(pmd_pte(pmd))
-+#define pmd_special(pmd)	pte_special(pmd_pte(pmd))
- #endif
- static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- {
- 	return pte_pmd(set_pte_bit(pmd_pte(pmd), __pgprot(PTE_DEVMAP)));
+diff --git a/lib/test_xarray.c b/lib/test_xarray.c
+index 8b1c318189ce..84c6057932f3 100644
+--- a/lib/test_xarray.c
++++ b/lib/test_xarray.c
+@@ -1463,6 +1463,30 @@ static noinline void check_create_range_4(struct xarray *xa,
+ 	XA_BUG_ON(xa, !xa_empty(xa));
  }
-+static inline pmd_t pmd_mkspecial(pmd_t pmd)
+ 
++static noinline void check_create_range_5(struct xarray *xa,
++		unsigned long index, unsigned order)
 +{
-+	return pte_pmd(set_pte_bit(pmd_pte(pmd), __pgprot(PTE_SPECIAL)));
-+}
-
- #define __pmd_to_phys(pmd)	__pte_to_phys(pmd_pte(pmd))
- #define __phys_to_pmd_val(phys)	__phys_to_pte_val(phys)
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index b1099f2d9800..45449ee86d4f 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -259,13 +259,13 @@ static inline int pmd_large(pmd_t pte)
- /* NOTE: when predicate huge page, consider also pmd_devmap, or use pmd_large */
- static inline int pmd_trans_huge(pmd_t pmd)
- {
--	return (pmd_val(pmd) & (_PAGE_PSE|_PAGE_DEVMAP)) == _PAGE_PSE;
-+	return (pmd_val(pmd) & (_PAGE_PSE|_PAGE_DEVMAP|_PAGE_SPECIAL)) == _PAGE_PSE;
- }
-
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
- static inline int pud_trans_huge(pud_t pud)
- {
--	return (pud_val(pud) & (_PAGE_PSE|_PAGE_DEVMAP)) == _PAGE_PSE;
-+	return (pud_val(pud) & (_PAGE_PSE|_PAGE_DEVMAP|_PAGE_SPECIAL)) == _PAGE_PSE;
- }
- #endif
-
-@@ -297,6 +297,19 @@ static inline int pgd_devmap(pgd_t pgd)
- {
- 	return 0;
- }
++	XA_STATE_ORDER(xas, xa, index, order);
++	int i = 0;
++	gfp_t gfp = GFP_KERNEL;
 +
-+static inline bool pmd_special(pmd_t pmd)
-+{
-+	return !!(pmd_flags(pmd) & _PAGE_SPECIAL);
++	XA_BUG_ON(xa, !xa_empty(xa));
++
++	do {
++		xas_lock(&xas);
++		xas_create_range(&xas);
++		xas_unlock(&xas);
++		if (++i == 4)
++			gfp = GFP_NOWAIT;
++	} while (xas_nomem(&xas, gfp));
++
++	if (!xas_error(&xas))
++		xa_destroy(xa);
++
++	XA_BUG_ON(xa, xas.xa_alloc);
++	XA_BUG_ON(xa, !xa_empty(xa));
 +}
 +
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+static inline bool pud_special(pud_t pud)
-+{
-+	return !!(pud_flags(pud) & _PAGE_SPECIAL);
-+}
-+#endif
-+
- #endif
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-
-@@ -452,6 +465,11 @@ static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- 	return pmd_set_flags(pmd, _PAGE_DEVMAP);
- }
-
-+static inline pmd_t pmd_mkspecial(pmd_t pmd)
-+{
-+	return pmd_set_flags(pmd, _PAGE_SPECIAL);
-+}
-+
- static inline pmd_t pmd_mkhuge(pmd_t pmd)
+ static noinline void check_create_range(struct xarray *xa)
  {
- 	return pmd_set_flags(pmd, _PAGE_PSE);
-@@ -511,6 +529,11 @@ static inline pud_t pud_mkhuge(pud_t pud)
- 	return pud_set_flags(pud, _PAGE_PSE);
- }
-
-+static inline pud_t pud_mkspecial(pud_t pud)
-+{
-+	return pud_set_flags(pud, _PAGE_SPECIAL);
-+}
+ 	unsigned int order;
+@@ -1490,6 +1514,12 @@ static noinline void check_create_range(struct xarray *xa)
+ 		check_create_range_4(xa, (3U << order) + 1, order);
+ 		check_create_range_4(xa, (3U << order) - 1, order);
+ 		check_create_range_4(xa, (1U << 24) + 1, order);
 +
- static inline pud_t pud_mkyoung(pud_t pud)
++		check_create_range_5(xa, 0, order);
++		check_create_range_5(xa, (1U << order), order);
++		check_create_range_5(xa, (2U << order), order);
++		check_create_range_5(xa, (3U << order), order);
++		check_create_range_5(xa, (1U << (2 * order)), order);
+ 	}
+ 
+ 	check_create_range_3();
+diff --git a/lib/xarray.c b/lib/xarray.c
+index f5d8f54907b4..923ccde6379e 100644
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -276,77 +276,6 @@ static void xas_destroy(struct xa_state *xas)
+ 	}
+ }
+ 
+-/**
+- * xas_nomem() - Allocate memory if needed.
+- * @xas: XArray operation state.
+- * @gfp: Memory allocation flags.
+- *
+- * If we need to add new nodes to the XArray, we try to allocate memory
+- * with GFP_NOWAIT while holding the lock, which will usually succeed.
+- * If it fails, @xas is flagged as needing memory to continue.  The caller
+- * should drop the lock and call xas_nomem().  If xas_nomem() succeeds,
+- * the caller should retry the operation.
+- *
+- * Forward progress is guaranteed as one node is allocated here and
+- * stored in the xa_state where it will be found by xas_alloc().  More
+- * nodes will likely be found in the slab allocator, but we do not tie
+- * them up here.
+- *
+- * Return: true if memory was needed, and was successfully allocated.
+- */
+-bool xas_nomem(struct xa_state *xas, gfp_t gfp)
+-{
+-	if (xas->xa_node != XA_ERROR(-ENOMEM)) {
+-		xas_destroy(xas);
+-		return false;
+-	}
+-	if (xas->xa->xa_flags & XA_FLAGS_ACCOUNT)
+-		gfp |= __GFP_ACCOUNT;
+-	xas->xa_alloc = kmem_cache_alloc(radix_tree_node_cachep, gfp);
+-	if (!xas->xa_alloc)
+-		return false;
+-	xas->xa_alloc->parent = NULL;
+-	XA_NODE_BUG_ON(xas->xa_alloc, !list_empty(&xas->xa_alloc->private_list));
+-	xas->xa_node = XAS_RESTART;
+-	return true;
+-}
+-EXPORT_SYMBOL_GPL(xas_nomem);
+-
+-/*
+- * __xas_nomem() - Drop locks and allocate memory if needed.
+- * @xas: XArray operation state.
+- * @gfp: Memory allocation flags.
+- *
+- * Internal variant of xas_nomem().
+- *
+- * Return: true if memory was needed, and was successfully allocated.
+- */
+-static bool __xas_nomem(struct xa_state *xas, gfp_t gfp)
+-	__must_hold(xas->xa->xa_lock)
+-{
+-	unsigned int lock_type = xa_lock_type(xas->xa);
+-
+-	if (xas->xa_node != XA_ERROR(-ENOMEM)) {
+-		xas_destroy(xas);
+-		return false;
+-	}
+-	if (xas->xa->xa_flags & XA_FLAGS_ACCOUNT)
+-		gfp |= __GFP_ACCOUNT;
+-	if (gfpflags_allow_blocking(gfp)) {
+-		xas_unlock_type(xas, lock_type);
+-		xas->xa_alloc = kmem_cache_alloc(radix_tree_node_cachep, gfp);
+-		xas_lock_type(xas, lock_type);
+-	} else {
+-		xas->xa_alloc = kmem_cache_alloc(radix_tree_node_cachep, gfp);
+-	}
+-	if (!xas->xa_alloc)
+-		return false;
+-	xas->xa_alloc->parent = NULL;
+-	XA_NODE_BUG_ON(xas->xa_alloc, !list_empty(&xas->xa_alloc->private_list));
+-	xas->xa_node = XAS_RESTART;
+-	return true;
+-}
+-
+ static void xas_update(struct xa_state *xas, struct xa_node *node)
  {
- 	return pud_set_flags(pud, _PAGE_ACCESSED);
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 16760b237229..156ceae33164 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -435,7 +435,7 @@ static int pmem_attach_disk(struct device *dev,
- 		pmem->data_offset = le64_to_cpu(pfn_sb->dataoff);
- 		pmem->pfn_pad = resource_size(res) -
- 			range_len(&pmem->pgmap.range);
--		pmem->pfn_flags |= PFN_MAP;
-+		pmem->pfn_flags |= PFN_MAP | PFN_SPECIAL;
- 		bb_range = pmem->pgmap.range;
- 		bb_range.start += pmem->data_offset;
- 	} else if (pmem_should_map_pages(dev)) {
-@@ -445,7 +445,7 @@ static int pmem_attach_disk(struct device *dev,
- 		pmem->pgmap.type = MEMORY_DEVICE_FS_DAX;
- 		pmem->pgmap.ops = &fsdax_pagemap_ops;
- 		addr = devm_memremap_pages(dev, &pmem->pgmap);
--		pmem->pfn_flags |= PFN_MAP;
-+		pmem->pfn_flags |= PFN_MAP | PFN_SPECIAL;
- 		bb_range = pmem->pgmap.range;
- 	} else {
- 		if (devm_add_action_or_reset(dev, pmem_release_queue,
-diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
-index 4ee6f734ba83..873c8e53c85d 100644
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -748,7 +748,7 @@ static long virtio_fs_direct_access(struct dax_device *dax_dev,
-pgoff_t pgoff,
- 		*kaddr = fs->window_kaddr + offset;
- 	if (pfn)
- 		*pfn = phys_to_pfn_t(fs->window_phys_addr + offset,
--					PFN_DEV | PFN_MAP);
-+					PFN_DEV | PFN_MAP | PFN_SPECIAL);
- 	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
+ 	if (xas->xa_update)
+@@ -551,6 +480,120 @@ static void xas_free_nodes(struct xa_state *xas, struct xa_node *top)
+ 	}
  }
-
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 7364e5a70228..ad7078e38ef2 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1189,6 +1189,18 @@ static inline int pgd_devmap(pgd_t pgd)
- }
- #endif
-
-+#if !defined(CONFIG_ARCH_HAS_PTE_SPECIAL) || !defined(CONFIG_TRANSPARENT_HUGEPAGE)
-+static inline bool pmd_special(pmd_t pmd)
+ 
++static bool __xas_trim(struct xa_state *xas)
 +{
++	unsigned long index = xas->xa_index;
++	unsigned char shift = xas->xa_shift;
++	unsigned char sibs = xas->xa_sibs;
++
++	xas->xa_index |= ((sibs + 1UL) << shift) - 1;
++	xas->xa_shift = 0;
++	xas->xa_sibs = 0;
++	xas->xa_node = XAS_RESTART;
++
++	for (;;) {
++		xas_load(xas);
++		if (!xas_is_node(xas))
++			break;
++		xas_delete_node(xas);
++		xas->xa_index -= XA_CHUNK_SIZE;
++		if (xas->xa_index < index)
++			break;
++	}
++
++	xas->xa_shift = shift;
++	xas->xa_sibs = sibs;
++	xas->xa_index = index;
++	xas->xa_node = XA_ERROR(-ENOMEM);
 +	return false;
 +}
 +
-+static inline pmd_t pmd_mkspecial(pmd_t pmd)
++/*
++ * We failed to allocate memory.  Trim any nodes we created along the
++ * way which are now unused.
++ */
++static bool xas_trim(struct xa_state *xas)
 +{
-+	return pmd;
-+}
-+#endif
++	unsigned int lock_type = xa_lock_type(xas->xa);
 +
- #if !defined(CONFIG_TRANSPARENT_HUGEPAGE) || \
- 	(defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
- 	 !defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
-@@ -1196,6 +1208,14 @@ static inline int pud_trans_huge(pud_t pud)
- {
- 	return 0;
- }
-+static inline bool pud_special(pud_t pud)
-+{
++	xas_lock_type(xas, lock_type);
++	__xas_trim(xas);
++	xas_unlock_type(xas, lock_type);
++
 +	return false;
 +}
-+static inline pud_t pud_mkspecial(pud_t pud)
++
++/**
++ * xas_nomem() - Allocate memory if needed.
++ * @xas: XArray operation state.
++ * @gfp: Memory allocation flags.
++ *
++ * If we need to add new nodes to the XArray, we try to allocate memory
++ * with GFP_NOWAIT while holding the lock, which will usually succeed.
++ * If it fails, @xas is flagged as needing memory to continue.  The caller
++ * should drop the lock and call xas_nomem().  If xas_nomem() succeeds,
++ * the caller should retry the operation.
++ *
++ * Forward progress is guaranteed as one node is allocated here and
++ * stored in the xa_state where it will be found by xas_alloc().  More
++ * nodes will likely be found in the slab allocator, but we do not tie
++ * them up here.
++ *
++ * Return: true if memory was needed, and was successfully allocated.
++ */
++bool xas_nomem(struct xa_state *xas, gfp_t gfp)
 +{
-+	return pud;
++	if (xas->xa_node != XA_ERROR(-ENOMEM)) {
++		xas_destroy(xas);
++		return false;
++	}
++	if (xas->xa->xa_flags & XA_FLAGS_ACCOUNT)
++		gfp |= __GFP_ACCOUNT;
++	xas->xa_alloc = kmem_cache_alloc(radix_tree_node_cachep, gfp);
++	if (!xas->xa_alloc)
++		return xas_trim(xas);
++	xas->xa_alloc->parent = NULL;
++	XA_NODE_BUG_ON(xas->xa_alloc, !list_empty(&xas->xa_alloc->private_list));
++	xas->xa_node = XAS_RESTART;
++	return true;
 +}
- #endif
-
- /* See pmd_none_or_trans_huge_or_clear_bad for discussion. */
-diff --git a/mm/gup.c b/mm/gup.c
-index b3e647c8b7ee..87aa229a9347 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2086,7 +2086,7 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned
-long end,
- 			goto pte_unmap;
-
- 		if (pte_devmap(pte)) {
--			if (unlikely(flags & FOLL_LONGTERM))
-+			if (unlikely(flags & FOLL_LONGTERM) && pte_special(pte))
- 				goto pte_unmap;
-
- 			pgmap = get_dev_pagemap(pte_pfn(pte), pgmap);
-@@ -2338,7 +2338,7 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
- 		return 0;
-
- 	if (pmd_devmap(orig)) {
--		if (unlikely(flags & FOLL_LONGTERM))
-+		if (unlikely(flags & FOLL_LONGTERM) && pmd_special(orig))
- 			return 0;
- 		return __gup_device_huge_pmd(orig, pmdp, addr, end, flags,
- 					     pages, nr);
-@@ -2372,7 +2372,7 @@ static int gup_huge_pud(pud_t orig, pud_t *pudp, unsigned long addr,
- 		return 0;
-
- 	if (pud_devmap(orig)) {
--		if (unlikely(flags & FOLL_LONGTERM))
-+		if (unlikely(flags & FOLL_LONGTERM) && pud_special(orig))
- 			return 0;
- 		return __gup_device_huge_pud(orig, pudp, addr, end, flags,
- 					     pages, nr);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f6f70632fc29..9d5117711919 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -796,8 +796,11 @@ static void insert_pfn_pmd(struct vm_area_struct *vma, unsigned long
-addr,
- 	}
-
- 	entry = pmd_mkhuge(pfn_t_pmd(pfn, prot));
--	if (pfn_t_devmap(pfn))
-+	if (pfn_t_devmap(pfn)) {
- 		entry = pmd_mkdevmap(entry);
-+		if (pfn_t_special(pfn))
-+			entry = pmd_mkspecial(entry);
++EXPORT_SYMBOL_GPL(xas_nomem);
++
++/*
++ * __xas_nomem() - Drop locks and allocate memory if needed.
++ * @xas: XArray operation state.
++ * @gfp: Memory allocation flags.
++ *
++ * Internal variant of xas_nomem().
++ *
++ * Return: true if memory was needed, and was successfully allocated.
++ */
++static bool __xas_nomem(struct xa_state *xas, gfp_t gfp)
++	__must_hold(xas->xa->xa_lock)
++{
++	unsigned int lock_type = xa_lock_type(xas->xa);
++
++	if (xas->xa_node != XA_ERROR(-ENOMEM)) {
++		xas_destroy(xas);
++		return false;
 +	}
- 	if (write) {
- 		entry = pmd_mkyoung(pmd_mkdirty(entry));
- 		entry = maybe_pmd_mkwrite(entry, vma);
-@@ -896,8 +899,11 @@ static void insert_pfn_pud(struct vm_area_struct *vma, unsigned long
-addr,
- 	}
-
- 	entry = pud_mkhuge(pfn_t_pud(pfn, prot));
--	if (pfn_t_devmap(pfn))
-+	if (pfn_t_devmap(pfn)) {
- 		entry = pud_mkdevmap(entry);
-+		if (pfn_t_special(pfn))
-+			entry = pud_mkspecial(entry);
++	if (xas->xa->xa_flags & XA_FLAGS_ACCOUNT)
++		gfp |= __GFP_ACCOUNT;
++	if (gfpflags_allow_blocking(gfp)) {
++		xas_unlock_type(xas, lock_type);
++		xas->xa_alloc = kmem_cache_alloc(radix_tree_node_cachep, gfp);
++		xas_lock_type(xas, lock_type);
++	} else {
++		xas->xa_alloc = kmem_cache_alloc(radix_tree_node_cachep, gfp);
 +	}
- 	if (write) {
- 		entry = pud_mkyoung(pud_mkdirty(entry));
- 		entry = maybe_pud_mkwrite(entry, vma);
++	if (!xas->xa_alloc)
++		return __xas_trim(xas);
++	xas->xa_alloc->parent = NULL;
++	XA_NODE_BUG_ON(xas->xa_alloc, !list_empty(&xas->xa_alloc->private_list));
++	xas->xa_node = XAS_RESTART;
++	return true;
++}
++
+ /*
+  * xas_expand adds nodes to the head of the tree until it has reached
+  * sufficient height to be able to contain @xas->xa_index
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
