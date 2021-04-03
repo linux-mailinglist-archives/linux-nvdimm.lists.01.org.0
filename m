@@ -2,67 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2D43532FF
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  3 Apr 2021 09:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7F6353592
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  3 Apr 2021 23:19:33 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 21EC2100ED49E;
-	Sat,  3 Apr 2021 00:42:55 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=84.38.130.169; helo=gmail.com; envelope-from=mediquipsale9@gmail.com; receiver=<UNKNOWN> 
-Received: from gmail.com (unknown [84.38.130.169])
-	by ml01.01.org (Postfix) with ESMTP id BFF39100EF267
-	for <linux-nvdimm@lists.01.org>; Sat,  3 Apr 2021 00:42:51 -0700 (PDT)
-From: Bomuco Group <mediquipsale9@gmail.com>
-To: linux-nvdimm@lists.01.org
-Subject: Product inquiry
-Date: 03 Apr 2021 10:42:47 +0300
-Message-ID: <20210403104246.0DEFBEC39F452450@gmail.com>
+	by ml01.01.org (Postfix) with ESMTP id DBB45100ED4AC;
+	Sat,  3 Apr 2021 14:19:30 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=118.27.120.231; helo=my.jcb.co.jp; envelope-from=lxbqy@my.jcb.co.jp; receiver=<UNKNOWN> 
+Received: from my.jcb.co.jp (v118-27-120-231.jke1.static.cnode.io [118.27.120.231])
+	by ml01.01.org (Postfix) with ESMTP id E63AF100EF271
+	for <linux-nvdimm@lists.01.org>; Sat,  3 Apr 2021 14:19:25 -0700 (PDT)
+From: My Job <lxbqy@my.jcb.co.jp>
+To: linux-nvdimm <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?W3NwYW1d77yc6YeN6KaB77ye44CQTXkgSkNC44CR44GU5Yip?=
+	=?utf-8?B?55So56K66KqN44Gu44GK6aGY44GE?=
+Date: Sun, 4 Apr 2021 06:19:21 +0900
+Message-ID: <00f1a268b7e5$c88d5e34$af64a30c$@my.jcb.co.jp>
 MIME-Version: 1.0
-Message-ID-Hash: 7GZF4GTIYJYZBX5NY3MPC54CIK532XOB
-X-Message-ID-Hash: 7GZF4GTIYJYZBX5NY3MPC54CIK532XOB
-X-MailFrom: mediquipsale9@gmail.com
+X-Mailer: Microsoft Outlook 16.0
+Message-ID-Hash: 3YL2RAONHAU27VFORQGVEID7BMZFWTZU
+X-Message-ID-Hash: 3YL2RAONHAU27VFORQGVEID7BMZFWTZU
+X-MailFrom: lxbqy@my.jcb.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: =?UTF-8?B?Qm9tdWNvIEdyb3VwwqA=?= <jlcantu@bomuco.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7GZF4GTIYJYZBX5NY3MPC54CIK532XOB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3YL2RAONHAU27VFORQGVEID7BMZFWTZU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============3711767683976055610=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============3711767683976055610==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<HTML><HEAD>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19699"></HEAD>
-<body>
-<P>Dear Sir&nbsp;</P>
-<P>We hope this email will find you well.&nbsp;<BR>Please kindly check atta=
-ched and quote us your price as requested in our PO.</P>
-<P><FONT color=3D#f60934>Include your term and mode of delivery,MOQ and FOB=
- Pakistan.<BR></FONT>&nbsp;</P>
-<P><FONT color=3D#4740bf>Regards</FONT></P>
-<P><FONT color=3D#4740bf>Amer Shahzad&nbsp;<BR>Awais <BR>Trading<BR>343-B P=
-eoples Colony No 1, Faisalabad, Pakistan.</FONT></P>
-<P><A href=3D"mailto:jlcantu@bomuco.com"><FONT color=3D#4740bf>jlcantu@bomu=
-co.com</FONT></A><FONT color=3D#4740bf>&nbsp;&nbsp;|&nbsp;Mob:&nbsp;+923006=
-622600&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;</FONT><A href=3D"http://w=
-ww.awaistex.com"><FONT color=3D#4740bf>www.awaistex.com</FONT></A></P></BOD=
-Y></HTML>
---===============3711767683976055610==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============3711767683976055610==--
+ICDjgYTjgaTjgoLlvIrnpL7jgqvjg7zjg4njgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorj
+gYzjgajjgYbjgZTjgZbjgYTjgb7jgZnjgIINCg0K5pio5LuK44Gu56ys5LiJ6ICF5LiN5q2j5Yip
+55So44Gu5oCl5aKX44Gr5Ly044GE44CB5byK56S+44Gn44Gv44CM5LiN5q2j5Yip55So55uj6KaW
+44K344K544OG44Og44CN44KS5bCO5YWl44GX44CBMjTmmYLplpMzNjXml6XkvZPliLbjgafjgqvj
+g7zjg4njga7jgZTliKnnlKjjgavlr77jgZnjgovjg6Ljg4vjgr/jg6rjg7PjgrDjgpLooYzjgaPj
+gabjgYrjgorjgb7jgZnjgIINCg0K44GT44Gu44Gf44Gz44CB44GU5pys5Lq65qeY44Gu44GU5Yip
+55So44GL44Gp44GG44GL44KS56K66KqN44GV44Gb44Gm44GE44Gf44Gg44GN44Gf44GE44GK5Y+W
+5byV44GM44GC44KK44G+44GX44Gf44Gu44Gn44CB6Kqg44Gr5Yud5omL44Gq44GM44KJ44CB44Kr
+44O844OJ44Gu44GU5Yip55So44KS5LiA6YOo5Yi26ZmQ44GV44Gb44Gm44GE44Gf44Gg44GN44CB
+44GU6YCj57Wh44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GX44Gf44CCDQoNCuOBpOOBjeOBvuOB
+l+OBpuOBr+OAgeS7peS4i+OBuOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWI
+qeeUqOeiuuiqjeOBq+OBlOWNlOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0K44GU5Zue
+562U44KS44GE44Gf44Gg44GR44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So5Yi2
+6ZmQ44GM57aZ57aa44GV44KM44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB5LqI
+44KB44GU5LqG5om/5LiL44GV44GE44CCDQoNCuKWoOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOC
+iQ0KDQrjgIBodHRwczovL215amNiLmNuLmRvdW1haW5mb3Iub25saW5lLw0KDQrilqDnmbrooYzo
+gIXilqANCkpDQuOCq+ODvOODieagquW8j+S8muekvg0K44CAaHR0cHM6Ly9teWpjYi5jbi5kb3Vt
+YWluZm9yLm9ubGluZS8NCuOAkjEwNS04MDExIOadseS6rOmDvea4r+WMuua1t+WyuDHkuIHnm64y
+55WqMjDlj7cg5rGQ55WZ44OT44Or44OH44Kj44Oz44KwDQoNCi4uLg0KDQpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBs
+aXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBl
+bWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
