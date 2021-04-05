@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E600354944
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Apr 2021 01:34:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5793549DD
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Apr 2021 03:05:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 81BDF100EBB94;
-	Mon,  5 Apr 2021 16:34:50 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.80; helo=globemobiles.com; envelope-from=gbaaopqhut@gloomth.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id BC2D8100EB826;
+	Mon,  5 Apr 2021 18:05:10 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.80; helo=globemobiles.com; envelope-from=gbadopqhut@globber.com; receiver=<UNKNOWN> 
 Received: from globemobiles.com (englios.com [188.72.187.80])
-	by ml01.01.org (Postfix) with ESMTP id F0213100EBB94
-	for <linux-nvdimm@lists.01.org>; Mon,  5 Apr 2021 16:34:46 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 70E6A100EF276
+	for <linux-nvdimm@lists.01.org>; Mon,  5 Apr 2021 18:05:07 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
 Subject: following up on my last email
-Message-ID: <b53201f580827524dad164ee50ac9cc4@outdoorlife.com>
-Date: Mon, 05 Apr 2021 15:50:48 +0200
-From: "Lucas Hawkins" <gbaaopqhut@gloomth.com>
+Message-ID: <92b038427725f5c7f9e75675e64290d2@outdoorlife.com>
+Date: Mon, 05 Apr 2021 16:04:00 +0200
+From: "Lucas Hawkins" <ukzkjphut@globber.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: OGADNUEQ6W2ZSDEG5JAG7R7ZXSTAYLY4
-X-Message-ID-Hash: OGADNUEQ6W2ZSDEG5JAG7R7ZXSTAYLY4
-X-MailFrom: gbaaopqhut@gloomth.com
+Message-ID-Hash: ERPU2CZDYKRKNT3OOZECHE5TOIWLYMDX
+X-Message-ID-Hash: ERPU2CZDYKRKNT3OOZECHE5TOIWLYMDX
+X-MailFrom: gbadopqhut@globber.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: queuezhangjop@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGADNUEQ6W2ZSDEG5JAG7R7ZXSTAYLY4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ERPU2CZDYKRKNT3OOZECHE5TOIWLYMDX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============8103963840458460683=="
+Content-Type: multipart/mixed; boundary="===============1770798525021015568=="
 
---===============8103963840458460683==
+--===============1770798525021015568==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -129,7 +129,7 @@ left;"></span></span>
 </body>
 </html>
 
---===============8103963840458460683==
+--===============1770798525021015568==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -139,4 +139,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============8103963840458460683==--
+--===============1770798525021015568==--
