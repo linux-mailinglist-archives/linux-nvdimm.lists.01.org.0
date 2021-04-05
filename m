@@ -1,121 +1,132 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8543538FB
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  4 Apr 2021 19:06:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80228353B21
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  5 Apr 2021 05:47:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B47CA100EC1F5;
-	Sun,  4 Apr 2021 10:05:58 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN> 
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by ml01.01.org (Postfix) with ESMTP id 0448C100EBBBB;
+	Sun,  4 Apr 2021 20:47:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B1081100EC1D9
-	for <linux-nvdimm@lists.01.org>; Sun,  4 Apr 2021 10:05:54 -0700 (PDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
-	by localhost (Postfix) with ESMTP id 4FD0Y82fMyz9txtD;
-	Sun,  4 Apr 2021 19:05:48 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-	with ESMTP id x2rDN5V69KRg; Sun,  4 Apr 2021 19:05:48 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4FD0Y80xvSz9txtB;
-	Sun,  4 Apr 2021 19:05:48 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AB7A08B78E;
-	Sun,  4 Apr 2021 19:05:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id SL43VzMhlW0d; Sun,  4 Apr 2021 19:05:51 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 15B408B76A;
-	Sun,  4 Apr 2021 19:05:51 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc/mm: Add cond_resched() while removing hpte
- mappings
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
-References: <20210404163148.321346-1-vaibhav@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <cb4a3059-0f5f-d904-7da4-065f2ec9bf0a@csgroup.eu>
-Date: Sun, 4 Apr 2021 19:05:48 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+	by ml01.01.org (Postfix) with ESMTPS id 5AA0E100ED4A4
+	for <linux-nvdimm@lists.01.org>; Sun,  4 Apr 2021 20:47:12 -0700 (PDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1353Xu4r178885;
+	Sun, 4 Apr 2021 23:47:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=fS17YGZlnRxBEsmZlS1zMSRS74sXkIfkrqbZYkQdVTE=;
+ b=Of5P/9TMdqd/JA+rfgdQdOkuVW2HOFBFA318v5JCtIy9CI+L5WSFZ54RLcwD3so6euEy
+ LVrHYuetP61X2WepS9CXRa+W4LjaWipQiQ0k45FbhiUmixdOz7v9Cxlow9rhZ9/2wmL8
+ /KCEnR2HDBHQkBJMhT0DUiAx9HWH2R0AiyHWKCGeWby9++jQLjfPlObszZ5WJNuryrYH
+ F3y8q+z8S5q0oW0pRgKIQCbTKKll6XD7/wWhTQy4XXRKH8UOPL2sfZYgdYfO4DfvZzbl
+ I0eJwg8zpikYy6jmDqSLBkTBvu2IFxMp7fmeihRPnIzFSwWKbk7yv3/N7yrLnsaHVs3i LQ==
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 37q603wwag-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 04 Apr 2021 23:47:10 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1353gmIm009827;
+	Mon, 5 Apr 2021 03:47:09 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma04ams.nl.ibm.com with ESMTP id 37q2n2ry2w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Apr 2021 03:47:08 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1353kjT932768468
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Apr 2021 03:46:45 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD8A14C04A;
+	Mon,  5 Apr 2021 03:47:05 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2FC3A4C040;
+	Mon,  5 Apr 2021 03:47:04 +0000 (GMT)
+Received: from [9.85.75.170] (unknown [9.85.75.170])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Apr 2021 03:47:03 +0000 (GMT)
+Subject: Re: [PATCH v3] powerpc/papr_scm: Implement support for H_SCM_FLUSH
+ hcall
+To: Michael Ellerman <ellerman@au1.ibm.com>,
+        Shivaprasad G Bhat <sbhat@linux.ibm.com>, sbhat@linux.vnet.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+        linux-nvdimm@lists.01.org
+References: <161703936121.36.7260632399582101498.stgit@e1fbed493c87>
+ <87mtul6xzj.fsf@linux.ibm.com> <87zgyjwrnv.fsf@mpe.ellerman.id.au>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <cbc59da3-3206-9ad5-fa8f-8fcd1df510ec@linux.ibm.com>
+Date: Mon, 5 Apr 2021 09:17:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
+In-Reply-To: <87zgyjwrnv.fsf@mpe.ellerman.id.au>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: c7pV3CUuqn9-sktYxpG-_Wg-MSbId8oQ
+X-Proofpoint-GUID: c7pV3CUuqn9-sktYxpG-_Wg-MSbId8oQ
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-In-Reply-To: <20210404163148.321346-1-vaibhav@linux.ibm.com>
-Content-Language: fr
-Message-ID-Hash: ZCCCXZYQX4MO4JFDFL5T4D7BGMV3OVWV
-X-Message-ID-Hash: ZCCCXZYQX4MO4JFDFL5T4D7BGMV3OVWV
-X-MailFrom: christophe.leroy@csgroup.eu
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
+ definitions=2021-04-05_02:2021-04-01,2021-04-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ adultscore=0 suspectscore=0 spamscore=0 phishscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104030000 definitions=main-2104050022
+Message-ID-Hash: 3J7BLOL5N3AAE7UEKZ3T7UGJ2EQH2MVY
+X-Message-ID-Hash: 3J7BLOL5N3AAE7UEKZ3T7UGJ2EQH2MVY
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+CC: linux-doc@vger.kernel.org, vaibhav@linux.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZCCCXZYQX4MO4JFDFL5T4D7BGMV3OVWV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3J7BLOL5N3AAE7UEKZ3T7UGJ2EQH2MVY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Transfer-Encoding: 7bit
 
-DQoNCkxlIDA0LzA0LzIwMjEgw6AgMTg6MzEsIFZhaWJoYXYgSmFpbiBhIMOpY3JpdMKgOg0KPiBX
-aGlsZSByZW1vdmluZyBsYXJnZSBudW1iZXIgb2YgbWFwcGluZ3MgZnJvbSBoYXNoIHBhZ2UgdGFi
-bGVzIGZvcg0KPiBsYXJnZSBtZW1vcnkgc3lzdGVtcyBhcyBzb2Z0LWxvY2t1cCBpcyByZXBvcnRl
-ZCBiZWNhdXNlIG9mIHRoZSB0aW1lDQo+IHNwZW50IGluc2lkZSBodGFwX3JlbW92ZV9tYXBwaW5n
-KCkgbGlrZSBvbmUgYmVsb3c6DQo+IA0KPiAgIHdhdGNoZG9nOiBCVUc6IHNvZnQgbG9ja3VwIC0g
-Q1BVIzggc3R1Y2sgZm9yIDIzcyENCj4gICA8c25pcD4NCj4gICBOSVAgcGxwYXJfaGNhbGwrMHgz
-OC8weDU4DQo+ICAgTFIgIHBTZXJpZXNfbHBhcl9ocHRlX2ludmFsaWRhdGUrMHg2OC8weGIwDQo+
-ICAgQ2FsbCBUcmFjZToNCj4gICAgMHgxZmZmZmZmZmZmZmYwMDAgKHVucmVsaWFibGUpDQo+ICAg
-IHBTZXJpZXNfbHBhcl9ocHRlX3JlbW92ZWJvbHRlZCsweDljLzB4MjMwDQo+ICAgIGhhc2hfX3Jl
-bW92ZV9zZWN0aW9uX21hcHBpbmcrMHhlYy8weDFjMA0KPiAgICByZW1vdmVfc2VjdGlvbl9tYXBw
-aW5nKzB4MjgvMHgzYw0KPiAgICBhcmNoX3JlbW92ZV9tZW1vcnkrMHhmYy8weDE1MA0KPiAgICBk
-ZXZtX21lbXJlbWFwX3BhZ2VzX3JlbGVhc2UrMHgxODAvMHgyZjANCj4gICAgZGV2bV9hY3Rpb25f
-cmVsZWFzZSsweDMwLzB4NTANCj4gICAgcmVsZWFzZV9ub2RlcysweDI4Yy8weDMwMA0KPiAgICBk
-ZXZpY2VfcmVsZWFzZV9kcml2ZXJfaW50ZXJuYWwrMHgxNmMvMHgyODANCj4gICAgdW5iaW5kX3N0
-b3JlKzB4MTI0LzB4MTcwDQo+ICAgIGRydl9hdHRyX3N0b3JlKzB4NDQvMHg2MA0KPiAgICBzeXNm
-c19rZl93cml0ZSsweDY0LzB4OTANCj4gICAga2VybmZzX2ZvcF93cml0ZSsweDFiMC8weDI5MA0K
-PiAgICBfX3Zmc193cml0ZSsweDNjLzB4NzANCj4gICAgdmZzX3dyaXRlKzB4ZDQvMHgyNzANCj4g
-ICAga3N5c193cml0ZSsweGRjLzB4MTMwDQo+ICAgIHN5c3RlbV9jYWxsKzB4NWMvMHg3MA0KPiAN
-Cj4gRml4IHRoaXMgYnkgYWRkaW5nIGEgY29uZF9yZXNjaGVkKCkgdG8gdGhlIGxvb3AgaW4NCj4g
-aHRhcF9yZW1vdmVfbWFwcGluZygpIHRoYXQgaXNzdWVzIGhjYWxsIHRvIHJlbW92ZSBocHRlIG1h
-cHBpbmcuIFRoZQ0KPiBjYWxsIHRvIGNvbmRfcmVzY2hlZCgpIGlzIGlzc3VlZCBldmVyeSBIWiBq
-aWZmaWVzIHdoaWNoIHNob3VsZCBwcmV2ZW50DQo+IHRoZSBzb2Z0LWxvY2t1cCBmcm9tIGJlaW5n
-IHJlcG9ydGVkLg0KPiANCj4gU3VnZ2VzdGVkLWJ5OiBBbmVlc2ggS3VtYXIgSy5WIDxhbmVlc2gu
-a3VtYXJAbGludXguaWJtLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogVmFpYmhhdiBKYWluIDx2YWli
-aGF2QGxpbnV4LmlibS5jb20+DQoNClJldmlld2VkLWJ5OiBDaHJpc3RvcGhlIExlcm95IDxjaHJp
-c3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU+DQoNCj4gDQo+IC0tLQ0KPiBDaGFuZ2Vsb2c6DQo+IA0K
-PiB2MjogSXNzdWUgY29uZF9yZXNjaGVkKCkgZXZlcnkgSFogamlmZmllcyBpbnN0ZWFkIG9mIGVh
-Y2ggaXRlcmF0aW9uIG9mDQo+ICAgICAgdGhlIGxvb3AuIFsgQ2hyaXN0b3BoZSBMZXJveSBdDQo+
-IC0tLQ0KPiAgIGFyY2gvcG93ZXJwYy9tbS9ib29rM3M2NC9oYXNoX3V0aWxzLmMgfCAxMyArKysr
-KysrKysrKystDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKyksIDEgZGVsZXRp
-b24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvbW0vYm9vazNzNjQvaGFzaF91
-dGlscy5jIGIvYXJjaC9wb3dlcnBjL21tL2Jvb2szczY0L2hhc2hfdXRpbHMuYw0KPiBpbmRleCA1
-ODFiMjBhMmZlYWYuLjI4NmU3ZThjYjkxOSAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL21t
-L2Jvb2szczY0L2hhc2hfdXRpbHMuYw0KPiArKysgYi9hcmNoL3Bvd2VycGMvbW0vYm9vazNzNjQv
-aGFzaF91dGlscy5jDQo+IEBAIC0zMzgsNyArMzM4LDcgQEAgaW50IGh0YWJfYm9sdF9tYXBwaW5n
-KHVuc2lnbmVkIGxvbmcgdnN0YXJ0LCB1bnNpZ25lZCBsb25nIHZlbmQsDQo+ICAgaW50IGh0YWJf
-cmVtb3ZlX21hcHBpbmcodW5zaWduZWQgbG9uZyB2c3RhcnQsIHVuc2lnbmVkIGxvbmcgdmVuZCwN
-Cj4gICAJCSAgICAgIGludCBwc2l6ZSwgaW50IHNzaXplKQ0KPiAgIHsNCj4gLQl1bnNpZ25lZCBs
-b25nIHZhZGRyOw0KPiArCXVuc2lnbmVkIGxvbmcgdmFkZHIsIHRpbWVfbGltaXQ7DQo+ICAgCXVu
-c2lnbmVkIGludCBzdGVwLCBzaGlmdDsNCj4gICAJaW50IHJjOw0KPiAgIAlpbnQgcmV0ID0gMDsN
-Cj4gQEAgLTM1MSw4ICszNTEsMTkgQEAgaW50IGh0YWJfcmVtb3ZlX21hcHBpbmcodW5zaWduZWQg
-bG9uZyB2c3RhcnQsIHVuc2lnbmVkIGxvbmcgdmVuZCwNCj4gICANCj4gICAJLyogVW5tYXAgdGhl
-IGZ1bGwgcmFuZ2Ugc3BlY2lmaWNpZWQgKi8NCj4gICAJdmFkZHIgPSBBTElHTl9ET1dOKHZzdGFy
-dCwgc3RlcCk7DQo+ICsJdGltZV9saW1pdCA9IGppZmZpZXMgKyBIWjsNCj4gKw0KPiAgIAlmb3Ig
-KDt2YWRkciA8IHZlbmQ7IHZhZGRyICs9IHN0ZXApIHsNCj4gICAJCXJjID0gbW11X2hhc2hfb3Bz
-LmhwdGVfcmVtb3ZlYm9sdGVkKHZhZGRyLCBwc2l6ZSwgc3NpemUpOw0KPiArDQo+ICsJCS8qDQo+
-ICsJCSAqIEZvciBsYXJnZSBudW1iZXIgb2YgbWFwcGluZ3MgaW50cm9kdWNlIGEgY29uZF9yZXNj
-aGVkKCkNCj4gKwkJICogdG8gcHJldmVudCBzb2Z0bG9ja3VwIHdhcm5pbmdzLg0KPiArCQkgKi8N
-Cj4gKwkJaWYgKHRpbWVfYWZ0ZXIoamlmZmllcywgdGltZV9saW1pdCkpIHsNCj4gKwkJCWNvbmRf
-cmVzY2hlZCgpOw0KPiArCQkJdGltZV9saW1pdCA9IGppZmZpZXMgKyBIWjsNCj4gKwkJfQ0KPiAg
-IAkJaWYgKHJjID09IC1FTk9FTlQpIHsNCj4gICAJCQlyZXQgPSAtRU5PRU5UOw0KPiAgIAkJCWNv
-bnRpbnVlOw0KPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
-ClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3Rz
-LjAxLm9yZwo=
+On 3/31/21 3:50 PM, Michael Ellerman wrote:
+> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+>> Shivaprasad G Bhat <sbhat@linux.ibm.com> writes:
+>>
+>>> Add support for ND_REGION_ASYNC capability if the device tree
+>>> indicates 'ibm,hcall-flush-required' property in the NVDIMM node.
+>>> Flush is done by issuing H_SCM_FLUSH hcall to the hypervisor.
+>>>
+>>> If the flush request failed, the hypervisor is expected to
+>>> to reflect the problem in the subsequent nvdimm H_SCM_HEALTH call.
+>>>
+>>> This patch prevents mmap of namespaces with MAP_SYNC flag if the
+>>> nvdimm requires an explicit flush[1].
+>>>
+>>> References:
+>>> [1] https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c
+>>
+>>
+>> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> 
+> Do we need an ack from nvdimm folks on this?
+> 
+> Or is it entirely powerpc internal (seems like it from the diffstat)?
+> 
+
+This is within powerpc and we are implementing details w.r.t PAPR spec. 
+There is a Qemu implementation that is getting reviewed here
+https://lore.kernel.org/linux-nvdimm/161650723087.2959.8703728357980727008.stgit@6532096d84d3
+
+But with respect to this patch, we can take that independent of the Qemu 
+backend implementation.
+
+-aneesh
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
