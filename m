@@ -1,61 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C0A3563FC
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Apr 2021 08:32:52 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55EB35648D
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Apr 2021 08:53:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2D5A1100F2268;
-	Tue,  6 Apr 2021 23:32:51 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 24778100F2257
-	for <linux-nvdimm@lists.01.org>; Tue,  6 Apr 2021 23:32:46 -0700 (PDT)
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AuPhIqq/2r5rmj5npc+luk+A4I+orLtY04lQ7?=
- =?us-ascii?q?vn1ZYxpTb8CeioSSjO0WvCWE7Ao5dVMBvZS7OKeGSW7B7pId2+QsFJqrQQWOgg?=
- =?us-ascii?q?WVBa5v4YboyzfjXw3Sn9Q26Y5OaK57YeeQMXFfreLXpDa1CMwhxt7vytHMuc77?=
- =?us-ascii?q?w212RQ9nL4FMhj0JaTqzKUF9SAlYCZdRLvP1ifZvnSaqengcc62Adxs4dtXEzu?=
- =?us-ascii?q?eqqLvWJTYCBzMCrDKFlC6U7tfBeCSw71MzVCxuzN4ZnVT4rw=3D=3D?=
-X-IronPort-AV: E=Sophos;i="5.82,201,1613404800";
-   d="scan'208";a="106725748"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 07 Apr 2021 14:32:46 +0800
-Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
-	by cn.fujitsu.com (Postfix) with ESMTP id 1FA064D0B8A5;
-	Wed,  7 Apr 2021 14:32:41 +0800 (CST)
-Received: from G08CNEXJMPEKD02.g08.fujitsu.local (10.167.33.202) by
- G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Wed, 7 Apr 2021 14:32:30 +0800
-Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
- G08CNEXJMPEKD02.g08.fujitsu.local (10.167.33.202) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Wed, 7 Apr 2021 14:32:29 +0800
-Received: from irides.mr.mr.mr (10.167.225.141) by
- G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Wed, 7 Apr 2021 14:32:29 +0800
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-fsdevel@vger.kernel.org>
-Subject: [PATCH 3/3] fsdax: Output address in dax_iomap_pfn() and rename it
-Date: Wed, 7 Apr 2021 14:32:07 +0800
-Message-ID: <20210407063207.676753-4-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20210407063207.676753-1-ruansy.fnst@fujitsu.com>
-References: <20210407063207.676753-1-ruansy.fnst@fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id 0DEDC100F225F;
+	Tue,  6 Apr 2021 23:53:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=zou_wei@huawei.com; receiver=<UNKNOWN> 
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 23AE5100F224B
+	for <linux-nvdimm@lists.01.org>; Tue,  6 Apr 2021 23:53:41 -0700 (PDT)
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FFZmv1Z5Qz93dQ;
+	Wed,  7 Apr 2021 14:51:27 +0800 (CST)
+Received: from linux-lmwb.huawei.com (10.175.103.112) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 7 Apr 2021 14:53:30 +0800
+From: Zou Wei <zou_wei@huawei.com>
+To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
+	<dave.jiang@intel.com>, <ira.weiny@intel.com>
+Subject: [PATCH -next] tools/testing/nvdimm: Make symbol '__nfit_test_ioremap' static
+Date: Wed, 7 Apr 2021 15:10:51 +0800
+Message-ID: <1617779451-81730-1-git-send-email-zou_wei@huawei.com>
+X-Mailer: git-send-email 2.6.2
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 1FA064D0B8A5.A1FAE
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: FS7MJ4NTLWLCSTZNLVCB46GWVBT4LBJA
-X-Message-ID-Hash: FS7MJ4NTLWLCSTZNLVCB46GWVBT4LBJA
-X-MailFrom: ruansy.fnst@fujitsu.com
+X-Originating-IP: [10.175.103.112]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: Q6ZLNNTXGP5ALOQGQSKAGFJZIO2P37US
+X-Message-ID-Hash: Q6ZLNNTXGP5ALOQGQSKAGFJZIO2P37US
+X-MailFrom: zou_wei@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, Ritesh Harjani <riteshh@gmail.com>
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, Zou Wei <zou_wei@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FS7MJ4NTLWLCSTZNLVCB46GWVBT4LBJA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Q6ZLNNTXGP5ALOQGQSKAGFJZIO2P37US/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -64,73 +47,35 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add address output in dax_iomap_pfn() in order to perform a memcpy() in
-CoW case.  Since this function both output address and pfn, rename it to
-dax_iomap_direct_access().
+The sparse tool complains as follows:
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ritesh Harjani <riteshh@gmail.com>
+tools/testing/nvdimm/test/iomap.c:65:14: warning:
+ symbol '__nfit_test_ioremap' was not declared. Should it be static?
+
+This symbol is not used outside of security.c, so this
+commit marks it static.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zou Wei <zou_wei@huawei.com>
 ---
- fs/dax.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tools/testing/nvdimm/test/iomap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 19fa22ab50fa..ec66207a3199 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -998,8 +998,8 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
- 	return (iomap->addr + (pos & PAGE_MASK) - iomap->offset) >> 9;
+diff --git a/tools/testing/nvdimm/test/iomap.c b/tools/testing/nvdimm/test/iomap.c
+index c62d372..ed563bd 100644
+--- a/tools/testing/nvdimm/test/iomap.c
++++ b/tools/testing/nvdimm/test/iomap.c
+@@ -62,7 +62,7 @@ struct nfit_test_resource *get_nfit_res(resource_size_t resource)
  }
+ EXPORT_SYMBOL(get_nfit_res);
  
--static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
--			 pfn_t *pfnp)
-+static int dax_iomap_direct_access(struct iomap *iomap, loff_t pos, size_t size,
-+		void **kaddr, pfn_t *pfnp)
+-void __iomem *__nfit_test_ioremap(resource_size_t offset, unsigned long size,
++static void __iomem *__nfit_test_ioremap(resource_size_t offset, unsigned long size,
+ 		void __iomem *(*fallback_fn)(resource_size_t, unsigned long))
  {
- 	const sector_t sector = dax_iomap_sector(iomap, pos);
- 	pgoff_t pgoff;
-@@ -1011,11 +1011,13 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
- 		return rc;
- 	id = dax_read_lock();
- 	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
--				   NULL, pfnp);
-+				   kaddr, pfnp);
- 	if (length < 0) {
- 		rc = length;
- 		goto out;
- 	}
-+	if (!pfnp)
-+		goto out_check_addr;
- 	rc = -EINVAL;
- 	if (PFN_PHYS(length) < size)
- 		goto out;
-@@ -1025,6 +1027,12 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
- 	if (length > 1 && !pfn_t_devmap(*pfnp))
- 		goto out;
- 	rc = 0;
-+
-+out_check_addr:
-+	if (!kaddr)
-+		goto out;
-+	if (!*kaddr)
-+		rc = -EFAULT;
- out:
- 	dax_read_unlock(id);
- 	return rc;
-@@ -1388,7 +1396,7 @@ static vm_fault_t dax_fault_actor(struct vm_fault *vmf, pfn_t *pfnp,
- 		return pmd ? VM_FAULT_FALLBACK : VM_FAULT_SIGBUS;
- 	}
- 
--	err = dax_iomap_pfn(iomap, pos, size, &pfn);
-+	err = dax_iomap_direct_access(iomap, pos, size, NULL, &pfn);
- 	if (err)
- 		return pmd ? VM_FAULT_FALLBACK : dax_fault_return(err);
- 
+ 	struct nfit_test_resource *nfit_res = get_nfit_res(offset);
 -- 
-2.31.0
-
-
+2.6.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
