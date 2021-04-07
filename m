@@ -1,46 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832B43558D4
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Apr 2021 18:08:06 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D1F35603B
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Apr 2021 02:21:32 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 71A98100EB323;
-	Tue,  6 Apr 2021 09:08:04 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.150.56.249; helo=izpjcxuht.net; envelope-from=zvdipbh@izpjcxuht.net; receiver=<UNKNOWN> 
-Received: from izpjcxuht.net (unknown [223.150.56.249])
-	by ml01.01.org (Postfix) with ESMTP id E1A43100EB85C
-	for <linux-nvdimm@lists.01.org>; Tue,  6 Apr 2021 09:07:57 -0700 (PDT)
-Message-ID: <C6C74C7618DCF5C995DA24C9A5D4AD14@izpjcxuht.net>
-From: =?utf-8?B?6ZmI5Li75Lu7?= <zvdipbh@izpjcxuht.net>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?bGludXgtbnZkaW1t77ya5aaC5L2V5YGa5aW96aKG5a+855qE?=
-	=?utf-8?B?5bem6IaA5Y+z6IeC5ZKM5Y+C6LCL5Yqp5omLMzMz?=
-Date: Wed, 7 Apr 2021 00:11:05 +0800
+	by ml01.01.org (Postfix) with ESMTP id 35F45100EB341;
+	Tue,  6 Apr 2021 17:21:29 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.156.93.235; helo=magicmayan.com; envelope-from=info@magicmayan.com; receiver=<UNKNOWN> 
+Received: from magicmayan.com (unknown [103.156.93.235])
+	by ml01.01.org (Postfix) with ESMTP id 27794100EB33A
+	for <linux-nvdimm@lists.01.org>; Tue,  6 Apr 2021 17:21:25 -0700 (PDT)
+From: kazim.Agace<info@magicmayan.com>
+To: linux-nvdimm@lists.01.org
+Subject: I await your response
+Date: 06 Apr 2021 17:21:28 -0700
+Message-ID: <20210406172127.002F114062F34BE5@magicmayan.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: ILZNRSMYXUXJN24IOMDGOYZCZG7EAFTK
-X-Message-ID-Hash: ILZNRSMYXUXJN24IOMDGOYZCZG7EAFTK
-X-MailFrom: zvdipbh@izpjcxuht.net
+Message-ID-Hash: ZOKGZNFK6RNOC3LSZ6RS4D7M5HBLJYX6
+X-Message-ID-Hash: ZOKGZNFK6RNOC3LSZ6RS4D7M5HBLJYX6
+X-MailFrom: info@magicmayan.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: kazim.agace@yandex.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ILZNRSMYXUXJN24IOMDGOYZCZG7EAFTK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZOKGZNFK6RNOC3LSZ6RS4D7M5HBLJYX6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============7998044520082252600=="
 
-ICDpmYQgIOS7tg0KICAgICAgICDkurIgIOWQrwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
-ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
-dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+--===============7998044520082252600==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Greeting,<br>Please forgive my unconventional approach because I throw the =
+question after reading your profile status<br>If you are eligible to assist=
+ in moving Multi-Million USD investment capital for Joint Venture Partnersh=
+ip, it will greatly benefit both of us. As soon as I receive your reply, I =
+will add your reference offer; please contact me via this email: kazim.agac=
+e@yandex.com for dispute measures.<br>thank you<br>With care,<br>Agace Kazi=
+m
+--===============7998044520082252600==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============7998044520082252600==--
