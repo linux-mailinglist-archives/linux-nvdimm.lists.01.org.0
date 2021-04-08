@@ -2,274 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5A1358F7B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Apr 2021 23:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF93358F8D
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Apr 2021 23:57:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1B1E3100EBB97;
-	Thu,  8 Apr 2021 14:53:22 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=djwong@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EC138100EF271
-	for <linux-nvdimm@lists.01.org>; Thu,  8 Apr 2021 14:53:19 -0700 (PDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9B46E610E6;
-	Thu,  8 Apr 2021 21:53:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1617918798;
-	bh=A6hMiax8/Or4LgNgXkUOelrTPiu/9BumK44HXSqfYOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k3UgSbfLjLyszGJJ0okGlDnxF/Jo+EQZsoDN7YjCW+ScTgoJQ21QcQllqj0WMW8AY
-	 phwC2BxfW75myZd+/4n3cVt0fJ2iIfKznXI3phH88YZ4Hkqvn57FyZNz+3swTTgklS
-	 H2uVClhQNfLPP2gG5KWl+cUx2iG7jMTKAn2WSpT9P3BZ3EDg/H6FSC3u4Lh+RvwWkA
-	 COgFaum7EWRQu2ozHAXcJFbdygyMgMquWLpoJx7u6p43Q+SzkxPDbI6xZoYlmvZ1fv
-	 L/+yxwO8eahF10cCzjemscD74D3C+veBLTteFgZV7A65PA7V1LXJ6SGDoxNt8RDbD2
-	 9T0b/O6QpzD3Q==
-Date: Thu, 8 Apr 2021 14:53:17 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Subject: Re: [PATCH v4 1/7] fsdax: Introduce dax_iomap_cow_copy()
-Message-ID: <20210408215317.GY3957620@magnolia>
-References: <20210408120432.1063608-1-ruansy.fnst@fujitsu.com>
- <20210408120432.1063608-2-ruansy.fnst@fujitsu.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210408120432.1063608-2-ruansy.fnst@fujitsu.com>
-Message-ID-Hash: KBYXLXNN7ONU56S5V756ZSRBIVTJIGDF
-X-Message-ID-Hash: KBYXLXNN7ONU56S5V756ZSRBIVTJIGDF
-X-MailFrom: djwong@kernel.org
+	by ml01.01.org (Postfix) with ESMTP id 89988100EAB5C;
+	Thu,  8 Apr 2021 14:57:23 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=117.51.159.20; helo=jcb.co.jp; envelope-from=gycoydyzs@jcb.co.jp; receiver=<UNKNOWN> 
+Received: from jcb.co.jp (unknown [117.51.159.20])
+	by ml01.01.org (Postfix) with ESMTP id 20CD8100F2248
+	for <linux-nvdimm@lists.01.org>; Thu,  8 Apr 2021 14:57:20 -0700 (PDT)
+Message-ID: <0D2815D28FD98C9D97E0FC111624DF71@jcb.co.jp>
+From: "MyJCB" <info@jcb.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQTXlKQ0LjgJHjgZTliKnnlKjnoro=?=
+	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
+Date: Fri, 9 Apr 2021 05:57:16 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: GDBTR2QLEBWCXR3UKOEWLN2NX6QECZBY
+X-Message-ID-Hash: GDBTR2QLEBWCXR3UKOEWLN2NX6QECZBY
+X-MailFrom: gycoydyzs@jcb.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KBYXLXNN7ONU56S5V756ZSRBIVTJIGDF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GDBTR2QLEBWCXR3UKOEWLN2NX6QECZBY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Thu, Apr 08, 2021 at 08:04:26PM +0800, Shiyang Ruan wrote:
-> In the case where the iomap is a write operation and iomap is not equal
-> to srcmap after iomap_begin, we consider it is a CoW operation.
-> 
-> The destance extent which iomap indicated is new allocated extent.
-> So, it is needed to copy the data from srcmap to new allocated extent.
-> In theory, it is better to copy the head and tail ranges which is
-> outside of the non-aligned area instead of copying the whole aligned
-> range. But in dax page fault, it will always be an aligned range.  So,
-> we have to copy the whole range in this case.
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/dax.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 77 insertions(+), 5 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 8d7e4e2cc0fb..b4fd3813457a 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -1038,6 +1038,61 @@ static int dax_iomap_direct_access(struct iomap *iomap, loff_t pos, size_t size,
->  	return rc;
->  }
->  
-> +/**
-> + * dax_iomap_cow_copy(): Copy the data from source to destination before write.
-> + * @pos:	address to do copy from.
-> + * @length:	size of copy operation.
-> + * @align_size:	aligned w.r.t align_size (either PMD_SIZE or PAGE_SIZE)
-> + * @srcmap:	iomap srcmap
-> + * @daddr:	destination address to copy to.
-> + *
-> + * This can be called from two places. Either during DAX write fault, to copy
-> + * the length size data to daddr. Or, while doing normal DAX write operation,
-> + * dax_iomap_actor() might call this to do the copy of either start or end
-> + * unaligned address. In this case the rest of the copy of aligned ranges is
-> + * taken care by dax_iomap_actor() itself.
-
-Er... what?  This description is very confusing to me.  /me reads the
-code, and ...
-
-OH.
-
-Given a range (pos, length) and a mapping for a source file, this
-function copies all the bytes between pos and (pos + length) to daddr if
-the range is aligned to @align_size.  But if pos and length are not both
-aligned to align_src then it'll copy *around* the range, leaving the
-area in the middle uncopied waiting for write_iter to fill it in with
-whatever's in the iovec.
-
-Yikes, this function is doing double duty and ought to be split into
-two functions.
-
-The first function does the COW work for a write fault to an mmap
-region and does a straight copy.  Page faults are always aligned, so
-this functionality is needed by dax_fault_actor.  Maybe this could be
-named dax_fault_cow?
-
-The second function does the prep COW work *around* a write so that we
-always copy entire page/blocks.  This cow-around code is needed by
-dax_iomap_actor.  This should perhaps be named dax_iomap_cow_around()?
-
-> + * Also, note DAX fault will always result in aligned pos and pos + length.
-> + */
-> +static int dax_iomap_cow_copy(loff_t pos, loff_t length, size_t align_size,
-> +		struct iomap *srcmap, void *daddr)
-> +{
-> +	loff_t head_off = pos & (align_size - 1);
-> +	size_t size = ALIGN(head_off + length, align_size);
-> +	loff_t end = pos + length;
-> +	loff_t pg_end = round_up(end, align_size);
-> +	bool copy_all = head_off == 0 && end == pg_end;
-> +	void *saddr = 0;
-> +	int ret = 0;
-> +
-> +	ret = dax_iomap_direct_access(srcmap, pos, size, &saddr, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (copy_all) {
-> +		ret = copy_mc_to_kernel(daddr, saddr, length);
-> +		return ret ? -EIO : 0;
-
-I find it /very/ interesting that copy_mc_to_kernel takes an unsigned
-int argument but returns an unsigned long (counting the bytes that
-didn't get copied, oddly...but that's an existing API so I guess I'll
-let it go.)
-
-> +	}
-> +
-> +	/* Copy the head part of the range.  Note: we pass offset as length. */
-> +	if (head_off) {
-> +		ret = copy_mc_to_kernel(daddr, saddr, head_off);
-> +		if (ret)
-> +			return -EIO;
-> +	}
-> +
-> +	/* Copy the tail part of the range */
-> +	if (end < pg_end) {
-> +		loff_t tail_off = head_off + length;
-> +		loff_t tail_len = pg_end - end;
-> +
-> +		ret = copy_mc_to_kernel(daddr + tail_off, saddr + tail_off,
-> +					tail_len);
-> +		if (ret)
-> +			return -EIO;
-> +	}
-> +	return 0;
-> +}
-> +
->  /*
->   * The user has performed a load from a hole in the file.  Allocating a new
->   * page in the file would cause excessive storage usage for workloads with
-> @@ -1167,11 +1222,12 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
->  	struct dax_device *dax_dev = iomap->dax_dev;
->  	struct iov_iter *iter = data;
->  	loff_t end = pos + length, done = 0;
-> +	bool write = iov_iter_rw(iter) == WRITE;
->  	ssize_t ret = 0;
->  	size_t xfer;
->  	int id;
->  
-> -	if (iov_iter_rw(iter) == READ) {
-> +	if (!write) {
->  		end = min(end, i_size_read(inode));
->  		if (pos >= end)
->  			return 0;
-> @@ -1180,7 +1236,8 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
->  			return iov_iter_zero(min(length, end - pos), iter);
->  	}
->  
-> -	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED))
-> +	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED &&
-> +			!(iomap->flags & IOMAP_F_SHARED)))
-
-This is a bit subtle.  Could we add a comment:
-
-	/*
-	 * In DAX mode, we allow either pure overwrites of written extents,
-	 * or writes to unwritten extents as part of a copy-on-write
-	 * operation.
-	 */
-	if (WARN_ON_ONCE(...))
-
->  		return -EIO;
->  
->  	/*
-> @@ -1219,6 +1276,13 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
->  			break;
->  		}
->  
-> +		if (write && srcmap->addr != iomap->addr) {
-
-Do you have to check if srcmap is not a hole?
-
---D
-
-> +			ret = dax_iomap_cow_copy(pos, length, PAGE_SIZE, srcmap,
-> +						 kaddr);
-> +			if (ret)
-> +				break;
-> +		}
-> +
->  		map_len = PFN_PHYS(map_len);
->  		kaddr += offset;
->  		map_len -= offset;
-> @@ -1230,7 +1294,7 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
->  		 * validated via access_ok() in either vfs_read() or
->  		 * vfs_write(), depending on which operation we are doing.
->  		 */
-> -		if (iov_iter_rw(iter) == WRITE)
-> +		if (write)
->  			xfer = dax_copy_from_iter(dax_dev, pgoff, kaddr,
->  					map_len, iter);
->  		else
-> @@ -1382,6 +1446,7 @@ static vm_fault_t dax_fault_actor(struct vm_fault *vmf, pfn_t *pfnp,
->  	unsigned long entry_flags = pmd ? DAX_PMD : 0;
->  	int err = 0;
->  	pfn_t pfn;
-> +	void *kaddr;
->  
->  	/* if we are reading UNWRITTEN and HOLE, return a hole. */
->  	if (!write &&
-> @@ -1392,18 +1457,25 @@ static vm_fault_t dax_fault_actor(struct vm_fault *vmf, pfn_t *pfnp,
->  			return dax_pmd_load_hole(xas, vmf, iomap, entry);
->  	}
->  
-> -	if (iomap->type != IOMAP_MAPPED) {
-> +	if (iomap->type != IOMAP_MAPPED && !(iomap->flags & IOMAP_F_SHARED)) {
->  		WARN_ON_ONCE(1);
->  		return pmd ? VM_FAULT_FALLBACK : VM_FAULT_SIGBUS;
->  	}
->  
-> -	err = dax_iomap_direct_access(iomap, pos, size, NULL, &pfn);
-> +	err = dax_iomap_direct_access(iomap, pos, size, &kaddr, &pfn);
->  	if (err)
->  		return pmd ? VM_FAULT_FALLBACK : dax_fault_return(err);
->  
->  	*entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn, entry_flags,
->  				  write && !sync);
->  
-> +	if (write &&
-> +	    srcmap->addr != IOMAP_HOLE && srcmap->addr != iomap->addr) {
-> +		err = dax_iomap_cow_copy(pos, size, size, srcmap, kaddr);
-> +		if (err)
-> +			return dax_fault_return(err);
-> +	}
-> +
->  	if (sync)
->  		return dax_fault_synchronous_pfnp(pfnp, pfn);
->  
-> -- 
-> 2.31.0
-> 
-> 
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
+iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
+iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
+ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
+q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
+o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
+iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
+j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
+gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
+gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
+44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
+5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
+m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
+iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
+uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
+44KJDQoNCmh0dHBzOi8vd3d3Lk15SkNCLWpwLnZpcC8NCg0K4pSB4pSB4pSB4pSB4pSB4pSB4pSB
+4pSB4pSB4pSB4pSB4pSB4pSB4pSB4pSBDQrilqDnmbrooYzogIXilqANCkpDQuOCq+ODvOODieag
+quW8j+S8muekvg0KDQpodHRwczovL3d3dy5NeUpDQi1qcC52aXAvDQrigLvmnKzjg6Hjg7zjg6vj
+ga/pgIHkv6HlsILnlKjjgafjgZnjgIINCuKAu+acrOODoeODvOODq+OBr+OAjE15SkNC44CN44Gr
+44Oh44O844Or44Ki44OJ44Os44K544KS44GU55m76Yyy44GE44Gf44Gg44GE44Gf5pa544Gr44GK
+6YCB44KK44GX44Gm44GE44G+44GZ44CCDQrilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEu
+b3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxp
+c3RzLjAxLm9yZwo=
