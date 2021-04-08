@@ -1,85 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34667358111
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Apr 2021 12:48:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A953582B6
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Apr 2021 14:04:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0460E100EAB44;
-	Thu,  8 Apr 2021 03:48:17 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2089A100EAB41
-	for <linux-nvdimm@lists.01.org>; Thu,  8 Apr 2021 03:48:15 -0700 (PDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 138AY6W9125372;
-	Thu, 8 Apr 2021 06:48:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=miZOpqIiiCZbuVYG5gGkfVrfgsW56tkhInewl1OeG2g=;
- b=YEqdXzcLz9g7+/TMHqIGYFnrQ3KAQKsuEZHCUGUgpjN+G/NLtbBPxtpAGFb9sYrhHLpl
- mf8TLjBm8Pjilrp/xZmBXb+70N/+RK2hX74937tLDV5KQEFZLDH7Wf0gtLE67p5kaR0U
- 47gQc9n1hE/qnos01j2qpwa2f4eRdfFju042mgKEeH7APFuJJFNspTf1DxrXmRea+id6
- cWJyw6NgAxfh64+2VkiCECW+nxQzAr1PVzSFUBsM+6Q17YrHx+XD8Nvh5ZCWTHHVLlDo
- J9WwaL3yAHNB03RaJ5ebN/vY4Q+eb+2e2+GozU2FpQhxQV0gSBpm0UhRB5NWcI7jpPPG pg==
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 37rw7kcsxa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Apr 2021 06:48:11 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 138Am9R6026375;
-	Thu, 8 Apr 2021 10:48:09 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma03ams.nl.ibm.com with ESMTP id 37rvbqhgex-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Apr 2021 10:48:09 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 138Am6Nk22807032
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Apr 2021 10:48:06 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3310CA405B;
-	Thu,  8 Apr 2021 10:48:06 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 112A6A4040;
-	Thu,  8 Apr 2021 10:48:04 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.70.62])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Thu,  8 Apr 2021 10:48:03 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Thu, 08 Apr 2021 16:18:03 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v2] libnvdimm/region: Update nvdimm_has_flush() to
- handle ND_REGION_ASYNC
-In-Reply-To: <5e64778d-bf48-9f10-7d3d-5e530e5db590@linux.ibm.com>
-References: <20210406032233.490596-1-vaibhav@linux.ibm.com>
- <874kgk6lnn.fsf@linux.ibm.com> <87wntfhcdr.fsf@vajain21.in.ibm.com>
- <5e64778d-bf48-9f10-7d3d-5e530e5db590@linux.ibm.com>
-Date: Thu, 08 Apr 2021 16:18:03 +0530
-Message-ID: <87tuohgiho.fsf@vajain21.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTP id F1CF6100EAB44;
+	Thu,  8 Apr 2021 05:04:45 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id 5FE54100EB333
+	for <linux-nvdimm@lists.01.org>; Thu,  8 Apr 2021 05:04:42 -0700 (PDT)
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A4NSyVKlPuH4vkzq6pEU2/XbVTQ3pDfLM3DAb?=
+ =?us-ascii?q?vn1ZSRFFG/GwvcaogfgdyFvImC8cMUtQ/eyoFYuhZTfn9ZBz6ZQMJrvKZmTbkU?=
+ =?us-ascii?q?ahMY0K1+Xf6hLtFyD0/uRekYdMGpIVNPTeFl5/5Pya3CCdM/INhOaK67qpg+C2?=
+ =?us-ascii?q?9QYJcShPZ7t75wl0Tia3e3cGJzVuPpYyGJqC6scvnVPJFkg/VNixBXUOQoH41r?=
+ =?us-ascii?q?/2va/hCCRnOzcXrCGKjR6NrIXxCgWk2H4lOA9n8PMP9nfknmXCipmejw=3D=3D?=
+X-IronPort-AV: E=Sophos;i="5.82,206,1613404800";
+   d="scan'208";a="106797245"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 08 Apr 2021 20:04:39 +0800
+Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
+	by cn.fujitsu.com (Postfix) with ESMTP id BF9744CEA876;
+	Thu,  8 Apr 2021 20:04:35 +0800 (CST)
+Received: from G08CNEXJMPEKD02.g08.fujitsu.local (10.167.33.202) by
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Thu, 8 Apr 2021 20:04:36 +0800
+Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
+ G08CNEXJMPEKD02.g08.fujitsu.local (10.167.33.202) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Thu, 8 Apr 2021 20:04:35 +0800
+Received: from irides.mr.mr.mr (10.167.225.141) by
+ G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
+ id 15.0.1497.2 via Frontend Transport; Thu, 8 Apr 2021 20:04:34 +0800
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
+	<linux-nvdimm@lists.01.org>, <linux-fsdevel@vger.kernel.org>
+Subject: [PATCH v4 0/7] fsdax,xfs: Add reflink&dedupe support for fsdax
+Date: Thu, 8 Apr 2021 20:04:25 +0800
+Message-ID: <20210408120432.1063608-1-ruansy.fnst@fujitsu.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 851Ngbcaim6BRz3QL-rcH_neL9yvD4w1
-X-Proofpoint-ORIG-GUID: 851Ngbcaim6BRz3QL-rcH_neL9yvD4w1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-08_02:2021-04-08,2021-04-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 suspectscore=0
- phishscore=0 adultscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104080071
-Message-ID-Hash: B3GVSXGRHLIU6XLMLHL4OXZOF4WDTR4Z
-X-Message-ID-Hash: B3GVSXGRHLIU6XLMLHL4OXZOF4WDTR4Z
-X-MailFrom: vaibhav@linux.ibm.com
+X-yoursite-MailScanner-ID: BF9744CEA876.A4371
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: YBJUSBJMPPSAXKASB6REFNGECOR7HD24
+X-Message-ID-Hash: YBJUSBJMPPSAXKASB6REFNGECOR7HD24
+X-MailFrom: ruansy.fnst@fujitsu.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michael Ellerman <mpe@ellerman.id.au>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, stable@vger.kernel.org
+CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B3GVSXGRHLIU6XLMLHL4OXZOF4WDTR4Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YBJUSBJMPPSAXKASB6REFNGECOR7HD24/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -88,57 +62,78 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+This patchset is attempt to add CoW support for fsdax, and take XFS,
+which has both reflink and fsdax feature, as an example.
 
-> On 4/6/21 5:07 PM, Vaibhav Jain wrote:
->> Hi Aneesh,
->> Thanks for looking into this patch.
->> 
->> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->> 
->>> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->>>
->>>> In case a platform doesn't provide explicit flush-hints but provides an
->>>> explicit flush callback via ND_REGION_ASYNC region flag, then
->>>> nvdimm_has_flush() still returns '0' indicating that writes do not
->>>> require flushing. This happens on PPC64 with patch at [1] applied,
->>>> where 'deep_flush' of a region was denied even though an explicit
->>>> flush function was provided.
->>>>
->>>> Similar problem is also seen with virtio-pmem where the 'deep_flush'
->>>> sysfs attribute is not visible as in absence of any registered nvdimm,
->>>> 'nd_region->ndr_mappings == 0'.
->>>>
->>>> Fix this by updating nvdimm_has_flush() adding a condition to
->>>> nvdimm_has_flush() testing for ND_REGION_ASYNC flag on the region
->>>> and see if a 'region->flush' callback is assigned. Also remove
->>>> explicit test for 'nd_region->ndr_mapping' since regions can be marked
->>>> 'ND_REGION_SYNC' without any explicit mappings as in case of
->>>> virtio-pmem.
->>>
->>> Do we need to check for ND_REGION_ASYNC? What if the backend wants to
->>> provide a synchronous dax region but with different deep flush semantic
->>> than writing to wpq flush address?
->>> ie,
->> 
->> For a synchronous dax region, writes arent expected to require any
->> flushing (or deep-flush) so this function should ideally return '0' in
->> such a case. Hence I had added the test for ND_REGION_ASYNC region flag.
->> 
->
-> that is not correct. For example, we could ideally move the wpq flush as 
-> an nd_region->flush callback for acpi or we could implement a deep flush 
-> for a synchronous dax region exposed by papr_scm driver that ensures 
-> stores indeed reached the media managed by the hypervisor.
-Sure, makes sense now. I have sent out a v3 of this patch with this
-addressed.
+Changes from V3:
+ - Take out the first 3 patches as a cleanup patchset[1], which has been
+    sent yesterday.
+ - Fix usage of code in dax_iomap_cow_copy()
+ - Add comments for macro definitions
+ - Fix other code style problems and mistakes
 
->
-> -aneesh
+Changes from V2:
+ - Fix the mistake in iomap_apply2() and dax_dedupe_file_range_compare()
+ - Add CoW judgement in dax_iomap_zero()
+ - Fix other code style problems and mistakes
+
+Changes from V1:
+ - Factor some helper functions to simplify dax fault code
+ - Introduce iomap_apply2() for dax_dedupe_file_range_compare()
+ - Fix mistakes and other problems
+ - Rebased on v5.11
+
+One of the key mechanism need to be implemented in fsdax is CoW.  Copy
+the data from srcmap before we actually write data to the destance
+iomap.  And we just copy range in which data won't be changed.
+
+Another mechanism is range comparison.  In page cache case, readpage()
+is used to load data on disk to page cache in order to be able to
+compare data.  In fsdax case, readpage() does not work.  So, we need
+another compare data with direct access support.
+
+With the two mechanism implemented in fsdax, we are able to make reflink
+and fsdax work together in XFS.
+
+Some of the patches are picked up from Goldwyn's patchset.  I made some
+changes to adapt to this patchset.
+
+
+(Rebased on v5.12-rc5 and patchset[1])
+
+[1]: https://lore.kernel.org/linux-xfs/20210407133823.828176-1-ruansy.fnst@fujitsu.com/
+==
+
+Shiyang Ruan (7):
+  fsdax: Introduce dax_iomap_cow_copy()
+  fsdax: Replace mmap entry in case of CoW
+  fsdax: Add dax_iomap_cow_copy() for dax_iomap_zero
+  iomap: Introduce iomap_apply2() for operations on two files
+  fsdax: Dedup file range to use a compare function
+  fs/xfs: Handle CoW for fsdax write() path
+  fs/xfs: Add dedupe support for fsdax
+
+ fs/dax.c               | 202 +++++++++++++++++++++++++++++++++++------
+ fs/iomap/apply.c       |  52 +++++++++++
+ fs/iomap/buffered-io.c |   2 +-
+ fs/remap_range.c       |  45 +++++++--
+ fs/xfs/xfs_bmap_util.c |   3 +-
+ fs/xfs/xfs_file.c      |  29 ++++--
+ fs/xfs/xfs_inode.c     |   8 +-
+ fs/xfs/xfs_inode.h     |   1 +
+ fs/xfs/xfs_iomap.c     |  58 +++++++++++-
+ fs/xfs/xfs_iomap.h     |   4 +
+ fs/xfs/xfs_iops.c      |   7 +-
+ fs/xfs/xfs_reflink.c   |  17 ++--
+ include/linux/dax.h    |   7 +-
+ include/linux/fs.h     |  12 ++-
+ include/linux/iomap.h  |   7 +-
+ 15 files changed, 393 insertions(+), 61 deletions(-)
 
 -- 
-Cheers
-~ Vaibhav
+2.31.0
+
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
