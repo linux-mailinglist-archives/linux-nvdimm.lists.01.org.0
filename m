@@ -2,40 +2,33 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB2035A765
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Apr 2021 21:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB01A35A7D7
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Apr 2021 22:28:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 72E76100EC1F5;
-	Fri,  9 Apr 2021 12:47:54 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.123; helo=fidr.com; envelope-from=gauso@fidr.com; receiver=<UNKNOWN> 
-Received: from fidr.com (unknown [223.73.35.123])
-	by ml01.01.org (Postfix) with ESMTP id B5B3A100EC1D9
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 12:47:50 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 17 Apr 2021 03:54:29 +0800
-Message-ID: eae2d662-d5a3-4f3b-bf4e-29dfa654d0a2
+	by ml01.01.org (Postfix) with ESMTP id ADE70100EAB0C;
+	Fri,  9 Apr 2021 13:28:15 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=123.58.197.250; helo=rakuten.co.jp; envelope-from=postmaster@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (unknown [123.58.197.250])
+	by ml01.01.org (Postfix) with ESMTP id 149FC100EAAE1
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 13:28:11 -0700 (PDT)
+Message-ID: <20210410042812476486@rakuten.co.jp>
+From: "myinfo" <postmaster@rakuten.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?shift_jis?B?QW1hem9ug3aDiYNDg4CCzI6pk66NWJBWkN2S6ILwifCPnA==?=
+	=?shift_jis?B?gqKCvYK1gtyCtYK9gUk=?=
+Date: Sat, 10 Apr 2021 04:28:04 +0800
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E4=B8=AD=E6=B8=AF=E8=BF=90=E8=BE=93+=E9=A6?=
- =?utf-8?Q?=99=E6=B8=AF=E4=BB=93=E5=82=A8+=E6=8B=BC=E7=AE=B1+=E8=A3=85?=
- =?utf-8?Q?=E5=8D=B8=E6=9F=9C=E6=9C=8D=E5=8A=A1?=
- <gauso@fidr.com>
-From: =?utf-8?Q?=E4=B8=AD=E6=B8=AF=E8=BF=90=E8=BE=93+=E9=A6=99?=
- =?utf-8?Q?=E6=B8=AF=E4=BB=93=E5=82=A8+=E6=8B=BC=E7=AE=B1+=E8=A3=85=E5?=
- =?utf-8?Q?=8D=B8=E6=9F=9C=E6=9C=8D=E5=8A=A1?=
- <bfxntg@fidr.com>
-To: linux-nvdimm@lists.01.org
-Date: 17 Apr 2021 03:54:29 +0800
-Subject: =?utf-8?B?5Lit5riv6L+Q6L6TK+mmmea4r+S7k+WCqCvmi7znrrEr6KOF?=
- =?utf-8?B?5Y245p+c5pyN5Yqh?=
-Message-ID-Hash: A3GD54POOQNTQRCNEWL2BUW5DQ7ZXLDK
-X-Message-ID-Hash: A3GD54POOQNTQRCNEWL2BUW5DQ7ZXLDK
-X-MailFrom: gauso@fidr.com
+X-mailer: Kuoikcyie 2
+Message-ID-Hash: OGU7WOX2JJKOM7QN3RLYKOF62MJ2F5FI
+X-Message-ID-Hash: OGU7WOX2JJKOM7QN3RLYKOF62MJ2F5FI
+X-MailFrom: postmaster@rakuten.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/A3GD54POOQNTQRCNEWL2BUW5DQ7ZXLDK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGU7WOX2JJKOM7QN3RLYKOF62MJ2F5FI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -44,20 +37,31 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-Jm5ic3A7DQombmJzcDsNCuS4rea4r+i/kOi+kyvpppnmuK/ku5Plgqgr5ou8566xK+ijheWNuOaf
-nOacjeWKoQ0KJm5ic3A7DQrkuK3muK/ov5DovpPmnI3liqHkuLvopoHku47kuovnnIHlhoXlkITl
-nLDliLDpppnmuK/okbXmtoznoIHlpLTjgIHmnLrlnLrlj4rlhbbku5bnq5nlnLrnmoTmlaPotKfm
-i7zovaYNCuaVtOi9pui/kOi+k+acjeWKoeWPiummmea4r+WIsOa3seWcs+eahOaOpemps+i/kOi+
-k++8jOW5tuWPr+S7o+eQhui/m+WHuuWPo+aKpeWFs+aKpeajgOmFjeWll+acjeWKoS4NCiZuYnNw
-Ow0K4pagJm5ic3A75aSn6ZmG5LiK6Zeo5o+Q6LSn77yM6L+Q6L6T5oql5YWz5LiA5p2h6b6Z5pyN
-5YqhDQrilqAmbmJzcDvpppnmuK/mnInljbjotKflubPlj7DvvIzlj6/mj5Dkvpvoo4XljbjotKfv
-vIzmi7znrrHvvIzku5PlgqjmnI3liqENCuKWoCZuYnNwO+S5nem+mS/mlrDnlYwv5riv5bKb5rS+
-6YCB5YWs5Y+45Lul5Y+K5LuT5bqTDQrilqAmbmJzcDvpppnmuK/mnLrlnLov5LuT56CB5aS05LuT
-5YWl5LuT5pyN5YqhDQombmJzcDsNCiZuYnNwOw0K5Lit5riv6LSn6L+Q5pyJ6ZmQ5YWs5Y+4DQoN
-CuiBlOezu+S6uu+8mkphY2sNCk1vYmlsZSZuYnNwO++8mis4Ni0xMzY0Mjk4MDkzNe+8iOW+ruS/
-oeWQjOWPt++8iQ0KRS1tYWlsJm5ic3A777yaJm5ic3A7d3VsaXU1NnNhbGVzMDFAaG90bWFpbC5j
-b20NCummmSZuYnNwO+a4r++8muiRtea2jOS4ieWPt+i0p+afnOeggeWktOeJqea1geS4reW/gyZu
-YnNwO0HluqflnLDkuIsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEu
-b3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxp
-c3RzLjAxLm9yZwo=
+DQoNCg0KDQoNCuOCr+ODrOOCuOODg+ODiOOCq+ODvOODieaDheWgseOBruabtOaWsOOAgei/veWK
+oOOBquOBqeOBq+OBpOOBjeOBvuOBl+OBpuOAgeS7peS4i+OBruaJi+mghuOCkuOBlOeiuuiqjeOB
+j+OBoOOBleOBhOOAguOCouOCq+OCpuODs+ODiOOCteODvOODk+OCueOBi+OCiUFtYXpvbuaDheWg
+seOCkueuoeeQhuOBmeOCi+ODmuODvOOCuOOBq+OCouOCr+OCu+OCueOBl+OBpuOAgeabtOaWsOOB
+l+OBpuOBj+OBoOOBleOBhOOAgg0KDQrjgb7jgZ/jgIFBbWF6b27jg5fjg6njgqTjg6DmnJ/plpPj
+gYzntYLkuobjgZfjgZ/jgonjgIEg44GK5oCl44GO5L6/54Sh5paZIOOChCDjg5fjg6njgqTjg6Dj
+g7vjg5Pjg4fjgqropovmlL7poYwg44Gq44Gp44Gu44OX44Op44Kk44Og5Lya5ZOh54m55YW444Gu
+44GU5Yip55So44GM44Gn44GN44Gq44GP44Gq44KK44G+44GZ44CCKOS4u+OBquODl+ODqeOCpOOD
+oOS8muWToeeJueWFuOOCkueiuuiqjeOBmeOCi+OBq+OBryDjgZPjgaHjgonjgpLjgq/jg6rjg4Pj
+gq/jgZfjgabjgY/jgaDjgZXjgYQp44CC5pep44KB44Gr44GK5omL57aa44GN44Gu56iL44KI44KN
+44GX44GP44GK6aGY44GE6Ie044GX44G+44GZDQoNCg0K57aZ57aa44GX44Gm44OX44Op44Kk44Og
+5Lya5ZOh54m55YW444KS44GK5qW944GX44G/44GE44Gf44Gg44GN44Gf44GE5aC05ZCI44Gv44CB
+44CMQW1hem9u44OX44Op44Kk44Og5Lya5ZOh5oOF5aCx44Gu566h55CG44CN44Oa44O844K444Gr
+44Gm44CM5Lya5ZOh6LOH5qC844KS57aZ57aa44GZ44KL44CNIOOCkuOCr+ODquODg+OCr+OBl+OB
+puOBj+OBoOOBleOBhOOAgg0KDQogDQogICDkvJrlk6Hmg4XloLHjga7nrqHnkIbjg5rjg7zjgrjj
+gafnorroqo0gICANCiANCg0KDQoNCg0K44Gq44GK44CBNzLmmYLplpPku6XlhoXjgavjgZTnorro
+qo3jgYzjgarjgYTloLTlkIjjgIHoqqDjgavnlLPjgZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgIHj
+gYrlrqLmp5jjga7lronlhajjga7ngrrjgIHjgqLjgqvjgqbjg7Pjg4jjga7liKnnlKjliLbpmZDj
+gpLjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/jgY/j
+gaDjgZXjgYTjgIINCg0K44Ki44Kr44Km44Oz44OI44Gr55m76Yyy44GuReODoeODvOODq+OCouOD
+ieODrOOCueOBq+OCouOCr+OCu+OCueOBp+OBjeOBquOBhOWgtOWQiA0K44GK5ZWP44GE5ZCI44KP
+44Gb77yaIEFtYXpvbuOCq+OCueOCv+ODnuODvOOCteODvOODk+OCueOAgg0KDQpBbWF6b27jgrXj
+g7zjg5PjgrnjgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbjgZTjgZbj
+gYTjgb7jgZfjgZ/jgIINCg0KDQoNCg0KIEFtYXpvbi5jby5qcCAg44Kr44K544K/44Oe44O844K1
+44O844OT44K5ICANCg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
+MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
+bGlzdHMuMDEub3JnCg==
