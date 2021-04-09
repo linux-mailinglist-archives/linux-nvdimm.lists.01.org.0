@@ -2,98 +2,135 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350E435A3E6
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Apr 2021 18:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 297AA35A6C1
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Apr 2021 21:11:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CD742100EA902;
-	Fri,  9 Apr 2021 09:45:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5D621100EAB1F
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 09:45:51 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id E91D4B120;
-	Fri,  9 Apr 2021 16:45:49 +0000 (UTC)
-From: Coly Li <colyli@suse.de>
-To: linux-bcache@vger.kernel.org
-Subject: [PATCH v7 16/16] bcache: more fix for compiling error when BCACHE_NVM_PAGES disabled
-Date: Sat, 10 Apr 2021 00:43:43 +0800
-Message-Id: <20210409164343.56828-17-colyli@suse.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210409164343.56828-1-colyli@suse.de>
-References: <20210409164343.56828-1-colyli@suse.de>
+	by ml01.01.org (Postfix) with ESMTP id 6AF46100EC1F5;
+	Fri,  9 Apr 2021 12:11:49 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=142.93.230.251; helo=gotothailand.com; envelope-from=ekearekuoe@fujiuser.com; receiver=<UNKNOWN> 
+Received: from gotothailand.com (unknown [142.93.230.251])
+	by ml01.01.org (Postfix) with ESMTP id 60260100EC1DA
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 12:11:45 -0700 (PDT)
+To: linux-nvdimm@lists.01.org
+Subject: Re: follow up on our email from yesterday
+Message-ID: <fda0b26ef7e83ed923367e538eac9958@bedbathandbeyond.com>
+Date: Fri, 09 Apr 2021 18:27:15 +0200
+From: "Addyson Barry" <ekedrekuoe@fujiuser.com>
 MIME-Version: 1.0
-Message-ID-Hash: NNQGJUVCISBNWUM2BOSH6X3HSNKO5ZWU
-X-Message-ID-Hash: NNQGJUVCISBNWUM2BOSH6X3HSNKO5ZWU
-X-MailFrom: colyli@suse.de
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-block@vger.kernel.org, linux-nvdimm@lists.01.org, axboe@kernel.dk, jianpeng.ma@intel.com, qiaowei.ren@intel.com, hare@suse.com, jack@suse.cz, Coly Li <colyli@suse.de>
+X-Mailer-Sent-By: 1
+Message-ID-Hash: DW7PQNHQPX2PBGJ2NABSFX3VCBVUUTNQ
+X-Message-ID-Hash: DW7PQNHQPX2PBGJ2NABSFX3VCBVUUTNQ
+X-MailFrom: ekearekuoe@fujiuser.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: houpkanorld@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NNQGJUVCISBNWUM2BOSH6X3HSNKO5ZWU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DW7PQNHQPX2PBGJ2NABSFX3VCBVUUTNQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============3119675866778745383=="
+
+--===============3119675866778745383==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align: left;"><span
+style=3D"text-align: left;"></span></span></span><span style=3D"text-alig=
+n:
+left;"><span style=3D"text-align: left;">Hi,<br /><br
+/></span></span></span></span></span></span></span></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"></span></span>
+<div>I hope all is well.<br />I am contacting you to let you know that we
+have got the following office chair available in our warehouse.<br /><br
+/></div>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align:
+left;"></span></span></span></span></span></span></span></span></span></s=
+pan></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align:
+left;"><span></span></span></span></span><span style=3D"display: block;
+text-align: left;">Specification:<br />Material: PVC=EF=BC=88polyvinyl
+chloride=EF=BC=89Leather + Elastic Fabric + Plating Feet<br />Max. Load B=
+earing:
+150kg<br />Whole Size: 73x50cm / 28.74''x19.68''<br />Sitting Size: 46x51=
+cm
+/ 18.11''x20.08''<br /><br />Feature:<br />-90&deg;~135&deg;lying design,
+can be lying down like a bed.<br />-Retractable footrest, make you more
+relexed during the break.<br />-Quality leather cushion, comfortable
+sitting, scratch resistant.<br />-5 claw universal wheel<br />-360&deg;
+rotatable.<br />-Height adjustable, to fit different people's
+height.</span><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><br /></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;">Costs:&nbsp; u&nbsp; s&nbsp; d&nbsp; shipment
+included<br />219.50 each (1-2 units)<br />199.50 each (3-10 units)<br
+/>179.50 each (11-50 units)<br /><br /></span></span><span style=3D"displ=
+ay:
+block; text-align: left;">Would you like to order it? Just confirm your
+address for delivery, we will arrange the shipment.<br /><br /><img
+src=3D"https://ae01.alicdn.com/kf/H9d17b44041ff4c09b7609e077afe130d8.jpg"
+width=3D"500" height=3D"500" /><img
+src=3D"https://ae01.alicdn.com/kf/Hf83511d7bcb34cde803a0a51218c4eeaa.jpeg=
+"
+width=3D"500" height=3D"500" /><br /></span><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"text-align: left;"><br /><br /><img
+src=3D"https://ae01.alicdn.com/kf/Hd5761f6e58684e089dfb40a62289efa4N.jpeg=
+"
+width=3D"500" height=3D"500" /><img
+src=3D"https://ae01.alicdn.com/kf/H3b55d82be89044f5a8052f006658723dg.jpg"
+width=3D"500" height=3D"500" /><br /><br /></span></span><span style=3D"d=
+isplay:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><br />Would you =
+like
+to order it? Just confirm your address for delivery, we will arrange the
+shipment.<br /><br />Thanks,<br />Addyson Barry</span></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"></span></span>
+</body>
+</html>
+
+--===============3119675866778745383==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-This patch fixes the compiling error when BCACHE_NVM_PAGES is disabled.
-The change could be added into previous nvm-pages patches, so that this
-patch can be dropped in next nvm-pages series.
-
-Signed-off-by: Coly Li <colyli@suse.de>
-Cc: Jianpeng Ma <jianpeng.ma@intel.com>
-Cc: Qiaowei Ren <qiaowei.ren@intel.com>
----
- drivers/md/bcache/nvm-pages.c | 4 ++--
- drivers/md/bcache/nvm-pages.h | 2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/md/bcache/nvm-pages.c b/drivers/md/bcache/nvm-pages.c
-index 19597ae7ef3e..b32f162bf728 100644
---- a/drivers/md/bcache/nvm-pages.c
-+++ b/drivers/md/bcache/nvm-pages.c
-@@ -7,6 +7,8 @@
-  * Copyright (c) 2021, Jianpeng Ma <jianpeng.ma@intel.com>.
-  */
- 
-+#ifdef CONFIG_BCACHE_NVM_PAGES
-+
- #include "bcache.h"
- #include "nvm-pages.h"
- 
-@@ -23,8 +25,6 @@
- #include <linux/blkdev.h>
- #include <linux/bcache-nvm.h>
- 
--#ifdef CONFIG_BCACHE_NVM_PAGES
--
- struct bch_nvm_set *only_set;
- 
- static void release_nvm_namespaces(struct bch_nvm_set *nvm_set)
-diff --git a/drivers/md/bcache/nvm-pages.h b/drivers/md/bcache/nvm-pages.h
-index 1c4cbad0209f..f9e0cd7ca3dd 100644
---- a/drivers/md/bcache/nvm-pages.h
-+++ b/drivers/md/bcache/nvm-pages.h
-@@ -3,8 +3,10 @@
- #ifndef _BCACHE_NVM_PAGES_H
- #define _BCACHE_NVM_PAGES_H
- 
-+#ifdef CONFIG_BCACHE_NVM_PAGES
- #include <linux/bcache-nvm.h>
- #include <linux/libnvdimm.h>
-+#endif /* CONFIG_BCACHE_NVM_PAGES */
- 
- /*
-  * Bcache NVDIMM in memory data structures
--- 
-2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============3119675866778745383==--
