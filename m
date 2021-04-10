@@ -2,66 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB01A35A7D7
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Apr 2021 22:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A81B235A98A
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Apr 2021 02:33:49 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ADE70100EAB0C;
-	Fri,  9 Apr 2021 13:28:15 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=123.58.197.250; helo=rakuten.co.jp; envelope-from=postmaster@rakuten.co.jp; receiver=<UNKNOWN> 
-Received: from rakuten.co.jp (unknown [123.58.197.250])
-	by ml01.01.org (Postfix) with ESMTP id 149FC100EAAE1
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 13:28:11 -0700 (PDT)
-Message-ID: <20210410042812476486@rakuten.co.jp>
-From: "myinfo" <postmaster@rakuten.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9ug3aDiYNDg4CCzI6pk66NWJBWkN2S6ILwifCPnA==?=
-	=?shift_jis?B?gqKCvYK1gtyCtYK9gUk=?=
-Date: Sat, 10 Apr 2021 04:28:04 +0800
-MIME-Version: 1.0
-X-mailer: Kuoikcyie 2
-Message-ID-Hash: OGU7WOX2JJKOM7QN3RLYKOF62MJ2F5FI
-X-Message-ID-Hash: OGU7WOX2JJKOM7QN3RLYKOF62MJ2F5FI
-X-MailFrom: postmaster@rakuten.co.jp
+	by ml01.01.org (Postfix) with ESMTP id A0ED6100ED4BF;
+	Fri,  9 Apr 2021 17:33:47 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=220.181.15.112; helo=m15112.mail.126.com; envelope-from=wangyingjie55@126.com; receiver=<UNKNOWN> 
+Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 24F1A100EF265
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 17:33:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=YjzmIwerweOGbfblgC
+	/Ly+OrKlNwezN7iggMM3swgJM=; b=MJHaL0orm8TvdDuB7Ke+swd6jhy8BrifMI
+	+AmmCaqyYsUXYS/mlvoGVJkb5MVHH8OlYONPAzTbVhf15OK1JCiodjpjbSWlC8pq
+	Es3/zLe6WynvMoDcLRKBGHs0EpyF02SeZdbgyiAoQipLo2pQbY/zcpPjNl9+LSR6
+	7yGPEDbrc=
+Received: from localhost.localdomain (unknown [106.17.213.220])
+	by smtp2 (Coremail) with SMTP id DMmowAA3nwNa8nBgdqQBAQ--.18230S2;
+	Sat, 10 Apr 2021 08:33:32 +0800 (CST)
+From: wangyingjie55@126.com
+To: dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	ira.weiny@intel.com,
+	linux-nvdimm@lists.01.org
+Subject: [PATCH v1] libnvdimm, dax: Fix a missing check in nd_dax_probe()
+Date: Fri,  9 Apr 2021 17:33:23 -0700
+Message-Id: <1618014803-17231-1-git-send-email-wangyingjie55@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID: DMmowAA3nwNa8nBgdqQBAQ--.18230S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtrW3XF15XF15Gw4rtry5urg_yoWfArXEkr
+	17Zr929Fy0kwnayr4aqr1fWryvyrs29r18ur4jgw13Ar4Y9r13GFykur9xtrsagr48urnr
+	ur1DXFnxZF15GjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjeyI5UUUUU==
+X-Originating-IP: [106.17.213.220]
+X-CM-SenderInfo: 5zdqw5xlqjyxrhvvqiyswou0bp/1tbiJRxwp13WGyhjMQAAsE
+Message-ID-Hash: LIJUL3B6IINDKLE6QOYHIDKUDBUXTWWR
+X-Message-ID-Hash: LIJUL3B6IINDKLE6QOYHIDKUDBUXTWWR
+X-MailFrom: wangyingjie55@126.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: wangyingjie55@126.com, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGU7WOX2JJKOM7QN3RLYKOF62MJ2F5FI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LIJUL3B6IINDKLE6QOYHIDKUDBUXTWWR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCg0KDQoNCuOCr+ODrOOCuOODg+ODiOOCq+ODvOODieaDheWgseOBruabtOaWsOOAgei/veWK
-oOOBquOBqeOBq+OBpOOBjeOBvuOBl+OBpuOAgeS7peS4i+OBruaJi+mghuOCkuOBlOeiuuiqjeOB
-j+OBoOOBleOBhOOAguOCouOCq+OCpuODs+ODiOOCteODvOODk+OCueOBi+OCiUFtYXpvbuaDheWg
-seOCkueuoeeQhuOBmeOCi+ODmuODvOOCuOOBq+OCouOCr+OCu+OCueOBl+OBpuOAgeabtOaWsOOB
-l+OBpuOBj+OBoOOBleOBhOOAgg0KDQrjgb7jgZ/jgIFBbWF6b27jg5fjg6njgqTjg6DmnJ/plpPj
-gYzntYLkuobjgZfjgZ/jgonjgIEg44GK5oCl44GO5L6/54Sh5paZIOOChCDjg5fjg6njgqTjg6Dj
-g7vjg5Pjg4fjgqropovmlL7poYwg44Gq44Gp44Gu44OX44Op44Kk44Og5Lya5ZOh54m55YW444Gu
-44GU5Yip55So44GM44Gn44GN44Gq44GP44Gq44KK44G+44GZ44CCKOS4u+OBquODl+ODqeOCpOOD
-oOS8muWToeeJueWFuOOCkueiuuiqjeOBmeOCi+OBq+OBryDjgZPjgaHjgonjgpLjgq/jg6rjg4Pj
-gq/jgZfjgabjgY/jgaDjgZXjgYQp44CC5pep44KB44Gr44GK5omL57aa44GN44Gu56iL44KI44KN
-44GX44GP44GK6aGY44GE6Ie044GX44G+44GZDQoNCg0K57aZ57aa44GX44Gm44OX44Op44Kk44Og
-5Lya5ZOh54m55YW444KS44GK5qW944GX44G/44GE44Gf44Gg44GN44Gf44GE5aC05ZCI44Gv44CB
-44CMQW1hem9u44OX44Op44Kk44Og5Lya5ZOh5oOF5aCx44Gu566h55CG44CN44Oa44O844K444Gr
-44Gm44CM5Lya5ZOh6LOH5qC844KS57aZ57aa44GZ44KL44CNIOOCkuOCr+ODquODg+OCr+OBl+OB
-puOBj+OBoOOBleOBhOOAgg0KDQogDQogICDkvJrlk6Hmg4XloLHjga7nrqHnkIbjg5rjg7zjgrjj
-gafnorroqo0gICANCiANCg0KDQoNCg0K44Gq44GK44CBNzLmmYLplpPku6XlhoXjgavjgZTnorro
-qo3jgYzjgarjgYTloLTlkIjjgIHoqqDjgavnlLPjgZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgIHj
-gYrlrqLmp5jjga7lronlhajjga7ngrrjgIHjgqLjgqvjgqbjg7Pjg4jjga7liKnnlKjliLbpmZDj
-gpLjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/jgY/j
-gaDjgZXjgYTjgIINCg0K44Ki44Kr44Km44Oz44OI44Gr55m76Yyy44GuReODoeODvOODq+OCouOD
-ieODrOOCueOBq+OCouOCr+OCu+OCueOBp+OBjeOBquOBhOWgtOWQiA0K44GK5ZWP44GE5ZCI44KP
-44Gb77yaIEFtYXpvbuOCq+OCueOCv+ODnuODvOOCteODvOODk+OCueOAgg0KDQpBbWF6b27jgrXj
-g7zjg5PjgrnjgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbjgZTjgZbj
-gYTjgb7jgZfjgZ/jgIINCg0KDQoNCg0KIEFtYXpvbi5jby5qcCAg44Kr44K544K/44Oe44O844K1
-44O844OT44K5ICANCg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
-MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
-bGlzdHMuMDEub3JnCg==
+From: Yingjie Wang <wangyingjie55@126.com>
+
+In nd_dax_probe(), nd_dax_alloc() may fail and return NULL.
+Check for NULL before attempting to
+use nd_dax to avoid a NULL pointer dereference.
+
+Fixes: c5ed9268643c ("libnvdimm, dax: autodetect support")
+Signed-off-by: Yingjie Wang <wangyingjie55@126.com>
+---
+ drivers/nvdimm/dax_devs.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 99965077bac4..b1426ac03f01 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -106,6 +106,8 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
+ 
+ 	nvdimm_bus_lock(&ndns->dev);
+ 	nd_dax = nd_dax_alloc(nd_region);
++	if (!nd_dax)
++		return -ENOMEM;
+ 	nd_pfn = &nd_dax->nd_pfn;
+ 	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
+ 	nvdimm_bus_unlock(&ndns->dev);
+-- 
+2.7.4
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
