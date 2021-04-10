@@ -2,36 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BEF135AB56
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Apr 2021 08:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFD635ABAD
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Apr 2021 09:31:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 630F6100ED4BB;
-	Fri,  9 Apr 2021 23:29:00 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=117.51.142.66; helo=eposcard.co.jp; envelope-from=wiagfvjwwp@eposcard.co.jp; receiver=<UNKNOWN> 
-Received: from eposcard.co.jp (unknown [117.51.142.66])
-	by ml01.01.org (Postfix) with ESMTP id A1631100ED4BA
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Apr 2021 23:28:55 -0700 (PDT)
-Message-ID: <D66BBDCBD800BB156A4E830E2FF03987@eposcard.co.jp>
+	by ml01.01.org (Postfix) with ESMTP id 84D65100EBBD9;
+	Sat, 10 Apr 2021 00:31:45 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=117.51.146.122; helo=eposcard.co.jp; envelope-from=ewynwpgh@eposcard.co.jp; receiver=<UNKNOWN> 
+Received: from eposcard.co.jp (unknown [117.51.146.122])
+	by ml01.01.org (Postfix) with ESMTP id 8A7C3100ED4BB
+	for <linux-nvdimm@lists.01.org>; Sat, 10 Apr 2021 00:31:40 -0700 (PDT)
+Message-ID: <E0172CA0BEE31E72D10AED1E09865835@eposcard.co.jp>
 From: =?utf-8?B?44Ko44Od44K544Kr44O844OJ?= <info@01epos.jp>
 To: <linux-nvdimm@lists.01.org>
 Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44Ko44Od44K5TmV0IElEIOW/hQ==?=
 	=?utf-8?B?6KaB44Gu5YaN44Ki44Kv44OG44Kj44OW5YyW44Oq44Kv44Ko44K544OI?=
-Date: Sat, 10 Apr 2021 14:28:45 +0800
+Date: Sat, 10 Apr 2021 15:31:30 +0800
 Mime-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2900.5512
 X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: FFR2DGOQOG4WZRKVFPEGEBPMV53NEKRT
-X-Message-ID-Hash: FFR2DGOQOG4WZRKVFPEGEBPMV53NEKRT
-X-MailFrom: wiagfvjwwp@eposcard.co.jp
+Message-ID-Hash: ZBLGMKR4GCOBEJ5K57AKW2OYHXLK3P4Z
+X-Message-ID-Hash: ZBLGMKR4GCOBEJ5K57AKW2OYHXLK3P4Z
+X-MailFrom: ewynwpgh@eposcard.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FFR2DGOQOG4WZRKVFPEGEBPMV53NEKRT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZBLGMKR4GCOBEJ5K57AKW2OYHXLK3P4Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
