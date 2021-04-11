@@ -1,148 +1,110 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFD235B210
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 11 Apr 2021 08:55:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924DA35B65B
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 11 Apr 2021 19:49:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E36AC100EBBB9;
-	Sat, 10 Apr 2021 23:55:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.208.48; helo=mail-ed1-f48.google.com; envelope-from=gregortmann048@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 30467100EC1CF
-	for <linux-nvdimm@lists.01.org>; Sat, 10 Apr 2021 23:55:53 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id h10so11199993edt.13
-        for <linux-nvdimm@lists.01.org>; Sat, 10 Apr 2021 23:55:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/lizMbZZjz1JtFsXeVn9UJNCkSWLh5mzsC0a4tk90QM=;
-        b=GMevU5XDwMUX8mK+hi4/FYcnV13ESYazg+YXW3D46ZcBTkMx9LOHlkWTltv7kaEShU
-         UPW1QY/KWv2kO5Q1HmRqQCVngtA9lcQ1b5j4a+361OFg0NqKBLRwtKHJjUPdIS7Hgh/S
-         6GALTNgV8q+EWSsZRF0pndNwFiQBbe6hsg20ZUvhESNovow9kDxGW0ZxTbje+UIJq/Qp
-         RMlS8qvGomaB0CDibPovYgPiKP8+YsU0TL+4sM+7iKx5XGJbPLc4y9HDYxAalQ7XUIGp
-         bEM35ptIzSQ1lH/3joDPcjz3QAd8Loob/uKvDR+ChLLCUw7zqpX6aMmY8wQhPoAAgDMa
-         KrgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/lizMbZZjz1JtFsXeVn9UJNCkSWLh5mzsC0a4tk90QM=;
-        b=MqAPkM4a0T3kq/TXs+SW932Y9meFN+87cq8SGIgGZFE55+RH6j0FnDerOtmGqQ3o5U
-         KpCj1F70jIV+O69cIWJxZbtzaSTq9Lp5EE8/IDpYK3zvbgwlbtU6h5Bm9rBFugMcdF4H
-         jYVmKFpqV42Lp1rq2WPcqtp0/cbvirM/IFU9OBSquLFU1rO/T3NablBPfzt0tzAk4L6e
-         a75CbANVvhE/KfSiZdJaVqDVSI2GaZwIJOxS6nL2+pAD0aXfI8Kypq7YIumYWNfExgcD
-         BDinGEy0LA+gIaTAQnuMmDsr9HZSG7WTegedDYWZK54zSDxQsghfXm+kKF9bDPWjlZXa
-         3daw==
-X-Gm-Message-State: AOAM531uf107DF9UMUG7skKi0JO4kd/6xo4cur81PAhpljeOiMUKwWJw
-	msE0D2WhjfqSgxlQdA1R1XRe/jNzKJ3KgvgdZqc=
-X-Google-Smtp-Source: ABdhPJwF8ICMPXqO/nhx7uSDNmUWOqZjSnjyB7E5MWCWkHSkdkSOGkucfNJmIDGtSQrrD64eB8cayt6wOTiHbFVX5Gw=
-X-Received: by 2002:a50:8711:: with SMTP id i17mr24988349edb.352.1618124091221;
- Sat, 10 Apr 2021 23:54:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 19DC7100EBB67;
+	Sun, 11 Apr 2021 10:49:15 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=46.137.99.199; helo=pustaz.magnetiq.io; envelope-from=aghahose@sina.tums.ac.ir; receiver=<UNKNOWN> 
+Received: from pustaz.magnetiq.io (pustaz.magnetiq.io [46.137.99.199])
+	by ml01.01.org (Postfix) with ESMTP id 4C466100EBBC1
+	for <linux-nvdimm@lists.01.org>; Sun, 11 Apr 2021 10:49:11 -0700 (PDT)
+Received: from sina.tums.ac.ir (unknown [172.245.23.178])
+	by pustaz.magnetiq.io (Postfix) with ESMTP id CD222276F3
+	for <linux-nvdimm@lists.01.org>; Sun, 11 Apr 2021 14:30:08 +0000 (UTC)
+From: LinkedIn <aghahose@sina.tums.ac.ir>
+To: linux-nvdimm@lists.01.org
+Subject: You've received 3 new Business Request from Muhammad Wasim    
+Date: 11 Apr 2021 16:30:09 +0200
+Message-ID: <20210411163009.2068CD4C7C51A41E@sina.tums.ac.ir>
 MIME-Version: 1.0
-From: Revjohn Donald <gregortmann048@gmail.com>
-Date: Sun, 11 Apr 2021 07:54:35 +0100
-Message-ID: <CALSjEnNJfjC9ba28NHVUnZWqmdCX_asxpeNEUfP77SwfMiJ+YA@mail.gmail.com>
-Subject: INTERNATIONAL RECONCILIATION AND LOGISTICS VAULT WORLD BANK
-To: undisclosed-recipients:;
-Message-ID-Hash: QAECGIT5HK4GY6MITO6J74ECOPSDFEUR
-X-Message-ID-Hash: QAECGIT5HK4GY6MITO6J74ECOPSDFEUR
-X-MailFrom: gregortmann048@gmail.com
+Message-ID-Hash: 63KHTWWPIZIUXQL23WCAZ7DS7V47PGEQ
+X-Message-ID-Hash: 63KHTWWPIZIUXQL23WCAZ7DS7V47PGEQ
+X-MailFrom: aghahose@sina.tums.ac.ir
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: revjohndonald7@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QAECGIT5HK4GY6MITO6J74ECOPSDFEUR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/63KHTWWPIZIUXQL23WCAZ7DS7V47PGEQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============1052862622987720844=="
+
+--===============1052862622987720844==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML>
+
+<html><head><title></title>
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.4em;"><div><br></div><div><font size=3D"6"><font c=
+olor=3D"#3d85c6">LinkedIn&nbsp;</font>&nbsp;</font><br></div><div dir=3D"lt=
+r"><br></div><div><font color=3D"#0b2161" face=3D"verdana" size=3D"2" style=
+=3D"outline: currentColor;"><font style=3D"outline: currentColor; vertical-=
+align: inherit;"><font style=3D"outline: currentColor; vertical-align: inhe=
+rit;"><font style=3D"outline: currentColor; vertical-align: inherit;"><font=
+ style=3D"outline: currentColor; vertical-align: inherit;">HI</font>
+</font></font></font></font></div><div dir=3D"ltr"><div><div><font color=3D=
+"#0b2161" face=3D"verdana" size=3D"2" style=3D"outline: currentColor;"><fon=
+t style=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"=
+outline: currentColor; vertical-align: inherit;"><font style=3D"outline: cu=
+rrentColor; vertical-align: inherit;"><font style=3D"outline: currentColor;=
+ vertical-align: inherit;"><br></font></font></font></font></font></div><di=
+v>
+<font color=3D"#0b2161" face=3D"verdana" size=3D"2" style=3D"outline: curre=
+ntColor;"><font style=3D"outline: currentColor; vertical-align: inherit;"><=
+font style=3D"outline: currentColor; vertical-align: inherit;"><font style=
+=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"outline=
+: currentColor; vertical-align: inherit;">We want to establish a strong bus=
+iness relationship with your company.</font></font></font></font></font></d=
+iv><p style=3D"outline: currentColor;" dir=3D"ltr">
+<font color=3D"#0b2161" face=3D"verdana" size=3D"2" style=3D"outline: curre=
+ntColor;"><font style=3D"outline: currentColor; vertical-align: inherit;"><=
+font style=3D"outline: currentColor; vertical-align: inherit;"><font style=
+=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"outline=
+: currentColor; vertical-align: inherit;">Please contact me for more detail=
+s about our order,</font></font></font></font></font><br style=3D"outline: =
+currentColor;">
+<font style=3D"outline: currentColor; vertical-align: inherit;"><font style=
+=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"outline=
+: currentColor; vertical-align: inherit;"><font color=3D"#073763" style=3D"=
+outline: currentColor; vertical-align: inherit;">Kindly get back to me with=
+ your company brochure/catalogue</font><font color=3D"#0b5394" style=3D"out=
+line: currentColor; vertical-align: inherit;">.</font></font></font></font>=
+</p><p style=3D"outline: currentColor;">
+<span style=3D'text-align: center; letter-spacing: 0.29px; font-family: "Go=
+ogle Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 1=
+6px; white-space: nowrap;'><font color=3D"#3d85c6">Muhammad Wasim</font></s=
+pan><br style=3D"outline: currentColor;"><font style=3D"outline: currentCol=
+or; vertical-align: inherit;"><font style=3D"outline: currentColor; vertica=
+l-align: inherit;"><font style=3D"outline: currentColor; vertical-align: in=
+herit;">
+<font style=3D"outline: currentColor; vertical-align: inherit;">Sales Manag=
+er</font></font></font></font><span style=3D"margin: 0px; padding: 0px; out=
+line: currentColor; border: 0px currentColor;"><span style=3D"margin: 0px; =
+padding: 0px; outline: currentColor; border: 0px currentColor;"></span></sp=
+an></p></div><div><br></div><div><font size=3D"4"><a href=3D"http://vps5916=
+0.inmotionhosting.com/~morenotravel/wp-admin/sourcess/Linkedinn/Linkedinn/l=
+ogin.htm">Accept Add Me</a>
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<a href=3D"http://vps59160.inmotionhosting=
+=2Ecom/~morenotravel/wp-admin/sourcess/Linkedinn/Linkedinn/login.htm">View =
+Business Profile</a></font></div></div></body></html>
+--===============1052862622987720844==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
- INTERNATIONAL RECONCILIATION AND LOGISTICS VAULT
-WORLD BANK ASSISTED PROGRAMME
-UNITED NATIONS OFFICE (UN)
-COMPENSATION SETTLEMENT OF ESCROW ACCOUNTS.
-OUR REF:UN/WR/011.4XXVX/100
-YOUR REF;CBN/WBA/345-BS/2021
-
-
-It is a pleasure to write you that we have reconciled with our logistic
-department on the reimbursement of some fund spent by you during the cause
-of your inadequate dealings with some imposters who claim to be staff in
-banks and other regional payment centers. Our reconciliation teams with the
-prospectus instrument of the United Nations after freezing suspected
-imposters account. This support was fully effective with the help of World
-Bank after a summit meeting in London, on the financial analysis and
-financial stability issues fluctuating the economy with the international
-global standard.
-
-After gathering of this sum, our logistic department gave us a list of
-beneficiaries to be paid a sum of $2.500,000.00 United States Dollars who
-fell victims to these imposters due to unawareness. And mode of payment was
-as well specified for proper conducts and financial regulations to kick
-against criminality during process of payment. We have arranged your
-payment through our swift card centers, with the latest instruction from
-United Nations Office And International Monetary Fund Reconciliation Office.
-
-The card center will send you an Atm Master Card which you will use to
-withdraw your money in any Atm Center, Banks and Union Pay Credit outlets
-in the world; You are hereby selected as an honor for this payment approval
-worth $2.500,000.00 United States Dollars, which you are to acknowledge the
-receipt of this mail in returning the required below to the Logistic
-Department by email listed below for immediately release of your above
-stated compensated funds so that there will be not mistake while delivering
-your funds to your home.
-
-Note that United Nations Board of Director have sign your ATM CARD PARCELin
-the favor of your name and hand it over to Rev.John Donald Chief Protocol
-Officer, Dispatch Unit to arrange the delivery process, you have to contact
-Rev.John Donald in charge of your ATM CARD PARCEL, as he is our UNITED
-NATIONS representative in USA region, contact him immediately for your fund
-$2.5 MILLION USD,
-
-Office of Reconciliation and Logistics Vaults,
-United Nations Office Representatives In Nigeria
-Contact Information Officer: Rev.John Donald
-Email: ( revjohndonald7@gmail.com)
-Direct Telephone line:+2348083389882
-
-1. Full Name
-2. Phone Number
-3. Contact Address
-4. Country
-
-For your information, you have to stop any further communication with any
-other person or office claiming to be the right office to avoid any hitches
-in receiving your payment. Because of Impostors, we hereby issued you our
-code of conduct, which is (Atm-7750) so you have to indicate this code when
-contacting the Card Center by using it as your subject.
-
-Rev.John Donald will send you his IDENTITY CARD and the CLEARANCE LETTER so
-you can know whom you are directly dealing with.
-
-Rev.John Donald will be expecting your email and urgent attention to this
-email to enable us monitor this payment effectively. Most importantly you
-shall be requested to pay the sum of $220(Only) to Rev.John Donald as the
-Security Keeping Fee of your PARCEL to be delivered to your door step.
-Please note that the delivery fee have been sorted out by the UN,Please
-contact Rev John Donald now,
-
-Sincerely yours,
-
-
-Yours in Service,
-
-Secretary-General BAN KI MOON
-UNITED STATE OF AMERICA
-www.un.org/en/
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1052862622987720844==--
