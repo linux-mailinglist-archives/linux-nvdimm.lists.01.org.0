@@ -1,110 +1,180 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924DA35B65B
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 11 Apr 2021 19:49:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D02735BA59
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 08:53:05 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 19DC7100EBB67;
-	Sun, 11 Apr 2021 10:49:15 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=46.137.99.199; helo=pustaz.magnetiq.io; envelope-from=aghahose@sina.tums.ac.ir; receiver=<UNKNOWN> 
-Received: from pustaz.magnetiq.io (pustaz.magnetiq.io [46.137.99.199])
-	by ml01.01.org (Postfix) with ESMTP id 4C466100EBBC1
-	for <linux-nvdimm@lists.01.org>; Sun, 11 Apr 2021 10:49:11 -0700 (PDT)
-Received: from sina.tums.ac.ir (unknown [172.245.23.178])
-	by pustaz.magnetiq.io (Postfix) with ESMTP id CD222276F3
-	for <linux-nvdimm@lists.01.org>; Sun, 11 Apr 2021 14:30:08 +0000 (UTC)
-From: LinkedIn <aghahose@sina.tums.ac.ir>
-To: linux-nvdimm@lists.01.org
-Subject: You've received 3 new Business Request from Muhammad Wasim    
-Date: 11 Apr 2021 16:30:09 +0200
-Message-ID: <20210411163009.2068CD4C7C51A41E@sina.tums.ac.ir>
+	by ml01.01.org (Postfix) with ESMTP id 97B19100EC1EB;
+	Sun, 11 Apr 2021 23:53:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 5C3BB100EC1CC
+	for <linux-nvdimm@lists.01.org>; Sun, 11 Apr 2021 23:52:59 -0700 (PDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13C6XOkY037291;
+	Mon, 12 Apr 2021 02:52:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=d2Mc6tbA+Dusk8jcIThE9LuWzrhnwf4JCSq+9vYv25s=;
+ b=bHUXNVen6cvbCJyX8pKe+yZVmwWLV5ESShCvc1xduSWjFfcCuJ51GBcU95wi1pQ+eVe5
+ Y3Fl1g14lXfgtWUAiLAzo4+kTNGHARboYITikBvXNN/JsWhBhZ6oaSAdKFtUCzgDSx1Z
+ tQCnrzKD8svhSrSqeBc5WcjMfI8Kebc4PdjqNtFTYoVA+NZUZPr/+QRkM1Nq0naNC3gY
+ 6b8pjUQO8hlg2dXNolkI2g8Os4s4KUS1A4cP3hCE1fQQiUNIsU1NEqSOz3O5/9iAsAxH
+ gyv+ytYs3d9ygVQMomv687gUVMaC9a/EtSzBsG4IKV0uVkhb7FujCS5Zc7gAMEnNDdeJ IA==
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 37usk9evsb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Apr 2021 02:52:53 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13C6ls5e026733;
+	Mon, 12 Apr 2021 06:52:52 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+	by ppma04wdc.us.ibm.com with ESMTP id 37u3n9p2ps-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Apr 2021 06:52:52 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
+	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13C6qqp329688088
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Apr 2021 06:52:52 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A136B2068;
+	Mon, 12 Apr 2021 06:52:52 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 988B1B2065;
+	Mon, 12 Apr 2021 06:52:49 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.72.239])
+	by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+	Mon, 12 Apr 2021 06:52:49 +0000 (GMT)
+X-Mailer: emacs 27.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linux-nvdimm@lists.01.org,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v3] libnvdimm/region: Update nvdimm_has_flush() to
+ handle explicit 'flush' callbacks
+In-Reply-To: <20210408104622.943843-1-vaibhav@linux.ibm.com>
+References: <20210408104622.943843-1-vaibhav@linux.ibm.com>
+Date: Mon, 12 Apr 2021 12:22:47 +0530
+Message-ID: <87blakuh8g.fsf@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2oaITbKzgQ63sWWEnRNEcNVRIXCX_ZNj
+X-Proofpoint-GUID: 2oaITbKzgQ63sWWEnRNEcNVRIXCX_ZNj
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Message-ID-Hash: 63KHTWWPIZIUXQL23WCAZ7DS7V47PGEQ
-X-Message-ID-Hash: 63KHTWWPIZIUXQL23WCAZ7DS7V47PGEQ
-X-MailFrom: aghahose@sina.tums.ac.ir
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-12_04:2021-04-12,2021-04-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=999 phishscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104060000 definitions=main-2104120042
+Message-ID-Hash: KXGOUNUUDY77CRYBYRPHCRREPK5JKGVE
+X-Message-ID-Hash: KXGOUNUUDY77CRYBYRPHCRREPK5JKGVE
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, stable@vger.kernel.org, Shivaprasad G Bhat <sbhat@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/63KHTWWPIZIUXQL23WCAZ7DS7V47PGEQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KXGOUNUUDY77CRYBYRPHCRREPK5JKGVE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1052862622987720844=="
-
---===============1052862622987720844==
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML>
-
-<html><head><title></title>
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body style=3D"margin: 0.4em;"><div><br></div><div><font size=3D"6"><font c=
-olor=3D"#3d85c6">LinkedIn&nbsp;</font>&nbsp;</font><br></div><div dir=3D"lt=
-r"><br></div><div><font color=3D"#0b2161" face=3D"verdana" size=3D"2" style=
-=3D"outline: currentColor;"><font style=3D"outline: currentColor; vertical-=
-align: inherit;"><font style=3D"outline: currentColor; vertical-align: inhe=
-rit;"><font style=3D"outline: currentColor; vertical-align: inherit;"><font=
- style=3D"outline: currentColor; vertical-align: inherit;">HI</font>
-</font></font></font></font></div><div dir=3D"ltr"><div><div><font color=3D=
-"#0b2161" face=3D"verdana" size=3D"2" style=3D"outline: currentColor;"><fon=
-t style=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"=
-outline: currentColor; vertical-align: inherit;"><font style=3D"outline: cu=
-rrentColor; vertical-align: inherit;"><font style=3D"outline: currentColor;=
- vertical-align: inherit;"><br></font></font></font></font></font></div><di=
-v>
-<font color=3D"#0b2161" face=3D"verdana" size=3D"2" style=3D"outline: curre=
-ntColor;"><font style=3D"outline: currentColor; vertical-align: inherit;"><=
-font style=3D"outline: currentColor; vertical-align: inherit;"><font style=
-=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"outline=
-: currentColor; vertical-align: inherit;">We want to establish a strong bus=
-iness relationship with your company.</font></font></font></font></font></d=
-iv><p style=3D"outline: currentColor;" dir=3D"ltr">
-<font color=3D"#0b2161" face=3D"verdana" size=3D"2" style=3D"outline: curre=
-ntColor;"><font style=3D"outline: currentColor; vertical-align: inherit;"><=
-font style=3D"outline: currentColor; vertical-align: inherit;"><font style=
-=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"outline=
-: currentColor; vertical-align: inherit;">Please contact me for more detail=
-s about our order,</font></font></font></font></font><br style=3D"outline: =
-currentColor;">
-<font style=3D"outline: currentColor; vertical-align: inherit;"><font style=
-=3D"outline: currentColor; vertical-align: inherit;"><font style=3D"outline=
-: currentColor; vertical-align: inherit;"><font color=3D"#073763" style=3D"=
-outline: currentColor; vertical-align: inherit;">Kindly get back to me with=
- your company brochure/catalogue</font><font color=3D"#0b5394" style=3D"out=
-line: currentColor; vertical-align: inherit;">.</font></font></font></font>=
-</p><p style=3D"outline: currentColor;">
-<span style=3D'text-align: center; letter-spacing: 0.29px; font-family: "Go=
-ogle Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 1=
-6px; white-space: nowrap;'><font color=3D"#3d85c6">Muhammad Wasim</font></s=
-pan><br style=3D"outline: currentColor;"><font style=3D"outline: currentCol=
-or; vertical-align: inherit;"><font style=3D"outline: currentColor; vertica=
-l-align: inherit;"><font style=3D"outline: currentColor; vertical-align: in=
-herit;">
-<font style=3D"outline: currentColor; vertical-align: inherit;">Sales Manag=
-er</font></font></font></font><span style=3D"margin: 0px; padding: 0px; out=
-line: currentColor; border: 0px currentColor;"><span style=3D"margin: 0px; =
-padding: 0px; outline: currentColor; border: 0px currentColor;"></span></sp=
-an></p></div><div><br></div><div><font size=3D"4"><a href=3D"http://vps5916=
-0.inmotionhosting.com/~morenotravel/wp-admin/sourcess/Linkedinn/Linkedinn/l=
-ogin.htm">Accept Add Me</a>
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<a href=3D"http://vps59160.inmotionhosting=
-=2Ecom/~morenotravel/wp-admin/sourcess/Linkedinn/Linkedinn/login.htm">View =
-Business Profile</a></font></div></div></body></html>
---===============1052862622987720844==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+
+> In case a platform doesn't provide explicit flush-hints but provides an
+> explicit flush callback, then nvdimm_has_flush() still returns '0'
+> indicating that writes do not require flushing. This happens on PPC64
+> with patch at [1] applied, where 'deep_flush' of a region was denied
+> even though an explicit flush function was provided.
+>
+> Similar problem is also seen with virtio-pmem where the 'deep_flush'
+> sysfs attribute is not visible as in absence of any registered nvdimm,
+> 'nd_region->ndr_mappings == 0'.
+>
+> Fix this by updating nvdimm_has_flush() adding a condition to
+> nvdimm_has_flush() to test if a 'region->flush' callback is
+> assigned. Also remove explicit test for 'nd_region->ndr_mapping' since
+> regions may need 'flush' without any explicit mappings as in case of
+> virtio-pmem.
+>
+> References:
+> [1] "powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall"
+> https://lore.kernel.org/linux-nvdimm/161703936121.36.7260632399582101498.stgit@e1fbed493c87
+>
+
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+> Cc: <stable@vger.kernel.org>
+> Fixes: c5d4355d10d4 ("libnvdimm: nd_region flush callback support")
+> Reported-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+> Changelog:
+>
+> v3:
+> * Removed the test for ND_REGION_SYNC to handle case where a
+>   synchronous region still wants to expose a deep-flush function.
+>   [ Aneesh ]
+> * Updated patch title and description from previous patch
+>   https://lore.kernel.org/linux-nvdimm/5e64778d-bf48-9f10-7d3d-5e530e5db590@linux.ibm.com
+>
+> v2:
+> * Added the fixes tag and addressed the patch to stable tree [ Aneesh ]
+> * Updated patch description to address the virtio-pmem case.
+> * Removed test for 'nd_region->ndr_mappings' from beginning of
+>   nvdimm_has_flush() to handle the virtio-pmem case.
+> ---
+>  drivers/nvdimm/region_devs.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+> index ef23119db574..c4b17bdd527f 100644
+> --- a/drivers/nvdimm/region_devs.c
+> +++ b/drivers/nvdimm/region_devs.c
+> @@ -1234,11 +1234,15 @@ int nvdimm_has_flush(struct nd_region *nd_region)
+>  {
+>  	int i;
+>  
+> -	/* no nvdimm or pmem api == flushing capability unknown */
+> -	if (nd_region->ndr_mappings == 0
+> -			|| !IS_ENABLED(CONFIG_ARCH_HAS_PMEM_API))
+> +	/* no pmem api == flushing capability unknown */
+> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_PMEM_API))
+>  		return -ENXIO;
+>  
+> +	/* Test if an explicit flush function is defined */
+> +	if (nd_region->flush)
+> +		return 1;
+> +
+> +	/* Test if any flush hints for the region are available */
+>  	for (i = 0; i < nd_region->ndr_mappings; i++) {
+>  		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
+>  		struct nvdimm *nvdimm = nd_mapping->nvdimm;
+> @@ -1249,8 +1253,8 @@ int nvdimm_has_flush(struct nd_region *nd_region)
+>  	}
+>  
+>  	/*
+> -	 * The platform defines dimm devices without hints, assume
+> -	 * platform persistence mechanism like ADR
+> +	 * The platform defines dimm devices without hints nor explicit flush,
+> +	 * assume platform persistence mechanism like ADR
+>  	 */
+>  	return 0;
+>  }
+> -- 
+> 2.30.2
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============1052862622987720844==--
