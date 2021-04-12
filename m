@@ -1,67 +1,151 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D149135C4EA
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 13:21:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8167635C807
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 15:57:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7B9DD100EBBCE;
-	Mon, 12 Apr 2021 04:20:57 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=117.51.159.198; helo=eposcard.co.jp; envelope-from=ncqnocuan@eposcard.co.jp; receiver=<UNKNOWN> 
-Received: from eposcard.co.jp (unknown [117.51.159.198])
-	by ml01.01.org (Postfix) with ESMTP id 741B7100EBBC4
-	for <linux-nvdimm@lists.01.org>; Mon, 12 Apr 2021 04:20:52 -0700 (PDT)
-Message-ID: <9855093633E4235929F674E2CFBD5DC8@eposcard.co.jp>
-From: =?utf-8?B?44Ko44Od44K544Kr44O844OJ?= <info@01epos.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44Ko44Od44K5TmV0IElEIOW/hQ==?=
-	=?utf-8?B?6KaB44Gu5YaN44Ki44Kv44OG44Kj44OW5YyW44Oq44Kv44Ko44K544OI?=
-Date: Mon, 12 Apr 2021 19:20:47 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: AP3CGXAEHLXW3UJDTX7Y76KW52CRSHWL
-X-Message-ID-Hash: AP3CGXAEHLXW3UJDTX7Y76KW52CRSHWL
-X-MailFrom: ncqnocuan@eposcard.co.jp
+	by ml01.01.org (Postfix) with ESMTP id 3C230100EB82B;
+	Mon, 12 Apr 2021 06:57:53 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=104.248.199.233; helo=gogreentravelgreen.com; envelope-from=snameyfkginli@forestnet.com; receiver=<UNKNOWN> 
+Received: from gogreentravelgreen.com (unknown [104.248.199.233])
+	by ml01.01.org (Postfix) with ESMTP id 75734100EBB9F
+	for <linux-nvdimm@lists.01.org>; Mon, 12 Apr 2021 06:57:49 -0700 (PDT)
+To: linux-nvdimm@lists.01.org
+Subject: Re: quick following up on my email from last week
+Message-ID: <eda76e78f011887be1ac8e59d68de062@travelawaits.com>
+Date: Mon, 12 Apr 2021 13:59:49 +0200
+From: "Rodolfo Levy" <snameaykginli@forestnet.com>
+MIME-Version: 1.0
+X-Mailer-Sent-By: 1
+Message-ID-Hash: WEVPHA6H3RSUR5J2JUTERCAJ5IZD7UAB
+X-Message-ID-Hash: WEVPHA6H3RSUR5J2JUTERCAJ5IZD7UAB
+X-MailFrom: snameyfkginli@forestnet.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: abrahamtheri@hotmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AP3CGXAEHLXW3UJDTX7Y76KW52CRSHWL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WEVPHA6H3RSUR5J2JUTERCAJ5IZD7UAB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1341751606683362656=="
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
-44KJDQpodHRwczovL3d3dy5lcG9zLWNhcmIuY24vDQrilIHilIHilIHilIHilIHilIHilIHilIHi
-lIHilIHilIHilIHilIHilIHilIENCuKWoOeZuuihjOiAheKWoA0K5qCq5byP5Lya56S+44CA44Ko
-44Od44K544Kr44O844OJDQrmnbHkuqzpg73kuK3ph47ljLrkuK3ph440LTMtMg0KaHR0cHM6Ly93
-d3cuZXBvcy1jYXJiLmNuLw0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSADQpDb3B5cmlnaHQgQWxsIFJpZ2h0IFJlc2VydmVkLiBFcG9zIENhcmQgQ28uLCBMdGQu
-DQrnhKHmlq3ou6LovInjgYrjgojjgbPlho3phY3luIPjgpLnpoHjgZjjgb7jgZnjgIIKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1h
-aWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNl
-bmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+--===============1341751606683362656==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align: left;"><span
+style=3D"text-align: left;"></span></span></span><span style=3D"text-alig=
+n:
+left;"><span style=3D"text-align: left;">Hi,<br /><br
+/></span></span></span></span></span></span></span></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"></span></span>
+<div>I hope this email finds you well.<br />I am reaching out to let you
+know that we have got the following drone available&nbsp;&nbsp;in our
+warehouse, ready to send to global customers.<br /><br /></div>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align:
+left;"></span></span></span></span></span></span></span></span></span></s=
+pan></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align:
+left;"><span></span></span></span></span><span style=3D"display: block;
+text-align: left;"><span style=3D"display: block; text-align:
+left;">Specification:</span></span><span style=3D"display: block; text-al=
+ign:
+left;">Motor: Brushless motor<br />Product Size<br />Battery capacity: 7.=
+4V
+2500mAh<br />Product weight: 1KG<br />Flight time: 30 minutes<br
+/>Intelligent positioning: GPS dual positioning<br />Remote control
+distance: 2000M<br />Remote control height: 500M<br />wifi image
+transmission distance: 500-800M<br />Camera resolution: 4096 x 3072
+(APP)<br />Video resolution: 2048 x 1080 (APP)<br />Gesture recognition
+shooting: 1-3m<br />Transmission frame rate: 25fps<br /></span><span
+style=3D"display: block; text-align: left;"><br />Feature:<br /><span>GPS=
+ one
+key return to take-off point, low power return, no signal return.</span><=
+br
+/><span>Gesture shooting recognition: within 1-5m from the aircraft, make=
+ a
+photo gesture / camera gesture in front of the camera.</span><br
+/><span>Route multi-point planning flight: the aircraft flies independent=
+ly
+according to the preset route, and the players focus on shooting.</span><=
+br
+/><span>Fixed point orbit: find the orbit center point, and then move the
+desired orbit radius through the rocker.</span><span><br /></span><br
+/></span><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;">Costs details:&nbsp; u&nbsp;
+s&nbsp; d<br />229.90 each (1-2 units)<br />199.90 each (3-10 units)<br
+/>179.90 each (11-50 units)<br /><br /></span></span><span style=3D"displ=
+ay:
+block; text-align: left;">Send us your mailing address if you want to pla=
+ce
+an order, we will&nbsp;get the package ready for you.&nbsp;<br /><br /><i=
+mg
+src=3D"https://ae01.alicdn.com/kf/H2684be4b48624b2d92398a68dacd7701M.jpg"
+width=3D"550" height=3D"847" /><img
+src=3D"https://ae01.alicdn.com/kf/H238da61b13464ec6a0eb22c14d737b043.jpg"
+width=3D"500" height=3D"942" /><br /></span><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"text-align: left;"><br /><br /><img
+src=3D"https://ae01.alicdn.com/kf/Hfac88b26c9b9459e8c610d23cf0cfabab.jpg"
+width=3D"500" height=3D"1184" /><img
+src=3D"https://ae01.alicdn.com/kf/H9fed4d5e08f44f94bf5137d8119b29faJ.jpg"
+width=3D"550" height=3D"1054" /><br /><img
+src=3D"https://ae01.alicdn.com/kf/H5cbe415d870e44fa935c96c53824c245M.jpg"
+width=3D"500" height=3D"766" /><img
+src=3D"https://ae01.alicdn.com/kf/H0ed3aced092e4337b11d71506623aad46.jpg"
+width=3D"500" height=3D"768" /><br /><br /></span></span><span style=3D"d=
+isplay:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><br />Send us yo=
+ur
+mailing address if you want to place an order, we will&nbsp;get the packa=
+ge
+ready for you.&nbsp;<br /><br />Thanks,<br />Rodolfo
+Levy</span></span></span><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"></span></span>
+</body>
+</html>
+
+--===============1341751606683362656==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1341751606683362656==--
