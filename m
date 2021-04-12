@@ -2,150 +2,75 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56F635C8EC
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 16:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C3C35CA3F
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 17:40:42 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E28D0100EC1EB;
-	Mon, 12 Apr 2021 07:38:34 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=185.53.168.22; helo=gogreentravelgreen.com; envelope-from=zcimedykginli@freshpatch.com; receiver=<UNKNOWN> 
-Received: from gogreentravelgreen.com (unknown [185.53.168.22])
-	by ml01.01.org (Postfix) with ESMTP id 1BC9D100EC1EB
-	for <linux-nvdimm@lists.01.org>; Mon, 12 Apr 2021 07:38:32 -0700 (PDT)
-To: linux-nvdimm@lists.01.org
-Subject: Re: quick following up on my email from last week
-Message-ID: <a4662c8e2afe87ff7399c261fee617c5@travelawaits.com>
-Date: Mon, 12 Apr 2021 12:24:40 +0200
-From: "Rodolfo Levy" <zcimseykginli@freshpatch.com>
-MIME-Version: 1.0
-X-Mailer-Sent-By: 1
-Message-ID-Hash: BBN4RQK53QVZLBN2VXMPO535Z4QWTI5E
-X-Message-ID-Hash: BBN4RQK53QVZLBN2VXMPO535Z4QWTI5E
-X-MailFrom: zcimedykginli@freshpatch.com
+	by ml01.01.org (Postfix) with ESMTP id C488E100EC1EB;
+	Mon, 12 Apr 2021 08:40:39 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=118.27.120.183; helo=reorlec.net.cn; envelope-from=sfp@reorlec.net.cn; receiver=<UNKNOWN> 
+Received: from reorlec.net.cn (v118-27-120-183.jke1.static.cnode.io [118.27.120.183])
+	by ml01.01.org (Postfix) with ESMTP id 0B7E3100EC1C6
+	for <linux-nvdimm@lists.01.org>; Mon, 12 Apr 2021 08:40:26 -0700 (PDT)
+Message-ID: <7CCDFA06307178BEB9393050BCA83042@reorlec.net.cn>
+From: =?utf-8?B?VUPjgqvjg7zjg4njg4jjg4Pjg5c=?= <atu@mail.uccard.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44Ki44OD44OI44Om44O844ON44OD44OI44GL44KJ44Gu44GK55+l44KJ44Gb?=
+Date: Tue, 13 Apr 2021 00:40:20 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: MJBK6KMTOVVXVJRSPRY3ROK2UB7EE3S5
+X-Message-ID-Hash: MJBK6KMTOVVXVJRSPRY3ROK2UB7EE3S5
+X-MailFrom: sfp@reorlec.net.cn
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: abrahamtheri@hotmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BBN4RQK53QVZLBN2VXMPO535Z4QWTI5E/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MJBK6KMTOVVXVJRSPRY3ROK2UB7EE3S5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5824761247553446811=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============5824761247553446811==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-</head>
-<body>
-<span style=3D"display: block; text-align: left;"><span style=3D"display:
-block; text-align: left;"><span style=3D"display: block; text-align:
-left;"><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"text-align: left;"><span style=3D"text-align: left;"><span
-style=3D"text-align: left;"></span></span></span><span style=3D"text-alig=
-n:
-left;"><span style=3D"text-align: left;">Hi,<br /><br
-/></span></span></span></span></span></span></span></span></span><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"></span></span>
-<div>I hope this email finds you well.<br />I am reaching out to let you
-know that we have got the following drone available&nbsp;&nbsp;in our
-warehouse, ready to send to global customers.<br /><br /></div>
-<span style=3D"display: block; text-align: left;"><span style=3D"display:
-block; text-align: left;"><span style=3D"display: block; text-align:
-left;"><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
-n
-style=3D"text-align: left;"><span style=3D"text-align:
-left;"></span></span></span></span></span></span></span></span></span></s=
-pan></span></span><span
-style=3D"display: block; text-align: left;"><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"display: block; text-align:
-left;"><span></span></span></span></span><span style=3D"display: block;
-text-align: left;"><span style=3D"display: block; text-align:
-left;">Specification:</span></span><span style=3D"display: block; text-al=
-ign:
-left;">Motor: Brushless motor<br />Product Size<br />Battery capacity: 7.=
-4V
-2500mAh<br />Product weight: 1KG<br />Flight time: 30 minutes<br
-/>Intelligent positioning: GPS dual positioning<br />Remote control
-distance: 2000M<br />Remote control height: 500M<br />wifi image
-transmission distance: 500-800M<br />Camera resolution: 4096 x 3072
-(APP)<br />Video resolution: 2048 x 1080 (APP)<br />Gesture recognition
-shooting: 1-3m<br />Transmission frame rate: 25fps<br /></span><span
-style=3D"display: block; text-align: left;"><br />Feature:<br /><span>GPS=
- one
-key return to take-off point, low power return, no signal return.</span><=
-br
-/><span>Gesture shooting recognition: within 1-5m from the aircraft, make=
- a
-photo gesture / camera gesture in front of the camera.</span><br
-/><span>Route multi-point planning flight: the aircraft flies independent=
-ly
-according to the preset route, and the players focus on shooting.</span><=
-br
-/><span>Fixed point orbit: find the orbit center point, and then move the
-desired orbit radius through the rocker.</span><span><br /></span><br
-/></span><span style=3D"display: block; text-align: left;"><span
-style=3D"display: block; text-align: left;">Costs details:&nbsp; u&nbsp;
-s&nbsp; d<br />229.90 each (1-2 units)<br />199.90 each (3-10 units)<br
-/>179.90 each (11-50 units)<br /><br /></span></span><span style=3D"displ=
-ay:
-block; text-align: left;">Send us your mailing address if you want to pla=
-ce
-an order, we will&nbsp;get the package ready for you.&nbsp;<br /><br /><i=
-mg
-src=3D"https://ae01.alicdn.com/kf/H2684be4b48624b2d92398a68dacd7701M.jpg"
-width=3D"550" height=3D"847" /><img
-src=3D"https://ae01.alicdn.com/kf/H238da61b13464ec6a0eb22c14d737b043.jpg"
-width=3D"500" height=3D"942" /><br /></span><span style=3D"display: block=
-;
-text-align: left;"><span style=3D"text-align: left;"><br /><br /><img
-src=3D"https://ae01.alicdn.com/kf/Hfac88b26c9b9459e8c610d23cf0cfabab.jpg"
-width=3D"500" height=3D"1184" /><img
-src=3D"https://ae01.alicdn.com/kf/H9fed4d5e08f44f94bf5137d8119b29faJ.jpg"
-width=3D"550" height=3D"1054" /><br /><img
-src=3D"https://ae01.alicdn.com/kf/H5cbe415d870e44fa935c96c53824c245M.jpg"
-width=3D"500" height=3D"766" /><img
-src=3D"https://ae01.alicdn.com/kf/H0ed3aced092e4337b11d71506623aad46.jpg"
-width=3D"500" height=3D"768" /><br /><br /></span></span><span style=3D"d=
-isplay:
-block; text-align: left;"><span style=3D"display: block; text-align:
-left;"><span style=3D"display: block; text-align: left;"><br />Send us yo=
-ur
-mailing address if you want to place an order, we will&nbsp;get the packa=
-ge
-ready for you.&nbsp;<br /><br />Thanks,<br />Rodolfo
-Levy</span></span></span><span style=3D"display: block; text-align:
-left;"><span style=3D"display: block; text-align: left;"></span></span>
-</body>
-</html>
-
---===============5824761247553446811==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============5824761247553446811==--
+DQrjgqLjg4Pjg4jjg6bjg7zjg43jg4Pjg4jjgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorj
+gYzjgajjgYbjgZTjgZbjgYTjgb7jgZnjgIINCuOBk+OBruOBn+OBs+OAgeOBlOacrOS6uuanmOOB
+ruOBlOWIqeeUqOOBi+OBqeOBhuOBi+OCkueiuuiqjeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBn+OB
+hOOBiuWPluW8leOBjOOBguOCiuOBvuOBl+OBn+OBruOBp+OAgeiqoOOBq+WLneaJi+OBquOBjOOC
+ieOAgeOCq+ODvOODieOBruOBlOWIqeeUqOOCkuS4gOmDqOWItumZkOOBleOBm+OBpuOBhOOBn+OB
+oOOBjeOAgeOBlOmAo+e1oeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBvuOBl+OBn+OAgg0K44Gk44GN
+44G+44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu
+44GU5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQog
+44GK5a6i5qeY44Gr44Gv44GU6L+35oOR44CB44GU5b+D6YWN44KS44GK5o6b44GR44GX44CB6Kqg
+44Gr55Sz44GX6Kiz44GU44GW44GE44G+44Gb44KT44CCDQrkvZXljZLjgZTnkIbop6PjgYTjgZ/j
+gaDjgY3jgZ/jgY/jgYrpoZjjgYTnlLPjgZfjgYLjgZLjgb7jgZnjgIINCuOBlOWbnuetlOOCkuOB
+hOOBn+OBoOOBkeOBquOBhOWgtOWQiOOAgeOCq+ODvOODieOBruOBlOWIqeeUqOWItumZkOOBjOe2
+mee2muOBleOCjOOCi+OBk+OBqOOCguOBlOOBluOBhOOBvuOBmeOBruOBp+OAgeS6iOOCgeOBlOS6
+huaJv+S4i+OBleOBhOOAgg0K4oC744GU5Yip55So56K66KqN44Gv44GT44Gh44KJDQogICAgaHR0
+cHM6Ly93d3cyLnVjY2F0ZC5jby5qcC5tc2stYmFvZ3Vhbi5jb20vDQrlvIrnpL7jga/jgIHjgqTj
+g7Pjgr/jg7zjg43jg4Pjg4jkuIrjga7kuI3mraPooYzngrrjga7pmLLmraLjg7vmipHliLbjga7o
+prPngrnjgYvjgonjgrXjgqTjg4jjgajjgZfjgabjga7kv6HpoLzmgKfjg7vmraPlvZPmgKfjgpLp
+q5jjgoHjgovjgZ/jgoHjgIENCiAgICDlpKflpInjgYrmiYvmlbDjgafjga/jgZTjgZbjgYTjgb7j
+gZnjgYzjgIHkuIvoqJjvvLXvvLLvvKzjgYvjgonjg63jgrDjgqTjg7PjgYTjgZ/jgaDjgY3jgIEN
+CiAgIGh0dHBzOi8vd3d3Mi51Y2NhdGQuY28uanAubXNrLWJhb2d1YW4uY29tLw0KDQrigLvjgZPj
+ga7jg6Hjg7zjg6vjga/jgIzjgqLjg4Pjg4jjg6bjg7zjg43jg4Pjg4jvvIHjgI3jgYvjgonoh6rl
+i5XphY3kv6HjgZfjgabjgYrjgorjgb7jgZnjgIINCg0K4oC75pys44Oh44O844Or44Gr44GU6L+U
+5L+h44GE44Gf44Gg44GN44G+44GX44Gm44KC44CB44GU6LOq5ZWP44O744GU5L6d6aC844Gq44Gp
+44GrDQoNCuOAgOOBiuetlOOBiOOBp+OBjeOBvuOBm+OCk+OBruOBp+OAgeOBguOCieOBi+OBmOOC
+geOBlOS6huaJv+OBj+OBoOOBleOBhOOAgg0KDQrigLvjg6Hjg7zjg6vjgavplqLjgZnjgovlkITn
+qK7jgYrmiYvntprjgY3mlrnms5XjgavjgaTjgY3jgb7jgZfjgabjga/jgIENCg0K44CA5Lul5LiL
+44KS44GU56K66KqN44GP44Gg44GV44GE44CCDQoNCuOAgGh0dHBzOi8vd3d3Mi51Y2NhdGQuY28u
+anAubXNrLWJhb2d1YW4uY29tLw0KDQrvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXv
+vaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXv
+vaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXv
+vaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXvvaXv
+vaXvvaXvvaXvvaXvvaXvvaXvvaUNCg0K44Ki44OD44OI44Om44O844ON44OD44OICl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWls
+aW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5k
+IGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
