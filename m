@@ -1,85 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D02735BA59
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 08:53:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CC735BB71
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Apr 2021 09:53:37 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 97B19100EC1EB;
-	Sun, 11 Apr 2021 23:53:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7ED2A100EBB76;
+	Mon, 12 Apr 2021 00:53:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.166.181; helo=mail-il1-f181.google.com; envelope-from=pankaj.gupta.linux@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5C3BB100EC1CC
-	for <linux-nvdimm@lists.01.org>; Sun, 11 Apr 2021 23:52:59 -0700 (PDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13C6XOkY037291;
-	Mon, 12 Apr 2021 02:52:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=d2Mc6tbA+Dusk8jcIThE9LuWzrhnwf4JCSq+9vYv25s=;
- b=bHUXNVen6cvbCJyX8pKe+yZVmwWLV5ESShCvc1xduSWjFfcCuJ51GBcU95wi1pQ+eVe5
- Y3Fl1g14lXfgtWUAiLAzo4+kTNGHARboYITikBvXNN/JsWhBhZ6oaSAdKFtUCzgDSx1Z
- tQCnrzKD8svhSrSqeBc5WcjMfI8Kebc4PdjqNtFTYoVA+NZUZPr/+QRkM1Nq0naNC3gY
- 6b8pjUQO8hlg2dXNolkI2g8Os4s4KUS1A4cP3hCE1fQQiUNIsU1NEqSOz3O5/9iAsAxH
- gyv+ytYs3d9ygVQMomv687gUVMaC9a/EtSzBsG4IKV0uVkhb7FujCS5Zc7gAMEnNDdeJ IA==
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 37usk9evsb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Apr 2021 02:52:53 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13C6ls5e026733;
-	Mon, 12 Apr 2021 06:52:52 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-	by ppma04wdc.us.ibm.com with ESMTP id 37u3n9p2ps-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Apr 2021 06:52:52 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13C6qqp329688088
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Apr 2021 06:52:52 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A136B2068;
-	Mon, 12 Apr 2021 06:52:52 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 988B1B2065;
-	Mon, 12 Apr 2021 06:52:49 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.72.239])
-	by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Apr 2021 06:52:49 +0000 (GMT)
-X-Mailer: emacs 27.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linux-nvdimm@lists.01.org,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3] libnvdimm/region: Update nvdimm_has_flush() to
- handle explicit 'flush' callbacks
-In-Reply-To: <20210408104622.943843-1-vaibhav@linux.ibm.com>
-References: <20210408104622.943843-1-vaibhav@linux.ibm.com>
-Date: Mon, 12 Apr 2021 12:22:47 +0530
-Message-ID: <87blakuh8g.fsf@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2oaITbKzgQ63sWWEnRNEcNVRIXCX_ZNj
-X-Proofpoint-GUID: 2oaITbKzgQ63sWWEnRNEcNVRIXCX_ZNj
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by ml01.01.org (Postfix) with ESMTPS id 56113100EBBBD
+	for <linux-nvdimm@lists.01.org>; Mon, 12 Apr 2021 00:53:32 -0700 (PDT)
+Received: by mail-il1-f181.google.com with SMTP id c18so10201225iln.7
+        for <linux-nvdimm@lists.01.org>; Mon, 12 Apr 2021 00:53:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DdceCmZ2FH904nfOs2t/mm+fumePewB2yMQTYqW1pUQ=;
+        b=Apq4GwRO8+k0lzIl6z+h+uu8KBzvRtqh328zmOmdX9D8WZDYE43EDj6UJ61SmYmvyY
+         DJYhKdL1TrcBWmGShxBBKJ+I7QrwnDJwBAqpkbS1gRDWVpqtdWBpMLqDEoOq6CABvLgR
+         nVFTAYG5vfrcdyXQR58db52lun1FYbLhQHMtvbVNGdlXijCx+uCmMysT/fsnpIHRa58p
+         cG8r8q/KqmIu4yR/+1pLa16Uw4sYVQ+kY7tKpgV6H1l1IXK43TEON0i7oy9fkvwt9pX9
+         AxYtvzX5CROT/ew5dySY6+1CdpLia9Ksrs7pLiP1zHg29+6QVRWO+yxNPOTdzqzjtXb+
+         i5PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DdceCmZ2FH904nfOs2t/mm+fumePewB2yMQTYqW1pUQ=;
+        b=VRY5z5qUPMqDn4LEtU2fhK/Mh7vE4HHDSI3jJPgPpQcRKhoEbxGPKp/0SqP+22slnH
+         8MSlPaxel6dd3eJ/C4wQkJHXG3WSbiMzRZrjKS9ZELkqIyqML31eEVZGG9S5Du3qQq74
+         9fpXMfskR2dvR4SSJneEY4+KZYqaLrikeKes6YKQdBGq3QTBmqWK9/obyHcaZa2Gl5by
+         ZO1OEpYszhWnpqH7srLi6S65YWktny0dxbN4V1PqpmKFH5Au6vZo0IhQDqH0iSq5WmHt
+         LnL4jaMoJ6lIfBLxvwGlj/0tdZCvmWMZiTUZWTGZb2QcQMl7alLQFlSlv1TeFszcWGZx
+         wwFw==
+X-Gm-Message-State: AOAM533lSIw6cU6wGew00j6VsAV7VVDuoJXWDNAIW9YofSjKczxUgMsp
+	F6wUyGGea+U3vr4gxxC7mZgMXKLOgzfGRdZ89vPbEqjLezcsoA==
+X-Google-Smtp-Source: ABdhPJx7/tHGIFdoZNnflfZ2w5YJbwrMyXJroyLcG0K9F4HeVTdf/EskJQeu4mNbgaLq4xasyQncDOldYVAOl+JcSJs=
+X-Received: by 2002:a05:6e02:118b:: with SMTP id y11mr8491030ili.163.1618213951540;
+ Mon, 12 Apr 2021 00:52:31 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-12_04:2021-04-12,2021-04-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 malwarescore=0 impostorscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 phishscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2104120042
-Message-ID-Hash: KXGOUNUUDY77CRYBYRPHCRREPK5JKGVE
-X-Message-ID-Hash: KXGOUNUUDY77CRYBYRPHCRREPK5JKGVE
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, stable@vger.kernel.org, Shivaprasad G Bhat <sbhat@linux.ibm.com>
+References: <20210408104622.943843-1-vaibhav@linux.ibm.com>
+In-Reply-To: <20210408104622.943843-1-vaibhav@linux.ibm.com>
+From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Date: Mon, 12 Apr 2021 09:52:20 +0200
+Message-ID: <CAM9Jb+j6oVumXQ+zmYbQSvQ3UzLKT3V8XLq1SotVcwVuUwP09A@mail.gmail.com>
+Subject: Re: [PATCH v3] libnvdimm/region: Update nvdimm_has_flush() to handle
+ explicit 'flush' callbacks
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Message-ID-Hash: P7P7MM3S7DMJVQDUFE7RAERRJ64C35NI
+X-Message-ID-Hash: P7P7MM3S7DMJVQDUFE7RAERRJ64C35NI
+X-MailFrom: pankaj.gupta.linux@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, stable@vger.kernel.org, Shivaprasad G Bhat <sbhat@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KXGOUNUUDY77CRYBYRPHCRREPK5JKGVE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P7P7MM3S7DMJVQDUFE7RAERRJ64C35NI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -88,7 +68,7 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+Hi Vaibhav,
 
 > In case a platform doesn't provide explicit flush-hints but provides an
 > explicit flush callback, then nvdimm_has_flush() still returns '0'
@@ -99,6 +79,11 @@ Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 > Similar problem is also seen with virtio-pmem where the 'deep_flush'
 > sysfs attribute is not visible as in absence of any registered nvdimm,
 > 'nd_region->ndr_mappings == 0'.
+
+In case of async flush callback, do we still need "deep_flush" ?
+
+Thanks,
+Pankaj
 >
 > Fix this by updating nvdimm_has_flush() adding a condition to
 > nvdimm_has_flush() to test if a 'region->flush' callback is
@@ -110,9 +95,6 @@ Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 > [1] "powerpc/papr_scm: Implement support for H_SCM_FLUSH hcall"
 > https://lore.kernel.org/linux-nvdimm/161703936121.36.7260632399582101498.stgit@e1fbed493c87
 >
-
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
 > Cc: <stable@vger.kernel.org>
 > Fixes: c5d4355d10d4 ("libnvdimm: nd_region flush callback support")
 > Reported-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
@@ -142,35 +124,35 @@ Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > +++ b/drivers/nvdimm/region_devs.c
 > @@ -1234,11 +1234,15 @@ int nvdimm_has_flush(struct nd_region *nd_region)
 >  {
->  	int i;
->  
-> -	/* no nvdimm or pmem api == flushing capability unknown */
-> -	if (nd_region->ndr_mappings == 0
-> -			|| !IS_ENABLED(CONFIG_ARCH_HAS_PMEM_API))
-> +	/* no pmem api == flushing capability unknown */
-> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_PMEM_API))
->  		return -ENXIO;
->  
-> +	/* Test if an explicit flush function is defined */
-> +	if (nd_region->flush)
-> +		return 1;
+>         int i;
+>
+> -       /* no nvdimm or pmem api == flushing capability unknown */
+> -       if (nd_region->ndr_mappings == 0
+> -                       || !IS_ENABLED(CONFIG_ARCH_HAS_PMEM_API))
+> +       /* no pmem api == flushing capability unknown */
+> +       if (!IS_ENABLED(CONFIG_ARCH_HAS_PMEM_API))
+>                 return -ENXIO;
+>
+> +       /* Test if an explicit flush function is defined */
+> +       if (nd_region->flush)
+> +               return 1;
 > +
-> +	/* Test if any flush hints for the region are available */
->  	for (i = 0; i < nd_region->ndr_mappings; i++) {
->  		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
->  		struct nvdimm *nvdimm = nd_mapping->nvdimm;
+> +       /* Test if any flush hints for the region are available */
+>         for (i = 0; i < nd_region->ndr_mappings; i++) {
+>                 struct nd_mapping *nd_mapping = &nd_region->mapping[i];
+>                 struct nvdimm *nvdimm = nd_mapping->nvdimm;
 > @@ -1249,8 +1253,8 @@ int nvdimm_has_flush(struct nd_region *nd_region)
->  	}
->  
->  	/*
-> -	 * The platform defines dimm devices without hints, assume
-> -	 * platform persistence mechanism like ADR
-> +	 * The platform defines dimm devices without hints nor explicit flush,
-> +	 * assume platform persistence mechanism like ADR
->  	 */
->  	return 0;
+>         }
+>
+>         /*
+> -        * The platform defines dimm devices without hints, assume
+> -        * platform persistence mechanism like ADR
+> +        * The platform defines dimm devices without hints nor explicit flush,
+> +        * assume platform persistence mechanism like ADR
+>          */
+>         return 0;
 >  }
-> -- 
+> --
 > 2.30.2
 > _______________________________________________
 > Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
