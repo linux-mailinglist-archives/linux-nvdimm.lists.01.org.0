@@ -2,52 +2,34 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7945E35E1E3
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Apr 2021 16:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A1635EA3C
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Apr 2021 03:15:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 22C9A100EB855;
-	Tue, 13 Apr 2021 07:53:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=5.9.137.197; helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN> 
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 76364100EB84F
-	for <linux-nvdimm@lists.01.org>; Tue, 13 Apr 2021 07:53:18 -0700 (PDT)
-Received: from zn.tnic (p200300ec2f0b8400dc5952bb5bba9b51.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:8400:dc59:52bb:5bba:9b51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 84C811EC0118;
-	Tue, 13 Apr 2021 16:53:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1618325596;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Zng+s8B6UzBFhAFGTLiOGYpjULkd5L9TFnuYZ/fZJMw=;
-	b=sfqiW9QpHo+w0Mdf7b+STf9grriXJSRP8r96BYJ9IR7mx6BfYZWWjzZJEsCi3zCnfkyBt4
-	KzXh30fBsl8U9/Z59iYeeErqvQkOfW2fuWqUtSfDzg7KtMbyyb+7/X0CLl0fZ2SK/qFAUt
-	ZFSanaWN0PkXvf+qbFA2pVZNiV4KdpU=
-Date: Tue, 13 Apr 2021 16:53:15 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Kemeng Shi <shikemeng@huawei.com>
-Subject: Re: Re: [PATCH] x86: Accelerate copy_page with non-temporal in X86
-Message-ID: <20210413145315.GF16519@zn.tnic>
-References: <3f28adee-8214-fa8e-b368-eaf8b193469e@huawei.com>
- <20210413110137.GD16519@zn.tnic>
- <bfa4fd38-0874-63b3-991a-1102af9f47a6@huawei.com>
+	by ml01.01.org (Postfix) with ESMTP id 6A19E100EB355;
+	Tue, 13 Apr 2021 18:15:01 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=207.154.218.40; helo=bizcloud-usmc.localdomain; envelope-from=noreply@expertnutra.com; receiver=<UNKNOWN> 
+Received: from bizcloud-usmc.localdomain (unknown [207.154.218.40])
+	by ml01.01.org (Postfix) with ESMTP id 69332100EB355
+	for <linux-nvdimm@lists.01.org>; Tue, 13 Apr 2021 18:14:57 -0700 (PDT)
+Received: from HY-F7WIJ (bizcloud-usmc [IPv6:::1])
+	by bizcloud-usmc.localdomain (Postfix) with ESMTP id C73A16AD5C
+	for <linux-nvdimm@lists.01.org>; Wed, 14 Apr 2021 01:06:31 +0000 (UTC)
+From: "US Marine Corps" <noreply@expertnutra.com>
+Subject: Can you help ?
+To: <linux-nvdimm@lists.01.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <bfa4fd38-0874-63b3-991a-1102af9f47a6@huawei.com>
-Message-ID-Hash: T53D2VW5ENWA2QYWUVOYY3HFYIYOXYVH
-X-Message-ID-Hash: T53D2VW5ENWA2QYWUVOYY3HFYIYOXYVH
-X-MailFrom: bp@alien8.de
+Date: Wed, 14 Apr 2021 03:06:34 +0200
+Message-Id: <14332021040603C8B1F82EBB-A0D73C5391@expertnutra.com>
+Message-ID-Hash: 6ZELYICACBUC7SIDJQXBKOF4ERHT5WFW
+X-Message-ID-Hash: 6ZELYICACBUC7SIDJQXBKOF4ERHT5WFW
+X-MailFrom: noreply@expertnutra.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: tglx@linutronix.de, mingo@redhat.com, x86@kernel.org, hpa@zytor.com, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/T53D2VW5ENWA2QYWUVOYY3HFYIYOXYVH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ZELYICACBUC7SIDJQXBKOF4ERHT5WFW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,18 +38,16 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 13, 2021 at 08:54:55PM +0800, Kemeng Shi wrote:
-> Yes. And NT stores should be better for copy_page especially copying a lot
-> of pages as only partial memory of copied page will be access recently.
 
-I thought "should be better" too last time when I measured rep; movs vs
-NT stores but actual measurements showed no real difference.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Good day linux-nvdimm@lists.01.org
+The reason why I am writing you now is that we had a patrol last week being (March 26, 2021) near the village of Al Karif. Al Karif is a populated place and is located in Jiblah, Ibb, Yemen. We came across a safe box that contains huge quatity of Gold and Diamond that belongs to the evolutionary, which we believe they sell ilegally, so we decided to share the diamond and the gold among ourselves and it was agreed by all the troops.
+I am seeking your assistance to evacuate my share of the diamond and gold bars out of Yemen because it's not safe here in the camp and it's against our code of ethics to keep such items recovered from rebels for personal use.
+I want you to help me receive and secure it until I complete my contract here, then I will come over to meet with you.I don't know the value of the Gold and diamonds but you can check when it gets to you.I can mail them to you by cargo once you are ready.
+NOTE; This are not stolen items, and we can split them equally when I am finally redeployed back.
+My return email is : officeebensee.imerys@gmail.com
+Looking forward to hearing from you.
+Best regards,
+Philip Cohen
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
