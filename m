@@ -2,55 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D3E360BF2
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 15 Apr 2021 16:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310A53610B6
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 15 Apr 2021 19:04:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B381D100EAB60;
-	Thu, 15 Apr 2021 07:37:48 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6F848100EB348;
+	Thu, 15 Apr 2021 10:04:18 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.208.49; helo=mail-ed1-f49.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D7416100EAB5E
-	for <linux-nvdimm@lists.01.org>; Thu, 15 Apr 2021 07:37:45 -0700 (PDT)
-IronPort-SDR: Gyo8ZpL+q0VQfTafuKEoT79ZAr8dtEuJFRVukAvqwVW9nLdhD0uxVIGUNotQmbHEh1Ybky2IQA
- ol7tZdEQH20w==
-X-IronPort-AV: E=McAfee;i="6200,9189,9955"; a="258822464"
-X-IronPort-AV: E=Sophos;i="5.82,225,1613462400";
-   d="scan'208";a="258822464"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2021 07:37:45 -0700
-IronPort-SDR: BGvb9CnNE+3hJ44yKpVysWJC+0nWnLvDs07AdBmA8RvT2cyO9ZO2b/1AZAPc890tzjU2q07BEU
- W5yJm7549imQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,225,1613462400";
-   d="scan'208";a="382745459"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 15 Apr 2021 07:37:42 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id A7483BA; Thu, 15 Apr 2021 17:37:59 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-nvdimm@lists.01.org,
-	linux-kernel@vger.kernel.org
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH v1 1/1] libnvdimm: Don't use GUID APIs against raw buffer
-Date: Thu, 15 Apr 2021 17:37:54 +0300
-Message-Id: <20210415143754.16553-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+	by ml01.01.org (Postfix) with ESMTPS id 87A71100EF271
+	for <linux-nvdimm@lists.01.org>; Thu, 15 Apr 2021 10:04:15 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id m3so28946250edv.5
+        for <linux-nvdimm@lists.01.org>; Thu, 15 Apr 2021 10:04:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SWKR5QoCIcgkYDJO1D3/EqsdlJKBzOvIE5uO8N845Ek=;
+        b=HZB0G/8+VAIcrWGClRrfQCWPr57el7IDgxgRcXwWOy6oNrd1n+M5Yp75CJ5pDNkLVP
+         MANBsbdEixpFE0goI87DwGpstnnho0ucVJzA9JreM9hxPEBG4uj/oKvoCNhJkqeDlkwl
+         B2yZSKqxaFd60GFPdGczqSw8MAalifJKU0hZDoa+dYuksPLUv+UCs+JecOLcXeOoNwCJ
+         MAjyCo69RQlZwfe9eQSK18o8lBbASE03gkAv5uA9Ew4hPg0f8SqCzzi0mDo/ACfwMIbX
+         ErGeyVI2CFTrOrYQr3yrxeyYn/WeOSoFuNaYFQO/RzSIRvvneMA7tpJCo13tbDwD10SM
+         GCCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SWKR5QoCIcgkYDJO1D3/EqsdlJKBzOvIE5uO8N845Ek=;
+        b=Zi6CqvEHrPJ+dibTC+3VIh8q0Xy4WMNKv28TRo2qdREUO4M3AdDMk5zQa7N6okc8hu
+         Mwe34zGQ855ZPV3nRmXjxb9RzUlrjF9ts/NeG4UieaJhug3jkOIGNOFratF/rJCyza7P
+         ujBJbFijDKHMB93pxrog9UYPQ7BZPA6e5TcZNggeok3fhGT5BJgQu/FquZueO4Cp3zUV
+         nLEKmefDA7UuJX+l6YSFQpVVXWKpNPhVpqPMsPh6l+zU3Jqlpj31FJ2pvc51cajbt5Hj
+         pn6waqjfqDvDk4K/86TXxw0/ByoUT4XbxaVRSWEDrKXfbIhUxq3C07b2w88PAt5hUu3e
+         HiSw==
+X-Gm-Message-State: AOAM532TDy4kEyCJFJlNTlvXJqASUomBPf0ssyJnr2wHJjvxPIYGc8LY
+	agcfc4Z1l1tOc+SkcynPQljPvCYTke6nQNcJIitfLQ==
+X-Google-Smtp-Source: ABdhPJyPU+CaTe3k4CP9B3bfuHwuS9lp7EC/RLUzWOQqM1xC4OnYc59f5uCi8HFc83PLFmyhXo4PcPy4HtSIMIphfbI=
+X-Received: by 2002:a05:6402:51d0:: with SMTP id r16mr2092696edd.52.1618506193479;
+ Thu, 15 Apr 2021 10:03:13 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: M25BLCI4X5MDRTPXM3RTDLJGGBMFZPKG
-X-Message-ID-Hash: M25BLCI4X5MDRTPXM3RTDLJGGBMFZPKG
-X-MailFrom: andriy.shevchenko@linux.intel.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
+ <CAPcyv4iU3cmjRsDevDJmJc72xo-QffUu3SGCwvRh5bitG-facw@mail.gmail.com> <87k0p3lqmq.fsf@vajain21.in.ibm.com>
+In-Reply-To: <87k0p3lqmq.fsf@vajain21.in.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 15 Apr 2021 10:03:01 -0700
+Message-ID: <CAPcyv4g=YqcOxwS5Q=_Z=fx5WCwU1t0M3me5OFeQodckKSfm9A@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats inaccessible
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Message-ID-Hash: C4URHE3SYCCOKY3T2R32R4L2WP3C4X6Q
+X-Message-ID-Hash: C4URHE3SYCCOKY3T2R32R4L2WP3C4X6Q
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/M25BLCI4X5MDRTPXM3RTDLJGGBMFZPKG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C4URHE3SYCCOKY3T2R32R4L2WP3C4X6Q/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,39 +68,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Strictly speaking the comparison between guid_t and raw buffer
-is not correct. Return to plain memcmp() since the data structures
-haven't changed to use uuid_t / guid_t the current state of affairs
-is inconsistent. Either it should be changed altogether or left
-as is.
+On Thu, Apr 15, 2021 at 4:44 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+>
+> Thanks for looking into this Dan,
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Wed, Apr 14, 2021 at 5:40 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+> >>
+> >> Currently drc_pmem_qeury_stats() generates a dev_err in case
+> >> "Enable Performance Information Collection" feature is disabled from
+> >> HMC. The error is of the form below:
+> >>
+> >> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
+> >>          performance stats, Err:-10
+> >>
+> >> This error message confuses users as it implies a possible problem
+> >> with the nvdimm even though its due to a disabled feature.
+> >>
+> >> So we fix this by explicitly handling the H_AUTHORITY error from the
+> >> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
+> >> error, saying that "Performance stats in-accessible".
+> >>
+> >> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
+> >> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> >> ---
+> >>  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
+> >>  1 file changed, 3 insertions(+)
+> >>
+> >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> index 835163f54244..9216424f8be3 100644
+> >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
+> >>                 dev_err(&p->pdev->dev,
+> >>                         "Unknown performance stats, Err:0x%016lX\n", ret[0]);
+> >>                 return -ENOENT;
+> >> +       } else if (rc == H_AUTHORITY) {
+> >> +               dev_warn(&p->pdev->dev, "Performance stats in-accessible");
+> >> +               return -EPERM;
+> >
+> > So userspace can spam the kernel log? Why is kernel log message needed
+> > at all? EPERM told the caller what happened.
+> Currently this error message is only reported during probe of the
+> nvdimm. So userspace cannot directly spam kernel log.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/nvdimm/btt_devs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nvdimm/btt_devs.c b/drivers/nvdimm/btt_devs.c
-index 05feb97e11ce..82bcd2e86a18 100644
---- a/drivers/nvdimm/btt_devs.c
-+++ b/drivers/nvdimm/btt_devs.c
-@@ -244,13 +244,14 @@ struct device *nd_btt_create(struct nd_region *nd_region)
-  */
- bool nd_btt_arena_is_valid(struct nd_btt *nd_btt, struct btt_sb *super)
- {
-+	static const u8 null_uuid[16];
- 	const u8 *parent_uuid = nd_dev_to_uuid(&nd_btt->ndns->dev);
- 	u64 checksum;
- 
- 	if (memcmp(super->signature, BTT_SIG, BTT_SIG_LEN) != 0)
- 		return false;
- 
--	if (!guid_is_null((guid_t *)&super->parent_uuid))
-+	if (memcmp(super->parent_uuid, null_uuid, 16) != 0)
- 		if (memcmp(super->parent_uuid, parent_uuid, 16) != 0)
- 			return false;
- 
--- 
-2.30.2
+Oh, ok, I saw things like papr_pdsm_fuel_gauge() in the call stack and
+thought this was reachable through an ioctl. Sorry for the noise.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
