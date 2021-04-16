@@ -1,56 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43043626F3
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Apr 2021 19:36:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9295A36276C
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Apr 2021 20:05:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 814C9100EAB6E;
-	Fri, 16 Apr 2021 10:36:19 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id BA6BA100EAB70;
+	Fri, 16 Apr 2021 11:05:52 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.218.47; helo=mail-ej1-f47.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1B853100EAB69
-	for <linux-nvdimm@lists.01.org>; Fri, 16 Apr 2021 10:36:17 -0700 (PDT)
-IronPort-SDR: AwMF4GzyBRJ2QWM1Z26zUAd+jnIiJK6qJw059Bj7voCvzYuk/fiopHWSuHwGbdgtkVYU3FUlvb
- k0Ys9E3GzUCw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9956"; a="259033311"
-X-IronPort-AV: E=Sophos;i="5.82,226,1613462400";
-   d="scan'208";a="259033311"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2021 10:36:14 -0700
-IronPort-SDR: /G8uWyJoqpYxFkZQD8VLD5Dqg8KkxE+HRNc5pUt16jLXo3D9rjLp7z4QNfAQZgV6fimW794iI4
- VbkG1qA30tNg==
-X-IronPort-AV: E=Sophos;i="5.82,226,1613462400";
-   d="scan'208";a="522771315"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2021 10:36:13 -0700
-Received: from andy by smile with local (Exim 4.94)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1lXSO2-004iS7-PW; Fri, 16 Apr 2021 20:36:10 +0300
-Date: Fri, 16 Apr 2021 20:36:10 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH v1 1/1] libnvdimm: Don't use GUID APIs against raw buffer
-Message-ID: <YHnLCoeBDn3BcRx1@smile.fi.intel.com>
-References: <20210415143754.16553-1-andriy.shevchenko@linux.intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 826B9100EAB6E
+	for <linux-nvdimm@lists.01.org>; Fri, 16 Apr 2021 11:05:49 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id w3so43425262ejc.4
+        for <linux-nvdimm@lists.01.org>; Fri, 16 Apr 2021 11:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Uc9tpLdABKe3k+bL9U1Q0ClltNGtCJ/DmDcgCrhYdYg=;
+        b=K3Y4k6P9B2fQV4CiR+khvfZXow2zdY2hX27fW9sgnIblaRE2hi2taF7p9Q4+AVcl4s
+         PfD8Ve5pKKASpKAll7IWIR3sutavY35ZyGnoSeGS8TSFfO7pt0sY4jZ2NOXX3aa+uGEt
+         hS8GPNmg0Kma0AUOiHZGH3XRkgHpY3q9QceqDF/VvGGr6hxG6R/PlKMfXoOLDzdf8+FE
+         JWH+eP92Afm41WhA/O1edLt5VLQcWd/s3RUB7P/6f157Rp/NIu9TD3WCQCkg/FgRiFYR
+         csxIBYc1ZQnzWAR8kN1svzNl5N3wrbg/gOMMMDKcCXCLEOdXR8MKYtIJJrmNX1ZgDtAA
+         gCWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Uc9tpLdABKe3k+bL9U1Q0ClltNGtCJ/DmDcgCrhYdYg=;
+        b=el0NUkxOOHOQO2qBEkAqOHdf+xkVajbB2Kg52JjrlTHeRSxohv00eqVPbMq3f0z5st
+         li7X98W+g1eyhF0/bePKK/IY1wq9B1XOLy4EzYKOhP218+uNTjBBU2KS+oq4/nozySnE
+         ATLok10UPZL0Y3wJsYXS3qOKgl3vr4DhBFf+t3I3X1UkjPaneUpSF1f804r0CUytVm5i
+         WrM7Xcb13ix8lxYgVBKNq/wtMNLKe5kZv/mLYFwA8+DpjEiDaOMgfo40pMNSPVxDY7s/
+         eN7q3mlaYs4LX4JyJ0HStxNnZScKmtHxDwlx38zSr0THsWxYEFXVoLOa0vvJAoGXjaC2
+         jLEA==
+X-Gm-Message-State: AOAM533dy8xJCef+TOFrOvt/sRTuBgoQsOEjiF67E7YOGk3z6fq5QTiV
+	RC5826MM54K/29GUCdSUQ3QZr+U8fFntjXO5VHpEZg==
+X-Google-Smtp-Source: ABdhPJzkDt6LekTblXCPYAUVMDzlqIo96JgBbNZCYuPdE91LgUOXmqNtScSYjIQX27TBLJw8r7il/9ZzZaWobeHGEDM=
+X-Received: by 2002:a17:906:4fcd:: with SMTP id i13mr9559800ejw.341.1618596287889;
+ Fri, 16 Apr 2021 11:04:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210415143754.16553-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Message-ID-Hash: PEEFCWCF5YI3CKRQQJTPZTMG5TDQQSJE
-X-Message-ID-Hash: PEEFCWCF5YI3CKRQQJTPZTMG5TDQQSJE
-X-MailFrom: andriy.shevchenko@linux.intel.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20210415135901.47131-1-andriy.shevchenko@linux.intel.com>
+ <CAPcyv4jpkZNsQEvCe_dLoq0DOTrEX36vhkJg+zqEacUkJtvWiQ@mail.gmail.com>
+ <CAHp75VcpQREYFesS9q2TeqrR29hf0CvMESM42AVGAFzEYeRr_Q@mail.gmail.com>
+ <CAPcyv4jzg23CoQeqAyAR=PUjB4HG-FSnD8G0J7S=p22ANmzDMQ@mail.gmail.com> <YHnKg4MHkZ4QIBHR@smile.fi.intel.com>
+In-Reply-To: <YHnKg4MHkZ4QIBHR@smile.fi.intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 16 Apr 2021 11:04:36 -0700
+Message-ID: <CAPcyv4j+66FaPHPLkF+ZPQq=uncYJ1Mx8JMzZnhp86qS=JewjQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] ACPI: NFIT: Import GUID before use
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Message-ID-Hash: DXQPE7V55NJXH2YDDKT2QN5AYVYFPYWQ
+X-Message-ID-Hash: DXQPE7V55NJXH2YDDKT2QN5AYVYFPYWQ
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PEEFCWCF5YI3CKRQQJTPZTMG5TDQQSJE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DXQPE7V55NJXH2YDDKT2QN5AYVYFPYWQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,19 +70,45 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 15, 2021 at 05:37:54PM +0300, Andy Shevchenko wrote:
-> Strictly speaking the comparison between guid_t and raw buffer
-> is not correct. Return to plain memcmp() since the data structures
-> haven't changed to use uuid_t / guid_t the current state of affairs
-> is inconsistent. Either it should be changed altogether or left
-> as is.
+On Fri, Apr 16, 2021 at 10:34 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Fri, Apr 16, 2021 at 09:15:34AM -0700, Dan Williams wrote:
+> > On Fri, Apr 16, 2021 at 1:58 AM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Fri, Apr 16, 2021 at 8:28 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > On Thu, Apr 15, 2021 at 6:59 AM Andy Shevchenko
+> > > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > > >
+> > > > > Strictly speaking the comparison between guid_t and raw buffer
+> > > > > is not correct. Import GUID to variable of guid_t type and then
+> > > > > compare.
+> > > >
+> > > > Hmm, what about something like the following instead, because it adds
+> > > > safety. Any concerns about evaluating x twice in a macro should be
+> > > > alleviated by the fact that ARRAY_SIZE() will fail the build if (x) is
+> > > > not an array.
+> > >
+> > > ARRAY_SIZE doesn't check type.
+> >
+> > See __must_be_array.
+> >
+> > > I don't like hiding ugly casts like this.
+> >
+> > See PTR_ERR, ERR_PTR, ERR_CAST.
+>
+> It's special, i.e. error pointer case. We don't handle such here.
+>
+> > There's nothing broken about the way the code currently stands, so I'd
+> > rather try to find something to move the implementation forward than
+> > sideways.
+>
+> Submit a patch then. I rest my case b/c I consider that ugly castings worse
+> than additional API call, although it's not ideal.
 
-Dan, please review this one as well. I think here you may agree with me.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+It sounds like you'll NAK that patch, and I'm not too enthusiastic
+about these proposed changes either because I disagree that the code
+is incorrect. Is there another compromise?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
