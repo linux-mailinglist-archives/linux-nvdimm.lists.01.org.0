@@ -2,81 +2,110 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F47B36176A
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Apr 2021 04:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DF2361926
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Apr 2021 07:18:37 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 69156100EAB45;
-	Thu, 15 Apr 2021 19:10:52 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=117.51.155.159; helo=aplus.co.jp; envelope-from=wcy@aplus.co.jp; receiver=<UNKNOWN> 
-Received: from aplus.co.jp (unknown [117.51.155.159])
-	by ml01.01.org (Postfix) with ESMTP id C3609100EC1C8
-	for <linux-nvdimm@lists.01.org>; Thu, 15 Apr 2021 19:10:47 -0700 (PDT)
-Message-ID: <BB07C588A26197F6024E3D49C9B686A6@aplus.co.jp>
-From: =?utf-8?B?44Ki44OX44Op44K544Kr44K544K/44Oe44O844K144Od44O844OI?= <info@aplus.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR5paw55Sf6YqA6KGM44Kr44O844OJ44GU5Yip55So56K6?=
-	=?utf-8?B?6KqN?=
-Date: Fri, 16 Apr 2021 10:10:44 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: O7RZSR4EJX4DYGLBI7KZ7B6TWIIAJW7I
-X-Message-ID-Hash: O7RZSR4EJX4DYGLBI7KZ7B6TWIIAJW7I
-X-MailFrom: wcy@aplus.co.jp
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+	by ml01.01.org (Postfix) with ESMTP id E1ED8100EAB56;
+	Thu, 15 Apr 2021 22:18:34 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.218.42; helo=mail-ej1-f42.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 20CD4100EAB54
+	for <linux-nvdimm@lists.01.org>; Thu, 15 Apr 2021 22:18:22 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id r9so40258327ejj.3
+        for <linux-nvdimm@lists.01.org>; Thu, 15 Apr 2021 22:18:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a50IcdnhgZEvsPlVOQCYwuiT5Nw59xUv8V7Dt7AB8ec=;
+        b=Kx4vU7nL6+WWW9/bFW2xrYUssnTxFwAiQq1M1mij8fBbsBmU1EI/FApEAV0JPYUV3O
+         8ScPtb77sQtWZTkMDnjBrSlTgPFL5tvZhO/vutCaZmdB15ZZTxxy+FVzYrwKptWCTWEw
+         DcR4nrY76od53LRi4pUFYbgamvg0tLC2ND2gxl7hXBNTiK3nCwe4k4tKwYN0uuVqOhxc
+         Gz2fKJF+GZzhbXM1X0dscDh4zzA3tKLtA2gntPcbhgSlw4W+T6JLBTtslniE8tDY15eQ
+         HcRZ9wBvhTEstVT3WiEOhzJy2P1WVRu7By1iLebTwM9uwJZwd3i8ou3s/TVs7B0bIFHt
+         a0mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a50IcdnhgZEvsPlVOQCYwuiT5Nw59xUv8V7Dt7AB8ec=;
+        b=qOLdjdI0Ig9tiudOfp/wthFCzwb8DlLrJgAsAUm0B54mFSLfvwVkbOuOod64tnVF9h
+         3R1viHfjyYYTQTJbU2kShgvFHRIT5yhr+of9ytuf8ZykimLkdtCs5nCiNBSy8XIti03i
+         t7KzOeyUEu8PhOqjAVBU3iNtjdOFC1HmmNw8QLKuEhDzuzlWtUuqlGieE8xFpH7nlF4u
+         e1j0CsMCmQpVld+HhMMDekGNRPli/uZyk94gDKrdPOwZ2lnHVj0TkgLMjcxlEqRTv/46
+         4vchFMTeO40afKxAvz8Wef16Ct355Y0qDUyQ/q9C7EgGYywCLxidGUjp0J01PsUTYuLT
+         SLrw==
+X-Gm-Message-State: AOAM53241FeUUCpQzI3w6HXWUF2u2sH91HNYuu03WJEmPXyO3a5jcFeg
+	khLugUZ8EHOaNsnTxS3Y2gH6Rpm5/99MHDPzvhScXQ==
+X-Google-Smtp-Source: ABdhPJzON0Yh7zxJFlJUIXPjsFg1VQTGGptwmZ97+vKn5UxbZ+RlSLTFihiznvOGyYOlfFFz+2jk0MoSZoVebbgAbrs=
+X-Received: by 2002:a17:906:8407:: with SMTP id n7mr6532409ejx.264.1618550241023;
+ Thu, 15 Apr 2021 22:17:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210415135901.47131-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210415135901.47131-1-andriy.shevchenko@linux.intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 15 Apr 2021 22:17:09 -0700
+Message-ID: <CAPcyv4jpkZNsQEvCe_dLoq0DOTrEX36vhkJg+zqEacUkJtvWiQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] ACPI: NFIT: Import GUID before use
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Message-ID-Hash: NIIIAYY6K3MZSKNFASNTLMFY67PPMTB4
+X-Message-ID-Hash: NIIIAYY6K3MZSKNFASNTLMFY67PPMTB4
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O7RZSR4EJX4DYGLBI7KZ7B6TWIIAJW7I/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NIIIAYY6K3MZSKNFASNTLMFY67PPMTB4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-5paw55Sf6YqA6KGM44Kr44O844OJ5Yip55So56K66KqNDQrmlrDnlJ/pioDooYzjgqvjg7zjg4nl
-iKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbjgZTjgZbjgYTjgb7jgZnjgIINCuOB
-k+OBruOBn+OBs+OAgeOBlOacrOS6uuanmOOBruOBlOWIqeeUqOOBi+OBqeOBhuOBi+OCkueiuuiq
-jeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBn+OBhOOBiuWPluW8leOBjOOBguOCiuOBvuOBl+OBn+OB
-ruOBp+OAgeiqoOOBq+WLneaJi+OBquOBjOOCieOAgeOCq+ODvOODieOBruOBlOWIqeeUqOOCkuS4
-gOmDqOWItumZkOOBleOBm+OBpuOBhOOBn+OBoOOBjeOAgeOBlOmAo+e1oeOBleOBm+OBpuOBhOOB
-n+OBoOOBjeOBvuOBl+OBn+OAgg0K44Gk44GN44G+44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv
-44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS
-44GK6aGY44GE6Ie044GX44G+44GZ44CCDQog44GK5a6i5qeY44Gr44Gv44GU6L+35oOR44CB44GU
-5b+D6YWN44KS44GK5o6b44GR44GX44CB6Kqg44Gr55Sz44GX6Kiz44GU44GW44GE44G+44Gb44KT
-44CCDQrkvZXljZLjgZTnkIbop6PjgYTjgZ/jgaDjgY3jgZ/jgY/jgYrpoZjjgYTnlLPjgZfjgYLj
-gZLjgb7jgZnjgIINCuOBlOWbnuetlOOCkuOBhOOBn+OBoOOBkeOBquOBhOWgtOWQiOOAgeOCq+OD
-vOODieOBruOBlOWIqeeUqOWItumZkOOBjOe2mee2muOBleOCjOOCi+OBk+OBqOOCguOBlOOBluOB
-hOOBvuOBmeOBruOBp+OAgeS6iOOCgeOBlOS6huaJv+S4i+OBleOBhOOAgg0KDQogDQrilqDjgZTl
-iKnnlKjnorroqo3jga/jgZPjgaHjgokNCmh0dHBzOi8vd3d3LmFwbHVzLWpwLmNuLw0KDQoNCg0K
-DQrlvIrnpL7jga/jgIHjgqTjg7Pjgr/jg7zjg43jg4Pjg4jkuIrjga7kuI3mraPooYzngrrjga7p
-mLLmraLjg7vmipHliLbjga7oprPngrnjgYvjgonjgrXjgqTjg4jjgajjgZfjgabjga7kv6HpoLzm
-gKfjg7vmraPlvZPmgKfjgpLpq5jjgoHjgovjgZ/jgoHjgIENCuWkp+WkieOBiuaJi+aVsOOBp+OB
-r+OBlOOBluOBhOOBvuOBmeOBjOOAgeS4i+iomO+8te+8su+8rOOBi+OCieODreOCsOOCpOODs+OB
-hOOBn+OBoOOBjeOAgQ0KaHR0cHM6Ly93d3cuYXBsdXMtanAuY24vbG9naW4uaHRtbA0K44GU5LiN
-5L6/44Go44GU5b+D6YWN44KS44GK44GL44GR44GX44G+44GX44Gm6Kqg44Gr55Sz44GX6Kiz44GU
-44GW44GE44G+44Gb44KT44GM44CBDQrkvZXjgajjgZ7jgZTnkIbop6Pos5zjgorjgZ/jgY/jgYrp
-oZjjgYTnlLPjgZfjgYLjgZLjgb7jgZnjgIINCg0KDQoNCj4g4pag5ouF5b2T6YOo572y77ya5qCq
-5byP5Lya56S+44Ki44OX44Op44K544CA44GK5a6i44GV44G+55u46KuH5a6kIA0KID7jgJIxMDUt
-MDAxMQ0KPiDkvY/miYDvvJrlpKfpmKrlupzlkLnnlLDluILosYrmtKXnlLrvvJnnlarvvJHlj7fj
-gIDjg5Hjgrfjg5XjgqPjg4Pjgq/jg57jg7zjgq/jgrnmsZ/lnYINCj4g6Zu76Kmx55Wq5Y+377ya
-MDU3MC0wMDEtNzcwDQo+5pyI772e6YeRKOWcn+aXpeelneODu+W5tOacq+W5tOWni+S8kSkNCj4g
-5Y+X5LuY5pmC6ZaT77yPOe+8mjMw772eMTfvvJozMA0KPiDosqzku7vogIXvvJrlgIvkurrmg4Xl
-oLHnrqHnkIbosqzku7vogIXvvIjlgIvkurrmg4XloLHnrqHnkIblrqTnrqHmjozlvbnlk6HvvIkN
-Cj4g5paw55Sf6YqA6KGM44Kr44O844OJ44Gn44Gv44CB44GK5a6i44GV44G+44Gu5YCL5Lq65oOF
-5aCx44KS6YGp5YiH44Gr5L+d6K2344GZ44KL44Gf44KB44CB44Gd44Gu5Y+W44KK5omx44GE44Gr
-44Gk44GN44G+44GX44Gm44Gv57Sw5b+D44Gu5rOo5oSP44KS5omV44Gj44Gm44GE44G+44GZ44CC
-DQo+IGh0dHBzOi8vd3d3LmFwbHVzLWpwLmNuL2xvZ2luLmh0bWwNCj4g4pag5pys44Oh44O844Or
-44Gu6YCB5L+h44Ki44OJ44Os44K544Gv6YCB5L+h5bCC55So44Go44Gq44Gj44Gm44GK44KK44G+
-44GZ44CC6L+U5L+h44Oh44O844Or44Gn44Gu44GK5ZWP44GE5ZCI44KP44Gb44Gv5om/44KK44GL
-44Gt44G+44GZ44Gu44Gn44CB44GC44KJ44GL44GY44KB44GU5LqG5om/6aGY44GE44G+44GZ44CC
-KDIzNjcxKQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
-aW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8g
-dW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEu
-b3JnCg==
+On Thu, Apr 15, 2021 at 6:59 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Strictly speaking the comparison between guid_t and raw buffer
+> is not correct. Import GUID to variable of guid_t type and then
+> compare.
+
+Hmm, what about something like the following instead, because it adds
+safety. Any concerns about evaluating x twice in a macro should be
+alleviated by the fact that ARRAY_SIZE() will fail the build if (x) is
+not an array.
+
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 8c5dde628405..bac01eec07a6 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -681,7 +681,7 @@ int nfit_spa_type(struct acpi_nfit_system_address *spa)
+        int i;
+
+        for (i = 0; i < NFIT_UUID_MAX; i++)
+-               if (guid_equal(to_nfit_uuid(i), (guid_t *)&spa->range_guid))
++               if (guid_equal(to_nfit_uuid(i), cast_guid(spa->range_guid)))
+                        return i;
+        return -1;
+ }
+diff --git a/include/linux/uuid.h b/include/linux/uuid.h
+index 8cdc0d3567cd..cec1dc2ab994 100644
+--- a/include/linux/uuid.h
++++ b/include/linux/uuid.h
+@@ -33,6 +33,9 @@ typedef struct {
+ extern const guid_t guid_null;
+ extern const uuid_t uuid_null;
+
++#define cast_guid(x) ({ BUILD_BUG_ON(ARRAY_SIZE(x) != 16); (guid_t *)&(x); })
++#define cast_uuid(x) ({ BUILD_BUG_ON(ARRAY_SIZE(x) != 16); (uuid_t *)&(x); })
++
+ static inline bool guid_equal(const guid_t *u1, const guid_t *u2)
+ {
+        return memcmp(u1, u2, sizeof(guid_t)) == 0;
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
