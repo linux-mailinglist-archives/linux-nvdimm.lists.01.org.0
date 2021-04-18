@@ -1,112 +1,174 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD9D36332F
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Apr 2021 04:16:47 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17710363446
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Apr 2021 09:59:02 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5203E100EC1EB;
-	Sat, 17 Apr 2021 19:16:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.121.120.192; helo=slot0.anpg-group.com; envelope-from=office@anpg-group.com; receiver=<UNKNOWN> 
-Received: from slot0.anpg-group.com (slot0.anpg-group.com [185.121.120.192])
+	by ml01.01.org (Postfix) with ESMTP id 24E40100EF27E;
+	Sun, 18 Apr 2021 00:59:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 493BB100EC1E3
-	for <linux-nvdimm@lists.01.org>; Sat, 17 Apr 2021 19:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=anpg-group.com;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=office@anpg-group.com;
- bh=/wGnlMwyK1o1iQwa7OdZ9lF1430=;
- b=YpWro2soDIAdgztqHhPmD7X2qplMlmYr6wPQMXoVGGV8e3Gw2IcGYaimwRgeVXvhqCP9Jo9B65z4
-   WEUpgqI5E/MrdZlkdAokH9+z3emkqWWDW+Ugs6kaNNRYEyQ5AKJZkR+5janZGN/o4XIF8wQ295ai
-   vmmH6Sx/TFu6XTqObIYeSelu3gtzgxh6j+NIJsmMTI40+KIgXYr4RHFxgtHdZDMJX6l87YGVzQij
-   PtX8YN294n7F3NLmM8Cu/sTH3h0/fVZTA5Oc8ETsR3oGmNGV/tzysiw3U/fhlp0PPd/SNBubn1nV
-   6EDH4vx1CB/7ftJERYW2x/CRlSHfusB9G7QFAA==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=anpg-group.com;
- b=HPBx2N6wZ9pm/E355c8/U9V9DLWPUiSez+sibs2N+gaQD2F1gp5Atjvx+oGwkwFRdcIuKSBOQEGP
-   rC4muTGC3ngicmI8c4FtDjDe1V4n7CW0z3UU5dQWqfFdB/XOeCVwKZGX7i8wHxkm1GehdfFjeD2x
-   s/Mfz3+KSROOPioRBWPAsknuFH3X7eHFqr/ax/DVBrY189j+8rudI4jlZH4bQHWgpcRkuNLVF6mw
-   x4ADAEpVg0O9Mt6V3S6XrvLdlakdUOw9/rOo1uxIz8DSQaAhIRQTQU8pjK1LR68K2rSTohS9CU4L
-   eahs0M4OPveTgEGUp7AFA9rGyVbD0n5mMfkhcg==;
-From: DE  ANPG Group <office@anpg-group.com>
-To: linux-nvdimm@lists.01.org
-Subject: Re: Business Proposal
-Date: 18 Apr 2021 04:16:38 +0200
-Message-ID: <20210418041638.81B818D4D1FA6538@anpg-group.com>
+	by ml01.01.org (Postfix) with ESMTPS id B1AC6100EF25B
+	for <linux-nvdimm@lists.01.org>; Sun, 18 Apr 2021 00:58:56 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13I7YDqT121739;
+	Sun, 18 Apr 2021 03:58:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ULaC95HYjCDtIig+69jp0n4CTfNHbL+8hAecd284Ipw=;
+ b=HW+r8U+3DyprtpAdNGDLyfshuM6puZ3FdPlVJYdSobpw0dZKVbQ/4w8D4FLd7WtAHsLo
+ PCt9UCFjMm370AKrW/NPdLJaPymYoERph1+5SY93DeMC/Hz226ZBo/7BVRiX0nhg+G4L
+ nf5y1QdBKNeg8HLML2oVS4J94FypyyYej1aSFZR8FyKBfdh6ofVwO7oW5Q0PQp8m06f4
+ lRUfdHKd6kw2c2EiVe92yAcwz0xtgwsgokgvHHdeZ6ii8t1mguit8F5HFUmXjSWqkwaA
+ SvrbV56eMRVBXGVrgGqUuMTNAblKMiiwyb4Fncx2y2E3lxSoylqyHzGbTkjDN0C2Fv4t TQ==
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 380crakkcb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 18 Apr 2021 03:58:51 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13I7uXae010621;
+	Sun, 18 Apr 2021 07:58:51 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+	by ppma02dal.us.ibm.com with ESMTP id 37yqa9k8wj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 18 Apr 2021 07:58:51 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13I7woRW15860200
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 18 Apr 2021 07:58:50 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 50317124055;
+	Sun, 18 Apr 2021 07:58:50 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44067124053;
+	Sun, 18 Apr 2021 07:58:48 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.43.108])
+	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+	Sun, 18 Apr 2021 07:58:47 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats
+ inaccessible
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
+References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
+ <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
+ <87lf9kkfaj.fsf@vajain21.in.ibm.com>
+ <20210414212417.GC1904484@iweiny-DESK2.sc.intel.com>
+ <87h7k7lqf8.fsf@vajain21.in.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <50e2df73-ae82-89da-a780-5dcf07328d96@linux.ibm.com>
+Date: Sun, 18 Apr 2021 13:28:46 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Message-ID-Hash: X3JDA7KITHK7CRRYAWXKKLDPF53NCWVS
-X-Message-ID-Hash: X3JDA7KITHK7CRRYAWXKKLDPF53NCWVS
-X-MailFrom: office@anpg-group.com
+In-Reply-To: <87h7k7lqf8.fsf@vajain21.in.ibm.com>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vtromN3D3YzRZv2cxxJN6j5OZt-BmHnf
+X-Proofpoint-ORIG-GUID: vtromN3D3YzRZv2cxxJN6j5OZt-BmHnf
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-17_16:2021-04-16,2021-04-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ priorityscore=1501 malwarescore=0 adultscore=0 mlxscore=0 suspectscore=0
+ bulkscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2104180053
+Message-ID-Hash: 62VR2DHSTGFQQWIJXAXAOBQHYP5X2CII
+X-Message-ID-Hash: 62VR2DHSTGFQQWIJXAXAOBQHYP5X2CII
+X-MailFrom: kjain@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: DE ANPG Group <josias.meloze1@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X3JDA7KITHK7CRRYAWXKKLDPF53NCWVS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/62VR2DHSTGFQQWIJXAXAOBQHYP5X2CII/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6315609274358338838=="
-
---===============6315609274358338838==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
-w3.org/TR/html4/loose.dtd">
-
-<HTML><HEAD>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.10570.1001"></HEAD>
-<BODY style=3D"MARGIN: 0.5em">
-<P>Greetings linux-nvdimm@lists.01.org,<BR><BR></P>
-<P style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif; WH=
-ITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 40=
-0; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-=
-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font=
--variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-=
-width: 0px; text-decoration-thickness: initial; text-decoration-style: init=
-ial; text-decoration-color: initial">How are you?<U>
- </U><U></U></P>
-<P style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif; WH=
-ITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 40=
-0; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-=
-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font=
--variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-=
-width: 0px; text-decoration-thickness: initial; text-decoration-style: init=
-ial; text-decoration-color: initial">
-My name is Josias Melo. I am a Procurement Officer with the Angolan Nationa=
-l Petroleum and Gas Agency (ANPG). I am writing to extend a business reques=
-t for you to stand as an agent or middle-man in a crude oil supply contract=
-=2E<U></U><U></U></P>
-<P style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif; WH=
-ITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 40=
-0; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-=
-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font=
--variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-=
-width: 0px; text-decoration-thickness: initial; text-decoration-style: init=
-ial; text-decoration-color: initial">
-I am assuring you that good profits will be earned from the commission that=
- will be paid to middle-persons. I will provide exclusive details to you up=
-on your acceptance.<BR><U></U><U><BR></U></P>
-<P style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif; WH=
-ITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 40=
-0; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-=
-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font=
--variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-=
-width: 0px; text-decoration-thickness: initial; text-decoration-style: init=
-ial; text-decoration-color: initial">Sincerely<BR>
-Josias Melo<BR>Procurement Officer<BR><BR></P></BODY></HTML>
---===============6315609274358338838==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+On 4/15/21 5:18 PM, Vaibhav Jain wrote:
+> Ira Weiny <ira.weiny@intel.com> writes:
+> 
+>> On Wed, Apr 14, 2021 at 09:51:40PM +0530, Vaibhav Jain wrote:
+>>> Thanks for looking into this patch Ira,
+>>>
+>>> Ira Weiny <ira.weiny@intel.com> writes:
+>>>
+>>>> On Wed, Apr 14, 2021 at 06:10:26PM +0530, Vaibhav Jain wrote:
+>>>>> Currently drc_pmem_qeury_stats() generates a dev_err in case
+>>>>> "Enable Performance Information Collection" feature is disabled from
+>>>>> HMC. The error is of the form below:
+>>>>>
+>>>>> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
+>>>>> 	 performance stats, Err:-10
+>>>>>
+>>>>> This error message confuses users as it implies a possible problem
+>>>>> with the nvdimm even though its due to a disabled feature.
+>>>>>
+>>>>> So we fix this by explicitly handling the H_AUTHORITY error from the
+>>>>> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
+>>>>> error, saying that "Performance stats in-accessible".
+>>>>>
+>>>>> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
+>>>>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>>>>> ---
+>>>>>  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
+>>>>>  1 file changed, 3 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+>>>>> index 835163f54244..9216424f8be3 100644
+>>>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+>>>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+>>>>> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
+>>>>>  		dev_err(&p->pdev->dev,
+>>>>>  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
+>>>>>  		return -ENOENT;
+>>>>> +	} else if (rc == H_AUTHORITY) {
+>>>>> +		dev_warn(&p->pdev->dev, "Performance stats in-accessible");
+>>>>> +		return -EPERM;
+>>>>
+>>>> Is this because of a disabled feature or because of permissions?
+>>>
+>>> Its because of a disabled feature that revokes permission for a guest to
+>>> retrieve performance statistics.
+>>>
+>>> The feature is called "Enable Performance Information Collection" and
+>>> once disabled the hcall H_SCM_PERFORMANCE_STATS returns an error
+>>> H_AUTHORITY indicating that the guest doesn't have permission to retrieve
+>>> performance statistics.
+>>
+>> In that case would it be appropriate to have the error message indicate a
+>> permission issue?
+>>
+>> Something like 'permission denied'?
+> 
+> Yes, Something like "Permission denied while accessing performance
+> stats" might be more clear and intuitive.
+
+Hi Vaibhav,
+   Thanks for the patch. I agree with Ira and above warning message with "Permission denied" looks more clear.
+With that change, patch looks good to me.
+
+Reviewed-By: Kajol Jain<kjain@linux.ibm.com>
+
+Thanks,
+Kajol Jain
+> 
+> Will update the warn message in v2.
+> 
+>>
+>> Ira
+>>
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============6315609274358338838==--
