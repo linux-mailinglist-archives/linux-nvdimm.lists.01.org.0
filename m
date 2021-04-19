@@ -1,90 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17710363446
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Apr 2021 09:59:02 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946093638ED
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 02:56:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 24E40100EF27E;
-	Sun, 18 Apr 2021 00:59:00 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4DEA6100ED49C;
+	Sun, 18 Apr 2021 17:56:53 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=209.85.210.177; helo=mail-pf1-f177.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B1AC6100EF25B
-	for <linux-nvdimm@lists.01.org>; Sun, 18 Apr 2021 00:58:56 -0700 (PDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13I7YDqT121739;
-	Sun, 18 Apr 2021 03:58:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ULaC95HYjCDtIig+69jp0n4CTfNHbL+8hAecd284Ipw=;
- b=HW+r8U+3DyprtpAdNGDLyfshuM6puZ3FdPlVJYdSobpw0dZKVbQ/4w8D4FLd7WtAHsLo
- PCt9UCFjMm370AKrW/NPdLJaPymYoERph1+5SY93DeMC/Hz226ZBo/7BVRiX0nhg+G4L
- nf5y1QdBKNeg8HLML2oVS4J94FypyyYej1aSFZR8FyKBfdh6ofVwO7oW5Q0PQp8m06f4
- lRUfdHKd6kw2c2EiVe92yAcwz0xtgwsgokgvHHdeZ6ii8t1mguit8F5HFUmXjSWqkwaA
- SvrbV56eMRVBXGVrgGqUuMTNAblKMiiwyb4Fncx2y2E3lxSoylqyHzGbTkjDN0C2Fv4t TQ==
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 380crakkcb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Apr 2021 03:58:51 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 13I7uXae010621;
-	Sun, 18 Apr 2021 07:58:51 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-	by ppma02dal.us.ibm.com with ESMTP id 37yqa9k8wj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Apr 2021 07:58:51 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 13I7woRW15860200
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 18 Apr 2021 07:58:50 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 50317124055;
-	Sun, 18 Apr 2021 07:58:50 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44067124053;
-	Sun, 18 Apr 2021 07:58:48 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.43.108])
-	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-	Sun, 18 Apr 2021 07:58:47 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/papr_scm: Reduce error severity if nvdimm stats
- inaccessible
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
-References: <20210414124026.332472-1-vaibhav@linux.ibm.com>
- <20210414153625.GB1904484@iweiny-DESK2.sc.intel.com>
- <87lf9kkfaj.fsf@vajain21.in.ibm.com>
- <20210414212417.GC1904484@iweiny-DESK2.sc.intel.com>
- <87h7k7lqf8.fsf@vajain21.in.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <50e2df73-ae82-89da-a780-5dcf07328d96@linux.ibm.com>
-Date: Sun, 18 Apr 2021 13:28:46 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+	by ml01.01.org (Postfix) with ESMTPS id E1641100EF267
+	for <linux-nvdimm@lists.01.org>; Sun, 18 Apr 2021 17:56:50 -0700 (PDT)
+Received: by mail-pf1-f177.google.com with SMTP id h11so4411087pfn.0
+        for <linux-nvdimm@lists.01.org>; Sun, 18 Apr 2021 17:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3SI3E+AsAKKmrL599c0cLgPoq31WqxGk+bLBIL/YTXk=;
+        b=H5RPbHwcUSIP0dXOd4FPJy0d36fSLh34E3pp20m8lq+52VBzxk5dfG2P+Hd45IjRWg
+         f3fmpHaU/o6amprRtGZyGnSH/wJso2ErZ4IgmfoP7HZITY9nQxVcCqw+KWBNIB+1Yl58
+         txQQ/4DeaGS7mzoUa4TJdUHSWw0f2QSLOp2+bsW8BNqcoPQgkKq+BDqJ9N3ItdzI69EK
+         OfeOgyaYDN0jmJgpjeIV5icDd6K4rmFpjHtB8Ve8QeeIviuQYlHZnLq6epRRVUuF0y49
+         M8y35KR/26FMUoMvrKg+oNHOJZK0gWKvbbUer6wImnC4e91Oa1fh4GsnJIbl/hN2DPOw
+         y2Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3SI3E+AsAKKmrL599c0cLgPoq31WqxGk+bLBIL/YTXk=;
+        b=KIS3lnn3xgUhgdoSC/ffAie3x1npf/8WmpHHaPau/MM4I4/Qzj9Q1ll2r3fc1SYFXm
+         U5MPLlVnVtMXE8I/3PnUV5hZ+A2DQ3fs33Tnq6Bwj58sB5wSysd/rXnHMPQ0AN5/dIYp
+         SQzhsxWMo/6aWVMd7Sm1xFdGvbYc6rzt/01Ud2LtV9F5ponv+e/6uNOeyAUIZkdZ5o1z
+         yyKYVW5rzh1HVIPYBmROoSA3GnwaHkpC/aRxCrsDdhxOS7wx5y1rd4MVMK0driiHY98t
+         onlbOWyKX6ej03B9/JNDF+EkCRAtBKRhaTZC3Y/pCjUSwMoxvdHSuq71QcqnLM8zTgDm
+         hLlQ==
+X-Gm-Message-State: AOAM533+e23JI392mHuablzdLXsLVUEDnIi4v3nBSenOE8EbNXKjm6Yq
+	Qo6oYjhgnPmR1lC07U23m0quEb58UGDUIA==
+X-Google-Smtp-Source: ABdhPJyU1Er8phNJpN4VYRPcF/d5RAdHmZW8VPpME6ZDCWckI8UP70rZzcxlJW9FvE4cHYDVbXYhHw==
+X-Received: by 2002:a62:1ec1:0:b029:24d:b3de:25be with SMTP id e184-20020a621ec10000b029024db3de25bemr17279908pfe.17.1618793749470;
+        Sun, 18 Apr 2021 17:55:49 -0700 (PDT)
+Received: from desktop.fossix.local ([103.21.79.4])
+        by smtp.gmail.com with ESMTPSA id u1sm12694018pjj.19.2021.04.18.17.55.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Apr 2021 17:55:49 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Linux NVDIMM <linux-nvdimm@lists.01.org>
+Subject: [PATCH] nvdimm/ndtest: Add support for error injection tests
+Date: Mon, 19 Apr 2021 06:25:11 +0530
+Message-Id: <20210419005511.491619-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <87h7k7lqf8.fsf@vajain21.in.ibm.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vtromN3D3YzRZv2cxxJN6j5OZt-BmHnf
-X-Proofpoint-ORIG-GUID: vtromN3D3YzRZv2cxxJN6j5OZt-BmHnf
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-04-17_16:2021-04-16,2021-04-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- priorityscore=1501 malwarescore=0 adultscore=0 mlxscore=0 suspectscore=0
- bulkscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
- definitions=main-2104180053
-Message-ID-Hash: 62VR2DHSTGFQQWIJXAXAOBQHYP5X2CII
-X-Message-ID-Hash: 62VR2DHSTGFQQWIJXAXAOBQHYP5X2CII
-X-MailFrom: kjain@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Message-ID-Hash: LFGXKO5DVGDT4YDLSM6V4WENP4RLR4A7
+X-Message-ID-Hash: LFGXKO5DVGDT4YDLSM6V4WENP4RLR4A7
+X-MailFrom: santosh@fossix.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/62VR2DHSTGFQQWIJXAXAOBQHYP5X2CII/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LFGXKO5DVGDT4YDLSM6V4WENP4RLR4A7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -93,82 +70,648 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+Add necessary support for error injection family of tests on non-acpi
+platforms.
 
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+---
+ tools/testing/nvdimm/test/ndtest.c | 455 ++++++++++++++++++++++++++++-
+ tools/testing/nvdimm/test/ndtest.h |  25 ++
+ 2 files changed, 477 insertions(+), 3 deletions(-)
 
-On 4/15/21 5:18 PM, Vaibhav Jain wrote:
-> Ira Weiny <ira.weiny@intel.com> writes:
-> 
->> On Wed, Apr 14, 2021 at 09:51:40PM +0530, Vaibhav Jain wrote:
->>> Thanks for looking into this patch Ira,
->>>
->>> Ira Weiny <ira.weiny@intel.com> writes:
->>>
->>>> On Wed, Apr 14, 2021 at 06:10:26PM +0530, Vaibhav Jain wrote:
->>>>> Currently drc_pmem_qeury_stats() generates a dev_err in case
->>>>> "Enable Performance Information Collection" feature is disabled from
->>>>> HMC. The error is of the form below:
->>>>>
->>>>> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
->>>>> 	 performance stats, Err:-10
->>>>>
->>>>> This error message confuses users as it implies a possible problem
->>>>> with the nvdimm even though its due to a disabled feature.
->>>>>
->>>>> So we fix this by explicitly handling the H_AUTHORITY error from the
->>>>> H_SCM_PERFORMANCE_STATS hcall and generating a warning instead of an
->>>>> error, saying that "Performance stats in-accessible".
->>>>>
->>>>> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
->>>>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->>>>> ---
->>>>>  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
->>>>>  1 file changed, 3 insertions(+)
->>>>>
->>>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> index 835163f54244..9216424f8be3 100644
->>>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->>>>> @@ -277,6 +277,9 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->>>>>  		dev_err(&p->pdev->dev,
->>>>>  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
->>>>>  		return -ENOENT;
->>>>> +	} else if (rc == H_AUTHORITY) {
->>>>> +		dev_warn(&p->pdev->dev, "Performance stats in-accessible");
->>>>> +		return -EPERM;
->>>>
->>>> Is this because of a disabled feature or because of permissions?
->>>
->>> Its because of a disabled feature that revokes permission for a guest to
->>> retrieve performance statistics.
->>>
->>> The feature is called "Enable Performance Information Collection" and
->>> once disabled the hcall H_SCM_PERFORMANCE_STATS returns an error
->>> H_AUTHORITY indicating that the guest doesn't have permission to retrieve
->>> performance statistics.
->>
->> In that case would it be appropriate to have the error message indicate a
->> permission issue?
->>
->> Something like 'permission denied'?
-> 
-> Yes, Something like "Permission denied while accessing performance
-> stats" might be more clear and intuitive.
+This patch is based on top of Shiva's "Enable SMART test" patch[1].
 
-Hi Vaibhav,
-   Thanks for the patch. I agree with Ira and above warning message with "Permission denied" looks more clear.
-With that change, patch looks good to me.
+[1]: https://lkml.kernel.org/r/161711723989.556.4220555988871072543.stgit@9add658da52e
 
-Reviewed-By: Kajol Jain<kjain@linux.ibm.com>
-
-Thanks,
-Kajol Jain
-> 
-> Will update the warn message in v2.
-> 
->>
->> Ira
->>
-> 
+diff --git a/tools/testing/nvdimm/test/ndtest.c b/tools/testing/nvdimm/test/ndtest.c
+index bb47b145466d..09d98317bf4e 100644
+--- a/tools/testing/nvdimm/test/ndtest.c
++++ b/tools/testing/nvdimm/test/ndtest.c
+@@ -1,5 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "ndtest :" fmt
+ 
+ #include <linux/platform_device.h>
+ #include <linux/device.h>
+@@ -42,6 +42,7 @@ static DEFINE_SPINLOCK(ndtest_lock);
+ static struct ndtest_priv *instances[NUM_INSTANCES];
+ static struct class *ndtest_dimm_class;
+ static struct gen_pool *ndtest_pool;
++static struct workqueue_struct *ndtest_wq;
+ 
+ static const struct nd_papr_pdsm_health health_defaults = {
+ 	.dimm_unarmed = 0,
+@@ -496,6 +497,139 @@ static int ndtest_pdsm_health_set_threshold(struct ndtest_dimm *dimm,
+ 	return 0;
+ }
+ 
++static void ars_complete_all(struct ndtest_priv *p)
++{
++	int i;
++
++	for (i = 0; i < p->config->num_regions; i++) {
++		struct ndtest_region *region = &p->config->regions[i];
++
++		if (region->region)
++			nvdimm_region_notify(region->region,
++					     NVDIMM_REVALIDATE_POISON);
++	}
++}
++
++static void ndtest_scrub(struct work_struct *work)
++{
++	struct ndtest_priv *p = container_of(work, typeof(struct ndtest_priv),
++					     dwork.work);
++	struct badrange_entry *be;
++	int rc, i = 0;
++
++	spin_lock(&p->badrange.lock);
++	list_for_each_entry(be, &p->badrange.list, list) {
++		rc = nvdimm_bus_add_badrange(p->bus, be->start, be->length);
++		if (rc)
++			dev_err(&p->pdev.dev, "Failed to process ARS records\n");
++		else
++			i++;
++	}
++	spin_unlock(&p->badrange.lock);
++
++	if (i == 0) {
++		queue_delayed_work(ndtest_wq, &p->dwork, HZ);
++		return;
++	}
++
++	ars_complete_all(p);
++	p->scrub_count++;
++
++	mutex_lock(&p->ars_lock);
++	sysfs_notify_dirent(p->scrub_state);
++	clear_bit(ARS_BUSY, &p->scrub_flags);
++	clear_bit(ARS_POLL, &p->scrub_flags);
++	set_bit(ARS_VALID, &p->scrub_flags);
++	mutex_unlock(&p->ars_lock);
++
++}
++
++static int ndtest_scrub_notify(struct ndtest_priv *p)
++{
++	if (!test_and_set_bit(ARS_BUSY, &p->scrub_flags))
++		queue_delayed_work(ndtest_wq, &p->dwork, HZ);
++
++	return 0;
++}
++
++static int ndtest_ars_inject(struct ndtest_priv *p,
++			     struct nd_cmd_ars_err_inj *inj,
++			     unsigned int buf_len)
++{
++	int rc;
++
++	if (buf_len != sizeof(*inj)) {
++		dev_dbg(&p->bus->dev, "buflen: %u, inj size: %lu\n",
++			buf_len, sizeof(*inj));
++		rc = -EINVAL;
++		goto err;
++	}
++
++	rc =  badrange_add(&p->badrange, inj->err_inj_spa_range_base,
++			   inj->err_inj_spa_range_length);
++
++	if (inj->err_inj_options & (1 << ND_ARS_ERR_INJ_OPT_NOTIFY))
++		ndtest_scrub_notify(p);
++
++	inj->status = 0;
++
++	return 0;
++
++err:
++	inj->status = NFIT_ARS_INJECT_INVALID;
++	return rc;
++}
++
++static int ndtest_ars_inject_clear(struct ndtest_priv *p,
++				   struct nd_cmd_ars_err_inj_clr *inj,
++				   unsigned int buf_len)
++{
++	int rc;
++
++	if (buf_len != sizeof(*inj)) {
++		rc = -EINVAL;
++		goto err;
++	}
++
++	if (inj->err_inj_clr_spa_range_length <= 0) {
++		rc = -EINVAL;
++		goto err;
++	}
++
++	badrange_forget(&p->badrange, inj->err_inj_clr_spa_range_base,
++			inj->err_inj_clr_spa_range_length);
++
++	inj->status = 0;
++	return 0;
++
++err:
++	inj->status = NFIT_ARS_INJECT_INVALID;
++	return rc;
++}
++
++static int ndtest_ars_inject_status(struct ndtest_priv *p,
++				    struct nd_cmd_ars_err_inj_stat *stat,
++				    unsigned int buf_len)
++{
++	struct badrange_entry *be;
++	int max = SZ_4K / sizeof(struct nd_error_stat_query_record);
++	int i = 0;
++
++	stat->status = 0;
++	spin_lock(&p->badrange.lock);
++	list_for_each_entry(be, &p->badrange.list, list) {
++		stat->record[i].err_inj_stat_spa_range_base = be->start;
++		stat->record[i].err_inj_stat_spa_range_length = be->length;
++		i++;
++		if (i > max)
++			break;
++	}
++	spin_unlock(&p->badrange.lock);
++	stat->inj_err_rec_count = i;
++
++	return 0;
++}
++
+ static int ndtest_dimm_cmd_call(struct ndtest_dimm *dimm, unsigned int buf_len,
+ 			   void *buf)
+ {
+@@ -519,6 +653,157 @@ static int ndtest_dimm_cmd_call(struct ndtest_dimm *dimm, unsigned int buf_len,
+ 	return 0;
+ }
+ 
++static int ndtest_bus_cmd_call(struct nvdimm_bus_descriptor *nd_desc, void *buf,
++			       unsigned int buf_len, int *cmd_rc)
++{
++	struct nd_cmd_pkg *pkg = buf;
++	struct ndtest_priv *p = container_of(nd_desc, struct ndtest_priv,
++					     bus_desc);
++	void *payload = pkg->nd_payload;
++	unsigned int func = pkg->nd_command;
++	unsigned int len = pkg->nd_size_in + pkg->nd_size_out;
++
++	switch (func) {
++	case PAPR_PDSM_INJECT_SET:
++		return ndtest_ars_inject(p, payload, len);
++	case PAPR_PDSM_INJECT_CLEAR:
++		return ndtest_ars_inject_clear(p, payload, len);
++	case PAPR_PDSM_INJECT_GET:
++		return ndtest_ars_inject_status(p, payload, len);
++	}
++
++	return -ENOTTY;
++}
++
++static int ndtest_cmd_ars_cap(struct ndtest_priv *p, struct nd_cmd_ars_cap *cmd,
++			      unsigned int buf_len)
++{
++	int ars_recs;
++
++	if (buf_len < sizeof(*cmd))
++		return -EINVAL;
++
++	/* for testing, only store up to n records that fit within a page */
++	ars_recs = SZ_4K / sizeof(struct nd_ars_record);
++
++	cmd->max_ars_out = sizeof(struct nd_cmd_ars_status)
++		+ ars_recs * sizeof(struct nd_ars_record);
++	cmd->status = (ND_ARS_PERSISTENT | ND_ARS_VOLATILE) << 16;
++	cmd->clear_err_unit = 256;
++	p->max_ars = cmd->max_ars_out;
++
++	return 0;
++}
++
++static void post_ars_status(struct ars_state *state,
++			    struct badrange *badrange, u64 addr, u64 len)
++{
++	struct nd_cmd_ars_status *status;
++	struct nd_ars_record *record;
++	struct badrange_entry *be;
++	u64 end = addr + len - 1;
++	int i = 0;
++
++	state->deadline = jiffies + 1*HZ;
++	status = state->ars_status;
++	status->status = 0;
++	status->address = addr;
++	status->length = len;
++	status->type = ND_ARS_PERSISTENT;
++
++	spin_lock(&badrange->lock);
++	list_for_each_entry(be, &badrange->list, list) {
++		u64 be_end = be->start + be->length - 1;
++		u64 rstart, rend;
++
++		/* skip entries outside the range */
++		if (be_end < addr || be->start > end)
++			continue;
++
++		rstart = (be->start < addr) ? addr : be->start;
++		rend = (be_end < end) ? be_end : end;
++		record = &status->records[i];
++		record->handle = 0;
++		record->err_address = rstart;
++		record->length = rend - rstart + 1;
++		i++;
++	}
++	spin_unlock(&badrange->lock);
++
++	status->num_records = i;
++	status->out_length = sizeof(struct nd_cmd_ars_status)
++		+ i * sizeof(struct nd_ars_record);
++}
++
++#define NFIT_ARS_STATUS_BUSY (1 << 16)
++#define NFIT_ARS_START_BUSY 6
++
++static int ndtest_cmd_ars_start(struct ndtest_priv *priv,
++				struct nd_cmd_ars_start *start,
++				unsigned int buf_len, int *cmd_rc)
++{
++	if (buf_len < sizeof(*start))
++		return -EINVAL;
++
++	spin_lock(&priv->state.lock);
++	if (time_before(jiffies, priv->state.deadline)) {
++		start->status = NFIT_ARS_START_BUSY;
++		*cmd_rc = -EBUSY;
++	} else {
++		start->status = 0;
++		start->scrub_time = 1;
++		post_ars_status(&priv->state, &priv->badrange,
++				start->address, start->length);
++		*cmd_rc = 0;
++	}
++	spin_unlock(&priv->state.lock);
++
++	return 0;
++}
++
++static int ndtest_cmd_ars_status(struct ndtest_priv *priv,
++				 struct nd_cmd_ars_status *status,
++				 unsigned int buf_len, int *cmd_rc)
++{
++	if (buf_len < priv->state.ars_status->out_length)
++		return -EINVAL;
++
++	spin_lock(&priv->state.lock);
++	if (time_before(jiffies, priv->state.deadline)) {
++		memset(status, 0, buf_len);
++		status->status = NFIT_ARS_STATUS_BUSY;
++		status->out_length = sizeof(*status);
++		*cmd_rc = -EBUSY;
++	} else {
++		memcpy(status, priv->state.ars_status,
++		       priv->state.ars_status->out_length);
++		*cmd_rc = 0;
++	}
++	spin_unlock(&priv->state.lock);
++
++	return 0;
++}
++
++static int ndtest_cmd_clear_error(struct ndtest_priv *priv,
++				     struct nd_cmd_clear_error *inj,
++				     unsigned int buf_len, int *cmd_rc)
++{
++	const u64 mask = 255;
++
++	if (buf_len < sizeof(*inj))
++		return -EINVAL;
++
++	if ((inj->address & mask) || (inj->length & mask))
++		return -EINVAL;
++
++	badrange_forget(&priv->badrange, inj->address, inj->length);
++	inj->status = 0;
++	inj->cleared = inj->length;
++	*cmd_rc = 0;
++
++	return 0;
++}
++
+ static int ndtest_ctl(struct nvdimm_bus_descriptor *nd_desc,
+ 		      struct nvdimm *nvdimm, unsigned int cmd, void *buf,
+ 		      unsigned int buf_len, int *cmd_rc)
+@@ -531,8 +816,32 @@ static int ndtest_ctl(struct nvdimm_bus_descriptor *nd_desc,
+ 
+ 	*cmd_rc = 0;
+ 
+-	if (!nvdimm)
+-		return -EINVAL;
++	if (!nvdimm) {
++		struct ndtest_priv *priv;
++
++		if (!nd_desc)
++			return -ENOTTY;
++
++		priv = container_of(nd_desc, struct ndtest_priv, bus_desc);
++		switch (cmd) {
++		case ND_CMD_CALL:
++			return ndtest_bus_cmd_call(nd_desc, buf, buf_len,
++						   cmd_rc);
++		case ND_CMD_ARS_CAP:
++			return ndtest_cmd_ars_cap(priv, buf, buf_len);
++		case ND_CMD_ARS_START:
++			return ndtest_cmd_ars_start(priv, buf, buf_len, cmd_rc);
++		case ND_CMD_ARS_STATUS:
++			return ndtest_cmd_ars_status(priv, buf, buf_len,
++						     cmd_rc);
++		case ND_CMD_CLEAR_ERROR:
++			return ndtest_cmd_clear_error(priv, buf, buf_len,
++						      cmd_rc);
++		default:
++			dev_dbg(&priv->pdev.dev, "Invalid command\n");
++			return -ENOTTY;
++		}
++	}
+ 
+ 	dimm = nvdimm_provider_data(nvdimm);
+ 	if (!dimm)
+@@ -683,6 +992,9 @@ static void *ndtest_alloc_resource(struct ndtest_priv *p, size_t size,
+ 		return NULL;
+ 
+ 	buf = vmalloc(size);
++	if (!buf)
++		return NULL;
++
+ 	if (size >= DIMM_SIZE)
+ 		__dma = gen_pool_alloc_algo(ndtest_pool, size,
+ 					    gen_pool_first_fit_align, &data);
+@@ -1052,6 +1364,7 @@ static ssize_t flags_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RO(flags);
+ 
++
+ #define PAPR_PMEM_DIMM_CMD_MASK				\
+ 	 ((1U << PAPR_PDSM_HEALTH)			\
+ 	 | (1U << PAPR_PDSM_HEALTH_INJECT)		\
+@@ -1195,11 +1508,102 @@ static const struct attribute_group of_node_attribute_group = {
+ 	.attrs = of_node_attributes,
+ };
+ 
++#define PAPR_PMEM_BUS_DSM_MASK				\
++	((1U << PAPR_PDSM_INJECT_SET)			\
++	 | (1U << PAPR_PDSM_INJECT_GET)			\
++	 | (1U << PAPR_PDSM_INJECT_CLEAR))
++
++static ssize_t bus_dsm_mask_show(struct device *dev,
++		struct device_attribute *attr, char *buf)
++{
++	return sprintf(buf, "%#x\n", PAPR_PMEM_BUS_DSM_MASK);
++}
++static struct device_attribute dev_attr_bus_dsm_mask = {
++	.attr	= { .name = "dsm_mask", .mode = 0444 },
++	.show	= bus_dsm_mask_show,
++};
++
++static ssize_t scrub_show(struct device *dev, struct device_attribute *attr,
++			  char *buf)
++{
++	struct nvdimm_bus_descriptor *nd_desc;
++	struct ndtest_priv *p;
++	ssize_t rc = -ENXIO;
++	bool busy = 0;
++
++	device_lock(dev);
++	nd_desc = dev_get_drvdata(dev);
++	if (!nd_desc) {
++		device_unlock(dev);
++		return rc;
++	}
++
++	p = container_of(nd_desc, struct ndtest_priv, bus_desc);
++
++	mutex_lock(&p->ars_lock);
++	busy = test_bit(ARS_BUSY, &p->scrub_flags) &&
++		!test_bit(ARS_CANCEL, &p->scrub_flags);
++	rc = sprintf(buf, "%d%s", p->scrub_count, busy ? "+\n" : "\n");
++	if (busy && capable(CAP_SYS_RAWIO) &&
++	    !test_and_set_bit(ARS_POLL, &p->scrub_flags))
++		mod_delayed_work(ndtest_wq, &p->dwork, HZ);
++
++	mutex_unlock(&p->ars_lock);
++
++	device_unlock(dev);
++	return rc;
++}
++
++static ssize_t scrub_store(struct device *dev, struct device_attribute *attr,
++			   const char *buf, size_t size)
++{
++	struct nvdimm_bus_descriptor *nd_desc;
++	struct ndtest_priv *p;
++	ssize_t rc = 0;
++	long val;
++
++	rc = kstrtol(buf, 0, &val);
++	if (rc)
++		return rc;
++	if (val != 1)
++		return -EINVAL;
++	device_lock(dev);
++	nd_desc = dev_get_drvdata(dev);
++	if (nd_desc) {
++		p = container_of(nd_desc, struct ndtest_priv, bus_desc);
++
++		ndtest_scrub_notify(p);
++	}
++	device_unlock(dev);
++
++	return size;
++}
++static DEVICE_ATTR_RW(scrub);
++
++static struct attribute *ndtest_attributes[] = {
++	&dev_attr_bus_dsm_mask.attr,
++	&dev_attr_scrub.attr,
++	NULL,
++};
++
++static const struct attribute_group ndtest_attribute_group = {
++	.name = "papr",
++	.attrs = ndtest_attributes,
++};
++
+ static const struct attribute_group *ndtest_attribute_groups[] = {
+ 	&of_node_attribute_group,
++	&ndtest_attribute_group,
+ 	NULL,
+ };
+ 
++#define PAPR_PMEM_BUS_CMD_MASK				   \
++	(1UL << ND_CMD_ARS_CAP				   \
++	 | 1UL << ND_CMD_ARS_START			   \
++	 | 1UL << ND_CMD_ARS_STATUS			   \
++	 | 1UL << ND_CMD_CLEAR_ERROR			   \
++	 | 1UL << ND_CMD_CALL)
++
+ static int ndtest_bus_register(struct ndtest_priv *p)
+ {
+ 	p->config = &bus_configs[p->pdev.id];
+@@ -1207,7 +1611,9 @@ static int ndtest_bus_register(struct ndtest_priv *p)
+ 	p->bus_desc.ndctl = ndtest_ctl;
+ 	p->bus_desc.module = THIS_MODULE;
+ 	p->bus_desc.provider_name = NULL;
++	p->bus_desc.cmd_mask = PAPR_PMEM_BUS_CMD_MASK;
+ 	p->bus_desc.attr_groups = ndtest_attribute_groups;
++	p->bus_desc.bus_family_mask = NVDIMM_FAMILY_PAPR;
+ 
+ 	set_bit(NVDIMM_FAMILY_PAPR, &p->bus_desc.dimm_family_mask);
+ 
+@@ -1228,6 +1634,33 @@ static int ndtest_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static int ndtest_init_ars(struct ndtest_priv *p)
++{
++	struct kernfs_node *papr_node;
++	struct device *bus_dev;
++
++	p->state.ars_status = devm_kzalloc(
++		&p->pdev.dev, sizeof(struct nd_cmd_ars_status) + SZ_4K,
++		GFP_KERNEL);
++	if (!p->state.ars_status)
++		return -ENOMEM;
++
++	bus_dev = to_nvdimm_bus_dev(p->bus);
++	papr_node = sysfs_get_dirent(bus_dev->kobj.sd, "papr");
++	if (!papr_node) {
++		dev_err(&p->pdev.dev, "sysfs_get_dirent 'papr' failed\n");
++		return -ENOENT;
++	}
++
++	p->scrub_state = sysfs_get_dirent(papr_node, "scrub");
++	if (!p->scrub_state) {
++		dev_err(&p->pdev.dev, "sysfs_get_dirent 'scrub' failed\n");
++		return -ENOENT;
++	}
++
++	return 0;
++}
++
+ static int ndtest_probe(struct platform_device *pdev)
+ {
+ 	struct ndtest_priv *p;
+@@ -1252,6 +1685,10 @@ static int ndtest_probe(struct platform_device *pdev)
+ 	if (rc)
+ 		goto err;
+ 
++	rc = ndtest_init_ars(p);
++	if (rc)
++		goto err;
++
+ 	rc = devm_add_action_or_reset(&pdev->dev, put_dimms, p);
+ 	if (rc)
+ 		goto err;
+@@ -1299,6 +1736,7 @@ static void cleanup_devices(void)
+ 	if (ndtest_pool)
+ 		gen_pool_destroy(ndtest_pool);
+ 
++	destroy_workqueue(ndtest_wq);
+ 
+ 	if (ndtest_dimm_class)
+ 		class_destroy(ndtest_dimm_class);
+@@ -1319,6 +1757,10 @@ static __init int ndtest_init(void)
+ 
+ 	nfit_test_setup(ndtest_resource_lookup, NULL);
+ 
++	ndtest_wq = create_singlethread_workqueue("nfit");
++	if (!ndtest_wq)
++		return -ENOMEM;
++
+ 	ndtest_dimm_class = class_create(THIS_MODULE, "nfit_test_dimm");
+ 	if (IS_ERR(ndtest_dimm_class)) {
+ 		rc = PTR_ERR(ndtest_dimm_class);
+@@ -1348,6 +1790,7 @@ static __init int ndtest_init(void)
+ 		}
+ 
+ 		INIT_LIST_HEAD(&priv->resources);
++		badrange_init(&priv->badrange);
+ 		pdev = &priv->pdev;
+ 		pdev->name = KBUILD_MODNAME;
+ 		pdev->id = i;
+@@ -1360,6 +1803,11 @@ static __init int ndtest_init(void)
+ 		get_device(&pdev->dev);
+ 
+ 		instances[i] = priv;
++
++		/* Everything about ARS here */
++		INIT_DELAYED_WORK(&priv->dwork, ndtest_scrub);
++		mutex_init(&priv->ars_lock);
++		spin_lock_init(&priv->state.lock);
+ 	}
+ 
+ 	rc = platform_driver_register(&ndtest_driver);
+@@ -1377,6 +1825,7 @@ static __init int ndtest_init(void)
+ 
+ static __exit void ndtest_exit(void)
+ {
++	flush_workqueue(ndtest_wq);
+ 	cleanup_devices();
+ 	platform_driver_unregister(&ndtest_driver);
+ }
+diff --git a/tools/testing/nvdimm/test/ndtest.h b/tools/testing/nvdimm/test/ndtest.h
+index d29638b6a332..d92c4f3df344 100644
+--- a/tools/testing/nvdimm/test/ndtest.h
++++ b/tools/testing/nvdimm/test/ndtest.h
+@@ -83,17 +83,34 @@ enum dimm_type {
+ 	NDTEST_REGION_TYPE_BLK = 0x1,
+ };
+ 
++struct ars_state {
++	struct nd_cmd_ars_status *ars_status;
++	unsigned long deadline;
++	spinlock_t lock;
++};
++
+ struct ndtest_priv {
+ 	struct platform_device pdev;
+ 	struct device_node *dn;
+ 	struct list_head resources;
+ 	struct nvdimm_bus_descriptor bus_desc;
++	struct delayed_work dwork;
++	struct mutex ars_lock;
+ 	struct nvdimm_bus *bus;
+ 	struct ndtest_config *config;
++	struct ars_state state;
++	struct badrange badrange;
++	struct nd_cmd_ars_status *ars_status;
++	struct kernfs_node *scrub_state;
+ 
+ 	dma_addr_t *dcr_dma;
+ 	dma_addr_t *label_dma;
+ 	dma_addr_t *dimm_dma;
++
++	unsigned long scrub_flags;
++	unsigned long ars_state;
++	unsigned int max_ars;
++	int scrub_count;
+ };
+ 
+ struct ndtest_blk_mmio {
+@@ -235,4 +252,12 @@ struct nd_pkg_pdsm {
+ 	union nd_pdsm_payload payload;
+ } __packed;
+ 
++enum scrub_flags {
++	ARS_BUSY,
++	ARS_CANCEL,
++	ARS_VALID,
++	ARS_POLL,
++	ARS_FAILED,
++};
++
+ #endif /* NDTEST_H */
+-- 
+2.30.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
