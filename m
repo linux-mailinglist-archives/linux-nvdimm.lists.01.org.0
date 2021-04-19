@@ -2,68 +2,51 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB48936408E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 13:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F853640D6
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 13:48:08 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 82D0E100EB839;
-	Mon, 19 Apr 2021 04:29:11 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=209.85.214.180; helo=mail-pl1-f180.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 39BFA100EC1D4;
+	Mon, 19 Apr 2021 04:48:06 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1722F100EB838
-	for <linux-nvdimm@lists.01.org>; Mon, 19 Apr 2021 04:29:09 -0700 (PDT)
-Received: by mail-pl1-f180.google.com with SMTP id u15so8962710plf.10
-        for <linux-nvdimm@lists.01.org>; Mon, 19 Apr 2021 04:29:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=2BnjbBxaWsdyVb9syIrgmIISJyliqSGiE2A8ive3aqQ=;
-        b=jpo6eKEHXYPXQ/P9tY6+0bphWcKjVMVru0gXOj6endcvM6O21e/zaQEGiitosLP6wc
-         CbQElQzja5o69sJTiRWxi/9FATlVrmnvmUuyevVp9jtIa5yiCK7HUQSYf21VKudMgs2J
-         5ER3wmfIIwaN4/2oCPEZkYWAVNMtBm/6mUlse+W0rYG18PRJ+6RtrxHuR8Eb0pLFvPe0
-         Se4cFO9Qkf+oqHQLlq0Fshs/j0HT9uirq5uk1yOquz2zxLrl9h/TV4aUkDZfmSkOBCp1
-         StMCp9NDCZiDtm2YwuKt6WmsZ0W3RDZr0llDfSWqkkP8i0oJVQcrzqXalBGPfZ+ZQW0D
-         Qk7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=2BnjbBxaWsdyVb9syIrgmIISJyliqSGiE2A8ive3aqQ=;
-        b=qjw4S6Gn+4vbIHTQk6zCrj2CW3oByH/FyZJ2PEPLVSHCgzqzVtlNN+bBK6Q3zkgIBM
-         EHxLfD2vr+dx94McRK89VjbdJYgGeyGj4tZc7NOfvYqqKvUevrEZ2GrJ1hmFY6OLXLLk
-         TrOJ+epeq2qOTFleP0V8HsxT9RkXIluHlkpIBs7OupDD+zKfctkSjD709AoyCYL+IPt/
-         fTiFQ+yPwLx4DRq/tcxpULv7WHnuXon1qRJZR7mgg+wLwz2TR5RDO+Ru+xMvq3PoLd+Y
-         4r/kG/2ykvr1lonAIzao7OqQ2Qn1FliEJee+w6/De6qPmH7NELV/ionli3udWwFVmcbZ
-         stPg==
-X-Gm-Message-State: AOAM532qMR6MMKf4p2BnjLLbC/63k2fBXGmUkC1yJO2CbBDjPzm3KNqs
-	vcS1ilu/Ei+K0X7xwnQ97LZ8LAnyXuW7FA==
-X-Google-Smtp-Source: ABdhPJzrSLuZuYa8icm19KoirpAiKvbBuUdS43ST+rIE+7hfb4Jr7++GU4OOg709dTl9I/3V7UUWaQ==
-X-Received: by 2002:a17:902:8c92:b029:e8:fa73:ad22 with SMTP id t18-20020a1709028c92b02900e8fa73ad22mr22165680plo.66.1618831688551;
-        Mon, 19 Apr 2021 04:28:08 -0700 (PDT)
-Received: from desktop.fossix.local ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id l3sm14276734pju.44.2021.04.19.04.28.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 04:28:08 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Linux NVDIMM <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH 2/2] Error injection support for PAPR
-Date: Mon, 19 Apr 2021 16:57:40 +0530
-Message-Id: <20210419112740.695948-2-santosh@fossix.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210419112740.695948-1-santosh@fossix.org>
-References: <20210419112740.695948-1-santosh@fossix.org>
+	by ml01.01.org (Postfix) with ESMTPS id A686F100EF264
+	for <linux-nvdimm@lists.01.org>; Mon, 19 Apr 2021 04:48:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bwPuhmLV9iDdbBtA80aP2NeOoPck37vPl2v0l8S8dJw=; b=ZKgd+wiWxB4OjJM0AIDMQSKXxR
+	mK2R/z3oqKh1PUQkJXhvcIcCeNtKgp8OXUyGgAszjnbvM4jRpHJ8CjWbc7hBN1U6HbdDGK+UorYOc
+	MFcMKMdSOPfBZbD7GWLjHFe+LP+3z+b1cJWnPckDm478VhnIuObWzbqtK9sHaZ8jwmo1+eWrdBGQa
+	v1kBE40Vi4xvSvLhZ0bnDkcLGvuPRT/cK5/47tFYec+ZGcwN2cVCQO61pGGxpuB3lYinJPup2TnB4
+	GZ/ajfYkgk2Tj5Ry8+D2ggrOGM4MLh5XgrDlBR0M9Vx/aMmMy+8h8RgjgqInD8p/8jeX+er7cc13j
+	MOHIVxrw==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1lYSJB-00Dg11-HM; Mon, 19 Apr 2021 11:43:29 +0000
+Date: Mon, 19 Apr 2021 12:43:17 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH] secretmem: optimize page_is_secretmem()
+Message-ID: <20210419114317.GY2531743@casper.infradead.org>
+References: <20210419084218.7466-1-rppt@kernel.org>
+ <3b30ac54-8a92-5f54-28f0-f110a40700c7@redhat.com>
+ <YH1PE4oWeicpJT9g@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: ANUK6HFLHX34ZG67YRNKSLLQ5ZUYO65K
-X-Message-ID-Hash: ANUK6HFLHX34ZG67YRNKSLLQ5ZUYO65K
-X-MailFrom: santosh@fossix.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Disposition: inline
+In-Reply-To: <YH1PE4oWeicpJT9g@kernel.org>
+Message-ID-Hash: 7RES3Q2EGLX5YMZXZYLMALMCTO74UR4F
+X-Message-ID-Hash: 7RES3Q2EGLX5YMZXZYLMALMCTO74UR4F
+X-MailFrom: willy@infradead.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, S
+ huah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, kernel test robot <oliver.sang@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ANUK6HFLHX34ZG67YRNKSLLQ5ZUYO65K/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7RES3Q2EGLX5YMZXZYLMALMCTO74UR4F/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -72,213 +55,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add support for error injection on PAPR family of devices. This is
-particularly useful in running 'make check' on non-nfit platforms.
+On Mon, Apr 19, 2021 at 12:36:19PM +0300, Mike Rapoport wrote:
+> Well, most if the -4.2% of the performance regression kbuild reported were
+> due to repeated compount_head(page) in page_mapping(). So the whole point
+> of this patch is to avoid calling page_mapping().
 
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
----
- ndctl/lib/libndctl.c  |   1 +
- ndctl/lib/papr.c      | 134 ++++++++++++++++++++++++++++++++++++++++++
- ndctl/lib/private.h   |   1 +
- ndctl/libndctl-papr.h |   7 +++
- 4 files changed, 143 insertions(+)
- create mode 100644 ndctl/libndctl-papr.h
+It's quite ludicrous how many times we call compound_head() in
+page_mapping() today:
 
-diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
-index 2364578..2c2f485 100644
---- a/ndctl/lib/libndctl.c
-+++ b/ndctl/lib/libndctl.c
-@@ -904,6 +904,7 @@ static void *add_bus(void *parent, int id, const char *ctl_base)
- 	else {
- 		bus->has_of_node = 1;
- 		bus_name = "papr";
-+		bus->ops = papr_bus_ops;
- 	}
- 
- 	sprintf(path, "%s/device/%s/dsm_mask", ctl_base, bus_name);
-diff --git a/ndctl/lib/papr.c b/ndctl/lib/papr.c
-index f94f8aa..6ac3d3e 100644
---- a/ndctl/lib/papr.c
-+++ b/ndctl/lib/papr.c
-@@ -12,6 +12,7 @@
- #include <util/log.h>
- #include <ndctl.h>
- #include <ndctl/libndctl.h>
-+#include <ndctl/libndctl-papr.h>
- #include <lib/private.h>
- #include "papr.h"
- 
-@@ -38,6 +39,33 @@
- /* return the pdsm command */
- #define to_pdsm_cmd(C) ((enum papr_pdsm)to_ndcmd(C)->nd_command)
- 
-+/**
-+ * ndctl_bus_is_papr_cmd_supported - check if command is supported on @bus.
-+ * @bus: ndctl_bus instance
-+ * @cmd: papr command number (defined as PAPR_PDSM_XXX in papr-pdsm.h)
-+ *
-+ * Return 1: command is supported. Return 0: command is not supported.
-+ *
-+ */
-+NDCTL_EXPORT int ndctl_bus_is_papr_cmd_supported(struct ndctl_bus *bus,
-+						 int cmd)
-+{
-+	return !!(bus->nfit_dsm_mask & (1ULL << cmd));
-+}
-+
-+static int papr_is_errinj_supported(struct ndctl_bus *bus)
-+{
-+	if (!ndctl_bus_is_papr_scm(bus))
-+		return 0;
-+
-+	if (ndctl_bus_is_papr_cmd_supported(bus, PAPR_PDSM_INJECT_SET) &&
-+	    ndctl_bus_is_papr_cmd_supported(bus, PAPR_PDSM_INJECT_CLEAR) &&
-+	    ndctl_bus_is_papr_cmd_supported(bus, PAPR_PDSM_INJECT_GET))
-+		return 1;
-+
-+	return 0;
-+}
-+
- static bool papr_cmd_is_supported(struct ndctl_dimm *dimm, int cmd)
- {
- 	/* Handle this separately to support monitor mode */
-@@ -559,3 +587,109 @@ struct ndctl_dimm_ops * const papr_dimm_ops = &(struct ndctl_dimm_ops) {
- 		= papr_cmd_smart_threshold_set_ctrl_temperature,
- 	.smart_threshold_set_spares = papr_cmd_smart_threshold_set_spares,
- };
-+
-+static u32 bus_get_firmware_status(struct ndctl_cmd *cmd)
-+{
-+	struct nd_cmd_bus *cmd_bus = cmd->cmd_bus;
-+
-+	switch (cmd_bus->gen.nd_command) {
-+	case PAPR_PDSM_INJECT_SET:
-+		return cmd_bus->err_inj.status;
-+	case PAPR_PDSM_INJECT_CLEAR:
-+		return cmd_bus->err_inj_clr.status;
-+	case PAPR_PDSM_INJECT_GET:
-+		return cmd_bus->err_inj_stat.status;
-+	}
-+
-+	return -1U;
-+}
-+
-+static struct ndctl_cmd *papr_bus_cmd_new_err_inj(struct ndctl_bus *bus)
-+{
-+	size_t size, cmd_length;
-+	struct nd_cmd_pkg *pkg;
-+	struct ndctl_cmd *cmd;
-+
-+	cmd_length = sizeof(struct nd_cmd_ars_err_inj);
-+	size = sizeof(*cmd) + sizeof(*pkg) + cmd_length;
-+	cmd = calloc(1, size);
-+	if (!cmd)
-+		return NULL;
-+
-+	cmd->bus = bus;
-+	ndctl_cmd_ref(cmd);
-+	cmd->type = ND_CMD_CALL;
-+	cmd->get_firmware_status = bus_get_firmware_status;
-+	cmd->size = size;
-+	cmd->status = 1;
-+	pkg = (struct nd_cmd_pkg *)&cmd->cmd_buf[0];
-+	pkg->nd_command = PAPR_PDSM_INJECT_SET;
-+	pkg->nd_size_in = offsetof(struct nd_cmd_ars_err_inj, status);
-+	pkg->nd_size_out = cmd_length - pkg->nd_size_in;
-+	pkg->nd_fw_size = pkg->nd_size_out;
-+
-+	return cmd;
-+}
-+
-+static struct ndctl_cmd *papr_bus_cmd_new_err_inj_clr(struct ndctl_bus *bus)
-+{
-+	size_t size, cmd_length;
-+	struct nd_cmd_pkg *pkg;
-+	struct ndctl_cmd *cmd;
-+
-+	cmd_length = sizeof(struct nd_cmd_ars_err_inj_clr);
-+	size = sizeof(*cmd) + sizeof(*pkg) + cmd_length;
-+	cmd = calloc(1, size);
-+	if (!cmd)
-+		return NULL;
-+
-+	cmd->bus = bus;
-+	ndctl_cmd_ref(cmd);
-+	cmd->type = ND_CMD_CALL;
-+	cmd->get_firmware_status = bus_get_firmware_status;
-+	cmd->size = size;
-+	cmd->status = 1;
-+	pkg = (struct nd_cmd_pkg *)&cmd->cmd_buf[0];
-+	pkg->nd_command = PAPR_PDSM_INJECT_CLEAR;
-+	pkg->nd_size_in = offsetof(struct nd_cmd_ars_err_inj_clr, status);
-+	pkg->nd_size_out = cmd_length - pkg->nd_size_in;
-+	pkg->nd_fw_size = pkg->nd_size_out;
-+
-+	return cmd;
-+}
-+
-+static struct ndctl_cmd *papr_bus_cmd_new_err_inj_stat(struct ndctl_bus *bus,
-+						u32 buf_size)
-+{
-+	size_t size, cmd_length;
-+	struct nd_cmd_pkg *pkg;
-+	struct ndctl_cmd *cmd;
-+
-+
-+	cmd_length = sizeof(struct nd_cmd_ars_err_inj_stat);
-+	size = sizeof(*cmd) + sizeof(*pkg) + cmd_length + buf_size;
-+	cmd = calloc(1, size);
-+	if (!cmd)
-+		return NULL;
-+
-+	cmd->bus = bus;
-+	ndctl_cmd_ref(cmd);
-+	cmd->type = ND_CMD_CALL;
-+	cmd->get_firmware_status = bus_get_firmware_status;
-+	cmd->size = size;
-+	cmd->status = 1;
-+	pkg = (struct nd_cmd_pkg *)&cmd->cmd_buf[0];
-+	pkg->nd_command = PAPR_PDSM_INJECT_GET;
-+	pkg->nd_size_in = 0;
-+	pkg->nd_size_out = cmd_length + buf_size;
-+	pkg->nd_fw_size = pkg->nd_size_out;
-+
-+	return cmd;
-+}
-+
-+struct ndctl_bus_ops *const papr_bus_ops = &(struct ndctl_bus_ops) {
-+	.new_err_inj = papr_bus_cmd_new_err_inj,
-+	.new_err_inj_clr = papr_bus_cmd_new_err_inj_clr,
-+	.new_err_inj_stat = papr_bus_cmd_new_err_inj_stat,
-+	.err_inj_supported = papr_is_errinj_supported,
-+};
-diff --git a/ndctl/lib/private.h b/ndctl/lib/private.h
-index 0f36c67..96d890b 100644
---- a/ndctl/lib/private.h
-+++ b/ndctl/lib/private.h
-@@ -383,6 +383,7 @@ struct ndctl_bus_ops {
- };
- 
- extern struct ndctl_bus_ops * const nfit_bus_ops;
-+extern struct ndctl_bus_ops * const papr_bus_ops;
- 
- struct ndctl_cmd *ndctl_bus_cmd_new_err_inj(struct ndctl_bus *bus);
- struct ndctl_cmd *ndctl_bus_cmd_new_err_inj_clr(struct ndctl_bus *bus);
-diff --git a/ndctl/libndctl-papr.h b/ndctl/libndctl-papr.h
-new file mode 100644
-index 0000000..1658d8e
---- /dev/null
-+++ b/ndctl/libndctl-papr.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: LGPL-2.1 */
-+
-+#ifndef __LIBNDCTL_PAPR_H__
-+#define __LIBNDCTL_PAPR_H__
-+
-+int ndctl_bus_is_papr_cmd_supported(struct ndctl_bus *bus, int cmd);
-+#endif
--- 
-2.30.2
+ page = compound_head(page);
+ if (__builtin_expect(!!(PageSlab(page)), 0))
+ if (__builtin_expect(!!(PageSwapCache(page)), 0)) {
+
+TESTPAGEFLAG(Slab, slab, PF_NO_TAIL) expands to:
+
+static __always_inline int PageSlab(struct page *page)
+{
+	PF_POISONED_CHECK(compound_head(page));
+	return test_bit(PG_slab, &compound_head(page));
+}
+
+static __always_inline int PageSwapCache(struct page *page)
+{
+        page = compound_head(page);
+        return PageSwapBacked(page) && test_bit(PG_swapcache, &page->flags);
+}
+
+but then!
+
+TESTPAGEFLAG(SwapBacked, swapbacked, PF_NO_TAIL) also expands like Slab does.
+
+So that's six calls to compound_head(), depending what Kconfig options
+you have enabled.
+
+And folio_mapping() is one of the functions I add in the first batch of
+patches, so review, etc will be helpful.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
