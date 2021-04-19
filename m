@@ -1,74 +1,82 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807223639A4
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 05:16:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A1E3639F1
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 06:05:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DF0B0100EC1EE;
-	Sun, 18 Apr 2021 20:16:04 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=117.51.136.25; helo=eposcard.co.jp; envelope-from=eyxshhm@eposcard.co.jp; receiver=<UNKNOWN> 
-Received: from eposcard.co.jp (unknown [117.51.136.25])
-	by ml01.01.org (Postfix) with ESMTP id A29C9100EC1EB
-	for <linux-nvdimm@lists.01.org>; Sun, 18 Apr 2021 20:16:00 -0700 (PDT)
-Message-ID: <B844E8E388C4E1BAD4AE5381928BE834@eposcard.co.jp>
-From: "EPOS" <info@01epos.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44Ko44Od44K544Kr44O844OJ44GU5Yip55So56K66KqN?=
-Date: Mon, 19 Apr 2021 11:15:48 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: BUBL2YFTBKJ772GIVEZA4QTCGESUJZRQ
-X-Message-ID-Hash: BUBL2YFTBKJ772GIVEZA4QTCGESUJZRQ
-X-MailFrom: eyxshhm@eposcard.co.jp
+	by ml01.01.org (Postfix) with ESMTP id D4C1F100EBB6A;
+	Sun, 18 Apr 2021 21:05:07 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=203.11.71.1; helo=ozlabs.org; envelope-from=michael@ozlabs.org; receiver=<UNKNOWN> 
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id C7F98100EBB62
+	for <linux-nvdimm@lists.01.org>; Sun, 18 Apr 2021 21:05:04 -0700 (PDT)
+Received: by ozlabs.org (Postfix, from userid 1034)
+	id 4FNtVv4RKdz9vHq; Mon, 19 Apr 2021 14:04:39 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linux-nvdimm@lists.01.org, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210404163148.321346-1-vaibhav@linux.ibm.com>
+References: <20210404163148.321346-1-vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/mm: Add cond_resched() while removing hpte mappings
+Message-Id: <161880478898.1398509.10526534460384650101.b4-ty@ellerman.id.au>
+Date: Mon, 19 Apr 2021 13:59:48 +1000
+MIME-Version: 1.0
+Message-ID-Hash: PRWA67HN5Z4YDYJ4NCGUZ5YH4FPOHT37
+X-Message-ID-Hash: PRWA67HN5Z4YDYJ4NCGUZ5YH4FPOHT37
+X-MailFrom: michael@ozlabs.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BUBL2YFTBKJ772GIVEZA4QTCGESUJZRQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PRWA67HN5Z4YDYJ4NCGUZ5YH4FPOHT37/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-44CQ44Ko44Od44K544Kr44O844OJ44CR5Yip55So44GE44Gf44Gg44GN44CB44GC44KK44GM44Go
-44GG44GU44GW44GE44G+44GZ44CCDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCuOBpOOBjeOBvuOB
-l+OBpuOBr+OAgeS7peS4i+OBuOOCouOCr+OCu+OCueOBruS4iuOAgeOCq+ODvOODieOBruOBlOWI
-qeeUqOeiuuiqjeOBq+OBlOWNlOWKm+OCkuOBiumhmOOBhOiHtOOBl+OBvuOBmeOAgg0KIOOBiuWu
-ouanmOOBq+OBr+OBlOi/t+aDkeOAgeOBlOW/g+mFjeOCkuOBiuaOm+OBkeOBl+OAgeiqoOOBq+eU
-s+OBl+ios+OBlOOBluOBhOOBvuOBm+OCk+OAgg0K5L2V5Y2S44GU55CG6Kej44GE44Gf44Gg44GN
-44Gf44GP44GK6aGY44GE55Sz44GX44GC44GS44G+44GZ44CCDQrjgZTlm57nrZTjgpLjgYTjgZ/j
-gaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjliLbpmZDjgYzntpnntprj
-gZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/k
-uIvjgZXjgYTjgIINCuKWoOOBlOWIqeeUqOeiuuiqjeOBr+OBk+OBoeOCiQ0KaHR0cHM6Ly93d3cu
-ZXBvcy1qcC52aXAvbG9naW4vDQrlvIrnpL7jga/jgIHjgqTjg7Pjgr/jg7zjg43jg4Pjg4jkuIrj
-ga7kuI3mraPooYzngrrjga7pmLLmraLjg7vmipHliLbjga7oprPngrnjgYvjgonjgrXjgqTjg4jj
-gajjgZfjgabjga7kv6HpoLzmgKfjg7vmraPlvZPmgKfjgpLpq5jjgoHjgovjgZ/jgoHjgIENCuWk
-p+WkieOBiuaJi+aVsOOBp+OBr+OBlOOBluOBhOOBvuOBmeOBjOOAgeS4i+iomO+8te+8su+8rOOB
-i+OCieODreOCsOOCpOODs+OBhOOBn+OBoOOBjeOAgQ0KaHR0cHM6Ly93d3cuZXBvcy1qcC52aXAv
-bG9naW4vDQrjgZTkuI3kvr/jgajjgZTlv4PphY3jgpLjgYrjgYvjgZHjgZfjgb7jgZfjgaboqqDj
-gavnlLPjgZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgYzjgIENCuS9leOBqOOBnuOBlOeQhuino+iz
-nOOCiuOBn+OBj+OBiumhmOOBhOeUs+OBl+OBguOBkuOBvuOBmeOAgg0K4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSADQrmoKrlvI/kvJrnpL7jgIDjgqjjg53jgrnj
-gqvjg7zjg4kNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K
-4pag55m66KGM6ICF4pagDQrmoKrlvI/kvJrnpL7jgIDjgqjjg53jgrnjgqvjg7zjg4kNCuadseS6
-rOmDveS4remHjuWMuuS4remHjjQtMy0yDQrilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIANCkNvcHlyaWdodCBBbGwgUmlnaHQgUmVzZXJ2ZWQuIEVwb3MgQ2FyZCBD
-by4sIEx0ZC4NCueEoeaWrei7oui8ieOBiuOCiOOBs+WGjemFjeW4g+OCkuemgeOBmOOBvuOBmeOA
-ggpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
-dmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJz
-Y3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Sun, 4 Apr 2021 22:01:48 +0530, Vaibhav Jain wrote:
+> While removing large number of mappings from hash page tables for
+> large memory systems as soft-lockup is reported because of the time
+> spent inside htap_remove_mapping() like one below:
+> 
+>  watchdog: BUG: soft lockup - CPU#8 stuck for 23s!
+>  <snip>
+>  NIP plpar_hcall+0x38/0x58
+>  LR  pSeries_lpar_hpte_invalidate+0x68/0xb0
+>  Call Trace:
+>   0x1fffffffffff000 (unreliable)
+>   pSeries_lpar_hpte_removebolted+0x9c/0x230
+>   hash__remove_section_mapping+0xec/0x1c0
+>   remove_section_mapping+0x28/0x3c
+>   arch_remove_memory+0xfc/0x150
+>   devm_memremap_pages_release+0x180/0x2f0
+>   devm_action_release+0x30/0x50
+>   release_nodes+0x28c/0x300
+>   device_release_driver_internal+0x16c/0x280
+>   unbind_store+0x124/0x170
+>   drv_attr_store+0x44/0x60
+>   sysfs_kf_write+0x64/0x90
+>   kernfs_fop_write+0x1b0/0x290
+>   __vfs_write+0x3c/0x70
+>   vfs_write+0xd4/0x270
+>   ksys_write+0xdc/0x130
+>   system_call+0x5c/0x70
+> 
+> [...]
+
+Applied to powerpc/next.
+
+[1/1] powerpc/mm: Add cond_resched() while removing hpte mappings
+      https://git.kernel.org/powerpc/c/a5d6a3e73acbd619dd5b7b831762b755f9e2db80
+
+cheers
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
