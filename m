@@ -1,46 +1,82 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6456A363F68
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 12:14:45 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF01363F72
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Apr 2021 12:21:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B4F61100EB827;
-	Mon, 19 Apr 2021 03:14:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 4F012100EB827;
+	Mon, 19 Apr 2021 03:21:42 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D5905100EB823
-	for <linux-nvdimm@lists.01.org>; Mon, 19 Apr 2021 03:14:39 -0700 (PDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E554261157;
-	Mon, 19 Apr 2021 10:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1618827278;
-	bh=5M87hSd1tRHqwQ2MYCWGR3C48wQgQUhK50aj8D9UnJc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=evAt2Kl5D6T9Cd0vvsQr+HGnZL0bjqZw0RQERf99o/a8ARSQONHlK5WsXoqQNk5HA
-	 UuhF/Rrt5Zhrq6yRbbpHUSqFJnrvW93kg/buM/tDCb4j7nNpeebnLT19q5XvGHG0e1
-	 49YiudzNJhVJYWtrWp69yUsf7ZicdxeuaJvb2o26MproyIrJfelmI05dnFpYTA1S+3
-	 KPevq2k+QCdmg92H0H+J4u9YW1dfsBAUkpesDwdo/uZea8b1mg9JI4Syb8VXhzzjqw
-	 IZ0ev45rLME8l/aMAEZNl8hE0npfiMbGut76Y1J7ozBko7t6Q5l7vUjPndFu66yHeo
-	 n/6L17YFihFDg==
-Date: Mon, 19 Apr 2021 13:14:19 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 6FD47100EBB97
+	for <linux-nvdimm@lists.01.org>; Mon, 19 Apr 2021 03:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1618827698;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xpi5lBk+awQqaK6Y03m/CCSgGP4Mxrpo1j7RjBYWGpQ=;
+	b=RpFTYZJllBfLrvOkIyyyjdJB5dQpYh75p1kl7C17eZHpzIJCD1chdSBHNdXO+1X9rEchpd
+	dv4GrQ5LwDmZfhmmQ/w8Pv1dKToK4Z6ZST9WU4Pvq2PMYtdVqPqYMcin7fbcxdlazxc6Bu
+	HO59Nf+wV9S2ZM82Hkd/HCe3sufmUso=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-479-OEfZTDtDPWC0nUUGiB02wQ-1; Mon, 19 Apr 2021 06:21:34 -0400
+X-MC-Unique: OEfZTDtDPWC0nUUGiB02wQ-1
+Received: by mail-ed1-f71.google.com with SMTP id f9-20020a50fe090000b02903839889635cso8952090edt.14
+        for <linux-nvdimm@lists.01.org>; Mon, 19 Apr 2021 03:21:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=Xpi5lBk+awQqaK6Y03m/CCSgGP4Mxrpo1j7RjBYWGpQ=;
+        b=Ohs8iWJQMeUT+FkGtfh1DXV8pUe+hIFuMAMB3qsv2DdE3SHyPpbGJp6UPAUm7Gi1g7
+         rKKbOzeTCRjccwfBSiregX8c8BeySVYZaaRk55Pv910C9JcCP2S9WRWvyhTpufwwIHhx
+         FzRv84O13Jwxpm7z/ofvw7eES5Pvf1OhJpkGbG3KsH3guTHY4ZSk7euqa40614C4F9QN
+         tkM19RNPm5zaUQa4wqs8P/OnngCBlB9HNOnoOvx5NQvoZLoC6Q1YM3toDCaTVbY/hxlF
+         gdZoV3peEJW6aiMsWI7zBpmdMN+7t2tdBi4bk9AIZeI9AL74euOBdX12OL5nAG+nvoel
+         Ztyg==
+X-Gm-Message-State: AOAM532HCgPViG8wjtRhezdUI5xzSGkiX/seMeHeh0u04prAmJtgLuvm
+	wOQHYUxOmjpoSwFv3NdMz6EbQmoL6iskk8BN+OJMXDrXXykuTmmeVPkGDYu9qamnIFVictub3bW
+	PlbVzeOayu2v1J2XxDEZE
+X-Received: by 2002:a05:6402:26c3:: with SMTP id x3mr25471491edd.126.1618827693632;
+        Mon, 19 Apr 2021 03:21:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwmgqAt375JQolL1odKMUOeY+mBAXFeiW3PyhYVPJipQltfTGdvih9swcKv5opSGIf6ZUpLaQ==
+X-Received: by 2002:a05:6402:26c3:: with SMTP id x3mr25471472edd.126.1618827693375;
+        Mon, 19 Apr 2021 03:21:33 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c69b8.dip0.t-ipconnect.de. [91.12.105.184])
+        by smtp.gmail.com with ESMTPSA id g11sm12241330edy.9.2021.04.19.03.21.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Apr 2021 03:21:32 -0700 (PDT)
 Subject: Re: [PATCH] secretmem: optimize page_is_secretmem()
-Message-ID: <YH1X+0CMH/2yppHK@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
 References: <20210419084218.7466-1-rppt@kernel.org>
  <3b30ac54-8a92-5f54-28f0-f110a40700c7@redhat.com>
  <YH1PE4oWeicpJT9g@kernel.org>
  <f4d0c4bf-423b-e227-444b-f1ea722dc43f@redhat.com>
  <56d8b80c-ce2c-ed86-0eda-253768d8d463@redhat.com>
+ <YH1X+0CMH/2yppHK@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Message-ID: <0a957f9b-b4d7-869a-44ec-14e92a40d941@redhat.com>
+Date: Mon, 19 Apr 2021 12:21:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <56d8b80c-ce2c-ed86-0eda-253768d8d463@redhat.com>
-Message-ID-Hash: SMBGVZ4LQJ6NUXBVWFAJP7PW5TFRZME2
-X-Message-ID-Hash: SMBGVZ4LQJ6NUXBVWFAJP7PW5TFRZME2
-X-MailFrom: rppt@kernel.org
+In-Reply-To: <YH1X+0CMH/2yppHK@kernel.org>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Message-ID-Hash: DVKOFBOKEHDZOOYUKIKT64GE2P2LNSGE
+X-Message-ID-Hash: DVKOFBOKEHDZOOYUKIKT64GE2P2LNSGE
+X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, S
@@ -48,167 +84,137 @@ CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SMBGVZ4LQJ6NUXBVWFAJP7PW5TFRZME2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DVKOFBOKEHDZOOYUKIKT64GE2P2LNSGE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Mon, Apr 19, 2021 at 11:40:56AM +0200, David Hildenbrand wrote:
-> On 19.04.21 11:38, David Hildenbrand wrote:
-> > On 19.04.21 11:36, Mike Rapoport wrote:
-> > > On Mon, Apr 19, 2021 at 11:15:02AM +0200, David Hildenbrand wrote:
-> > > > On 19.04.21 10:42, Mike Rapoport wrote:
-> > > > > From: Mike Rapoport <rppt@linux.ibm.com>
-> > > > >=20
-> > > > > Kernel test robot reported -4.2% regression of will-it-scale.per_=
-thread_ops
-> > > > > due to commit "mm: introduce memfd_secret system call to create "=
-secret"
-> > > > > memory areas".
-> > > > >=20
-> > > > > The perf profile of the test indicated that the regression is cau=
-sed by
-> > > > > page_is_secretmem() called from gup_pte_range() (inlined by gup_p=
-gd_range):
-> > > > >=20
-> > > > >     27.76  +2.5  30.23       perf-profile.children.cycles-pp.gup_=
-pgd_range
-> > > > >      0.00  +3.2   3.19 =B1 2%  perf-profile.children.cycles-pp.pa=
-ge_mapping
-> > > > >      0.00  +3.7   3.66 =B1 2%  perf-profile.children.cycles-pp.pa=
-ge_is_secretmem
-> > > > >=20
-> > > > > Further analysis showed that the slow down happens because neither
-> > > > > page_is_secretmem() nor page_mapping() are not inline and moreove=
-r,
-> > > > > multiple page flags checks in page_mapping() involve calling
-> > > > > compound_head() several times for the same page.
-> > > > >=20
-> > > > > Make page_is_secretmem() inline and replace page_mapping() with p=
-age flag
-> > > > > checks that do not imply page-to-head conversion.
-> > > > >=20
-> > > > > Reported-by: kernel test robot <oliver.sang@intel.com>
-> > > > > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > > > > ---
-> > > > >=20
-> > > > > @Andrew,
-> > > > > The patch is vs v5.12-rc7-mmots-2021-04-15-16-28, I'd appreciate =
-if it would
-> > > > > be added as a fixup to the memfd_secret series.
-> > > > >=20
-> > > > >     include/linux/secretmem.h | 26 +++++++++++++++++++++++++-
-> > > > >     mm/secretmem.c            | 12 +-----------
-> > > > >     2 files changed, 26 insertions(+), 12 deletions(-)
-> > > > >=20
-> > > > > diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
-> > > > > index 907a6734059c..b842b38cbeb1 100644
-> > > > > --- a/include/linux/secretmem.h
-> > > > > +++ b/include/linux/secretmem.h
-> > > > > @@ -4,8 +4,32 @@
-> > > > >     #ifdef CONFIG_SECRETMEM
-> > > > > +extern const struct address_space_operations secretmem_aops;
-> > > > > +
-> > > > > +static inline bool page_is_secretmem(struct page *page)
-> > > > > +{
-> > > > > +	struct address_space *mapping;
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * Using page_mapping() is quite slow because of the actual call
-> > > > > +	 * instruction and repeated compound_head(page) inside the
-> > > > > +	 * page_mapping() function.
-> > > > > +	 * We know that secretmem pages are not compound and LRU so we =
-can
-> > > > > +	 * save a couple of cycles here.
-> > > > > +	 */
-> > > > > +	if (PageCompound(page) || !PageLRU(page))
-> > > > > +		return false;
-> > > >=20
-> > > > I'd assume secretmem pages are rare in basically every setup out th=
-ere. So
-> > > > maybe throwing in a couple of likely()/unlikely() might make sense.
-> > >=20
-> > > I'd say we could do unlikely(page_is_secretmem()) at call sites. Here=
- I can
-> > > hardly estimate which pages are going to be checked.
-> > > > > +
-> > > > > +	mapping =3D (struct address_space *)
-> > > > > +		((unsigned long)page->mapping & ~PAGE_MAPPING_FLAGS);
-> > > > > +
-> > > >=20
-> > > > Not sure if open-coding page_mapping is really a good idea here -- =
-or even
-> > > > necessary after the fast path above is in place. Anyhow, just my 2 =
-cents.
-> > >=20
-> > > Well, most if the -4.2% of the performance regression kbuild reported=
- were
-> > > due to repeated compount_head(page) in page_mapping(). So the whole p=
-oint
-> > > of this patch is to avoid calling page_mapping().
-> >=20
-> > I would have thought the fast path "(PageCompound(page) ||
-> > !PageLRU(page))" would already avoid calling page_mapping() in many cas=
-es.
->=20
-> (and I do wonder if a generic page_mapping() optimization would make sense
-> instead)
-
-Not sure. Replacing page_mapping() with page_file_mapping() at the
-call sites at fs/ and mm/ increased the defconfig image by nearly 2k
-and page_file_mapping() is way simpler than page_mapping()
-
-add/remove: 1/0 grow/shrink: 35/0 up/down: 1960/0 (1960)
-Function                                     old     new   delta
-shrink_page_list                            3414    3670    +256
-__set_page_dirty_nobuffers                   242     349    +107
-check_move_unevictable_pages                 904     987     +83
-move_to_new_page                             591     671     +80
-shrink_active_list                           912     970     +58
-move_pages_to_lru                            911     965     +54
-migrate_pages                               2500    2554     +54
-shmem_swapin_page                           1145    1197     +52
-shmem_undo_range                            1669    1719     +50
-__test_set_page_writeback                    620     670     +50
-__set_page_dirty_buffers                     187     237     +50
-__pagevec_lru_add                            757     807     +50
-__munlock_pagevec                           1155    1205     +50
-__dump_page                                 1101    1151     +50
-__cancel_dirty_page                          182     232     +50
-__remove_mapping                             461     510     +49
-rmap_walk_file                               402     449     +47
-isolate_movable_page                         240     287     +47
-test_clear_page_writeback                    668     714     +46
-page_cache_pipe_buf_try_steal                171     217     +46
-page_endio                                   246     290     +44
-page_file_mapping                              -      43     +43
-__isolate_lru_page_prepare                   254     297     +43
-hugetlb_page_mapping_lock_write               39      81     +42
-iomap_set_page_dirty                         110     151     +41
-clear_page_dirty_for_io                      324     364     +40
-wait_on_page_writeback_killable              118     157     +39
-wait_on_page_writeback                       105     144     +39
-set_page_dirty                               159     198     +39
-putback_movable_page                          32      71     +39
-page_mkclean                                 172     211     +39
-mark_buffer_dirty                            176     215     +39
-invalidate_inode_page                        122     161     +39
-delete_from_page_cache                       139     178     +39
-PageMovable                                   49      86     +37
-isolate_migratepages_block                  2843    2872     +29
-Total: Before=3D17068648, After=3D17070608, chg +0.01%
-=20
-> Willy can most probably give the best advise here :)
-
-I think that's what folios are for :)
-
---=20
-Sincerely yours,
-Mike.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gMTkuMDQuMjEgMTI6MTQsIE1pa2UgUmFwb3BvcnQgd3JvdGU6DQo+IE9uIE1vbiwgQXByIDE5
+LCAyMDIxIGF0IDExOjQwOjU2QU0gKzAyMDAsIERhdmlkIEhpbGRlbmJyYW5kIHdyb3RlOg0KPj4g
+T24gMTkuMDQuMjEgMTE6MzgsIERhdmlkIEhpbGRlbmJyYW5kIHdyb3RlOg0KPj4+IE9uIDE5LjA0
+LjIxIDExOjM2LCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0KPj4+PiBPbiBNb24sIEFwciAxOSwgMjAy
+MSBhdCAxMToxNTowMkFNICswMjAwLCBEYXZpZCBIaWxkZW5icmFuZCB3cm90ZToNCj4+Pj4+IE9u
+IDE5LjA0LjIxIDEwOjQyLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0KPj4+Pj4+IEZyb206IE1pa2Ug
+UmFwb3BvcnQgPHJwcHRAbGludXguaWJtLmNvbT4NCj4+Pj4+Pg0KPj4+Pj4+IEtlcm5lbCB0ZXN0
+IHJvYm90IHJlcG9ydGVkIC00LjIlIHJlZ3Jlc3Npb24gb2Ygd2lsbC1pdC1zY2FsZS5wZXJfdGhy
+ZWFkX29wcw0KPj4+Pj4+IGR1ZSB0byBjb21taXQgIm1tOiBpbnRyb2R1Y2UgbWVtZmRfc2VjcmV0
+IHN5c3RlbSBjYWxsIHRvIGNyZWF0ZSAic2VjcmV0Ig0KPj4+Pj4+IG1lbW9yeSBhcmVhcyIuDQo+
+Pj4+Pj4NCj4+Pj4+PiBUaGUgcGVyZiBwcm9maWxlIG9mIHRoZSB0ZXN0IGluZGljYXRlZCB0aGF0
+IHRoZSByZWdyZXNzaW9uIGlzIGNhdXNlZCBieQ0KPj4+Pj4+IHBhZ2VfaXNfc2VjcmV0bWVtKCkg
+Y2FsbGVkIGZyb20gZ3VwX3B0ZV9yYW5nZSgpIChpbmxpbmVkIGJ5IGd1cF9wZ2RfcmFuZ2UpOg0K
+Pj4+Pj4+DQo+Pj4+Pj4gICAgICAyNy43NiAgKzIuNSAgMzAuMjMgICAgICAgcGVyZi1wcm9maWxl
+LmNoaWxkcmVuLmN5Y2xlcy1wcC5ndXBfcGdkX3JhbmdlDQo+Pj4+Pj4gICAgICAgMC4wMCAgKzMu
+MiAgIDMuMTkgwrEgMiUgIHBlcmYtcHJvZmlsZS5jaGlsZHJlbi5jeWNsZXMtcHAucGFnZV9tYXBw
+aW5nDQo+Pj4+Pj4gICAgICAgMC4wMCAgKzMuNyAgIDMuNjYgwrEgMiUgIHBlcmYtcHJvZmlsZS5j
+aGlsZHJlbi5jeWNsZXMtcHAucGFnZV9pc19zZWNyZXRtZW0NCj4+Pj4+Pg0KPj4+Pj4+IEZ1cnRo
+ZXIgYW5hbHlzaXMgc2hvd2VkIHRoYXQgdGhlIHNsb3cgZG93biBoYXBwZW5zIGJlY2F1c2UgbmVp
+dGhlcg0KPj4+Pj4+IHBhZ2VfaXNfc2VjcmV0bWVtKCkgbm9yIHBhZ2VfbWFwcGluZygpIGFyZSBu
+b3QgaW5saW5lIGFuZCBtb3Jlb3ZlciwNCj4+Pj4+PiBtdWx0aXBsZSBwYWdlIGZsYWdzIGNoZWNr
+cyBpbiBwYWdlX21hcHBpbmcoKSBpbnZvbHZlIGNhbGxpbmcNCj4+Pj4+PiBjb21wb3VuZF9oZWFk
+KCkgc2V2ZXJhbCB0aW1lcyBmb3IgdGhlIHNhbWUgcGFnZS4NCj4+Pj4+Pg0KPj4+Pj4+IE1ha2Ug
+cGFnZV9pc19zZWNyZXRtZW0oKSBpbmxpbmUgYW5kIHJlcGxhY2UgcGFnZV9tYXBwaW5nKCkgd2l0
+aCBwYWdlIGZsYWcNCj4+Pj4+PiBjaGVja3MgdGhhdCBkbyBub3QgaW1wbHkgcGFnZS10by1oZWFk
+IGNvbnZlcnNpb24uDQo+Pj4+Pj4NCj4+Pj4+PiBSZXBvcnRlZC1ieToga2VybmVsIHRlc3Qgcm9i
+b3QgPG9saXZlci5zYW5nQGludGVsLmNvbT4NCj4+Pj4+PiBTaWduZWQtb2ZmLWJ5OiBNaWtlIFJh
+cG9wb3J0IDxycHB0QGxpbnV4LmlibS5jb20+DQo+Pj4+Pj4gLS0tDQo+Pj4+Pj4NCj4+Pj4+PiBA
+QW5kcmV3LA0KPj4+Pj4+IFRoZSBwYXRjaCBpcyB2cyB2NS4xMi1yYzctbW1vdHMtMjAyMS0wNC0x
+NS0xNi0yOCwgSSdkIGFwcHJlY2lhdGUgaWYgaXQgd291bGQNCj4+Pj4+PiBiZSBhZGRlZCBhcyBh
+IGZpeHVwIHRvIHRoZSBtZW1mZF9zZWNyZXQgc2VyaWVzLg0KPj4+Pj4+DQo+Pj4+Pj4gICAgICBp
+bmNsdWRlL2xpbnV4L3NlY3JldG1lbS5oIHwgMjYgKysrKysrKysrKysrKysrKysrKysrKysrKy0N
+Cj4+Pj4+PiAgICAgIG1tL3NlY3JldG1lbS5jICAgICAgICAgICAgfCAxMiArLS0tLS0tLS0tLS0N
+Cj4+Pj4+PiAgICAgIDIgZmlsZXMgY2hhbmdlZCwgMjYgaW5zZXJ0aW9ucygrKSwgMTIgZGVsZXRp
+b25zKC0pDQo+Pj4+Pj4NCj4+Pj4+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9zZWNyZXRt
+ZW0uaCBiL2luY2x1ZGUvbGludXgvc2VjcmV0bWVtLmgNCj4+Pj4+PiBpbmRleCA5MDdhNjczNDA1
+OWMuLmI4NDJiMzhjYmViMSAxMDA2NDQNCj4+Pj4+PiAtLS0gYS9pbmNsdWRlL2xpbnV4L3NlY3Jl
+dG1lbS5oDQo+Pj4+Pj4gKysrIGIvaW5jbHVkZS9saW51eC9zZWNyZXRtZW0uaA0KPj4+Pj4+IEBA
+IC00LDggKzQsMzIgQEANCj4+Pj4+PiAgICAgICNpZmRlZiBDT05GSUdfU0VDUkVUTUVNDQo+Pj4+
+Pj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgYWRkcmVzc19zcGFjZV9vcGVyYXRpb25zIHNlY3JldG1l
+bV9hb3BzOw0KPj4+Pj4+ICsNCj4+Pj4+PiArc3RhdGljIGlubGluZSBib29sIHBhZ2VfaXNfc2Vj
+cmV0bWVtKHN0cnVjdCBwYWdlICpwYWdlKQ0KPj4+Pj4+ICt7DQo+Pj4+Pj4gKwlzdHJ1Y3QgYWRk
+cmVzc19zcGFjZSAqbWFwcGluZzsNCj4+Pj4+PiArDQo+Pj4+Pj4gKwkvKg0KPj4+Pj4+ICsJICog
+VXNpbmcgcGFnZV9tYXBwaW5nKCkgaXMgcXVpdGUgc2xvdyBiZWNhdXNlIG9mIHRoZSBhY3R1YWwg
+Y2FsbA0KPj4+Pj4+ICsJICogaW5zdHJ1Y3Rpb24gYW5kIHJlcGVhdGVkIGNvbXBvdW5kX2hlYWQo
+cGFnZSkgaW5zaWRlIHRoZQ0KPj4+Pj4+ICsJICogcGFnZV9tYXBwaW5nKCkgZnVuY3Rpb24uDQo+
+Pj4+Pj4gKwkgKiBXZSBrbm93IHRoYXQgc2VjcmV0bWVtIHBhZ2VzIGFyZSBub3QgY29tcG91bmQg
+YW5kIExSVSBzbyB3ZSBjYW4NCj4+Pj4+PiArCSAqIHNhdmUgYSBjb3VwbGUgb2YgY3ljbGVzIGhl
+cmUuDQo+Pj4+Pj4gKwkgKi8NCj4+Pj4+PiArCWlmIChQYWdlQ29tcG91bmQocGFnZSkgfHwgIVBh
+Z2VMUlUocGFnZSkpDQo+Pj4+Pj4gKwkJcmV0dXJuIGZhbHNlOw0KPj4+Pj4NCj4+Pj4+IEknZCBh
+c3N1bWUgc2VjcmV0bWVtIHBhZ2VzIGFyZSByYXJlIGluIGJhc2ljYWxseSBldmVyeSBzZXR1cCBv
+dXQgdGhlcmUuIFNvDQo+Pj4+PiBtYXliZSB0aHJvd2luZyBpbiBhIGNvdXBsZSBvZiBsaWtlbHko
+KS91bmxpa2VseSgpIG1pZ2h0IG1ha2Ugc2Vuc2UuDQo+Pj4+DQo+Pj4+IEknZCBzYXkgd2UgY291
+bGQgZG8gdW5saWtlbHkocGFnZV9pc19zZWNyZXRtZW0oKSkgYXQgY2FsbCBzaXRlcy4gSGVyZSBJ
+IGNhbg0KPj4+PiBoYXJkbHkgZXN0aW1hdGUgd2hpY2ggcGFnZXMgYXJlIGdvaW5nIHRvIGJlIGNo
+ZWNrZWQuDQo+Pj4+Pj4gKw0KPj4+Pj4+ICsJbWFwcGluZyA9IChzdHJ1Y3QgYWRkcmVzc19zcGFj
+ZSAqKQ0KPj4+Pj4+ICsJCSgodW5zaWduZWQgbG9uZylwYWdlLT5tYXBwaW5nICYgflBBR0VfTUFQ
+UElOR19GTEFHUyk7DQo+Pj4+Pj4gKw0KPj4+Pj4NCj4+Pj4+IE5vdCBzdXJlIGlmIG9wZW4tY29k
+aW5nIHBhZ2VfbWFwcGluZyBpcyByZWFsbHkgYSBnb29kIGlkZWEgaGVyZSAtLSBvciBldmVuDQo+
+Pj4+PiBuZWNlc3NhcnkgYWZ0ZXIgdGhlIGZhc3QgcGF0aCBhYm92ZSBpcyBpbiBwbGFjZS4gQW55
+aG93LCBqdXN0IG15IDIgY2VudHMuDQo+Pj4+DQo+Pj4+IFdlbGwsIG1vc3QgaWYgdGhlIC00LjIl
+IG9mIHRoZSBwZXJmb3JtYW5jZSByZWdyZXNzaW9uIGtidWlsZCByZXBvcnRlZCB3ZXJlDQo+Pj4+
+IGR1ZSB0byByZXBlYXRlZCBjb21wb3VudF9oZWFkKHBhZ2UpIGluIHBhZ2VfbWFwcGluZygpLiBT
+byB0aGUgd2hvbGUgcG9pbnQNCj4+Pj4gb2YgdGhpcyBwYXRjaCBpcyB0byBhdm9pZCBjYWxsaW5n
+IHBhZ2VfbWFwcGluZygpLg0KPj4+DQo+Pj4gSSB3b3VsZCBoYXZlIHRob3VnaHQgdGhlIGZhc3Qg
+cGF0aCAiKFBhZ2VDb21wb3VuZChwYWdlKSB8fA0KPj4+ICFQYWdlTFJVKHBhZ2UpKSIgd291bGQg
+YWxyZWFkeSBhdm9pZCBjYWxsaW5nIHBhZ2VfbWFwcGluZygpIGluIG1hbnkgY2FzZXMuDQo+Pg0K
+Pj4gKGFuZCBJIGRvIHdvbmRlciBpZiBhIGdlbmVyaWMgcGFnZV9tYXBwaW5nKCkgb3B0aW1pemF0
+aW9uIHdvdWxkIG1ha2Ugc2Vuc2UNCj4+IGluc3RlYWQpDQo+IA0KPiBOb3Qgc3VyZS4gUmVwbGFj
+aW5nIHBhZ2VfbWFwcGluZygpIHdpdGggcGFnZV9maWxlX21hcHBpbmcoKSBhdCB0aGUNCj4gY2Fs
+bCBzaXRlcyBhdCBmcy8gYW5kIG1tLyBpbmNyZWFzZWQgdGhlIGRlZmNvbmZpZyBpbWFnZSBieSBu
+ZWFybHkgMmsNCj4gYW5kIHBhZ2VfZmlsZV9tYXBwaW5nKCkgaXMgd2F5IHNpbXBsZXIgdGhhbiBw
+YWdlX21hcHBpbmcoKQ0KPiANCj4gYWRkL3JlbW92ZTogMS8wIGdyb3cvc2hyaW5rOiAzNS8wIHVw
+L2Rvd246IDE5NjAvMCAoMTk2MCkNCj4gRnVuY3Rpb24gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgb2xkICAgICBuZXcgICBkZWx0YQ0KPiBzaHJpbmtfcGFnZV9saXN0ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIDM0MTQgICAgMzY3MCAgICArMjU2DQo+IF9fc2V0X3BhZ2Vf
+ZGlydHlfbm9idWZmZXJzICAgICAgICAgICAgICAgICAgIDI0MiAgICAgMzQ5ICAgICsxMDcNCj4g
+Y2hlY2tfbW92ZV91bmV2aWN0YWJsZV9wYWdlcyAgICAgICAgICAgICAgICAgOTA0ICAgICA5ODcg
+ICAgICs4Mw0KPiBtb3ZlX3RvX25ld19wYWdlICAgICAgICAgICAgICAgICAgICAgICAgICAgICA1
+OTEgICAgIDY3MSAgICAgKzgwDQo+IHNocmlua19hY3RpdmVfbGlzdCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIDkxMiAgICAgOTcwICAgICArNTgNCj4gbW92ZV9wYWdlc190b19scnUgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgOTExICAgICA5NjUgICAgICs1NA0KPiBtaWdyYXRlX3BhZ2Vz
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDI1MDAgICAgMjU1NCAgICAgKzU0DQo+IHNo
+bWVtX3N3YXBpbl9wYWdlICAgICAgICAgICAgICAgICAgICAgICAgICAgMTE0NSAgICAxMTk3ICAg
+ICArNTINCj4gc2htZW1fdW5kb19yYW5nZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAxNjY5
+ICAgIDE3MTkgICAgICs1MA0KPiBfX3Rlc3Rfc2V0X3BhZ2Vfd3JpdGViYWNrICAgICAgICAgICAg
+ICAgICAgICA2MjAgICAgIDY3MCAgICAgKzUwDQo+IF9fc2V0X3BhZ2VfZGlydHlfYnVmZmVycyAg
+ICAgICAgICAgICAgICAgICAgIDE4NyAgICAgMjM3ICAgICArNTANCj4gX19wYWdldmVjX2xydV9h
+ZGQgICAgICAgICAgICAgICAgICAgICAgICAgICAgNzU3ICAgICA4MDcgICAgICs1MA0KPiBfX211
+bmxvY2tfcGFnZXZlYyAgICAgICAgICAgICAgICAgICAgICAgICAgIDExNTUgICAgMTIwNSAgICAg
+KzUwDQo+IF9fZHVtcF9wYWdlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTEwMSAg
+ICAxMTUxICAgICArNTANCj4gX19jYW5jZWxfZGlydHlfcGFnZSAgICAgICAgICAgICAgICAgICAg
+ICAgICAgMTgyICAgICAyMzIgICAgICs1MA0KPiBfX3JlbW92ZV9tYXBwaW5nICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICA0NjEgICAgIDUxMCAgICAgKzQ5DQo+IHJtYXBfd2Fsa19maWxlICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDQwMiAgICAgNDQ5ICAgICArNDcNCj4gaXNvbGF0
+ZV9tb3ZhYmxlX3BhZ2UgICAgICAgICAgICAgICAgICAgICAgICAgMjQwICAgICAyODcgICAgICs0
+Nw0KPiB0ZXN0X2NsZWFyX3BhZ2Vfd3JpdGViYWNrICAgICAgICAgICAgICAgICAgICA2NjggICAg
+IDcxNCAgICAgKzQ2DQo+IHBhZ2VfY2FjaGVfcGlwZV9idWZfdHJ5X3N0ZWFsICAgICAgICAgICAg
+ICAgIDE3MSAgICAgMjE3ICAgICArNDYNCj4gcGFnZV9lbmRpbyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgMjQ2ICAgICAyOTAgICAgICs0NA0KPiBwYWdlX2ZpbGVfbWFwcGluZyAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIC0gICAgICA0MyAgICAgKzQzDQo+IF9faXNvbGF0
+ZV9scnVfcGFnZV9wcmVwYXJlICAgICAgICAgICAgICAgICAgIDI1NCAgICAgMjk3ICAgICArNDMN
+Cj4gaHVnZXRsYl9wYWdlX21hcHBpbmdfbG9ja193cml0ZSAgICAgICAgICAgICAgIDM5ICAgICAg
+ODEgICAgICs0Mg0KPiBpb21hcF9zZXRfcGFnZV9kaXJ0eSAgICAgICAgICAgICAgICAgICAgICAg
+ICAxMTAgICAgIDE1MSAgICAgKzQxDQo+IGNsZWFyX3BhZ2VfZGlydHlfZm9yX2lvICAgICAgICAg
+ICAgICAgICAgICAgIDMyNCAgICAgMzY0ICAgICArNDANCj4gd2FpdF9vbl9wYWdlX3dyaXRlYmFj
+a19raWxsYWJsZSAgICAgICAgICAgICAgMTE4ICAgICAxNTcgICAgICszOQ0KPiB3YWl0X29uX3Bh
+Z2Vfd3JpdGViYWNrICAgICAgICAgICAgICAgICAgICAgICAxMDUgICAgIDE0NCAgICAgKzM5DQo+
+IHNldF9wYWdlX2RpcnR5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE1OSAgICAgMTk4
+ICAgICArMzkNCj4gcHV0YmFja19tb3ZhYmxlX3BhZ2UgICAgICAgICAgICAgICAgICAgICAgICAg
+IDMyICAgICAgNzEgICAgICszOQ0KPiBwYWdlX21rY2xlYW4gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAxNzIgICAgIDIxMSAgICAgKzM5DQo+IG1hcmtfYnVmZmVyX2RpcnR5ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIDE3NiAgICAgMjE1ICAgICArMzkNCj4gaW52YWxpZGF0ZV9p
+bm9kZV9wYWdlICAgICAgICAgICAgICAgICAgICAgICAgMTIyICAgICAxNjEgICAgICszOQ0KPiBk
+ZWxldGVfZnJvbV9wYWdlX2NhY2hlICAgICAgICAgICAgICAgICAgICAgICAxMzkgICAgIDE3OCAg
+ICAgKzM5DQo+IFBhZ2VNb3ZhYmxlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA0
+OSAgICAgIDg2ICAgICArMzcNCj4gaXNvbGF0ZV9taWdyYXRlcGFnZXNfYmxvY2sgICAgICAgICAg
+ICAgICAgICAyODQzICAgIDI4NzIgICAgICsyOQ0KPiBUb3RhbDogQmVmb3JlPTE3MDY4NjQ4LCBB
+ZnRlcj0xNzA3MDYwOCwgY2hnICswLjAxJQ0KPiAgIA0KPj4gV2lsbHkgY2FuIG1vc3QgcHJvYmFi
+bHkgZ2l2ZSB0aGUgYmVzdCBhZHZpc2UgaGVyZSA6KQ0KPiANCj4gSSB0aGluayB0aGF0J3Mgd2hh
+dCBmb2xpb3MgYXJlIGZvciA6KQ0KDQpFeGFjdGx5IG15IHRob3VnaHQuIDopDQoNCg0KLS0gDQpU
+aGFua3MsDQoNCkRhdmlkIC8gZGhpbGRlbmINCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZk
+aW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52
+ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
