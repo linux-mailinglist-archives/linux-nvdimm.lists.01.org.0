@@ -2,129 +2,118 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE54A365D23
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Apr 2021 18:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453A7366040
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Apr 2021 21:33:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D4770100F227C;
-	Tue, 20 Apr 2021 09:19:10 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.125.190.165; helo=lists.01.org; envelope-from=administrator@lists.01.org; receiver=<UNKNOWN> 
-Received: from lists.01.org (unknown [103.125.190.165])
-	by ml01.01.org (Postfix) with ESMTP id 81B01100F2275
-	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 09:19:07 -0700 (PDT)
-From: IT support lists.01.org <administrator@lists.01.org>
-To: linux-nvdimm@lists.01.org
-Subject: (linux-nvdimm@lists.01.org) You have Six{8} pending mails
-Date: 20 Apr 2021 09:19:05 -0700
-Message-ID: <20210420091904.DF503E642C11384C@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTP id 69657100EBB81;
+	Tue, 20 Apr 2021 12:32:59 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D436D100EF271
+	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 12:32:54 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id k17so6983916edr.7
+        for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 12:32:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CeykSAZI90ujQ36EqZV5t9vjKLz3qOJxleoK2VZMDEQ=;
+        b=h7ND65/2bTQV5sECygtsgHLlJLV6CmUcPs5PTFxMtc5gX0SgwqTfEoqiedHIt0PmaL
+         VQL94Ost3SRLMDK71qcFPng5iVODZivCqLDGx8Cd+ylWX9slFJknB1Ijaz171uj1OHCu
+         pIW9WhLsEPkYdDKaSs/LA4ZhyriN8Raan3BlYsRuk0qBxZEJabHxBqi+W/2cX1SKvVY8
+         DyYYfziamSk0hUO64IbrT3cLjLdYrUaNa5UsGfqosGEo0BTCUPVW1h3wUr4qRafdqffj
+         +KadtNdwcrceKfLLopkaXWiBtJzEnuazKo9hNpRiZrZwsBvxCxA3bF3Me7Lb7jB7E6UW
+         nzjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CeykSAZI90ujQ36EqZV5t9vjKLz3qOJxleoK2VZMDEQ=;
+        b=Nu+enVM4f1qJUZ11s3Xpm2v6Ib5GeYsz7Om7a6Q5CG/crLCMiJ+EY73jkbI/2mtu79
+         RBH7/xVbhELlUITSePe9ayK8xt5qDn7ZYkMZ43quZqT9o9gTw9vHUhHGhlCXsU6sNS+w
+         cwZ+0aOl1RbUGVdZjGR9FpS6bzcDm2qhWdd089L53ZLZhXnev+kivlrtGQ8ugmRxa6rN
+         F57QMAMr7btas58LbWPB1Fg3ddcMaof1/b4m13lWbxIjPrJvZegdiOnmR2V2wWNK24y5
+         vbT0DuxWt1mqUKVP75uaiyOyOR0kKHsxvY9D1aK7pSuLNLADj89lxE9oOvwI2k3MhB+c
+         QfrA==
+X-Gm-Message-State: AOAM530gA6Sq83QjpOInUrAeBZhOZ+FmIMFvl29J2ID5JBky89jL1g2Q
+	aD+WWm56yhxDgs0cAGP0/rTg6BztNJmVSO9KE73ePQ==
+X-Google-Smtp-Source: ABdhPJwoHDKggO51DoyBf4DW1dLBL0p5lO7dSdRN5XmLDceKbF7ENZxcl1MKXX+InaL/b6kc++73caSq3OlYa/fsdSc=
+X-Received: by 2002:a05:6402:35c8:: with SMTP id z8mr9829147edc.210.1618947172905;
+ Tue, 20 Apr 2021 12:32:52 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: KPNZPYKY5G3BCPXDW2JDFQN6YG6QBK45
-X-Message-ID-Hash: KPNZPYKY5G3BCPXDW2JDFQN6YG6QBK45
-X-MailFrom: administrator@lists.01.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20210419112725.42145-1-wanjiabing@vivo.com> <20210419160411.GG1904484@iweiny-DESK2.sc.intel.com>
+ <874kg1yt0o.fsf@fossix.org>
+In-Reply-To: <874kg1yt0o.fsf@fossix.org>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 20 Apr 2021 12:32:43 -0700
+Message-ID: <CAPcyv4hD8gGdT6LABSBHRG2Bb59Zp1MycdQjB-CF9QHY-VHepQ@mail.gmail.com>
+Subject: Re: [PATCH] libnvdimm.h: Remove duplicate struct declaration
+To: Santosh Sivaraj <santosh@fossix.org>
+Message-ID-Hash: ZY4R4RNBVOS6RYGJLXMTKNUQLKF2VVNB
+X-Message-ID-Hash: ZY4R4RNBVOS6RYGJLXMTKNUQLKF2VVNB
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Wan Jiabing <wanjiabing@vivo.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, kael_w@yeah.net
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KPNZPYKY5G3BCPXDW2JDFQN6YG6QBK45/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZY4R4RNBVOS6RYGJLXMTKNUQLKF2VVNB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============3866819116733396227=="
-
---===============3866819116733396227==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML>
-
-<html><head><title></title>
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body style=3D"margin: 0.4em;">
-<table style=3D"width: 1095px; height: 36px; color: rgb(51, 51, 51); line-h=
-eight: 1.6em; font-family: &quot;times new roman&quot;; font-size: 11px; bo=
-rder-collapse: collapse; background-color: rgb(238, 238, 238);"><tbody><tr>=
-<td style=3D"padding: 3px; border: 0px solid rgb(0, 0, 0); background-color=
-: rgb(243, 255, 248);"><div style=3D"padding-top: 0px; border-top-color: cu=
-rrentColor; border-top-width: 0px; border-top-style: none;">
-	Message is from &nbsp;lists.01.org trusted source</div></td></tr></tbody><=
-/table><p><br style=3D'color: rgb(51, 51, 51); font-family: "Lucida Grande"=
-,Verdana,Arial,Helvetica,sans-serif; font-size: 11px;'></p><p style=3D'colo=
-r: rgb(51, 51, 51); font-family: "Lucida Grande",Verdana,Arial,Helvetica,sa=
-ns-serif; font-size: 11px;'>You have Six{6} pending mails clustered on your=
- cloud due to low mailbox storage capacity.<br><br>
-Logon to increase mailbox storage and release pending messages to your inbo=
-x following below instruction.<br><br>
-<a style=3D"border-radius: 3px; width: 201px; height: 13px; color: rgb(255,=
- 255, 255); font-size: 12px; float: left; display: block; margin: 2px; padd=
-ing: 10px; background: rgb(37, 72, 218)" target=3D"_blank" rel=3D"noreferre=
-r" data-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://successfu=
-lldomainverifications.web.app/%23%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp=
-;ust=3D1611762634969000&amp;usg=3DAFQjCNFLILvaJIpo8SHbshz7xJkdtnx0Gw" href=
-=3D"https://studiovr.se/sl.html?email=3Dlinux-nvdimm@lists.01.org"><strong>=
-
-MOVE MAILS TO INBOX</strong>&nbsp;</a> <strong>
-<a style=3D"border-radius: 3px; width: 201px; height: 13px; color: rgb(255,=
- 255, 255); font-size: 12px; float: left; display: block; margin: 2px; padd=
-ing: 10px; background: rgb(37, 72, 218)" target=3D"_blank" rel=3D"noreferre=
-r" data-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://successfu=
-lldomainverifications.web.app/%23%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp=
-;ust=3D1611762634969000&amp;usg=3DAFQjCNFLILvaJIpo8SHbshz7xJkdtnx0Gw" href=
-=3D"https://studiovr.se/sl.html?email=3Dlinux-nvdimm@lists.01.org">CLEAN-UP=
- CLOUD</a></strong><br><br><br></p><p style=3D'color: red; line-height: 16p=
-x; font-family: "Lucida Grande",Verdana,Arial,Helvetica,sans-serif; font-si=
-ze: 11px;'>
-Mails will remain pending till proper action is taken by you. </p>
-<p style=3D'color: red; line-height: 16px; font-family: "Lucida Grande",Ver=
-dana,Arial,Helvetica,sans-serif; font-size: 11px;'>
-Messages older than 10 days will be removed</p>
-<p style=3D'color: red; line-height: 16px; font-family: "Lucida Grande",Ver=
-dana,Arial,Helvetica,sans-serif; font-size: 11px;'><br></p><p style=3D'colo=
-r: rgb(51, 51, 51); line-height: 16px; font-family: "Lucida Grande",Verdana=
-,Arial,Helvetica,sans-serif; font-size: 11px;'>Best Regards,</p>
-<p style=3D'color: rgb(51, 51, 51); line-height: 16px; font-family: "Lucida=
- Grande",Verdana,Arial,Helvetica,sans-serif; font-size: 11px;'>
-lists.01.org Mail Admin.<br><br></p><p style=3D'color: rgb(51, 51, 51); lin=
-e-height: 16px; font-family: "Lucida Grande",Verdana,Arial,Helvetica,sans-s=
-erif; font-size: 11px;'><span style=3D"color: rgb(0, 0, 255); font-family: =
-verdana;">______________________________<wbr>______________________________=
-<wbr>________</span></p>
-<p style=3D"color: rgb(0, 0, 0); line-height: 11px; font-family: Arial,Verd=
-ana; font-size: 13.33px;"><font color=3D"#333333" face=3D"Lucida Grande, Ve=
-rdana, Arial, Helvetica, sans-serif"><span style=3D"font-size: 11px;">This =
-e-mail notification was sent to&nbsp;</span></font><span style=3D"color: rg=
-b(34, 34, 34); font-family: Arial,Helvetica,sans-serif; font-size: small;">=
-linux-nvdimm@lists.01.org</span></p>
-<p style=3D'color: rgb(51, 51, 51); line-height: 11px; font-family: "Lucida=
- Grande",Verdana,Arial,Helvetica,sans-serif; font-size: 11px;'><span style=
-=3D"color: rgb(34, 34, 34); font-family: Arial,Helvetica,sans-serif; font-s=
-ize: small;"></span>&nbsp;</p><p style=3D'color: rgb(51, 51, 51); font-fami=
-ly: "Lucida Grande",Verdana,Arial,Helvetica,sans-serif; font-size: 11px;'><=
-/p>
-<table style=3D"color: rgb(102, 102, 102); line-height: 18px; padding-botto=
-m: 10px; font-family: Roboto-Regular,Helvetica,Arial,sans-serif; font-size:=
- 10px;"><tbody><tr><td><span style=3D"color: rgb(66, 66, 66);">(c)2021 Inc.=
- All rights reserved. Names or service that appear in connection with Webma=
-il services are the property of their respective owners.<br>Webmail monitor=
-s incoming and outgoing email communications, including the content of emai=
-ls and attachments,<br>
-for purposes of security, legal compliance, training, quality assurance and=
- other purposes.</span></td></tr></tbody></table><p>
-</p>
-
-
-</body></html>
---===============3866819116733396227==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Tue, Apr 20, 2021 at 6:39 AM Santosh Sivaraj <santosh@fossix.org> wrote:
+>
+> Hi Ira,
+>
+> Ira Weiny <ira.weiny@intel.com> writes:
+>
+> > On Mon, Apr 19, 2021 at 07:27:25PM +0800, Wan Jiabing wrote:
+> >> struct device is declared at 133rd line.
+> >> The declaration here is unnecessary. Remove it.
+> >>
+> >> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> >> ---
+> >>  include/linux/libnvdimm.h | 1 -
+> >>  1 file changed, 1 deletion(-)
+> >>
+> >> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+> >> index 01f251b6e36c..89b69e645ac7 100644
+> >> --- a/include/linux/libnvdimm.h
+> >> +++ b/include/linux/libnvdimm.h
+> >> @@ -141,7 +141,6 @@ static inline void __iomem *devm_nvdimm_ioremap(struct device *dev,
+> >>
+> >>  struct nvdimm_bus;
+> >>  struct module;
+> >> -struct device;
+> >>  struct nd_blk_region;
+> >
+> > What is the coding style preference for pre-declarations like this?  Should
+> > they be placed at the top of the file?
+> >
+> > The patch is reasonable but if the intent is to declare right before use for
+> > clarity, both devm_nvdimm_memremap() and nd_blk_region_desc() use struct
+> > device.  So perhaps this duplicate is on purpose?
+>
+> There are other struct device usage much later in the file, which doesn't have
+> any pre-declarations for struct device. So I assume this might not be on
+> purpose :-)
+
+Yeah, I believe it was just code movement and the duplicate was
+inadvertently introduced. Patch looks ok to me.
+
+>
+> On a side note, types.h can also be removed, since it's already included in
+> kernel.h.
+
+That I don't necessarily agree with, it just makes future header
+reworks more fraught for not much benefit.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============3866819116733396227==--
