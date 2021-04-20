@@ -2,38 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF4A3659A5
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Apr 2021 15:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 802793659A9
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Apr 2021 15:16:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0B453100EBB68;
-	Tue, 20 Apr 2021 06:16:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3A91B100EB352;
+	Tue, 20 Apr 2021 06:16:42 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 68F7A100EBB61
-	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 06:16:28 -0700 (PDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DB92561155;
-	Tue, 20 Apr 2021 13:16:16 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id 06A0A100EB34D
+	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 06:16:40 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8D3E9613CD;
+	Tue, 20 Apr 2021 13:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1618924588;
-	bh=qhR1fpCqAsT1S7eszhL+8DGn+IohPdIv6ZmfP8rMA54=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KUF557NhH5l1t2K0OYATzazaNCSAUMl7v8OSvEA6BB3++H9JFEiE0m47Qe20TLsyA
-	 Mg+bE3SvdjK4KbC0KDgBwkghXH1+SdNl7XPGJXfOGWL6rieURUdgwykpH/YpDMQBPG
-	 rKBgMRdJAVDnOl31RwFKVeNmayE39KOv5tA+vfGakvNDvdEpQ+NJsJgelSxLbVraWI
-	 bPMda19jc0MXqs60Xcjv5yfm6A6g9IJPG8oGUJGNTfLxnnkT0YtwmG/da8/HHsmN7t
-	 JmXlm7VjlV/79DJvWlsaprQDngcrZLv3QMmwPhKSGYJzeKATbw0tpP/7J7LXi7vTV1
-	 xuJcRy9ZW0OEg==
+	s=k20201202; t=1618924599;
+	bh=WQBjtjBUVixKPUq09lDhJ2RWgVokupnypM/eycKpBe4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KLusc3hvcK/USIRTI1/AA31CBHshBIRyZKJvd5mzmsf8uSSJ7TpzKDUsknaC7MPq6
+	 eN0zAy+9/IAGzPjtf0706PNPT2er4LIkgsjACRHnJ0RD6mEJSD9zoue15HlmXFbsNB
+	 WGr5S/g/5n5tBlMAVJCDdPgvHQnj5JM/Bjkejl8nPPCZ8wGk0lluRfswUy871QdR0G
+	 NvuSLdYZOYvhOTbadz3yEZRjXbepapK8sotHUAsbDxshP5vjW7LQpXxOenROX7IQQr
+	 FdwihTAykTp4q2B0yXS34iR+4uoUJCi072sqeX6ixjq5AcceB0CrHyE/nOjCJknzzP
+	 mVOEnaY9ajjYg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 0/2] secretmem: optimize page_is_secretmem()
-Date: Tue, 20 Apr 2021 16:16:07 +0300
-Message-Id: <20210420131611.8259-1-rppt@kernel.org>
+Subject: [PATCH v2 1/2] secretmem/gup: don't check if page is secretmem without reference
+Date: Tue, 20 Apr 2021 16:16:08 +0300
+Message-Id: <20210420131611.8259-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20210420131611.8259-1-rppt@kernel.org>
+References: <20210420131611.8259-1-rppt@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: XNCN7T6MA4XR7NZJPIQDG24O7YHGQOYE
-X-Message-ID-Hash: XNCN7T6MA4XR7NZJPIQDG24O7YHGQOYE
+Message-ID-Hash: VOT6R345R73C3TBYEEBXIBZNM7SZXG7C
+X-Message-ID-Hash: VOT6R345R73C3TBYEEBXIBZNM7SZXG7C
 X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -42,7 +44,7 @@ CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XNCN7T6MA4XR7NZJPIQDG24O7YHGQOYE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VOT6R345R73C3TBYEEBXIBZNM7SZXG7C/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,27 +55,37 @@ Content-Transfer-Encoding: 7bit
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-Hi,
+The check in gup_pte_range() whether a page belongs to a secretmem mapping
+is performed before grabbing the page reference.
 
-This is an updated version of page_is_secretmem() changes.
-This is based on v5.12-rc7-mmots-2021-04-15-16-28.
+To avoid potential race move the check after try_grab_compound_head().
 
-@Andrew, please let me know if you'd like me to rebase it differently or
-resend the entire set.
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+ mm/gup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-v2:
-* move the check for secretmem page in gup_pte_range after we get a
-  reference to the page, per Matthew.
-
-Mike Rapoport (2):
-  secretmem/gup: don't check if page is secretmem without reference
-  secretmem: optimize page_is_secretmem()
-
- include/linux/secretmem.h | 26 +++++++++++++++++++++++++-
- mm/gup.c                  |  6 +++---
- mm/secretmem.c            | 12 +-----------
- 3 files changed, 29 insertions(+), 15 deletions(-)
-
+diff --git a/mm/gup.c b/mm/gup.c
+index c3a17b189064..4b58c016e949 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2080,13 +2080,13 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
+ 		VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
+ 		page = pte_page(pte);
+ 
+-		if (page_is_secretmem(page))
+-			goto pte_unmap;
+-
+ 		head = try_grab_compound_head(page, 1, flags);
+ 		if (!head)
+ 			goto pte_unmap;
+ 
++		if (page_is_secretmem(page))
++			goto pte_unmap;
++
+ 		if (unlikely(pte_val(pte) != pte_val(*ptep))) {
+ 			put_compound_head(head, 1, flags);
+ 			goto pte_unmap;
 -- 
 2.28.0
 _______________________________________________
