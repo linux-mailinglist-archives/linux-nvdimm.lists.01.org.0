@@ -1,65 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB88367334
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 21:10:08 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ED436733B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 21:13:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 441F8100EBB81;
-	Wed, 21 Apr 2021 12:10:06 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8C1DF100EAB61;
+	Wed, 21 Apr 2021 12:13:19 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A8DE9100EC1CE
-	for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 12:10:03 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id i3so24924960edt.1
-        for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 12:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NBcAuPkDB8yn7vxrbycYSSA5wndCepu03NrNjeW39ik=;
-        b=pthqRNwvDGzcKw29vq+beBkIOvNN/fF7gZ2Xe3IXaGqVyzwBsLaqthgSuIMoUo8IW+
-         gumEibGbH+L9n3/IkDXke2EWisNXcNsuQf6FnbaaEy/QeVNwKXdGbkZ8gOO9PSRg/1tX
-         kwpHvf8Dnvam7XnxffqBhiCqCrOzMrFlKJ0zzdSJYgIVgPVSylOM6txrHN/8UiwP6HfA
-         yla17QS2aL3iB+isH0nkwPXzzVoti8Zr1k8OZUkULS65Qk4I6Ao+xwxtWVYQdJYqZq+u
-         WaYCdpb8iRaFCZA0dUw7sziGDrn8XZ0N4rnmBOYyoVOkjZHatSAF/GDUpT6/5BGbcEFC
-         b0/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NBcAuPkDB8yn7vxrbycYSSA5wndCepu03NrNjeW39ik=;
-        b=UFmhRRxDEXVI7dQtP2lXlJzOzO63AvRh3+I3fNZ/rcScSeVAMcKkxqs46Mcu5q6egc
-         PibEpjiujSNjJ+2/m2mNglSp8hzAgajeTzNf3WMQbSelcuQtiLsLDLYUBdJKFmQgvMBH
-         Y/DrdsCvRMGu6VfulSpjt0CaD/qgXRRXDZiLpIMN3U9UPvRRGsWZbvADqb5r6xhjcb03
-         LKQ/xANc1Qs8vf1DsIbOo9jkpfWPML+BAVXm5Uvep+Xo5OOXGdnvWtxqPRMX2lnMNIhL
-         htlxm40fNKsiSXil93+Z73y706HpYaVOmAIpq+nNeU/kM+FpeMSCk02QZK53iwKSXXc4
-         XPOA==
-X-Gm-Message-State: AOAM533XTRxLIv/JuJxTF6B7r4ZW6eX0ngKoo/t1wOLVBWNC67Q0hOk4
-	zpvaar5pIlnEwpvfSBBcVW7Jqm+gwizgwdQxinTDBg==
-X-Google-Smtp-Source: ABdhPJzUzvWoqsHVgj6q4VHtvt/KU0qakEZL3zMXCyN6iQAH2qDqBVdMEkOUp4sI5gEzwoBW8HbVmWc5LR0glCxieKk=
-X-Received: by 2002:a50:e607:: with SMTP id y7mr40985113edm.18.1619032201627;
- Wed, 21 Apr 2021 12:10:01 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 013D1100EBB81
+	for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 12:13:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1619032395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ftb3f+P7+1mOJewyvfh1G9UljZ8q13sSYxQQCbMYd20=;
+	b=dCplDRE68G8M7d9zGfOf4KITOkZ6Z1xgI/HxnyFP/XqTi/RbswzMoh4gpcd4nRtXvw0mic
+	vjiRD66HJ7uX1br5kzM2VJnoO8/ZrVgbE2ax0c6ElMGVHuGw29WE7jOsVTB7h8cG0VLQuU
+	6Sp/4agxWo1CLKxTQfkpPtGAVVBuxx4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-356-uCi6xlovOaShJNxmp9ojMg-1; Wed, 21 Apr 2021 15:13:11 -0400
+X-MC-Unique: uCi6xlovOaShJNxmp9ojMg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3EA19107ACCA;
+	Wed, 21 Apr 2021 19:13:10 +0000 (UTC)
+Received: from horse.redhat.com (ovpn-114-206.rdu2.redhat.com [10.10.114.206])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 3FB5D10023AE;
+	Wed, 21 Apr 2021 19:13:06 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id AFEA5220BCF; Wed, 21 Apr 2021 15:13:05 -0400 (EDT)
+Date: Wed, 21 Apr 2021 15:13:05 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [Virtio-fs] [PATCH v3 2/3] dax: Add a wakeup mode parameter to
+ put_unlocked_entry()
+Message-ID: <20210421191305.GG1579961@redhat.com>
+References: <20210419213636.1514816-1-vgoyal@redhat.com>
+ <20210419213636.1514816-3-vgoyal@redhat.com>
+ <20210420093420.2eed3939@bahia.lan>
+ <20210420140033.GA1529659@redhat.com>
+ <CAPcyv4g2raipYhivwbiSvsHmSdgLO8wphh5dhY3hpjwko9G4Hw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20210419213636.1514816-1-vgoyal@redhat.com> <20210419213636.1514816-3-vgoyal@redhat.com>
- <20210420093420.2eed3939@bahia.lan> <20210420140033.GA1529659@redhat.com>
-In-Reply-To: <20210420140033.GA1529659@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 21 Apr 2021 12:09:54 -0700
-Message-ID: <CAPcyv4g2raipYhivwbiSvsHmSdgLO8wphh5dhY3hpjwko9G4Hw@mail.gmail.com>
-Subject: Re: [Virtio-fs] [PATCH v3 2/3] dax: Add a wakeup mode parameter to put_unlocked_entry()
-To: Vivek Goyal <vgoyal@redhat.com>
-Message-ID-Hash: DM56LTNCLWWF7MILCB4E665BFZ4IDAPC
-X-Message-ID-Hash: DM56LTNCLWWF7MILCB4E665BFZ4IDAPC
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4g2raipYhivwbiSvsHmSdgLO8wphh5dhY3hpjwko9G4Hw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: DE3H4B6FJCP62UCXIWFEXOXS5DO6E2YV
+X-Message-ID-Hash: DE3H4B6FJCP62UCXIWFEXOXS5DO6E2YV
+X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: Greg Kurz <groug@kaod.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Miklos Szeredi <miklos@szeredi.hu>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, virtio-fs-list <virtio-fs@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DM56LTNCLWWF7MILCB4E665BFZ4IDAPC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DE3H4B6FJCP62UCXIWFEXOXS5DO6E2YV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,131 +68,142 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 20, 2021 at 7:01 AM Vivek Goyal <vgoyal@redhat.com> wrote:
->
-> On Tue, Apr 20, 2021 at 09:34:20AM +0200, Greg Kurz wrote:
-> > On Mon, 19 Apr 2021 17:36:35 -0400
-> > Vivek Goyal <vgoyal@redhat.com> wrote:
+On Wed, Apr 21, 2021 at 12:09:54PM -0700, Dan Williams wrote:
+> On Tue, Apr 20, 2021 at 7:01 AM Vivek Goyal <vgoyal@redhat.com> wrote:
 > >
-> > > As of now put_unlocked_entry() always wakes up next waiter. In next
-> > > patches we want to wake up all waiters at one callsite. Hence, add a
-> > > parameter to the function.
+> > On Tue, Apr 20, 2021 at 09:34:20AM +0200, Greg Kurz wrote:
+> > > On Mon, 19 Apr 2021 17:36:35 -0400
+> > > Vivek Goyal <vgoyal@redhat.com> wrote:
 > > >
-> > > This patch does not introduce any change of behavior.
+> > > > As of now put_unlocked_entry() always wakes up next waiter. In next
+> > > > patches we want to wake up all waiters at one callsite. Hence, add a
+> > > > parameter to the function.
+> > > >
+> > > > This patch does not introduce any change of behavior.
+> > > >
+> > > > Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> > > > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> > > > ---
+> > > >  fs/dax.c | 13 +++++++------
+> > > >  1 file changed, 7 insertions(+), 6 deletions(-)
+> > > >
+> > > > diff --git a/fs/dax.c b/fs/dax.c
+> > > > index 00978d0838b1..f19d76a6a493 100644
+> > > > --- a/fs/dax.c
+> > > > +++ b/fs/dax.c
+> > > > @@ -275,11 +275,12 @@ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
+> > > >     finish_wait(wq, &ewait.wait);
+> > > >  }
+> > > >
+> > > > -static void put_unlocked_entry(struct xa_state *xas, void *entry)
+> > > > +static void put_unlocked_entry(struct xa_state *xas, void *entry,
+> > > > +                          enum dax_entry_wake_mode mode)
+> > > >  {
+> > > >     /* If we were the only waiter woken, wake the next one */
 > > >
-> > > Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> > > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-> > > ---
-> > >  fs/dax.c | 13 +++++++------
-> > >  1 file changed, 7 insertions(+), 6 deletions(-)
+> > > With this change, the comment is no longer accurate since the
+> > > function can now wake all waiters if passed mode == WAKE_ALL.
+> > > Also, it paraphrases the code which is simple enough, so I'd
+> > > simply drop it.
 > > >
-> > > diff --git a/fs/dax.c b/fs/dax.c
-> > > index 00978d0838b1..f19d76a6a493 100644
-> > > --- a/fs/dax.c
-> > > +++ b/fs/dax.c
-> > > @@ -275,11 +275,12 @@ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
-> > >     finish_wait(wq, &ewait.wait);
-> > >  }
+> > > This is minor though and it shouldn't prevent this fix to go
+> > > forward.
 > > >
-> > > -static void put_unlocked_entry(struct xa_state *xas, void *entry)
-> > > +static void put_unlocked_entry(struct xa_state *xas, void *entry,
-> > > +                          enum dax_entry_wake_mode mode)
-> > >  {
-> > >     /* If we were the only waiter woken, wake the next one */
+> > > Reviewed-by: Greg Kurz <groug@kaod.org>
 > >
-> > With this change, the comment is no longer accurate since the
-> > function can now wake all waiters if passed mode == WAKE_ALL.
-> > Also, it paraphrases the code which is simple enough, so I'd
-> > simply drop it.
+> > Ok, here is the updated patch which drops that comment line.
 > >
-> > This is minor though and it shouldn't prevent this fix to go
-> > forward.
-> >
-> > Reviewed-by: Greg Kurz <groug@kaod.org>
->
-> Ok, here is the updated patch which drops that comment line.
->
-> Vivek
+> > Vivek
+> 
+> Hi Vivek,
+> 
+> Can you get in the habit of not replying inline with new patches like
+> this? Collect the review feedback, take a pause, and resend the full
+> series so tooling like b4 and patchwork can track when a new posting
+> supersedes a previous one. As is, this inline style inflicts manual
+> effort on the maintainer.
 
-Hi Vivek,
+Hi Dan,
 
-Can you get in the habit of not replying inline with new patches like
-this? Collect the review feedback, take a pause, and resend the full
-series so tooling like b4 and patchwork can track when a new posting
-supersedes a previous one. As is, this inline style inflicts manual
-effort on the maintainer.
+Sure. I will avoid doing this updated inline patch style. I will post new
+version of patch series. 
 
->
-> Subject: dax: Add a wakeup mode parameter to put_unlocked_entry()
->
-> As of now put_unlocked_entry() always wakes up next waiter. In next
-> patches we want to wake up all waiters at one callsite. Hence, add a
-> parameter to the function.
->
-> This patch does not introduce any change of behavior.
->
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-> ---
->  fs/dax.c |   14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->
-> Index: redhat-linux/fs/dax.c
-> ===================================================================
-> --- redhat-linux.orig/fs/dax.c  2021-04-20 09:55:45.105069893 -0400
-> +++ redhat-linux/fs/dax.c       2021-04-20 09:56:27.685822730 -0400
-> @@ -275,11 +275,11 @@ static void wait_entry_unlocked(struct x
->         finish_wait(wq, &ewait.wait);
->  }
->
-> -static void put_unlocked_entry(struct xa_state *xas, void *entry)
-> +static void put_unlocked_entry(struct xa_state *xas, void *entry,
-> +                              enum dax_entry_wake_mode mode)
->  {
-> -       /* If we were the only waiter woken, wake the next one */
->         if (entry && !dax_is_conflict(entry))
-> -               dax_wake_entry(xas, entry, WAKE_NEXT);
-> +               dax_wake_entry(xas, entry, mode);
->  }
->
->  /*
-> @@ -633,7 +633,7 @@ struct page *dax_layout_busy_page_range(
->                         entry = get_unlocked_entry(&xas, 0);
->                 if (entry)
->                         page = dax_busy_page(entry);
-> -               put_unlocked_entry(&xas, entry);
-> +               put_unlocked_entry(&xas, entry, WAKE_NEXT);
->                 if (page)
->                         break;
->                 if (++scanned % XA_CHECK_SCHED)
-> @@ -675,7 +675,7 @@ static int __dax_invalidate_entry(struct
->         mapping->nrexceptional--;
->         ret = 1;
->  out:
-> -       put_unlocked_entry(&xas, entry);
-> +       put_unlocked_entry(&xas, entry, WAKE_NEXT);
->         xas_unlock_irq(&xas);
->         return ret;
->  }
-> @@ -954,7 +954,7 @@ static int dax_writeback_one(struct xa_s
->         return ret;
->
->   put_unlocked:
-> -       put_unlocked_entry(xas, entry);
-> +       put_unlocked_entry(xas, entry, WAKE_NEXT);
->         return ret;
->  }
->
-> @@ -1695,7 +1695,7 @@ dax_insert_pfn_mkwrite(struct vm_fault *
->         /* Did we race with someone splitting entry or so? */
->         if (!entry || dax_is_conflict(entry) ||
->             (order == 0 && !dax_is_pte_entry(entry))) {
-> -               put_unlocked_entry(&xas, entry);
-> +               put_unlocked_entry(&xas, entry, WAKE_NEXT);
->                 xas_unlock_irq(&xas);
->                 trace_dax_insert_pfn_mkwrite_no_entry(mapping->host, vmf,
->                                                       VM_FAULT_NOPAGE);
->
+Thanks
+Vivek
+
+> 
+> >
+> > Subject: dax: Add a wakeup mode parameter to put_unlocked_entry()
+> >
+> > As of now put_unlocked_entry() always wakes up next waiter. In next
+> > patches we want to wake up all waiters at one callsite. Hence, add a
+> > parameter to the function.
+> >
+> > This patch does not introduce any change of behavior.
+> >
+> > Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> > ---
+> >  fs/dax.c |   14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> >
+> > Index: redhat-linux/fs/dax.c
+> > ===================================================================
+> > --- redhat-linux.orig/fs/dax.c  2021-04-20 09:55:45.105069893 -0400
+> > +++ redhat-linux/fs/dax.c       2021-04-20 09:56:27.685822730 -0400
+> > @@ -275,11 +275,11 @@ static void wait_entry_unlocked(struct x
+> >         finish_wait(wq, &ewait.wait);
+> >  }
+> >
+> > -static void put_unlocked_entry(struct xa_state *xas, void *entry)
+> > +static void put_unlocked_entry(struct xa_state *xas, void *entry,
+> > +                              enum dax_entry_wake_mode mode)
+> >  {
+> > -       /* If we were the only waiter woken, wake the next one */
+> >         if (entry && !dax_is_conflict(entry))
+> > -               dax_wake_entry(xas, entry, WAKE_NEXT);
+> > +               dax_wake_entry(xas, entry, mode);
+> >  }
+> >
+> >  /*
+> > @@ -633,7 +633,7 @@ struct page *dax_layout_busy_page_range(
+> >                         entry = get_unlocked_entry(&xas, 0);
+> >                 if (entry)
+> >                         page = dax_busy_page(entry);
+> > -               put_unlocked_entry(&xas, entry);
+> > +               put_unlocked_entry(&xas, entry, WAKE_NEXT);
+> >                 if (page)
+> >                         break;
+> >                 if (++scanned % XA_CHECK_SCHED)
+> > @@ -675,7 +675,7 @@ static int __dax_invalidate_entry(struct
+> >         mapping->nrexceptional--;
+> >         ret = 1;
+> >  out:
+> > -       put_unlocked_entry(&xas, entry);
+> > +       put_unlocked_entry(&xas, entry, WAKE_NEXT);
+> >         xas_unlock_irq(&xas);
+> >         return ret;
+> >  }
+> > @@ -954,7 +954,7 @@ static int dax_writeback_one(struct xa_s
+> >         return ret;
+> >
+> >   put_unlocked:
+> > -       put_unlocked_entry(xas, entry);
+> > +       put_unlocked_entry(xas, entry, WAKE_NEXT);
+> >         return ret;
+> >  }
+> >
+> > @@ -1695,7 +1695,7 @@ dax_insert_pfn_mkwrite(struct vm_fault *
+> >         /* Did we race with someone splitting entry or so? */
+> >         if (!entry || dax_is_conflict(entry) ||
+> >             (order == 0 && !dax_is_pte_entry(entry))) {
+> > -               put_unlocked_entry(&xas, entry);
+> > +               put_unlocked_entry(&xas, entry, WAKE_NEXT);
+> >                 xas_unlock_irq(&xas);
+> >                 trace_dax_insert_pfn_mkwrite_no_entry(mapping->host, vmf,
+> >                                                       VM_FAULT_NOPAGE);
+> >
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
