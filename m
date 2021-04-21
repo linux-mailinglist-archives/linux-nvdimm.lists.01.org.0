@@ -2,46 +2,99 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E339B36660F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 09:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A806136661D
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Apr 2021 09:16:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 25979100EAB41;
-	Wed, 21 Apr 2021 00:05:33 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	by ml01.01.org (Postfix) with ESMTP id F3468100EAB48;
+	Wed, 21 Apr 2021 00:16:53 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.75.74; helo=eur04-vi1-obe.outbound.protection.outlook.com; envelope-from=dfsgffjhj87@outlook.com; receiver=<UNKNOWN> 
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-oln040092075074.outbound.protection.outlook.com [40.92.75.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C8DD5100F225F
-	for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 00:05:30 -0700 (PDT)
-IronPort-SDR: +8nRJQRD06Ppl5wnaFKEqjtz4beyfmv/F1VCma2o8Ryrpn5gx4WyFeTHLw7lGqr25YYMy6nOpp
- vTJEihuz4G2w==
-X-IronPort-AV: E=McAfee;i="6200,9189,9960"; a="175758426"
-X-IronPort-AV: E=Sophos;i="5.82,238,1613462400";
-   d="scan'208";a="175758426"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2021 00:05:29 -0700
-IronPort-SDR: WUI6B6A2c1385Mjp3QwBr7DCDjFLPz6hbPrJAmTtPnqqn7pKBakBTUI7ilMc/lUVEP/zYlaiMi
- II+qu07Imt7Q==
-X-IronPort-AV: E=Sophos;i="5.82,238,1613462400";
-   d="scan'208";a="463482473"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2021 00:05:28 -0700
-Subject: [PATCH] MAINTAINERS: Move nvdimm mailing list
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Wed, 21 Apr 2021 00:05:28 -0700
-Message-ID: <161898872871.3406469.4054282559340528393.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id CC950100EAB41
+	for <linux-nvdimm@lists.01.org>; Wed, 21 Apr 2021 00:16:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IDkbfsTb+s0TDbQd11pPiqQeTYI88zV9DdRKNwW8Ixsi5Xrmvi0TlVnoUAy99wVmG0e4uFQYIMz5p7H4rA6EAeU8anelSHOKaQqgzRIi+Kzb056QVp4YlQIpeU7/K1VQbVoDvHMXLENJec2F8WjOm/M16SBzceTLQ5kEOrvAWVZA2JFcrxVOg/TlVLTGHbiVNXb4tSNbKveRtaPFcGpO4ofYlF7eMF+IiFShG/X84RM/tYQwNqIX1nUwUjQT/lqkrxR0Q1Vyyhs70v1Ojlhrck2PTW7t3KU/+yiVyXYn+16g4dQZICz4fepFrs/weqQnfYvJAys+EP0+3wN1iKBp/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X+mulV5rEuLmAM42qGdI/xWC6g7UYk3k7/auFk2CBoE=;
+ b=oF06ebCbley8jknjoyhusHXuDUw/llQv8CKDXKO9dKFVvgaKQYshz7dWQKeSatMbvGdXaYiYPkcOzUuT8nkCJgHZCwFTjb0mshsYDM9b14tDyNz+7Fc3iAvceRzj8lOHaWOY5TM0Qai2WxU36CCQpg8yUu7FMJlmMW+SSTRR+dHKsSu84DhTrX9MqtnqaPgy+YsmG34Tejcze1bNNlmt5+u85eszNkbVpS4kLpE+Aiqyp4TnFhNkIo1lJ9vjqW8UZO6tZYuNnJ0ZG5wh2nJx5RmtDHsWbPEAihEKouqujzI1end9jU6VFArdsdpEwOiECNedDotcYdX2cbB9B4cuTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X+mulV5rEuLmAM42qGdI/xWC6g7UYk3k7/auFk2CBoE=;
+ b=Z2siYegLmL9gzRu+iWiWVM6uGmquolWf9AkQLF5G7UkB6k+vyojI3io05pilDTgjtAjjIIO2EcRltSUKT8FNqUjw9UwLQk8uamcfDZid79iV1wsYSjk8qF12IGIy3ny2VGh/1TcEvifbCHcT+GEdWXuf78kul/d+yMVGxcPRhjY52p97eKKL16V1GT9CqXdzAt6td5lsDnpHEuKE9zXKDduTdgdNL3eDpGhOG9jjkL/+YOGBeyYeJd+c7rou2M94tfQ5YsOsxYTj+AEIPNzuj/m1XE3nrFWD0JxDumlUJqcw3trjBV5GSVupZfETuuyOkrlRiiSmD46jYMSC1Qj4vw==
+Received: from DB3EUR04FT033.eop-eur04.prod.protection.outlook.com
+ (2a01:111:e400:7e0c::41) by
+ DB3EUR04HT032.eop-eur04.prod.protection.outlook.com (2a01:111:e400:7e0c::114)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.21; Wed, 21 Apr
+ 2021 07:16:38 +0000
+Received: from DBBPR07MB7482.eurprd07.prod.outlook.com
+ (2a01:111:e400:7e0c::50) by DB3EUR04FT033.mail.protection.outlook.com
+ (2a01:111:e400:7e0c::78) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.21 via Frontend
+ Transport; Wed, 21 Apr 2021 07:16:38 +0000
+Received: from DBBPR07MB7482.eurprd07.prod.outlook.com
+ ([fe80::c114:8ec0:a15a:f55c]) by DBBPR07MB7482.eurprd07.prod.outlook.com
+ ([fe80::c114:8ec0:a15a:f55c%4]) with mapi id 15.20.4065.021; Wed, 21 Apr 2021
+ 07:16:37 +0000
+From: PFIZER B.V Supply <dfsgffjhj87@outlook.com>
+Subject: Request for Quotation (RFQ) 
+Thread-Topic: Request for Quotation (RFQ) 
+Thread-Index: AQHXKb6/g9hjjOjiikmVZtZEZZA01qq+20C3
+Date: Wed, 21 Apr 2021 07:16:37 +0000
+Message-ID: 
+ <DBBPR07MB748223917430D55FD00CCF4EAD479@DBBPR07MB7482.eurprd07.prod.outlook.com>
+References: 
+ <DBBPR07MB74821F466B16DF5D1BEFE79EAD779@DBBPR07MB7482.eurprd07.prod.outlook.com>
+In-Reply-To: 
+ <DBBPR07MB74821F466B16DF5D1BEFE79EAD779@DBBPR07MB7482.eurprd07.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-incomingtopheadermarker: 
+ OriginalChecksum:86E642DEA963E2880B1A275811154F633BEE1A2224986F0F042DC12DC8F40A6C;UpperCasedChecksum:76DBDD89E7094F5535ED06B484C9CE12CE80E062C59AE6C510287AA7BFCE6C5C;SizeAsReceived:32956;Count:42
+x-tmn: [un/uFTmfm2zyhZNwHp99LMd+PzRDIo0j]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 42
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: d116ae62-72aa-4fb2-54d2-08d90495674d
+x-ms-exchange-slblob-mailprops: 
+ myhWhilQ5IJ11rYe6Y3fllao2DN6Qj54K5RjtbiIpztg/GIGHwqhTqA35M93JRHl0ewG6UwByy9epzfi9ode4DPtEg04Wp8xSIkGGN2SJH9igmoTtrW/5UR979fH7039jM4T+h68S7NDNm4a0YVZw0ClR+EvEkAXwYdW867u2igckbC48J8/QSIWn4zvOJJiuQp5PSbAqcm+gbJWWMTs7gsXpbtutf3f4qw3bBTZrYmZ/8DaRMUDxGVoy33qGjs4X8dgXMYzmBC+7ZLlrRCji4ukKFhObwYj51EsJdMp7pSXX8ZG58XG2N7k3b156U/HYXTKkvxxXITGCCDlWPYxVIZqwDmQfF0TTkG2HVUsPMTCdDf5hruof2Tp2JtYWzfpSsbf/zDGbCfdeewwAM+ryf7jZB0by4bJiVBnOIC0JKy1kvEiqzCef5EPu4UaHNJ+ChVBP5g/H2y/vhqb1vr1H1ps0N+b5ueM6wrZdHI3waXOoW6mbjjFq+jSUZwmkqSPW9VN+l1E82Hk/PLpC5i4UTJvUH3QK3OhNXl8+ZUN+jtrZCfARQMxm6CNOnp5+NtfX+p7GUmBUqgL03QWB0tFzunbgejI5wB7y9CPUAEFq6j7Y4T9+Lpvm6mRfLp/XiuQzcGO8olRNLGjMx30Zsebip9XIDVat5q4FlxHKoVHZc7yeDmaIZdOtuqYmUkcr6b7
+x-ms-traffictypediagnostic: DB3EUR04HT032:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ YXLyCr2z2F3x1pm/BiiEqsprqsjg3HS/0A6D9r1Igf7zOdob4UCaACFmo+CeMZtbkgJlP9HhqItQimjP8zVQeJDNwGpU2bEpfgQ9MI0k/5OyQjVnPcYkopunIkPdqASwLNniqEy89rurgKjQ5L2qkxrGbEQY/2SkbcKw384CrzYiKQE1y+5BpTzQRVyJuhhJfaS4nRf3s0uyy6FeMIkiIZ8eRZbAzM/DzoRrSz1g9ZE4A0BUli92VOdHfYUHRqiPF0h7k+tMqUSeHH3A2Nvi2WNUf/OEEOTZ4j4MgcH7vLtYy4ePjYYZafPbICilLiEF4fi2xYjVTxKsbIy93H7GACP0ti/z+DhQYMa+LfdaL5zYpecR1PxHk7mGGGJ0Of1KV1HNR1uQWKwAs9C/10RIYOd1+m1MUYA/rktsNAjvaAK6ATECC+JX2ugAFWAkfAi5
+x-ms-exchange-antispam-messagedata: 
+ 2bxEmLkBpJWJNt4NRJX/2gUYlYqwihqNiD92CyyfR/M8SW8fgRaXTG3u6kj0khQRErXFMKnnYMLfC1o9uA17C1jS6VeBmWS412Io8gP+bUFo7iMaGIVTMc23vGRqe46c/VBeUVjmkt6mLWnarfLTCA==
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-Message-ID-Hash: CAAP5VWAZYF4V4GXGIQATY5K72OYHXBU
-X-Message-ID-Hash: CAAP5VWAZYF4V4GXGIQATY5K72OYHXBU
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Jonathan Corbet <corbet@lwn.net>, nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-AuthSource: DB3EUR04FT033.eop-eur04.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: d116ae62-72aa-4fb2-54d2-08d90495674d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Apr 2021 07:16:37.6836
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3EUR04HT032
+Message-ID-Hash: F4IXQQT2QM47WRWXMQ7K4AWER6M5MC6S
+X-Message-ID-Hash: F4IXQQT2QM47WRWXMQ7K4AWER6M5MC6S
+X-MailFrom: dfsgffjhj87@outlook.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CAAP5VWAZYF4V4GXGIQATY5K72OYHXBU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/V2EE6TCMJIWWMKQKIJLRQI6CJPJ6667A/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,342 +103,27 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-After seeing some users have subscription management trouble, more spam
-than other Linux development lists, and considering some of the benefits
-of kernel.org hosted lists, nvdimm and persistent memory development is
-moving to nvdimm@lists.linux.dev.
+Good Day Sir/Madam,
 
-The old list will remain up until v5.14-rc1 and shutdown thereafter.
+We are please to invite you or your company to quote the following item listed
+below:
 
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Oliver O'Halloran <oohall@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- Documentation/ABI/obsolete/sysfs-class-dax    |    2 +
- Documentation/ABI/removed/sysfs-bus-nfit      |    2 +
- Documentation/ABI/testing/sysfs-bus-nfit      |   40 +++++++++++++------------
- Documentation/ABI/testing/sysfs-bus-papr-pmem |    4 +--
- Documentation/driver-api/nvdimm/nvdimm.rst    |    2 +
- MAINTAINERS                                   |   14 ++++-----
- 6 files changed, 32 insertions(+), 32 deletions(-)
+Product/Model No: Cetter Actuator model 275
+Model Number: 275
+Qty. 45
 
-diff --git a/Documentation/ABI/obsolete/sysfs-class-dax b/Documentation/ABI/obsolete/sysfs-class-dax
-index 0faf1354cd05..5bcce27458e3 100644
---- a/Documentation/ABI/obsolete/sysfs-class-dax
-+++ b/Documentation/ABI/obsolete/sysfs-class-dax
-@@ -1,7 +1,7 @@
- What:           /sys/class/dax/
- Date:           May, 2016
- KernelVersion:  v4.7
--Contact:        linux-nvdimm@lists.01.org
-+Contact:        nvdimm@lists.linux.dev
- Description:	Device DAX is the device-centric analogue of Filesystem
- 		DAX (CONFIG_FS_DAX).  It allows memory ranges to be
- 		allocated and mapped without need of an intervening file
-diff --git a/Documentation/ABI/removed/sysfs-bus-nfit b/Documentation/ABI/removed/sysfs-bus-nfit
-index ae8c1ca53828..277437005def 100644
---- a/Documentation/ABI/removed/sysfs-bus-nfit
-+++ b/Documentation/ABI/removed/sysfs-bus-nfit
-@@ -1,7 +1,7 @@
- What:		/sys/bus/nd/devices/regionX/nfit/ecc_unit_size
- Date:		Aug, 2017
- KernelVersion:	v4.14 (Removed v4.18)
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Size of a write request to a DIMM that will not incur a
- 		read-modify-write cycle at the memory controller.
-diff --git a/Documentation/ABI/testing/sysfs-bus-nfit b/Documentation/ABI/testing/sysfs-bus-nfit
-index 63ef0b9ecce7..e7282d184a74 100644
---- a/Documentation/ABI/testing/sysfs-bus-nfit
-+++ b/Documentation/ABI/testing/sysfs-bus-nfit
-@@ -5,7 +5,7 @@ Interface Table (NFIT)' section in the ACPI specification
- What:		/sys/bus/nd/devices/nmemX/nfit/serial
- Date:		Jun, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Serial number of the NVDIMM (non-volatile dual in-line
- 		memory module), assigned by the module vendor.
-@@ -14,7 +14,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/handle
- Date:		Apr, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) The address (given by the _ADR object) of the device on its
- 		parent bus of the NVDIMM device containing the NVDIMM region.
-@@ -23,7 +23,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/device
- Date:		Apr, 2015
- KernelVersion:	v4.1
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Device id for the NVDIMM, assigned by the module vendor.
- 
-@@ -31,7 +31,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/rev_id
- Date:		Jun, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Revision of the NVDIMM, assigned by the module vendor.
- 
-@@ -39,7 +39,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/phys_id
- Date:		Apr, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Handle (i.e., instance number) for the SMBIOS (system
- 		management BIOS) Memory Device structure describing the NVDIMM
-@@ -49,7 +49,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/flags
- Date:		Jun, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) The flags in the NFIT memory device sub-structure indicate
- 		the state of the data on the nvdimm relative to its energy
-@@ -68,7 +68,7 @@ What:		/sys/bus/nd/devices/nmemX/nfit/format1
- What:		/sys/bus/nd/devices/nmemX/nfit/formats
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) The interface codes indicate support for persistent memory
- 		mapped directly into system physical address space and / or a
-@@ -84,7 +84,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/vendor
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Vendor id of the NVDIMM.
- 
-@@ -92,7 +92,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/dsm_mask
- Date:		May, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) The bitmask indicates the supported device specific control
- 		functions relative to the NVDIMM command family supported by the
-@@ -102,7 +102,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/family
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Displays the NVDIMM family command sets. Values
- 		0, 1, 2 and 3 correspond to NVDIMM_FAMILY_INTEL,
-@@ -118,7 +118,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/id
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) ACPI specification 6.2 section 5.2.25.9, defines an
- 		identifier for an NVDIMM, which refelects the id attribute.
-@@ -127,7 +127,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/subsystem_vendor
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Sub-system vendor id of the NVDIMM non-volatile memory
- 		subsystem controller.
-@@ -136,7 +136,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/subsystem_rev_id
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Sub-system revision id of the NVDIMM non-volatile memory subsystem
- 		controller, assigned by the non-volatile memory subsystem
-@@ -146,7 +146,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/nfit/subsystem_device
- Date:		Apr, 2016
- KernelVersion:	v4.7
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) Sub-system device id for the NVDIMM non-volatile memory
- 		subsystem controller, assigned by the non-volatile memory
-@@ -156,7 +156,7 @@ Description:
- What:		/sys/bus/nd/devices/ndbusX/nfit/revision
- Date:		Jun, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) ACPI NFIT table revision number.
- 
-@@ -164,7 +164,7 @@ Description:
- What:		/sys/bus/nd/devices/ndbusX/nfit/scrub
- Date:		Sep, 2016
- KernelVersion:	v4.9
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RW) This shows the number of full Address Range Scrubs (ARS)
- 		that have been completed since driver load time. Userspace can
-@@ -177,7 +177,7 @@ Description:
- What:		/sys/bus/nd/devices/ndbusX/nfit/hw_error_scrub
- Date:		Sep, 2016
- KernelVersion:	v4.9
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RW) Provides a way to toggle the behavior between just adding
- 		the address (cache line) where the MCE happened to the poison
-@@ -196,7 +196,7 @@ Description:
- What:		/sys/bus/nd/devices/ndbusX/nfit/dsm_mask
- Date:		Jun, 2017
- KernelVersion:	v4.13
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) The bitmask indicates the supported bus specific control
- 		functions. See the section named 'NVDIMM Root Device _DSMs' in
-@@ -205,7 +205,7 @@ Description:
- What:		/sys/bus/nd/devices/ndbusX/nfit/firmware_activate_noidle
- Date:		Apr, 2020
- KernelVersion:	v5.8
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RW) The Intel platform implementation of firmware activate
- 		support exposes an option let the platform force idle devices in
-@@ -225,7 +225,7 @@ Description:
- What:		/sys/bus/nd/devices/regionX/nfit/range_index
- Date:		Jun, 2015
- KernelVersion:	v4.2
--Contact:	linux-nvdimm@lists.01.org
-+Contact:	nvdimm@lists.linux.dev
- Description:
- 		(RO) A unique number provided by the BIOS to identify an address
- 		range. Used by NVDIMM Region Mapping Structure to uniquely refer
-diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-index 8316c33862a0..92e2db0e2d3d 100644
---- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
-+++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-@@ -1,7 +1,7 @@
- What:		/sys/bus/nd/devices/nmemX/papr/flags
- Date:		Apr, 2020
- KernelVersion:	v5.8
--Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
-+Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
- Description:
- 		(RO) Report flags indicating various states of a
- 		papr-pmem NVDIMM device. Each flag maps to a one or
-@@ -36,7 +36,7 @@ Description:
- What:		/sys/bus/nd/devices/nmemX/papr/perf_stats
- Date:		May, 2020
- KernelVersion:	v5.9
--Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
-+Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
- Description:
- 		(RO) Report various performance stats related to papr-scm NVDIMM
- 		device.  Each stat is reported on a new line with each line
-diff --git a/Documentation/driver-api/nvdimm/nvdimm.rst b/Documentation/driver-api/nvdimm/nvdimm.rst
-index ef6d59e0978e..1d8302b89bd4 100644
---- a/Documentation/driver-api/nvdimm/nvdimm.rst
-+++ b/Documentation/driver-api/nvdimm/nvdimm.rst
-@@ -4,7 +4,7 @@ LIBNVDIMM: Non-Volatile Devices
- 
- libnvdimm - kernel / libndctl - userspace helper library
- 
--linux-nvdimm@lists.01.org
-+nvdimm@lists.linux.dev
- 
- Version 13
- 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9450e052f1b1..4d18fa67f71b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5146,7 +5146,7 @@ DEVICE DIRECT ACCESS (DAX)
- M:	Dan Williams <dan.j.williams@intel.com>
- M:	Vishal Verma <vishal.l.verma@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- F:	drivers/dax/
- 
-@@ -6887,7 +6887,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
- R:	Matthew Wilcox <willy@infradead.org>
- R:	Jan Kara <jack@suse.cz>
- L:	linux-fsdevel@vger.kernel.org
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- F:	fs/dax.c
- F:	include/linux/dax.h
-@@ -10146,7 +10146,7 @@ LIBNVDIMM BLK: MMIO-APERTURE DRIVER
- M:	Dan Williams <dan.j.williams@intel.com>
- M:	Vishal Verma <vishal.l.verma@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
- P:	Documentation/nvdimm/maintainer-entry-profile.rst
-@@ -10157,7 +10157,7 @@ LIBNVDIMM BTT: BLOCK TRANSLATION TABLE
- M:	Vishal Verma <vishal.l.verma@intel.com>
- M:	Dan Williams <dan.j.williams@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
- P:	Documentation/nvdimm/maintainer-entry-profile.rst
-@@ -10167,7 +10167,7 @@ LIBNVDIMM PMEM: PERSISTENT MEMORY DRIVER
- M:	Dan Williams <dan.j.williams@intel.com>
- M:	Vishal Verma <vishal.l.verma@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
- P:	Documentation/nvdimm/maintainer-entry-profile.rst
-@@ -10175,7 +10175,7 @@ F:	drivers/nvdimm/pmem*
- 
- LIBNVDIMM: DEVICETREE BINDINGS
- M:	Oliver O'Halloran <oohall@gmail.com>
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
- F:	Documentation/devicetree/bindings/pmem/pmem-region.txt
-@@ -10186,7 +10186,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
- M:	Vishal Verma <vishal.l.verma@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
- M:	Ira Weiny <ira.weiny@intel.com>
--L:	linux-nvdimm@lists.01.org
-+L:	nvdimm@lists.linux.dev
- S:	Supported
- Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
- P:	Documentation/nvdimm/maintainer-entry-profile.rst
+Compulsory,Kindly send your quotation to: quote@pfizereu.com<mailto:quote@pfizereu.com>
+for immediate approval.
+
+Kind Regards,
+Ajane Bulla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)513 78 8206
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands
+
+
+[https://ipmcdn.avast.com/images/icons/icon-envelope-tick-round-orange-animated-no-repeat-v1.gif]<https://www.avast.com/sig-email?utm_medium=email&utm_source=link&utm_campaign=sig-email&utm_content=webmail>  Virus-free. www.avast.com<https://www.avast.com/sig-email?utm_medium=email&utm_source=link&utm_campaign=sig-email&utm_content=webmail>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
