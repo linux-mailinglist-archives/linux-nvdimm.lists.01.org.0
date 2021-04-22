@@ -2,57 +2,54 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB673681B5
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Apr 2021 15:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D4B368479
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Apr 2021 18:12:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D7F65100EAB73;
-	Thu, 22 Apr 2021 06:45:35 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 5C061100EAB73
-	for <linux-nvdimm@lists.01.org>; Thu, 22 Apr 2021 06:45:33 -0700 (PDT)
-IronPort-HdrOrdr: =?us-ascii?q?A9a23=3A/fQciaxJuV6fXtLJbYteKrPwzL1zdoIgy1kn?=
- =?us-ascii?q?xilNYDZSddGVkN3roeQD2XbP+VIscVwDufTFAqmPRnvA6YV4iLN9AZ6OVBTr0V?=
- =?us-ascii?q?HHEKhM4YfuyDXrGWnf24dmv5tIXLN5DLTLbGRSqebfzE2GH807wN+BmZrY4Nv2?=
- =?us-ascii?q?63t2VwllZ+VBwm5Ce2WmO3Z7TgVHGpY1faD0jqV6jgC9cncaZNnTPAhmY8H/ob?=
- =?us-ascii?q?Tw9K7OUFovAh4LzE20hyq01biSKXOl9yZbfzRR4bpKywT4rzA=3D?=
-X-IronPort-AV: E=Sophos;i="5.82,242,1613404800";
-   d="scan'208";a="107477157"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 22 Apr 2021 21:45:31 +0800
-Received: from G08CNEXMBPEKD06.g08.fujitsu.local (unknown [10.167.33.206])
-	by cn.fujitsu.com (Postfix) with ESMTP id 8FF6D4D0B8AC;
-	Thu, 22 Apr 2021 21:45:25 +0800 (CST)
-Received: from G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.200) by
- G08CNEXMBPEKD06.g08.fujitsu.local (10.167.33.206) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Thu, 22 Apr 2021 21:45:26 +0800
-Received: from irides.mr.mr.mr (10.167.225.141) by
- G08CNEXCHPEKD04.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
- id 15.0.1497.2 via Frontend Transport; Thu, 22 Apr 2021 21:45:25 +0800
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<linux-nvdimm@lists.01.org>, <linux-fsdevel@vger.kernel.org>
-Subject: [PATCH v3 3/3] fsdax: Output address in dax_iomap_pfn() and rename it
-Date: Thu, 22 Apr 2021 21:45:01 +0800
-Message-ID: <20210422134501.1596266-4-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20210422134501.1596266-1-ruansy.fnst@fujitsu.com>
-References: <20210422134501.1596266-1-ruansy.fnst@fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTP id 93DB5100EAB77;
+	Thu, 22 Apr 2021 09:12:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=djwong@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 5184D100EAB71
+	for <linux-nvdimm@lists.01.org>; Thu, 22 Apr 2021 09:12:43 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AFE77613FA;
+	Thu, 22 Apr 2021 16:12:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1619107961;
+	bh=StivcVD9xXu0rWnliGlK3Di9LBDcwLdEvblI2w8R7OM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LqZlGEbuM6/TYtsddHzWNpv36nTueJY4ONSELqRugx9Rgkmb62aoGknxJuFj1K81o
+	 L2MjJKkoNaS83JMzkN4kfTtjWgdmcac2ZINLJazYAr9eWwRC43Rp8jWq8Jx2ZV9B0C
+	 VMsMugEgCvT+Wp5Qg1HuNYg6I4iUJ3p1MRsPk6ITCK+CBvJZ+9fpGqieNNMzhQ0SBg
+	 MgJWx8hRiuym2vygfMs/yTnUsL/AWKWjLFm+bq7/cCRLjt+DuIJzC3ZRTaGzeZ7Lc8
+	 sgZ+C+SsId/LlpV9Ih32OYwQBxRxM/T/yGA/fueHe3P2i/0hAeyUFfgMHxNm7XhWX/
+	 M9FWcEL1YvG6g==
+Date: Thu, 22 Apr 2021 09:12:41 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [Virtio-fs] [PATCH v3 2/3] dax: Add a wakeup mode parameter to
+ put_unlocked_entry()
+Message-ID: <20210422161241.GC547183@magnolia>
+References: <20210419213636.1514816-1-vgoyal@redhat.com>
+ <20210419213636.1514816-3-vgoyal@redhat.com>
+ <20210420093420.2eed3939@bahia.lan>
+ <20210420140033.GA1529659@redhat.com>
+ <CAPcyv4g2raipYhivwbiSvsHmSdgLO8wphh5dhY3hpjwko9G4Hw@mail.gmail.com>
+ <20210422062458.GA4176641@infradead.org>
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 8FF6D4D0B8AC.A52EF
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: 3VTMRNC2WM7BW3E262CIUUWSHL3VRXFQ
-X-Message-ID-Hash: 3VTMRNC2WM7BW3E262CIUUWSHL3VRXFQ
-X-MailFrom: ruansy.fnst@fujitsu.com
+Content-Disposition: inline
+In-Reply-To: <20210422062458.GA4176641@infradead.org>
+Message-ID-Hash: EOCKXIV23RLALXPOLFG53BLAHPQ3B27U
+X-Message-ID-Hash: EOCKXIV23RLALXPOLFG53BLAHPQ3B27U
+X-MailFrom: djwong@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: darrick.wong@oracle.com, willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk, linux-btrfs@vger.kernel.org, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
+CC: Greg Kurz <groug@kaod.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Miklos Szeredi <miklos@szeredi.hu>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, virtio-fs-list <virtio-fs@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3VTMRNC2WM7BW3E262CIUUWSHL3VRXFQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EOCKXIV23RLALXPOLFG53BLAHPQ3B27U/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -61,73 +58,30 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add address output in dax_iomap_pfn() in order to perform a memcpy() in
-CoW case.  Since this function both output address and pfn, rename it to
-dax_iomap_direct_access().
+On Thu, Apr 22, 2021 at 07:24:58AM +0100, Christoph Hellwig wrote:
+> On Wed, Apr 21, 2021 at 12:09:54PM -0700, Dan Williams wrote:
+> > Can you get in the habit of not replying inline with new patches like
+> > this? Collect the review feedback, take a pause, and resend the full
+> > series so tooling like b4 and patchwork can track when a new posting
+> > supersedes a previous one. As is, this inline style inflicts manual
+> > effort on the maintainer.
+> 
+> Honestly I don't mind it at all.  If you shiny new tooling can't handle
+> it maybe you should fix your shiny new tooling instead of changing
+> everyones workflow?
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ritesh Harjani <riteshh@linux.ibm.com>
----
- fs/dax.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+Just speaking for XFS here, but I don't like inline resubmissions
+because that makes it /really/ hard to find the original patch 6 months
+later when everything has paged out of my brain but random enterprise
+distro backporters start asking questions ("is this an actively
+exploited security fix?" "what were you smoking?" etc).
 
-diff --git a/fs/dax.c b/fs/dax.c
-index f99e33de2036..48a97905c0c3 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -998,8 +998,8 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
- 	return (iomap->addr + (pos & PAGE_MASK) - iomap->offset) >> 9;
- }
- 
--static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
--			 pfn_t *pfnp)
-+static int dax_iomap_direct_access(struct iomap *iomap, loff_t pos, size_t size,
-+		void **kaddr, pfn_t *pfnp)
- {
- 	const sector_t sector = dax_iomap_sector(iomap, pos);
- 	pgoff_t pgoff;
-@@ -1011,11 +1011,13 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
- 		return rc;
- 	id = dax_read_lock();
- 	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
--				   NULL, pfnp);
-+				   kaddr, pfnp);
- 	if (length < 0) {
- 		rc = length;
- 		goto out;
- 	}
-+	if (!pfnp)
-+		goto out_check_addr;
- 	rc = -EINVAL;
- 	if (PFN_PHYS(length) < size)
- 		goto out;
-@@ -1025,6 +1027,12 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
- 	if (length > 1 && !pfn_t_devmap(*pfnp))
- 		goto out;
- 	rc = 0;
-+
-+out_check_addr:
-+	if (!kaddr)
-+		goto out;
-+	if (!*kaddr)
-+		rc = -EFAULT;
- out:
- 	dax_read_unlock(id);
- 	return rc;
-@@ -1389,7 +1397,7 @@ static vm_fault_t dax_fault_actor(struct vm_fault *vmf, pfn_t *pfnp,
- 		return pmd ? VM_FAULT_FALLBACK : VM_FAULT_SIGBUS;
- 	}
- 
--	err = dax_iomap_pfn(iomap, pos, size, &pfn);
-+	err = dax_iomap_direct_access(iomap, pos, size, NULL, &pfn);
- 	if (err)
- 		return pmd ? VM_FAULT_FALLBACK : dax_fault_return(err);
- 
--- 
-2.31.1
+At least change the subject line to something that screams "new patch!"
+so that mutt and lore will make it stand out.
 
+(Granted this isn't XFS, so I am not the enforcer here ;))
 
+--D
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
