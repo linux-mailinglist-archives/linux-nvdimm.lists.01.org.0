@@ -1,62 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A514A3692B1
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Apr 2021 15:07:56 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B323695F5
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Apr 2021 17:20:03 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4DD18100EAAEB;
-	Fri, 23 Apr 2021 06:07:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C2CE4100EAAEE;
+	Fri, 23 Apr 2021 08:20:01 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::32d; helo=mail-ot1-x32d.google.com; envelope-from=damesalle132@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 48DA9100EAB5E
-	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 06:07:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1619183270;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HrEvCjKrNvU8f2Kdeia0iPn8GHvkOfIv042jQr8u048=;
-	b=MlYogAost8Ij70lyLqPWGGx0joZS4REWFQCUI8PZMnE9656B4FcR/KYueXD9Vs4LNtmYds
-	7RrKt2GKU2O1D/YIfCjeY60Nht2pJeRgSwTscRYFXjyzrNne444wIkIIoYa0OU1dresB56
-	i8+552DgpTNrdb4oHGWR5jnGoa2bRj0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-128-p2aXp0xRN9iTLkrd4oJhkA-1; Fri, 23 Apr 2021 09:07:46 -0400
-X-MC-Unique: p2aXp0xRN9iTLkrd4oJhkA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 269C61006C81;
-	Fri, 23 Apr 2021 13:07:45 +0000 (UTC)
-Received: from horse.redhat.com (ovpn-115-86.rdu2.redhat.com [10.10.115.86])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 1C37250DD2;
-	Fri, 23 Apr 2021 13:07:38 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id A8368225FCD; Fri, 23 Apr 2021 09:07:37 -0400 (EDT)
-From: Vivek Goyal <vgoyal@redhat.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-nvdimm@lists.01.org,
-	dan.j.williams@intel.com
-Subject: [PATCH v4 3/3] dax: Wake up all waiters after invalidating dax entry
-Date: Fri, 23 Apr 2021 09:07:23 -0400
-Message-Id: <20210423130723.1673919-4-vgoyal@redhat.com>
-In-Reply-To: <20210423130723.1673919-1-vgoyal@redhat.com>
-References: <20210423130723.1673919-1-vgoyal@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 7921B100EAAEE
+	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 08:19:58 -0700 (PDT)
+Received: by mail-ot1-x32d.google.com with SMTP id 92-20020a9d02e50000b029028fcc3d2c9eso23109077otl.0
+        for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 08:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=IeyU6ogacHzhKikUzm5Y/puaLChm3iyHuJBsQWkBdfI=;
+        b=QLjgCZto1H/lUj/C2pmIWyLDxj79nvFmJ41BqX9X5R5igBNqhwGggG8Eau4gL16eN2
+         7xgSQ2z7nP8+Wa0p42BFxTFV55m4PbRvn64ccDUTq0ZhPxVZbO7nnURO3Jj0btM8obq4
+         HK/exBk7hkHB3sS8bwyt0WaZXb2bPmvAeJ2+gnJjV1mr2DD0/AQ2K4m8FOxk8VedHFo5
+         Ht2VL+uajjEt8PEOAvUzvZWOh84xLtdlELn0LAjJlLb7ab7uBsN+nDWJxZf4/7VyV2oe
+         0C4htC1h+cj+0sx9grz2/XroX667BNmtF49mbMl826oyroT9j6n7n/oVC6vqyoA1hA5J
+         NPPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=IeyU6ogacHzhKikUzm5Y/puaLChm3iyHuJBsQWkBdfI=;
+        b=BgcYDFZ65o0PZzDC/nri7hgE/5eSE8nmukEt2aoH9wXYBmCW9jyIV+L4ldN8EK/kjG
+         UHWaXEErMylssnw4D3bHeaZq3IP1VuF6hIu8zxftLiXqhXAr9p5aDX8teKiG27xA89q0
+         iTDKqLpNwmhfIxS8Euta9oEQKjfV4Ultx3AIuhRda0F2ShHjsdOhmT5Oj4nbRCldaTwJ
+         WgBjAbVAJ64LcpFVcVuKapO9xwkIpAF08Ac6UdwjfZgaFJDwbj5yEUuJxsfc0I+EgiLi
+         nwczNqxwxOIocPxG53AJKicBy8LvW6qUexlOqpkyqrwYB5EV9fJY54J2mQvxMiRV8mnN
+         hL8A==
+X-Gm-Message-State: AOAM530Ln4P7mBdXwSuZWLOOZXV+kvxWVdpocMp8C/F0ilZeNmBmnsE2
+	n1akIK7FB3U+9cwYgGsVdm3XyhetXUrke8A3m9E=
+X-Google-Smtp-Source: ABdhPJwlsvsaaslIWKXCuCaw8Su9gYG1n/JQVZGuIkb5r2GlnCIJHDmPGQOnkGBYT3hR0N8kXjvE+M68WZ3s7JXfD04=
+X-Received: by 2002:a9d:d05:: with SMTP id 5mr3916087oti.312.1619191197748;
+ Fri, 23 Apr 2021 08:19:57 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: PW4KL56FD2XYIZ76NOBC4TXXWPIV3BOG
-X-Message-ID-Hash: PW4KL56FD2XYIZ76NOBC4TXXWPIV3BOG
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, virtio-fs@redhat.com, miklos@szeredi.hu, jack@suse.cz, willy@infradead.org, slp@redhat.com, groug@kaod.org
+From: Karen J Brown <karen.j.brown211@gmail.com>
+Date: Fri, 23 Apr 2021 15:19:43 +0000
+Message-ID: <CAFLzmNvqMJ__1dfGK03QoX63Skb07ipTVT93AU3adSEOGmc_7w@mail.gmail.com>
+Subject: 
+To: undisclosed-recipients:;
+Message-ID-Hash: TZD2G5J5Y7JSVEWV6JOJZI5TBQCW4BRO
+X-Message-ID-Hash: TZD2G5J5Y7JSVEWV6JOJZI5TBQCW4BRO
+X-MailFrom: damesalle132@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PW4KL56FD2XYIZ76NOBC4TXXWPIV3BOG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TZD2G5J5Y7JSVEWV6JOJZI5TBQCW4BRO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -65,74 +64,7 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-I am seeing missed wakeups which ultimately lead to a deadlock when I am
-using virtiofs with DAX enabled and running "make -j". I had to mount
-virtiofs as rootfs and also reduce to dax window size to 256M to reproduce
-the problem consistently.
-
-So here is the problem. put_unlocked_entry() wakes up waiters only
-if entry is not null as well as !dax_is_conflict(entry). But if I
-call multiple instances of invalidate_inode_pages2() in parallel,
-then I can run into a situation where there are waiters on
-this index but nobody will wake these waiters.
-
-invalidate_inode_pages2()
-  invalidate_inode_pages2_range()
-    invalidate_exceptional_entry2()
-      dax_invalidate_mapping_entry_sync()
-        __dax_invalidate_entry() {
-                xas_lock_irq(&xas);
-                entry = get_unlocked_entry(&xas, 0);
-                ...
-                ...
-                dax_disassociate_entry(entry, mapping, trunc);
-                xas_store(&xas, NULL);
-                ...
-                ...
-                put_unlocked_entry(&xas, entry);
-                xas_unlock_irq(&xas);
-        }
-
-Say a fault in in progress and it has locked entry at offset say "0x1c".
-Now say three instances of invalidate_inode_pages2() are in progress
-(A, B, C) and they all try to invalidate entry at offset "0x1c". Given
-dax entry is locked, all tree instances A, B, C will wait in wait queue.
-
-When dax fault finishes, say A is woken up. It will store NULL entry
-at index "0x1c" and wake up B. When B comes along it will find "entry=0"
-at page offset 0x1c and it will call put_unlocked_entry(&xas, 0). And
-this means put_unlocked_entry() will not wake up next waiter, given
-the current code. And that means C continues to wait and is not woken
-up.
-
-This patch fixes the issue by waking up all waiters when a dax entry
-has been invalidated. This seems to fix the deadlock I am facing
-and I can make forward progress.
-
-Reported-by: Sergio Lopez <slp@redhat.com>
-Fixes: ac401cc78242 ("dax: New fault locking")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
----
- fs/dax.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/dax.c b/fs/dax.c
-index 96e896de8f18..83daa57d37d3 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -675,7 +675,7 @@ static int __dax_invalidate_entry(struct address_space *mapping,
- 	mapping->nrexceptional--;
- 	ret = 1;
- out:
--	put_unlocked_entry(&xas, entry, WAKE_NEXT);
-+	put_unlocked_entry(&xas, entry, WAKE_ALL);
- 	xas_unlock_irq(&xas);
- 	return ret;
- }
--- 
-2.25.4
+ Can we talk please ???
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
