@@ -2,66 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3870369A87
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Apr 2021 20:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7977E369AFA
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Apr 2021 21:37:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 23685100EAAF9;
-	Fri, 23 Apr 2021 11:55:06 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.218.164.231; helo=rakuten.co.jp; envelope-from=postmaster@rakuten.co.jp; receiver=<UNKNOWN> 
-Received: from rakuten.co.jp (unknown [104.218.164.231])
-	by ml01.01.org (Postfix) with ESMTP id E4EAA100EAAF8
-	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 11:55:02 -0700 (PDT)
-Message-ID: <20210423195503028114@rakuten.co.jp>
-From: "myinfo" <postmaster@rakuten.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9ug3aDiYNDg4CCzI6pk66NWJBWkN2S6ILwifCPnA==?=
-	=?shift_jis?B?gqKCvYK1gtyCtYK9gUk=?=
-Date: Fri, 23 Apr 2021 19:54:54 +000
+	by ml01.01.org (Postfix) with ESMTP id 6D246100EAAFC;
+	Fri, 23 Apr 2021 12:37:41 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=135.125.102.137; helo=preprod.nougat-chabert-guillot.trimoreau.fr; envelope-from=rdevies@marlboropolice.org; receiver=<UNKNOWN> 
+Received: from preprod.nougat-chabert-guillot.trimoreau.fr (vps-b0232749.vps.ovh.net [135.125.102.137])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id BC1B6100EAAFB
+	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 12:37:38 -0700 (PDT)
 MIME-Version: 1.0
-X-mailer: Kwxscmfl 5
-Message-ID-Hash: 5C7UQTDSEXKYUVIMCPC75APJMQHKQW43
-X-Message-ID-Hash: 5C7UQTDSEXKYUVIMCPC75APJMQHKQW43
-X-MailFrom: postmaster@rakuten.co.jp
+Subject: New Business Invitation from Ibrahim Sadiq
+To: Recipients <rdevies@marlboropolice.org>
+From: "LinkedIn" <rdevies@marlboropolice.org>
+Date: Fri, 23 Apr 2021 02:04:27 +0200
+Message-Id: <E1lZjJA-0008WA-Hy@preprod.nougat-chabert-guillot.trimoreau.fr>
+Message-ID-Hash: Z4TSWCV7U6IBWNAEHRDLEALPRGVOFADF
+X-Message-ID-Hash: Z4TSWCV7U6IBWNAEHRDLEALPRGVOFADF
+X-MailFrom: rdevies@marlboropolice.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Description: Mail message body
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5C7UQTDSEXKYUVIMCPC75APJMQHKQW43/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z4TSWCV7U6IBWNAEHRDLEALPRGVOFADF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCg0KDQoNCuOCr+ODrOOCuOODg+ODiOOCq+ODvOODieaDheWgseOBruabtOaWsOOAgei/veWK
-oOOBquOBqeOBq+OBpOOBjeOBvuOBl+OBpuOAgeS7peS4i+OBruaJi+mghuOCkuOBlOeiuuiqjeOB
-j+OBoOOBleOBhOOAguOCouOCq+OCpuODs+ODiOOCteODvOODk+OCueOBi+OCiUFtYXpvbuaDheWg
-seOCkueuoeeQhuOBmeOCi+ODmuODvOOCuOOBq+OCouOCr+OCu+OCueOBl+OBpuOAgeabtOaWsOOB
-l+OBpuOBj+OBoOOBleOBhOOAgg0KDQrjgb7jgZ/jgIFBbWF6b27jg5fjg6njgqTjg6DmnJ/plpPj
-gYzntYLkuobjgZfjgZ/jgonjgIEg44GK5oCl44GO5L6/54Sh5paZIOOChCDjg5fjg6njgqTjg6Dj
-g7vjg5Pjg4fjgqropovmlL7poYwg44Gq44Gp44Gu44OX44Op44Kk44Og5Lya5ZOh54m55YW444Gu
-44GU5Yip55So44GM44Gn44GN44Gq44GP44Gq44KK44G+44GZ44CCKOS4u+OBquODl+ODqeOCpOOD
-oOS8muWToeeJueWFuOOCkueiuuiqjeOBmeOCi+OBq+OBryDjgZPjgaHjgonjgpLjgq/jg6rjg4Pj
-gq/jgZfjgabjgY/jgaDjgZXjgYQp44CC5pep44KB44Gr44GK5omL57aa44GN44Gu56iL44KI44KN
-44GX44GP44GK6aGY44GE6Ie044GX44G+44GZDQoNCg0K57aZ57aa44GX44Gm44OX44Op44Kk44Og
-5Lya5ZOh54m55YW444KS44GK5qW944GX44G/44GE44Gf44Gg44GN44Gf44GE5aC05ZCI44Gv44CB
-44CMQW1hem9u44OX44Op44Kk44Og5Lya5ZOh5oOF5aCx44Gu566h55CG44CN44Oa44O844K444Gr
-44Gm44CM5Lya5ZOh6LOH5qC844KS57aZ57aa44GZ44KL44CNIOOCkuOCr+ODquODg+OCr+OBl+OB
-puOBj+OBoOOBleOBhOOAgg0KDQogDQogICDkvJrlk6Hmg4XloLHjga7nrqHnkIbjg5rjg7zjgrjj
-gafnorroqo0gICANCiANCg0KDQoNCg0K44Gq44GK44CBNzLmmYLplpPku6XlhoXjgavjgZTnorro
-qo3jgYzjgarjgYTloLTlkIjjgIHoqqDjgavnlLPjgZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgIHj
-gYrlrqLmp5jjga7lronlhajjga7ngrrjgIHjgqLjgqvjgqbjg7Pjg4jjga7liKnnlKjliLbpmZDj
-gpLjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZnjga7jgafjgIHkuojjgoHjgZTkuobmib/jgY/j
-gaDjgZXjgYTjgIINCg0K44Ki44Kr44Km44Oz44OI44Gr55m76Yyy44GuReODoeODvOODq+OCouOD
-ieODrOOCueOBq+OCouOCr+OCu+OCueOBp+OBjeOBquOBhOWgtOWQiA0K44GK5ZWP44GE5ZCI44KP
-44Gb77yaIEFtYXpvbuOCq+OCueOCv+ODnuODvOOCteODvOODk+OCueOAgg0KDQpBbWF6b27jgrXj
-g7zjg5PjgrnjgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbjgZTjgZbj
-gYTjgb7jgZfjgZ/jgIINCg0KDQoNCg0KIEFtYXpvbi5jby5qcCAg44Kr44K544K/44Oe44O844K1
-44O844OT44K5ICANCg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
-MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
-bGlzdHMuMDEub3JnCg==
+
+ LinkedIn  
+ 
+ HI   
+ We want to establish a strong business relationship with your company. Please contact me for more details about our order,
+Kindly get back to me with your company brochure/catalogue.
+ Ibrahim Sadiq
+Sales Manager
+ 
+ Accept Add Me        View Business Profile
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
