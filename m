@@ -2,180 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEA2369DB3
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Apr 2021 02:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A51B4369EA2
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Apr 2021 05:36:39 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CCBA4100EAB09;
-	Fri, 23 Apr 2021 17:18:17 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7EC4B100EAB03
-	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 17:18:14 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id s15so59264457edd.4
-        for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 17:18:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=m/iSqBVg1YOHEHtFtoKF8EBfJrdT6u7/8yJl358aav0=;
-        b=0Oz4zOQpLT79MkhCiWeWYGeDTVfiQHHn800C7spi38MntkbkKGCKKc10O/abfvYL04
-         0qVaac4ERAfye2S9MOirSIHygbmK/Om2XIwsPneOhn/xXYQx2nbh//HuJCjIok5t0eTb
-         +nL2GtrP1VNv8t77DfswJeR47fq8IBWZULzOlTQIBgTDExyBTA4xw/FZuO39BpItMWC4
-         jrk3qwWlABYehyaSIok7gWSrF0yB/NlUVLDJic0WLn0SgPycBGESMNAIcr+xn+G7ZVYA
-         ym5VpliTw/3ZFi5b0+l13Y5ZjHUMD1omSAJf36oQQNbuOVOtEtgsoGABkDN0UJ3567u4
-         NorA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=m/iSqBVg1YOHEHtFtoKF8EBfJrdT6u7/8yJl358aav0=;
-        b=S0Qtyvo7ThHYBRNp/F9YTMQp1d+hWpm6OiQDFGWvKsS6G3Kf6rVPZJBDBAtlFwWsg2
-         OHc0LZJpbx1ztczELCC+JUd7S6Wj0jh8BdFQg8Exf2q0h6ijwEYB1dlQ5/oTFWfOfxbb
-         40EDy4lczLUbrDm8MHnszAlIjZ895onRxac/OG3LsEtSOH/5p8jxJnNDgj22327k/7Yp
-         MSdPfXF80PE4cqJuDs/Ob4bDMGqxrSxlGaG8+31SjHpBXpCy9u/Zy0RNPezgL5fKLsiC
-         UC1Knu1+KofNJu5DxcbLU5bK3Mn9j82TV+U0C0CS2ruexDTOK+4nRYBwn2/V9LsHSKXA
-         lSEQ==
-X-Gm-Message-State: AOAM532TI23bUjjvfDhpCUyf933JTuImlftsWjQWsbQj2vl2C0xsrHzq
-	WS5Ks6atBDfeBrompYx/6l1lBvZ5vfSxxW2spSyD/w==
-X-Google-Smtp-Source: ABdhPJxsskPSzKaSZPJYohnrTDZszdo2yqGxotaVocKrNWJqixlR+zaqhPGBgD3L0ftbDs+aRcC6a246W/M1xptXxwQ=
-X-Received: by 2002:aa7:cd52:: with SMTP id v18mr7356306edw.97.1619223493083;
- Fri, 23 Apr 2021 17:18:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210325230938.30752-1-joao.m.martins@oracle.com> <20210325230938.30752-4-joao.m.martins@oracle.com>
-In-Reply-To: <20210325230938.30752-4-joao.m.martins@oracle.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 23 Apr 2021 17:18:07 -0700
-Message-ID: <CAPcyv4h4TrHWzrpQQHsO4FnTJcZvhw25LJSe5GZ-7ojTu=kL_A@mail.gmail.com>
-Subject: Re: [PATCH v1 03/11] mm/page_alloc: refactor memmap_init_zone_device()
- page init
-To: Joao Martins <joao.m.martins@oracle.com>
-Message-ID-Hash: DO7FCIOQCMZ726KCIUXL2SJOG5RJP4DQ
-X-Message-ID-Hash: DO7FCIOQCMZ726KCIUXL2SJOG5RJP4DQ
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+	by ml01.01.org (Postfix) with ESMTP id 9A7B4100ED480;
+	Fri, 23 Apr 2021 20:36:36 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=118.27.77.61; helo=qlztft.org; envelope-from=zyxidzp@qlztft.org; receiver=<UNKNOWN> 
+Received: from qlztft.org (v118-27-77-61.wj1b.static.cnode.io [118.27.77.61])
+	by ml01.01.org (Postfix) with ESMTP id 08A96100EF267
+	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 20:36:32 -0700 (PDT)
+Message-ID: <5D30929AD2AB4229816E59EA84B225A2@qlztft.org>
+From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44OI44Op44K544OI44Kv44Op44OW?= <account_post@sumitclub.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44OA44Kk44OK44O844K544Kv44Op44OW44Kr44O844OJ44GK55+l44KJ44Gb?=
+Date: Sat, 24 Apr 2021 12:36:27 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: XADHQ2R2DDS6CBY54MYCV2Z4RC2EYPLZ
+X-Message-ID-Hash: XADHQ2R2DDS6CBY54MYCV2Z4RC2EYPLZ
+X-MailFrom: zyxidzp@qlztft.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DO7FCIOQCMZ726KCIUXL2SJOG5RJP4DQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XADHQ2R2DDS6CBY54MYCV2Z4RC2EYPLZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Thu, Mar 25, 2021 at 4:10 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->
-> Move struct page init to an helper function __init_zone_device_page().
-
-Same sentence addition suggestion from the last patch to make this
-patch have some rationale for existing.
-
->
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
->  mm/page_alloc.c | 74 +++++++++++++++++++++++++++----------------------
->  1 file changed, 41 insertions(+), 33 deletions(-)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 43dd98446b0b..58974067bbd4 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6237,6 +6237,46 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
->  }
->
->  #ifdef CONFIG_ZONE_DEVICE
-> +static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
-> +                                         unsigned long zone_idx, int nid,
-> +                                         struct dev_pagemap *pgmap)
-> +{
-> +
-> +       __init_single_page(page, pfn, zone_idx, nid);
-> +
-> +       /*
-> +        * Mark page reserved as it will need to wait for onlining
-> +        * phase for it to be fully associated with a zone.
-> +        *
-> +        * We can use the non-atomic __set_bit operation for setting
-> +        * the flag as we are still initializing the pages.
-> +        */
-> +       __SetPageReserved(page);
-> +
-> +       /*
-> +        * ZONE_DEVICE pages union ->lru with a ->pgmap back pointer
-> +        * and zone_device_data.  It is a bug if a ZONE_DEVICE page is
-> +        * ever freed or placed on a driver-private list.
-> +        */
-> +       page->pgmap = pgmap;
-> +       page->zone_device_data = NULL;
-> +
-> +       /*
-> +        * Mark the block movable so that blocks are reserved for
-> +        * movable at startup. This will force kernel allocations
-> +        * to reserve their blocks rather than leaking throughout
-> +        * the address space during boot when many long-lived
-> +        * kernel allocations are made.
-> +        *
-> +        * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
-> +        * because this is done early in section_activate()
-> +        */
-> +       if (IS_ALIGNED(pfn, pageblock_nr_pages)) {
-> +               set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-> +               cond_resched();
-> +       }
-> +}
-> +
->  void __ref memmap_init_zone_device(struct zone *zone,
->                                    unsigned long start_pfn,
->                                    unsigned long nr_pages,
-> @@ -6265,39 +6305,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->         for (pfn = start_pfn; pfn < end_pfn; pfn++) {
->                 struct page *page = pfn_to_page(pfn);
->
-> -               __init_single_page(page, pfn, zone_idx, nid);
-> -
-> -               /*
-> -                * Mark page reserved as it will need to wait for onlining
-> -                * phase for it to be fully associated with a zone.
-> -                *
-> -                * We can use the non-atomic __set_bit operation for setting
-> -                * the flag as we are still initializing the pages.
-> -                */
-> -               __SetPageReserved(page);
-> -
-> -               /*
-> -                * ZONE_DEVICE pages union ->lru with a ->pgmap back pointer
-> -                * and zone_device_data.  It is a bug if a ZONE_DEVICE page is
-> -                * ever freed or placed on a driver-private list.
-> -                */
-> -               page->pgmap = pgmap;
-> -               page->zone_device_data = NULL;
-> -
-> -               /*
-> -                * Mark the block movable so that blocks are reserved for
-> -                * movable at startup. This will force kernel allocations
-> -                * to reserve their blocks rather than leaking throughout
-> -                * the address space during boot when many long-lived
-> -                * kernel allocations are made.
-> -                *
-> -                * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
-> -                * because this is done early in section_activate()
-> -                */
-> -               if (IS_ALIGNED(pfn, pageblock_nr_pages)) {
-> -                       set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-> -                       cond_resched();
-> -               }
-> +               __init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
->         }
->
->         pr_info("%s initialised %lu pages in %ums\n", __func__,
-> --
-> 2.17.1
->
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+RGluZXJzIENhcmTjgpLjgZTliKnnlKjjga7jgYrlrqLjgZXjgb4NCuWIqeeUqOOBhOOBn+OBoOOB
+jeOAgeOBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0K44GT44Gu44Gf44Gz44CB44GU
+5pys5Lq65qeY44Gu44GU5Yip55So44GL44Gp44GG44GL44KS56K66KqN44GV44Gb44Gm44GE44Gf
+44Gg44GN44Gf44GE44GK5Y+W5byV44GM44GC44KK44G+44GX44Gf44Gu44Gn44CB6Kqg44Gr5Yud
+5omL44Gq44GM44KJ44CB44Kr44O844OJ44Gu44GU5Yip55So44KS5LiA6YOo5Yi26ZmQ44GV44Gb
+44Gm44GE44Gf44Gg44GN44CB44GU6YCj57Wh44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GX44Gf
+44CCDQrjgaTjgY3jgb7jgZfjgabjga/jgIHku6XkuIvjgbjjgqLjgq/jgrvjgrnjga7kuIrjgIHj
+gqvjg7zjg4njga7jgZTliKnnlKjnorroqo3jgavjgZTljZTlipvjgpLjgYrpoZjjgYToh7TjgZfj
+gb7jgZnjgIINCiDjgYrlrqLmp5jjgavjga/jgZTov7fmg5HjgIHjgZTlv4PphY3jgpLjgYrmjpvj
+gZHjgZfjgIHoqqDjgavnlLPjgZfoqLPjgZTjgZbjgYTjgb7jgZvjgpPjgIINCuS9leWNkuOBlOeQ
+huino+OBhOOBn+OBoOOBjeOBn+OBj+OBiumhmOOBhOeUs+OBl+OBguOBkuOBvuOBmeOAgg0K44GU
+5Zue562U44KS44GE44Gf44Gg44GR44Gq44GE5aC05ZCI44CB44Kr44O844OJ44Gu44GU5Yip55So
+5Yi26ZmQ44GM57aZ57aa44GV44KM44KL44GT44Go44KC44GU44GW44GE44G+44GZ44Gu44Gn44CB
+5LqI44KB44GU5LqG5om/5LiL44GV44GEDQrilrzjgZTliKnnlKjnorroqo3jga/jgZPjgaHjgokN
+Cg0K5byK56S+44Gv44CB44Kk44Oz44K/44O844ON44OD44OI5LiK44Gu5LiN5q2j6KGM54K644Gu
+6Ziy5q2i44O75oqR5Yi244Gu6Kaz54K544GL44KJ44K144Kk44OI44Go44GX44Gm44Gu5L+h6aC8
+5oCn44O75q2j5b2T5oCn44KS6auY44KB44KL44Gf44KB44CBDQo85rOoPuOBk+OBruODoe+8jeOD
+q+OCouODieODrOOCueOBr+mAgeS/oeWwgueUqOOBp+OBmeOAgui/lOS/oeOCkuOBhOOBn+OBoOOB
+hOOBpuOCguOBlOWbnuetlOOBp+OBjeOBvg0K44Gb44KT44Gu44Gn44GU5LqG5om/44GP44Gg44GV
+44GE44CCDQrilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIANCuOB
+k+OBruODoeODvOODq+OBr+OAgeOCqOODneOCuU5ldOOBq+OBlOeZu+mMsuOBleOCjOOBn+OBi+OB
+n+OBuOmAgeS/oeOBleOBm+OBpuOBhOOBn+OBoOOBhOOBpuOBiuOCiuOBvuOBmeOAgg0K5pys5Lu2
+44Gr44GK5b+D5b2T44Gf44KK44GM44Gq44GE44GL44Gf44Gv44CB44GK5omL5pWw44Gn44GZ44GM
+5LiL6KiY44G+44Gn44GU6YCj57Wh44KS44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCDQrjgqjj
+g53jgrnjgqvjgrnjgr/jg57jg7zjgrvjg7Pjgr/jg7zvvIjvvJnvvJrvvJPvvJDvvZ7vvJHvvJjv
+vJrvvJDvvJDvvIkNCuOAgOadseS6rOOAgO+8kO+8k++8je+8k++8k++8mO+8k++8je+8kO+8ke+8
+kO+8kQ0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSADQrkuInk
+upXkvY/lj4vjg4jjg6njgrnjg4jjgq/jg6njg5bmoKrlvI/kvJrnpL4NCuadseS6rOmDveS4reWk
+ruWMuuaZtOa1t+S4gOS4geebrjjnlaoxMOWPt+OAgOODiOODquODiOODs+OCueOCr+OCqOOColjm
+o58NCmh0dHA6Ly93d3cuc3VtaXRjbHViLmpwLw0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSADQpDb3B5cmlnaHQgQWxsIFJpZ2h0IFJlc2VydmVkLiBFcG9zIENh
+cmQgQ28uLCBMdGQuDQrnhKHmlq3ou6LovInjgYrjgojjgbPlho3phY3luIPjgpLnpoHjgZjjgb7j
+gZnjgIIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
+dXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVu
+c3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9y
+Zwo=
