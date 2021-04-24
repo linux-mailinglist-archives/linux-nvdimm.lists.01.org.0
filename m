@@ -1,64 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C62E369DAA
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Apr 2021 02:12:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 417D0369DAD
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Apr 2021 02:16:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3E6F1100EAAFC;
-	Fri, 23 Apr 2021 17:12:29 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+	by ml01.01.org (Postfix) with ESMTP id 98C92100EAB03;
+	Fri, 23 Apr 2021 17:16:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2ACA2100F2274
-	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 17:12:27 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id r20so26468271ejo.11
-        for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 17:12:27 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id DA52E100EAAFC
+	for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 17:16:17 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id j12so34204141edy.3
+        for <linux-nvdimm@lists.01.org>; Fri, 23 Apr 2021 17:16:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=qHr7tUOXaQai/2OdZAuZvtKoquZIqzNXavanHLPXua4=;
-        b=Zx4YtT/ak9bAKuxFjeh83s+2vCvsnhqW3WCOWH4QzP7FZDumo/tG8NEFlLRf/X/sbx
-         YFUhP9uRlqwpI3tvdp2tiW7FVEXDjWLkB88vK9RtxYeM+kx5snSvvD+2Ugvc1PRL1saF
-         uH/CLk8Mcqrg2WyECWStWddk61woeHpnR4f4uyysEdWMMKR/fzCtR11lVV65qWR6Iq+E
-         c1fXjIlaM9+x9Jl1n005XVF0hQnEyoDeQu7d50p+OzI4PLRAJHKlMs5ToOR01asCBMk8
-         SG44A7i5NlRMdVttNuSG8NcItte4Gkfk044vNafdlz1AMqgObu+XiIuTsP1TtksYy+N6
-         fuNA==
+        bh=l/uh3+B4XuoxsCrq3rYabHaGGWXFYs+Y4T04wxnm3Nw=;
+        b=vEfpZojtg8fw3cfDceRI4HjqvLyoMCV8Hxpf2pqKYy7CnCYbXxn4v/SRJ+JV+1YNF+
+         bkT2tlZs2nX2GIshFrpgzDt0j8VfiXs09v4BPbZHRXGTC11MRqbgF9zkjHHky6PeOnhz
+         AlvWZcYv541dGxjX6+d1MBG740xhcSEW0lYz3wCsiyndxz0ZPchHdnsW1n4biz4B+o9N
+         ZRu2b/rIs/UEc1YNxxrBGvmJTza3o3RHB4IPDtQXpEXkNwGO+6rIdWpZt03kGqeY4zwZ
+         DWQs5a/ovq9nPpG98DYVYvBa05SzVYfaBklE+1eeYICPRk0k4qiVEyM9Nrlf/7Ldhc/7
+         Blvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=qHr7tUOXaQai/2OdZAuZvtKoquZIqzNXavanHLPXua4=;
-        b=pmlNI0BDDWpVshFzVJ7mgd+Ks7EAkhJs+iLll2hD1RVqkR5L6f11IK/1/AvE5K+V2/
-         xy08dE71Tm3RQt2t2nOJNBGFFDcYOlaTmUGLueEtSFq4CfXrOjV6UbUm4WBO5PVZzvqO
-         1J/iz9knMPqtqygU976LO2Xw813BFgn/v5WmLgnFtDziPhnsXd0p+bHNOCYRrgwSIfh3
-         k2sVedBxkl8efK1s+JmSZysRLZv51iOk/hr9nmHNKjGZoYFdfdXLnoUDHwiWifHtg/Us
-         UCXy2oFV0AfaXNi5saOI1wKLeU9aqjhuL4wD3Mz4mBMtnIDScDOwJV1zlrw7WEwZSJVH
-         2Vsw==
-X-Gm-Message-State: AOAM533bfqkI9DaNOqe62XrIvMrJkp8z+/HJT1WoAkGuIUAVIjNcs+5D
-	p6r+ryOXJLPJRPQorMt3xX7tgjDfUL9/kZlKmE3aQA==
-X-Google-Smtp-Source: ABdhPJxw0VS3dz3A1xGOFxbEhcW7vCcLHVEkly52DIWEjT1QLF7rLt2Jx7ufHOUIpby/EW/WDEEg9aMUXcjUacu5Jzk=
-X-Received: by 2002:a17:907:7631:: with SMTP id jy17mr6812547ejc.418.1619223143985;
- Fri, 23 Apr 2021 17:12:23 -0700 (PDT)
+        bh=l/uh3+B4XuoxsCrq3rYabHaGGWXFYs+Y4T04wxnm3Nw=;
+        b=kyWXltUDsY2AsXjtZfIAXkRI/U1/jCN/EZi2DsCgc/qDJ3qZ3m3yQuumAf83CcI4z8
+         9lch4grtKiIGZarFbpw4uD0Z8sZVagvMWPXnTLi/LcaLxESrjUdW7rYJ0BD3mRZLyZw0
+         sgWMc6zIA24lqbVVwnHbGCdjgNj6I727JeDkguD9kAOiw5to31EvSqVb2Nxe2VrnLKR7
+         lUh0aOQ0BWfMOu/9mGbiEUYu9I5gJeWMBIf1rdgfOAx9CUugtrw5wmlLL55xKdmae1q8
+         mOB7bkJizHuUe9qsJsuNUPYOvJhY/elDPyzO8yiMs/Mr0v00he6SMHG9VcxyEpse5idz
+         nwuQ==
+X-Gm-Message-State: AOAM532vc0C/gdleGfkj2WQKCZCGymxPHOZQagB17MjaqXESm1osbEEx
+	nu+fQPT5Qx6CX1M8Y4lMO15lDQGbQ1GuinTcxvxygg==
+X-Google-Smtp-Source: ABdhPJyr+nWFUeRB/31XPMGbxG182hpB631BFplB/xl3H7HTZZvEhyoCUuto/u3J+7UzagRMIbKR05/dmKhjNRBbxAY=
+X-Received: by 2002:a50:e607:: with SMTP id y7mr7558321edm.18.1619223375444;
+ Fri, 23 Apr 2021 17:16:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210325230938.30752-1-joao.m.martins@oracle.com> <20210325230938.30752-2-joao.m.martins@oracle.com>
-In-Reply-To: <20210325230938.30752-2-joao.m.martins@oracle.com>
+References: <20210325230938.30752-1-joao.m.martins@oracle.com> <20210325230938.30752-3-joao.m.martins@oracle.com>
+In-Reply-To: <20210325230938.30752-3-joao.m.martins@oracle.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 23 Apr 2021 17:12:18 -0700
-Message-ID: <CAPcyv4hCRZ9Dacmbv8kP-4g4DkD6HvO0OSzzaXWLQhKa-r_fXQ@mail.gmail.com>
-Subject: Re: [PATCH v1 01/11] memory-failure: fetch compound_head after pgmap_pfn_valid()
+Date: Fri, 23 Apr 2021 17:16:09 -0700
+Message-ID: <CAPcyv4jrdrKXhnoWKPRUE+McjP_7BOrG8GYBoeGP1s9-aF5FxQ@mail.gmail.com>
+Subject: Re: [PATCH v1 02/11] mm/page_alloc: split prep_compound_page into
+ head and tail subparts
 To: Joao Martins <joao.m.martins@oracle.com>
-Message-ID-Hash: DKU4AO3JGN23TM345SD7W6CZWOVCOERS
-X-Message-ID-Hash: DKU4AO3JGN23TM345SD7W6CZWOVCOERS
+Message-ID-Hash: 4UWI3LWA2BEOWZQ2OLANQURBID2Q2G3S
+X-Message-ID-Hash: 4UWI3LWA2BEOWZQ2OLANQURBID2Q2G3S
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DKU4AO3JGN23TM345SD7W6CZWOVCOERS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4UWI3LWA2BEOWZQ2OLANQURBID2Q2G3S/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,34 +70,75 @@ Content-Transfer-Encoding: 7bit
 
 On Thu, Mar 25, 2021 at 4:10 PM Joao Martins <joao.m.martins@oracle.com> wrote:
 >
-> memory_failure_dev_pagemap() at the moment assumes base pages (e.g.
-> dax_lock_page()).  For pagemap with compound pages fetch the
-> compound_head in case we are handling a tail page memory failure.
+> Split the utility function prep_compound_page() into head and tail
+> counterparts, and use them accordingly.
+
+To make this patch stand alone better lets add another sentence:
+
+"This is in preparation for sharing the storage for / deduplicating
+compound page metadata."
+
+Other than that, looks good to me.
+
 >
-> Currently this is a nop, but in the advent of compound pages in
-> dev_pagemap it allows memory_failure_dev_pagemap() to keep working.
->
-> Reported-by: Jane Chu <jane.chu@oracle.com>
 > Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 > ---
->  mm/memory-failure.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  mm/page_alloc.c | 32 +++++++++++++++++++++-----------
+>  1 file changed, 21 insertions(+), 11 deletions(-)
 >
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 24210c9bd843..94240d772623 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1318,6 +1318,8 @@ static int memory_failure_dev_pagemap(unsigned long pfn, int flags,
->                 goto out;
->         }
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index c53fe4fa10bf..43dd98446b0b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -692,24 +692,34 @@ void free_compound_page(struct page *page)
+>         __free_pages_ok(page, compound_order(page), FPI_NONE);
+>  }
 >
-> +       page = compound_head(page);
-
-Unless / until we do compound pages for the filesystem-dax case, I
-would add a comment like:
-
-/* pages instantiated by device-dax (not filesystem-dax) may be
-compound pages */
+> +static void prep_compound_head(struct page *page, unsigned int order)
+> +{
+> +       set_compound_page_dtor(page, COMPOUND_PAGE_DTOR);
+> +       set_compound_order(page, order);
+> +       atomic_set(compound_mapcount_ptr(page), -1);
+> +       if (hpage_pincount_available(page))
+> +               atomic_set(compound_pincount_ptr(page), 0);
+> +}
+> +
+> +static void prep_compound_tail(struct page *head, int tail_idx)
+> +{
+> +       struct page *p = head + tail_idx;
+> +
+> +       set_page_count(p, 0);
+> +       p->mapping = TAIL_MAPPING;
+> +       set_compound_head(p, head);
+> +}
+> +
+>  void prep_compound_page(struct page *page, unsigned int order)
+>  {
+>         int i;
+>         int nr_pages = 1 << order;
+>
+>         __SetPageHead(page);
+> -       for (i = 1; i < nr_pages; i++) {
+> -               struct page *p = page + i;
+> -               set_page_count(p, 0);
+> -               p->mapping = TAIL_MAPPING;
+> -               set_compound_head(p, page);
+> -       }
+> +       for (i = 1; i < nr_pages; i++)
+> +               prep_compound_tail(page, i);
+>
+> -       set_compound_page_dtor(page, COMPOUND_PAGE_DTOR);
+> -       set_compound_order(page, order);
+> -       atomic_set(compound_mapcount_ptr(page), -1);
+> -       if (hpage_pincount_available(page))
+> -               atomic_set(compound_pincount_ptr(page), 0);
+> +       prep_compound_head(page, order);
+>  }
+>
+>  #ifdef CONFIG_DEBUG_PAGEALLOC
+> --
+> 2.17.1
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
