@@ -1,100 +1,129 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB49C36ED1B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Apr 2021 17:08:39 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4866B36EDB5
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Apr 2021 17:55:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 09C23100ED4BF;
-	Thu, 29 Apr 2021 08:08:36 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=shubhankarvk@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 983DC100EB839;
+	Thu, 29 Apr 2021 08:55:33 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=stefanha@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 06DE6100ED49E
-	for <linux-nvdimm@lists.01.org>; Thu, 29 Apr 2021 08:08:32 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id a11so4022624plh.3
-        for <linux-nvdimm@lists.01.org>; Thu, 29 Apr 2021 08:08:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=GgXjPCns+v+eTZAmZafN0sCl2pErz4or/Z5oduKbOjM=;
-        b=NOB7NTePrT66Rm9kLn0amKEGyBEPyg8zzxAqifAtZtkD4aZYV58gYuqmp9WytOdFDV
-         scMvNF4k+BsBz5Q9Ww1c3wfh3MRfln13ka6MsVrR6fsuuUNoOxRFA/UhwwYT39G3PuG3
-         GAoF8SIIcUX1Gom+cT0grvMFxHAZ18mHOW5YrGEj4fQNcQEd+B5YJcHozhl0IKqqd5ek
-         zJQdMr41fpuy+qV3Y9zSMX/p3y419ZGiHxw8AZrtbY3LQRgGKK6PPJnc3lb+EGl07ozl
-         OLSv5ojaqQBu5F88jkgSRBPVWl7tlKiF5ZS5kIlj4bz1oav/zce+R3eRczcHVxGZlQNF
-         MlOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=GgXjPCns+v+eTZAmZafN0sCl2pErz4or/Z5oduKbOjM=;
-        b=Tij5lV1QluWxLmrYMXRSxeW8r/P2PMpeEZVJqIzX0ZF2EtKL4R112Vdc8cKBVYC7Ks
-         nu5+iWzp3TmbJZlUf7plSDBI1J7ramFOiUyii9bTb8ImuL34mEWK5//A0mGZCPkOxbhU
-         iSgvGKGQMlEBkwWLVGS1Zq9Tg91Uyo5yNCTK4LWY/F+Zf4/ocVynr2NMgaTE6Uck7b3M
-         7JxAY61lV12BidPT6AAEAqTWuwfLEopsqPSPsE6JJINVpqiE3Crx81DN5RQZJM5l1cfQ
-         JNRnMxH2mArC3WA4TZ3CynNaYaYBkqjGuLF+Uu0fxzI0P8+ULaJC6fuWuOY/7kEijN6M
-         vihA==
-X-Gm-Message-State: AOAM531Y9hLhjVgd8E4VrC5gsA/wP+AGuyCa3tyYODnVTZVPl1typeAg
-	5xCVNT93ZZUrcXkL4QW+i9SlpCZoPWAk+U44
-X-Google-Smtp-Source: ABdhPJzcYVTJIuTNAaStQGXkeKJ+uhEePxuz3QpkB7hBzFgUkPgetxIb2Qo8N30n0hWwJOIcUJLEyA==
-X-Received: by 2002:a17:90a:788d:: with SMTP id x13mr7891362pjk.140.1619708911670;
-        Thu, 29 Apr 2021 08:08:31 -0700 (PDT)
-Received: from localhost ([157.45.131.193])
-        by smtp.gmail.com with ESMTPSA id m12sm204486pgn.24.2021.04.29.08.08.30
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 29 Apr 2021 08:08:30 -0700 (PDT)
-Date: Thu, 29 Apr 2021 20:38:21 +0530
-From: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH] drivers: nvdimm: region_devs.c: Add tabs instead of space
-Message-ID: <20210429150821.a23qgknksyqk6ajy@kewl-virtual-machine>
+	by ml01.01.org (Postfix) with ESMTPS id 5CE4B100ED4BF
+	for <linux-nvdimm@lists.01.org>; Thu, 29 Apr 2021 08:55:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1619711729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gV1rD9bP2auaigdAbuGR4mySJTtzY5Cye9xn+YBFw4I=;
+	b=ale+RNCBzti8iTEyMH0IiXc8pSPECAbPhzHnwRtN7MmK2OR6Y19Va8KmPgVUugp8Eip+dG
+	VS39VFlNfhBHY1xkDtPdkCUJLHEPtCxTYMa0sMt0WzaPhBR2TKwXk3sIOps5e3ioAceQN5
+	Q5GEtS+c+4jJPH1DcV4nI6llyPDRyBI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-548-RWF37mhfMXigVq3nHW7iqA-1; Thu, 29 Apr 2021 11:55:27 -0400
+X-MC-Unique: RWF37mhfMXigVq3nHW7iqA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2E6B08026BB;
+	Thu, 29 Apr 2021 15:55:25 +0000 (UTC)
+Received: from localhost (ovpn-115-28.ams2.redhat.com [10.36.115.28])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id E21A319C59;
+	Thu, 29 Apr 2021 15:55:14 +0000 (UTC)
+Date: Thu, 29 Apr 2021 16:55:13 +0100
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Subject: Re: [PATCH v4 0/3] nvdimm: Enable sync-dax property for nvdimm
+Message-ID: <YIrW4bwbR1R0CWm/@stefanha-x1.localdomain>
+References: <161966810162.652.13723419108625443430.stgit@17be908f7c1c>
 MIME-Version: 1.0
-Content-Disposition: inline
-User-Agent: NeoMutt/20171215
-Message-ID-Hash: 4BI52AR7REVY4DK7RBEVXPIOSU64JX4X
-X-Message-ID-Hash: 4BI52AR7REVY4DK7RBEVXPIOSU64JX4X
-X-MailFrom: shubhankarvk@gmail.com
+In-Reply-To: <161966810162.652.13723419108625443430.stgit@17be908f7c1c>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Message-ID-Hash: OZQ7A2IFWTOYW33UYOM5F3IYAHOIWPJK
+X-Message-ID-Hash: OZQ7A2IFWTOYW33UYOM5F3IYAHOIWPJK
+X-MailFrom: stefanha@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, sanjanasrinidhi1810@gmail.com
+CC: david@gibson.dropbear.id.au, groug@kaod.org, qemu-ppc@nongnu.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com, mst@redhat.com, imammedo@redhat.com, xiaoguangrong.eric@gmail.com, peter.maydell@linaro.org, eblake@redhat.com, qemu-arm@nongnu.org, richard.henderson@linaro.org, pbonzini@redhat.com, haozhong.zhang@intel.com, shameerali.kolothum.thodi@huawei.com, kwangwoo.lee@sk.com, armbru@redhat.com, qemu-devel@nongnu.org, aneesh.kumar@linux.ibm.com, linux-nvdimm@lists.01.org, kvm-ppc@vger.kernel.org, shivaprasadbhat@gmail.com, bharata@linux.vnet.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4BI52AR7REVY4DK7RBEVXPIOSU64JX4X/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OZQ7A2IFWTOYW33UYOM5F3IYAHOIWPJK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============0123867094709111221=="
+
+
+--===============0123867094709111221==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Rcrw00CWvSVPCG9y"
+Content-Disposition: inline
+
+
+--Rcrw00CWvSVPCG9y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Apr 28, 2021 at 11:48:21PM -0400, Shivaprasad G Bhat wrote:
+> The nvdimm devices are expected to ensure write persistence during power
+> failure kind of scenarios.
+>=20
+> The libpmem has architecture specific instructions like dcbf on POWER
+> to flush the cache data to backend nvdimm device during normal writes
+> followed by explicit flushes if the backend devices are not synchronous
+> DAX capable.
+>=20
+> Qemu - virtual nvdimm devices are memory mapped. The dcbf in the guest
+> and the subsequent flush doesn't traslate to actual flush to the backend
+> file on the host in case of file backed v-nvdimms. This is addressed by
+> virtio-pmem in case of x86_64 by making explicit flushes translating to
+> fsync at qemu.
+>=20
+> On SPAPR, the issue is addressed by adding a new hcall to
+> request for an explicit flush from the guest ndctl driver when the backend
+> nvdimm cannot ensure write persistence with dcbf alone. So, the approach
+> here is to convey when the hcall flush is required in a device tree
+> property. The guest makes the hcall when the property is found, instead
+> of relying on dcbf.
+
+Sorry, I'm not very familiar with SPAPR. Why add a hypercall when the
+virtio-nvdimm device already exists?
+
+Stefan
+
+--Rcrw00CWvSVPCG9y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmCK1uEACgkQnKSrs4Gr
+c8g/QAf/Zl3J7k2z3nQpWi/HcgKIqmiZ/gYlHxU610TnzxB0pWJfprNzeuJEWeaC
+tT9RloGdmS+KmKkKjX7LQplDEry2hc6tEbyUfj3YemUW5Lz8gouaagtSkfLOFsVb
+Gpd74EcslwzSzeTmaczXTLP6MVsNaLBJx94C2/tIouGbAZwHcXSWPk/czqFm3YfL
+1Zddp77kaNiEOxk62DmL2+iW5NHzNNNzQZyMOod6el05nvuCQrobqzu3HuJ9LklE
+CWyi3GbrFLVIsB/xFKIGykaCOaQLpdc/KP6ckdN4mWTStJv9DUCd4ypomrhd1utY
+NaKyqhVKEC95PHCEz1YZk9BP8SwUlg==
+=jrRj
+-----END PGP SIGNATURE-----
+
+--Rcrw00CWvSVPCG9y--
+
+--===============0123867094709111221==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Space has been replaced with a tab as mentioned in Lindent
-This is done to maintain code uniformity.
-
-Signed-off-by: Shubhankar Kuranagatti <shubhankarvk@gmail.com>
----
- drivers/nvdimm/region_devs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index ef23119db574..e8a8fe3fc5a4 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -1089,7 +1089,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 	if (!nd_region->lane)
- 		goto err_percpu;
- 
--        for (i = 0; i < nr_cpu_ids; i++) {
-+	for (i = 0; i < nr_cpu_ids; i++) {
- 		struct nd_percpu_lane *ndl;
- 
- 		ndl = per_cpu_ptr(nd_region->lane, i);
--- 
-2.17.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============0123867094709111221==--
