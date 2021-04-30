@@ -2,306 +2,223 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007B936FEB1
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 30 Apr 2021 18:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D7537010E
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 30 Apr 2021 21:14:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2EFED100EB33A;
-	Fri, 30 Apr 2021 09:35:51 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 65BC5100EB33F;
+	Fri, 30 Apr 2021 12:14:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8455B100EF27E
-	for <linux-nvdimm@lists.01.org>; Fri, 30 Apr 2021 09:35:49 -0700 (PDT)
-IronPort-SDR: HBBKuZqs/QBHPrpoy5LEsiNbFvJkUmb4sQF55mkC+f4Zvkige73HH9UJG9jE0ciSGu8opy0S3W
- wzfp+8Gg/BsQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9970"; a="176803917"
-X-IronPort-AV: E=Sophos;i="5.82,263,1613462400";
-   d="scan'208";a="176803917"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2021 09:35:48 -0700
-IronPort-SDR: D8tq6gYW9CkjhyRm4SMSGrxv3K6Ea1XDxyxxk8bVKxc/1YHefiV18Nnl0bsXDb2I5D9Wl15Qhc
- VDnFfCnS7fwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,263,1613462400";
-   d="scan'208";a="527700551"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmsmga001.fm.intel.com with ESMTP; 30 Apr 2021 09:35:48 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 30 Apr 2021 09:35:48 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2106.2; Fri, 30 Apr 2021 09:35:47 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2
- via Frontend Transport; Fri, 30 Apr 2021 09:35:47 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.47) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2106.2; Fri, 30 Apr 2021 09:35:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kgWVBlUmwOuQXpn02cFCwTK6ffgw29eMrFL2J8S8XbmfJjFYV8E4/xv1XCQLNe4BalmqoAXLISYzatzd5F3797zevnSb5Hf2tZXvyXZvsKgCZBW3weTub2A7tjlBcP7bkavgXqoYxSXUP6WTwpqgCmcPSuWSs1D7pbMftm3nj9Ssl9Yy+3mNBFac+E8nctUz5JSoh5xC6uWmaSVRBglk2hWOGth/aRFy/cHMXY4Zx7tZUCRb26dCyH/8+X7uqzA9M4mP1YS6LqwX0iPxN7pakRI+pBrwvrulW9GstHLkSXdyo6gvSqJf45SkQ2cFFfSklhVy2OVlwqHkT/4DirLbcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KU2PVdn9348C+IkDpprBFM7TkEwT5Jy7yr4g647cgWg=;
- b=bx0qtsBcpJwaNpTjlyR5UiEBwbhfYsxjbdbxG7g+cP3NnSFGRWuFT8ZQVSBw/68Wg5gLpiw2uCUUltkJXwoUZ/Z4OeGAQQPj7i8ekH93kAXtsHhbDORuNzfHPdEik5EAsyIHNUO8W/mXq28kU+dG0aQJy6OQuUJB6UbFNcWroktG67k+XeCxwoGFeCM6svhWEZ1pC/pRs5wMfEeyVakApMsBkDNktdigGbpGsMl96GUfFYF+bbRhpd9/2Ex8QEX25rIYskOg0abNnhDRoHsSvbCvIFx6ipAmHK4i8wzrf1SJOXTfnhZJ6P7vrgExXEqkDJMOaW3M0YHAUUcDogHHEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KU2PVdn9348C+IkDpprBFM7TkEwT5Jy7yr4g647cgWg=;
- b=PS34gF8S91trKX3FqQv1fQtKEYMMtgNVSwFFyB/tVS/NFfayZ00bzhjAswCFsMTjSK+qnAZlj6TLUXQEMn0QQsnWe7xwcKOIe4TL/5k0iArrniPbC2vWjEqafsl/gCuqwrCoj5CrLtFuCuG8omm3Y/eR6NJlITdr7pNGtNKMrdE=
-Received: from BYAPR11MB3448.namprd11.prod.outlook.com (2603:10b6:a03:76::21)
- by BY5PR11MB4226.namprd11.prod.outlook.com (2603:10b6:a03:1bf::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.25; Fri, 30 Apr
- 2021 16:35:45 +0000
-Received: from BYAPR11MB3448.namprd11.prod.outlook.com
- ([fe80::713c:a1f6:aae4:19fc]) by BYAPR11MB3448.namprd11.prod.outlook.com
- ([fe80::713c:a1f6:aae4:19fc%5]) with mapi id 15.20.4065.029; Fri, 30 Apr 2021
- 16:35:45 +0000
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "sbhat@linux.ibm.com" <sbhat@linux.ibm.com>, "linux-nvdimm@lists.01.org"
-	<linux-nvdimm@lists.01.org>, "harish@linux.ibm.com" <harish@linux.ibm.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>, "santosh@fossix.org"
-	<santosh@fossix.org>, "vaibhav@linux.ibm.com" <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH 2/4] test: Don't skip tests if nfit modules are missing
-Thread-Topic: [PATCH 2/4] test: Don't skip tests if nfit modules are missing
-Thread-Index: AQHXI3eOEQnljR07BkutwRRqK+bYdKrNdrYA
-Date: Fri, 30 Apr 2021 16:35:45 +0000
-Message-ID: <5b0e885146cf54acb82ead867e495169d7a28252.camel@intel.com>
-References: <20210328021001.2340251-1-santosh@fossix.org>
-	 <20210328021001.2340251-2-santosh@fossix.org>
-In-Reply-To: <20210328021001.2340251-2-santosh@fossix.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.38.4 (3.38.4-1.fc33) 
-authentication-results: linux.ibm.com; dkim=none (message not signed)
- header.d=none;linux.ibm.com; dmarc=none action=none header.from=intel.com;
-x-originating-ip: [192.55.54.51]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0168d8b1-0392-4fab-a46c-08d90bf600d9
-x-ms-traffictypediagnostic: BY5PR11MB4226:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BY5PR11MB422615A1347759327A1AFB41C75E9@BY5PR11MB4226.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 6vfhwjUu8jW8+PoB6R39aKLJpHcetZkuyctN2X4MRnit9ptPtrf1r/CV8yD/suU1HxbfiVecwahV4oRI6hEe6mSZu6J0X7Wi46ETV4L6LOrXofTlA6Zi08FChEqWDoDHuf0ZycnUru2ekdXBdiZ/2ipjIzSj/jtv9S1tkIQstsUZTof2jP9Oev3/l8llcQQaysnyo11MTO72lmU81kUtj7afun4AfkdrsxLleYcR5hzt/vbeKidSUXAWLrhYTK7THqlBe8lNQeY6xFwg9JrjFGW8JqheMvVRa2WDSALfVfKemcd04zQHN/t9Mg0OjOxwxzWONiw/vpFC8T9hOdxnzSlQ1MlKmSrA+LDZ7JnNI4Wl/JJXgVOO5zcIFVLkwRSZu2oH4rzN5P4aH68wWucDTHBk8XHjp7cYDAWpMjA5dj63xkeH9yN+35whzaUraSEMmXXsl5/CxG5MpERzo95uSXC6dBC0ErZ21Jti1ln+DjeXqv9GN1kolVCoxTBFsmhHXyKD6EfpMX1VZeLKi3rdNOhyHmfTxD/0mKhFC3RNHB8sM1M69MQXjKs+zrzuvJlPO2boo+2PWTvEUBBNnv1gMcnpUWpm109eJpeQDuxgw/c=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(366004)(376002)(346002)(136003)(39860400002)(8936002)(6506007)(316002)(186003)(110136005)(6512007)(5660300002)(2906002)(66556008)(76116006)(86362001)(26005)(64756008)(2616005)(66446008)(66476007)(8676002)(71200400001)(122000001)(83380400001)(36756003)(6486002)(38100700002)(66946007)(478600001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: =?utf-8?B?b2pDeUZBODlVR0l4Wk8ySzNKelg0K1AzMjR0MnVhN04zQTRJVjRjVklxakww?=
- =?utf-8?B?OVQ2SzVOdS9XQnNVMnBVS1JIbjJZNzNBL0Q1dVdZRE9wdU5rWWpRakphOUpK?=
- =?utf-8?B?M3RaMVFDWWwxeml4Ky85ZCsyZjRNWGxNSGNhbVpDdHdsakRTdC9Qa1o2TUlP?=
- =?utf-8?B?OGQxeVpNQ2ZGY3hZNGJjM3d1R0lxSGE3N09sOUpHeGVYOHFPMW51c3BYaVJO?=
- =?utf-8?B?dWoydVY4K1VPZWFYSFV2VmljbGM2YXVMMWJ6Zi9pek9meUdxMExtR3djbTBU?=
- =?utf-8?B?U3lHVFhldEpSY012MXY2QVlkcDhwc0hjRnhQNUY2b3lIckY1aUg1Tlo3cTJZ?=
- =?utf-8?B?SnpoS1d5QjliMnBic1Q2RGlobktiY2FlR3FlSzBwVXNDZFR1L2N5citxUGla?=
- =?utf-8?B?bjVHaWNFZEl0UnFLTVZtRjRtVE5LQnZ2cGdMWjNzQzUxR3MvZDUvb3laMGdz?=
- =?utf-8?B?emtKK0lEY2cza2h5UVloUFIzVzc0K1VtbW9pRytOeCtnSlJvZXMwbkZ0WFo0?=
- =?utf-8?B?YmNIRXNTcjNqRXZOMVZ5MjVpTjMweFA0VjdLKzJZdWwwVWhSQXFYaUVPclVT?=
- =?utf-8?B?Sy9LbDREQmlhRUowZzhuamFGVWxNTlVqTXJ5RWM4ZEV5Q1RZaytlMzJGZ3RY?=
- =?utf-8?B?Nk5DaEx3SVBmaGhqbGJHUjU1UVhXaGl4cXVHb1ZKdlR2QythYWF3bjdRQS9O?=
- =?utf-8?B?a1I2OVRJQWc1TVdCSk1oZU9ZT2hhQUFXd1Rid0ZwRnluQjd3dGVpbDd5TGhD?=
- =?utf-8?B?UFlHRzluV0FQaWx1VkNoNTIybm81enFmWlN0MUFibUx5eEZuY3YwUXJjSXdT?=
- =?utf-8?B?QnpxY2hoQXR1YVRQczczbE1sdnZYdFROYmh4V29PMUJPampnQkIyeTVvSGtC?=
- =?utf-8?B?UlZIT1FReGJSUVphUllvamk3TkU2clZZMjZoRXVFT09vb2FkOHgvcURXUlJJ?=
- =?utf-8?B?OVlYNEVMRDBYWFJ5aWtENG5scWF3WUNZL29vUGo0aHhwK0liT2YvbjJzNkY1?=
- =?utf-8?B?d2FDSVN0UFJIZGZkU3c3K1ZucUZzcU1RTm8wN01VYjN2R1M4Z3I2TFRWR05D?=
- =?utf-8?B?Z0xoekxwY0dWK2VBOWlhdW01bXJOUlFPbjZiV0VmZi9MY0txQVJocW5MU1lE?=
- =?utf-8?B?MXhKK1gwZnlvbGxWcnhIN1ZUUG5VRUpvZkdtclBxWlNzZHBDVXpIQm9CeE56?=
- =?utf-8?B?WlE3ejdYWlErajhnUGNLTnB5U1YvUkhhbEpZWC8wOFN0NkhIKy9qdThsRVpt?=
- =?utf-8?B?eEpGOGFEaUZQZXA5c1cybjliMDdsc0VTdHlZVFE5cDJnUVZhU2M1OFV6QnYx?=
- =?utf-8?B?ditCcWxZRWVaVTZ2eVRsWUdXcy9UaDhFclNNTEswT20zRExSbWNqYnJ2b2ts?=
- =?utf-8?B?SzF3a3kyWHpXZjB2SkV2ZTFtU0dSWmNmM3RMaXlBb0kwYjFtNVByYzR5MENU?=
- =?utf-8?B?YkFvNHlUZ2VLa1JMajF5YUhGZU1VQ1NzdVF1aXZTUzQxOVRlMlVneVR2QzB1?=
- =?utf-8?B?NDY3U1hHMXUxN1NzQTMxdXBaM1JZYlRMRXpXK3Q5U1dBcUMvTXFhbUEva2Q3?=
- =?utf-8?B?V3A3UGd4bjBJK25aV3hmYXhEMEJHRnRRR3NmYWg1TlNyQzd6cEpkb2dUMzFW?=
- =?utf-8?B?MjFWTjR0WkhhVHJlVEJSRzFqOUM5cUdnMGFlQUM1Z2hpajFQbWRIMXBTdkJ6?=
- =?utf-8?B?V0F2azQrR0ROT29RdjFmdkV6Qk5QMDI5WGhBUUFlaVNlbkkwWTk5WE8vUlRO?=
- =?utf-8?Q?YmMcXBhOv2UOR0Zq60AHTDdHaT4btSwa6mbgT5r?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <342E8FBE6784A1439E23EAEB979C1BC6@namprd11.prod.outlook.com>
+	by ml01.01.org (Postfix) with ESMTPS id E993F100EB33A
+	for <linux-nvdimm@lists.01.org>; Fri, 30 Apr 2021 12:14:39 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id t4so23533058ejo.0
+        for <linux-nvdimm@lists.01.org>; Fri, 30 Apr 2021 12:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SVaZEa6T1OlZEI2ZRCjaeg3vEy1Vw6FSwiGIGLqhRiA=;
+        b=hSmPGg1woGCWrtib2vDCyHADvNbcXMWY1N4HZoA/Dc0dDn6CIy7oepwfhpSWXQOPAb
+         jQSMM2z7PqF5Aeps791PdAuKxHPLHrTIpO3qkwC1U244YOPo3rtC/fJt0zEp+0kh0/qo
+         qQWTPvjSFUOLd9HLmgxmuzOXIi2Fh8ruvZrwf1wcv8p1VGQB8KrwlHx5bDb3uHno2BKp
+         u9fcgEP+3lbmp+TXxVTo5ZpyBJ4dQUoDggD/ilqOHSP3jjWVembDw/rdFWmcQYId4h3X
+         u2LHIta0hJrnJcZFKFPK/ewDqKJGyV+DZxXUPSAeytK2WJI/dZylwU4jqTJr186rjN2b
+         fYuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SVaZEa6T1OlZEI2ZRCjaeg3vEy1Vw6FSwiGIGLqhRiA=;
+        b=Hk4tgrLnqmJiy4hxrm9eT7v6AEqTkTGsUIF/s2CMBM2c/6sQBndYoOFtq+pmT8fIwF
+         UwW2vLsuCrmnWmTdx8OJTqQ08FnOjWiDNlA6DS5JWGMsxgDWfO+EkVweJ5IltgOXFNgG
+         5wSjnOHxPajTIjB3RPSKqwnjXXvNFYBnRdEI5vJdh0q+KXv3EC/EGVQ9mVgpYPiXMU2O
+         ljECPqkgVWiX6zMBzegvDfqI8VyBQyqanc4YzWPd00C/x0urFqqGxd38ETRc9OxcMoMa
+         eDpzMYWR/dvo//do0/nJkdK9ELPMlQJ7oMPXwBdKQpnYwCbyt+NqajDD6+vH2w14WVo9
+         SFhw==
+X-Gm-Message-State: AOAM531TY/4WKHZdQwu4JfeEMWcyezGUREBpWeQux4HFx+Zyh8t6Iwa+
+	fLtthjTXPgkeDXO9ryWIsMzG2S+5HaHyMi5x2iapmw==
+X-Google-Smtp-Source: ABdhPJxWhl/4Wl06Jd4YyX/1fomQ8w4q0Aps7EkyT3DYr4nAK1VxEw092nPbBy4Dz9d/BnILBkCFzTz+uUt2sIudWMY=
+X-Received: by 2002:a17:907:1183:: with SMTP id uz3mr6068141ejb.264.1619810077593;
+ Fri, 30 Apr 2021 12:14:37 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3448.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0168d8b1-0392-4fab-a46c-08d90bf600d9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2021 16:35:45.2117
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LPgMrJAMNtNUsHMPYIlxSZXjNLw5AUG0IzrHZ0+pfmp8QrdmoyaQo+uJVMd7iM6QFOnfRJZv6lMfHHfDPp9gt4+rmMw4CUyB+PXG0qPY9J4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB4226
-X-OriginatorOrg: intel.com
-Message-ID-Hash: HQOYC2DA7RB2J4AN6VMUHKQ6C26MJQOC
-X-Message-ID-Hash: HQOYC2DA7RB2J4AN6VMUHKQ6C26MJQOC
-X-MailFrom: vishal.l.verma@intel.com
+References: <161966810162.652.13723419108625443430.stgit@17be908f7c1c>
+In-Reply-To: <161966810162.652.13723419108625443430.stgit@17be908f7c1c>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 30 Apr 2021 12:14:37 -0700
+Message-ID: <CAPcyv4gwkyDBG7EZOth-kcZR8Fb+RgGXY=Y9vbuHXAz3PAnLVw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] nvdimm: Enable sync-dax property for nvdimm
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Message-ID-Hash: UMCEA7B3YCDOTZ6VQLQNGBQVOIEZGR3C
+X-Message-ID-Hash: UMCEA7B3YCDOTZ6VQLQNGBQVOIEZGR3C
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, qemu-ppc@nongnu.org, Eduardo Habkost <ehabkost@redhat.com>, marcel.apfelbaum@gmail.com, "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>, peter.maydell@linaro.org, Eric Blake <eblake@redhat.com>, qemu-arm@nongnu.org, richard.henderson@linaro.org, Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Haozhong Zhang <haozhong.zhang@intel.com>, shameerali.kolothum.thodi@huawei.com, kwangwoo.lee@sk.com, Markus Armbruster <armbru@redhat.com>, Qemu Developers <qemu-devel@nongnu.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, kvm-ppc@vger.kernel.org, shivaprasadbhat@gmail.com, bharata@linux.vnet.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HQOYC2DA7RB2J4AN6VMUHKQ6C26MJQOC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UMCEA7B3YCDOTZ6VQLQNGBQVOIEZGR3C/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gU3VuLCAyMDIxLTAzLTI4IGF0IDA3OjM5ICswNTMwLCBTYW50b3NoIFNpdmFyYWogd3JvdGU6
-DQo+IEZvciBORklUIHRvIGJlIGF2YWlsYWJsZSBBQ1BJIGlzIGEgbXVzdCwgc28gZG9uJ3QgZmFp
-bCB3aGVuIG5maXQgbW9kdWxlcw0KPiBhcmUgbWlzc2luZyBvbiBhIHBsYXRmb3JtIHRoYXQgZG9l
-c24ndCBzdXBwb3J0IEFDUEkuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBTYW50b3NoIFNpdmFyYWog
-PHNhbnRvc2hAZm9zc2l4Lm9yZz4NCj4gLS0tDQo+IMKgdGVzdC5oICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgMiArLQ0KPiDCoHRlc3QvYWNrLXNodXRkb3duLWNvdW50LXNldC5jIHwgIDIgKy0N
-Cj4gwqB0ZXN0L2Jsa19uYW1lc3BhY2VzLmMgICAgICAgICB8ICAyICstDQo+IMKgdGVzdC9jb3Jl
-LmMgICAgICAgICAgICAgICAgICAgfCAzMCArKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0N
-Cj4gwqB0ZXN0L2RwYS1hbGxvYy5jICAgICAgICAgICAgICB8ICAyICstDQo+IMKgdGVzdC9kc20t
-ZmFpbC5jICAgICAgICAgICAgICAgfCAgMiArLQ0KPiDCoHRlc3QvbGlibmRjdGwuYyAgICAgICAg
-ICAgICAgIHwgIDIgKy0NCj4gwqB0ZXN0L211bHRpLXBtZW0uYyAgICAgICAgICAgICB8ICAyICst
-DQo+IMKgdGVzdC9wYXJlbnQtdXVpZC5jICAgICAgICAgICAgfCAgMiArLQ0KPiDCoHRlc3QvcG1l
-bV9uYW1lc3BhY2VzLmMgICAgICAgIHwgIDIgKy0NCj4gwqAxMCBmaWxlcyBjaGFuZ2VkLCAzNyBp
-bnNlcnRpb25zKCspLCAxMSBkZWxldGlvbnMoLSkNCj4gDQoNCkkgaGF2ZW4ndCBsb29rZWQgZGVl
-cGVyLCBidXQgdGhpcyBzZWVtcyB0byBmYWlsIHRoZSBibGstbnMgdGVzdCB3aXRoOg0KDQogIEFD
-UEkuTkZJVCB1bmF2YWlsYWJsZSBmYWxsaW5nIGJhY2sgdG8gbmZpdF90ZXN0DQogIHRlc3QvaW5p
-dDogbmRjdGxfdGVzdF9pbml0OiBDYW5ub3QgZGV0ZXJtaW5lIE5WRElNTSBmYW1pbHkNCiAgX19u
-ZGN0bF90ZXN0X3NraXA6IGV4cGxpY2l0IHNraXAgdGVzdF9ibGtfbmFtZXNwYWNlczoyMzUNCiAg
-bmZpdF90ZXN0IHVuYXZhaWxhYmxlIHNraXBwaW5nIHRlc3RzDQoNCj4gZGlmZiAtLWdpdCBhL3Rl
-c3QuaCBiL3Rlc3QuaA0KPiBpbmRleCBjYmE4ZDQxLi43ZGUxM2ZlIDEwMDY0NA0KPiAtLS0gYS90
-ZXN0LmgNCj4gKysrIGIvdGVzdC5oDQo+IEBAIC0yMCw3ICsyMCw3IEBAIHZvaWQgYnVpbHRpbl94
-YWN0aW9uX25hbWVzcGFjZV9yZXNldCh2b2lkKTsNCj4gwqANCj4gDQo+IMKgc3RydWN0IGttb2Rf
-Y3R4Ow0KPiDCoHN0cnVjdCBrbW9kX21vZHVsZTsNCj4gLWludCBuZml0X3Rlc3RfaW5pdChzdHJ1
-Y3Qga21vZF9jdHggKipjdHgsIHN0cnVjdCBrbW9kX21vZHVsZSAqKm1vZCwNCj4gK2ludCBuZGN0
-bF90ZXN0X2luaXQoc3RydWN0IGttb2RfY3R4ICoqY3R4LCBzdHJ1Y3Qga21vZF9tb2R1bGUgKipt
-b2QsDQo+IMKgCQlzdHJ1Y3QgbmRjdGxfY3R4ICpuZF9jdHgsIGludCBsb2dfbGV2ZWwsDQo+IMKg
-CQlzdHJ1Y3QgbmRjdGxfdGVzdCAqdGVzdCk7DQo+IMKgDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVz
-dC9hY2stc2h1dGRvd24tY291bnQtc2V0LmMgYi90ZXN0L2Fjay1zaHV0ZG93bi1jb3VudC1zZXQu
-Yw0KPiBpbmRleCBmYjFkODJiLi5jNTYxZmYzIDEwMDY0NA0KPiAtLS0gYS90ZXN0L2Fjay1zaHV0
-ZG93bi1jb3VudC1zZXQuYw0KPiArKysgYi90ZXN0L2Fjay1zaHV0ZG93bi1jb3VudC1zZXQuYw0K
-PiBAQCAtOTksNyArOTksNyBAQCBzdGF0aWMgaW50IHRlc3RfYWNrX3NodXRkb3duX2NvdW50X3Nl
-dChpbnQgbG9nbGV2ZWwsIHN0cnVjdCBuZGN0bF90ZXN0ICp0ZXN0LA0KPiDCoAlpbnQgcmVzdWx0
-ID0gRVhJVF9GQUlMVVJFLCBlcnI7DQo+IMKgDQo+IA0KPiDCoAluZGN0bF9zZXRfbG9nX3ByaW9y
-aXR5KGN0eCwgbG9nbGV2ZWwpOw0KPiAtCWVyciA9IG5maXRfdGVzdF9pbml0KCZrbW9kX2N0eCwg
-Jm1vZCwgTlVMTCwgbG9nbGV2ZWwsIHRlc3QpOw0KPiArCWVyciA9IG5kY3RsX3Rlc3RfaW5pdCgm
-a21vZF9jdHgsICZtb2QsIE5VTEwsIGxvZ2xldmVsLCB0ZXN0KTsNCj4gwqAJaWYgKGVyciA8IDAp
-IHsNCj4gwqAJCXJlc3VsdCA9IDc3Ow0KPiDCoAkJbmRjdGxfdGVzdF9za2lwKHRlc3QpOw0KPiBk
-aWZmIC0tZ2l0IGEvdGVzdC9ibGtfbmFtZXNwYWNlcy5jIGIvdGVzdC9ibGtfbmFtZXNwYWNlcy5j
-DQo+IGluZGV4IGQ3ZjAwY2IuLmYwNzZlODUgMTAwNjQ0DQo+IC0tLSBhL3Rlc3QvYmxrX25hbWVz
-cGFjZXMuYw0KPiArKysgYi90ZXN0L2Jsa19uYW1lc3BhY2VzLmMNCj4gQEAgLTIyOCw3ICsyMjgs
-NyBAQCBpbnQgdGVzdF9ibGtfbmFtZXNwYWNlcyhpbnQgbG9nX2xldmVsLCBzdHJ1Y3QgbmRjdGxf
-dGVzdCAqdGVzdCwNCj4gwqANCj4gDQo+IMKgCWlmICghYnVzKSB7DQo+IMKgCQlmcHJpbnRmKHN0
-ZGVyciwgIkFDUEkuTkZJVCB1bmF2YWlsYWJsZSBmYWxsaW5nIGJhY2sgdG8gbmZpdF90ZXN0XG4i
-KTsNCj4gLQkJcmMgPSBuZml0X3Rlc3RfaW5pdCgma21vZF9jdHgsICZtb2QsIE5VTEwsIGxvZ19s
-ZXZlbCwgdGVzdCk7DQo+ICsJCXJjID0gbmRjdGxfdGVzdF9pbml0KCZrbW9kX2N0eCwgJm1vZCwg
-TlVMTCwgbG9nX2xldmVsLCB0ZXN0KTsNCj4gwqAJCW5kY3RsX2ludmFsaWRhdGUoY3R4KTsNCj4g
-wqAJCWJ1cyA9IG5kY3RsX2J1c19nZXRfYnlfcHJvdmlkZXIoY3R4LCAibmZpdF90ZXN0LjAiKTsN
-Cj4gwqAJCWlmIChyYyA8IDAgfHwgIWJ1cykgew0KPiBkaWZmIC0tZ2l0IGEvdGVzdC9jb3JlLmMg
-Yi90ZXN0L2NvcmUuYw0KPiBpbmRleCBjYzdkOGQ5Li40NGNiMjc3IDEwMDY0NA0KPiAtLS0gYS90
-ZXN0L2NvcmUuYw0KPiArKysgYi90ZXN0L2NvcmUuYw0KPiBAQCAtMTEsNiArMTEsNyBAQA0KPiDC
-oCNpbmNsdWRlIDx1dGlsL2xvZy5oPg0KPiDCoCNpbmNsdWRlIDx1dGlsL3N5c2ZzLmg+DQo+IMKg
-I2luY2x1ZGUgPG5kY3RsL2xpYm5kY3RsLmg+DQo+ICsjaW5jbHVkZSA8bmRjdGwvbmRjdGwuaD4N
-Cj4gwqAjaW5jbHVkZSA8Y2Nhbi9hcnJheV9zaXplL2FycmF5X3NpemUuaD4NCj4gwqANCj4gDQo+
-IMKgI2RlZmluZSBLVkVSX1NUUkxFTiAyMA0KPiBAQCAtMTA2LDExICsxMDcsMTEgQEAgaW50IG5k
-Y3RsX3Rlc3RfZ2V0X3NraXBwZWQoc3RydWN0IG5kY3RsX3Rlc3QgKnRlc3QpDQo+IMKgCXJldHVy
-biB0ZXN0LT5za2lwOw0KPiDCoH0NCj4gwqANCj4gDQo+IC1pbnQgbmZpdF90ZXN0X2luaXQoc3Ry
-dWN0IGttb2RfY3R4ICoqY3R4LCBzdHJ1Y3Qga21vZF9tb2R1bGUgKiptb2QsDQo+ICtpbnQgbmRj
-dGxfdGVzdF9pbml0KHN0cnVjdCBrbW9kX2N0eCAqKmN0eCwgc3RydWN0IGttb2RfbW9kdWxlICoq
-bW9kLA0KPiDCoAkJc3RydWN0IG5kY3RsX2N0eCAqbmRfY3R4LCBpbnQgbG9nX2xldmVsLA0KPiDC
-oAkJc3RydWN0IG5kY3RsX3Rlc3QgKnRlc3QpDQo+IMKgew0KPiAtCWludCByYzsNCj4gKwlpbnQg
-cmMsIGZhbWlseSA9IC0xOw0KPiDCoAl1bnNpZ25lZCBpbnQgaTsNCj4gwqAJY29uc3QgY2hhciAq
-bmFtZTsNCj4gwqAJc3RydWN0IG5kY3RsX2J1cyAqYnVzOw0KPiBAQCAtMTI3LDEwICsxMjgsMzAg
-QEAgaW50IG5maXRfdGVzdF9pbml0KHN0cnVjdCBrbW9kX2N0eCAqKmN0eCwgc3RydWN0IGttb2Rf
-bW9kdWxlICoqbW9kLA0KPiDCoAkJIm5kX2U4MjAiLA0KPiDCoAkJIm5kX3BtZW0iLA0KPiDCoAl9
-Ow0KPiArCWNoYXIgKnRlc3RfZW52Ow0KPiDCoA0KPiANCj4gwqAJbG9nX2luaXQoJmxvZ19jdHgs
-ICJ0ZXN0L2luaXQiLCAiTkRDVExfVEVTVCIpOw0KPiDCoAlsb2dfY3R4LmxvZ19wcmlvcml0eSA9
-IGxvZ19sZXZlbDsNCj4gwqANCj4gDQo+ICsJLyoNCj4gKwkgKiBUaGUgZm9sbG93aW5nIHR3byBj
-aGVja3MgZGV0ZXJtaW5lIHRoZSBwbGF0Zm9ybSBmYW1pbHkuIEZvcg0KPiArCSAqIEludGVsL3Bs
-YXRmb3JtcyB3aGljaCBzdXBwb3J0IEFDUEksIGNoZWNrIHN5c2ZzOyBmb3Igb3RoZXIgcGxhdGZv
-cm1zDQo+ICsJICogZGV0ZXJtaW5lIGZyb20gdGhlIGVudmlyb25tZW50IHZhcmlhYmxlIE5WRElN
-TV9URVNUX0ZBTUlMWQ0KPiArCSAqLw0KPiArCWlmIChhY2Nlc3MoIi9zeXMvYnVzL2FjcGkiLCBG
-X09LKSA9PSAwKSB7DQo+ICsJCWlmIChlcnJubyA9PSBFTk9FTlQpDQo+ICsJCQlmYW1pbHkgPSBO
-VkRJTU1fRkFNSUxZX0lOVEVMOw0KPiArCX0NCj4gKw0KPiArCXRlc3RfZW52ID0gZ2V0ZW52KCJO
-RENUTF9URVNUX0ZBTUlMWSIpOw0KPiArCWlmICh0ZXN0X2VudiAmJiBzdHJjbXAodGVzdF9lbnYs
-ICJQQVBSIikgPT0gMCkNCj4gKwkJZmFtaWx5ID0gTlZESU1NX0ZBTUlMWV9QQVBSOw0KPiArDQo+
-ICsJaWYgKGZhbWlseSA9PSAtMSkgew0KPiArCQlsb2dfZXJyKCZsb2dfY3R4LCAiQ2Fubm90IGRl
-dGVybWluZSBOVkRJTU0gZmFtaWx5XG4iKTsNCj4gKwkJcmV0dXJuIC1FTk9UU1VQOw0KPiArCX0N
-Cj4gKw0KPiDCoAkqY3R4ID0ga21vZF9uZXcoTlVMTCwgTlVMTCk7DQo+IMKgCWlmICghKmN0eCkN
-Cj4gwqAJCXJldHVybiAtRU5YSU87DQo+IEBAIC0xODUsNiArMjA2LDExIEBAIHJldHJ5Og0KPiDC
-oA0KPiANCj4gwqAJCXBhdGggPSBrbW9kX21vZHVsZV9nZXRfcGF0aCgqbW9kKTsNCj4gwqAJCWlm
-ICghcGF0aCkgew0KPiArCQkJaWYgKGZhbWlseSAhPSBOVkRJTU1fRkFNSUxZX0lOVEVMICYmDQo+
-ICsJCQkgICAgKHN0cmNtcChuYW1lLCAibmZpdCIpID09IDAgfHwNCj4gKwkJCSAgICAgc3RyY21w
-KG5hbWUsICJuZF9lODIwIikgPT0gMCkpDQo+ICsJCQkJY29udGludWU7DQo+ICsNCj4gwqAJCQls
-b2dfZXJyKCZsb2dfY3R4LCAiJXMua286IGZhaWxlZCB0byBnZXQgcGF0aFxuIiwgbmFtZSk7DQo+
-IMKgCQkJYnJlYWs7DQo+IMKgCQl9DQo+IGRpZmYgLS1naXQgYS90ZXN0L2RwYS1hbGxvYy5jIGIv
-dGVzdC9kcGEtYWxsb2MuYw0KPiBpbmRleCBlOTIyMDA5Li4wYjNiYjdhIDEwMDY0NA0KPiAtLS0g
-YS90ZXN0L2RwYS1hbGxvYy5jDQo+ICsrKyBiL3Rlc3QvZHBhLWFsbG9jLmMNCj4gQEAgLTI4OSw3
-ICsyODksNyBAQCBpbnQgdGVzdF9kcGFfYWxsb2MoaW50IGxvZ2xldmVsLCBzdHJ1Y3QgbmRjdGxf
-dGVzdCAqdGVzdCwgc3RydWN0IG5kY3RsX2N0eCAqY3R4KQ0KPiDCoAkJcmV0dXJuIDc3Ow0KPiDC
-oA0KPiANCj4gwqAJbmRjdGxfc2V0X2xvZ19wcmlvcml0eShjdHgsIGxvZ2xldmVsKTsNCj4gLQll
-cnIgPSBuZml0X3Rlc3RfaW5pdCgma21vZF9jdHgsICZtb2QsIE5VTEwsIGxvZ2xldmVsLCB0ZXN0
-KTsNCj4gKwllcnIgPSBuZGN0bF90ZXN0X2luaXQoJmttb2RfY3R4LCAmbW9kLCBOVUxMLCBsb2ds
-ZXZlbCwgdGVzdCk7DQo+IMKgCWlmIChlcnIgPCAwKSB7DQo+IMKgCQluZGN0bF90ZXN0X3NraXAo
-dGVzdCk7DQo+IMKgCQlmcHJpbnRmKHN0ZGVyciwgIm5maXRfdGVzdCB1bmF2YWlsYWJsZSBza2lw
-cGluZyB0ZXN0c1xuIik7DQo+IGRpZmYgLS1naXQgYS90ZXN0L2RzbS1mYWlsLmMgYi90ZXN0L2Rz
-bS1mYWlsLmMNCj4gaW5kZXggOWRmZDhiMC4uMGE2MzgzZCAxMDA2NDQNCj4gLS0tIGEvdGVzdC9k
-c20tZmFpbC5jDQo+ICsrKyBiL3Rlc3QvZHNtLWZhaWwuYw0KPiBAQCAtMzQ2LDcgKzM0Niw3IEBA
-IGludCB0ZXN0X2RzbV9mYWlsKGludCBsb2dsZXZlbCwgc3RydWN0IG5kY3RsX3Rlc3QgKnRlc3Qs
-IHN0cnVjdCBuZGN0bF9jdHggKmN0eCkNCj4gwqAJaW50IHJlc3VsdCA9IEVYSVRfRkFJTFVSRSwg
-ZXJyOw0KPiDCoA0KPiANCj4gwqAJbmRjdGxfc2V0X2xvZ19wcmlvcml0eShjdHgsIGxvZ2xldmVs
-KTsNCj4gLQllcnIgPSBuZml0X3Rlc3RfaW5pdCgma21vZF9jdHgsICZtb2QsIE5VTEwsIGxvZ2xl
-dmVsLCB0ZXN0KTsNCj4gKwllcnIgPSBuZGN0bF90ZXN0X2luaXQoJmttb2RfY3R4LCAmbW9kLCBO
-VUxMLCBsb2dsZXZlbCwgdGVzdCk7DQo+IMKgCWlmIChlcnIgPCAwKSB7DQo+IMKgCQlyZXN1bHQg
-PSA3NzsNCj4gwqAJCW5kY3RsX3Rlc3Rfc2tpcCh0ZXN0KTsNCj4gZGlmZiAtLWdpdCBhL3Rlc3Qv
-bGlibmRjdGwuYyBiL3Rlc3QvbGlibmRjdGwuYw0KPiBpbmRleCAyNGQ3MmIzLi4wZTg4ZmNlIDEw
-MDY0NA0KPiAtLS0gYS90ZXN0L2xpYm5kY3RsLmMNCj4gKysrIGIvdGVzdC9saWJuZGN0bC5jDQo+
-IEBAIC0yNjkyLDcgKzI2OTIsNyBAQCBpbnQgdGVzdF9saWJuZGN0bChpbnQgbG9nbGV2ZWwsIHN0
-cnVjdCBuZGN0bF90ZXN0ICp0ZXN0LCBzdHJ1Y3QgbmRjdGxfY3R4ICpjdHgpDQo+IMKgCWRheGN0
-bF9zZXRfbG9nX3ByaW9yaXR5KGRheGN0bF9jdHgsIGxvZ2xldmVsKTsNCj4gwqAJbmRjdGxfc2V0
-X3ByaXZhdGVfZGF0YShjdHgsIHRlc3QpOw0KPiDCoA0KPiANCj4gLQllcnIgPSBuZml0X3Rlc3Rf
-aW5pdCgma21vZF9jdHgsICZtb2QsIGN0eCwgbG9nbGV2ZWwsIHRlc3QpOw0KPiArCWVyciA9IG5k
-Y3RsX3Rlc3RfaW5pdCgma21vZF9jdHgsICZtb2QsIGN0eCwgbG9nbGV2ZWwsIHRlc3QpOw0KPiDC
-oAlpZiAoZXJyIDwgMCkgew0KPiDCoAkJbmRjdGxfdGVzdF9za2lwKHRlc3QpOw0KPiDCoAkJZnBy
-aW50ZihzdGRlcnIsICJuZml0X3Rlc3QgdW5hdmFpbGFibGUgc2tpcHBpbmcgdGVzdHNcbiIpOw0K
-PiBkaWZmIC0tZ2l0IGEvdGVzdC9tdWx0aS1wbWVtLmMgYi90ZXN0L211bHRpLXBtZW0uYw0KPiBp
-bmRleCAzZDEwOTUyLi4zZWEwOGNjIDEwMDY0NA0KPiAtLS0gYS90ZXN0L211bHRpLXBtZW0uYw0K
-PiArKysgYi90ZXN0L211bHRpLXBtZW0uYw0KPiBAQCAtMjQ5LDcgKzI0OSw3IEBAIGludCB0ZXN0
-X211bHRpX3BtZW0oaW50IGxvZ2xldmVsLCBzdHJ1Y3QgbmRjdGxfdGVzdCAqdGVzdCwgc3RydWN0
-IG5kY3RsX2N0eCAqY3R4DQo+IMKgDQo+IA0KPiDCoAluZGN0bF9zZXRfbG9nX3ByaW9yaXR5KGN0
-eCwgbG9nbGV2ZWwpOw0KPiDCoA0KPiANCj4gLQllcnIgPSBuZml0X3Rlc3RfaW5pdCgma21vZF9j
-dHgsICZtb2QsIE5VTEwsIGxvZ2xldmVsLCB0ZXN0KTsNCj4gKwllcnIgPSBuZGN0bF90ZXN0X2lu
-aXQoJmttb2RfY3R4LCAmbW9kLCBOVUxMLCBsb2dsZXZlbCwgdGVzdCk7DQo+IMKgCWlmIChlcnIg
-PCAwKSB7DQo+IMKgCQlyZXN1bHQgPSA3NzsNCj4gwqAJCW5kY3RsX3Rlc3Rfc2tpcCh0ZXN0KTsN
-Cj4gZGlmZiAtLWdpdCBhL3Rlc3QvcGFyZW50LXV1aWQuYyBiL3Rlc3QvcGFyZW50LXV1aWQuYw0K
-PiBpbmRleCA2NDI0ZTlmLi5iZGVkMzNhIDEwMDY0NA0KPiAtLS0gYS90ZXN0L3BhcmVudC11dWlk
-LmMNCj4gKysrIGIvdGVzdC9wYXJlbnQtdXVpZC5jDQo+IEBAIC0yMTgsNyArMjE4LDcgQEAgaW50
-IHRlc3RfcGFyZW50X3V1aWQoaW50IGxvZ2xldmVsLCBzdHJ1Y3QgbmRjdGxfdGVzdCAqdGVzdCwg
-c3RydWN0IG5kY3RsX2N0eCAqY3QNCj4gwqAJCXJldHVybiA3NzsNCj4gwqANCj4gDQo+IMKgCW5k
-Y3RsX3NldF9sb2dfcHJpb3JpdHkoY3R4LCBsb2dsZXZlbCk7DQo+IC0JZXJyID0gbmZpdF90ZXN0
-X2luaXQoJmttb2RfY3R4LCAmbW9kLCBOVUxMLCBsb2dsZXZlbCwgdGVzdCk7DQo+ICsJZXJyID0g
-bmRjdGxfdGVzdF9pbml0KCZrbW9kX2N0eCwgJm1vZCwgTlVMTCwgbG9nbGV2ZWwsIHRlc3QpOw0K
-PiDCoAlpZiAoZXJyIDwgMCkgew0KPiDCoAkJbmRjdGxfdGVzdF9za2lwKHRlc3QpOw0KPiDCoAkJ
-ZnByaW50ZihzdGRlcnIsICJuZml0X3Rlc3QgdW5hdmFpbGFibGUgc2tpcHBpbmcgdGVzdHNcbiIp
-Ow0KPiBkaWZmIC0tZ2l0IGEvdGVzdC9wbWVtX25hbWVzcGFjZXMuYyBiL3Rlc3QvcG1lbV9uYW1l
-c3BhY2VzLmMNCj4gaW5kZXggZjBmMmVkZC4uYTRkYjFhZSAxMDA2NDQNCj4gLS0tIGEvdGVzdC9w
-bWVtX25hbWVzcGFjZXMuYw0KPiArKysgYi90ZXN0L3BtZW1fbmFtZXNwYWNlcy5jDQo+IEBAIC0x
-OTEsNyArMTkxLDcgQEAgaW50IHRlc3RfcG1lbV9uYW1lc3BhY2VzKGludCBsb2dfbGV2ZWwsIHN0
-cnVjdCBuZGN0bF90ZXN0ICp0ZXN0LA0KPiDCoA0KPiANCj4gwqAJaWYgKCFidXMpIHsNCj4gwqAJ
-CWZwcmludGYoc3RkZXJyLCAiQUNQSS5ORklUIHVuYXZhaWxhYmxlIGZhbGxpbmcgYmFjayB0byBu
-Zml0X3Rlc3RcbiIpOw0KPiAtCQlyYyA9IG5maXRfdGVzdF9pbml0KCZrbW9kX2N0eCwgJm1vZCwg
-TlVMTCwgbG9nX2xldmVsLCB0ZXN0KTsNCj4gKwkJcmMgPSBuZGN0bF90ZXN0X2luaXQoJmttb2Rf
-Y3R4LCAmbW9kLCBOVUxMLCBsb2dfbGV2ZWwsIHRlc3QpOw0KPiDCoAkJbmRjdGxfaW52YWxpZGF0
-ZShjdHgpOw0KPiDCoAkJYnVzID0gbmRjdGxfYnVzX2dldF9ieV9wcm92aWRlcihjdHgsICJuZml0
-X3Rlc3QuMCIpOw0KPiDCoAkJaWYgKHJjIDwgMCB8fCAhYnVzKSB7DQoNCg0KX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcg
-bGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4g
-ZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Some corrections to terminology confusion below...
+
+
+On Wed, Apr 28, 2021 at 8:49 PM Shivaprasad G Bhat <sbhat@linux.ibm.com> wrote:
+>
+> The nvdimm devices are expected to ensure write persistence during power
+> failure kind of scenarios.
+
+No, QEMU is not expected to make that guarantee. QEMU is free to lie
+to the guest about the persistence guarantees of the guest PMEM
+ranges. It's more accurate to say that QEMU nvdimm devices can emulate
+persistent memory and optionally pass through host power-fail
+persistence guarantees to the guest. The power-fail persistence domain
+can be one of "cpu_cache", or "memory_controller" if the persistent
+memory region is "synchronous". If the persistent range is not
+synchronous, it really isn't "persistent memory"; it's memory mapped
+storage that needs I/O commands to flush.
+
+> The libpmem has architecture specific instructions like dcbf on POWER
+
+Which "libpmem" is this? PMDK is a reference library not a PMEM
+interface... maybe I'm missing what libpmem has to do with QEMU?
+
+> to flush the cache data to backend nvdimm device during normal writes
+> followed by explicit flushes if the backend devices are not synchronous
+> DAX capable.
+>
+> Qemu - virtual nvdimm devices are memory mapped. The dcbf in the guest
+> and the subsequent flush doesn't traslate to actual flush to the backend
+
+s/traslate/translate/
+
+> file on the host in case of file backed v-nvdimms. This is addressed by
+> virtio-pmem in case of x86_64 by making explicit flushes translating to
+> fsync at qemu.
+
+Note that virtio-pmem was a proposal for a specific optimization of
+allowing guests to share page cache. The virtio-pmem approach is not
+to be confused with actual persistent memory.
+
+> On SPAPR, the issue is addressed by adding a new hcall to
+> request for an explicit flush from the guest ndctl driver when the backend
+
+What is an "ndctl" driver? ndctl is userspace tooling, do you mean the
+guest pmem driver?
+
+> nvdimm cannot ensure write persistence with dcbf alone. So, the approach
+> here is to convey when the hcall flush is required in a device tree
+> property. The guest makes the hcall when the property is found, instead
+> of relying on dcbf.
+>
+> A new device property sync-dax is added to the nvdimm device. When the
+> sync-dax is 'writeback'(default for PPC), device property
+> "hcall-flush-required" is set, and the guest makes hcall H_SCM_FLUSH
+> requesting for an explicit flush.
+
+I'm not sure "sync-dax" is a suitable name for the property of the
+guest persistent memory. There is no requirement that the
+memory-backend file for a guest be a dax-capable file. It's also
+implementation specific what hypercall needs to be invoked for a given
+occurrence of "sync-dax". What does that map to on non-PPC platforms
+for example? It seems to me that an "nvdimm" device presents the
+synchronous usage model and a whole other device type implements an
+async-hypercall setup that the guest happens to service with its
+nvdimm stack, but it's not an "nvdimm" anymore at that point.
+
+> sync-dax is "unsafe" on all other platforms(x86, ARM) and old pseries machines
+> prior to 5.2 on PPC. sync-dax="writeback" on ARM and x86_64 is prevented
+> now as the flush semantics are unimplemented.
+
+"sync-dax" has no meaning on its own, I think this needs an explicit
+mechanism to convey both the "not-sync" property *and* the callback
+method, it shouldn't be inferred by arch type.
+
+> When the backend file is actually synchronous DAX capable and no explicit
+> flushes are required, the sync-dax mode 'direct' is to be used.
+>
+> The below demonstration shows the map_sync behavior with sync-dax writeback &
+> direct.
+> (https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/memory/ndctl.py.data/map_sync.c)
+>
+> The pmem0 is from nvdimm with With sync-dax=direct, and pmem1 is from
+> nvdimm with syn-dax=writeback, mounted as
+> /dev/pmem0 on /mnt1 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+> /dev/pmem1 on /mnt2 type xfs (rw,relatime,attr2,dax=always,inode64,logbufs=8,logbsize=32k,noquota)
+>
+> [root@atest-guest ~]# ./mapsync /mnt1/newfile ----> When sync-dax=unsafe/direct
+> [root@atest-guest ~]# ./mapsync /mnt2/newfile ----> when sync-dax=writeback
+> Failed to mmap  with Operation not supported
+>
+> The first patch does the header file cleanup necessary for the
+> subsequent ones. Second patch implements the hcall, adds the necessary
+> vmstate properties to spapr machine structure for carrying the hcall
+> status during save-restore. The nature of the hcall being asynchronus,
+> the patch uses aio utilities to offload the flush. The third patch adds
+> the 'sync-dax' device property and enables the device tree property
+> for the guest to utilise the hcall.
+>
+> The kernel changes to exploit this hcall is at
+> https://github.com/linuxppc/linux/commit/75b7c05ebf9026.patch
+>
+> ---
+> v3 - https://lists.gnu.org/archive/html/qemu-devel/2021-03/msg07916.html
+> Changes from v3:
+>       - Fixed the forward declaration coding guideline violations in 1st patch.
+>       - Removed the code waiting for the flushes to complete during migration,
+>         instead restart the flush worker on destination qemu in post load.
+>       - Got rid of the randomization of the flush tokens, using simple
+>         counter.
+>       - Got rid of the redundant flush state lock, relying on the BQL now.
+>       - Handling the memory-backend-ram usage
+>       - Changed the sync-dax symantics from on/off to 'unsafe','writeback' and 'direct'.
+>         Added prevention code using 'writeback' on arm and x86_64.
+>       - Fixed all the miscellaneous comments.
+>
+> v2 - https://lists.gnu.org/archive/html/qemu-devel/2020-11/msg07031.html
+> Changes from v2:
+>       - Using the thread pool based approach as suggested
+>       - Moved the async hcall handling code to spapr_nvdimm.c along
+>         with some simplifications
+>       - Added vmstate to preserve the hcall status during save-restore
+>         along with pre_save handler code to complete all ongoning flushes.
+>       - Added hw_compat magic for sync-dax 'on' on previous machines.
+>       - Miscellanious minor fixes.
+>
+> v1 - https://lists.gnu.org/archive/html/qemu-devel/2020-11/msg06330.html
+> Changes from v1
+>       - Fixed a missed-out unlock
+>       - using QLIST_FOREACH instead of QLIST_FOREACH_SAFE while generating token
+>
+> Shivaprasad G Bhat (3):
+>       spapr: nvdimm: Forward declare and move the definitions
+>       spapr: nvdimm: Implement H_SCM_FLUSH hcall
+>       nvdimm: Enable sync-dax device property for nvdimm
+>
+>
+>  hw/arm/virt.c                 |   28 ++++
+>  hw/i386/pc.c                  |   28 ++++
+>  hw/mem/nvdimm.c               |   52 +++++++
+>  hw/ppc/spapr.c                |   16 ++
+>  hw/ppc/spapr_nvdimm.c         |  285 +++++++++++++++++++++++++++++++++++++++++
+>  include/hw/mem/nvdimm.h       |   11 ++
+>  include/hw/ppc/spapr.h        |   11 +-
+>  include/hw/ppc/spapr_nvdimm.h |   27 ++--
+>  qapi/common.json              |   20 +++
+>  9 files changed, 455 insertions(+), 23 deletions(-)
+>
+> --
+> Signature
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
