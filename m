@@ -1,41 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02291371585
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 May 2021 14:55:32 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863E6371580
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 May 2021 14:55:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9950A100EB35B;
-	Mon,  3 May 2021 05:55:30 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=31.7.62.119; helo=haydenquinn.com.au; envelope-from=wuimedykdmcdd@harrimanarmynavy.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id DBDC3100EB82B;
+	Mon,  3 May 2021 05:55:10 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=31.7.62.119; helo=haydenquinn.com.au; envelope-from=slimeaykdmcdd@happysocks.com; receiver=<UNKNOWN> 
 Received: from haydenquinn.com.au (unknown [31.7.62.119])
-	by ml01.01.org (Postfix) with ESMTP id C29AC100EB35A
-	for <linux-nvdimm@lists.01.org>; Mon,  3 May 2021 05:55:25 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DDFC1100EB82A
+	for <linux-nvdimm@lists.01.org>; Mon,  3 May 2021 05:55:07 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
 Subject: Re: the quick follow up
-Message-ID: <e7c5b9c08f1ee3baa8d67b86f8060347@mynoisycar.com>
-Date: Mon, 03 May 2021 12:24:11 +0200
-From: "Rory Henderson" <wuimeyfkdmcdd@harrimanarmynavy.com>
+Message-ID: <d0b749c060c1008681e9c8129d110faa@mynoisycar.com>
+Date: Mon, 03 May 2021 13:43:11 +0200
+From: "Rory Henderson" <slimedykdmcdd@happysocks.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: RC4GDZQ65NKQBZND6X6RCEGBQW66NNBG
-X-Message-ID-Hash: RC4GDZQ65NKQBZND6X6RCEGBQW66NNBG
-X-MailFrom: wuimedykdmcdd@harrimanarmynavy.com
+Message-ID-Hash: C7WESOGQAYWWIYBBUWEW7NMGOSCJQR2J
+X-Message-ID-Hash: C7WESOGQAYWWIYBBUWEW7NMGOSCJQR2J
+X-MailFrom: slimeaykdmcdd@happysocks.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: rongbindesigne@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RC4GDZQ65NKQBZND6X6RCEGBQW66NNBG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C7WESOGQAYWWIYBBUWEW7NMGOSCJQR2J/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6035037215390255618=="
+Content-Type: multipart/mixed; boundary="===============4879904285702347708=="
 
---===============6035037215390255618==
+--===============4879904285702347708==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -133,7 +133,7 @@ text-align: left;"></span></span>
 </body>
 </html>
 
---===============6035037215390255618==
+--===============4879904285702347708==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -143,4 +143,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============6035037215390255618==--
+--===============4879904285702347708==--
