@@ -1,80 +1,146 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CB237140C
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 May 2021 13:11:45 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02291371585
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 May 2021 14:55:32 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D2980100EBB92;
-	Mon,  3 May 2021 04:11:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::c2e; helo=mail-oo1-xc2e.google.com; envelope-from=chomnhdwillhsa720@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 623BD100EBB92
-	for <linux-nvdimm@lists.01.org>; Mon,  3 May 2021 04:11:37 -0700 (PDT)
-Received: by mail-oo1-xc2e.google.com with SMTP id s24-20020a4aead80000b02901fec6deb28aso329934ooh.11
-        for <linux-nvdimm@lists.01.org>; Mon, 03 May 2021 04:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=O73w3eTSAqTZqtAl/zHwIocBpBuxARSYjm1Xp3kgudU=;
-        b=GwktxwGZhTyMP05adaHN713Nq6qyoK50zlTlUfJqSO7boQqxVvyka8bh9sRGUK9Hts
-         Jj6cr6z8+5xIfds8vGXAhBTnAQX8gp5OlSgZxs1oJbp4y1E8V41kWRRNoBps2wcosrER
-         xUMvbrtnEUSnpjMIDm2/tadusc8MgYMPvBLqYVKaI7DG2pAjTGLwUsBI11+6wVt5mQQe
-         pVmCidbb6anpk0up3387ZPx8jrblkNAMh+O8CF+gbj4AzggYRnNlnBZV9g6B4CPqZTGW
-         FtU0JDgRaoLblDjrHO+9QVcWc4MnOeeq8fc1+V0aEIvaYNRuFIQRLK391hdsalTqlADr
-         35bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=O73w3eTSAqTZqtAl/zHwIocBpBuxARSYjm1Xp3kgudU=;
-        b=SxmJG6uam943vM2bgZLapIJWniSmzls/HG2dWKaPEOPwftkpRkiEotE/I6/dzO2+25
-         GwjpiwybtphzxM7Z5bxyjzSc3OBLTfAdH5SIl/Ce+RFkhJoVzYZB8QDyJCWYqzruHp5d
-         2IKVrf4YiXbOk/n0euBvlA6T1PqLDeQV0+ZxRTz3kLmw3+Z2IJ/kVpqwCJRzF8rZmuMb
-         7o3PRaFLByFCDzgS8F0xlPcwLGM5Qzd08lY5F2s1NCD8bQNtqq9y8E/jP5ARxlrAV4si
-         or2eyvZ+4DnXCupGuCI4Cj5/++wX75utU/kYE/JWHmb9fYpudKQLxambK9ZOKHg8YUXs
-         nm7A==
-X-Gm-Message-State: AOAM530azdOO6v8NHegeuEedc4G2BO5wsaNXleD2rXQ9j88yJ8YajxX9
-	OojIeQwNOGj/zu3WjWbsYLp4ofyIReNgAj42D5s=
-X-Google-Smtp-Source: ABdhPJzZdYP1pertH6DDLDKPDmLr+vrUwHj4INimc17BIDJ4Lp92pflSnAdcCasDLuD1gKSjipOX8Ir4boKmUGzpd3U=
-X-Received: by 2002:a4a:d2cb:: with SMTP id j11mr3854691oos.87.1620040295912;
- Mon, 03 May 2021 04:11:35 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9950A100EB35B;
+	Mon,  3 May 2021 05:55:30 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=31.7.62.119; helo=haydenquinn.com.au; envelope-from=wuimedykdmcdd@harrimanarmynavy.com; receiver=<UNKNOWN> 
+Received: from haydenquinn.com.au (unknown [31.7.62.119])
+	by ml01.01.org (Postfix) with ESMTP id C29AC100EB35A
+	for <linux-nvdimm@lists.01.org>; Mon,  3 May 2021 05:55:25 -0700 (PDT)
+To: linux-nvdimm@lists.01.org
+Subject: Re: the quick follow up
+Message-ID: <e7c5b9c08f1ee3baa8d67b86f8060347@mynoisycar.com>
+Date: Mon, 03 May 2021 12:24:11 +0200
+From: "Rory Henderson" <wuimeyfkdmcdd@harrimanarmynavy.com>
 MIME-Version: 1.0
-From: Chlmhdse Younhdsae <chomnhdwillhsa720@gmail.com>
-Date: Mon, 3 May 2021 06:11:24 -0500
-Message-ID: <CAK4kgpRt_oEj_KhRw-d=FX5DTKiRMR3-Rw+FQAzbMqa2m+Dm9w@mail.gmail.com>
-Subject: NICE DAY AHEAD
-To: undisclosed-recipients:;
-Message-ID-Hash: YFME7BWIB2323RDCOBP3XRE5B2IJLX3T
-X-Message-ID-Hash: YFME7BWIB2323RDCOBP3XRE5B2IJLX3T
-X-MailFrom: chomnhdwillhsa720@gmail.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: RC4GDZQ65NKQBZND6X6RCEGBQW66NNBG
+X-Message-ID-Hash: RC4GDZQ65NKQBZND6X6RCEGBQW66NNBG
+X-MailFrom: wuimedykdmcdd@harrimanarmynavy.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: rongbindesigne@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YFME7BWIB2323RDCOBP3XRE5B2IJLX3T/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RC4GDZQ65NKQBZND6X6RCEGBQW66NNBG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6035037215390255618=="
+
+--===============6035037215390255618==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align: left;"><span
+style=3D"text-align: left;"></span></span></span><span style=3D"text-alig=
+n:
+left;"><span style=3D"text-align: left;">Hi,<br /><br
+/></span></span></span></span></span></span></span></span></span>
+<div><span style=3D"display: block; text-align: left;">I hope all is well=
+.<br
+/>This email is just to let you know that&nbsp;the&nbsp;following drone n=
+ow
+is in our stock, ready to ship&nbsp;to customers&nbsp;worldwide.</span><b=
+r
+/><span style=3D"display: block; text-align: left;"><span style=3D"displa=
+y:
+block; text-align: left;"></span></span><span style=3D"display: block;
+text-align: left;">Drone specs and features=EF=BC=9A<br />Frequency: 5G<b=
+r />FPV
+Image transmission: 2km<br />6K wide-angle 120&deg; adjustable camera.<br
+/>Battery: 2850mAh Li-ion battery<br />Flight time: 28-30 minutes<br
+/>Remote control distance: 2km<br />Level-7 wind resistance <br />GPS
+positioning mode<br />Follow me function: The plane will follow the
+direction of movement.<br />Surroud flight: will make the plane fly in
+circles, providing a shooting angle.<br />Waypoint flight mode: draw a
+route on the screen and the drone fly follow the given path.<br />Auto
+return function. <br />With low power protection overcurrent protection.<=
+br
+/><br /></span><span>Costs: u&nbsp; &nbsp;s&nbsp; &nbsp;d<br />1-5
+units&nbsp;295.50 each<br />6-10 units&nbsp;285.50 each<br />11-20 units
+275.50 each<br /><br />If you would like to place an order, we need to kn=
+ow
+your delivery address to get the package ready for you.&nbsp;<br
+/></span></div>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align:
+left;"></span></span></span></span></span></span></span></span></span></s=
+pan></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align:
+left;"><span></span></span></span></span><span style=3D"display: block;
+text-align: left;"><span style=3D"display: block; text-align: left;"><br
+/></span></span><span style=3D"display: block; text-align: left;"><img
+src=3D"https://ae01.alicdn.com/kf/Hc9d51d1d21744a969f87e41d4a3bec84d.jpg"
+width=3D"500" height=3D"757" /><img
+src=3D"https://ae01.alicdn.com/kf/H6966efe8bce64adb88c45f7172d144a3j.jpg"
+width=3D"500" height=3D"685" /><br /></span><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"text-align: left;"><br /><br /><br /><i=
+mg
+src=3D"https://ae01.alicdn.com/kf/H59144da9eba34d43aae89c56101741a8c.jpg"
+width=3D"500" height=3D"756" /><img
+src=3D"https://ae01.alicdn.com/kf/Hb9e04516047243f0954fab86b79e7100E.jpg"
+width=3D"500" height=3D"1051" /><br /><img
+src=3D"https://ae01.alicdn.com/kf/H72234d22076d4d70b049628d927763191.jpg"
+width=3D"500" height=3D"657" /><img
+src=3D"https://ae01.alicdn.com/kf/H0c25bf7e694a410f96d268c839e67cf1V.jpg"
+width=3D"500" height=3D"930" /><br /></span></span><span style=3D"display=
+: block;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><br /><br /></span></span></span></span>
+<div>If you would like to place an order, we need to know your delivery
+address to get the package ready for you.&nbsp;</div>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><br />Thanks,<br />Rory&nbsp;Henderson</span></span></span><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"></span></span>
+</body>
+</html>
+
+--===============6035037215390255618==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Dear Sir/Madam
-
-How are you today? I hope all is well with you. I have an interesting
-Investment Opportunity which i know will be of interest to you. Please
-respond for more details. Reply with my direct
-email:malikmohammed01@outlook.com
-
-Yours Truly
-
-Malik Mohammed
-Email: malikmohammed01@outlook.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6035037215390255618==--
