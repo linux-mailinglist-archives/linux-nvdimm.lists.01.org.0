@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BA8372F00
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  4 May 2021 19:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC76A372FB3
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  4 May 2021 20:28:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9E95A100EBBC4;
-	Tue,  4 May 2021 10:37:28 -0700 (PDT)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=81.17.30.195; helo=moyou.co.uk; envelope-from=sdvmedyfderfs@hatsofflynden.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 3F55E100EB85F;
+	Tue,  4 May 2021 11:28:09 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=81.17.30.195; helo=moyou.co.uk; envelope-from=hasmeyffderfs@hebrewsurnames.com; receiver=<UNKNOWN> 
 Received: from moyou.co.uk (unknown [81.17.30.195])
-	by ml01.01.org (Postfix) with ESMTP id 0AFE1100EBBC4
-	for <linux-nvdimm@lists.01.org>; Tue,  4 May 2021 10:37:26 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 284F0100EB32A
+	for <linux-nvdimm@lists.01.org>; Tue,  4 May 2021 11:28:06 -0700 (PDT)
 To: linux-nvdimm@lists.01.org
 Subject: Re: office chair
-Message-ID: <190688504c29d5141e5e5583ace24629@beachykeensic.com>
-Date: Tue, 04 May 2021 15:17:04 +0200
-From: "Jerry Mccarty" <sdvmeayfderfs@hatsofflynden.com>
+Message-ID: <ba2fac4a4aa4d761398d2d24bb29e892@beachykeensic.com>
+Date: Tue, 04 May 2021 16:25:21 +0200
+From: "Jerry Mccarty" <hasmseyfderfs@hebrewsurnames.com>
 MIME-Version: 1.0
 X-Mailer-Sent-By: 1
-Message-ID-Hash: PQIKP37IRKPJAMMX6GSCS5CQNIVVUEH7
-X-Message-ID-Hash: PQIKP37IRKPJAMMX6GSCS5CQNIVVUEH7
-X-MailFrom: sdvmedyfderfs@hatsofflynden.com
+Message-ID-Hash: TZRTBJBR3RYSOG2GGSKBX3W4CGLD3PW6
+X-Message-ID-Hash: TZRTBJBR3RYSOG2GGSKBX3W4CGLD3PW6
+X-MailFrom: hasmeyffderfs@hebrewsurnames.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: jefflansohunio@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PQIKP37IRKPJAMMX6GSCS5CQNIVVUEH7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TZRTBJBR3RYSOG2GGSKBX3W4CGLD3PW6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============7629093341233443214=="
+Content-Type: multipart/mixed; boundary="===============2698636036911748386=="
 
---===============7629093341233443214==
+--===============2698636036911748386==
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -110,7 +110,7 @@ text-align: left;"></span></span>
 </body>
 </html>
 
---===============7629093341233443214==
+--===============2698636036911748386==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,4 +120,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============7629093341233443214==--
+--===============2698636036911748386==--
