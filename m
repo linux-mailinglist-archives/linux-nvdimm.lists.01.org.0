@@ -1,165 +1,162 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542BD374B4C
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 May 2021 00:36:39 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9113A374B50
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 May 2021 00:38:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CACA9100F225A;
-	Wed,  5 May 2021 15:36:37 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+	by ml01.01.org (Postfix) with ESMTP id 3FB1A100F225D;
+	Wed,  5 May 2021 15:38:08 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9C51E100F2253
-	for <linux-nvdimm@lists.01.org>; Wed,  5 May 2021 15:36:35 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 145MXrOu192942;
-	Wed, 5 May 2021 22:36:26 GMT
+	by ml01.01.org (Postfix) with ESMTPS id 33469100F225A
+	for <linux-nvdimm@lists.01.org>; Wed,  5 May 2021 15:38:06 -0700 (PDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 145MZ14o106603;
+	Wed, 5 May 2021 22:37:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
  references : from : message-id : date : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=XACopG7v3MNrc4PJJp7nX31Iaia7txtUgNHQ2GzPJ0k=;
- b=HAGfg5LaWf1lgVcExiKuwBO8hdi/7YM4+t2KXNGz1s5OOnUVWL+qEdc155d6jkUNZyqy
- IRQLg6jm+YaUfz0QPJPr+FMqXG6debEPRfJ1v/9ZntK8vd1jHFIdYQM4CFUIffTBRtAI
- YBaCjb2EA3i1g9IICu++tZ4XVw4R3HsVlgG+Jw1AVaamswRNVohTeL0hhgPTlf5k54Z5
- ySXxERBt9uuOmzAWAfNyM/iww1bSTR8Kij3k2J9q0Z3iVw8Z+z4JVoiZEqdTU/2izoZQ
- m7alXhRjOlfKdD9+JfSqQvKpJqPabpr88a4t/Dcy6VXGIatQsBeo4CESBHL5AKg0sD7v GA==
+ bh=hG2KInLIA7pTpOAhka6+89fTSjD3ylqw0Ijx3nA2TFE=;
+ b=MbweAFNjUGNV+cJ4WbqqqKNjzZjchhcqxY5UoOAA1OKAD3Rcg0yjC8B6NDzczgphV3rS
+ DD2gZ8xJlF5qZNP3wBRUPM2EcXLJNtjEMwJXrkfz7S8Owrpg8XOiJ2LjbjLLr9wZgQqb
+ hTvXoRedKXKxDZ+g1nB5KGAPqyzfHnZURgS2epAIt9WGw6TEowGX2NO/x1l+tfoTwm/R
+ L8tX9QW5aAUC2j+CFFNJxqyLq+zH1SPNDnMqAmjgTNiab05J2MzKL0xyp7PIVI7BoAj0
+ SuDSP+jNiCMXf9cYIiBnEHc9yrZEqmCHtQ7PAFR7mMU4pPGLKSUV8MoTNEg+YyAhixS4 5g==
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by userp2130.oracle.com with ESMTP id 38beetkbfu-1
+	by userp2120.oracle.com with ESMTP id 38bebc3by4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 May 2021 22:36:26 +0000
+	Wed, 05 May 2021 22:37:56 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 145MZSJd168930;
-	Wed, 5 May 2021 22:36:25 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
-	by aserp3030.oracle.com with ESMTP id 38bewrjp58-1
+	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 145MZR34168823;
+	Wed, 5 May 2021 22:37:56 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2103.outbound.protection.outlook.com [104.47.70.103])
+	by aserp3030.oracle.com with ESMTP id 38bewrjq8s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 May 2021 22:36:25 +0000
+	Wed, 05 May 2021 22:37:55 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Bz+Id90PGQ+h1RMDoKoKqiVqpc+cxZDXyKkaU2fKPwSjc/cEcqmnkgdR3ZJhHwuJGK2QbhZhTCj2hk0e/ODie78rxGK+WRTDBqHtW9IbKVTno++YrtVfA59+i5npW1ALqDGxmlSCYOiXOkA9ISumbT0EzC+blNlSh4fK9+drnQ6c3gvMaZyyv7HXKsgm2dHdBpVfe1yHjwZsAFXLa752lCISmxJoD6socrzdPo+VQN1I9H9fg1stwOxioHIgD2B1a1pyuR9L823WeiZVsbY5GHN3C1L+fgsx7+jFYBhZL6P+HLDOS8lNCGEzcrc1WfYmXUXQMt97/82ZNK7QWPli1g==
+ b=QitukmL1/SFeQ7SSNdpcDWdrK2KQENAQ1oIO7gsEgCqhBL8stivWyby1NbsKJKiPF9vJW4krvx7HfyFpXSLxLA5kZ4pI8tCk9aBURreLED5G9SitDtbRFYuSIQ0x/k5fDk/TUCSpTJczcnNhah1HJqCiJ1F4MKLxJVw2yw/kJTgQhY4BD9FMubatESnHAGOukXLMFLTUmGea35zW4nuBI6o10WmE++1nrHttJcbPoq25HB1TMeXlD9wjfbgCQKqRdCxkriWUCeGQ1CTurvrOwfDpYP3g2eIjHaGPzGXiEJZ++G650Urixh4Pt0BhZKROXMVcT22Ra/e6U8U49P82Iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XACopG7v3MNrc4PJJp7nX31Iaia7txtUgNHQ2GzPJ0k=;
- b=e80IhFRD9RHMj53jJobKZcR+abe+uIJy65S9wSfhscRvCj4bJZ4XtTuKY9HS6Sw5zG9H0lZuumY7GNN+LBQJ7LUecZCTW20qRnl8lC02c4aEDJ22QpQUkZUN/p1v2pBkANO64Y53tyD46IPXwVH2VTedsXYmrOqhSx+HRWNcMbeVLf7z9oS3diMhgKriQELbqfe3zLcGEhXFqTYU5+Pw5OW6YFl0dems6C/UXBRAq4mGqXlCJX/+rXBYQwLI6ZslD3/AYPusHz1rNfmqXwPjCzJJqeIqEloRG1YLX+qeSVbr1OQCqT4U0AH5Q1IZeQPtOY6/d3dG7A1urblKW43rag==
+ bh=hG2KInLIA7pTpOAhka6+89fTSjD3ylqw0Ijx3nA2TFE=;
+ b=bbvX2VEJ4HafKMRvMndk40iwKdYQkuZpDoNRw3A7Xq0I+bwoTD9WeAocKGsuSIajTEBOoa2KIiVz/92i1wwTjUHUaT8Lk8uhD6dIPmT7IKXDsr+NMRaP2lb8eOkLXdOIQBR68VJp3cuzhKKLtktysh0KNh3oXLbV50Opj6tOpIeDrBx7OXiIHl+GWUekc3IvNg8FKtDb6ToAfc/MSTh60NZGj9sWpdmdfOw2qXHibJhQgkiQ4l38PoaYThG0fBAv5SLTzZdJysvTYJYkbkvdqo+HA/umL/6SH9GAM3l4Mwf6mwR+xSiwHh5Md1PE7mrmzy/zxQBc0ZV8V9yYr9fWDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XACopG7v3MNrc4PJJp7nX31Iaia7txtUgNHQ2GzPJ0k=;
- b=n13hRjXKJfuJ83fog9y3rArF91tW1v2EL3ccDohs0QH4B7fBRz9Uv3hJbpV51qs+mkp1ZQzVxlIbY/Myu9kvjX0zTeJX4xS1JTnApqCipkAE0OxvMZDsLBy2y1aIuWdGhyI+1if1HEN71zo7rHbN5MDDSWgC7xxkW7+SMSPEbsU=
-Authentication-Results: linux-foundation.org; dkim=none (message not signed)
- header.d=none;linux-foundation.org; dmarc=none action=none
- header.from=oracle.com;
+ bh=hG2KInLIA7pTpOAhka6+89fTSjD3ylqw0Ijx3nA2TFE=;
+ b=xBoCB4it7xhIrCp9JGsL0zG2nivoOlDz3EYC6WnCQNIsfhMV8KtrdMHPNJx9MY8ykYNtz1fj9MEYRJXdB6Tg0e0gsB7G2yZX0xRc7zDmEMZDd7mhCWzcToHJ54fHJrJ7POzBp3kmQlKiC6mew5UgJBikmld2fvCOGf1EL+Rt4d8=
+Authentication-Results: suse.de; dkim=none (message not signed)
+ header.d=none;suse.de; dmarc=none action=none header.from=oracle.com;
 Received: from BYAPR10MB3077.namprd10.prod.outlook.com (2603:10b6:a03:8c::12)
- by BYAPR10MB3158.namprd10.prod.outlook.com (2603:10b6:a03:15d::23) with
+ by BY5PR10MB4115.namprd10.prod.outlook.com (2603:10b6:a03:213::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4087.38; Wed, 5 May
- 2021 22:36:23 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25; Wed, 5 May
+ 2021 22:37:54 +0000
 Received: from BYAPR10MB3077.namprd10.prod.outlook.com
  ([fe80::fdc1:840e:3540:422e]) by BYAPR10MB3077.namprd10.prod.outlook.com
  ([fe80::fdc1:840e:3540:422e%6]) with mapi id 15.20.4108.026; Wed, 5 May 2021
- 22:36:23 +0000
-Subject: Re: [PATCH v1 04/11] mm/memremap: add ZONE_DEVICE support for
- compound pages
+ 22:37:54 +0000
+Subject: Re: [PATCH v1 05/11] mm/sparse-vmemmap: add a pgmap argument to
+ section activation
 To: Dan Williams <dan.j.williams@intel.com>
 References: <20210325230938.30752-1-joao.m.martins@oracle.com>
- <20210325230938.30752-5-joao.m.martins@oracle.com>
- <CAPcyv4gs_rHL7FPqyQEb3yT4jrv8Wo_xA2ojKsppoBfmDocq8A@mail.gmail.com>
- <cd1c9849-8660-dbdc-718a-aa4ba5d48c01@oracle.com>
- <CAPcyv4jG8+S6xJyp=1S2=dpit0Hs2+HgGwpWeRROCRuJnQYAxQ@mail.gmail.com>
+ <20210325230938.30752-6-joao.m.martins@oracle.com>
+ <CAPcyv4iOh5wS04F=hftcwN1e3DJTg-qUhw8KHR=+wncqJ2KZsg@mail.gmail.com>
 From: Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <56a3e271-4ef8-ba02-639e-fd7fe7de7e36@oracle.com>
-Date: Wed, 5 May 2021 23:36:16 +0100
-In-Reply-To: <CAPcyv4jG8+S6xJyp=1S2=dpit0Hs2+HgGwpWeRROCRuJnQYAxQ@mail.gmail.com>
+Message-ID: <52195943-3344-ec9b-3c7f-1e6d415c390e@oracle.com>
+Date: Wed, 5 May 2021 23:37:45 +0100
+In-Reply-To: <CAPcyv4iOh5wS04F=hftcwN1e3DJTg-qUhw8KHR=+wncqJ2KZsg@mail.gmail.com>
 Content-Language: en-US
 X-Originating-IP: [94.61.1.144]
-X-ClientProxiedBy: PR0P264CA0222.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:100:1e::18) To BYAPR10MB3077.namprd10.prod.outlook.com
+X-ClientProxiedBy: PR0P264CA0220.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:100:1e::16) To BYAPR10MB3077.namprd10.prod.outlook.com
  (2603:10b6:a03:8c::12)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [192.168.1.67] (94.61.1.144) by PR0P264CA0222.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:1e::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25 via Frontend Transport; Wed, 5 May 2021 22:36:20 +0000
+Received: from [192.168.1.67] (94.61.1.144) by PR0P264CA0220.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100:1e::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.24 via Frontend Transport; Wed, 5 May 2021 22:37:51 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b82c3551-4c06-43b5-5eb5-08d91016360e
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3158:
+X-MS-Office365-Filtering-Correlation-Id: 86288165-3515-4cca-7c97-08d910166c0c
+X-MS-TrafficTypeDiagnostic: BY5PR10MB4115:
 X-MS-Exchange-Transport-Forked: True
 X-Microsoft-Antispam-PRVS: 
-	<BYAPR10MB3158AA235F74792A516F3F3FBB599@BYAPR10MB3158.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+	<BY5PR10MB411565AD5F4FD0D88AEDDDEEBB599@BY5PR10MB4115.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	3yUEJ0xoy1h/hAVNRTnWz+JXIZeRmmribwxY2J6grQY//6Xy3cEHjDZ6cL+Lizda1UJ6XgWUi0C4dOUlmGZ/JA4QRAOXgRElefyS3nUGS8yJ8SJN0Helmc4v6QrGFbL7Vad2U6td8nTrsp63H+GObkAFFHR/ZjB23w43A3biz8ecltafdO9TKhl4y3vYco++HYRRAHA3wFh0Ri2Dvx9ePc86Kj2rgV+H5EBIf8U2yBa2ToSRem+h7XA33EA7P1cZS3EXgBe1AukV6wGxvOdWYoPzTqBqe+pm6mcADy8yIvy1Ug3bTn5bH41uhS25QzNEOM8xCxQvfd72VDMtExDRKm+dv4FGiM5RYVS37Po8TfWGU923ojDGjq45cfw2dZiMMugCmY5m9U3lX4ypi52N18Fm6BYE/qiM1nN77DcsqoARzZQ7MC+Aj0HmPNQ3OiN7Cn8AP7tfDpLcN8ueXSfpTElK3ScdrKEibbmMk4nhmuNOPPV2Xs0sLFNWCHbYwqfWVq1GK6EHht+kZjV5cvAJdwUjhDg+koQJFWpiGy28Nt6lDvjCxQ5gerxfLBo8jT6oBxZ4Wl/AxTzgab6bSHdqaT2yTFK4AuE8Y7a+HMvFo8ktRRpDJr+kQmc4QKUKVFP5faiMftNUSrIrO1G+lTLOzOUAY2UCe/X6SBHd2cUfcB8=
+	S1TEkQmqP2dsR0SWVhVPn9JTO6KoEQDYEkD5WpcJqnN/X0lujnuVUs8XqygZumUzcELpYSzx+8ajkh3A9Qy0rJQUU3HfIJIp9iU4/2Lbte65JPBn/l9/KwqmY3Ty7RlaI6Rdb3KjqByugLawlSVzV4pg3nBGQZr3Ynkrfslvuwj1jUoGsF1pUn1WnYO49D5GN6872xu/DtxVi6scEMLkBy14sJMi3IQpdiaTfQ/xfbwa1hH6L0ZXr0qhwRyGIGWN09KBdDkKJ2Y4/MuHm40bkOXFwN9kTOgkJYdh0zOHkeklv2+A0LaYmxw+pBH4rihHck+4XlX9XWEnqfdesI1hCC20PGXU6GBVPzVszhTZGKD6YKRyfL85BQQsll/zqLO8Z6y/Tgl2L/U2Tu2rR50HWvSKKKfjPY3T6FYPbFfOJ1t0LrQNIvHV5XVuf5fW4l4d1hRonO1n6rf2QUWs1tCM983eAoOdsOjXg4oGdmtlH9UyJ2S5h1AeKOZZDZ/LDE7mPlSD3EeTZB8VjRH/uy/24a8QBYYfHQKTQ24ovvkpW08tPQeNTufVXqg0LVtvmUdZKfIZDcxVnMJjVMHrcmwIO0nix6HVswl5fpVapKTwpjTLLBxngwNI/z7hjS3zIE0ps69wpOrAj4RlaD1F9QvtPA==
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3077.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(39860400002)(376002)(366004)(136003)(346002)(66556008)(26005)(66946007)(36756003)(5660300002)(6486002)(86362001)(956004)(478600001)(6916009)(2906002)(53546011)(8936002)(31696002)(8676002)(316002)(16526019)(31686004)(54906003)(83380400001)(6666004)(186003)(38100700002)(4326008)(16576012)(66476007)(2616005)(45980500001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3077.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(136003)(39860400002)(376002)(346002)(31696002)(8936002)(8676002)(53546011)(66946007)(66556008)(54906003)(31686004)(478600001)(6666004)(66476007)(86362001)(956004)(36756003)(4744005)(6486002)(38100700002)(186003)(16526019)(83380400001)(26005)(16576012)(2906002)(316002)(2616005)(6916009)(5660300002)(4326008)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData: 
-	=?utf-8?B?dUQwSG5seDMzVnIvSHhRSi95cHNVR29rTDRnRGRxbXBwZGwvRVZGeTBheVFq?=
- =?utf-8?B?SURPc0VNWERjSldsQjY2VDhldzd2L2xOQWJsZlhjUk9RL1A3MXYvQmlmYjZL?=
- =?utf-8?B?KzZPWGs1UzhybVVQWTNEY1FRK3VRR08wZmhvbXUwc1EvcjRjcU1EZmRENUZh?=
- =?utf-8?B?WUV0eGFRVVlLTnRRS1BrUW9FYzlTbFk5NnhZc1h5Rk13bFhPS3djZFlaVlFN?=
- =?utf-8?B?WXoxemlGVmJZakhuRk9HbzlZWmdUSmlBZlk5V0dGUEJNaURFVXZzUXNSd0ZO?=
- =?utf-8?B?cHBZaVA2djBhOEQ4c04vZXYrWVVxR00xSm9Md2kyd3VlQmNqdy8rNDVrVVg4?=
- =?utf-8?B?TmFDN0t6YmFwU0E0cTF1LzVudHdsdUhGTFEyaWJ3OUdnL3RkMldsd2ZHdklD?=
- =?utf-8?B?MVNiOWNOYW51UmN4NFRoUGlLZEJGc0pkVnZOb2x2ampqTFVxQW9yYjdwWVdU?=
- =?utf-8?B?NE5rL25vTlRXeTB1SnVmd0ZOL1lUN0tVUkVrNHZYU3RZblBVK0grWjNDbVRi?=
- =?utf-8?B?NXM3T3RGOW9FN0haeDgzTXZLdmkrTE56SXl4N0kyc0tadTBsY3dZVVhhL0lK?=
- =?utf-8?B?amtyeVhxVDc2VDVOVVZndDhiU2ZjQmVBNGZmaDFFTXkvcHJzeDFsanZON1dy?=
- =?utf-8?B?VjJuVW82Z3ZFNmNMeGpQWmx0VzBaQWtZVm93bnppUUJrRXBIalR5SGN4cUFk?=
- =?utf-8?B?eXhNS255MlZGSzFzSTlNa0psUmIrZWhrOHNXbXRjYkxyQXRmb2dlZmhJcklJ?=
- =?utf-8?B?VjYwSDR1NEFBbnVXcXAremhzSHY0N1k3alBSYWZmdjhPUGJreWp3blhxTEFC?=
- =?utf-8?B?ZmgyOWl1bm9vaVZKeXpXRDdGempmOTBRYStMV2h5RmVPcXNnZHdHMXFqZXZk?=
- =?utf-8?B?WHZmZ3RJdnRUNEl3cTZVdk43QUs3ZlNlODlzbEhCeXJ4cDdRNS9DWEJvdm5s?=
- =?utf-8?B?aXNpSitjM0dYcUZEaFlhL25VQ29JWmh2S1E5WjQybTg2UDlIOHdqMUxKeHFW?=
- =?utf-8?B?c052UGxQYk9QbmEwODlwdHp4RE1OalErNFNoUHhPVFlOcFVCRjFMWDhjd3ds?=
- =?utf-8?B?YVV0a0EwaWY4RjRvWDZORDc1OWw4VG1BZnVsWjQ5NEQzdnJML0hJZjZKRitV?=
- =?utf-8?B?WitadzhSOWY2UDc2OFptOXRrbE5kRWVxK3pESi9PdFRRbHpNRE5YRmJ5Mnlp?=
- =?utf-8?B?YnFIMUE2bVBUVHc5MHVjcitWU0RzK2VBWmFGQjl2YkxBZmpMYzZvZDBlR2VD?=
- =?utf-8?B?SXBUMEVOWE43QldKSWlxQlpmcjQzMjV1aHJIdndSOUpOSlEzSitGZ0wvSXVn?=
- =?utf-8?B?SFNkbnRydHFsSUd4RlJsKzR1ekhVSnd1SGRoMFh0NEk2djRKdERweXNZUFNo?=
- =?utf-8?B?OG8rU1g0N1FtdDZ0bDc2UlgxWmJDamRWYzI5dmo4MlYzaDBUU0E2MXlDS0lQ?=
- =?utf-8?B?RDZQU3ZFRzRMNSt4Q3cwbEY0UEFKdlBWcStrVGFUdFlaMG5uejYzUUFUcGJX?=
- =?utf-8?B?aFhrRzVkbXZFZjBjMk1TVzdLZkd6ZnVMTGZiWkNZVkw4cWNYVUlaaG5rTCtT?=
- =?utf-8?B?YUh1dXNQN1hMZzMzRmYzanVkWVZWa1Y1UDR1aDFNVTJvRE5hVWVqVStJcEJS?=
- =?utf-8?B?S2xYcDlRZW1DajFuRDRVWXg5dUJDZ2tPTHhpbGcyeGl6R2ZVZFR5a3NoNCsz?=
- =?utf-8?B?V0I5Q2hOS3NWRXd6dVZEOEdIeEpkWE1Id0hEdGhyaUEvYlFBd014bmREeTFJ?=
- =?utf-8?Q?aVvlOp+b68ASkC2QHtI8TTN16AenxwNdrpsamRJ?=
+	=?utf-8?B?N3RQSm01eXQydlJXc09WZ3hBQkVNK21yUmZVcjFUYkh3SXlwSVBMeFU0dW1W?=
+ =?utf-8?B?dmYwdkpWWDZSd2V1VnNiWUVpbXBZZTEvYjJ3a2RvSTNQRlFRTm1qWUZpMndK?=
+ =?utf-8?B?cE5RS3NnVzBJUEVWVGNkck12N0ZYaWhCRVhkZGY3c09nSkFXOC9PdERKaEFJ?=
+ =?utf-8?B?QnkweFZVdmdSa25qVSs0dXlQbi9oeklhZjBUWjA2Um5ndklzN3FlWUFZaTds?=
+ =?utf-8?B?UkpwOUdHRE5TWlh0ekVzSXE3UG5xSVRkQmdFUnhPQjA0azJXVnFNc2V2WU9x?=
+ =?utf-8?B?RHhyNWVpSmRtZkliWVRONHVyVlZxYndKZm1JMnR0T3VVV2xER1RzMWpWTXRi?=
+ =?utf-8?B?OCtEVTZtTUYxNmdLSHJMNUJNd1dTSXRKSDI1ZGZaUllKa1RrcnBQeVZTdm85?=
+ =?utf-8?B?Q2tJdDRHaDJEQ3BzKzcrTlE1MjBPKzIyb1BPd2FOMGkxcHZIVm81S0JVSFNX?=
+ =?utf-8?B?VjNOWDNWNDA2dTNKR05mcmlHQXJTS1g4VU5vVHVDQ0h6akc5Y0pTTytyQmNB?=
+ =?utf-8?B?WStRWFR1Yk1mVHM3WjZtY1p1ajdoZnhETkQwYjByZFBXL1lOTWRSU1kySFo4?=
+ =?utf-8?B?K21QMGFub1FqaTQxTkdwbWZvWS8zZnpIc09TZHozUERXWDNSc1laaXZTbmVX?=
+ =?utf-8?B?cEprcGs3cEFOR3RVMFhZUGowMG0zV2JzckM2czgydE8yUVVzNzNNbjdHa25B?=
+ =?utf-8?B?akNaOVBoaHJOaVVCS2FpdFZacU9jclZwOTJhL0lrOUErMlNpR0JHTkRyRjMy?=
+ =?utf-8?B?MmRsMndTSU53SUErYVR2SHJDb0FyUU1iNEFHQXFidTlHNnR1TG1tWUpZclFL?=
+ =?utf-8?B?ZnNFWlZ0L1dXQXFDQTVhMHl6aks4OURZOW1ZRFpCWTNPVFZHektMd1UyNnNo?=
+ =?utf-8?B?RHEwK1VOZS96blhxOUdyd3N0elZ2TlU5M21hbnAxbWthVjBKWmNxdklqRStI?=
+ =?utf-8?B?T2dWRkFBSUNUbjZqaSt6ZWxZSllYYWpZb1QyeDJINFVDMTN5R29QRFpqVXVV?=
+ =?utf-8?B?Sjg5d1d2dWE5UnYzdWM0OVBCTzdIT1JHaWNGUit4QnNuemxtMUM0TGRMSm5i?=
+ =?utf-8?B?OWhpay8yaEhabXRzZmpPV09lc3J2em5zOFlTRWhRNVdWWEZvdzF5YzJ1aXV3?=
+ =?utf-8?B?OHllQUhtcWNXa1FleUdiZkFzRjFjempiUi9kaE84UzlvYWRsRnZGV0w4d2R6?=
+ =?utf-8?B?ZzFCcVhyQlUxT3RYNkVuYklVZ1VrR3lIVkFtV3g1aFdMMi9sU29XdnZkUjlB?=
+ =?utf-8?B?RnNySVBrcGZnVVRXUlVqTWRxN2hsenZBcUtrTGgxengxc2NPakZSeUdlNXBF?=
+ =?utf-8?B?QzJRcGo4UW9XaDN3K1VPVUhmZHJNOWR0K0Q0TGhkbXlTOE14WEFKZjZaVWF0?=
+ =?utf-8?B?Sk5SL1B1SmVibVZ6bS91U0QwZzlIZmZZbVNDdzZWRDRSOHEwVHUwSW1zcDhz?=
+ =?utf-8?B?SkY4Ymsvdno1RXYya3k2V2xGb0prRGlYNWgrU1U4bW9qWlNKZWFNdWtxci83?=
+ =?utf-8?B?YUNKRzhHVWJhRmRPd0lGc1N3Y25CQVdoVXVOOTNoMTB3TEZ1K0hkNisyTU5R?=
+ =?utf-8?B?V0ZEVDlQOW1WajZhY2h0aGIvT1lOS0ZYK1B6QlJiaHAwUGRpaTdCZGFoMEMy?=
+ =?utf-8?B?ekl6anJ1SEtpaEN6Ni8wcyt0WWVZVzBKZzJOZzFGaTBzWTFsTHpUMFN5ZkNS?=
+ =?utf-8?B?TE9LZWdqZ3dtN1hVS2xaYXozNDV6VHAxUDZZMmg5c3drRTJFN2N1NTMyZDkv?=
+ =?utf-8?Q?SKIB6ED/ob5acDxP/trjcM6lGsJD1GSwVUcdBRn?=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b82c3551-4c06-43b5-5eb5-08d91016360e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86288165-3515-4cca-7c97-08d910166c0c
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3077.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2021 22:36:23.3950
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2021 22:37:53.9917
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iib4vT/mktyPKXK7PQr4+iFPbF/NnOx4sFF2gVS/HCm2vTTn0LKXO0LT0/LcbZf2oIq2kgDnc67aREGBrIrEv/HlBNEg5OyFYgMTwyideoQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR10MB3158
+X-MS-Exchange-CrossTenant-UserPrincipalName: lI5L08GpZvAe9qptgCdqLgJa2i0QiM2NlwdLRyPMXVnHTl1fzj/fiG7hGo56uMVZEcK0hacBSlceyLBETCcv2gl+bHNdeZCfoUTDTrJ3X3A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4115
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9975 signatures=668683
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
  suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104060000 definitions=main-2105050155
-X-Proofpoint-GUID: UeJMtSxFWvCjtZaBurviXntPrdCMkxtm
-X-Proofpoint-ORIG-GUID: UeJMtSxFWvCjtZaBurviXntPrdCMkxtm
+X-Proofpoint-ORIG-GUID: qCCL0sF1UPehoyFoXQXDJzijBTLkfjkH
+X-Proofpoint-GUID: qCCL0sF1UPehoyFoXQXDJzijBTLkfjkH
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9975 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 lowpriorityscore=0
- mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=999 clxscore=1011
- suspectscore=0 impostorscore=0 phishscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105050155
-Message-ID-Hash: KN3JHAIHM6MHN6PSXRAZ6PPH2JDPVNMH
-X-Message-ID-Hash: KN3JHAIHM6MHN6PSXRAZ6PPH2JDPVNMH
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 lowpriorityscore=0
+ phishscore=0 spamscore=0 adultscore=0 clxscore=1011 mlxscore=0
+ malwarescore=0 mlxlogscore=999 impostorscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104060000
+ definitions=main-2105050155
+Message-ID-Hash: IRHPA3RH6ABM4WVCWIUJFR4HZNPYLQEH
+X-Message-ID-Hash: IRHPA3RH6ABM4WVCWIUJFR4HZNPYLQEH
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+CC: Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KN3JHAIHM6MHN6PSXRAZ6PPH2JDPVNMH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IRHPA3RH6ABM4WVCWIUJFR4HZNPYLQEH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -168,163 +165,28 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 5/5/21 11:20 PM, Dan Williams wrote:
-> On Wed, May 5, 2021 at 12:50 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->> On 5/5/21 7:44 PM, Dan Williams wrote:
->>> On Thu, Mar 25, 2021 at 4:10 PM Joao Martins <joao.m.martins@oracle.com> wrote:
->>>>
->>>> Add a new align property for struct dev_pagemap which specifies that a
->>>> pagemap is composed of a set of compound pages of size @align, instead
->>>> of base pages. When these pages are initialised, most are initialised as
->>>> tail pages instead of order-0 pages.
->>>>
->>>> For certain ZONE_DEVICE users like device-dax which have a fixed page
->>>> size, this creates an opportunity to optimize GUP and GUP-fast walkers,
->>>> treating it the same way as THP or hugetlb pages.
->>>>
->>>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->>>> ---
->>>>  include/linux/memremap.h | 13 +++++++++++++
->>>>  mm/memremap.c            |  8 ++++++--
->>>>  mm/page_alloc.c          | 24 +++++++++++++++++++++++-
->>>>  3 files changed, 42 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
->>>> index b46f63dcaed3..bb28d82dda5e 100644
->>>> --- a/include/linux/memremap.h
->>>> +++ b/include/linux/memremap.h
->>>> @@ -114,6 +114,7 @@ struct dev_pagemap {
->>>>         struct completion done;
->>>>         enum memory_type type;
->>>>         unsigned int flags;
->>>> +       unsigned long align;
->>>
->>> I think this wants some kernel-doc above to indicate that non-zero
->>> means "use compound pages with tail-page dedup" and zero / PAGE_SIZE
->>> means "use non-compound base pages".
+
+
+On 5/5/21 11:34 PM, Dan Williams wrote:
+> On Thu, Mar 25, 2021 at 4:10 PM Joao Martins <joao.m.martins@oracle.com> wrote:
 >>
->> Got it. Are you thinking a kernel_doc on top of the variable above, or preferably on top
->> of pgmap_align()?
+>> @altmap is stored in a dev_pagemap, but it will be repurposed for
+>> hotplug memory for storing the memmap in the hotplugged memory[*] and
+>> reusing the altmap infrastructure to that end. This is to say that
+>> altmap can't be replaced with a @pgmap as it is going to cover more than
+>> dev_pagemap backend altmaps.
 > 
-> I was thinking in dev_pagemap because this value is more than just a
-> plain alignment its restructuring the layout and construction of the
-> memmap(), but when I say it that way it seems much less like a vanilla
-> align value compared to a construction / geometry mode setting.
+> I was going to say, just pass the pgmap and lookup the altmap from
+> pgmap, but Oscar added a use case for altmap independent of pgmap. So
+> you might refresh this commit message to clarify why passing pgmap by
+> itself is not sufficient.
+> 
+Isn't that what I am doing above with that exact paragraph? I even
+reference his series at the end of commit description :) in [*]
+
+> Other than that, looks good.
 > 
 /me nods
-
->>
->>> The non-zero value must be
->>> PAGE_SIZE, PMD_PAGE_SIZE or PUD_PAGE_SIZE.
->>> Hmm, maybe it should be an
->>> enum:
->>>
->>> enum devmap_geometry {
->>>     DEVMAP_PTE,
->>>     DEVMAP_PMD,
->>>     DEVMAP_PUD,
->>> }
->>>
->> I suppose a converter between devmap_geometry and page_size would be needed too? And maybe
->> the whole dax/nvdimm align values change meanwhile (as a followup improvement)?
-> 
-> I think it is ok for dax/nvdimm to continue to maintain their align
-> value because it should be ok to have 4MB align if the device really
-> wanted. However, when it goes to map that alignment with
-> memremap_pages() it can pick a mode. For example, it's already the
-> case that dax->align == 1GB is mapped with DEVMAP_PTE today, so
-> they're already separate concepts that can stay separate.
-> 
-Gotcha.
-
->>
->> Although to be fair we only ever care about compound page size in this series (and
->> similarly dax/nvdimm @align properties).
->>
->>> ...because it's more than just an alignment it's a structural
->>> definition of how the memmap is laid out.
->>>
-
-Somehow I missed this other part of your response.
-
->>>>         const struct dev_pagemap_ops *ops;
->>>>         void *owner;
->>>>         int nr_range;
->>>> @@ -130,6 +131,18 @@ static inline struct vmem_altmap *pgmap_altmap(struct dev_pagemap *pgmap)
->>>>         return NULL;
->>>>  }
->>>>
->>>> +static inline unsigned long pgmap_align(struct dev_pagemap *pgmap)
->>>> +{
->>>> +       if (!pgmap || !pgmap->align)
->>>> +               return PAGE_SIZE;
->>>> +       return pgmap->align;
->>>> +}
->>>> +
->>>> +static inline unsigned long pgmap_pfn_align(struct dev_pagemap *pgmap)
->>>> +{
->>>> +       return PHYS_PFN(pgmap_align(pgmap));
->>>> +}
->>>> +
->>>>  #ifdef CONFIG_ZONE_DEVICE
->>>>  bool pfn_zone_device_reserved(unsigned long pfn);
->>>>  void *memremap_pages(struct dev_pagemap *pgmap, int nid);
->>>> diff --git a/mm/memremap.c b/mm/memremap.c
->>>> index 805d761740c4..d160853670c4 100644
->>>> --- a/mm/memremap.c
->>>> +++ b/mm/memremap.c
->>>> @@ -318,8 +318,12 @@ static int pagemap_range(struct dev_pagemap *pgmap, struct mhp_params *params,
->>>>         memmap_init_zone_device(&NODE_DATA(nid)->node_zones[ZONE_DEVICE],
->>>>                                 PHYS_PFN(range->start),
->>>>                                 PHYS_PFN(range_len(range)), pgmap);
->>>> -       percpu_ref_get_many(pgmap->ref, pfn_end(pgmap, range_id)
->>>> -                       - pfn_first(pgmap, range_id));
->>>> +       if (pgmap_align(pgmap) > PAGE_SIZE)
->>>> +               percpu_ref_get_many(pgmap->ref, (pfn_end(pgmap, range_id)
->>>> +                       - pfn_first(pgmap, range_id)) / pgmap_pfn_align(pgmap));
->>>> +       else
->>>> +               percpu_ref_get_many(pgmap->ref, pfn_end(pgmap, range_id)
->>>> +                               - pfn_first(pgmap, range_id));
->>>>         return 0;
->>>>
->>>>  err_add_memory:
->>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>> index 58974067bbd4..3a77f9e43f3a 100644
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -6285,6 +6285,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
->>>>         unsigned long pfn, end_pfn = start_pfn + nr_pages;
->>>>         struct pglist_data *pgdat = zone->zone_pgdat;
->>>>         struct vmem_altmap *altmap = pgmap_altmap(pgmap);
->>>> +       unsigned int pfn_align = pgmap_pfn_align(pgmap);
->>>> +       unsigned int order_align = order_base_2(pfn_align);
->>>>         unsigned long zone_idx = zone_idx(zone);
->>>>         unsigned long start = jiffies;
->>>>         int nid = pgdat->node_id;
->>>> @@ -6302,10 +6304,30 @@ void __ref memmap_init_zone_device(struct zone *zone,
->>>>                 nr_pages = end_pfn - start_pfn;
->>>>         }
->>>>
->>>> -       for (pfn = start_pfn; pfn < end_pfn; pfn++) {
->>>> +       for (pfn = start_pfn; pfn < end_pfn; pfn += pfn_align) {
->>>
->>> pfn_align is in bytes and pfn is in pages... is there a "pfn_align >>=
->>> PAGE_SHIFT" I missed somewhere?
->>>
->> @pfn_align is in pages too. It's pgmap_align() which is in bytes:
->>
->> +static inline unsigned long pgmap_pfn_align(struct dev_pagemap *pgmap)
->> +{
->> +       return PHYS_PFN(pgmap_align(pgmap));
->> +}
-> 
-> Ah yup, my eyes glazed over that. I think this is another place that
-> benefits from a more specific name than "align". "pfns_per_compound"
-> "compound_pfns"?
-> 
-We are still describing a page, just not a base page. So perhaps @pfns_per_hpage ?
-
-I am fine with @pfns_per_compound or @compound_pfns as well.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
