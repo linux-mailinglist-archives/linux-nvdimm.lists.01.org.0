@@ -2,40 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E254E373354
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 May 2021 02:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8920D3733E7
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 May 2021 05:19:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1C243100EBB98;
-	Tue,  4 May 2021 17:51:22 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.82; helo=gwob.com; envelope-from=fmwp@gwob.com; receiver=<UNKNOWN> 
-Received: from gwob.com (unknown [223.73.128.82])
-	by ml01.01.org (Postfix) with ESMTP id 0C83B100EBBC0
-	for <linux-nvdimm@lists.01.org>; Tue,  4 May 2021 17:51:18 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Wed, 05 May 2021 08:51:22 +0800
-Message-ID: 74b323f7-8633-4fbe-881a-3ad3894219e6
-MIME-Version: 1.0
-Sender: =?utf-8?Q?=E9=82=AE=E4=BB=B6=E7=BE=A4=E5=8F=91=E8=BD?=
- =?utf-8?Q?=AF=E4=BB=B6---500=E5=85=83/=E6=9C=88=EF=BC=8C=E8=B5=A0=E9?=
- =?utf-8?Q?=80=81200=E4=B8=87=E9=82=AE=E7=AE=B1=E6=95=B0=E6=8D=AE?=
- <fmwp@gwob.com>
-From: =?utf-8?Q?=E9=82=AE=E4=BB=B6=E7=BE=A4=E5=8F=91=E8=BD=AF?=
- =?utf-8?Q?=E4=BB=B6---500=E5=85=83/=E6=9C=88=EF=BC=8C=E8=B5=A0=E9=80?=
- =?utf-8?Q?=81200=E4=B8=87=E9=82=AE=E7=AE=B1=E6=95=B0=E6=8D=AE?=
- <sales0769@hotmail.com>
-To: linux-nvdimm@lists.01.org
-Date: 5 May 2021 08:51:22 +0800
-Subject: =?utf-8?B?6YKu5Lu2576k5Y+R6L2v5Lu2LS0tNTAw5YWDL+aciO+8jOi1?=
- =?utf-8?B?oOmAgTIwMOS4h+mCrueuseaVsOaNrg==?=
-Message-ID-Hash: LH5VQOCT3RRSLXUJIVEOWUE34KY4K6KD
-X-Message-ID-Hash: LH5VQOCT3RRSLXUJIVEOWUE34KY4K6KD
-X-MailFrom: fmwp@gwob.com
+	by ml01.01.org (Postfix) with ESMTP id BFB9B100EBB98;
+	Tue,  4 May 2021 20:19:36 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.14.133; helo=kagin.co.jp; envelope-from=zfklohla@kagin.co.jp; receiver=<UNKNOWN> 
+Received: from kagin.co.jp (unknown [116.85.14.133])
+	by ml01.01.org (Postfix) with ESMTP id E251A100EBBD7
+	for <linux-nvdimm@lists.01.org>; Tue,  4 May 2021 20:19:33 -0700 (PDT)
+Message-ID: <3DB8255EEB1F2E999FE1A3064A9E3577@kagin.co.jp>
+From: =?utf-8?B?5qCq5byP5Lya56S+IOm5v+WFkOWztumKgOihjA==?= <info@kagin.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR6bm/5YWQ5bO26YqA6KGMIElEIOW/heimgQ==?=
+	=?utf-8?B?44Gu5YaN44Ki44Kv44OG44Kj44OW5YyW44Oq44Kv44Ko44K544OI?=
+Date: Wed, 5 May 2021 11:19:25 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: FKMQOUNOFA42SPUORHYSET4V4ALCJYQD
+X-Message-ID-Hash: FKMQOUNOFA42SPUORHYSET4V4ALCJYQD
+X-MailFrom: zfklohla@kagin.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LH5VQOCT3RRSLXUJIVEOWUE34KY4K6KD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FKMQOUNOFA42SPUORHYSET4V4ALCJYQD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -44,10 +40,28 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-Jm5ic3A7DQrmr4/lj7DnlLXohJHml6Xlj5E1LTIw5LiH6YKu566x5pWw5o2u5peg6ZyA5Y+R5Lu2
-566x55qE6YKu5Lu2576k5Y+R6L2v5Lu25aSW6LS444CB54mp5rWB44CB5bGV5Lya5Lia5Yqh5aW9
-5biu5omLDQpFLW1haWwgOiZuYnNwOyBzYWxlczA3NjlAaG90bWFpbC5jb21RUeWSqOivou+8mjMz
-NTE2NjU2MjUgDQombmJzcDsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
-MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
-QGxpc3RzLjAxLm9yZwo=
+DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
+iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
+iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
+ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
+q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
+o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
+iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
+j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
+gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
+gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
+44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
+5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
+m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
+iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
+uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
+44KJDQpodHRwczovL3d3dy5rYWdpbi52aXAvbG9naW4ucGhwDQrilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIENCuKWoOeZuuihjOiAheKWoA0K44GL44GO44KT772F
+44OQ44Oz44Kv44K744Oz44K/44O8DQrpub/lhZDls7bluILkuIvojZLnlLA0LTQ2LTIwDQrilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIANCkNvcHlyaWdodCDCqSAy
+MDE0IFRoZSBLQUdPU0hJTUEgQkFOSywgTFRELg0K54Sh5pat6Lui6LyJ44GK44KI44Gz5YaN6YWN
+5biD44KS56aB44GY44G+44GZ44CCCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
+c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
+ZWF2ZUBsaXN0cy4wMS5vcmcK
