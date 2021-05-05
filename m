@@ -1,52 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE2E374854
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 May 2021 21:00:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB373374875
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 May 2021 21:08:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6511D100EB334;
-	Wed,  5 May 2021 11:59:58 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 26DEB100EB33B;
+	Wed,  5 May 2021 12:08:12 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AA88B100EB332
-	for <linux-nvdimm@lists.01.org>; Wed,  5 May 2021 11:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7Ts3m9Dmu8TbFp1Zou/lAmdxBv7vUaszRSdZtygGL3s=; b=eKuCCZ+YLLh/IfsiA2w2TJnrVq
-	OgsO6w/D0Fq0g3dHXII9KGzSc/qTA7NBXv38JF7QEOyGbRPI+lQzcqZ/aYb1SJdMtttFxdlIc3UQ/
-	gsmOyS+xv0AUj0u8nQICpJLKl56GUf2FrWTZOM83hUHEaRUlaciSIebpnb1qCyo4mDgKcSsFsux3z
-	GpYO6JkYOwrZCA4dlgPSWLWUiu+cO4qfsDeNbKDkLDDBtW5y5BKAsBa/6OCccyEKi+VnNszzSVzSv
-	zt9omkCl03D90I/M5UK6bjixbmbSfSvHuxKrCa402BYQq/BIo+9XdgPVWy1RoH0ejumnnoRoDgRUG
-	r6n6Og3w==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-	id 1leMjW-000nXf-H1; Wed, 05 May 2021 18:59:01 +0000
-Date: Wed, 5 May 2021 19:58:54 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v1 04/11] mm/memremap: add ZONE_DEVICE support for
- compound pages
-Message-ID: <20210505185854.GI1847222@casper.infradead.org>
-References: <20210325230938.30752-1-joao.m.martins@oracle.com>
- <20210325230938.30752-5-joao.m.martins@oracle.com>
- <CAPcyv4gs_rHL7FPqyQEb3yT4jrv8Wo_xA2ojKsppoBfmDocq8A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4gs_rHL7FPqyQEb3yT4jrv8Wo_xA2ojKsppoBfmDocq8A@mail.gmail.com>
-Message-ID-Hash: FB7ZDOUBE5QKMJQCWXB2VO5EQWSX2VXL
-X-Message-ID-Hash: FB7ZDOUBE5QKMJQCWXB2VO5EQWSX2VXL
-X-MailFrom: willy@infradead.org
+	by ml01.01.org (Postfix) with ESMTPS id D7609100EB334
+	for <linux-nvdimm@lists.01.org>; Wed,  5 May 2021 12:08:09 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F53D613BC;
+	Wed,  5 May 2021 19:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1620241689;
+	bh=hhpxxXD6aDeVp5ZewAeV19qTR1ebHSAlNlE2Ux5iOSM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ug/m3Htuj/0ky54AF8kZ3lyLJYozDhbNWgyIX0TCxQniyIIVskzJR85jb1a8l24+P
+	 wj3Uq3KGTcmSyyj8MjENJW/Q1S0V1k1C7Ipr+8QQ7aULrVrbnYhAQH9rFXWSlKHVc9
+	 sXdVqWFVybXYIICA46jG/2KrFmKvLuINZAazEgtE=
+Date: Wed, 5 May 2021 12:08:06 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v18 0/9] mm: introduce memfd_secret system call to
+ create "secret" memory areas
+Message-Id: <20210505120806.abfd4ee657ccabf2f221a0eb@linux-foundation.org>
+In-Reply-To: <20210303162209.8609-1-rppt@kernel.org>
+References: <20210303162209.8609-1-rppt@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Message-ID-Hash: 76LRK5IKRSMAOTPWUPM6OZXGGXWMT2TZ
+X-Message-ID-Hash: 76LRK5IKRSMAOTPWUPM6OZXGGXWMT2TZ
+X-MailFrom: akpm@linux-foundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Joao Martins <joao.m.martins@oracle.com>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Jason Gunthorpe <jgg@ziepe.ca>, Jane Chu <jane.chu@oracle.com>, Muchun Song <songmuchun@bytedance.com>, Mike Kravetz <mike.kravetz@oracle.com>, Andrew Morton <akpm@linux-foundation.org>
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah 
+ Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FB7ZDOUBE5QKMJQCWXB2VO5EQWSX2VXL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/76LRK5IKRSMAOTPWUPM6OZXGGXWMT2TZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,32 +51,37 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, May 05, 2021 at 11:44:29AM -0700, Dan Williams wrote:
-> > @@ -6285,6 +6285,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
-> >         unsigned long pfn, end_pfn = start_pfn + nr_pages;
-> >         struct pglist_data *pgdat = zone->zone_pgdat;
-> >         struct vmem_altmap *altmap = pgmap_altmap(pgmap);
-> > +       unsigned int pfn_align = pgmap_pfn_align(pgmap);
-> > +       unsigned int order_align = order_base_2(pfn_align);
-> >         unsigned long zone_idx = zone_idx(zone);
-> >         unsigned long start = jiffies;
-> >         int nid = pgdat->node_id;
-> > @@ -6302,10 +6304,30 @@ void __ref memmap_init_zone_device(struct zone *zone,
-> >                 nr_pages = end_pfn - start_pfn;
-> >         }
-> >
-> > -       for (pfn = start_pfn; pfn < end_pfn; pfn++) {
-> > +       for (pfn = start_pfn; pfn < end_pfn; pfn += pfn_align) {
-> 
-> pfn_align is in bytes and pfn is in pages... is there a "pfn_align >>=
-> PAGE_SHIFT" I missed somewhere?
+On Wed,  3 Mar 2021 18:22:00 +0200 Mike Rapoport <rppt@kernel.org> wrote:
 
-If something is measured in bytes, I like to use size_t (if it's
-in memory) and loff_t (if it's on storage).  The compiler doesn't do
-anything useful to warn you, but it's a nice indication to humans about
-what's going on.  And it removes the temptation to do 'pfn_align >>=
-PAGE_SHIFT' and suddenly take pfn_align from being measured in bytes to
-being measured in pages.
+> This is an implementation of "secret" mappings backed by a file descriptor.
+> 
+> The file descriptor backing secret memory mappings is created using a
+> dedicated memfd_secret system call The desired protection mode for the
+> memory is configured using flags parameter of the system call. The mmap()
+> of the file descriptor created with memfd_secret() will create a "secret"
+> memory mapping. The pages in that mapping will be marked as not present in
+> the direct map and will be present only in the page table of the owning mm.
+> 
+> Although normally Linux userspace mappings are protected from other users,
+> such secret mappings are useful for environments where a hostile tenant is
+> trying to trick the kernel into giving them access to other tenants
+> mappings.
+
+I continue to struggle with this and I don't recall seeing much
+enthusiasm from others.  Perhaps we're all missing the value point and
+some additional selling is needed.
+
+Am I correct in understanding that the overall direction here is to
+protect keys (and perhaps other things) from kernel bugs?  That if the
+kernel was bug-free then there would be no need for this feature?  If
+so, that's a bit sad.  But realistic I guess.
+
+Is this intended to protect keys/etc after the attacker has gained the
+ability to run arbitrary kernel-mode code?  If so, that seems
+optimistic, doesn't it?
+
+I think that a very complete description of the threats which this
+feature addresses would be helpful.  
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
