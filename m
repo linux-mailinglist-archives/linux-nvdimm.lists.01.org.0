@@ -1,264 +1,321 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D281D375A64
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 May 2021 20:48:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7043C375CB4
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 May 2021 23:17:41 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2604F100EAB64;
-	Thu,  6 May 2021 11:48:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9F603100EAB64;
+	Thu,  6 May 2021 14:17:39 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::733; helo=mail-qk1-x733.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 79E90100EAB62
-	for <linux-nvdimm@lists.01.org>; Thu,  6 May 2021 11:48:39 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 146Ie0Id095816;
-	Thu, 6 May 2021 14:48:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=Wc+kGeasxC6SCjHD/hF7VUIpoQ6yJFeE+vXN7W7+C4U=;
- b=OTVCDM3WySurOF5XXn57WUpqZhxVqXaTB8D+to5XbmiwW+4XK39ESsbHdU0eKsg4gHg5
- M9m1v87wap5KMdARxbTYfS1Vkb6dmoqLJm45GOW5vi6sAw+ClYZG/Ukudm5sDTA9NOFH
- lAGH29vry4j7aTa16opQjvhkXs8HZHCle5EwO6S4TO/+JIue4T7X3+GuQjZGl4wGF28a
- Dpn1ZEybliVEIcSb0RpYDt8VtfWlWeVPFwKY1OJGaRu12yLUqdQe6uSGPBNEsPdcxhr7
- j8DvjnPv68EtoQJ8p+h5nrehmQKUKBRYJFWRnD+iSaZEYAdVycCRCmbjkhKSILB2deGB Nw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 38cmsfa5we-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 May 2021 14:48:05 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 146IeELI097074;
-	Thu, 6 May 2021 14:48:04 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 38cmsfa5vr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 May 2021 14:48:04 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 146IcEn9017016;
-	Thu, 6 May 2021 18:48:03 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-	by ppma01dal.us.ibm.com with ESMTP id 38bee1150t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 May 2021 18:48:03 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 146Im26m21758272
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 May 2021 18:48:02 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41B3C78068;
-	Thu,  6 May 2021 18:48:02 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 55FB77805F;
-	Thu,  6 May 2021 18:47:49 +0000 (GMT)
-Received: from jarvis (unknown [9.80.192.238])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu,  6 May 2021 18:47:49 +0000 (GMT)
-Message-ID: <9e1953a1412fad06a9f7988a280d2d9a74ab0464.camel@linux.ibm.com>
-Subject: Re: [PATCH v18 0/9] mm: introduce memfd_secret system call to
- create "secret" memory areas
-From: James Bottomley <jejb@linux.ibm.com>
-To: Kees Cook <keescook@chromium.org>
-Date: Thu, 06 May 2021 11:47:47 -0700
-In-Reply-To: <202105060916.ECDEC21@keescook>
-References: <20210303162209.8609-1-rppt@kernel.org>
-	 <20210505120806.abfd4ee657ccabf2f221a0eb@linux-foundation.org>
-	 <de27bfae0f4fdcbb0bb4ad17ec5aeffcd774c44b.camel@linux.ibm.com>
-	 <202105060916.ECDEC21@keescook>
-User-Agent: Evolution 3.34.4 
+	by ml01.01.org (Postfix) with ESMTPS id DCBF6100EBBA2
+	for <linux-nvdimm@lists.01.org>; Thu,  6 May 2021 14:17:36 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id i67so6479400qkc.4
+        for <linux-nvdimm@lists.01.org>; Thu, 06 May 2021 14:17:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=t+kSeogHnXzGFUXZ9Cu2ma6rKi2lFjcXv+maXnz5Y9U=;
+        b=AxUAQ+s9gFICHhSbb++PcP11By920jROv3k3QvzpkmkkgtwWLFlkXBtOsWiN/hbqsf
+         /U7Dcb1Ntq3brNrhQb/spNXKtswXyRXXRPT1IsbtGHClWGlDSBdvnhtEiWl/4iGiZE4Y
+         jPcN95W9cLeuy9RLNGbe3I/eg/brQUWtDsvsaI6oNODDrT7BmGTMmg6KhrAm1QZ+sYoE
+         5reqY/21Lv4QmvntfFmYI8ghG+7jcNsgN6YTZbraOQGElRx2F+nOPFErKu7hLGerwVGJ
+         kX6vnrucnU2Dqbrx6Sr0mEGMrnP6/FDrA3QbC73XZCUSYTLjIS7n+beuVjqfGRyqfObx
+         1kQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=t+kSeogHnXzGFUXZ9Cu2ma6rKi2lFjcXv+maXnz5Y9U=;
+        b=DB1I8NsXAcpHG9e0ObMLsVoojOTP5kin5i51TP5uLGbigvHZGVEXr4sRzAyk1lxAmQ
+         wvtppfXAYWmCvI9Y+LLCjQ5TpOHzTmBc/Xaf55N4QS5mNl87yPRoe7fKaX86+UNdXBgp
+         sgxZYJCRGQy4fXNPLUbRCQwIGeJeqnF3qh84qJd6ic6FvGc8H49WyYkeNILpc8//J+HQ
+         QZ612f7EWUCQD3rzz5yFHkl6SdQ2pIWhvSVdg+3NgyM+yNiogyrA3hrE6dRfekmaOD5p
+         ACRODMFkOTLxru8jWenT00jg+djsZgrQ+57E7kYoWt1e2cU2Q30fLhFsNnYsxmGOGRnB
+         rhxw==
+X-Gm-Message-State: AOAM533lON7DYXrbqZ1O+94e58CWodlQN+zdJc/zcc/IDiAwQ8BPjAV2
+	VgkSnvnhJWpFXpDJw+YA1CNfidDvME7gJ6/AKLBfFQ==
+X-Google-Smtp-Source: ABdhPJybfRoM6zK5oL0IpvBctZChcutwUhV2Tr8OTd2eBlkuMyIReeQPbBltHlPNsgjCDYUgfGGhfEv90lgpaMYWrPw=
+X-Received: by 2002:a37:9f4c:: with SMTP id i73mr6067390qke.165.1620335852707;
+ Thu, 06 May 2021 14:17:32 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: g0-aeVw8NpL0zpJxkftnXh3fKMLJvIyG
-X-Proofpoint-ORIG-GUID: QDTWMRO_ZYIJvGBc0eZdMSgIeAAZWI1o
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-06_10:2021-05-06,2021-05-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 clxscore=1015
- adultscore=0 mlxscore=0 bulkscore=0 impostorscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105060127
-Message-ID-Hash: OX7ELS55JXS5NMHKSKWQ2FOXTEP5AIJM
-X-Message-ID-Hash: OX7ELS55JXS5NMHKSKWQ2FOXTEP5AIJM
-X-MailFrom: jejb@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki  <rjw@rjwysocki.net>, Rick Edgecombe" <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Sha
- keel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org
+References: <CAHj4cs9s25EqRhL6_D5Rg_7j14N5UVODJ0ps4=4n7sZ6zE5U3w@mail.gmail.com>
+ <CAPcyv4iuA=+aUOgHvYXtg8D_1RSxjrZC4cG2GXVhEZVeQCD5rA@mail.gmail.com>
+ <CAHj4cs_Zp85ePses2CxuNyoh5FAObWxOuWGAmmOeZ1KOTQ6msQ@mail.gmail.com> <MWHPR11MB1599C0D93E6535796F3E0F21F0589@MWHPR11MB1599.namprd11.prod.outlook.com>
+In-Reply-To: <MWHPR11MB1599C0D93E6535796F3E0F21F0589@MWHPR11MB1599.namprd11.prod.outlook.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 6 May 2021 14:17:37 -0700
+Message-ID: <CAPcyv4g8+JHem1dJy4Hnf0eu0LfCX59u9Zta9AEXXRSa835GyA@mail.gmail.com>
+Subject: Re: [bug report] system panic at nfit_get_smbios_id+0x6e/0xf0 [nfit]
+ during boot
+To: "Kaneda, Erik" <erik.kaneda@intel.com>
+Content-Type: multipart/mixed; boundary="000000000000eb2a3605c1afd6d4"
+Message-ID-Hash: PE2RSZCSS6FJXQ6SHL6ISYNUEEPKSJL2
+X-Message-ID-Hash: PE2RSZCSS6FJXQ6SHL6ISYNUEEPKSJL2
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Yi Zhang <yi.zhang@redhat.com>, "Moore, Robert" <robert.moore@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, nvdimm@lists.linux.dev
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jejb@linux.ibm.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OX7ELS55JXS5NMHKSKWQ2FOXTEP5AIJM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PE2RSZCSS6FJXQ6SHL6ISYNUEEPKSJL2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+
+--000000000000eb2a3605c1afd6d4
+Content-Type: text/plain; charset="UTF-8"
+
+On Thu, May 6, 2021 at 10:28 AM Kaneda, Erik <erik.kaneda@intel.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Yi Zhang <yi.zhang@redhat.com>
+> > Sent: Wednesday, May 5, 2021 8:05 PM
+> > To: Williams, Dan J <dan.j.williams@intel.com>; Moore, Robert
+> > <robert.moore@intel.com>
+> > Cc: linux-nvdimm <linux-nvdimm@lists.01.org>; Kaneda, Erik
+> > <erik.kaneda@intel.com>; Wysocki, Rafael J <rafael.j.wysocki@intel.com>
+> > Subject: Re: [bug report] system panic at nfit_get_smbios_id+0x6e/0xf0
+> > [nfit] during boot
+> >
+> > On Sat, May 1, 2021 at 2:05 PM Dan Williams <dan.j.williams@intel.com>
+> > wrote:
+> > >
+> > > On Fri, Apr 30, 2021 at 7:28 PM Yi Zhang <yi.zhang@redhat.com> wrote:
+> > > >
+> > > > Hi
+> > > >
+> > > > With the latest Linux tree, my DCPMM server boot failed with the
+> > > > bellow panic log, pls help check it, let me know if you need any test
+> > > > for it.
+> > >
+> > > So v5.12 is ok but v5.12+ is not?
+> > >
+> > > Might you be able to bisect?
+> >
+> > Hi Dan
+> > This issue was introduced with this patch, let me know if you need more info.
+> >
+> > commit cf16b05c607bd716a0a5726dc8d577a89fdc1777
+> > Author: Bob Moore <robert.moore@intel.com>
+> > Date:   Tue Apr 6 14:30:15 2021 -0700
+> >
+> >     ACPICA: ACPI 6.4: NFIT: add Location Cookie field
+> >
+> >     Also, update struct size to reflect these changes in nfit core driver.
+> >
+> >     ACPICA commit af60199a9a1de9e6844929fd4cc22334522ed195
+> >
+> >     Link: https://github.com/acpica/acpica/commit/af60199a
+> >     Cc: Dan Williams <dan.j.williams@intel.com>
+> >     Signed-off-by: Bob Moore <robert.moore@intel.com>
+> >     Signed-off-by: Erik Kaneda <erik.kaneda@intel.com>
+> >     Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+>
+> It's likely that this change forced the nfit driver's code to parse the ACPI table so that it assumes that the location cookie field is always enabled and the NFIT was parsed incorrectly. Does the NFIT table on this platform contain a valid cookie field?
+>
+
+This was my fault. When I saw the size change fly by, I should have
+remembered to go update all the places that do "sizeof(struct
+acpi_nfit_system_address)".
+
+Yi Zhang, can you give the attached patch a try:
+
+--000000000000eb2a3605c1afd6d4
+Content-Type: text/x-patch; charset="US-ASCII"; name="nfit-fix.patch"
+Content-Disposition: attachment; filename="nfit-fix.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kode4dv30>
+X-Attachment-Id: f_kode4dv30
+
+QUNQSTogTkZJVDogRml4IHN1cHBvcnQgZm9yIHZhcmlhYmxlICdTUEEnIHN0cnVjdHVyZSBzaXpl
+CgpGcm9tOiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KCkFDUEkgNi40
+IGludHJvZHVjZWQgdGhlICJTcGFMb2NhdGlvbkNvb2tpZSIgdG8gdGhlIE5GSVQgIlN5c3RlbSBQ
+aHlzaWNhbApBZGRyZXNzIChTUEEpIFJhbmdlIFN0cnVjdHVyZSIuIFRoZSBwcmVzZW5jZSBvZiB0
+aGF0IG5ldyBmaWVsZCBpcwppbmRpY2F0ZWQgYnkgdGhlIEFDUElfTkZJVF9MT0NBVElPTl9DT09L
+SUVfVkFMSUQgZmxhZy4gUHJlLUFDUEktNi40CmZpcm13YXJlIGltcGxlbWVudGF0aW9ucyBvbWl0
+IHRoZSBmbGFnIGFuZCBtYWludGFpbiB0aGUgb3JpZ2luYWwgc2l6ZSBvZgp0aGUgc3RydWN0dXJl
+LgoKVXBkYXRlIHRoZSBpbXBsZW1lbnRhdGlvbiB0byBjaGVjayB0aGF0IGZsYWcgdG8gZGV0ZXJt
+aW5lIHRoZSBzaXplCnJhdGhlciB0aGFuIHRoZSBBQ1BJIDYuNCBjb21wbGlhbnQgZGVmaW5pdGlv
+biBvZiAnc3RydWN0CmFjcGlfbmZpdF9zeXN0ZW1fYWRkcmVzcycgZnJvbSB0aGUgTGludXggQUNQ
+SUNBIGRlZmluaXRpb25zLgoKVXBkYXRlIHRoZSB0ZXN0IGluZnJhc3RydWN0dXJlIGZvciB0aGUg
+bmV3IGV4cGVjdGF0aW9ucyBhcyB3ZWxsLCBpLmUuCmNvbnRpbnVlIHRvIGVtdWxhdGUgdGhlIEFD
+UEkgNi4zIGRlZmluaXRpb24gb2YgdGhhdCBzdHJ1Y3R1cmUuCgpXaXRob3V0IHRoaXMgZml4IHRo
+ZSBrZXJuZWwgZmFpbHMgdG8gdmFsaWRhdGUgJ1NQQScgc3RydWN0dXJlcyBhbmQgdGhpcwpsZWFk
+cyB0byBhIGNyYXNoIGluIG5maXRfZ2V0X3NtYmlvc19pZCgpIHNpbmNlIHRoYXQgcm91dGluZSBh
+c3N1bWVzIHRoYXQKU1BBcyBhcmUgdmFsaWQgaWYgaXQgZmluZHMgdmFsaWQgU01CSU9TIHRhYmxl
+cy4KCiAgICBCVUc6IHVuYWJsZSB0byBoYW5kbGUgcGFnZSBmYXVsdCBmb3IgYWRkcmVzczogZmZm
+ZmZmZmZmZmZmZmZhOAogICAgWy4uXQogICAgQ2FsbCBUcmFjZToKICAgICBza3hfZ2V0X252ZGlt
+bV9pbmZvKzB4NTYvMHgxMzAgW3NreF9lZGFjXQogICAgIHNreF9nZXRfZGltbV9jb25maWcrMHgx
+ZjUvMHgyMTMgW3NreF9lZGFjXQogICAgIHNreF9yZWdpc3Rlcl9tY2krMHgxMzIvMHgxYzAgW3Nr
+eF9lZGFjXQoKUmVwb3J0ZWQtYnk6IFlpIFpoYW5nIDx5aS56aGFuZ0ByZWRoYXQuY29tPgpTaWdu
+ZWQtb2ZmLWJ5OiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KLS0tCiBk
+cml2ZXJzL2FjcGkvbmZpdC9jb3JlLmMgICAgICAgICB8ICAgMTcgKysrKysrKysrKystLS0tCiB0
+b29scy90ZXN0aW5nL252ZGltbS90ZXN0L25maXQuYyB8ICAgNDIgKysrKysrKysrKysrKysrKysr
+KysrKystLS0tLS0tLS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgMzcgaW5zZXJ0aW9ucygrKSwg
+MjIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL25maXQvY29yZS5jIGIv
+ZHJpdmVycy9hY3BpL25maXQvY29yZS5jCmluZGV4IDk1OGFhYWM4NjllOC4uYmZlY2I3OWU4Yzgy
+IDEwMDY0NAotLS0gYS9kcml2ZXJzL2FjcGkvbmZpdC9jb3JlLmMKKysrIGIvZHJpdmVycy9hY3Bp
+L25maXQvY29yZS5jCkBAIC02ODYsMjkgKzY4NiwzNiBAQCBpbnQgbmZpdF9zcGFfdHlwZShzdHJ1
+Y3QgYWNwaV9uZml0X3N5c3RlbV9hZGRyZXNzICpzcGEpCiAJcmV0dXJuIC0xOwogfQogCi1zdGF0
+aWMgYm9vbCBhZGRfc3BhKHN0cnVjdCBhY3BpX25maXRfZGVzYyAqYWNwaV9kZXNjLAorc3RhdGlj
+IHNpemVfdCBzaXplb2Zfc3BhKHN0cnVjdCBhY3BpX25maXRfc3lzdGVtX2FkZHJlc3MgKnNwYSkK
+K3sKKwlpZiAoc3BhLT5mbGFncyAmIEFDUElfTkZJVF9MT0NBVElPTl9DT09LSUVfVkFMSUQpCisJ
+CXJldHVybiBzaXplb2YoKnNwYSk7CisJcmV0dXJuIHNpemVvZigqc3BhKSAtIDg7Cit9CisKK3N0
+YXRpYyBib29sIG5vaW5saW5lIGFkZF9zcGEoc3RydWN0IGFjcGlfbmZpdF9kZXNjICphY3BpX2Rl
+c2MsCiAJCXN0cnVjdCBuZml0X3RhYmxlX3ByZXYgKnByZXYsCiAJCXN0cnVjdCBhY3BpX25maXRf
+c3lzdGVtX2FkZHJlc3MgKnNwYSkKIHsKIAlzdHJ1Y3QgZGV2aWNlICpkZXYgPSBhY3BpX2Rlc2Mt
+PmRldjsKIAlzdHJ1Y3QgbmZpdF9zcGEgKm5maXRfc3BhOwogCi0JaWYgKHNwYS0+aGVhZGVyLmxl
+bmd0aCAhPSBzaXplb2YoKnNwYSkpCisJaWYgKHNwYS0+aGVhZGVyLmxlbmd0aCAhPSBzaXplb2Zf
+c3BhKHNwYSkpCiAJCXJldHVybiBmYWxzZTsKIAogCWxpc3RfZm9yX2VhY2hfZW50cnkobmZpdF9z
+cGEsICZwcmV2LT5zcGFzLCBsaXN0KSB7Ci0JCWlmIChtZW1jbXAobmZpdF9zcGEtPnNwYSwgc3Bh
+LCBzaXplb2YoKnNwYSkpID09IDApIHsKKwkJaWYgKG1lbWNtcChuZml0X3NwYS0+c3BhLCBzcGEs
+IHNpemVvZl9zcGEoc3BhKSkgPT0gMCkgewogCQkJbGlzdF9tb3ZlX3RhaWwoJm5maXRfc3BhLT5s
+aXN0LCAmYWNwaV9kZXNjLT5zcGFzKTsKIAkJCXJldHVybiB0cnVlOwogCQl9CiAJfQogCi0JbmZp
+dF9zcGEgPSBkZXZtX2t6YWxsb2MoZGV2LCBzaXplb2YoKm5maXRfc3BhKSArIHNpemVvZigqc3Bh
+KSwKKwluZml0X3NwYSA9IGRldm1fa3phbGxvYyhkZXYsIHNpemVvZigqbmZpdF9zcGEpICsgc2l6
+ZW9mX3NwYShzcGEpLAogCQkJR0ZQX0tFUk5FTCk7CiAJaWYgKCFuZml0X3NwYSkKIAkJcmV0dXJu
+IGZhbHNlOwogCUlOSVRfTElTVF9IRUFEKCZuZml0X3NwYS0+bGlzdCk7Ci0JbWVtY3B5KG5maXRf
+c3BhLT5zcGEsIHNwYSwgc2l6ZW9mKCpzcGEpKTsKKwltZW1jcHkobmZpdF9zcGEtPnNwYSwgc3Bh
+LCBzaXplb2Zfc3BhKHNwYSkpOwogCWxpc3RfYWRkX3RhaWwoJm5maXRfc3BhLT5saXN0LCAmYWNw
+aV9kZXNjLT5zcGFzKTsKIAlkZXZfZGJnKGRldiwgInNwYSBpbmRleDogJWQgdHlwZTogJXNcbiIs
+CiAJCQlzcGEtPnJhbmdlX2luZGV4LApkaWZmIC0tZ2l0IGEvdG9vbHMvdGVzdGluZy9udmRpbW0v
+dGVzdC9uZml0LmMgYi90b29scy90ZXN0aW5nL252ZGltbS90ZXN0L25maXQuYwppbmRleCA5YjE4
+NWJmODJkYTguLjU0ZjM2N2NiYWRhZSAxMDA2NDQKLS0tIGEvdG9vbHMvdGVzdGluZy9udmRpbW0v
+dGVzdC9uZml0LmMKKysrIGIvdG9vbHMvdGVzdGluZy9udmRpbW0vdGVzdC9uZml0LmMKQEAgLTE4
+NzEsOSArMTg3MSwxNiBAQCBzdGF0aWMgdm9pZCBzbWFydF9pbml0KHN0cnVjdCBuZml0X3Rlc3Qg
+KnQpCiAJfQogfQogCitzdGF0aWMgc2l6ZV90IHNpemVvZl9zcGEoc3RydWN0IGFjcGlfbmZpdF9z
+eXN0ZW1fYWRkcmVzcyAqc3BhKQoreworCS8qIHVudGlsIHNwYSBsb2NhdGlvbiBjb29raWUgc3Vw
+cG9ydCBpcyBhZGRlZC4uLiAqLworCXJldHVybiBzaXplb2YoKnNwYSkgLSA4OworfQorCiBzdGF0
+aWMgaW50IG5maXRfdGVzdDBfYWxsb2Moc3RydWN0IG5maXRfdGVzdCAqdCkKIHsKLQlzaXplX3Qg
+bmZpdF9zaXplID0gc2l6ZW9mKHN0cnVjdCBhY3BpX25maXRfc3lzdGVtX2FkZHJlc3MpICogTlVN
+X1NQQQorCXN0cnVjdCBhY3BpX25maXRfc3lzdGVtX2FkZHJlc3MgKnNwYSA9IE5VTEw7CisJc2l6
+ZV90IG5maXRfc2l6ZSA9IHNpemVvZl9zcGEoc3BhKSAqIE5VTV9TUEEKIAkJCSsgc2l6ZW9mKHN0
+cnVjdCBhY3BpX25maXRfbWVtb3J5X21hcCkgKiBOVU1fTUVNCiAJCQkrIHNpemVvZihzdHJ1Y3Qg
+YWNwaV9uZml0X2NvbnRyb2xfcmVnaW9uKSAqIE5VTV9EQ1IKIAkJCSsgb2Zmc2V0b2Yoc3RydWN0
+IGFjcGlfbmZpdF9jb250cm9sX3JlZ2lvbiwKQEAgLTE5MzcsNyArMTk0NCw4IEBAIHN0YXRpYyBp
+bnQgbmZpdF90ZXN0MF9hbGxvYyhzdHJ1Y3QgbmZpdF90ZXN0ICp0KQogCiBzdGF0aWMgaW50IG5m
+aXRfdGVzdDFfYWxsb2Moc3RydWN0IG5maXRfdGVzdCAqdCkKIHsKLQlzaXplX3QgbmZpdF9zaXpl
+ID0gc2l6ZW9mKHN0cnVjdCBhY3BpX25maXRfc3lzdGVtX2FkZHJlc3MpICogMgorCXN0cnVjdCBh
+Y3BpX25maXRfc3lzdGVtX2FkZHJlc3MgKnNwYSA9IE5VTEw7CisJc2l6ZV90IG5maXRfc2l6ZSA9
+IHNpemVvZl9zcGEoc3BhKSAqIDIKIAkJKyBzaXplb2Yoc3RydWN0IGFjcGlfbmZpdF9tZW1vcnlf
+bWFwKSAqIDIKIAkJKyBvZmZzZXRvZihzdHJ1Y3QgYWNwaV9uZml0X2NvbnRyb2xfcmVnaW9uLCB3
+aW5kb3dfc2l6ZSkgKiAyOwogCWludCBpOwpAQCAtMjAwMCw3ICsyMDA4LDcgQEAgc3RhdGljIHZv
+aWQgbmZpdF90ZXN0MF9zZXR1cChzdHJ1Y3QgbmZpdF90ZXN0ICp0KQogCSAqLwogCXNwYSA9IG5m
+aXRfYnVmOwogCXNwYS0+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9TWVNURU1fQUREUkVT
+UzsKLQlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2YoKnNwYSk7CisJc3BhLT5oZWFkZXIubGVu
+Z3RoID0gc2l6ZW9mX3NwYShzcGEpOwogCW1lbWNweShzcGEtPnJhbmdlX2d1aWQsIHRvX25maXRf
+dXVpZChORklUX1NQQV9QTSksIDE2KTsKIAlzcGEtPnJhbmdlX2luZGV4ID0gMCsxOwogCXNwYS0+
+YWRkcmVzcyA9IHQtPnNwYV9zZXRfZG1hWzBdOwpAQCAtMjAxNCw3ICsyMDIyLDcgQEAgc3RhdGlj
+IHZvaWQgbmZpdF90ZXN0MF9zZXR1cChzdHJ1Y3QgbmZpdF90ZXN0ICp0KQogCSAqLwogCXNwYSA9
+IG5maXRfYnVmICsgb2Zmc2V0OwogCXNwYS0+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9T
+WVNURU1fQUREUkVTUzsKLQlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2YoKnNwYSk7CisJc3Bh
+LT5oZWFkZXIubGVuZ3RoID0gc2l6ZW9mX3NwYShzcGEpOwogCW1lbWNweShzcGEtPnJhbmdlX2d1
+aWQsIHRvX25maXRfdXVpZChORklUX1NQQV9QTSksIDE2KTsKIAlzcGEtPnJhbmdlX2luZGV4ID0g
+MSsxOwogCXNwYS0+YWRkcmVzcyA9IHQtPnNwYV9zZXRfZG1hWzFdOwpAQCAtMjAyNCw3ICsyMDMy
+LDcgQEAgc3RhdGljIHZvaWQgbmZpdF90ZXN0MF9zZXR1cChzdHJ1Y3QgbmZpdF90ZXN0ICp0KQog
+CS8qIHNwYTIgKGRjcjApIGRpbW0wICovCiAJc3BhID0gbmZpdF9idWYgKyBvZmZzZXQ7CiAJc3Bh
+LT5oZWFkZXIudHlwZSA9IEFDUElfTkZJVF9UWVBFX1NZU1RFTV9BRERSRVNTOwotCXNwYS0+aGVh
+ZGVyLmxlbmd0aCA9IHNpemVvZigqc3BhKTsKKwlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2Zf
+c3BhKHNwYSk7CiAJbWVtY3B5KHNwYS0+cmFuZ2VfZ3VpZCwgdG9fbmZpdF91dWlkKE5GSVRfU1BB
+X0RDUiksIDE2KTsKIAlzcGEtPnJhbmdlX2luZGV4ID0gMisxOwogCXNwYS0+YWRkcmVzcyA9IHQt
+PmRjcl9kbWFbMF07CkBAIC0yMDM0LDcgKzIwNDIsNyBAQCBzdGF0aWMgdm9pZCBuZml0X3Rlc3Qw
+X3NldHVwKHN0cnVjdCBuZml0X3Rlc3QgKnQpCiAJLyogc3BhMyAoZGNyMSkgZGltbTEgKi8KIAlz
+cGEgPSBuZml0X2J1ZiArIG9mZnNldDsKIAlzcGEtPmhlYWRlci50eXBlID0gQUNQSV9ORklUX1RZ
+UEVfU1lTVEVNX0FERFJFU1M7Ci0Jc3BhLT5oZWFkZXIubGVuZ3RoID0gc2l6ZW9mKCpzcGEpOwor
+CXNwYS0+aGVhZGVyLmxlbmd0aCA9IHNpemVvZl9zcGEoc3BhKTsKIAltZW1jcHkoc3BhLT5yYW5n
+ZV9ndWlkLCB0b19uZml0X3V1aWQoTkZJVF9TUEFfRENSKSwgMTYpOwogCXNwYS0+cmFuZ2VfaW5k
+ZXggPSAzKzE7CiAJc3BhLT5hZGRyZXNzID0gdC0+ZGNyX2RtYVsxXTsKQEAgLTIwNDQsNyArMjA1
+Miw3IEBAIHN0YXRpYyB2b2lkIG5maXRfdGVzdDBfc2V0dXAoc3RydWN0IG5maXRfdGVzdCAqdCkK
+IAkvKiBzcGE0IChkY3IyKSBkaW1tMiAqLwogCXNwYSA9IG5maXRfYnVmICsgb2Zmc2V0OwogCXNw
+YS0+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9TWVNURU1fQUREUkVTUzsKLQlzcGEtPmhl
+YWRlci5sZW5ndGggPSBzaXplb2YoKnNwYSk7CisJc3BhLT5oZWFkZXIubGVuZ3RoID0gc2l6ZW9m
+X3NwYShzcGEpOwogCW1lbWNweShzcGEtPnJhbmdlX2d1aWQsIHRvX25maXRfdXVpZChORklUX1NQ
+QV9EQ1IpLCAxNik7CiAJc3BhLT5yYW5nZV9pbmRleCA9IDQrMTsKIAlzcGEtPmFkZHJlc3MgPSB0
+LT5kY3JfZG1hWzJdOwpAQCAtMjA1NCw3ICsyMDYyLDcgQEAgc3RhdGljIHZvaWQgbmZpdF90ZXN0
+MF9zZXR1cChzdHJ1Y3QgbmZpdF90ZXN0ICp0KQogCS8qIHNwYTUgKGRjcjMpIGRpbW0zICovCiAJ
+c3BhID0gbmZpdF9idWYgKyBvZmZzZXQ7CiAJc3BhLT5oZWFkZXIudHlwZSA9IEFDUElfTkZJVF9U
+WVBFX1NZU1RFTV9BRERSRVNTOwotCXNwYS0+aGVhZGVyLmxlbmd0aCA9IHNpemVvZigqc3BhKTsK
+KwlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2Zfc3BhKHNwYSk7CiAJbWVtY3B5KHNwYS0+cmFu
+Z2VfZ3VpZCwgdG9fbmZpdF91dWlkKE5GSVRfU1BBX0RDUiksIDE2KTsKIAlzcGEtPnJhbmdlX2lu
+ZGV4ID0gNSsxOwogCXNwYS0+YWRkcmVzcyA9IHQtPmRjcl9kbWFbM107CkBAIC0yMDY0LDcgKzIw
+NzIsNyBAQCBzdGF0aWMgdm9pZCBuZml0X3Rlc3QwX3NldHVwKHN0cnVjdCBuZml0X3Rlc3QgKnQp
+CiAJLyogc3BhNiAoYmR3IGZvciBkY3IwKSBkaW1tMCAqLwogCXNwYSA9IG5maXRfYnVmICsgb2Zm
+c2V0OwogCXNwYS0+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9TWVNURU1fQUREUkVTUzsK
+LQlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2YoKnNwYSk7CisJc3BhLT5oZWFkZXIubGVuZ3Ro
+ID0gc2l6ZW9mX3NwYShzcGEpOwogCW1lbWNweShzcGEtPnJhbmdlX2d1aWQsIHRvX25maXRfdXVp
+ZChORklUX1NQQV9CRFcpLCAxNik7CiAJc3BhLT5yYW5nZV9pbmRleCA9IDYrMTsKIAlzcGEtPmFk
+ZHJlc3MgPSB0LT5kaW1tX2RtYVswXTsKQEAgLTIwNzQsNyArMjA4Miw3IEBAIHN0YXRpYyB2b2lk
+IG5maXRfdGVzdDBfc2V0dXAoc3RydWN0IG5maXRfdGVzdCAqdCkKIAkvKiBzcGE3IChiZHcgZm9y
+IGRjcjEpIGRpbW0xICovCiAJc3BhID0gbmZpdF9idWYgKyBvZmZzZXQ7CiAJc3BhLT5oZWFkZXIu
+dHlwZSA9IEFDUElfTkZJVF9UWVBFX1NZU1RFTV9BRERSRVNTOwotCXNwYS0+aGVhZGVyLmxlbmd0
+aCA9IHNpemVvZigqc3BhKTsKKwlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2Zfc3BhKHNwYSk7
+CiAJbWVtY3B5KHNwYS0+cmFuZ2VfZ3VpZCwgdG9fbmZpdF91dWlkKE5GSVRfU1BBX0JEVyksIDE2
+KTsKIAlzcGEtPnJhbmdlX2luZGV4ID0gNysxOwogCXNwYS0+YWRkcmVzcyA9IHQtPmRpbW1fZG1h
+WzFdOwpAQCAtMjA4NCw3ICsyMDkyLDcgQEAgc3RhdGljIHZvaWQgbmZpdF90ZXN0MF9zZXR1cChz
+dHJ1Y3QgbmZpdF90ZXN0ICp0KQogCS8qIHNwYTggKGJkdyBmb3IgZGNyMikgZGltbTIgKi8KIAlz
+cGEgPSBuZml0X2J1ZiArIG9mZnNldDsKIAlzcGEtPmhlYWRlci50eXBlID0gQUNQSV9ORklUX1RZ
+UEVfU1lTVEVNX0FERFJFU1M7Ci0Jc3BhLT5oZWFkZXIubGVuZ3RoID0gc2l6ZW9mKCpzcGEpOwor
+CXNwYS0+aGVhZGVyLmxlbmd0aCA9IHNpemVvZl9zcGEoc3BhKTsKIAltZW1jcHkoc3BhLT5yYW5n
+ZV9ndWlkLCB0b19uZml0X3V1aWQoTkZJVF9TUEFfQkRXKSwgMTYpOwogCXNwYS0+cmFuZ2VfaW5k
+ZXggPSA4KzE7CiAJc3BhLT5hZGRyZXNzID0gdC0+ZGltbV9kbWFbMl07CkBAIC0yMDk0LDcgKzIx
+MDIsNyBAQCBzdGF0aWMgdm9pZCBuZml0X3Rlc3QwX3NldHVwKHN0cnVjdCBuZml0X3Rlc3QgKnQp
+CiAJLyogc3BhOSAoYmR3IGZvciBkY3IzKSBkaW1tMyAqLwogCXNwYSA9IG5maXRfYnVmICsgb2Zm
+c2V0OwogCXNwYS0+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9TWVNURU1fQUREUkVTUzsK
+LQlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2YoKnNwYSk7CisJc3BhLT5oZWFkZXIubGVuZ3Ro
+ID0gc2l6ZW9mX3NwYShzcGEpOwogCW1lbWNweShzcGEtPnJhbmdlX2d1aWQsIHRvX25maXRfdXVp
+ZChORklUX1NQQV9CRFcpLCAxNik7CiAJc3BhLT5yYW5nZV9pbmRleCA9IDkrMTsKIAlzcGEtPmFk
+ZHJlc3MgPSB0LT5kaW1tX2RtYVszXTsKQEAgLTI1ODEsNyArMjU4OSw3IEBAIHN0YXRpYyB2b2lk
+IG5maXRfdGVzdDBfc2V0dXAoc3RydWN0IG5maXRfdGVzdCAqdCkKIAkJLyogc3BhMTAgKGRjcjQp
+IGRpbW00ICovCiAJCXNwYSA9IG5maXRfYnVmICsgb2Zmc2V0OwogCQlzcGEtPmhlYWRlci50eXBl
+ID0gQUNQSV9ORklUX1RZUEVfU1lTVEVNX0FERFJFU1M7Ci0JCXNwYS0+aGVhZGVyLmxlbmd0aCA9
+IHNpemVvZigqc3BhKTsKKwkJc3BhLT5oZWFkZXIubGVuZ3RoID0gc2l6ZW9mX3NwYShzcGEpOwog
+CQltZW1jcHkoc3BhLT5yYW5nZV9ndWlkLCB0b19uZml0X3V1aWQoTkZJVF9TUEFfRENSKSwgMTYp
+OwogCQlzcGEtPnJhbmdlX2luZGV4ID0gMTArMTsKIAkJc3BhLT5hZGRyZXNzID0gdC0+ZGNyX2Rt
+YVs0XTsKQEAgLTI1OTUsNyArMjYwMyw3IEBAIHN0YXRpYyB2b2lkIG5maXRfdGVzdDBfc2V0dXAo
+c3RydWN0IG5maXRfdGVzdCAqdCkKIAkJICovCiAJCXNwYSA9IG5maXRfYnVmICsgb2Zmc2V0Owog
+CQlzcGEtPmhlYWRlci50eXBlID0gQUNQSV9ORklUX1RZUEVfU1lTVEVNX0FERFJFU1M7Ci0JCXNw
+YS0+aGVhZGVyLmxlbmd0aCA9IHNpemVvZigqc3BhKTsKKwkJc3BhLT5oZWFkZXIubGVuZ3RoID0g
+c2l6ZW9mX3NwYShzcGEpOwogCQltZW1jcHkoc3BhLT5yYW5nZV9ndWlkLCB0b19uZml0X3V1aWQo
+TkZJVF9TUEFfUE0pLCAxNik7CiAJCXNwYS0+cmFuZ2VfaW5kZXggPSAxMSsxOwogCQlzcGEtPmFk
+ZHJlc3MgPSB0LT5zcGFfc2V0X2RtYVsyXTsKQEAgLTI2MDUsNyArMjYxMyw3IEBAIHN0YXRpYyB2
+b2lkIG5maXRfdGVzdDBfc2V0dXAoc3RydWN0IG5maXRfdGVzdCAqdCkKIAkJLyogc3BhMTIgKGJk
+dyBmb3IgZGNyNCkgZGltbTQgKi8KIAkJc3BhID0gbmZpdF9idWYgKyBvZmZzZXQ7CiAJCXNwYS0+
+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9TWVNURU1fQUREUkVTUzsKLQkJc3BhLT5oZWFk
+ZXIubGVuZ3RoID0gc2l6ZW9mKCpzcGEpOworCQlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2Zf
+c3BhKHNwYSk7CiAJCW1lbWNweShzcGEtPnJhbmdlX2d1aWQsIHRvX25maXRfdXVpZChORklUX1NQ
+QV9CRFcpLCAxNik7CiAJCXNwYS0+cmFuZ2VfaW5kZXggPSAxMisxOwogCQlzcGEtPmFkZHJlc3Mg
+PSB0LT5kaW1tX2RtYVs0XTsKQEAgLTI3MzksNyArMjc0Nyw3IEBAIHN0YXRpYyB2b2lkIG5maXRf
+dGVzdDFfc2V0dXAoc3RydWN0IG5maXRfdGVzdCAqdCkKIAkvKiBzcGEwIChmbGF0IHJhbmdlIHdp
+dGggbm8gYmR3IGFsaWFzaW5nKSAqLwogCXNwYSA9IG5maXRfYnVmICsgb2Zmc2V0OwogCXNwYS0+
+aGVhZGVyLnR5cGUgPSBBQ1BJX05GSVRfVFlQRV9TWVNURU1fQUREUkVTUzsKLQlzcGEtPmhlYWRl
+ci5sZW5ndGggPSBzaXplb2YoKnNwYSk7CisJc3BhLT5oZWFkZXIubGVuZ3RoID0gc2l6ZW9mX3Nw
+YShzcGEpOwogCW1lbWNweShzcGEtPnJhbmdlX2d1aWQsIHRvX25maXRfdXVpZChORklUX1NQQV9Q
+TSksIDE2KTsKIAlzcGEtPnJhbmdlX2luZGV4ID0gMCsxOwogCXNwYS0+YWRkcmVzcyA9IHQtPnNw
+YV9zZXRfZG1hWzBdOwpAQCAtMjc0OSw3ICsyNzU3LDcgQEAgc3RhdGljIHZvaWQgbmZpdF90ZXN0
+MV9zZXR1cChzdHJ1Y3QgbmZpdF90ZXN0ICp0KQogCS8qIHZpcnR1YWwgY2QgcmVnaW9uICovCiAJ
+c3BhID0gbmZpdF9idWYgKyBvZmZzZXQ7CiAJc3BhLT5oZWFkZXIudHlwZSA9IEFDUElfTkZJVF9U
+WVBFX1NZU1RFTV9BRERSRVNTOwotCXNwYS0+aGVhZGVyLmxlbmd0aCA9IHNpemVvZigqc3BhKTsK
+KwlzcGEtPmhlYWRlci5sZW5ndGggPSBzaXplb2Zfc3BhKHNwYSk7CiAJbWVtY3B5KHNwYS0+cmFu
+Z2VfZ3VpZCwgdG9fbmZpdF91dWlkKE5GSVRfU1BBX1ZDRCksIDE2KTsKIAlzcGEtPnJhbmdlX2lu
+ZGV4ID0gMDsKIAlzcGEtPmFkZHJlc3MgPSB0LT5zcGFfc2V0X2RtYVsxXTsK
+--000000000000eb2a3605c1afd6d4
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-
-On Thu, 2021-05-06 at 10:33 -0700, Kees Cook wrote:
-> On Thu, May 06, 2021 at 08:26:41AM -0700, James Bottomley wrote:
-[...]
-> >    1. Memory safety for user space code.  Once the secret memory is
-> >       allocated, the user can't accidentally pass it into the
-> > kernel to be
-> >       transmitted somewhere.
-> 
-> In my first read through, I didn't see how cross-userspace operations
-> were blocked, but it looks like it's the various gup paths where
-> {vma,page}_is_secretmem() is called. (Thank you for the self-test!
-> That helped me follow along.) I think this access pattern should be
-> more clearly spelled out in the cover later (i.e. "This will block
-> things like process_vm_readv()").
-
-I'm sure Mike can add it.
-
-> I like the results (inaccessible outside the process), though I
-> suspect this will absolutely melt gdb or other ptracers that try to
-> see into the memory.
-
-I wouldn't say "melt" ... one of the Demos we did a FOSDEM was using
-gdb/ptrace to extract secrets and then showing it couldn't be done if
-secret memory was used.  You can still trace the execution of the
-process (and thus you could extract the secret as it's processed in
-registers, for instance) but you just can't extract the actual secret
-memory contents ... that's a fairly limited and well defined
-restriction.
-
->  Don't get me wrong, I'm a big fan of such concepts[0], but I see
-> nothing in the cover letter about it (e.g. the effects on "ptrace" or
-> "gdb" are not mentioned.)
-
-Sure, but we thought "secret" covered it.  It wouldn't be secret if
-gdb/ptrace from another process could see it.
-
-> There is also a risk here of this becoming a forensics nightmare:
-> userspace malware will just download their entire executable region
-> into a memfd_secret region. Can we, perhaps, disallow mmap/mprotect
-> with PROT_EXEC when vma_is_secretmem()? The OpenSSL example, for
-> example, certainly doesn't need PROT_EXEC.
-
-I think disallowing PROT_EXEC is a great enhancement.
-
-> What's happening with O_CLOEXEC in this code? I don't see that
-> mentioned in the cover letter either. Why is it disallowed? That
-> seems a strange limitation for something trying to avoid leaking
-> secrets into other processes.
-
-I actually thought we forced it, so I'll let Mike address this.  I
-think allowing it is great, so the secret memory isn't inherited by
-children, but I can see use cases where a process would want its child
-to inherit the secrets.
-
-> And just so I'm sure I understand: if a vma_is_secretmem() check is
-> missed in future mm code evolutions, it seems there is nothing to
-> block the kernel from accessing the contents directly through
-> copy_from_user() via the userspace virtual address, yes?
-
-Technically no because copy_from_user goes via the userspace page
-tables which do have access.
-
-> >    2. It also serves as a basis for context protection of virtual
-> >       machines, but other groups are working on this aspect, and it
-> > is
-> >       broadly similar to the secret exfiltration from the kernel
-> > problem.
-> > 
-> > > Is this intended to protect keys/etc after the attacker has
-> > > gained the ability to run arbitrary kernel-mode code?  If so,
-> > > that seems optimistic, doesn't it?
-> > 
-> > Not exactly: there are many types of kernel attack, but mostly the
-> > attacker either manages to effect a privilege escalation to root or
-> > gets the ability to run a ROP gadget.  The object of this code is
-> > to be completely secure against root trying to extract the secret
-> > (some what similar to the lockdown idea), thus defeating privilege
-> > escalation and to provide "sufficient" protection against ROP
-> > gadgets.
-> > 
-> > The ROP gadget thing needs more explanation: the usual defeatist
-> > approach is to say that once the attacker gains the stack, they can
-> > do anything because they can find enough ROP gadgets to be turing
-> > complete.  However, in the real world, given the kernel stack size
-> > limit and address space layout randomization making finding gadgets
-> > really hard, usually the attacker gets one or at most two gadgets
-> > to string together.  Not having any in-kernel primitive for
-> > accessing secret memory means the one gadget ROP attack can't
-> > work.  Since the only way to access secret memory is to reconstruct
-> > the missing mapping entry, the attacker has to recover the physical
-> > page and insert a PTE pointing to it in the kernel and then
-> > retrieve the contents.  That takes at least three gadgets which is
-> > a level of difficulty beyond most standard attacks.
-> 
-> As for protecting against exploited kernel flaws I also see benefits
-> here. While the kernel is already blocked from directly reading
-> contents from userspace virtual addresses (i.e. SMAP), this feature
-> does help by blocking the kernel from directly reading contents via
-> the direct map alias. (i.e. this feature is a specialized version of
-> XPFO[1], which tried to do this for ALL user memory.) So in that
-> regard, yes, this has value in the sense that to perform
-> exfiltration, an attacker would need a significant level of control
-> over kernel execution or over page table contents.
-> 
-> Sufficient control over PTE allocation and positioning is possible
-> without kernel execution control[3], and "only" having an arbitrary
-> write primitive can lead to direct PTE control. Because of this, it
-> would be nice to have page tables strongly protected[2] in the
-> kernel. They remain a viable "data only" attack given a sufficiently
-> "capable" write flaw.
-
-Right, but this is on the radar of several people and when fixed will
-strengthen the value of secret memory.
-
-> I would argue that page table entries are a more important asset to
-> protect than userspace secrets, but given the difficulties with XPFO
-> and the not-yet-available PKS I can understand starting here. It
-> does, absolutely, narrow the ways exploits must be written to
-> exfiltrate secret contents. (We are starting to now constrict[4] many
-> attack methods into attacking the page table itself, which is good in
-> the sense that protecting page tables will be a big win, and bad in
-> the sense that focusing attack research on page tables means we're
-> going to see some very powerful attacks.)
-> 
-> > > I think that a very complete description of the threats which
-> > > this feature addresses would be helpful.  
-> > 
-> > It's designed to protect against three different threats:
-> > 
-> >    1. Detection of user secret memory mismanagement
-> 
-> I would say "cross-process secret userspace memory exposures" (via a
-> number of common interfaces by blocking it at the GUP level).
-> 
-> >    2. significant protection against privilege escalation
-> 
-> I don't see how this series protects against privilege escalation.
-> (It protects against exfiltration.) Maybe you mean include this in
-> the first bullet point (i.e. "cross-process secret userspace memory
-> exposures, even in the face of privileged processes")?
-
-It doesn't prevent privilege escalation from happening in the first
-place, but once the escalation has happened it protects against
-exfiltration by the newly minted root attacker.
-
-> >    3. enhanced protection (in conjunction with all the other in-
-> > kernel
-> >       attack prevention systems) against ROP attacks.
-> 
-> Same here, I don't see it preventing ROP, but I see it making
-> "simple" ROP insufficient to perform exfiltration.
-
-Right, that's why I call it "enhanced protection".  With ROP the design
-goal is to take exfiltration beyond the simple, and require increasing
-complexity in the attack ... the usual security whack-a-mole approach
-... in the hope that script kiddies get bored by the level of
-difficulty and move on to something easier.
-
-James
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--000000000000eb2a3605c1afd6d4--
