@@ -2,185 +2,90 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05813756D4
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 May 2021 17:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D10375866
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 May 2021 18:24:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 089DF100EC1CF;
-	Thu,  6 May 2021 08:27:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B3ACB100ED48A
-	for <linux-nvdimm@lists.01.org>; Thu,  6 May 2021 08:27:28 -0700 (PDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 146F6QQk151323;
-	Thu, 6 May 2021 11:26:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=sjoZoiMhBl/YeAs7nylvrqucKRtz6t+UYFLBf4hwx58=;
- b=HNnR1WbtcErDOmskKqlTooqNTP1IivLAtx4QS4CKp6cKX+kgP4zQvoFZWL5AVg264ZTj
- /8JlRuQgWTJqNrDCfS3qB6iutm3wRUwNb5gT6wRvkj7xEihLZiVwqPsEQ8ad6kAutzc1
- vWXExVZgy6ss+xtA+6SYXg/ZOVdbIsgx2CKiIb7wGnIwmvj1GGrO7ifiBh9RhnmDdNoJ
- LMoRMK0OqojDRTYJuBf4qF8l+Q7nlnlOocgvLdq3bMaE1Oq4M0+Eg7+ihwCtwfSxcest
- 1EoxjQ/XX+Q78+58ZXnBQCbBu5x4dPi1zM0YuMj7+PuRZF52CyumY9KDrfdHysz7ZluW Mw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 38cjhps4q7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 May 2021 11:26:58 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 146F7KKD161033;
-	Thu, 6 May 2021 11:26:58 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 38cjhps4pf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 May 2021 11:26:57 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 146FLr4I023803;
-	Thu, 6 May 2021 15:26:56 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma04dal.us.ibm.com with ESMTP id 38bedtysuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 May 2021 15:26:56 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 146FQtK516646530
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 May 2021 15:26:55 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 71AB07805E;
-	Thu,  6 May 2021 15:26:55 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 50AA17805C;
-	Thu,  6 May 2021 15:26:43 +0000 (GMT)
-Received: from jarvis (unknown [9.80.192.238])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu,  6 May 2021 15:26:42 +0000 (GMT)
-Message-ID: <de27bfae0f4fdcbb0bb4ad17ec5aeffcd774c44b.camel@linux.ibm.com>
-Subject: Re: [PATCH v18 0/9] mm: introduce memfd_secret system call to
- create "secret" memory areas
-From: James Bottomley <jejb@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport
- <rppt@kernel.org>
-Date: Thu, 06 May 2021 08:26:41 -0700
-In-Reply-To: <20210505120806.abfd4ee657ccabf2f221a0eb@linux-foundation.org>
-References: <20210303162209.8609-1-rppt@kernel.org>
-	 <20210505120806.abfd4ee657ccabf2f221a0eb@linux-foundation.org>
-User-Agent: Evolution 3.34.4 
+	by ml01.01.org (Postfix) with ESMTP id F241A100EB355;
+	Thu,  6 May 2021 09:24:49 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=188.72.187.114; helo=karatebyjesse.com; envelope-from=laumeyfmalofe@kahntractor.com; receiver=<UNKNOWN> 
+Received: from karatebyjesse.com (unknown [188.72.187.114])
+	by ml01.01.org (Postfix) with ESMTP id 7455A100EB353
+	for <linux-nvdimm@lists.01.org>; Thu,  6 May 2021 09:24:46 -0700 (PDT)
+To: linux-nvdimm@lists.01.org
+Subject: office chair distribution
+Message-ID: <9135ff36fef14d6d36868297588dd4c5@bluewatergear.com>
+Date: Thu, 06 May 2021 17:36:29 +0200
+From: "Darren" <laumedymalofe@kahntractor.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HbXsy0ifNJ0qG09HbRm_LXazjxQbp5n0
-X-Proofpoint-ORIG-GUID: DJupxtqPHyyQ3Z1xYY6MEK2xJzvjhhcP
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-06_10:2021-05-06,2021-05-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- clxscore=1011 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
- spamscore=0 mlxscore=0 adultscore=0 bulkscore=0 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104060000 definitions=main-2105060108
-Message-ID-Hash: WHEDAF5GAXAXSLKZDO3MNGSOFK5GFTZL
-X-Message-ID-Hash: WHEDAF5GAXAXSLKZDO3MNGSOFK5GFTZL
-X-MailFrom: jejb@linux.ibm.com
+X-Mailer-Sent-By: 1
+Message-ID-Hash: W6QT3QTTKFAFHTOUTRRXOEAKGFBXTQGL
+X-Message-ID-Hash: W6QT3QTTKFAFHTOUTRRXOEAKGFBXTQGL
+X-MailFrom: laumeyfmalofe@kahntractor.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixn
- er <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jejb@linux.ibm.com
+Reply-To: duohanshanton@aliyun.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WHEDAF5GAXAXSLKZDO3MNGSOFK5GFTZL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/W6QT3QTTKFAFHTOUTRRXOEAKGFBXTQGL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============9160224303620000619=="
+
+--===============9160224303620000619==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+</head>
+<body>
+<span style=3D"display: block; text-align: left;"><span style=3D"display:
+block; text-align: left;"><span style=3D"display: block; text-align:
+left;"><span style=3D"display: block; text-align: left;"><span
+style=3D"display: block; text-align: left;"><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align: left;"><spa=
+n
+style=3D"text-align: left;"><span style=3D"text-align: left;">Hi
+,</span></span></span></span></span></span></span></span></span>
+<div><span style=3D"display: block; text-align: left;"><br />Did you rece=
+ive
+my email from last week?<br />I would like to speak with the person in
+charge of office supplies for your company? <br /><br />Our company
+produces and distributes amazing office chairs.<br /><span>Material:
+PVC=EF=BC=88polyvinyl chloride=EF=BC=89Leather + Elastic Fabric + Plating
+Feet</span><br /><span>Max. Load Bearing: 150kg</span> <br /><br />Starti=
+ng
+at 195.00 per chair: shipping incuded.<br />u&nbsp; s&nbsp; d<br /><br />=
+We
+offer low minimum quantities&nbsp;<br />Please reply back and let me know
+the quantity of office chairs you would like, and where do we ship them
+to?<br /><br />Thanks,<br />Darren Williams<br />Office Chair
+Distribution<br /></span><span><br /></span></div>
+<span style=3D"display: block; text-align: left;"><img
+src=3D"https://ae01.alicdn.com/kf/H9d17b44041ff4c09b7609e077afe130d8.jpg"
+width=3D"450" height=3D"450" /><img
+src=3D"https://ae01.alicdn.com/kf/Hf83511d7bcb34cde803a0a51218c4eeaa.jpeg=
+"
+width=3D"450" height=3D"450" /><br /></span><span style=3D"display: block=
+;
+text-align: left;"><span style=3D"display: block; text-align:
+left;"></span></span>
+</body>
+</html>
+
+--===============9160224303620000619==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-
-On Wed, 2021-05-05 at 12:08 -0700, Andrew Morton wrote:
-> On Wed,  3 Mar 2021 18:22:00 +0200 Mike Rapoport <rppt@kernel.org>
-> wrote:
-> 
-> > This is an implementation of "secret" mappings backed by a file
-> > descriptor.
-> > 
-> > The file descriptor backing secret memory mappings is created using
-> > a dedicated memfd_secret system call The desired protection mode
-> > for the memory is configured using flags parameter of the system
-> > call. The mmap() of the file descriptor created with memfd_secret()
-> > will create a "secret" memory mapping. The pages in that mapping
-> > will be marked as not present in the direct map and will be present
-> > only in the page table of the owning mm.
-> > 
-> > Although normally Linux userspace mappings are protected from other
-> > users, such secret mappings are useful for environments where a
-> > hostile tenant is trying to trick the kernel into giving them
-> > access to other tenants mappings.
-> 
-> I continue to struggle with this and I don't recall seeing much
-> enthusiasm from others.  Perhaps we're all missing the value point
-> and some additional selling is needed.
-> 
-> Am I correct in understanding that the overall direction here is to
-> protect keys (and perhaps other things) from kernel bugs?  That if
-> the kernel was bug-free then there would be no need for this
-> feature?  If so, that's a bit sad.  But realistic I guess.
-
-Secret memory really serves several purposes. The "increase the level
-of difficulty of secret exfiltration" you describe.  And, as you say,
-if the kernel were bug free this wouldn't be necessary.
-
-But also:
-
-   1. Memory safety for use space code.  Once the secret memory is
-      allocated, the user can't accidentally pass it into the kernel to be
-      transmitted somewhere.
-   2. It also serves as a basis for context protection of virtual
-      machines, but other groups are working on this aspect, and it is
-      broadly similar to the secret exfiltration from the kernel problem.
-
-> 
-> Is this intended to protect keys/etc after the attacker has gained
-> the ability to run arbitrary kernel-mode code?  If so, that seems
-> optimistic, doesn't it?
-
-Not exactly: there are many types of kernel attack, but mostly the
-attacker either manages to effect a privilege escalation to root or
-gets the ability to run a ROP gadget.  The object of this code is to be
-completely secure against root trying to extract the secret (some what
-similar to the lockdown idea), thus defeating privilege escalation and
-to provide "sufficient" protection against ROP gadgets.
-
-The ROP gadget thing needs more explanation: the usual defeatist
-approach is to say that once the attacker gains the stack, they can do
-anything because they can find enough ROP gadgets to be turing
-complete.  However, in the real world, given the kernel stack size
-limit and address space layout randomization making finding gadgets
-really hard, usually the attacker gets one or at most two gadgets to
-string together.  Not having any in-kernel primitive for accessing
-secret memory means the one gadget ROP attack can't work.  Since the
-only way to access secret memory is to reconstruct the missing mapping
-entry, the attacker has to recover the physical page and insert a PTE
-pointing to it in the kernel and then retrieve the contents.  That
-takes at least three gadgets which is a level of difficulty beyond most
-standard attacks.
-
-> I think that a very complete description of the threats which this
-> feature addresses would be helpful.  
-
-It's designed to protect against three different threats:
-
-   1. Detection of user secret memory mismanagement
-   2. significant protection against privilege escalation
-   3. enhanced protection (in conjunction with all the other in-kernel
-      attack prevention systems) against ROP attacks.
-
-Do you want us to add this to one of the patch descriptions?
-
-James
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============9160224303620000619==--
