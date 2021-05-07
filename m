@@ -2,54 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB193376737
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 16:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7EA376784
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 17:04:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1332C100EAB77;
-	Fri,  7 May 2021 07:49:51 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.43; helo=mail-ot1-f43.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 35713100EAB7C;
+	Fri,  7 May 2021 08:04:37 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 601BD100EAB73
-	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 07:49:48 -0700 (PDT)
-Received: by mail-ot1-f43.google.com with SMTP id n32-20020a9d1ea30000b02902a53d6ad4bdso8116256otn.3
-        for <linux-nvdimm@lists.01.org>; Fri, 07 May 2021 07:49:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=l66WwrIfYXPPqt7FNouM4SijVky0kURl9BRKhLx5Olw=;
-        b=BtWKj4iAHoY9p2F2o3psABHhNUScQPhbF2BKkR0dzL5BYtkWcBqtyJ4q8e14jUJgPY
-         L9StaFbMktFXR9kLywPnTaAN4rMGXM0fQdTSAHJdQixU6MIt9FHJdXyaEm61y3qtZsmT
-         Fmb+oRQ+4QeJ0PQH7Ngs1KKpNuuRwofO2ibvcLDwi26n8PFOQCu3nRtZY4AAnncmFOge
-         J5YsRxdX/C+2PCfQxxlapyydeS9P67fSJOQvzidJo2vZhQiHS0z0WyoT1pCXpWJ6Yyi3
-         S0EZawmD0Y+9KB4b8qp2lqAD2AoSdtnG54CO04SgcapI6w9RVTPO89TOmelAv77qeUr4
-         To1g==
-X-Gm-Message-State: AOAM533Yv47Zyd/2YCBKqvIHs8bi6uPPTMLdDqJ9UHuDxHOBoznyRird
-	IDGerre/tBXLyStE5xrG+JQetbUEjG/AOZc/j4E=
-X-Google-Smtp-Source: ABdhPJwJ/Efd8Ja1dPWdSMymvbhACucR7P1kJhsAmSyKlyVRN8WDUqINXHChWukdv3xi3dM/kIb3SuazbyBGmIIg5xM=
-X-Received: by 2002:a9d:5a7:: with SMTP id 36mr8640979otd.321.1620398987013;
- Fri, 07 May 2021 07:49:47 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id C3E45100EAB79
+	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 08:04:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=fRqBvN0tx2pJaoUlzcO69LtYKZ2yqF996XdsgiyBnas=; b=vaCd2p/D451W+krKP3Hm+Mbqfr
+	M8QcUhbPPqPhLegCFXy/cxzLW7FvZbb6uNxUkrkGKI7XjV3rn1ZAHfUBFG0w/Gcd1Y0HXH+I+0tsZ
+	X5OIkmdSb3DENIfibsKFsOFwf+J99y1XPqyblM2DtI5EMz6S+PaSg2Gnd8QEkW1EprcE5IyDWWb6H
+	XccLGtI0WGlOs3TxB5jzm8biFUFGO1u++Fy5mXwuv4p8ZE02GLqDy0C+/fvdeiHDl1AhGyFKWfXC8
+	WRULaO5OwTroeiZB1MTX6BJLmVDaSGw7qazPs7fahImlS4WfUKCD7jeGmPMUmeQ9MZT53HIVPhRiY
+	pkdu3BuQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+	id 1lf1z6-003Gsj-Mp; Fri, 07 May 2021 15:01:57 +0000
+Date: Fri, 7 May 2021 16:01:44 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v3 2/2] secretmem: optimize page_is_secretmem()
+Message-ID: <YJVWWFrvTzC2M0ba@casper.infradead.org>
+References: <20210420150049.14031-1-rppt@kernel.org>
+ <20210420150049.14031-3-rppt@kernel.org>
 MIME-Version: 1.0
-References: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAJZ5v0gBCxFQ1pC1PTRximwzGXOSQDCzOfjX497aqBq5GQ48tA@mail.gmail.com> <CAPcyv4jUdebFQvrhi0yzNyZ1wwzeGDpf6T34m=bfL593s-PEcA@mail.gmail.com>
-In-Reply-To: <CAPcyv4jUdebFQvrhi0yzNyZ1wwzeGDpf6T34m=bfL593s-PEcA@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 7 May 2021 16:49:35 +0200
-Message-ID: <CAJZ5v0g_q7ceyLmmVzhAyruFd4CxSJj+JdigFURPoHNwG_DRyw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NFIT: Fix support for variable 'SPA' structure size
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: U24E6UHH6YPMV4V5SYQWELC27GNP43FM
-X-Message-ID-Hash: U24E6UHH6YPMV4V5SYQWELC27GNP43FM
-X-MailFrom: rjwysocki@gmail.com
+Content-Disposition: inline
+In-Reply-To: <20210420150049.14031-3-rppt@kernel.org>
+Message-ID-Hash: 3EXOPL6OJSWRBRJP26EBT6NEWDF2PB76
+X-Message-ID-Hash: 3EXOPL6OJSWRBRJP26EBT6NEWDF2PB76
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Bob Moore <robert.moore@intel.com>, Erik Kaneda <erik.kaneda@intel.com>, Yi Zhang <yi.zhang@redhat.com>, nvdimm@lists.linux.dev, linux-nvdimm <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, S
+ huah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, kernel test robot <oliver.sang@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/U24E6UHH6YPMV4V5SYQWELC27GNP43FM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3EXOPL6OJSWRBRJP26EBT6NEWDF2PB76/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,51 +54,18 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, May 7, 2021 at 4:12 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> On Fri, May 7, 2021 at 2:47 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
-> >
-> > Hi Dan,
-> >
-> > On Fri, May 7, 2021 at 9:33 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > >
-> > > ACPI 6.4 introduced the "SpaLocationCookie" to the NFIT "System Physical
-> > > Address (SPA) Range Structure". The presence of that new field is
-> > > indicated by the ACPI_NFIT_LOCATION_COOKIE_VALID flag. Pre-ACPI-6.4
-> > > firmware implementations omit the flag and maintain the original size of
-> > > the structure.
-> > >
-> > > Update the implementation to check that flag to determine the size
-> > > rather than the ACPI 6.4 compliant definition of 'struct
-> > > acpi_nfit_system_address' from the Linux ACPICA definitions.
-> > >
-> > > Update the test infrastructure for the new expectations as well, i.e.
-> > > continue to emulate the ACPI 6.3 definition of that structure.
-> > >
-> > > Without this fix the kernel fails to validate 'SPA' structures and this
-> > > leads to a crash in nfit_get_smbios_id() since that routine assumes that
-> > > SPAs are valid if it finds valid SMBIOS tables.
-> > >
-> > >     BUG: unable to handle page fault for address: ffffffffffffffa8
-> > >     [..]
-> > >     Call Trace:
-> > >      skx_get_nvdimm_info+0x56/0x130 [skx_edac]
-> > >      skx_get_dimm_config+0x1f5/0x213 [skx_edac]
-> > >      skx_register_mci+0x132/0x1c0 [skx_edac]
-> > >
-> > > Cc: Bob Moore <robert.moore@intel.com>
-> > > Cc: Erik Kaneda <erik.kaneda@intel.com>
-> > > Fixes: cf16b05c607b ("ACPICA: ACPI 6.4: NFIT: add Location Cookie field")
-> >
-> > Do you want me to apply this (as the commit being fixed went in
-> > through the ACPI tree)?
->
-> Yes, I would need to wait for a signed tag so if you're sending urgent
-> fixes in the next few days please take this one, otherwise I'll circle
-> back next week after -rc1.
+On Tue, Apr 20, 2021 at 06:00:49PM +0300, Mike Rapoport wrote:
+> +	mapping = (struct address_space *)
+> +		((unsigned long)page->mapping & ~PAGE_MAPPING_FLAGS);
+> +
+> +	if (mapping != page->mapping)
+> +		return false;
+> +
+> +	return page->mapping->a_ops == &secretmem_aops;
 
-I'll be doing my next push after -rc1 either, so I guess it doesn't
-matter time-wise.
+... why do you go back to page->mapping here?
+
+	return mapping->a_ops == &secretmem_aops
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
