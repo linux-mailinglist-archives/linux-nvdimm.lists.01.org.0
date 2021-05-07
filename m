@@ -1,54 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501AD37630E
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 11:47:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9F1376491
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 13:40:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 50866100EBB6C;
-	Fri,  7 May 2021 02:47:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.41; helo=mail-ot1-f41.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id AF4D2100EBB78;
+	Fri,  7 May 2021 04:40:08 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 32E0A100ED4A2
-	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 02:47:38 -0700 (PDT)
-Received: by mail-ot1-f41.google.com with SMTP id i23-20020a9d68d70000b02902dc19ed4c15so3435738oto.0
-        for <linux-nvdimm@lists.01.org>; Fri, 07 May 2021 02:47:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1GNd+SmdPBX9J4x9GZDpwE064W8fyTQnbLI8+k9NPaw=;
-        b=Fak8EABE4v10DYXFVDsGu8CizX/5B2B423YtZxSl9Q0rvjT/4MLQTPmSXMAVO+xDHS
-         2LMq5qWlpNruVp2eJeANz+XrgRwsohSL+P4LxiOC+DaSjop3D1EzWZwrGuBj5Y7h1/5V
-         KaTryxx55shz4ZozFQbPW2b54bmgoCk4kKpnfCj0GcaS76XH+kav3PDALzVsh9pUZtzB
-         fK66Dvf7fpTv8zFcV4ZIRe/sauBTjdndrGIeLuOZ42FqNsgC8+EYbKtWVg2soodpumgV
-         n+A20wZcE6MZIvkF2payYAVQmJfGh00RvlatM/ktgyHEnjq3XrDp32BjfJ1c6B5PDwD0
-         zLVQ==
-X-Gm-Message-State: AOAM532nIicPpJDFgI8kr+cpiVeurN2do9Tkc1i06Fh2G5iDUEZleNBt
-	pzZkS8gdz1Oej8L05UHTJv2chS5K4k5UeOkhTPc=
-X-Google-Smtp-Source: ABdhPJxia7qiNpcUZJ4NPD59W/7j1FY+QnvdCAIFCJB7zbze5eLWgq15ivGB6y3WHkXf1FvKyr4kdw2aEYZX9EYZKkQ=
-X-Received: by 2002:a9d:5a7:: with SMTP id 36mr7513627otd.321.1620380857294;
- Fri, 07 May 2021 02:47:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 76FEC100EBB6C
+	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 04:40:06 -0700 (PDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 147BWjV7127717;
+	Fri, 7 May 2021 07:40:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=CsLPBrkvnepPxpoLL2iPU4V3RctbqgEBQqgiT5igYD4=;
+ b=Bla6+hmN+U11OB11BCGgyIUp3xzyv9hgzodqgIa5beiDWDFTVimKnKeSR5PtpU8jZinZ
+ bchMUetxaV8kwejJYcQWTOV4bgksjq8dtqqhFWLX94jX2akNXtB6yz4IF+A1LXxPE7Hi
+ JPts760S6zIEsJIVgWo16FyRgPctrcIGM2mPAfErcHkDUJ9H3g+Caef7oxlEQx5cqZKK
+ IHQsuPQAW7M5uNf4Cn+8PRPloTxGUw5p4wTfOIxW//b9HlEDhrmCLJrGQcYzKhWmAG7x
+ 8QutN9vczx4DOoEp1DsrXJA7/1Wv+k2auhghGwxXebrccWRtjRZyTyvt6lcWheARfWGd QA==
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 38d4ka8du3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 May 2021 07:39:59 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 147BXCDN009890;
+	Fri, 7 May 2021 11:39:57 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 38csq108sm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 May 2021 11:39:57 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 147BdsEU34013664
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 May 2021 11:39:54 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 25BB352050;
+	Fri,  7 May 2021 11:39:54 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.85.69.191])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id DA33B5204F;
+	Fri,  7 May 2021 11:39:50 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Fri, 07 May 2021 17:09:49 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH v2] powerpc/papr_scm: Make 'perf_stats' invisible if perf-stats unavailable
+Date: Fri,  7 May 2021 17:09:48 +0530
+Message-Id: <20210507113948.38950-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 7 May 2021 11:47:25 +0200
-Message-ID: <CAJZ5v0gBCxFQ1pC1PTRximwzGXOSQDCzOfjX497aqBq5GQ48tA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: NFIT: Fix support for variable 'SPA' structure size
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: OONS6RA35QUKLUPPUMUXKH2I52OKUQZD
-X-Message-ID-Hash: OONS6RA35QUKLUPPUMUXKH2I52OKUQZD
-X-MailFrom: rjwysocki@gmail.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PDEonpK8umvdTD7Pk2rtab5WtRhYtogl
+X-Proofpoint-GUID: PDEonpK8umvdTD7Pk2rtab5WtRhYtogl
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-07_04:2021-05-06,2021-05-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=34 impostorscore=0
+ clxscore=1015 phishscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2105070079
+Message-ID-Hash: A632WT5OLMQ5IPPP2DBQWZXR4QJUKGY2
+X-Message-ID-Hash: A632WT5OLMQ5IPPP2DBQWZXR4QJUKGY2
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Rafael Wysocki <rafael.j.wysocki@intel.com>, Bob Moore <robert.moore@intel.com>, Erik Kaneda <erik.kaneda@intel.com>, Yi Zhang <yi.zhang@redhat.com>, nvdimm@lists.linux.dev, linux-nvdimm <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OONS6RA35QUKLUPPUMUXKH2I52OKUQZD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/A632WT5OLMQ5IPPP2DBQWZXR4QJUKGY2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -57,271 +81,117 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Dan,
+In case performance stats for an nvdimm are not available, reading the
+'perf_stats' sysfs file returns an -ENOENT error. A better approach is
+to make the 'perf_stats' file entirely invisible to indicate that
+performance stats for an nvdimm are unavailable.
 
-On Fri, May 7, 2021 at 9:33 AM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> ACPI 6.4 introduced the "SpaLocationCookie" to the NFIT "System Physical
-> Address (SPA) Range Structure". The presence of that new field is
-> indicated by the ACPI_NFIT_LOCATION_COOKIE_VALID flag. Pre-ACPI-6.4
-> firmware implementations omit the flag and maintain the original size of
-> the structure.
->
-> Update the implementation to check that flag to determine the size
-> rather than the ACPI 6.4 compliant definition of 'struct
-> acpi_nfit_system_address' from the Linux ACPICA definitions.
->
-> Update the test infrastructure for the new expectations as well, i.e.
-> continue to emulate the ACPI 6.3 definition of that structure.
->
-> Without this fix the kernel fails to validate 'SPA' structures and this
-> leads to a crash in nfit_get_smbios_id() since that routine assumes that
-> SPAs are valid if it finds valid SMBIOS tables.
->
->     BUG: unable to handle page fault for address: ffffffffffffffa8
->     [..]
->     Call Trace:
->      skx_get_nvdimm_info+0x56/0x130 [skx_edac]
->      skx_get_dimm_config+0x1f5/0x213 [skx_edac]
->      skx_register_mci+0x132/0x1c0 [skx_edac]
->
-> Cc: Bob Moore <robert.moore@intel.com>
-> Cc: Erik Kaneda <erik.kaneda@intel.com>
-> Fixes: cf16b05c607b ("ACPICA: ACPI 6.4: NFIT: add Location Cookie field")
+So this patch updates 'papr_nd_attribute_group' to add a 'is_visible'
+callback implemented as newly introduced 'papr_nd_attribute_visible()'
+that returns an appropriate mode in case performance stats aren't
+supported in a given nvdimm.
 
-Do you want me to apply this (as the commit being fixed went in
-through the ACPI tree)?
+Also the initialization of 'papr_scm_priv.stat_buffer_len' is moved
+from papr_scm_nvdimm_init() to papr_scm_probe() so that it value is
+available when 'papr_nd_attribute_visible()' is called during nvdimm
+initialization.
 
-If you'd rather take care of it yourself:
+Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+Changelog:
 
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+v2:
+* Removed a redundant dev_info() from pap_scm_nvdimm_init() [ Aneesh ]
+* Marked papr_nd_attribute_visible() as static which also fixed the
+  build warning reported by kernel build robot
+---
+ arch/powerpc/platforms/pseries/papr_scm.c | 35 ++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-> Reported-by: Yi Zhang <yi.zhang@redhat.com>
-> Tested-by: Yi Zhang <yi.zhang@redhat.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->
-> Rafael, I can take this through nvdimm.git after -rc1, but if you are
-> sending any fixes to Linus based on your merge baseline between now and
-> Monday, please pick up this one.
->
->  drivers/acpi/nfit/core.c         |   15 ++++++++++----
->  tools/testing/nvdimm/test/nfit.c |   42 +++++++++++++++++++++++---------------
->  2 files changed, 36 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index 958aaac869e8..23d9a09d7060 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -686,6 +686,13 @@ int nfit_spa_type(struct acpi_nfit_system_address *spa)
->         return -1;
->  }
->
-> +static size_t sizeof_spa(struct acpi_nfit_system_address *spa)
-> +{
-> +       if (spa->flags & ACPI_NFIT_LOCATION_COOKIE_VALID)
-> +               return sizeof(*spa);
-> +       return sizeof(*spa) - 8;
-> +}
-> +
->  static bool add_spa(struct acpi_nfit_desc *acpi_desc,
->                 struct nfit_table_prev *prev,
->                 struct acpi_nfit_system_address *spa)
-> @@ -693,22 +700,22 @@ static bool add_spa(struct acpi_nfit_desc *acpi_desc,
->         struct device *dev = acpi_desc->dev;
->         struct nfit_spa *nfit_spa;
->
-> -       if (spa->header.length != sizeof(*spa))
-> +       if (spa->header.length != sizeof_spa(spa))
->                 return false;
->
->         list_for_each_entry(nfit_spa, &prev->spas, list) {
-> -               if (memcmp(nfit_spa->spa, spa, sizeof(*spa)) == 0) {
-> +               if (memcmp(nfit_spa->spa, spa, sizeof_spa(spa)) == 0) {
->                         list_move_tail(&nfit_spa->list, &acpi_desc->spas);
->                         return true;
->                 }
->         }
->
-> -       nfit_spa = devm_kzalloc(dev, sizeof(*nfit_spa) + sizeof(*spa),
-> +       nfit_spa = devm_kzalloc(dev, sizeof(*nfit_spa) + sizeof_spa(spa),
->                         GFP_KERNEL);
->         if (!nfit_spa)
->                 return false;
->         INIT_LIST_HEAD(&nfit_spa->list);
-> -       memcpy(nfit_spa->spa, spa, sizeof(*spa));
-> +       memcpy(nfit_spa->spa, spa, sizeof_spa(spa));
->         list_add_tail(&nfit_spa->list, &acpi_desc->spas);
->         dev_dbg(dev, "spa index: %d type: %s\n",
->                         spa->range_index,
-> diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
-> index 9b185bf82da8..54f367cbadae 100644
-> --- a/tools/testing/nvdimm/test/nfit.c
-> +++ b/tools/testing/nvdimm/test/nfit.c
-> @@ -1871,9 +1871,16 @@ static void smart_init(struct nfit_test *t)
->         }
->  }
->
-> +static size_t sizeof_spa(struct acpi_nfit_system_address *spa)
-> +{
-> +       /* until spa location cookie support is added... */
-> +       return sizeof(*spa) - 8;
-> +}
-> +
->  static int nfit_test0_alloc(struct nfit_test *t)
->  {
-> -       size_t nfit_size = sizeof(struct acpi_nfit_system_address) * NUM_SPA
-> +       struct acpi_nfit_system_address *spa = NULL;
-> +       size_t nfit_size = sizeof_spa(spa) * NUM_SPA
->                         + sizeof(struct acpi_nfit_memory_map) * NUM_MEM
->                         + sizeof(struct acpi_nfit_control_region) * NUM_DCR
->                         + offsetof(struct acpi_nfit_control_region,
-> @@ -1937,7 +1944,8 @@ static int nfit_test0_alloc(struct nfit_test *t)
->
->  static int nfit_test1_alloc(struct nfit_test *t)
->  {
-> -       size_t nfit_size = sizeof(struct acpi_nfit_system_address) * 2
-> +       struct acpi_nfit_system_address *spa = NULL;
-> +       size_t nfit_size = sizeof_spa(spa) * 2
->                 + sizeof(struct acpi_nfit_memory_map) * 2
->                 + offsetof(struct acpi_nfit_control_region, window_size) * 2;
->         int i;
-> @@ -2000,7 +2008,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->          */
->         spa = nfit_buf;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
->         spa->range_index = 0+1;
->         spa->address = t->spa_set_dma[0];
-> @@ -2014,7 +2022,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->          */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
->         spa->range_index = 1+1;
->         spa->address = t->spa_set_dma[1];
-> @@ -2024,7 +2032,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa2 (dcr0) dimm0 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
->         spa->range_index = 2+1;
->         spa->address = t->dcr_dma[0];
-> @@ -2034,7 +2042,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa3 (dcr1) dimm1 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
->         spa->range_index = 3+1;
->         spa->address = t->dcr_dma[1];
-> @@ -2044,7 +2052,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa4 (dcr2) dimm2 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
->         spa->range_index = 4+1;
->         spa->address = t->dcr_dma[2];
-> @@ -2054,7 +2062,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa5 (dcr3) dimm3 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
->         spa->range_index = 5+1;
->         spa->address = t->dcr_dma[3];
-> @@ -2064,7 +2072,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa6 (bdw for dcr0) dimm0 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
->         spa->range_index = 6+1;
->         spa->address = t->dimm_dma[0];
-> @@ -2074,7 +2082,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa7 (bdw for dcr1) dimm1 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
->         spa->range_index = 7+1;
->         spa->address = t->dimm_dma[1];
-> @@ -2084,7 +2092,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa8 (bdw for dcr2) dimm2 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
->         spa->range_index = 8+1;
->         spa->address = t->dimm_dma[2];
-> @@ -2094,7 +2102,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->         /* spa9 (bdw for dcr3) dimm3 */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
->         spa->range_index = 9+1;
->         spa->address = t->dimm_dma[3];
-> @@ -2581,7 +2589,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->                 /* spa10 (dcr4) dimm4 */
->                 spa = nfit_buf + offset;
->                 spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -               spa->header.length = sizeof(*spa);
-> +               spa->header.length = sizeof_spa(spa);
->                 memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_DCR), 16);
->                 spa->range_index = 10+1;
->                 spa->address = t->dcr_dma[4];
-> @@ -2595,7 +2603,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->                  */
->                 spa = nfit_buf + offset;
->                 spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -               spa->header.length = sizeof(*spa);
-> +               spa->header.length = sizeof_spa(spa);
->                 memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
->                 spa->range_index = 11+1;
->                 spa->address = t->spa_set_dma[2];
-> @@ -2605,7 +2613,7 @@ static void nfit_test0_setup(struct nfit_test *t)
->                 /* spa12 (bdw for dcr4) dimm4 */
->                 spa = nfit_buf + offset;
->                 spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -               spa->header.length = sizeof(*spa);
-> +               spa->header.length = sizeof_spa(spa);
->                 memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_BDW), 16);
->                 spa->range_index = 12+1;
->                 spa->address = t->dimm_dma[4];
-> @@ -2739,7 +2747,7 @@ static void nfit_test1_setup(struct nfit_test *t)
->         /* spa0 (flat range with no bdw aliasing) */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_PM), 16);
->         spa->range_index = 0+1;
->         spa->address = t->spa_set_dma[0];
-> @@ -2749,7 +2757,7 @@ static void nfit_test1_setup(struct nfit_test *t)
->         /* virtual cd region */
->         spa = nfit_buf + offset;
->         spa->header.type = ACPI_NFIT_TYPE_SYSTEM_ADDRESS;
-> -       spa->header.length = sizeof(*spa);
-> +       spa->header.length = sizeof_spa(spa);
->         memcpy(spa->range_guid, to_nfit_uuid(NFIT_SPA_VCD), 16);
->         spa->range_index = 0;
->         spa->address = t->spa_set_dma[1];
->
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index e2b69cc3beaf..11e7b90a3360 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -907,6 +907,20 @@ static ssize_t flags_show(struct device *dev,
+ }
+ DEVICE_ATTR_RO(flags);
+ 
++static umode_t papr_nd_attribute_visible(struct kobject *kobj,
++					 struct attribute *attr, int n)
++{
++	struct device *dev = container_of(kobj, typeof(*dev), kobj);
++	struct nvdimm *nvdimm = to_nvdimm(dev);
++	struct papr_scm_priv *p = nvdimm_provider_data(nvdimm);
++
++	/* For if perf-stats not available remove perf_stats sysfs */
++	if (attr == &dev_attr_perf_stats.attr && p->stat_buffer_len == 0)
++		return 0;
++
++	return attr->mode;
++}
++
+ /* papr_scm specific dimm attributes */
+ static struct attribute *papr_nd_attributes[] = {
+ 	&dev_attr_flags.attr,
+@@ -916,6 +930,7 @@ static struct attribute *papr_nd_attributes[] = {
+ 
+ static struct attribute_group papr_nd_attribute_group = {
+ 	.name = "papr",
++	.is_visible = papr_nd_attribute_visible,
+ 	.attrs = papr_nd_attributes,
+ };
+ 
+@@ -931,7 +946,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	struct nd_region_desc ndr_desc;
+ 	unsigned long dimm_flags;
+ 	int target_nid, online_nid;
+-	ssize_t stat_size;
+ 
+ 	p->bus_desc.ndctl = papr_scm_ndctl;
+ 	p->bus_desc.module = THIS_MODULE;
+@@ -1016,16 +1030,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	list_add_tail(&p->region_list, &papr_nd_regions);
+ 	mutex_unlock(&papr_ndr_lock);
+ 
+-	/* Try retriving the stat buffer and see if its supported */
+-	stat_size = drc_pmem_query_stats(p, NULL, 0);
+-	if (stat_size > 0) {
+-		p->stat_buffer_len = stat_size;
+-		dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
+-			p->stat_buffer_len);
+-	} else {
+-		dev_info(&p->pdev->dev, "Dimm performance stats unavailable\n");
+-	}
+-
+ 	return 0;
+ 
+ err:	nvdimm_bus_unregister(p->bus);
+@@ -1102,6 +1106,7 @@ static int papr_scm_probe(struct platform_device *pdev)
+ 	u64 blocks, block_size;
+ 	struct papr_scm_priv *p;
+ 	const char *uuid_str;
++	ssize_t stat_size;
+ 	u64 uuid[2];
+ 	int rc;
+ 
+@@ -1179,6 +1184,14 @@ static int papr_scm_probe(struct platform_device *pdev)
+ 	p->res.name  = pdev->name;
+ 	p->res.flags = IORESOURCE_MEM;
+ 
++	/* Try retriving the stat buffer and see if its supported */
++	stat_size = drc_pmem_query_stats(p, NULL, 0);
++	if (stat_size > 0) {
++		p->stat_buffer_len = stat_size;
++		dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
++			p->stat_buffer_len);
++	}
++
+ 	rc = papr_scm_nvdimm_init(p);
+ 	if (rc)
+ 		goto err2;
+-- 
+2.31.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
