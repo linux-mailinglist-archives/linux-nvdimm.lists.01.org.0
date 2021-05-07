@@ -1,84 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669D43764FB
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 14:18:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178783766E9
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 16:12:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B85C0100EAB6F;
-	Fri,  7 May 2021 05:18:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 571E3100EAB71;
+	Fri,  7 May 2021 07:12:53 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 67FA5100EAB6B
-	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 05:18:53 -0700 (PDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 147C4HNa145163;
-	Fri, 7 May 2021 08:18:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=J47BGLLd8vxfyQEKsvcgegBLj2p88069X4f1aWKgUCk=;
- b=m9ZRgFZdCA/QRo+jHfAJIQ7mAEK9SjGHUTjenFX6VlsWd6PT7g7MOUNc8I7I/4OaDjAH
- p53bC8ij4nhsX+nUdY6oHK7l8w4hEv8hwcQblijOAE4JLIKKsMmIccUPw264uOkSQQ1a
- ULpEemJoFV1Zd8wzPMBrIrYWHjDXGCp9DiY112jvQ00HYZl4UvqfQp8P/H15/vsz0eCy
- LZ9omuSYBRNd4qLftTAM5dROye6/CrKvAMeHP56aG9qNrqNaLMsKK3IsKxisv5qaiSDQ
- JRudN2DCn+UbtLXD8JlZ8qLpuBYygxCFMntXgee3r83AWVw7k1EEDSyaAw8XNaaXMGHp vg==
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 38d42mt6xn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 May 2021 08:18:47 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 147CCRAL028865;
-	Fri, 7 May 2021 12:18:45 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma01fra.de.ibm.com with ESMTP id 38csqgr5bd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 May 2021 12:18:45 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 147CIgsj33554736
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 May 2021 12:18:42 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA7A942042;
-	Fri,  7 May 2021 12:18:42 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 99CDE4203F;
-	Fri,  7 May 2021 12:18:40 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.69.191])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Fri,  7 May 2021 12:18:40 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Fri, 07 May 2021 17:48:39 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH v2] powerpc/papr_scm: Reduce error severity if nvdimm
- stats inaccessible
-In-Reply-To: <20210506045817.GF1068722@iweiny-DESK2.sc.intel.com>
-References: <20210505191606.51666-1-vaibhav@linux.ibm.com>
- <20210506045817.GF1068722@iweiny-DESK2.sc.intel.com>
-Date: Fri, 07 May 2021 17:48:39 +0530
-Message-ID: <87eeeiu480.fsf@vajain21.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 32C71100EB82B
+	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 07:12:49 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id s7so5704623edq.12
+        for <linux-nvdimm@lists.01.org>; Fri, 07 May 2021 07:12:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kLniGNx4BxwN5Xd2zc0IGUwak+T5o8FFC1I3NPRJVXE=;
+        b=uSs5tE4pdnmy1J5EesfN1eVWvpFDfJ1ly/S1gTE+RpFTbkyv0qiHb7E3qglgh8xHeS
+         51bFyaQw0kQBalHPUo0unemVmMkSLKeHgnWjmLyZviH5ltlwQ5w8sEy88hLzBwu7ad/B
+         zId42r9UHXvzucZJhnw6CY46qlzIOkoSgUuGrt9Qln+5C8FcQvhsJ2TJNZ8XMIPfRNpe
+         hH2GQpcVWp/1TFmPymsPLa+DjiOZsOXrMSqn3NO5nSt30M5AUVcS1/z6Jfs5LgU9uaAq
+         Z/Xli3WwfSlv2I4lCwDksdIsO3RJhiGl3/c9yr6lKw5xT5P2QsOrTRaen476Jl00SkKB
+         KyKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kLniGNx4BxwN5Xd2zc0IGUwak+T5o8FFC1I3NPRJVXE=;
+        b=p3oiOka8JMhqewceUb8rnEvv6Nc0hmMrdwVRN80Y4bf+V33UziXL38/PKQ2FaBzQcC
+         i0Y+yRttq3SCzZZprqrsTGS8KD5x7pldtAt3T3R/9vudaEF8ZmTur16ffbgXNEDqTW0H
+         Hzc/B20/UNNdyl9gFM6FqrNZAkCJLssbPTJoFxdsp9I1jKDxuOAQPtXb+62a7YXXuMef
+         3GEc+K7hdXcWNPJGSe3l9Svi4Zb6yB0bmqGptgtujQUofmyJn36s8jLY4MY53GCh6mgl
+         05qAKaEUuJwRrEBRLQUGFgMemiNNP90gA5TydS5rf47nwyNURhI/+gl+fEqNgbGK1LTM
+         P1Lw==
+X-Gm-Message-State: AOAM531ecrImttreO6o9nUk98dzGsM1rtOm+DkCE8N94/+wQjg9NEmHu
+	8vku7WIKYbPiEyDAV/XvR5B5Do7WQly4BGV6QE9qkA==
+X-Google-Smtp-Source: ABdhPJwWyScMuqXDcIBAuztYBHKcNDRNOaJtIKcFL4gBL8++2X0f1kwToRZXeC3Mdnv0qiilb3DxuPS08o181IP/mbQ=
+X-Received: by 2002:a50:f0d6:: with SMTP id a22mr11880375edm.354.1620396766237;
+ Fri, 07 May 2021 07:12:46 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: r78fIpOtfLI4KlpJAc7O7KZeB7IU-5dw
-X-Proofpoint-GUID: r78fIpOtfLI4KlpJAc7O7KZeB7IU-5dw
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-07_04:2021-05-06,2021-05-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 spamscore=0
- suspectscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2105070083
-Message-ID-Hash: FS7QNWNHJ32WF3V7BUDRFM2D3SQLLJFA
-X-Message-ID-Hash: FS7QNWNHJ32WF3V7BUDRFM2D3SQLLJFA
-X-MailFrom: vaibhav@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, "Aneesh Kumar K . V  <aneesh.kumar@linux.ibm.com>, Michael Ellerman" <mpe@ellerman.id.au>
+References: <162037273007.1195827.10907249070709169329.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAJZ5v0gBCxFQ1pC1PTRximwzGXOSQDCzOfjX497aqBq5GQ48tA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gBCxFQ1pC1PTRximwzGXOSQDCzOfjX497aqBq5GQ48tA@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 7 May 2021 07:12:51 -0700
+Message-ID: <CAPcyv4jUdebFQvrhi0yzNyZ1wwzeGDpf6T34m=bfL593s-PEcA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: NFIT: Fix support for variable 'SPA' structure size
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Message-ID-Hash: U4KDFSWO7M5CDRQFY6FXWMPXNTBBJMPM
+X-Message-ID-Hash: U4KDFSWO7M5CDRQFY6FXWMPXNTBBJMPM
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Rafael Wysocki <rafael.j.wysocki@intel.com>, Bob Moore <robert.moore@intel.com>, Erik Kaneda <erik.kaneda@intel.com>, Yi Zhang <yi.zhang@redhat.com>, nvdimm@lists.linux.dev, linux-nvdimm <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FS7QNWNHJ32WF3V7BUDRFM2D3SQLLJFA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/U4KDFSWO7M5CDRQFY6FXWMPXNTBBJMPM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -87,55 +68,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Ira,
-
-Thanks for looking into this patch
-
-Ira Weiny <ira.weiny@intel.com> writes:
-
-> On Thu, May 06, 2021 at 12:46:06AM +0530, Vaibhav Jain wrote:
->> Currently drc_pmem_qeury_stats() generates a dev_err in case
->> "Enable Performance Information Collection" feature is disabled from
->> HMC or performance stats are not available for an nvdimm. The error is
->> of the form below:
->> 
->> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
->> 	 performance stats, Err:-10
->> 
->> This error message confuses users as it implies a possible problem
->> with the nvdimm even though its due to a disabled/unavailable
->> feature. We fix this by explicitly handling the H_AUTHORITY and
->> H_UNSUPPORTED errors from the H_SCM_PERFORMANCE_STATS hcall.
->> 
->> In case of H_AUTHORITY error an info message is logged instead of an
->> error, saying that "Permission denied while accessing performance
->> stats". Also '-EACCES' error is return instead of -EPERM.
+On Fri, May 7, 2021 at 2:47 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> I thought you clarified before that this was a permission issue.  So why change
-> the error to EACCES?
+> Hi Dan,
 >
-EACCESS("Permission Denied") felt like a more accurate error code for
-this case than EPERM("Operation not permitted"). So switched the usage
-of EPERM error code to handle the case if this hcall is not supported
-for an nvdimm.
-
->> 
->> In case of H_UNSUPPORTED error we return a -EPERM error back from
->> drc_pmem_query_stats() indicating that performance stats-query
->> operation is not supported on this nvdimm.
+> On Fri, May 7, 2021 at 9:33 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > ACPI 6.4 introduced the "SpaLocationCookie" to the NFIT "System Physical
+> > Address (SPA) Range Structure". The presence of that new field is
+> > indicated by the ACPI_NFIT_LOCATION_COOKIE_VALID flag. Pre-ACPI-6.4
+> > firmware implementations omit the flag and maintain the original size of
+> > the structure.
+> >
+> > Update the implementation to check that flag to determine the size
+> > rather than the ACPI 6.4 compliant definition of 'struct
+> > acpi_nfit_system_address' from the Linux ACPICA definitions.
+> >
+> > Update the test infrastructure for the new expectations as well, i.e.
+> > continue to emulate the ACPI 6.3 definition of that structure.
+> >
+> > Without this fix the kernel fails to validate 'SPA' structures and this
+> > leads to a crash in nfit_get_smbios_id() since that routine assumes that
+> > SPAs are valid if it finds valid SMBIOS tables.
+> >
+> >     BUG: unable to handle page fault for address: ffffffffffffffa8
+> >     [..]
+> >     Call Trace:
+> >      skx_get_nvdimm_info+0x56/0x130 [skx_edac]
+> >      skx_get_dimm_config+0x1f5/0x213 [skx_edac]
+> >      skx_register_mci+0x132/0x1c0 [skx_edac]
+> >
+> > Cc: Bob Moore <robert.moore@intel.com>
+> > Cc: Erik Kaneda <erik.kaneda@intel.com>
+> > Fixes: cf16b05c607b ("ACPICA: ACPI 6.4: NFIT: add Location Cookie field")
 >
-> EPERM seems wrong here too...  ENOTSUP?
-Yes, will change it to EOPNOTSUPP in v3.
+> Do you want me to apply this (as the commit being fixed went in
+> through the ACPI tree)?
+
+Yes, I would need to wait for a signed tag so if you're sending urgent
+fixes in the next few days please take this one, otherwise I'll circle
+back next week after -rc1.
 
 >
-> Ira
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+> If you'd rather take care of it yourself:
+>
+> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
--- 
-Cheers
-~ Vaibhav
+Thanks!
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
