@@ -1,51 +1,96 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7EA376784
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 17:04:44 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D6B376B48
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 May 2021 22:48:05 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 35713100EAB7C;
-	Fri,  7 May 2021 08:04:37 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 10A17100EAB7E;
+	Fri,  7 May 2021 13:48:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.16.24; helo=eur06-am7-obe.outbound.protection.outlook.com; envelope-from=ddddssad@outlook.com; receiver=<UNKNOWN> 
+Received: from EUR06-AM7-obe.outbound.protection.outlook.com (mail-am7eur06olkn2024.outbound.protection.outlook.com [40.92.16.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C3E45100EAB79
-	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 08:04:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=fRqBvN0tx2pJaoUlzcO69LtYKZ2yqF996XdsgiyBnas=; b=vaCd2p/D451W+krKP3Hm+Mbqfr
-	M8QcUhbPPqPhLegCFXy/cxzLW7FvZbb6uNxUkrkGKI7XjV3rn1ZAHfUBFG0w/Gcd1Y0HXH+I+0tsZ
-	X5OIkmdSb3DENIfibsKFsOFwf+J99y1XPqyblM2DtI5EMz6S+PaSg2Gnd8QEkW1EprcE5IyDWWb6H
-	XccLGtI0WGlOs3TxB5jzm8biFUFGO1u++Fy5mXwuv4p8ZE02GLqDy0C+/fvdeiHDl1AhGyFKWfXC8
-	WRULaO5OwTroeiZB1MTX6BJLmVDaSGw7qazPs7fahImlS4WfUKCD7jeGmPMUmeQ9MZT53HIVPhRiY
-	pkdu3BuQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-	id 1lf1z6-003Gsj-Mp; Fri, 07 May 2021 15:01:57 +0000
-Date: Fri, 7 May 2021 16:01:44 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 2/2] secretmem: optimize page_is_secretmem()
-Message-ID: <YJVWWFrvTzC2M0ba@casper.infradead.org>
-References: <20210420150049.14031-1-rppt@kernel.org>
- <20210420150049.14031-3-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 27B10100EAB77;
+	Fri,  7 May 2021 13:47:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LpVWGQmf6I1uIGRsj6i4Q8DDLrQ41qmvSVnGwxzD3Br2IZAldn0OXJOaI7gSllx8dPjU0hO/GkgrrAF8e6H6P1skwmX2QT6XU2HWoL18mjBGpg37QW9fsoVEF8KEjSChtJUY8IecmeyMLsq4gKCgMifKS2FHIB39BpI6nqXYWCq7GDolwb/GYl2pJcAGOD+IuDJVkkiHcTp7MMGAiaW7+QByvj0wmsbSGfMl4c5Xv9zcEnGXGQaRD6hau7x0dGxdIo7eOQajncojqH+5ibZ8K8DApjTB0jf6TPR4agfjSVW288Hos/Drhe2WPWCzIZCIZQaFIxfDLw/guxeRh2y6XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8FH/cNJqT8tStW+cZsYuOwLWJ4qv3ZpW4YgzLLHUA/U=;
+ b=ghbWvMH0N97nHgc496YQSjO/t+YRm7DnqrjBMfR9kvFreUBnj6aRLbc8e663eZNNAsLFxb/gU6SvV5xn+guYkadb4SBliaY46ACFB1F0QI7chKb1Inr79aypp+8BR5vJpQ2B9giUqhG/VCswXg+JHhy/5/YhdulOeR6kuQepuoCdEw9Z5M6hNFHquBRhhc+KZwGYNmpjukQhyWftEWibAY4pQ+ouu6rpXCRs8EjMnjGi/ugzXy8h4ZxTNBjcFBQF/42gaDSwvKwkbu4cGdQq1zpWTexXDaVupufSFjxkpdPhPY0vOVceBl76+1hvC/ssJMLmGvWeAqK++S0EtZny4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8FH/cNJqT8tStW+cZsYuOwLWJ4qv3ZpW4YgzLLHUA/U=;
+ b=Co3/RjSLeZ5m/95sJ7nmfozOM5oKYgdgLgfqRqe4vLjgHbBRwDKEkYUfrwecX7urCWG1ZSCI86BUQBfcMbipbnoKDPOnt17lxDt68O50nc4tw3DT5LqIzdnc1TB9eb55AfNEn7cXH2URnJIVZ/c3PyNcSQa5MK7SwlO33lAqPQSQR2VufKN/tFtr4kqzaTmlRum//nVRGToGUcyFHHAx5Kci4u7R6c+bHOLqPtqx2Aspf8QXIAHLsfetQGU/Qy5BgarvDBF88YG97P2CFLoQl3wRHdAyo400u0yPbo7QpM2jhprRjvc3nNxLiFwMDHZVrXQrMoCZRSFb/+Hno4WzSg==
+Received: from DB8EUR06FT059.eop-eur06.prod.protection.outlook.com
+ (2a01:111:e400:fc35::51) by
+ DB8EUR06HT166.eop-eur06.prod.protection.outlook.com (2a01:111:e400:fc35::151)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25; Fri, 7 May
+ 2021 20:47:45 +0000
+Received: from AM0PR02MB3601.eurprd02.prod.outlook.com
+ (2a01:111:e400:fc35::4a) by DB8EUR06FT059.mail.protection.outlook.com
+ (2a01:111:e400:fc35::333) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25 via Frontend
+ Transport; Fri, 7 May 2021 20:47:45 +0000
+Received: from AM0PR02MB3601.eurprd02.prod.outlook.com
+ ([fe80::b481:2bcb:ee90:21bc]) by AM0PR02MB3601.eurprd02.prod.outlook.com
+ ([fe80::b481:2bcb:ee90:21bc%3]) with mapi id 15.20.4087.044; Fri, 7 May 2021
+ 20:47:44 +0000
+From: aaa aaa <ddddssad@outlook.com>
+Subject: THANKS!
+Thread-Topic: THANKS!
+Thread-Index: AQHXQ4IX0yvGmyPl4UC4KR2L200BHg==
+Date: Fri, 7 May 2021 20:47:44 +0000
+Message-ID: 
+ <AM0PR02MB3601D3CF3EBD397CF7C3F56FD9579@AM0PR02MB3601.eurprd02.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-incomingtopheadermarker: 
+ OriginalChecksum:8C68F4B3F2A68A4FC5336DFC70D509F048F68D19A44A42BD7D64CA5EFCC9F6B8;UpperCasedChecksum:6FA7CD35812C65DB73291E8D74391B8D5F75681D3F308F3BC87D82DA427E2BCA;SizeAsReceived:33930;Count:40
+x-tmn: [f/cTLu3pUcL33jUNX76LRv/qLsFg/8gD]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 40
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: 184f76bd-87f0-4695-79ac-08d911995da6
+x-ms-exchange-slblob-mailprops: 
+ BBDuhOFk7KB6PrmFdLHISg5JKjPtlWYE/IKJqmEJq8e1+usCN2vYqhG7EUVqxj8D12rJgsixrikZpTBW6QVQ151ExuTOJs2tDeUhX6Py/367DWx6k/9zceS+Uj01H9AGV90APRFoTVOk7hTi40zA2cqsUy7UQA9a+OINkvBWX2plQRJVOCeJjTbS3b5rvTCcLMKBvXNT+cv0KxiyBrnVYKK80YegniFm1sfZvYi5rDjCgUOV2snWL0wSoBgsyuzoVa0fXGJ3rnczxrBaKHqBLQ51f74M42316jfFnHNh5nTiAOWBLgP1kvKUQPjHRqtxC0w4MbgPYQdTPJXeS/tvxLZpKYY62UF+tyaGeNu0kl915yNq7n8m9nrXs7iK4ZCYfUT/2MRuWsMtt9oz4poXKbA/8k6X0+WY6Ed3J75fdkN7Kk1BD4hJHIwsANd0f4OmsyOCwdRQFEeqfd0DXbj/RckyzZsUIMi3b5N7+kW06aFjxqFIT/ChZ4r52V/BD7wZegcET5EvXyB05hKJMLdN1LszzYKk2pWecCH/1ibHgDxdSj5wA3e5RKAioS1XRYLClAIv5X2zJkl4Rqofngmd50HX6leu0oC07erMDb0n+dkYp3bZcUZ2MyekUWAK5Qd+uUjA3NH/yOqcMRTkbMBik82KRA7GdqBSRFpL+XeZY64=
+x-ms-traffictypediagnostic: DB8EUR06HT166:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ IAWGgLGzYriSZKK/Nu9j3CZ6cdhHY4U64OZaUAkXoSc+NlQkbyZS3etJdAhbcSAaxtEai9Aa3DXz8ZN5u78BwlykFOTZEX8gQjp1//mDoVh1uVBIEXL5xAI3HQVDgW+29mN03m+wfeL2TnKVmhOVZrj2xhbmvN52seQ9fRBu8O5BRWJsbT/sC8HgARunESpS3HPO5ImXUKF2FHgd8574jSFzAk0Ecj+qWkF5k7KqlVwqZkmQtB1Lq69r59jBCtv5F90uojhC9fmrt7mnhU2DHJu7qTYUAIzDgnF3CETsAQEk9JwHiXeECJHE05nbVbXApJcs4su4j5FiX2x3uDqwfPlDcbBxygrMPPbGeeDBqfn48GZK7EtogkbQMUxPUciTbXUkPaLF4X1DxMewmtYVwQ==
+x-ms-exchange-antispam-messagedata: 
+ QpmZ51RHTGWUFOu2tj/XeapPWcqOm9D19tWJqRx8FR5GuMDukY+wnD5ZXgivF7rPr7DQGUHsdxsX2LVvFMJnKv3VHuF++C8YwiwmLSlHzmOpg8hnyOHoenX2Xwn1NhzhPoGZsGggiR7MJvyPH59KDQ==
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20210420150049.14031-3-rppt@kernel.org>
-Message-ID-Hash: 3EXOPL6OJSWRBRJP26EBT6NEWDF2PB76
-X-Message-ID-Hash: 3EXOPL6OJSWRBRJP26EBT6NEWDF2PB76
-X-MailFrom: willy@infradead.org
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-AuthSource: DB8EUR06FT059.eop-eur06.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 184f76bd-87f0-4695-79ac-08d911995da6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2021 20:47:44.5787
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8EUR06HT166
+Message-ID-Hash: LGTNGG6CBZAYVBYWIMYTQVFNPNNFM3YH
+X-Message-ID-Hash: LGTNGG6CBZAYVBYWIMYTQVFNPNNFM3YH
+X-MailFrom: ddddssad@outlook.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, S
- huah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, kernel test robot <oliver.sang@intel.com>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3EXOPL6OJSWRBRJP26EBT6NEWDF2PB76/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CD3HI3MUTUP7GAH2EKSV3Y6ASXKAL6UW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,18 +99,29 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 20, 2021 at 06:00:49PM +0300, Mike Rapoport wrote:
-> +	mapping = (struct address_space *)
-> +		((unsigned long)page->mapping & ~PAGE_MAPPING_FLAGS);
-> +
-> +	if (mapping != page->mapping)
-> +		return false;
-> +
-> +	return page->mapping->a_ops == &secretmem_aops;
+Email:Ahpeiyassin@gmail.com
 
-... why do you go back to page->mapping here?
 
-	return mapping->a_ops == &secretmem_aops
+
+Dearest Friend,
+
+
+
+I am Mrs. Ah-Pei Yassin. A dual France and Saudi Arabic National, I decided to donate part of what I have to you for investment towards the good work of charity organization, and also to help the motherless and the less privileged ones and to carry out a charitable works in
+your Country and around the World on my Behalf.
+
+I am diagnosing of throat Cancer, hospitalize for good 2 years and some months now and quite obvious that I have few days to live, and I am a Widow no child; I decided to will/donate the sum of $7.8 million to you for the good work of God, and also to help the motherless and less privilege and also forth assistance of the widows. At the moment I cannot take any telephone calls right now due to the fact that my relatives (that have squandered the funds for this purpose before) are round me and my health status also. I have adjusted my will and my
+Bank  is  aware.
+
+I have willed those properties to you by quoting my Personal File Routing and Account Information. And I have also notified the bank that I am willing that properties to you for a good, effective and prudent work. It is right to say that I have been directed to do this
+by God. I will be going in for a surgery soon and I want to make sure
+that I make this donation before undergoing this surgery.
+
+I will need your support to make this dream come through, could  you let  me know your interest to enable me give you further information. And I hereby advice to contact me by this email address : Ahpeiyassi@gmail.com
+
+Thanks
+Ah-Pei Yassin
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
