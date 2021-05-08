@@ -1,81 +1,138 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F240E376F97
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 May 2021 06:37:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61735376FB8
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 May 2021 07:26:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 25888100EAAEB;
-	Fri,  7 May 2021 21:37:17 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id EDDE4100EAAF0;
+	Fri,  7 May 2021 22:26:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=68.232.159.83; helo=esa6.fujitsucc.c3s2.iphmx.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
+Received: from esa6.fujitsucc.c3s2.iphmx.com (esa6.fujitsucc.c3s2.iphmx.com [68.232.159.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 13D31100EC1C6
-	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 21:37:13 -0700 (PDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1484YPf6067321;
-	Sat, 8 May 2021 00:37:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=J015+afVlEQ33c36XPtW4avmXBQHeDgnCWaXqrlS8js=;
- b=lR0WkbQfrNowiAaUOghJRQqBAaZlEKjmT4bYcrIe767lVRYHcnMd4igCXidyLFTryAEV
- tCN/D/b7EXbU0zQHWZLjxKZEZLgwpyoDg7/Toz9IRxPLjvhLUMGIo/kDUR7/uq4jP2e9
- 1kVi20ghXBmaYbmIA7OfZRLUbJi51zI52OsEt2dmPOAJow97ILAk1IKg1VvHBqGiHA3T
- dCgntqio5co43TOexgggDv/5wCkSJodB4QXVYjsdtgZ0MaqxphVbVyhJTINW92ZhmE1f
- TAvcUcm76kdB5yLYE7TuJNIdYyQThgpW9rZe8slFqrlYj03YRrIFlDpFwkOXHHq7ut3W +w==
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 38djnkgxmu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 May 2021 00:37:03 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 1484RKND017435;
-	Sat, 8 May 2021 04:37:02 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma05fra.de.ibm.com with ESMTP id 38dj98g0bp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 May 2021 04:37:02 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1484awMq33489380
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 8 May 2021 04:36:58 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA5224206E;
-	Sat,  8 May 2021 04:36:58 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 035C042064;
-	Sat,  8 May 2021 04:36:56 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.77.197.122])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Sat,  8 May 2021 04:36:55 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Sat, 08 May 2021 10:06:54 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: [PATCH v3] powerpc/papr_scm: Reduce error severity if nvdimm stats inaccessible
-Date: Sat,  8 May 2021 10:06:42 +0530
-Message-Id: <20210508043642.114076-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+	by ml01.01.org (Postfix) with ESMTPS id E46E7100EAAEB
+	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 22:26:40 -0700 (PDT)
+IronPort-SDR: sDHXWIVpvAjtMaVQC0yuKmAnHkOqJ/3Whja4/WqPTZXtkr10druYH/z5gzzuZVnGNn5Ho+33wv
+ e5j7fVxOcXNmBHZw1XtGOzGLaAf+e9zvtVO4lQ25qhRhkoE5hHAlichlsVZgU7DLHO/k+Jkpw7
+ cxZSIcS+NIdlvYWIP+cx22LqUpxeXN4l1IczDbu+gONtqWT8MbeMTHVYAfyBm7lixmrbLcWlBs
+ w1os0YzrZ7B8L3opeObhMhho6Nh7xhFBcpvoLlEniHcglNxsXdhiRhWJI4t8XgRhJBNuOqMAoe
+ GkE=
+X-IronPort-AV: E=McAfee;i="6200,9189,9977"; a="31107942"
+X-IronPort-AV: E=Sophos;i="5.82,282,1613401200";
+   d="scan'208";a="31107942"
+Received: from mail-os2jpn01lp2056.outbound.protection.outlook.com (HELO JPN01-OS2-obe.outbound.protection.outlook.com) ([104.47.92.56])
+  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2021 14:26:35 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=L1IggSGYzbkNfUj3P18LztakePeTkcHiDulieEBJBddeF7fZx1g0BeFFC71V0HLOC+7PveX785faIbiNgD/Vlk+dMPh/nQiR1FXfVa9OgzF3wa8md9rV1L2uHhjZTVcExSqUdrgus3mbR4b41ytvfjKxwYjTdMT5Z/DURuQXVyx6GNtFdRUVXtYs1amhe4EKXk3uU30aMjSUTIg+jSc3eoT/PrRIK7DldD3mk0KEMV22TSIJm9VFo8SiZwowiDdwOMQZzA/A7Tn7VEYU7E5QTn9cEZ92CuM9DRmbQ3vNM6gJ1FWwA11iTgt5zw/7+ixatFFoY3yDtZfh1z1RxzFvcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kOeC3vu+7clFPbAHDHS3thSf5/YASS1sMfLbA5OMCBA=;
+ b=RXdBx9V44F3xhpL8+5aP33B/N4fKYoWPLbvaFH8+yLxvlYjBpNm4gO3rqvCMShy++elevHYutGKZLKnINYDUGX+4C9/BrowWbHT+gf1mOj34q+lkMuTXIH+UVOZBLqtxTwss5D9qFhWHqLQHYQIPm4lnjVqXXS4xkYyhhVaaU3pTioc1rTYI0EPGiZacV34F7c0+r/sgNuhL752Y268GX0CJt7v2f/YJScrwkJ2iNB0J61hhy8GfnIAjiPKi0HujWzFkcWtFMP4m/NmivG4y2HgLubJgGSrVFlZyNbt6jqRgiYrD/bqrEEEC8czcXieoF6bhwi7treYSlmpecgqdww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fujitsu.onmicrosoft.com; s=selector2-fujitsu-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kOeC3vu+7clFPbAHDHS3thSf5/YASS1sMfLbA5OMCBA=;
+ b=WatrRG8c2VKu7SYHO4uIHb1OOrVwft4sgWQvgokI2kVotwYcSDNQsVNoe1VIQUiUuvomyU/5s/VK9v66yu1ME23OhUkdUXO26MslOWK2yePCSInYwlYWNww6YaqTuAuW6jHxo6WlzR0OgkK4WDwwz2C4cbGOdLcOl4nCNuVLG/k=
+Received: from OSBPR01MB2920.jpnprd01.prod.outlook.com (2603:1096:604:18::16)
+ by OSZPR01MB6293.jpnprd01.prod.outlook.com (2603:1096:604:ed::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.25; Sat, 8 May
+ 2021 05:26:32 +0000
+Received: from OSBPR01MB2920.jpnprd01.prod.outlook.com
+ ([fe80::b985:8239:6cf0:1228]) by OSBPR01MB2920.jpnprd01.prod.outlook.com
+ ([fe80::b985:8239:6cf0:1228%7]) with mapi id 15.20.4108.031; Sat, 8 May 2021
+ 05:26:32 +0000
+From: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>
+To: "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Subject: RE: [PATCH v3 0/3] fsdax: Factor helper functions to simplify the
+ code
+Thread-Topic: [PATCH v3 0/3] fsdax: Factor helper functions to simplify the
+ code
+Thread-Index: AQHXN325ZvNg0AwKgEyTZt/tgpBu/qrZJMtA
+Date: Sat, 8 May 2021 05:26:32 +0000
+Message-ID: 
+ <OSBPR01MB29205D645B33F4721E890660F4569@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+References: <20210422134501.1596266-1-ruansy.fnst@fujitsu.com>
+In-Reply-To: <20210422134501.1596266-1-ruansy.fnst@fujitsu.com>
+Accept-Language: en-US, zh-CN
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: intel.com; dkim=none (message not signed)
+ header.d=none;intel.com; dmarc=none action=none header.from=fujitsu.com;
+x-originating-ip: [223.111.68.150]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 5df88144-5d5d-4a9f-739b-08d911e1d701
+x-ms-traffictypediagnostic: OSZPR01MB6293:
+x-microsoft-antispam-prvs: 
+ <OSZPR01MB6293271876D5981797A260B3F4569@OSZPR01MB6293.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ cc9u2bdaMbUkID9Edub3sB5dBGouniStjSEfaSRKtCH/OcGR5QlpTIfjIjtK8sjSh5jqpJuSfAgfMdclVzDRjICWSu/qmx7SWxn8kmu6zXSHAyEOSRVVsEW4S7gqlvqrro71S3NGN12WuW0COx+yuGDBsw7GJgKw4OzFAFGO4S3byVrjXdD16vKX6VTQXFeayvu1al5GnqUVIRft+X91hIskl+CAyv2DHXsHT6aAJRr30ILBfEHhVho1frm9tyavOmM8bvrrQJ+i31pHFeDYx6kgvQBKDogrNec0vKCeqX7dpr04LkmrWKdgYobUntMd15i+wC4NTB8ap5LWR+Wgd9hNWMXZdhRu68NDbx6syUNWbxTkVASSQU4uC7NkTHOm5l189fnxrKuh0Vl4QjjdCVIET1UifpyR8wMqV8H1PeCpF6HwPvikUHzYm5/4Xn9w1GjiXuQngD6VNakdQFwFmrWSyX+YT212Mem9/zkqyfUcBM/0FlxCKOLByeD8SRbdGc0WrviVQ9usrKTvOtkj2Potx/RnsZY5Z3gmU9XucR7p6+nkt+NUlyGysRP3DnpdxI3EOmIVpUPZ0Jj6oyCOFMjIiSGKk0bQF1R8jXHeMKXdl7kspntxOZfs1DlH4doDgHIkK7kVciDKkiUzuC95htOF9b7l7vNysHlO7nHUwtK4nBijOpnx3Ds6IY6uHhbc
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSBPR01MB2920.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(366004)(136003)(376002)(39860400002)(396003)(33656002)(7416002)(186003)(316002)(8936002)(8676002)(85182001)(26005)(71200400001)(7696005)(4326008)(110136005)(54906003)(122000001)(52536014)(76116006)(66946007)(66556008)(2906002)(66476007)(66446008)(9686003)(38100700002)(64756008)(5660300002)(966005)(6506007)(478600001)(86362001)(53546011)(83380400001)(55016002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 
+ =?gb2312?B?S3E5cHNsY0t2V2tiZ2lBdmcvSUNwVksrNWg4Q2ZEWm5OTCs5aXVwUkpTOGxq?=
+ =?gb2312?B?SkJ4ZW1OTTVCSnI3RnpoUlJXR2FiNFpRK3JoS296eVAzVWM4TVJJUFlVZUUr?=
+ =?gb2312?B?M1NNN0JrY3laWnZDd2FZdjQ0RjVVaE5jS3NlQ09neUxZM2FxaDJZdkVSR1Qv?=
+ =?gb2312?B?b1BieDhhRENaN3B1YkNOMVk5TWdWcjdKYy8rMjVhOEVsdDQwQ0pKZ0R2Zisy?=
+ =?gb2312?B?S0xTYXppR0h2V3hQVmlvTEprWUVrMnZkNmNaYzB5MktuREpFTm8zRXNvK3BX?=
+ =?gb2312?B?VTRKMTRzQ3A2dFZ5V0RiclhQZFdzdTVVblNOVkhiUnlJMlVKY2xoV2tyNTdJ?=
+ =?gb2312?B?YjV4RGRLd3Z5SVRxSlBqbUlKMVMzV0RQZ3RpRlhCVUhqNlJnSXhmbjFZU3Z2?=
+ =?gb2312?B?M0NoQ3pvQzVBOXJIUFFaejNmb29CbThOQkJ5cmRsN1loSVMxVkNuWTc2MEpw?=
+ =?gb2312?B?NTdPOW9EOGRVeXg1RklHV0RjWUJHcGpzMlN6MXFTMksxTjJtVDI4dHBrUkJl?=
+ =?gb2312?B?aDRZbEdjOUhiQnNwcVRKTHpmRUFlRWN3WlcvOUtEdEJneGllallKZFY1NWd6?=
+ =?gb2312?B?eVdnajRrQXBGNjNvcXdHKzIwUlJLTWh6TG5pZXFOQU5oR1ROWDJENDFVZVF3?=
+ =?gb2312?B?amQ5dW1nT2NJOWdPcDdJVEhsZlJHNWY0NXR3SVlkRDBsUVNraHRwWmRVbzR2?=
+ =?gb2312?B?Uy9QTUtidlh5ZFJUbEZGOWprMmVORXVuOFhBMEt1VnAveWtjalFjeGN3dHVo?=
+ =?gb2312?B?WTFmMVdIYTZybFNsbVFnMCtQU1RyTWF1M2d4SzN1ZmtrczFqUUhYMnVxalRB?=
+ =?gb2312?B?cHlkVnM4TlBhaXRpelZxSmZGekFtK0pYOWhTeFBUWWRCUjRzekdHemF2NjJp?=
+ =?gb2312?B?N1plcHlScTZnUFR3WTVRRDU0eVZhVmVRU0ZXcFdYaUQ1UElOVHNaeXpKaTdn?=
+ =?gb2312?B?RGdCOWRRQ3AwZTJEOUQ4cjJ4VGRBdTVEMXhpb2RLTTRWQjdNcDFSbk9heWg1?=
+ =?gb2312?B?TWRCZUlDTTdWbGZBUzFKbFJLMExlQW5Ld2d3bTF1ZHVDVGVhWmorbG5KbTl6?=
+ =?gb2312?B?bXVSYnN6aStKWVFoemw1VUw3TWpJMkJTSGRvczRsT3M3WURiY0N3S2R1SHJR?=
+ =?gb2312?B?Z0ZseGoyRWVkaWlLaDhZSWpnWktzczFoY2xiaDNNMnlwa0RnUWg1SVRWb2la?=
+ =?gb2312?B?c3VQdWdkdy9KTXAvdkVyYkVTU3NRTEhnU3owWnNDR2NwRjA1RXArSXlNTjky?=
+ =?gb2312?B?aEVRcmhmdi9QMXpRVU9zU0crTkEreE1IMXF5L0RLdktWN1I2bFU4V0xybkNW?=
+ =?gb2312?B?MkJIOTJseko2VU9sQVN1YnE1cVd6Z2pqeUFZZ2wxNlpnOERaVExQSjF6aDgv?=
+ =?gb2312?B?ZGcvWTBucWNlMk1GWTZ6ZUVoZjdxcFZUNUtWNDVZaW1TbTlDWUU4djUzMFla?=
+ =?gb2312?B?MVFiOStwVmEwRHJWL0tDNmtMei9mdzVnRnNRTXU1TlQ5KzRVV293cWF0RGsx?=
+ =?gb2312?B?bGlUamkxaFM1WmZFVWFLKy9ENVdOZXJSeUVrU2RJMUtuMUxqcWV1VHRjaGY1?=
+ =?gb2312?B?Y2tobndDMkRqaW1yOGI2djVVb2txVFRray9GWUhnWW8vU1VLbXVKSFE5aEZE?=
+ =?gb2312?B?WHJtajBjVDgwNzB3TUoxS3RlZHprbTBNc2ZLU3RZdDZCSGVYVytXMGEzVkVF?=
+ =?gb2312?B?WmFHNnZPVyt2R2dFTmtaam1adEYzK2Rpa2FpdHRxNmRJM21iSTh6WU5PZEYw?=
+ =?gb2312?Q?chKMTlGsrX2bHXeDlJr8xF8o1RSPkaSRgR9rcTc?=
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 75Q6dyj18lEVbupR733Arw18RSvD1ut5
-X-Proofpoint-GUID: 75Q6dyj18lEVbupR733Arw18RSvD1ut5
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-08_02:2021-05-06,2021-05-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 spamscore=0 clxscore=1011 bulkscore=0 impostorscore=0
- mlxscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105080030
-Message-ID-Hash: 3P6DNRRQLAOLYONTFRWVTJNFI7VCX4PH
-X-Message-ID-Hash: 3P6DNRRQLAOLYONTFRWVTJNFI7VCX4PH
-X-MailFrom: vaibhav@linux.ibm.com
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OSBPR01MB2920.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5df88144-5d5d-4a9f-739b-08d911e1d701
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 May 2021 05:26:32.1596
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Tmc3JVee0tT5HXUWFd/ubGa0FB96bemoZrISCS1DQzugBq3SRFE1oQZbyIqfcjvQva1vChKRFrMBfDPziVV7CA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB6293
+Message-ID-Hash: VJIIESGCGY5Z2MPS3PJ4UPH4KF6XPPIT
+X-Message-ID-Hash: VJIIESGCGY5Z2MPS3PJ4UPH4KF6XPPIT
+X-MailFrom: ruansy.fnst@fujitsu.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+CC: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "jack@suse.cz" <jack@suse.cz>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, "david@fromorbit.com" <david@fromorbit.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3P6DNRRQLAOLYONTFRWVTJNFI7VCX4PH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OT5CGJICXZOZR3OXZHT5B3N2PFMYR3XY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,66 +141,55 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Currently drc_pmem_qeury_stats() generates a dev_err in case
-"Enable Performance Information Collection" feature is disabled from
-HMC or performance stats are not available for an nvdimm. The error is
-of the form below:
+Hi, Dan
 
-papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
-	 performance stats, Err:-10
+Do you have any comments on this?
 
-This error message confuses users as it implies a possible problem
-with the nvdimm even though its due to a disabled/unavailable
-feature. We fix this by explicitly handling the H_AUTHORITY and
-H_UNSUPPORTED errors from the H_SCM_PERFORMANCE_STATS hcall.
 
-In case of H_AUTHORITY error an info message is logged instead of an
-error, saying that "Permission denied while accessing performance
-stats" and an EPERM error is returned back.
+--
+Thanks,
+Ruan Shiyang.
 
-In case of H_UNSUPPORTED error we return a EOPNOTSUPP error back from
-drc_pmem_query_stats() indicating that performance stats-query
-operation is not supported on this nvdimm.
+> -----Original Message-----
+> From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+> Sent: Thursday, April 22, 2021 9:45 PM
+> Subject: [PATCH v3 0/3] fsdax: Factor helper functions to simplify the code
+> 
+> From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+> 
+> The page fault part of fsdax code is little complex. In order to add CoW feature
+> and make it easy to understand, I was suggested to factor some helper functions
+> to simplify the current dax code.
+> 
+> This is separated from the previous patchset called "V3 fsdax,xfs: Add
+> reflink&dedupe support for fsdax", and the previous comments are here[1].
+> 
+> [1]:
+> https://patchwork.kernel.org/project/linux-nvdimm/patch/20210319015237.99
+> 3880-3-ruansy.fnst@fujitsu.com/
+> 
+> Changes from V2:
+>  - fix the type of 'major' in patch 2
+>  - Rebased on v5.12-rc8
+> 
+> Changes from V1:
+>  - fix Ritesh's email address
+>  - simplify return logic in dax_fault_cow_page()
+> 
+> (Rebased on v5.12-rc8)
+> ==
+> 
+> Shiyang Ruan (3):
+>   fsdax: Factor helpers to simplify dax fault code
+>   fsdax: Factor helper: dax_fault_actor()
+>   fsdax: Output address in dax_iomap_pfn() and rename it
+> 
+>  fs/dax.c | 443 +++++++++++++++++++++++++++++--------------------------
+>  1 file changed, 234 insertions(+), 209 deletions(-)
+> 
+> --
+> 2.31.1
 
-Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
-Changelog
-
-v3:
-* Return EOPNOTSUPP error in case of H_UNSUPPORTED [ Ira ]
-* Return EPERM in case of H_AUTHORITY [ Ira ]
-* Updated patch description
-
-v2:
-* Updated the message logged in case of H_AUTHORITY error [ Ira ]
-* Switched from dev_warn to dev_info in case of H_AUTHORITY error.
-* Instead of -EPERM return -EACCESS for H_AUTHORITY error.
-* Added explicit handling of H_UNSUPPORTED error.
----
- arch/powerpc/platforms/pseries/papr_scm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index ef26fe40efb0..e2b69cc3beaf 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -310,6 +310,13 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
- 		dev_err(&p->pdev->dev,
- 			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
- 		return -ENOENT;
-+	} else if (rc == H_AUTHORITY) {
-+		dev_info(&p->pdev->dev,
-+			 "Permission denied while accessing performance stats");
-+		return -EPERM;
-+	} else if (rc == H_UNSUPPORTED) {
-+		dev_dbg(&p->pdev->dev, "Performance stats unsupported\n");
-+		return -EOPNOTSUPP;
- 	} else if (rc != H_SUCCESS) {
- 		dev_err(&p->pdev->dev,
- 			"Failed to query performance stats, Err:%lld\n", rc);
--- 
-2.31.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
