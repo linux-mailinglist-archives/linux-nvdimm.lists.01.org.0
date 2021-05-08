@@ -1,65 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9391A376FF1
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 May 2021 08:03:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892B337701E
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 May 2021 08:32:49 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B518E100EAAF0;
-	Fri,  7 May 2021 23:03:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=118.97.107.102; helo=mail1.igm.co.id; envelope-from=postmailing1@igm.co.id; receiver=<UNKNOWN> 
-Received: from mail1.igm.co.id (unknown [118.97.107.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F1FB2100EAAF0
-	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 23:03:33 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail1.igm.co.id (Postfix) with ESMTP id 3101A204890;
-	Sat,  8 May 2021 12:29:13 +0700 (WIT)
-X-Virus-Scanned: amavisd-new at igm.co.id
-Received: from mail1.igm.co.id ([127.0.0.1])
-	by localhost (mail1.igm.co.id [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id zvTfY6tyqHXH; Sat,  8 May 2021 12:29:06 +0700 (WIT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail1.igm.co.id (Postfix) with ESMTP id 958C7204898;
-	Sat,  8 May 2021 12:28:17 +0700 (WIT)
-X-Virus-Scanned: amavisd-new at igm.co.id
-Received: from mail1.igm.co.id ([127.0.0.1])
-	by localhost (mail1.igm.co.id [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id uZ5oINjqPSXT; Sat,  8 May 2021 12:28:10 +0700 (WIT)
-Received: from mail1.igm.co.id (mail1.igm.co.id [192.168.2.20])
-	by mail1.igm.co.id (Postfix) with ESMTP id 796B3204874;
-	Sat,  8 May 2021 12:26:54 +0700 (WIT)
-Date: Sat, 8 May 2021 12:26:53 +0700 (WIT)
-From: pedro hills <postmailing1@igm.co.id>
-Message-ID: <1003982758.3494849.1620451613962.JavaMail.root@igm.co.id>
-Subject: (DONATION) $2 Million Has Been Donated
-MIME-Version: 1.0
-X-Originating-IP: [188.241.82.27]
-X-Mailer: Zimbra 8.0.2_GA_5569 (zclient/8.0.2_GA_5569)
-Thread-Topic: (DONATION) $2 Million Has Been Donated
-Thread-Index: yRYlZN+jRS0fTaPj/tnN0zvJzA9ugA==
-Message-ID-Hash: CJEICRKTPOXSH4CYDGXM325BQECMLTZW
-X-Message-ID-Hash: CJEICRKTPOXSH4CYDGXM325BQECMLTZW
-X-MailFrom: postmailing1@igm.co.id
+	by ml01.01.org (Postfix) with ESMTP id DB306100EAAF8;
+	Fri,  7 May 2021 23:32:47 -0700 (PDT)
+Received: from bounces.amazon.co.jp (v160-251-58-180.js8v.static.cnode.io [160.251.58.180])
+	by ml01.01.org (Postfix) with ESMTP id E79B6100EAAF0
+	for <linux-nvdimm@lists.01.org>; Fri,  7 May 2021 23:32:44 -0700 (PDT)
+Message-ID: <4C35EFFFDC6F21CB5FB8A9047976E242@bounces.amazon.co.jp>
+From: "Amazon.co.jp" <account-update@amazon.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQQW1hem9u44CR44GU5Yip55So56K66KqN44Gu44GK6aGY44GE?=
+Date: Sat, 8 May 2021 15:32:32 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: 6VP74IKJBSID2BBMC2OBB2NRBT4YJDFU
+X-Message-ID-Hash: 6VP74IKJBSID2BBMC2OBB2NRBT4YJDFU
+X-MailFrom: abfe@bounces.amazon.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: "hillsp625@gmail.com" <hillsp625@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CJEICRKTPOXSH4CYDGXM325BQECMLTZW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6VP74IKJBSID2BBMC2OBB2NRBT4YJDFU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-
-
-$2 Million Has Been Donated To You,By PEDRO due to the covid-19 pandemia this is Real For More Info Contact PEDRO immediately for your clame This Email: hillsp625@gmail.com Contact whatsapp phone number 0034632232897 Send Your Response To: hillsp625@gmail.com    ________________________________________________________________________________________________________     Aufgrund der Covid-19-Pand&auml;mie wurden Ihnen von PEDRO 2 Millionen US-Dollar gespendet. Dies ist Real For More Info Wenden Sie sich umgehend an PEDRO. hillsp625@gmail.com Kontakt WhatsApp Telefonnummer 0034632232897 Senden Sie Ihre Antwort an: hillsp625@gmail.com
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+IA0KDQogDQoNCg0KDQoNCg0KDQoNCg0KDQoNCkFtYXpvbuS8muWToeaDheWgseOBjOabtOaWsOOB
+p+OBjeOBvuOBm+OCkw0K44GT44KM44Gv44CB6KuL5rGC5YWI44Gu5aSJ5pu044KE44Kr44O844OJ
+44Gu5pyf6ZmQ5YiH44KM44Gq44Gp44CB44GV44G+44GW44G+44Gq5Y6f5Zug44GM6ICD44GI44KJ
+44KM44G+44GZDQrjgqLjgqvjgqbjg7Pjg4jjgpLntq3mjIHjgZnjgovjgavjga/jgIHkuIvjga7j
+g6rjg7Pjgq/jgpLjgq/jg6rjg4Pjgq/jgZfjgabjgqLjgqvjgqbjg7Pjg4jmg4XloLHjgpLmm7Tm
+lrDjgZfjgabjgY/jgaDjgZXjgYQNCg0KaHR0cHM6Ly9hbW9hem4uZThmeC5jb20NCg0KDQoNCg0K
+QW1hem9uLmNvLmpw44Gu44G+44Gf44Gu44GU5Yip55So44KS44GK5b6F44Gh44GX44Gm44GK44KK
+44G+44GZ44CCDQoNCg0KDQrCqSAxOTk2LTIwMjEsIEFtYXpvbi5jb20sIEluYy4gb3IgaXRzIGFm
+ZmlsaWF0ZXMgDQoNCg0KDQoNCg0KDQoNCg0KLiAKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1u
+dmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgt
+bnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
