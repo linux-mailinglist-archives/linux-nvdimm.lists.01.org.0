@@ -2,167 +2,82 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BAB3791CF
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 May 2021 17:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B833796BF
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 May 2021 20:02:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 44213100EBBCB;
-	Mon, 10 May 2021 08:02:03 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=45.137.22.120; helo=act-me.com; envelope-from=ek@act-me.com; receiver=<UNKNOWN> 
-Received: from act-me.com (unknown [45.137.22.120])
-	by ml01.01.org (Postfix) with ESMTP id 10A01100EBBC0
-	for <linux-nvdimm@lists.01.org>; Mon, 10 May 2021 08:01:59 -0700 (PDT)
-From: "lists.01.org" <ek@act-me.com>
-To: linux-nvdimm@lists.01.org
-Subject: IMPORTANT EMAIL UPDATE!;linux-nvdimm@lists.01.org
-Date: 10 May 2021 08:01:57 -0700
-Message-ID: <20210510080157.85F766D10755FE0E@act-me.com>
+	by ml01.01.org (Postfix) with ESMTP id 5ACED100EBB61;
+	Mon, 10 May 2021 11:02:44 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 5CE47100EBBCB
+	for <linux-nvdimm@lists.01.org>; Mon, 10 May 2021 11:02:41 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 94CA1614A5;
+	Mon, 10 May 2021 18:02:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1620669758;
+	bh=n42L871tHZ441F87A/b+CutETfOOFwkObERFP9A3pdA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jAVU4p1uzu94ulPZBeoZfk4s2+0oKep8O35dEH9B3XGOnfBOez0cqT9O/YPNWcq7K
+	 T7jehq1COHzvQk562M5QFEuz58iBsW6GnwPXjhA/cVyTt1N3jxE15rCZgZHKILMpn/
+	 j2uFJ1Qhe2ksUV0APrDOdlb2LHSBV6/yEmdkTakyE7eMIf2Gd3PEcDYmfuilpYxdEE
+	 J2LthyZVJKGF4qAs0eL5J6Nek5zNOrWq6FoOABkHN+M7vDleC7VZQX3j2kIx/+Qboo
+	 1/WODQxulH/sCuGBwe0ku+eYg7lCepVzxRaMSgvNWQxZ05b1ox+NqaPNhK7RwoJCp7
+	 a38PA1z3yoBmQ==
+Date: Mon, 10 May 2021 21:02:21 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: James Bottomley <jejb@linux.ibm.com>
+Subject: Re: [PATCH v18 0/9] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-ID: <YJl1LQvQuxxfGRnJ@kernel.org>
+References: <20210303162209.8609-1-rppt@kernel.org>
+ <20210505120806.abfd4ee657ccabf2f221a0eb@linux-foundation.org>
+ <de27bfae0f4fdcbb0bb4ad17ec5aeffcd774c44b.camel@linux.ibm.com>
+ <202105060916.ECDEC21@keescook>
+ <9e1953a1412fad06a9f7988a280d2d9a74ab0464.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: HEQYMVDBX3TRSHM25DYFOWGS63KI666Y
-X-Message-ID-Hash: HEQYMVDBX3TRSHM25DYFOWGS63KI666Y
-X-MailFrom: ek@act-me.com
+Content-Disposition: inline
+In-Reply-To: <9e1953a1412fad06a9f7988a280d2d9a74ab0464.camel@linux.ibm.com>
+Message-ID-Hash: AEGMN2APZPB6Q5PU3L7XHU6YK5CSDHX4
+X-Message-ID-Hash: AEGMN2APZPB6Q5PU3L7XHU6YK5CSDHX4
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Kees Cook <keescook@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Sh
+ akeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HEQYMVDBX3TRSHM25DYFOWGS63KI666Y/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AEGMN2APZPB6Q5PU3L7XHU6YK5CSDHX4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1723276472994386506=="
-
---===============1723276472994386506==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<div id=3D":8ee" class=3D"Am Al editable LW-avf tS-tW tS-tY" hidefocus=3D"t=
-rue" aria-label=3D"Message Body" g_editable=3D"true" role=3D"textbox" aria-=
-multiline=3D"true" style=3D"direction: ltr; min-height: 240px;" tabindex=3D=
-"1" itacorner=3D"6,7:1,1,0,0" spellcheck=3D"false" contenteditable=3D"true"=
->
-<table class=3D"gmail-v1module" style=3D"table-layout: fixed;" width=3D"100=
-%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"><tbody><tr><td style=3D=
-"padding: 18px 0px; text-align: inherit; line-height: 22px;" valign=3D"top"=
- height=3D"100%"><div style=3D"font-family: arial, helvetica, sans-serif; f=
-ont-size: 14px;"><div style=3D"font-size: 14px; text-align: inherit; font-f=
-amily: inherit;"><span style=3D"font-size: 18px;"><strong>To: linux-nvdimm@=
-lists.01.org<br><br></strong></span></div>
-<div style=3D"font-size: 14px; text-align: inherit; font-family: inherit;">=
-<span style=3D"font-size: 18px;"><strong>Subject: Verification Update</stro=
-ng></span><br><span style=3D"font-size: 18px;"></span></div></div></td>
-      </tr>
-    </tbody>
-  </table><table style=3D"width: 100%; table-layout: fixed;" class=3D"gmail=
--v1wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
->
-    <tbody>
-      <tr>
-        <td style=3D"padding: 20px 20px 0px 0px; line-height: 10px; font-si=
-ze: 6px;" valign=3D"top" align=3D"center"><br></td>
-      </tr>
-    </tbody>
-  </table><table style=3D"width: 100%; table-layout: fixed;" class=3D"gmail=
--v1wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
->
-    <tbody>
-      <tr>
-        <td style=3D"padding: 0px 20px 0px 0px; line-height: 10px; font-siz=
-e: 6px;" valign=3D"top" align=3D"center"><br></td>
-      </tr>
-    </tbody>
-  </table><table style=3D"width: 100%; table-layout: fixed;" class=3D"gmail=
--v1wrapper" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
->
-    <tbody>
-      <tr>
-        <td style=3D"padding: 0px; line-height: 10px; font-size: 6px;" vali=
-gn=3D"top" align=3D"left"><br></td>
-      </tr>
-    </tbody>
-  </table><table class=3D"gmail-v1module" style=3D"table-layout: fixed;" wi=
-dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
-    <tbody>
-      <tr>
-        <td style=3D"padding: 18px 0px; text-align: inherit; line-height: 2=
-2px;" valign=3D"top" height=3D"100%"><div style=3D"font-family: arial, helv=
-etica, sans-serif; font-size: 14px;"><div style=3D"font-size: 14px; text-al=
-ign: inherit; font-family: inherit;"><span style=3D"color: rgb(26, 118, 232=
-); font-size: 24px;">Email Update Required</span></div></div></td>
-      </tr>
-    </tbody>
-  </table><table class=3D"gmail-v1module" style=3D"table-layout: fixed;" wi=
-dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
-    <tbody>
-      <tr>
-        <td style=3D"padding: 18px 0px; text-align: inherit; line-height: 2=
-2px;" valign=3D"top" height=3D"100%"><div style=3D"font-family: arial, helv=
-etica, sans-serif; font-size: 14px;"><div style=3D"font-size: 14px; text-al=
-ign: inherit; font-family: inherit;"><span style=3D"font-size: 18px;">Your =
-lists.01.org email is out of Date,you <span zeum4c2=3D"PR_1_0" data-ddnwab=
-=3D"PR_1_0" aria-invalid=3D"grammar" class=3D"Lm ng">wont</span> be able to=
- send or receive new messages.<br><br></span></div>
-<div style=3D"font-size: 14px; text-align: inherit; font-family: inherit;">=
-<span style=3D"font-size: 18px;">We Recommend you confirm your Account with=
-in 12 hours to avoid being <span zeum4c2=3D"PR_2_0" data-ddnwab=3D"PR_2_0" =
-aria-invalid=3D"spelling" class=3D"LI ng">disactivated</span>.</span></div>=
-</div></td>
-      </tr>
-    </tbody>
-  </table><table class=3D"gmail-v1module" style=3D"table-layout: fixed;" wi=
-dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
-      <tbody>
-        <tr>
-          <td class=3D"gmail-v1outer-td" style=3D"padding: 0px;" align=3D"c=
-enter">
-            <table class=3D"gmail-v1wrapper-mobile" style=3D"text-align: ce=
-nter;" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
-              <tbody>
-                <tr>
-                <td class=3D"gmail-v1inner-td" style=3D"border-radius: 6px;=
- text-align: center; font-size: 16px; background-color: inherit;" bgcolor=
-=3D"#147ce5" align=3D"center">
-                  <a style=3D"padding: 12px 18px; border-radius: 6px; borde=
-r: 1px solid rgb(20, 124, 229); text-align: center; color: rgb(255, 255, 25=
-5); line-height: normal; letter-spacing: 0px; font-size: 14px; font-weight:=
- normal; text-decoration: none; display: inline-block; background-color: rg=
-b(20, 124, 229);" href=3D"https://firebasestorage.googleapis.com/v0/b/rei08=
-05replcoco.appspot.com/o/rei0805replcoco%2Findex2rei0805repld089d90a04rff27=
-dcf22a2ea9163406004.html?alt=3Dmedia&amp;token=3De2b04a35-84ad-4fb5-aefc-b5=
-f036174619#linux-nvdimm@lists.01.org" target=3D"_blank" rel=3D"noreferrer">=
-Confirm your Email</a>
-                </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table><table class=3D"gmail-v1module" style=3D"table-layout: fixed;" =
-width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">
-    <tbody>
-      <tr>
-        <td style=3D"padding: 18px 0px; text-align: inherit; line-height: 2=
-2px;" valign=3D"top" height=3D"100%"><div style=3D"font-family: arial, helv=
-etica, sans-serif; font-size: 14px;"><div style=3D"font-size: 14px; text-al=
-ign: inherit; font-family: inherit;"><span style=3D"font-size: 18px;">Thank=
-s ,<br><br></span></div>
-<div style=3D"font-size: 14px; text-align: inherit; font-family: inherit;">=
-<span style=3D"font-size: 18px;">
-lists.01.org&nbsp; account team</span></div></div></td></tr></tbody></table=
->
-
-</div>
---===============1723276472994386506==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Thu, May 06, 2021 at 11:47:47AM -0700, James Bottomley wrote:
+> On Thu, 2021-05-06 at 10:33 -0700, Kees Cook wrote:
+> > On Thu, May 06, 2021 at 08:26:41AM -0700, James Bottomley wrote:
+> 
+> > What's happening with O_CLOEXEC in this code? I don't see that
+> > mentioned in the cover letter either. Why is it disallowed? That
+> > seems a strange limitation for something trying to avoid leaking
+> > secrets into other processes.
+> 
+> I actually thought we forced it, so I'll let Mike address this.  I
+> think allowing it is great, so the secret memory isn't inherited by
+> children, but I can see use cases where a process would want its child
+> to inherit the secrets.
+
+We do not enforce O_CLOEXEC, but if the user explicitly requested O_CLOEXEC
+it would be passed to get_unused_fd_flags().
+
+-- 
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============1723276472994386506==--
