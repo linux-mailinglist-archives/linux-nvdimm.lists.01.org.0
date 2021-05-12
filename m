@@ -2,118 +2,219 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B6237A845
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 11 May 2021 15:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE4737B342
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 May 2021 03:04:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 75EEC100EB32C;
-	Tue, 11 May 2021 06:57:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=82.202.160.247; helo=ceo8.b2blinkeddatabase.info; envelope-from=info-linux+2dnvdimm=lists.01.org@b2blinkeddatabase.info; receiver=<UNKNOWN> 
-Received: from ceo8.b2blinkeddatabase.info (unknown [82.202.160.247])
+	by ml01.01.org (Postfix) with ESMTP id 207B5100EB32A;
+	Tue, 11 May 2021 18:04:36 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=djwong@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 348BD100EBBDD
-	for <linux-nvdimm@lists.01.org>; Tue, 11 May 2021 06:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=b2blinkeddatabase.info;
- h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:List-Unsubscribe:List-Id; i=info@b2blinkeddatabase.info;
- bh=bLpBD8wtXOtUFYUf9J1ZFgecqVs=;
- b=I6LDpkyRofHJ36cNTSJAOnJ7VT07dvJa9aIOQwkkApXoj5VGbHJG7wgq7CbsgU914VBR9qmoCt94
-   lOgpxxGomUkD3GNxYi7fWiW07Rme3z8hnp/g40sZvmSq3dOixvlg9q2OPDrRF5Gd+koqJWbx8j71
-   7y0nfusbrG+QMwB2E8r67cnDyFe156u8ZUhCD/4hmQZw1+h5xCXA9lr0Gs2EzxN7dd5w/4IyWanY
-   tmczV9VuPaWzgfrHk6iixhtzrkyTk+/Qjex+KEzAF0qJbI4EisOEmv4+MRWcfZnKximxBL3OjVUv
-   czBFpqDeTns54tt/KuNyrW2gvaQbYpceANvwIg==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=b2blinkeddatabase.info;
- b=fleZRG9xzOctCBwFHCaRX9O2IM1cJC92df/y7p7BT4Zs6NfZHxmm2tS4/HB1vfzb6eyOxQuq2v55
-   8+eV5Ko00EnU0J2ls6Bmkcovg4W169gWyIvkdwVEjXDAYLaktLBoU7pshHalsUdGIb4TPZ8T3x0m
-   swqkjrQsEEtFgDEg+Ogedpw/aCINQXJDG6MIeHnVoWx5o/SAPPTOkzECSFx1iIaFux4D4QM6vrOA
-   ew4VxjJkBdz8xVvPGV9DNEFvs7/6dHOicQnCz2uIKRjuaYi4jysUmp4Ki+SSCf/aOHMSmz/9gYdB
-   iRFYxu9h45XURw4NRKi79ROmxODvLN0uwCf/Ag==;
-Received: from b2blinkeddatabase.info (127.0.0.1) by ceo1.b2blinkeddatabase.info id hja6jti19tkj for <linux-nvdimm@lists.01.org>; Tue, 11 May 2021 04:09:38 +0300 (envelope-from <info-linux+2Dnvdimm=lists.01.org@b2blinkeddatabase.info>)
-Message-ID: <3f9d2232be379b50d10a1a83ca000b48@b2blinkeddatabase.info>
-Date: Tue, 11 May 2021 01:09:38 +0000
-Subject: RE: 100k Client details at $500
-From: Sara Taylor <info@b2blinkeddatabase.info>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+	by ml01.01.org (Postfix) with ESMTPS id 5F5FA100EBB6E
+	for <linux-nvdimm@lists.01.org>; Tue, 11 May 2021 18:04:33 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 92DFF6188B;
+	Wed, 12 May 2021 01:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1620781471;
+	bh=4ukDiIKKgh1y+mRhe74OIC0185vE18PdqlfDiEBdDE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HksElAHPqQqPB2hMXEL/asB8GFQXO3cFgF3KADg+VblDPr/PBw4dPekdB21RFxoSJ
+	 5Awaw1RlZivkW7DrIaEee7Ctm/wxfD/BTyXlqhTLHsF6mSqovXt/1rZiv/s9Vq62w3
+	 3Efp0CgDDF5waFLOzD8jmBLv46/LliifFIMNAspqqG5791JL8rsBnFOkUg8efhqMxD
+	 pkxMmHCzryjgNtteu5hzHqyqzm1ACsfYCcMcwQ1fqIHGyWcNqL+R5z4nKs9grDuPoL
+	 CZ5m0uxIYixuIs41CZ0xcuJBTkXamHs/pU58ime2FvfEtX89szvZdLuu9FTwcx5E8R
+	 DAQVLPTmCDdfw==
+Date: Tue, 11 May 2021 18:04:28 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Subject: Re: [PATCH v5 7/7] fs/xfs: Add dax dedupe support
+Message-ID: <20210512010428.GQ8582@magnolia>
+References: <20210511030933.3080921-1-ruansy.fnst@fujitsu.com>
+ <20210511030933.3080921-8-ruansy.fnst@fujitsu.com>
 MIME-Version: 1.0
-X-Sender: info@b2blinkeddatabase.info
-X-Report-Abuse: Please report abuse for this campaign here:
- https://b2blinkeddatabase.info/emm/index.php/campaigns/fn986akphhdea/report-abuse/fw854rkhve69a/kh853511etd7e
-X-Receiver: linux-nvdimm@lists.01.org
-X-Poyq-Tracking-Did: 0
-X-Poyq-Subscriber-Uid: kh853511etd7e
-X-Poyq-Mailer: SwiftMailer - 5.4.x
-X-Poyq-EBS: https://b2blinkeddatabase.info/emm/index.php/lists/block-address
-X-Poyq-Delivery-Sid: 1
-X-Poyq-Customer-Uid: jt8014h46gbc0
-X-Poyq-Customer-Gid: 0
-X-Poyq-Campaign-Uid: fn986akphhdea
-Precedence: bulk
-Feedback-ID: fn986akphhdea:kh853511etd7e:fw854rkhve69a:jt8014h46gbc0
-Message-ID-Hash: LR4LQV7SW7TWQV5SAJGDHZVGYFLVYVO2
-X-Message-ID-Hash: LR4LQV7SW7TWQV5SAJGDHZVGYFLVYVO2
-X-MailFrom: info-linux+2Dnvdimm=lists.01.org@b2blinkeddatabase.info
+Content-Disposition: inline
+In-Reply-To: <20210511030933.3080921-8-ruansy.fnst@fujitsu.com>
+Message-ID-Hash: 3OTWUHUFGZTS72SGH4FWJHS6J5BF7XCO
+X-Message-ID-Hash: 3OTWUHUFGZTS72SGH4FWJHS6J5BF7XCO
+X-MailFrom: djwong@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, willy@infradead.org, viro@zeniv.linux.org.uk, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
-Reply-To: Sara Taylor <sarajohntaylor@gmail.com>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LR4LQV7SW7TWQV5SAJGDHZVGYFLVYVO2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3OTWUHUFGZTS72SGH4FWJHS6J5BF7XCO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QmVjYXVzZSBvZiBidXNpbmVzc2VzIGFyZSBzbG93IHdlIGFyZSBvZmZlcnJpbmcgMTAwLDAwMCBl
-bWFpbA0KZGF0YWJhc2VzIGp1c3QgYXQgJDUwMCBvbmx5IGZvciBNYXkuDQpPdXIgZGF0YWJhc2Vz
-IGNvdmVyIGFsbCBjaXRpZXMuDQoqIENFT3MsIG93bmVycywgUHJlc2lkZW50cyBhbmQgTURzIGVt
-YWlsIGxpc3QNCiogQ0lPLCBDVE8sIENJU08sIFZQL0RpcmVjdG9yL01hbmFnZXIgb2YgSVQsIElU
-IENvbXBsaWFuY2UsIElUIFJpc2ssDQpCSSwgQ2xvdWQsIERhdGFiYXNlIGFuZCBJVCBTZWN1cml0
-eSBtYW5hZ2VycyBlbWFpbCBsaXN0DQoqIENGTywgQ29udHJvbGxlciwgVlAvRGlyZWN0b3IvTWFu
-YWdlciBvZiBGaW5hbmNlLCBBY2NvdW50cyBQYXlhYmxlLA0KQWNjb3VudHMgUmVjZWl2YWJsZSwg
-QXVkaXQgbWFuYWdlcnMgZW1haWwgbGlzdA0KKiBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEN1c3Rv
-bWVyIFNlcnZpY2UgYW5kIEN1c3RvbWVyIFN1Y2Nlc3MNCm1hbmFnZXJzIGVtYWlsIGxpc3QNCiog
-VHJhZGVyL2ludmVzdG9ycyBlbWFpbCBsaXN0DQoqIFRlbGVjb20gbWFuYWdlcnMsIFZPSVAgbWFu
-YWdlcnMsIENsb3VkIGFyY2hpdGVjdCwgQ2xvdWQgbWFuYWdlcnMsDQpTdG9yYWdlIG1hbmFnZXJz
-IGVtYWlsIGxpc3QNCiogU21hbGwgQnVzaW5lc3Mgb3duZXJzIGVtYWlsIGxpc3QNCiogUHVyY2hh
-c2luZyBhbmQgUHJvY3VyZW1lbnQgTWFuYWdlcnMgZW1haWwgbGlzdA0KKiBQaHlzaWNpYW5zLCBE
-b2N0b3JzLCBOdXJzZXMsIERlbnRpc3RzLCBUaGVyYXBpc3RzIGVtYWlsIGxpc3QNCiogUGhhcm1h
-Y2lzdCBhbmQgcGhhcm1hY3kgb3duZXJzIGVtYWlsIGxpc3QNCiogT2lsLCBHYXMgYW5kIHV0aWxp
-dHkgaW5kdXN0cnkgZGVjaXNpb24gbWFrZXJzIGVtYWlsIGxpc3QNCiogTmV3ICYgVXNlZCBDYXIg
-RGVhbGVycyBlbWFpbCBsaXN0DQoqIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVt
-YW5kIGdlbmVyYXRpb24sIExlYWQgZ2VuZXJhdGlvbg0KZGVjaXNpb24gbWFrZXJzIGVtYWlsIGxp
-c3QNCiogTWFudWZhY3R1cmluZyBJbmR1c3RyeSBkZWNpc2lvbiBtYWtlcnMgZW1haWwgbGlzdA0K
-KiBMb2dpc3RpY3MsIHNoaXBwaW5nLCBhbmQgc3VwcGx5IGNoYWluIG1hbmFnZXJzIGVtYWlsIGxp
-c3QNCiogSVNWL1ZBUnMvUmVzZWxsZXJzIGVtYWlsIGxpc3QNCiogSW5kaXZpZHVhbCBpbnN1cmFu
-Y2UgYWdlbnRzIGVtYWlsIGxpc3QNCiogSFIsIFRyYWluaW5nLCBMZWFybmluZyAmIERldmVsb3Bt
-ZW50LCBFbXBsb3llZSBCZW5lZml0cywgVGFsZW50DQpBY3F1aXNpdGlvbiwgUmVjcnVpdGluZyBk
-ZWNpc2lvbiBtYWtlcnMgZW1haWwgbGlzdA0KKiBIb3NwaXRhbHMsIGNsaW5pY3MsIHByaXZhdGUg
-cHJhY3RpY2VzLCBQaGFybWFjZXV0aWNhbCBhbmQNCmJpb3RlY2hub2xvZ3kgY29tcGFueeKAmXMg
-dG9wIGRlY2lzaW9uIG1ha2VycyBlbWFpbCBsaXN0DQoqIEhvbWVvd25lcnMsIEFwYXJ0bWVudCBv
-d25lcnMsIEJ1aWxkaW5nIG93bmVyIGVtYWlsIGxpc3QNCiogSGlnaCBuZXQgd29ydGggaW5kaXZp
-ZHVhbHMvaW52ZXN0b3JzIGVtYWlsIGxpc3QNCiogSGVhbHRoLCBlbnZpcm9ubWVudCAmIFNhZmV0
-eSBtYW5hZ2VycyBlbWFpbCBsaXN0DQoqIEdvdmVybm1lbnQgZGVjaXNpb24gbWFrZXJzIGVtYWls
-IGxpc3QNCiogR2VuZXJhbCBhbmQgY29ycG9yYXRlIGNvdW5zZWxzIGVtYWlsIGxpc3QNCiogRmxl
-ZXQgbWFuYWdlcnMsIFRydWNraW5nIGNvbXBhbnkgb3duZXJzIGVtYWlsIGxpc3QNCiogRmluYW5j
-aWFsIHBsYW5uZXIvYWR2aXNvcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzLCBvZmZpY2UgYW5k
-IG1haW50ZW5hbmNlIG1hbmFnZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5kIE1lZXRpbmcgcGxh
-bm5lcnMsIG9yZ2FuaXplcnMsIGFuZCBleGhpYml0b3JzIGVtYWlsIGxpc3QNCiogRW5naW5lZXJz
-IGVtYWlsIGxpc3QNCiogRWR1Y2F0aW9uIGluZHVzdHJ5IGV4ZWN1dGl2ZXMgZW1haWwgbGlzdCAt
-IFByaW5jaXBhbHMsIERlYW4sDQpBZG1pbnMgYW5kIHRlYWNoZXJzIGZyb20gU2Nob29scywgQ29s
-bGVnZXMgYW5kIFVuaXZlcnNpdGllcw0KKiBFLWNvbW1lcmNlIG9yIG9ubGluZSByZXRhaWxlcnMg
-ZW1haWwgbGlzdA0KKiBEYXRhIHNjaWVudGlzdCwgRGF0YSBBbmFseXRpY3MgYW5kIERhdGFiYXNl
-IEFkbWluaXN0cmF0b3JzIGVtYWlsDQpsaXN0DQoqIENQQSBhbmQgQm9va2tlZXBlcnMgZW1haWwg
-bGlzdA0KKiBDb21wbGlhbmNlIGFuZCBSaXNrIE1hbmFnZW1lbnQgbWFuYWdlcnMgZW1haWwgbGlz
-dA0KKiBDb21tZXJjaWFsIHByb3BlcnR5IG93bmVycyBlbWFpbCBsaXN0DQoqIEJ1aWxkZXJzLCBw
-cm9wZXJ0eSBkZXZlbG9wZXJzIGFuZCBjb25zdHJ1Y3Rpb24gaW5kdXN0cnkgZGVjaXNpb24NCm1h
-a2VycyBlbWFpbCBsaXN0DQoqIEF0dG9ybmV5cyBhbmQgTGF3eWVycyBlbWFpbCBsaXN0DQoqIEFy
-Y2hpdGVjdHMgYW5kIGludGVyaW9yIGRlc2lnbmVycyBlbWFpbCBsaXN0DQpQbGVhc2UgbGV0IG1l
-IGtub3cgeW91ciB0aG91Z2h0cy4NClNhcmEgdGF5bG9yDQpFbWFpbCBEYXRhYmFzZSBQcm92aWRl
-cg0KVW5zdWJzY3JpYmUNCmh0dHBzOi8vYjJibGlua2VkZGF0YWJhc2UuaW5mby9lbW0vaW5kZXgu
-cGhwL2xpc3RzL2Z3ODU0cmtodmU2OWEvdW5zdWJzY3JpYmUva2g4NTM1MTFldGQ3ZS9mbjk4NmFr
-cGhoZGVhDQrCoA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
-ClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3Rz
-LjAxLm9yZwo=
+On Tue, May 11, 2021 at 11:09:33AM +0800, Shiyang Ruan wrote:
+> Introduce xfs_mmaplock_two_inodes_and_break_dax_layout() for dax files
+> who are going to be deduped.  After that, call compare range function
+> only when files are both DAX or not.
+> 
+> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+> ---
+>  fs/xfs/xfs_file.c    |  2 +-
+>  fs/xfs/xfs_inode.c   | 66 +++++++++++++++++++++++++++++++++++++++++++-
+>  fs/xfs/xfs_inode.h   |  1 +
+>  fs/xfs/xfs_reflink.c |  4 +--
+>  4 files changed, 69 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+> index 38d8eca05aee..bd5002d38df4 100644
+> --- a/fs/xfs/xfs_file.c
+> +++ b/fs/xfs/xfs_file.c
+> @@ -823,7 +823,7 @@ xfs_wait_dax_page(
+>  	xfs_ilock(ip, XFS_MMAPLOCK_EXCL);
+>  }
+>  
+> -static int
+> +int
+>  xfs_break_dax_layouts(
+>  	struct inode		*inode,
+>  	bool			*retry)
+> diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+> index 0369eb22c1bb..0774b6e2b940 100644
+> --- a/fs/xfs/xfs_inode.c
+> +++ b/fs/xfs/xfs_inode.c
+> @@ -3711,6 +3711,64 @@ xfs_iolock_two_inodes_and_break_layout(
+>  	return 0;
+>  }
+>  
+> +static int
+> +xfs_mmaplock_two_inodes_and_break_dax_layout(
+> +	struct inode		*src,
+> +	struct inode		*dest)
+
+MMAPLOCK is an xfs_inode lock, so please pass those in here.
+
+> +{
+> +	int			error, attempts = 0;
+> +	bool			retry;
+> +	struct xfs_inode	*ip0, *ip1;
+> +	struct page		*page;
+> +	struct xfs_log_item	*lp;
+> +
+> +	if (src > dest)
+> +		swap(src, dest);
+
+The MMAPLOCK (and ILOCK) locking order is increasing inode number, not
+the address of the incore object.  This is different (and not consistent
+with) i_rwsem/XFS_IOLOCK, but those are the rules.
+
+> +	ip0 = XFS_I(src);
+> +	ip1 = XFS_I(dest);
+> +
+> +again:
+> +	retry = false;
+> +	/* Lock the first inode */
+> +	xfs_ilock(ip0, XFS_MMAPLOCK_EXCL);
+> +	error = xfs_break_dax_layouts(src, &retry);
+> +	if (error || retry) {
+> +		xfs_iunlock(ip0, XFS_MMAPLOCK_EXCL);
+> +		goto again;
+> +	}
+> +
+> +	if (src == dest)
+> +		return 0;
+> +
+> +	/* Nested lock the second inode */
+> +	lp = &ip0->i_itemp->ili_item;
+> +	if (lp && test_bit(XFS_LI_IN_AIL, &lp->li_flags)) {
+> +		if (!xfs_ilock_nowait(ip1,
+> +		    xfs_lock_inumorder(XFS_MMAPLOCK_EXCL, 1))) {
+> +			xfs_iunlock(ip0, XFS_MMAPLOCK_EXCL);
+> +			if ((++attempts % 5) == 0)
+> +				delay(1); /* Don't just spin the CPU */
+> +			goto again;
+> +		}
+> +	} else
+> +		xfs_ilock(ip1, xfs_lock_inumorder(XFS_MMAPLOCK_EXCL, 1));
+> +	/*
+> +	 * We cannot use xfs_break_dax_layouts() directly here because it may
+> +	 * need to unlock & lock the XFS_MMAPLOCK_EXCL which is not suitable
+> +	 * for this nested lock case.
+> +	 */
+> +	page = dax_layout_busy_page(dest->i_mapping);
+> +	if (page) {
+> +		if (page_ref_count(page) != 1) {
+
+This could be flattened to:
+
+	if (page && page_ref_count(page) != 1) {
+		...
+	}
+
+--D
+
+> +			xfs_iunlock(ip1, XFS_MMAPLOCK_EXCL);
+> +			xfs_iunlock(ip0, XFS_MMAPLOCK_EXCL);
+> +			goto again;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * Lock two inodes so that userspace cannot initiate I/O via file syscalls or
+>   * mmap activity.
+> @@ -3721,10 +3779,16 @@ xfs_ilock2_io_mmap(
+>  	struct xfs_inode	*ip2)
+>  {
+>  	int			ret;
+> +	struct inode		*ino1 = VFS_I(ip1);
+> +	struct inode		*ino2 = VFS_I(ip2);
+>  
+> -	ret = xfs_iolock_two_inodes_and_break_layout(VFS_I(ip1), VFS_I(ip2));
+> +	ret = xfs_iolock_two_inodes_and_break_layout(ino1, ino2);
+>  	if (ret)
+>  		return ret;
+> +
+> +	if (IS_DAX(ino1) && IS_DAX(ino2))
+> +		return xfs_mmaplock_two_inodes_and_break_dax_layout(ino1, ino2);
+> +
+>  	if (ip1 == ip2)
+>  		xfs_ilock(ip1, XFS_MMAPLOCK_EXCL);
+>  	else
+> diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
+> index ca826cfba91c..2d0b344fb100 100644
+> --- a/fs/xfs/xfs_inode.h
+> +++ b/fs/xfs/xfs_inode.h
+> @@ -457,6 +457,7 @@ enum xfs_prealloc_flags {
+>  
+>  int	xfs_update_prealloc_flags(struct xfs_inode *ip,
+>  				  enum xfs_prealloc_flags flags);
+> +int	xfs_break_dax_layouts(struct inode *inode, bool *retry);
+>  int	xfs_break_layouts(struct inode *inode, uint *iolock,
+>  		enum layout_break_reason reason);
+>  
+> diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+> index 9a780948dbd0..ff308304c5cd 100644
+> --- a/fs/xfs/xfs_reflink.c
+> +++ b/fs/xfs/xfs_reflink.c
+> @@ -1324,8 +1324,8 @@ xfs_reflink_remap_prep(
+>  	if (XFS_IS_REALTIME_INODE(src) || XFS_IS_REALTIME_INODE(dest))
+>  		goto out_unlock;
+>  
+> -	/* Don't share DAX file data for now. */
+> -	if (IS_DAX(inode_in) || IS_DAX(inode_out))
+> +	/* Don't share DAX file data with non-DAX file. */
+> +	if (IS_DAX(inode_in) != IS_DAX(inode_out))
+>  		goto out_unlock;
+>  
+>  	if (!IS_DAX(inode_in))
+> -- 
+> 2.31.1
+> 
+> 
+> 
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
