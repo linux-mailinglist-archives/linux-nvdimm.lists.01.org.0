@@ -1,69 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81A237B88C
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 May 2021 10:50:48 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3F337BCDE
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 May 2021 14:51:19 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CF02B100EC1CE;
-	Wed, 12 May 2021 01:50:45 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.64.219; helo=jcb.co.jp; envelope-from=dz@jcb.co.jp; receiver=<UNKNOWN> 
-Received: from jcb.co.jp (unknown [116.85.64.219])
-	by ml01.01.org (Postfix) with ESMTP id 47BFA100ED4AE
-	for <linux-nvdimm@lists.01.org>; Wed, 12 May 2021 01:50:41 -0700 (PDT)
-Message-ID: <AD80C28B9F7925BBB968E5671313F1F5@jcb.co.jp>
-From: =?utf-8?B?5qCq5byP5Lya56S+44K444Kn44O844K344O844OT44O8?= <info@jcb.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQTXlKQ0LjgJHjgZTliKnnlKjnoro=?=
-	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
-Date: Wed, 12 May 2021 16:50:30 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: N3S7VEAAZWALAR4PVRAJAWKP34NGQJXK
-X-Message-ID-Hash: N3S7VEAAZWALAR4PVRAJAWKP34NGQJXK
-X-MailFrom: dz@jcb.co.jp
+	by ml01.01.org (Postfix) with ESMTP id 8A495100EC1D4;
+	Wed, 12 May 2021 05:51:14 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=84.38.129.56; helo=i-cbr.com; envelope-from=secureserver@i-cbr.com; receiver=<UNKNOWN> 
+Received: from i-cbr.com (unknown [84.38.129.56])
+	by ml01.01.org (Postfix) with ESMTP id DFB43100EBB6B
+	for <linux-nvdimm@lists.01.org>; Wed, 12 May 2021 05:51:11 -0700 (PDT)
+From: mohsin<secureserver@i-cbr.com>
+To: linux-nvdimm@lists.01.org
+Subject: About your products!
+Date: 12 May 2021 14:51:08 +0200
+Message-ID: <20210512145107.D7DE3FF87FAC8554@i-cbr.com>
+MIME-Version: 1.0
+Message-ID-Hash: 63XRWPK6IOFXBMWHGSCFERPIYGRXUWX6
+X-Message-ID-Hash: 63XRWPK6IOFXBMWHGSCFERPIYGRXUWX6
+X-MailFrom: secureserver@i-cbr.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: md.mohsin@i-cbr.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/N3S7VEAAZWALAR4PVRAJAWKP34NGQJXK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/63XRWPK6IOFXBMWHGSCFERPIYGRXUWX6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============8579917766778838794=="
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
-44KJDQoNCuOBlOS4jeS+v+OBqOOBlOW/g+mFjeOCkuOBiuOBi+OBkeOBl+OBvuOBl+OBpuiqoOOB
-q+eUs+OBl+ios+OBlOOBluOBhOOBvuOBm+OCk+OBjOOAgQ0K5L2V44Go44Ge44GU55CG6Kej6LOc
-44KK44Gf44GP44GK6aGY44GE55Sz44GX44GC44GS44G+44GZ44CCDQrilIHilIHilIHilIHilIHi
-lIHilIHilIHilIHilIHilIHilIHilIHilIHilIENCuKWoOeZuuihjOiAheKWoA0K5qCq5byP5Lya
-56S+44K444Kn44O844K344O844OT44O8DQrmnbHkuqzpg73muK/ljLrljZfpnZLlsbE1LTEtMjIN
-CuKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgA0KwqlKQ0IgQ28u
-LCBMdGQuIDIwMDANCueEoeaWrei7oui8ieOBiuOCiOOBs+WGjemFjeW4g+OCkuemgeOBmOOBvuOB
-meOAggpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51
-eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5z
-dWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3Jn
-Cg==
+--===============8579917766778838794==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19699"></HEAD>
+<body>
+<H2>
+<H3>
+<P>
+<H2>Hello,=20
+<P></P>
+<P>Your products are good, do send me your catalogue/samples prices. <BR>ki=
+ndly, let me know the terms of payment., and delivery. <BR><BR><BR><BR></P>=
+
+<P>Thanks, <BR>Md. Mohsin<BR>Sales Manager<BR>Achieve Intl Trade Co., Ltd.<=
+BR>Unnamed Road - Abu Dhabi - United Arab Emirates<BR></H2></H3></H2></P></=
+BODY></HTML>
+--===============8579917766778838794==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============8579917766778838794==--
