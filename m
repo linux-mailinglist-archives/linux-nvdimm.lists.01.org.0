@@ -2,263 +2,285 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A17737F286
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 May 2021 07:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4466D37F2DA
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 May 2021 08:13:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A7189100F2257;
-	Wed, 12 May 2021 22:16:03 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	by ml01.01.org (Postfix) with ESMTP id 839F2100F2257;
+	Wed, 12 May 2021 23:12:59 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A7A6A100EC1C6
-	for <linux-nvdimm@lists.01.org>; Wed, 12 May 2021 22:16:00 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id b21so13540219pft.10
-        for <linux-nvdimm@lists.01.org>; Wed, 12 May 2021 22:16:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 1FBA2100F2255
+	for <linux-nvdimm@lists.01.org>; Wed, 12 May 2021 23:12:56 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d16so29007pfn.12
+        for <linux-nvdimm@lists.01.org>; Wed, 12 May 2021 23:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:in-reply-to:references:date:message-id:mime-version
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=Wne77lTC1YbIUt82ZrJDVijDGdM4ZnofcUpJ1ip33FE=;
-        b=AnzRGOJcfg4HcLJiQMDvyGuEW8p+LtJBSCU0MbSowtkukGE1tdRkLUxP0zhAQX8A0u
-         6Cc61uQoPuMcvhwIl4LYyJ11yyMbJZwx7GF+xbbnzH7qcPIC5rWg9SZFVB6dh8jItpDv
-         I+WoYD8CEGz2rvoCWlEFLqxD+rF3OiIIiVQCxC5htLZw0+yRhxthctNVNz3RSmJbGgS1
-         Aq6yo7Z4v7LyRsNbHXKumxFuxkcbIAVlW4G86PA2c3avLTerDQ9a0lRBkWOEN9/Tux6t
-         8Io+JXJp0OFrnq9GqS+gwuwi06KvuWtaJoHKmzkqAd2fXV85g9pXDI4q+jl7cZB67yoY
-         ufyA==
+        bh=Ldw0NnK3agDWj5ekHEK7g3s2gQc83F6iEQZ6tWXyceE=;
+        b=WrHDms0Ge1qmsG4tvkPF9OplzevscfoekilJH7S4sRJ1D0LHXO3lYPcBnL3MShyupm
+         KO6cZFV5otrYIGLNBwyzVwowqCUMOOk32PDWRfKI74gA2om29seEyICSBNCxv7ZSpaww
+         TAMVu48XzEu3G0Nh4k6BKWQE7cImCcqwGMFYnBtcimebJwnIa3AzqwlYzlhAztkd5xLQ
+         l1kt3h2n5GPNRn5DuwpoHqAaKDorW7ripsAPdYno+RGWCp+A3tDn5gVXWSEEobq8d4l0
+         fq7DOQoUh4qyHnpRHLZC6dSedyB9KlK85MscJTHgs8d98VVxewhQ/UxP9M2LL3QnnHdA
+         nAZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=Wne77lTC1YbIUt82ZrJDVijDGdM4ZnofcUpJ1ip33FE=;
-        b=ajOkBuWo2aH+bB3NnMHWIEPJKwClhK3DDcVHDhrjThGMt2ICCRFccDar29rE0Vzl4R
-         lTxYTtuCg7eD6Fj/ZAe7NXxjlQxau+nYEoX00YLAOzEGuEcnsH4+t/M0hy7bQWMzhazS
-         iR9/szv671FNi5mbZ5Pqq/59IaYH3hdEeK5P8VmPrYJal5H9itD6CJsbpXXXFBR388Us
-         j4s2jnBtW9ToGJUa/1EEYNCmiaKwgA7RNIkt15QuL2NA2VXxoktiZ/Wf+ITvkllcnkGI
-         K6uCMJe+aCfe3rXB1yHMZg04y5+6UqmC6Xw23TySZI7jKh9to+ksnNXIG2yt37ff9M6R
-         7r/g==
-X-Gm-Message-State: AOAM530JLsBh0qaFXx1IOJCcpTjYKUTXa/SOoZR24moN4W/44Z3pP2Rt
-	3oi4hRooBy5oqqya4EO9otCqPA==
-X-Google-Smtp-Source: ABdhPJy3VgtymjCOqgyBT1stTEbJgcazDdibDdfsQETAKXY8EAyS0W7Af1mAV3j0PiPfTJ4CfDC3Jg==
-X-Received: by 2002:a63:215a:: with SMTP id s26mr20367134pgm.134.1620882958973;
-        Wed, 12 May 2021 22:15:58 -0700 (PDT)
-Received: from localhost ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id d18sm1150256pgo.66.2021.05.12.22.15.58
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Ldw0NnK3agDWj5ekHEK7g3s2gQc83F6iEQZ6tWXyceE=;
+        b=O2naGG7ftomhiY39k7JUbvnOTqy843LlpbydmOXgcSoeg7EuhbioPJni1oShaHyzwy
+         9WT90lWVWDa2Q45FUNmn+IstRYbCFtjQ7QAvzTNe3nGl1+UgwP744+jbg2/EmpnegPtL
+         7SVDwYTRxqeAqh4KJfyFgNM0lmWwZp1MYOkiBJk9tAMKF9qH3jbwi2GRy4CNFaOuk0eg
+         BoBp/of7q/NBvjkfxC0F2i4q/so4sTP9iSaXC1VONnpxpvjyzvJSKJKoF6mbN2ytTyEk
+         fq6DkGc+lL6/QN1QSepFiCPqYcniLLNV1fP3+eiQB9WXAr2Jswv+JozEiBRVfg85FDZi
+         S05A==
+X-Gm-Message-State: AOAM531Nfix9j+pdEzj0GtnxPMq9wFiukMaOwWwEytf87hxEJT7biS4d
+	I+u9U7k8fUXCdEJtHZUynbcGKxkf+mIWDg==
+X-Google-Smtp-Source: ABdhPJyvcssk8zpTEplnbwns66QmjtQ/D4SCka+PiCMKW0jcBQUMQRWHUZCMQ+yikODrC42ID5FX/A==
+X-Received: by 2002:a65:6402:: with SMTP id a2mr4864749pgv.49.1620886376062;
+        Wed, 12 May 2021 23:12:56 -0700 (PDT)
+Received: from desktop.fossix.local ([103.21.79.4])
+        by smtp.gmail.com with ESMTPSA id gf21sm1422351pjb.20.2021.05.12.23.12.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 May 2021 22:15:58 -0700 (PDT)
+        Wed, 12 May 2021 23:12:55 -0700 (PDT)
 From: Santosh Sivaraj <santosh@fossix.org>
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>, "sbhat@linux.ibm.com"
- <sbhat@linux.ibm.com>, "linux-nvdimm@lists.01.org"
- <linux-nvdimm@lists.01.org>, "harish@linux.ibm.com"
- <harish@linux.ibm.com>, "Williams, Dan J" <dan.j.williams@intel.com>,
- "vaibhav@linux.ibm.com" <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH 2/4] test: Don't skip tests if nfit modules are missing
-In-Reply-To: <87im3n2qm6.fsf@fossix.org>
-References: <20210328021001.2340251-1-santosh@fossix.org>
- <20210328021001.2340251-2-santosh@fossix.org>
- <5b0e885146cf54acb82ead867e495169d7a28252.camel@intel.com>
- <87fsz72cll.fsf@fossix.org>
- <b5b8d378a757640c9e6345a1239e5c611a08dde1.camel@intel.com>
- <87im3n2qm6.fsf@fossix.org>
-Date: Thu, 13 May 2021 10:45:53 +0530
-Message-ID: <87fsyr2oza.fsf@fossix.org>
+To: Linux NVDIMM <linux-nvdimm@lists.01.org>
+Subject: [ndctl V5 1/4] libndctl: Unify adding dimms for papr and nfit families
+Date: Thu, 13 May 2021 11:42:15 +0530
+Message-Id: <20210513061218.760322-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Message-ID-Hash: 6FDGSNY7RR7LUHX7AUN3XOLXHICPYL3S
-X-Message-ID-Hash: 6FDGSNY7RR7LUHX7AUN3XOLXHICPYL3S
+Message-ID-Hash: L3K6KSWO2SMAMQA45WZM5EHYE63TQUVG
+X-Message-ID-Hash: L3K6KSWO2SMAMQA45WZM5EHYE63TQUVG
 X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Shivaprasad G Bhat <sbhat@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6FDGSNY7RR7LUHX7AUN3XOLXHICPYL3S/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/L3K6KSWO2SMAMQA45WZM5EHYE63TQUVG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-U2FudG9zaCBTaXZhcmFqIDxzYW50b3NoQGZvc3NpeC5vcmc+IHdyaXRlczoNCg0KPiAiVmVybWEs
-IFZpc2hhbCBMIiA8dmlzaGFsLmwudmVybWFAaW50ZWwuY29tPiB3cml0ZXM6DQo+DQo+IEhpIFZp
-c2hhbCwNCj4NCj4+IE9uIFNhdCwgMjAyMS0wNS0wMSBhdCAxMTo1NyArMDUzMCwgU2FudG9zaCBT
-aXZhcmFqIHdyb3RlOg0KPj4+ICJWZXJtYSwgVmlzaGFsIEwiIDx2aXNoYWwubC52ZXJtYUBpbnRl
-bC5jb20+IHdyaXRlczoNCj4+PiANCj4+PiBIaSBWaXNoYWwsDQo+Pj4gDQo+Pj4gPiBPbiBTdW4s
-IDIwMjEtMDMtMjggYXQgMDc6MzkgKzA1MzAsIFNhbnRvc2ggU2l2YXJhaiB3cm90ZToNCj4+PiA+
-ID4gRm9yIE5GSVQgdG8gYmUgYXZhaWxhYmxlIEFDUEkgaXMgYSBtdXN0LCBzbyBkb24ndCBmYWls
-IHdoZW4gbmZpdCBtb2R1bGVzDQo+Pj4gPiA+IGFyZSBtaXNzaW5nIG9uIGEgcGxhdGZvcm0gdGhh
-dCBkb2Vzbid0IHN1cHBvcnQgQUNQSS4NCj4+PiA+ID4gDQo+Pj4gPiA+IFNpZ25lZC1vZmYtYnk6
-IFNhbnRvc2ggU2l2YXJhaiA8c2FudG9zaEBmb3NzaXgub3JnPg0KPj4+ID4gPiAtLS0NCj4+PiA+
-ID4gwqB0ZXN0LmggICAgICAgICAgICAgICAgICAgICAgICB8ICAyICstDQo+Pj4gPiA+IMKgdGVz
-dC9hY2stc2h1dGRvd24tY291bnQtc2V0LmMgfCAgMiArLQ0KPj4+ID4gPiDCoHRlc3QvYmxrX25h
-bWVzcGFjZXMuYyAgICAgICAgIHwgIDIgKy0NCj4+PiA+ID4gwqB0ZXN0L2NvcmUuYyAgICAgICAg
-ICAgICAgICAgICB8IDMwICsrKysrKysrKysrKysrKysrKysrKysrKysrKystLQ0KPj4+ID4gPiDC
-oHRlc3QvZHBhLWFsbG9jLmMgICAgICAgICAgICAgIHwgIDIgKy0NCj4+PiA+ID4gwqB0ZXN0L2Rz
-bS1mYWlsLmMgICAgICAgICAgICAgICB8ICAyICstDQo+Pj4gPiA+IMKgdGVzdC9saWJuZGN0bC5j
-ICAgICAgICAgICAgICAgfCAgMiArLQ0KPj4+ID4gPiDCoHRlc3QvbXVsdGktcG1lbS5jICAgICAg
-ICAgICAgIHwgIDIgKy0NCj4+PiA+ID4gwqB0ZXN0L3BhcmVudC11dWlkLmMgICAgICAgICAgICB8
-ICAyICstDQo+Pj4gPiA+IMKgdGVzdC9wbWVtX25hbWVzcGFjZXMuYyAgICAgICAgfCAgMiArLQ0K
-Pj4+ID4gPiDCoDEwIGZpbGVzIGNoYW5nZWQsIDM3IGluc2VydGlvbnMoKyksIDExIGRlbGV0aW9u
-cygtKQ0KPj4+ID4gPiANCj4+PiA+IA0KPj4+ID4gSSBoYXZlbid0IGxvb2tlZCBkZWVwZXIsIGJ1
-dCB0aGlzIHNlZW1zIHRvIGZhaWwgdGhlIGJsay1ucyB0ZXN0IHdpdGg6DQo+Pj4gPiANCj4+PiA+
-ICAgQUNQSS5ORklUIHVuYXZhaWxhYmxlIGZhbGxpbmcgYmFjayB0byBuZml0X3Rlc3QNCj4+PiA+
-ICAgdGVzdC9pbml0OiBuZGN0bF90ZXN0X2luaXQ6IENhbm5vdCBkZXRlcm1pbmUgTlZESU1NIGZh
-bWlseQ0KPj4+ID4gICBfX25kY3RsX3Rlc3Rfc2tpcDogZXhwbGljaXQgc2tpcCB0ZXN0X2Jsa19u
-YW1lc3BhY2VzOjIzNQ0KPj4+ID4gICBuZml0X3Rlc3QgdW5hdmFpbGFibGUgc2tpcHBpbmcgdGVz
-dHMNCj4+PiANCj4+PiBUaGUgZmlyc3QgbWVzc2FnZSB3aWxsIGJlIGVtaXR0ZWQgZXZlbiB3aXRo
-b3V0IHRoZSBjaGFuZ2VzIGlmIHRoZSBidXMgaXMgbm90DQo+Pj4gZm91bmQuIFRoZSBzZWNvbmQg
-ZXJyb3Igd2lsbCBiZSBlbWl0dGVkIHdoZW4gY2hlY2sgIi9zeXMvYnVzL2FjcGkiIGlzIG5vdA0K
-Pj4+IGZvdW5kLiBXZSBmYWlsIGZvciBhbGwgb3RoZXIgYnVzZXMgYnkgZGVmYXVsdCBleGNlcHQg
-Zm9yIE5GSVQgYXMgYmVmb3JlIGFuZCBQQVBSDQo+Pj4gdGVzdHMgYXJlIGVuYWJsZWQgb25seSB3
-aGVuIE5WRElNTV9URVNUX0ZBTUlMWSBpcyBzZXQgdG8gIlBBUFIiLg0KPj4NCj4+IFNlZSBiZWxv
-dyBvbiB0aGlzLg0KPj4NCj4+PiANCj4+PiBBbGwgdGVzdHMgcGFzcyBpbiBteSBzZXR1cCAoeDg2
-XzY0IHFlbXUgZ3Vlc3QpIHdpdGggdGhlIHJlY2VudCB1cHN0cmVhbSBrZXJuZWwsDQo+Pj4gZXhj
-ZXB0IGZvciB0aGUgdGhlIGJlbG93IHdhcm5pbmcgZnJvbSBkcml2ZXJzL2FjcGkvbmZpdC9jb3Jl
-LmM6DQo+Pg0KPj4gSG0gSSd2ZSBub3Qgc2VlbiB0aGlzIHdpdGggNS4xMSBvciA1LjEyLiBXaGF0
-J3MgdGhlIHFlbXUgY29tbWFuZCBsaW5lDQo+PiBhbmQgaXMgaXQganVzdCB0cmlnZ2VyZWQgZnJv
-bSBhIHVuaXQgdGVzdCB0dW4/DQo+DQo+IFRoaXMgd2FzIG9uIGEgNS4xMiBrZXJuZWwsIHdoaWNo
-IEkgaGF2ZSBtZW50aW9uZWQgZWFybGllciwgYnV0IEkgYW0gbm90IGFibGUgdG8NCj4gcmVwcm9k
-dWNlIG5vdywgSSBoYWQgcmViYXNlZCB0aGUga2VybmVsIG5vdy4gQnV0IGFueXdheSBpdCBkb2Vz
-bid0IHNlZW0gdG8gYmUNCj4gcmVwcm9kdWNpYmxlIG5vdy4gV2lsbCBjb21lIGJhY2sgaWYgSSBz
-ZWUgc29tZXRoaW5nIGFnYWluLg0KDQpJIGNvdWxkIHJlcHJvZHVjZSB0aGlzIHdpdGgNCg0KbWFr
-ZSBjaGVjayBURVNUUz1jcmVhdGUuc2gNCg0KYW5kIGl0IHJlcHJvZHVjZXMgd2l0aCBhbGwgdGhl
-IHRlc3RzIHdoZW4gdGhlIG1vZHVsZSBpcyBiZWluZyByZW1vdmVkLg0KDQprZXJuZWw6IDUuMTMt
-cmMxICg2ZWZiOTQzYjg2MTZlYzUzYTVlNDQ0MTkzZGNjZjFhZjlhZDYyN2I1KQ0KbmRjdGw6IGVh
-MDE0YzBjOWVjOGQwZWY5NDVkMDcyZGNjNTJiMzA2YzdhNjg2ZjkNCg0KcWVtdSAtLXZlcnNpb246
-IFFFTVUgZW11bGF0b3IgdmVyc2lvbiA1LjAuMSAodjUuMC4xKQ0KDQokUUVNVV9YODYgLXNtcCA0
-IC1lbmFibGUta3ZtIC1oZGEgJERJU0sgLWJvb3QgYyBcDQogICAgICAgICAgLW0gNEcsc2xvdHM9
-NCxtYXhtZW09OEcgXA0KICAgICAgICAgIC1NIHBjLGFjY2VsPWt2bSxudmRpbW0gXA0KICAgICAg
-ICAgIC1uYW1lIGd1ZXN0PXNhbnRvc2gteDg2LGRlYnVnLXRocmVhZHM9b24gXA0KICAgICAgICAg
-IC1uZXRkZXYgdXNlcixpZD1ldGhlcm5ldC4wLGhvc3Rmd2Q9dGNwOjoxMjEyMS06MjIgLWRldmlj
-ZSBlMTAwMCxuZXRkZXY9ZXRoZXJuZXQuMCBcDQogICAgICAgICAgLXNlcmlhbCBtb246c3RkaW8g
-LWRpc3BsYXkgbm9uZSAtdmdhIG5vbmUgLW5vZ3JhcGhpYyBcDQogICAgICAgICAgLWtlcm5lbCAk
-MSAtYXBwZW5kICJjb25zb2xlPXR0eVMwIHJvb3Q9JFJPT1QiIFwNCiAgICAgICAgICAtaGRiICRE
-SVNLMg0KDQpUaGFua3MsDQpTYW50b3NoDQoNCj4NCj4+DQo+Pj4gDQo+Pj4gWyAyNDI2LjcyNzU4
-NF0gLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQo+Pj4gWyAyNDI2LjcyODQw
-NV0gV0FSTklORzogQ1BVOiAyIFBJRDogNDc1MDQgYXQgdG9vbHMvdGVzdGluZy9udmRpbW0vLi4v
-Li4vLi4vZHJpdmVycy9hY3BpL25maXQvY29yZS5jOjM4NzkgbmZpdF9leGl0KzB4XQ0KPj4+IFsg
-MjQyNi43MzAyNjRdIE1vZHVsZXMgbGlua2VkIGluOiBkYXhfcG1lbShPKSBuZF9wbWVtKE8pIG5m
-aXQoTy0pIGttZW0gZGF4X3BtZW1fY29tcGF0KE8pIG5kX2JsayhPKSBkYXhfcG1lbV9jb3JlKE8p
-IF0NCj4+PiBbIDI0MjYuNzMzMjA5XSBDUFU6IDIgUElEOiA0NzUwNCBDb21tOiBtb2Rwcm9iZSBU
-YWludGVkOiBHICAgICAgICBXICBPICAgICAgNS4xMi4wKyAjMw0KPj4+IFsgMjQyNi43MzQ0NzJd
-IEhhcmR3YXJlIG5hbWU6IFFFTVUgU3RhbmRhcmQgUEMgKGk0NDBGWCArIFBJSVgsIDE5OTYpLCBC
-SU9TIHJlbC0xLjEzLjAtMC1nZjIxYjVhNGFlYjAyLXByZWJ1aWx0LnFlbXUubzQNCj4+PiBbIDI0
-MjYuNzM2MzA1XSBSSVA6IDAwMTA6bmZpdF9leGl0KzB4MmMvMHg3MDMgW25maXRdDQo+Pj4gWyAy
-NDI2LjczNzA5OV0gQ29kZTogZmQgZmYgZmYgNDggYzcgYzcgMDAgZjAgMzkgYzAgZTggNTIgYTEg
-MzggZGEgNDggOGIgM2QgNmIgNDYgMDAgMDAgZTggZTYgODggZWUgZDkgNDggOGIgMDUgNWYgM2Mg
-MA0KPj4+IFsgMjQyNi43NDAwNDZdIFJTUDogMDAxODpmZmZmYThlODAwYjc3ZWQ4IEVGTEFHUzog
-MDAwMTAyODcNCj4+PiBbIDI0MjYuNzQwOTkwXSBSQVg6IGZmZmY5NWI3ZTUxOTM1YjAgUkJYOiAw
-MDAwMDAwMDAwMDAwODAwIFJDWDogZmZmZmZmZmY5YjRhMzZhOA0KPj4+IFsgMjQyNi43NDIyMzZd
-IFJEWDogMDAwMDAwMDAwMDAwMDAwMCBSU0k6IDAwMDAwMDAwMDAwMDAwODMgUkRJOiBmZmZmOTVi
-N2MwM2UxNTU0DQo+Pj4gWyAyNDI2Ljc0MzQwNF0gUkJQOiBmZmZmZmZmZmMwMzlmNzQwIFIwODog
-MDAwMDAwMDAwMDAwMDQwMCBSMDk6IGZmZmY5NWI3YzAzZTBlNTANCj4+PiBbIDI0MjYuNzQ0NjE3
-XSBSMTA6IGZmZmY5NWI3ZmJkMjk2ZjAgUjExOiAwMDAwMDAwMDAwODk1NDQwIFIxMjogZmZmZmE4
-ZTgwMGI3N2Y1OA0KPj4+IFsgMjQyNi43NDU3OTJdIFIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6
-IDAwMDAwMDAwMDAwMDAwMDAgUjE1OiAwMDAwMDAwMDAwMDAwMDAwDQo+Pj4gWyAyNDI2Ljc0Njk0
-Nl0gRlM6ICAwMDAwN2Y0ODI5N2UzNzQwKDAwMDApIEdTOmZmZmY5NWI3ZmJkMDAwMDAoMDAwMCkg
-a25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPj4+IFsgMjQyNi43NDgyNTBdIENTOiAgMDAxMCBEUzog
-MDAwMCBFUzogMDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMNCj4+PiBbIDI0MjYuNzQ5MTk4XSBD
-UjI6IDAwMDA1NjA3MmFhZGM5ZjggQ1IzOiAwMDAwMDAwMTE4YjA4MDAwIENSNDogMDAwMDAwMDAw
-MDAwMDZlMA0KPj4+IFsgMjQyNi43NTAzNDldIENhbGwgVHJhY2U6DQo+Pj4gWyAyNDI2Ljc1MDc1
-NF0gIF9fZG9fc3lzX2RlbGV0ZV9tb2R1bGUrMHgxOWQvMHgyNDANCj4+PiBbIDI0MjYuNzUxNDcy
-XSAgPyB0YXNrX3dvcmtfcnVuKzB4NWMvMHg5MA0KPj4+IFsgMjQyNi43NTE5NjRdICA/IGV4aXRf
-dG9fdXNlcl9tb2RlX3ByZXBhcmUrMHgyYS8weDEzMA0KPj4+IFsgMjQyNi43NTI2MzddICBkb19z
-eXNjYWxsXzY0KzB4NDAvMHg4MA0KPj4+IFsgMjQyNi43NTMxMjFdICBlbnRyeV9TWVNDQUxMXzY0
-X2FmdGVyX2h3ZnJhbWUrMHg0NC8weGFlDQo+Pj4gWyAyNDI2Ljc1MzgxMF0gUklQOiAwMDMzOjB4
-N2Y0ODI5OTEzNjFiDQo+Pj4gWyAyNDI2Ljc1NDI3NF0gQ29kZTogNzMgMDEgYzMgNDggOGIgMGQg
-NWQgMTggMGMgMDAgZjcgZDggNjQgODkgMDEgNDggODMgYzggZmYgYzMgNjYgMmUgMGYgMWYgODQg
-MDAgMDAgMDAgMDAgMDAgOTAgZjMgOA0KPj4+IFsgMjQyNi43NTY2NjhdIFJTUDogMDAyYjowMDAw
-N2ZmZDQ2Yzg5Yjk4IEVGTEFHUzogMDAwMDAyMDYgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAwYjAN
-Cj4+PiBbIDI0MjYuNzU3Njc2XSBSQVg6IGZmZmZmZmZmZmZmZmZmZGEgUkJYOiAwMDAwNTYwNzJh
-YWQ4ZjkwIFJDWDogMDAwMDdmNDgyOTkxMzYxYg0KPj4+IFsgMjQyNi43NTg2MThdIFJEWDogMDAw
-MDAwMDAwMDAwMDAwMCBSU0k6IDAwMDAwMDAwMDAwMDA4MDAgUkRJOiAwMDAwNTYwNzJhYWQ4ZmY4
-DQo+Pj4gWyAyNDI2Ljc1OTU2M10gUkJQOiAwMDAwNTYwNzJhYWQ4ZjkwIFIwODogMDAwMDAwMDAw
-MDAwMDAwMCBSMDk6IDAwMDAwMDAwMDAwMDAwMDANCj4+PiBbIDI0MjYuNzYwNTEzXSBSMTA6IDAw
-MDA3ZjQ4Mjk5ODdhYzAgUjExOiAwMDAwMDAwMDAwMDAwMjA2IFIxMjogMDAwMDU2MDcyYWFkOGZm
-OA0KPj4+IFsgMjQyNi43NjE0NjNdIFIxMzogMDAwMDAwMDAwMDAwMDAwMCBSMTQ6IDAwMDA1NjA3
-MmFhZGI0ZTggUjE1OiAwMDAwN2ZmZDQ2Yzg5ZDE4DQo+Pj4gWyAyNDI2Ljc2MjQwNV0gLS0tWyBl
-bmQgdHJhY2UgMTRhODc0OGNkYThiNDc3NyBdLS0tDQo+Pj4gDQo+Pj4gVGhpcyB3YXMgbm90IHNl
-ZW4gd2l0aCB0aGUgNS4xMSBrZXJuZWwuDQo+Pj4gDQo+Pj4gVGhhbmtzLA0KPj4+IFNhbnRvc2gN
-Cj4+PiA+IA0KPj4+ID4gPiBkaWZmIC0tZ2l0IGEvdGVzdC5oIGIvdGVzdC5oDQo+Pj4gPiA+IGlu
-ZGV4IGNiYThkNDEuLjdkZTEzZmUgMTAwNjQ0DQo+Pj4gPiA+IC0tLSBhL3Rlc3QuaA0KPj4+ID4g
-PiArKysgYi90ZXN0LmgNCj4+PiA+ID4gQEAgLTIwLDcgKzIwLDcgQEAgdm9pZCBidWlsdGluX3hh
-Y3Rpb25fbmFtZXNwYWNlX3Jlc2V0KHZvaWQpOw0KPj4+ID4gPiDCoA0KPj4+ID4gPiANCj4+PiA+
-ID4gwqBzdHJ1Y3Qga21vZF9jdHg7DQo+Pj4gPiA+IMKgc3RydWN0IGttb2RfbW9kdWxlOw0KPj4+
-ID4gPiAtaW50IG5maXRfdGVzdF9pbml0KHN0cnVjdCBrbW9kX2N0eCAqKmN0eCwgc3RydWN0IGtt
-b2RfbW9kdWxlICoqbW9kLA0KPj4+ID4gPiAraW50IG5kY3RsX3Rlc3RfaW5pdChzdHJ1Y3Qga21v
-ZF9jdHggKipjdHgsIHN0cnVjdCBrbW9kX21vZHVsZSAqKm1vZCwNCj4+PiA+ID4gwqAJCXN0cnVj
-dCBuZGN0bF9jdHggKm5kX2N0eCwgaW50IGxvZ19sZXZlbCwNCj4+PiA+ID4gwqAJCXN0cnVjdCBu
-ZGN0bF90ZXN0ICp0ZXN0KTsNCj4+PiA+ID4gwqANCj4+PiA+ID4gDQo+Pj4gPiA+IGRpZmYgLS1n
-aXQgYS90ZXN0L2Fjay1zaHV0ZG93bi1jb3VudC1zZXQuYyBiL3Rlc3QvYWNrLXNodXRkb3duLWNv
-dW50LXNldC5jDQo+Pj4gPiA+IGluZGV4IGZiMWQ4MmIuLmM1NjFmZjMgMTAwNjQ0DQo+Pj4gPiA+
-IC0tLSBhL3Rlc3QvYWNrLXNodXRkb3duLWNvdW50LXNldC5jDQo+Pj4gPiA+ICsrKyBiL3Rlc3Qv
-YWNrLXNodXRkb3duLWNvdW50LXNldC5jDQo+Pj4gPiA+IEBAIC05OSw3ICs5OSw3IEBAIHN0YXRp
-YyBpbnQgdGVzdF9hY2tfc2h1dGRvd25fY291bnRfc2V0KGludCBsb2dsZXZlbCwgc3RydWN0IG5k
-Y3RsX3Rlc3QgKnRlc3QsDQo+Pj4gPiA+IMKgCWludCByZXN1bHQgPSBFWElUX0ZBSUxVUkUsIGVy
-cjsNCj4+PiA+ID4gwqANCj4+PiA+ID4gDQo+Pj4gPiA+IMKgCW5kY3RsX3NldF9sb2dfcHJpb3Jp
-dHkoY3R4LCBsb2dsZXZlbCk7DQo+Pj4gPiA+IC0JZXJyID0gbmZpdF90ZXN0X2luaXQoJmttb2Rf
-Y3R4LCAmbW9kLCBOVUxMLCBsb2dsZXZlbCwgdGVzdCk7DQo+Pj4gPiA+ICsJZXJyID0gbmRjdGxf
-dGVzdF9pbml0KCZrbW9kX2N0eCwgJm1vZCwgTlVMTCwgbG9nbGV2ZWwsIHRlc3QpOw0KPj4+ID4g
-PiDCoAlpZiAoZXJyIDwgMCkgew0KPj4+ID4gPiDCoAkJcmVzdWx0ID0gNzc7DQo+Pj4gPiA+IMKg
-CQluZGN0bF90ZXN0X3NraXAodGVzdCk7DQo+Pj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0L2Jsa19u
-YW1lc3BhY2VzLmMgYi90ZXN0L2Jsa19uYW1lc3BhY2VzLmMNCj4+PiA+ID4gaW5kZXggZDdmMDBj
-Yi4uZjA3NmU4NSAxMDA2NDQNCj4+PiA+ID4gLS0tIGEvdGVzdC9ibGtfbmFtZXNwYWNlcy5jDQo+
-Pj4gPiA+ICsrKyBiL3Rlc3QvYmxrX25hbWVzcGFjZXMuYw0KPj4+ID4gPiBAQCAtMjI4LDcgKzIy
-OCw3IEBAIGludCB0ZXN0X2Jsa19uYW1lc3BhY2VzKGludCBsb2dfbGV2ZWwsIHN0cnVjdCBuZGN0
-bF90ZXN0ICp0ZXN0LA0KPj4+ID4gPiDCoA0KPj4+ID4gPiANCj4+PiA+ID4gwqAJaWYgKCFidXMp
-IHsNCj4+PiA+ID4gwqAJCWZwcmludGYoc3RkZXJyLCAiQUNQSS5ORklUIHVuYXZhaWxhYmxlIGZh
-bGxpbmcgYmFjayB0byBuZml0X3Rlc3RcbiIpOw0KPj4+ID4gPiAtCQlyYyA9IG5maXRfdGVzdF9p
-bml0KCZrbW9kX2N0eCwgJm1vZCwgTlVMTCwgbG9nX2xldmVsLCB0ZXN0KTsNCj4+PiA+ID4gKwkJ
-cmMgPSBuZGN0bF90ZXN0X2luaXQoJmttb2RfY3R4LCAmbW9kLCBOVUxMLCBsb2dfbGV2ZWwsIHRl
-c3QpOw0KPj4+ID4gPiDCoAkJbmRjdGxfaW52YWxpZGF0ZShjdHgpOw0KPj4+ID4gPiDCoAkJYnVz
-ID0gbmRjdGxfYnVzX2dldF9ieV9wcm92aWRlcihjdHgsICJuZml0X3Rlc3QuMCIpOw0KPj4+ID4g
-PiDCoAkJaWYgKHJjIDwgMCB8fCAhYnVzKSB7DQo+Pj4gPiA+IGRpZmYgLS1naXQgYS90ZXN0L2Nv
-cmUuYyBiL3Rlc3QvY29yZS5jDQo+Pj4gPiA+IGluZGV4IGNjN2Q4ZDkuLjQ0Y2IyNzcgMTAwNjQ0
-DQo+Pj4gPiA+IC0tLSBhL3Rlc3QvY29yZS5jDQo+Pj4gPiA+ICsrKyBiL3Rlc3QvY29yZS5jDQo+
-Pj4gPiA+IEBAIC0xMSw2ICsxMSw3IEBADQo+Pj4gPiA+IMKgI2luY2x1ZGUgPHV0aWwvbG9nLmg+
-DQo+Pj4gPiA+IMKgI2luY2x1ZGUgPHV0aWwvc3lzZnMuaD4NCj4+PiA+ID4gwqAjaW5jbHVkZSA8
-bmRjdGwvbGlibmRjdGwuaD4NCj4+PiA+ID4gKyNpbmNsdWRlIDxuZGN0bC9uZGN0bC5oPg0KPj4+
-ID4gPiDCoCNpbmNsdWRlIDxjY2FuL2FycmF5X3NpemUvYXJyYXlfc2l6ZS5oPg0KPj4+ID4gPiDC
-oA0KPj4+ID4gPiANCj4+PiA+ID4gwqAjZGVmaW5lIEtWRVJfU1RSTEVOIDIwDQo+Pj4gPiA+IEBA
-IC0xMDYsMTEgKzEwNywxMSBAQCBpbnQgbmRjdGxfdGVzdF9nZXRfc2tpcHBlZChzdHJ1Y3QgbmRj
-dGxfdGVzdCAqdGVzdCkNCj4+PiA+ID4gwqAJcmV0dXJuIHRlc3QtPnNraXA7DQo+Pj4gPiA+IMKg
-fQ0KPj4+ID4gPiDCoA0KPj4+ID4gPiANCj4+PiA+ID4gLWludCBuZml0X3Rlc3RfaW5pdChzdHJ1
-Y3Qga21vZF9jdHggKipjdHgsIHN0cnVjdCBrbW9kX21vZHVsZSAqKm1vZCwNCj4+PiA+ID4gK2lu
-dCBuZGN0bF90ZXN0X2luaXQoc3RydWN0IGttb2RfY3R4ICoqY3R4LCBzdHJ1Y3Qga21vZF9tb2R1
-bGUgKiptb2QsDQo+Pj4gPiA+IMKgCQlzdHJ1Y3QgbmRjdGxfY3R4ICpuZF9jdHgsIGludCBsb2df
-bGV2ZWwsDQo+Pj4gPiA+IMKgCQlzdHJ1Y3QgbmRjdGxfdGVzdCAqdGVzdCkNCj4+PiA+ID4gwqB7
-DQo+Pj4gPiA+IC0JaW50IHJjOw0KPj4+ID4gPiArCWludCByYywgZmFtaWx5ID0gLTE7DQo+Pj4g
-PiA+IMKgCXVuc2lnbmVkIGludCBpOw0KPj4+ID4gPiDCoAljb25zdCBjaGFyICpuYW1lOw0KPj4+
-ID4gPiDCoAlzdHJ1Y3QgbmRjdGxfYnVzICpidXM7DQo+Pj4gPiA+IEBAIC0xMjcsMTAgKzEyOCwz
-MCBAQCBpbnQgbmZpdF90ZXN0X2luaXQoc3RydWN0IGttb2RfY3R4ICoqY3R4LCBzdHJ1Y3Qga21v
-ZF9tb2R1bGUgKiptb2QsDQo+Pj4gPiA+IMKgCQkibmRfZTgyMCIsDQo+Pj4gPiA+IMKgCQkibmRf
-cG1lbSIsDQo+Pj4gPiA+IMKgCX07DQo+Pj4gPiA+ICsJY2hhciAqdGVzdF9lbnY7DQo+Pj4gPiA+
-IMKgDQo+Pj4gPiA+IA0KPj4+ID4gPiDCoAlsb2dfaW5pdCgmbG9nX2N0eCwgInRlc3QvaW5pdCIs
-ICJORENUTF9URVNUIik7DQo+Pj4gPiA+IMKgCWxvZ19jdHgubG9nX3ByaW9yaXR5ID0gbG9nX2xl
-dmVsOw0KPj4+ID4gPiDCoA0KPj4+ID4gPiANCj4+PiA+ID4gKwkvKg0KPj4+ID4gPiArCSAqIFRo
-ZSBmb2xsb3dpbmcgdHdvIGNoZWNrcyBkZXRlcm1pbmUgdGhlIHBsYXRmb3JtIGZhbWlseS4gRm9y
-DQo+Pj4gPiA+ICsJICogSW50ZWwvcGxhdGZvcm1zIHdoaWNoIHN1cHBvcnQgQUNQSSwgY2hlY2sg
-c3lzZnM7IGZvciBvdGhlciBwbGF0Zm9ybXMNCj4+PiA+ID4gKwkgKiBkZXRlcm1pbmUgZnJvbSB0
-aGUgZW52aXJvbm1lbnQgdmFyaWFibGUgTlZESU1NX1RFU1RfRkFNSUxZDQo+Pj4gPiA+ICsJICov
-DQo+Pj4gPiA+ICsJaWYgKGFjY2VzcygiL3N5cy9idXMvYWNwaSIsIEZfT0spID09IDApIHsNCj4+
-PiA+ID4gKwkJaWYgKGVycm5vID09IEVOT0VOVCkNCj4+PiA+ID4gKwkJCWZhbWlseSA9IE5WRElN
-TV9GQU1JTFlfSU5URUw7DQo+Pj4gPiA+ICsJfQ0KPj4NCj4+IERpZCB5b3UgbWVhbiBmb3IgdGhl
-IGVycm5vIGNoZWNrIHRvIGJlIGlmIChlcnJubyAhPSBFTk9FTlQpID8NCj4+IFRoaXMgaXMgd2hh
-dCB3YXMgY2F1c2luZyB0aGUgdW5pdCB0ZXN0IGZhaWx1cmUgZm9yIG1lLiBUaGlzIHBhdGNoIG9u
-DQo+PiB0b3AgZml4ZXMgaXQgZm9yIG1lOg0KPj4NCj4+IGRpZmYgLS1naXQgYS90ZXN0L2NvcmUu
-YyBiL3Rlc3QvY29yZS5jDQo+PiBpbmRleCA0NGNiMjc3Li42OThiYjY2IDEwMDY0NA0KPj4gLS0t
-IGEvdGVzdC9jb3JlLmMNCj4+ICsrKyBiL3Rlc3QvY29yZS5jDQo+PiBAQCAtMTM5LDcgKzEzOSw3
-IEBAIGludCBuZGN0bF90ZXN0X2luaXQoc3RydWN0IGttb2RfY3R4ICoqY3R4LCBzdHJ1Y3QNCj4+
-IGttb2RfbW9kdWxlICoqbW9kLA0KPj4gICAgICAgICAgKiBkZXRlcm1pbmUgZnJvbSB0aGUgZW52
-aXJvbm1lbnQgdmFyaWFibGUgTlZESU1NX1RFU1RfRkFNSUxZDQo+PiAgICAgICAgICAqLw0KPj4g
-ICAgICAgICBpZiAoYWNjZXNzKCIvc3lzL2J1cy9hY3BpIiwgRl9PSykgPT0gMCkgew0KPj4gLSAg
-ICAgICAgICAgICAgIGlmIChlcnJubyA9PSBFTk9FTlQpDQo+PiArICAgICAgICAgICAgICAgaWYg
-KGVycm5vICE9IEVOT0VOVCkNCj4+ICAgICAgICAgICAgICAgICAgICAgICAgIGZhbWlseSA9IE5W
-RElNTV9GQU1JTFlfSU5URUw7DQo+PiAgICAgICAgIH0NCj4+ICANCj4+IElmIHRoaXMgbG9va3Mg
-b2theSBkbyB5b3Ugd2FudCB0byBzZW5kIG91dCBhIHJlc3BpbiB3aXRoIHRoaXMgYW5kIEknbGwN
-Cj4+IHBpY2sgaXQgdXAuDQo+DQo+IFRoYXQncyB0aGlzIGxvb2tzIG9rYXkuIEkgd2lsbCBzZW5k
-IG91dCBhbiB1cGRhdGVkIHZlcnNpb24gdG9kYXkuDQo+DQo+IFRoYW5rcywNCj4gU2FudG9zaA0K
-Pj4NCj4+IFRoYW5rcywNCj4+IC1WaXNoYWwNCj4+PiA+IApfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
-aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+In preparation for enabling tests on non-nfit devices, unify both, already very
+similar, functions into one. This will help in adding all attributes needed for
+the unit tests. Since the function doesn't fail if some of the dimm attributes
+are missing, this will work fine on PAPR platforms though only part of the DIMM
+attributes are provided (This doesn't mean that all of the DIMM attributes can
+be missing).
+
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+---
+ ndctl/lib/libndctl.c | 103 ++++++++++++++++---------------------------
+ 1 file changed, 38 insertions(+), 65 deletions(-)
+
+diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+index 36fb6fe..26b9317 100644
+--- a/ndctl/lib/libndctl.c
++++ b/ndctl/lib/libndctl.c
+@@ -1646,41 +1646,9 @@ static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
+ static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
+ static struct kmod_module *to_module(struct ndctl_ctx *ctx, const char *alias);
+ 
+-static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+-{
+-	int rc = -ENODEV;
+-	char buf[SYSFS_ATTR_SIZE];
+-	struct ndctl_ctx *ctx = dimm->bus->ctx;
+-	char *path = calloc(1, strlen(dimm_base) + 100);
+-	const char * const devname = ndctl_dimm_get_devname(dimm);
+-
+-	dbg(ctx, "%s: Probing of_pmem dimm at %s\n", devname, dimm_base);
+-
+-	if (!path)
+-		return -ENOMEM;
+-
+-	/* construct path to the papr compatible dimm flags file */
+-	sprintf(path, "%s/papr/flags", dimm_base);
+-
+-	if (ndctl_bus_is_papr_scm(dimm->bus) &&
+-	    sysfs_read_attr(ctx, path, buf) == 0) {
+-
+-		dbg(ctx, "%s: Adding papr-scm dimm flags:\"%s\"\n", devname, buf);
+-		dimm->cmd_family = NVDIMM_FAMILY_PAPR;
+-
+-		/* Parse dimm flags */
+-		parse_papr_flags(dimm, buf);
+-
+-		/* Allocate monitor mode fd */
+-		dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
+-		rc = 0;
+-	}
+-
+-	free(path);
+-	return rc;
+-}
+-
+-static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
++static int populate_dimm_attributes(struct ndctl_dimm *dimm,
++				    const char *dimm_base,
++				    const char *bus_prefix)
+ {
+ 	int i, rc = -1;
+ 	char buf[SYSFS_ATTR_SIZE];
+@@ -1694,7 +1662,7 @@ static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+ 	 * 'unique_id' may not be available on older kernels, so don't
+ 	 * fail if the read fails.
+ 	 */
+-	sprintf(path, "%s/nfit/id", dimm_base);
++	sprintf(path, "%s/%s/id", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0) {
+ 		unsigned int b[9];
+ 
+@@ -1709,68 +1677,74 @@ static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+ 		}
+ 	}
+ 
+-	sprintf(path, "%s/nfit/handle", dimm_base);
++	sprintf(path, "%s/%s/handle", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) < 0)
+ 		goto err_read;
+ 	dimm->handle = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/phys_id", dimm_base);
++	sprintf(path, "%s/%s/phys_id", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) < 0)
+ 		goto err_read;
+ 	dimm->phys_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/serial", dimm_base);
++	sprintf(path, "%s/%s/serial", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->serial = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/vendor", dimm_base);
++	sprintf(path, "%s/%s/vendor", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->vendor_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/device", dimm_base);
++	sprintf(path, "%s/%s/device", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->device_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/rev_id", dimm_base);
++	sprintf(path, "%s/%s/rev_id", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->revision_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/dirty_shutdown", dimm_base);
++	sprintf(path, "%s/%s/dirty_shutdown", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->dirty_shutdown = strtoll(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/subsystem_vendor", dimm_base);
++	sprintf(path, "%s/%s/subsystem_vendor", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->subsystem_vendor_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/subsystem_device", dimm_base);
++	sprintf(path, "%s/%s/subsystem_device", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->subsystem_device_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/subsystem_rev_id", dimm_base);
++	sprintf(path, "%s/%s/subsystem_rev_id", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->subsystem_revision_id = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/family", dimm_base);
++	sprintf(path, "%s/%s/family", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->cmd_family = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/dsm_mask", dimm_base);
++	sprintf(path, "%s/%s/dsm_mask", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->nfit_dsm_mask = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/format", dimm_base);
++	sprintf(path, "%s/%s/format", dimm_base, bus_prefix);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+ 		dimm->format[0] = strtoul(buf, NULL, 0);
+ 	for (i = 1; i < dimm->formats; i++) {
+-		sprintf(path, "%s/nfit/format%d", dimm_base, i);
++		sprintf(path, "%s/%s/format%d", dimm_base, bus_prefix, i);
+ 		if (sysfs_read_attr(ctx, path, buf) == 0)
+ 			dimm->format[i] = strtoul(buf, NULL, 0);
+ 	}
+ 
+-	sprintf(path, "%s/nfit/flags", dimm_base);
+-	if (sysfs_read_attr(ctx, path, buf) == 0)
+-		parse_nfit_mem_flags(dimm, buf);
++	sprintf(path, "%s/%s/flags", dimm_base, bus_prefix);
++	if (sysfs_read_attr(ctx, path, buf) == 0) {
++		if (ndctl_bus_has_nfit(dimm->bus))
++			parse_nfit_mem_flags(dimm, buf);
++		else if (ndctl_bus_is_papr_scm(dimm->bus)) {
++			dimm->cmd_family = NVDIMM_FAMILY_PAPR;
++			parse_papr_flags(dimm, buf);
++		}
++	}
+ 
+ 	dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
+ 	rc = 0;
+@@ -1792,7 +1766,8 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ 	if (!path)
+ 		return NULL;
+ 
+-	sprintf(path, "%s/nfit/formats", dimm_base);
++	sprintf(path, "%s/%s/formats", dimm_base,
++		ndctl_bus_has_nfit(bus) ? "nfit" : "papr");
+ 	if (sysfs_read_attr(ctx, path, buf) < 0)
+ 		formats = 1;
+ 	else
+@@ -1866,13 +1841,12 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ 	else
+ 		dimm->fwa_result = fwa_result_to_result(buf);
+ 
++	dimm->formats = formats;
+ 	/* Check if the given dimm supports nfit */
+ 	if (ndctl_bus_has_nfit(bus)) {
+-		dimm->formats = formats;
+-		rc = add_nfit_dimm(dimm, dimm_base);
+-	} else if (ndctl_bus_has_of_node(bus)) {
+-		rc = add_papr_dimm(dimm, dimm_base);
+-	}
++		rc = populate_dimm_attributes(dimm, dimm_base, "nfit");
++	} else if (ndctl_bus_has_of_node(bus))
++		rc = populate_dimm_attributes(dimm, dimm_base, "papr");
+ 
+ 	if (rc == -ENODEV) {
+ 		/* Unprobed dimm with no family */
+@@ -2531,13 +2505,12 @@ static void *add_region(void *parent, int id, const char *region_base)
+ 		goto err_read;
+ 	region->num_mappings = strtoul(buf, NULL, 0);
+ 
+-	sprintf(path, "%s/nfit/range_index", region_base);
+-	if (ndctl_bus_has_nfit(bus)) {
+-		if (sysfs_read_attr(ctx, path, buf) < 0)
+-			goto err_read;
+-		region->range_index = strtoul(buf, NULL, 0);
+-	} else
++	sprintf(path, "%s/%s/range_index", region_base,
++		ndctl_bus_has_nfit(bus) ? "nfit": "papr");
++	if (sysfs_read_attr(ctx, path, buf) < 0)
+ 		region->range_index = -1;
++	else
++		region->range_index = strtoul(buf, NULL, 0);
+ 
+ 	sprintf(path, "%s/read_only", region_base);
+ 	if (sysfs_read_attr(ctx, path, buf) < 0)
+-- 
+2.31.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
