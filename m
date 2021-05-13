@@ -1,52 +1,150 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B0937FA36
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 May 2021 17:03:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68C337FD24
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 May 2021 20:17:42 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ED2BF100EF26A;
-	Thu, 13 May 2021 08:03:01 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=djwong@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 29E7C100EBB96;
+	Thu, 13 May 2021 11:17:41 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A4345100EF25B
-	for <linux-nvdimm@lists.01.org>; Thu, 13 May 2021 08:02:59 -0700 (PDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 21951613BF;
-	Thu, 13 May 2021 15:02:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1620918177;
-	bh=cBiZH5cA4ZJFBtPESKx3lalIyQXwEUPv61Feaixqwv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oFnkkGcTH2gdDJ1ec4mdivpiApkIDYh13BGA9uF0kntiLspoq9kyt3/6XiMt5UpeU
-	 +o/KEttW3Gx6ZjLTfGysichBWWcCpm483Cfu4zYyt+6uiKGSoWGr1xz5xqWlFmw1ys
-	 D9tUDJecP50MQYldnYtHruD6JLt59iYCK1LX+ZJgJ8tsP11aCr1iNa9yOhWjf4Knf6
-	 Qz3sLqshVj7rPL61GTgOQxNJ3uiE+kCWtjwDXcBn/YGINPZJgElxivFmeb4ZRWsew6
-	 kjPZmuwwaWJfD8fF8GIXdCCcjZ37TDsIlsVEpXsObNOs4YnAF2DEP2QSRwbJyfNCYo
-	 UoXFM21VxIh/w==
-Date: Thu, 13 May 2021 08:02:56 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: "ruansy.fnst@fujitsu.com" <ruansy.fnst@fujitsu.com>
-Subject: Re: [PATCH v5 1/7] fsdax: Introduce dax_iomap_cow_copy()
-Message-ID: <20210513150256.GA9675@magnolia>
-References: <20210511030933.3080921-1-ruansy.fnst@fujitsu.com>
- <20210511030933.3080921-2-ruansy.fnst@fujitsu.com>
- <20210512010810.GR8582@magnolia>
- <OSBPR01MB292062DA13D47BDBF3E2321BF4519@OSBPR01MB2920.jpnprd01.prod.outlook.com>
+	by ml01.01.org (Postfix) with ESMTPS id 08F3A100ED48C
+	for <linux-nvdimm@lists.01.org>; Thu, 13 May 2021 11:17:37 -0700 (PDT)
+IronPort-SDR: sxbTs0hIK3BjnHdTNRLG/yNpUnKP+iLolWbe51UdHdN6Ky94TXI+8NA4LzfW6t5ZqbB6dOYrkJ
+ akaxw9Og14Gw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9983"; a="285525121"
+X-IronPort-AV: E=Sophos;i="5.82,296,1613462400";
+   d="scan'208";a="285525121"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2021 11:17:35 -0700
+IronPort-SDR: GUp1V+zqdNtgOH5oolzGCT0rH+K7TXxHO9xMRxisU9/wcCd1B4aO1GSonYqFwex/E6KXC/K9iL
+ GMHTryN1AXfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,296,1613462400";
+   d="scan'208";a="542580890"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga004.jf.intel.com with ESMTP; 13 May 2021 11:17:35 -0700
+Received: from fmsmsx606.amr.corp.intel.com (10.18.126.86) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.4; Thu, 13 May 2021 11:17:34 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2106.2
+ via Frontend Transport; Thu, 13 May 2021 11:17:34 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.109)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2106.2; Thu, 13 May 2021 11:17:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G0MeSCkaeEdydvbD8+FOt6BzBrfysQGk0zD+ElEc9QvyG9vfVqBaOL/CiWV7E+yJXCyUeE84v3w8cMniAeEU48IssxHM1097R9sPISFYcc6VZhFZObqYSBfV8EPBelMdrYYpL7qeFF0D212GMSRSI73lAFvaAS6gRFyR+d5dMtPJXtd3BMHTHsmk57wjsj460ofao6HXGkEnApfvvg0EQn/32r/GzGn5sLtwWxrpLXKsfmkDlnWnt2cTINEQQV7ZTZ9OxTrmba4lB/UIV6I3bZNRXZo9e0HaC7I/EQG74eMK3uAPcRZSZyR1IhTS6majeooqxlupC4V++a4plTT/lw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J/KovrwIjshyRJZ8imDTMfHqLDfnMGw8dDD98rfIqqw=;
+ b=R8cgWFTRXJxkthOP2VFhvEnFi8mnNc1CcyiVtjxbrfzGnAP4c0rjU3w2JQvsK99QWxikJ4SFuAU9t2nAkP2JFjOQ7kbNga4ada2OapcgASQKBUWrdW7e17x/1/fCyoTFWyBvkCUDGL2ln1a2kKHX/qCRKK1ynCnuYMeZKQ6ETLY+2UbdsHoItLBhKguPJKoRFJOqxdDl1LHZ8436NE0TKSKiXXwlLdL9WV4vtPk/5nbvNlkLBTZYp4wCYNGecSI4MK/dR/rhn0+aKL8OdFeatKuDxIMNapqVQsCuyzNXmVFzBC6aR2kr8HBTg7eEX+SXVKKgeizHR4QQGGdG5NsZjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J/KovrwIjshyRJZ8imDTMfHqLDfnMGw8dDD98rfIqqw=;
+ b=EtqoCZNYwgs04lsy3lxRuv37UXJ+HqZJl0MNQ/1hzRRd4DJs058Zr3T34Qo6UxYrokWk88fMyLHedy5iTdde86CypXRgqJi3V+W5oObdsJHDDVe1IadRo5hkdYWvWndJ3RHHBJn2ajdvIfC5smNxej142y3jMmDOmNVwMSovWa0=
+Received: from BYAPR11MB3448.namprd11.prod.outlook.com (2603:10b6:a03:76::21)
+ by BYAPR11MB2807.namprd11.prod.outlook.com (2603:10b6:a02:c3::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4108.31; Thu, 13 May
+ 2021 18:17:31 +0000
+Received: from BYAPR11MB3448.namprd11.prod.outlook.com
+ ([fe80::713c:a1f6:aae4:19fc]) by BYAPR11MB3448.namprd11.prod.outlook.com
+ ([fe80::713c:a1f6:aae4:19fc%5]) with mapi id 15.20.4108.034; Thu, 13 May 2021
+ 18:17:31 +0000
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+	"santosh@fossix.org" <santosh@fossix.org>
+Subject: Re: [ndctl V5 4/4] Use page size as alignment value
+Thread-Topic: [ndctl V5 4/4] Use page size as alignment value
+Thread-Index: AQHXR78dliwb0fNPv0qbbfUYRWQK7qrhuPoA
+Date: Thu, 13 May 2021 18:17:31 +0000
+Message-ID: <27307f1aceeda53154b9985f065fdada71cf1fd4.camel@intel.com>
+References: <20210513061218.760322-1-santosh@fossix.org>
+	 <20210513061218.760322-4-santosh@fossix.org>
+In-Reply-To: <20210513061218.760322-4-santosh@fossix.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.40.1 (3.40.1-1.fc34) 
+authentication-results: lists.01.org; dkim=none (message not signed)
+ header.d=none;lists.01.org; dmarc=none action=none header.from=intel.com;
+x-originating-ip: [192.55.54.49]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f02f8ea9-6d10-4b41-7dc8-08d9163b5fae
+x-ms-traffictypediagnostic: BYAPR11MB2807:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BYAPR11MB2807C8D931C49B9331EA41DFC7519@BYAPR11MB2807.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1360;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 0ECi48rRP6BQBrTKZSWyaCb3gK4WPDKXpeKl0a5tcpLBy3qbZwoDbcOvEnfih3Lj5BuSjGY8RkU8+tX5qG4YCcL+O6UsCpmJAlmCe7DdkGYWsOUKylrOy7vgI+TW5ronZ9Vlipm2YZp7Z+KVhm1KZEVj1BEsOeiSHDJPCLYgXDYPMvpKpA1VrNsWMwQCW6iQjejMZBfiG2M4mzFo3ACCaFNxdwt9NbFQqoypURj99CmEImnNU1/0SvqIq2lNPt8WPT/nU131dil5igWPAnCfqtpWkUz60hJzQgwd0JUduNq+r8kjsOBa71Mm3mXhtBr6/OBN5LzJOvyjF8bc6b7I9F7qGamZJhFR1hw1qlLmf/FY2sJ59uFNm630CHEzis9cwz3SkjUl1BLENJt3nca/eCaf7qBEc56jxFV6bJyhWp5RYM1D5nMiCmd+R2qMclvv/4MRmH7RLfTol0T0hXU1nU/zpWSK112RkCHKz1LoOqWgdkvC42Q1POsJpaXtMYqfc3wtPEIt5ENm7IxRoAS99kNrigHNDkCtZOkezv4GGbyxy3LQpFCvviqsmYmIt3Gh4XBlc3DEzCpU2C8Rrd9bQVpZYk2+K6uaWgQzIKkaxDc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(64756008)(66476007)(66556008)(76116006)(4326008)(2906002)(498600001)(66446008)(38100700002)(8676002)(6486002)(110136005)(122000001)(26005)(186003)(71200400001)(2616005)(5660300002)(86362001)(6512007)(8936002)(36756003)(66946007)(6506007)(83380400001)(54906003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?utf-8?B?UmtBcHhuQlU2TktBUzUyeFVjMVQyZW8vQ2U2SGZGWWlvSVZnQ1JLUytpa1dR?=
+ =?utf-8?B?OFRaWXdSQnJzVDVneEJ2SlF1WDY1OVJjeXlKZGZ6UGpyK3NLRzNRczBObHlZ?=
+ =?utf-8?B?c2lESU5CZmlobGdsdUFONmoyVUNtaEprcGxLVklJMXhyb2hPbnhvNEtXV1Y2?=
+ =?utf-8?B?NFBpTXFjV0RxN2E5MjhQYTdiZEphQkdtbE81ZndDalNJUU1jK3planp0VUVt?=
+ =?utf-8?B?KzFtK1RxTmQrLzI1SVRFYVpwTGtDYVVVMHlneXFmNmRxdjZoQ042Rjh3SGpi?=
+ =?utf-8?B?U3Y4eFhwSzh3bnNtSkJad2l1bXhNTjQ1cytxc3hiQzV5NThTKzdkbkI2ekJv?=
+ =?utf-8?B?bDIvMEhac204SThRTkFEL3JMRjBsbWIzRnZ1TmdYS2Q1WldQTE1haEJkOENV?=
+ =?utf-8?B?TlFOcHpVT3gvdWN0U2h2R0NhWFo0RHBJU0MrMTVQWkE3Z3dIbmpRUnhkT3Y2?=
+ =?utf-8?B?RVJJNTlmZ1lwVndQbDVqb3B6RXVIdlV1VWhSMTdSODNEUnRRUzBwdVFXSmxS?=
+ =?utf-8?B?a3hvK2R4T2NraWlMbllLTWhMb2tjSDd5bDkwaFdNcWJTejg3U0tMbGNiY0NT?=
+ =?utf-8?B?MCsvOHRaWXM5MCtIb2dITmhKZWg3emViZ3QyUzlRSk82eWNVU3hoOE5mU2Zh?=
+ =?utf-8?B?aS9GYnp1a3ZoeUNzRkxWbEQ1RlNPc0JKMVVHY1VLSXhKZEZucldsQnJZWFNn?=
+ =?utf-8?B?bzhOems0MmFyaXdEQmlDSGFJYzhoZVp0NFkyemtrNkZ3ZHl6a29zc0dyODI0?=
+ =?utf-8?B?NEVLM1h0KzNpMHg2Zi9ZbzByS01VTkhLOXJKeVVPYTlQOFVZblBBY3U5YlZm?=
+ =?utf-8?B?SVY0WThsTWkwcmdrTHBzendqNTVNVXNhdTcyblErZWs3NGwyd2hGQ1JCb2FT?=
+ =?utf-8?B?UjdCRzMrdm14bStOVFlPT2cvVm5hRW9YLzNQRkFYQ3Jwd0xaSE1XUmhmM25I?=
+ =?utf-8?B?aSs4eDNMbHBYSlpoSDVUWjNDYVVyNGZ5bFJCRnlwdXRnWGpGV1FDYlBKWlJu?=
+ =?utf-8?B?YXhteDN1YkFiSlpvZWE1djQ0bzFMeUN0Zmczc0xnV2locis0eitWL1Fac0J0?=
+ =?utf-8?B?ZGZpY29HL0thMEdCV2RUWTRKSWpxQmR6TGJ4b3FJeEtJUjNUVTFvY2JZYzg2?=
+ =?utf-8?B?eGp2Y1JCMDhka2I2YXBxZ0tWVnBnUUY0TmV1b3l5Y3Q4cmgzRkxSQlRFc2hG?=
+ =?utf-8?B?ZndPWmpRMWp4SklFSnQrNTRWdzJKVFEzWjRlU1laeVBZU29CaUpkYUJyZTRl?=
+ =?utf-8?B?OG1FUlZBWnFRQ1B4Sml5V21BdzdMYnFKUUJnZjljU0d4U3h0YTNieEFEOEFM?=
+ =?utf-8?B?UlM5LzdHLzJHTzFYNDJyMWRwanU5TjVuVW5EdFhyQTQ2b29vQ0FhU2ozWWxB?=
+ =?utf-8?B?U1pCMDhaRXZKa3Q2MWppbDJSZ2t2eVhwbzBrYzRHRVZoSThtalpBUGVFVlE3?=
+ =?utf-8?B?VDB5WE02d2VOb09xRGRiTG0rT3dPVmRWSEJ4RWlTTUllZ29meElBZEowMkpM?=
+ =?utf-8?B?VEZMWU5Lb1J2S3pkTHFyV2NTRUh6Y3EremI3a3VCYW90ekJwMkRkdEJXNkNt?=
+ =?utf-8?B?VjB1cEdCRUNsWjBVY0YwSHpLYThkRmQwZEtrQ0liQ3FPZWV6T3hzSWh1ckpn?=
+ =?utf-8?B?UVd3dXd4aTVuL0k5cUxaSnMwU1lBUUZEZDVIc3o1QW0xRXdBVGtyc25UYzBj?=
+ =?utf-8?B?OWthUVVxMWRZTERHRUNQRFR6alI0b2V0eC9RNlhEUWttMTV3Z3lCbWZwWVlJ?=
+ =?utf-8?Q?nCuBbscKpNCTZv3GgYp5sLnsk9eTIAXkLHcVbQh?=
+Content-ID: <1358B6E69FA69846BDBB57815E1C1617@namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <OSBPR01MB292062DA13D47BDBF3E2321BF4519@OSBPR01MB2920.jpnprd01.prod.outlook.com>
-Message-ID-Hash: MII7CCHY2A7EGQC5Y3FPMU7AIXQYYQGR
-X-Message-ID-Hash: MII7CCHY2A7EGQC5Y3FPMU7AIXQYYQGR
-X-MailFrom: djwong@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "darrick.wong@oracle.com" <darrick.wong@oracle.com>, "willy@infradead.org" <willy@infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "david@fromorbit.com" <david@fromorbit.com>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3448.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f02f8ea9-6d10-4b41-7dc8-08d9163b5fae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2021 18:17:31.2389
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ytdpPxHQr0y7KeDuDOaaBRQ0PerikhrpzHGf6p6xjNVNLX8eWUBLZekkSdEVhZpW36h4P0ZCVUjIpGkRqIbwhcafvQpwCm5qDN9LXzGU6jI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB2807
+X-OriginatorOrg: intel.com
+Message-ID-Hash: RJYK6PYQUTVZTGUVMEYLTAXFCRLAKDCJ
+X-Message-ID-Hash: RJYK6PYQUTVZTGUVMEYLTAXFCRLAKDCJ
+X-MailFrom: vishal.l.verma@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "sbhat@linux.ibm.com" <sbhat@linux.ibm.com>, "harish@linux.ibm.com" <harish@linux.ibm.com>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MII7CCHY2A7EGQC5Y3FPMU7AIXQYYQGR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RJYK6PYQUTVZTGUVMEYLTAXFCRLAKDCJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,229 +153,131 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, May 13, 2021 at 07:57:47AM +0000, ruansy.fnst@fujitsu.com wrote:
-> > -----Original Message-----
-> > From: Darrick J. Wong <djwong@kernel.org>
-> > Subject: Re: [PATCH v5 1/7] fsdax: Introduce dax_iomap_cow_copy()
-> > 
-> > On Tue, May 11, 2021 at 11:09:27AM +0800, Shiyang Ruan wrote:
-> > > In the case where the iomap is a write operation and iomap is not
-> > > equal to srcmap after iomap_begin, we consider it is a CoW operation.
-> > >
-> > > The destance extent which iomap indicated is new allocated extent.
-> > > So, it is needed to copy the data from srcmap to new allocated extent.
-> > > In theory, it is better to copy the head and tail ranges which is
-> > > outside of the non-aligned area instead of copying the whole aligned
-> > > range. But in dax page fault, it will always be an aligned range.  So,
-> > > we have to copy the whole range in this case.
-> > >
-> > > Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-> > > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > > ---
-> > >  fs/dax.c | 86
-> > > ++++++++++++++++++++++++++++++++++++++++++++++++++++----
-> > >  1 file changed, 81 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/fs/dax.c b/fs/dax.c
-> > > index bf3fc8242e6c..f0249bb1d46a 100644
-> > > --- a/fs/dax.c
-> > > +++ b/fs/dax.c
-> > > @@ -1038,6 +1038,61 @@ static int dax_iomap_direct_access(struct iomap
-> > *iomap, loff_t pos, size_t size,
-> > >  	return rc;
-> > >  }
-> > >
-> > > +/**
-> > > + * dax_iomap_cow_copy(): Copy the data from source to destination before
-> > write.
-> > > + * @pos:	address to do copy from.
-> > > + * @length:	size of copy operation.
-> > > + * @align_size:	aligned w.r.t align_size (either PMD_SIZE or PAGE_SIZE)
-> > > + * @srcmap:	iomap srcmap
-> > > + * @daddr:	destination address to copy to.
-> > > + *
-> > > + * This can be called from two places. Either during DAX write fault,
-> > > +to copy
-> > > + * the length size data to daddr. Or, while doing normal DAX write
-> > > +operation,
-> > > + * dax_iomap_actor() might call this to do the copy of either start
-> > > +or end
-> > > + * unaligned address. In this case the rest of the copy of aligned
-> > > +ranges is
-> > > + * taken care by dax_iomap_actor() itself.
-> > > + * Also, note DAX fault will always result in aligned pos and pos + length.
-> > > + */
-> > > +static int dax_iomap_cow_copy(loff_t pos, loff_t length, size_t
-> > > +align_size,
-> > 
-> > Nit: Linus has asked us not to continue the use of loff_t for file io length.  Could
-> > you change this to 'uint64_t length', please?
-> > (Assuming we even need the extra length bits?)
-> > 
-> > With that fixed up...
-> > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> > 
-> > --D
-> > 
-> > > +		struct iomap *srcmap, void *daddr)
-> > > +{
-> > > +	loff_t head_off = pos & (align_size - 1);
-> > 
-> > Other nit: head_off = round_down(pos, align_size); ?
+On Thu, 2021-05-13 at 11:42 +0530, Santosh Sivaraj wrote:
+> The alignment sizes passed to ndctl in the tests are all hardcoded to 4k,
+> the default page size on x86. Change those to the default page size on that
+> architecture (sysconf/getconf). No functional changes otherwise.
 > 
-> We need the offset within a page here, either PTE or PMD.  So I think round_down() is not suitable here.
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  test/dpa-alloc.c    | 15 ++++++++-------
+>  test/multi-dax.sh   |  6 ++++--
+>  test/sector-mode.sh |  4 +++-
+>  3 files changed, 15 insertions(+), 10 deletions(-)
 
-Oops, yeah.  /me wonders if any of Matthew's folio cleanups will reduce
-the amount of opencoding around this...
-
---D
+Thanks for the updates, these look good - I've applied them and pushed
+out on 'pending'.
 
 > 
-> 
-> --
-> Thanks,
-> Ruan Shiyang.
-> 
-> > 
-> > > +	size_t size = ALIGN(head_off + length, align_size);
-> > > +	loff_t end = pos + length;
-> > > +	loff_t pg_end = round_up(end, align_size);
-> > > +	bool copy_all = head_off == 0 && end == pg_end;
-> > > +	void *saddr = 0;
-> > > +	int ret = 0;
-> > > +
-> > > +	ret = dax_iomap_direct_access(srcmap, pos, size, &saddr, NULL);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	if (copy_all) {
-> > > +		ret = copy_mc_to_kernel(daddr, saddr, length);
-> > > +		return ret ? -EIO : 0;
-> > > +	}
-> > > +
-> > > +	/* Copy the head part of the range.  Note: we pass offset as length. */
-> > > +	if (head_off) {
-> > > +		ret = copy_mc_to_kernel(daddr, saddr, head_off);
-> > > +		if (ret)
-> > > +			return -EIO;
-> > > +	}
-> > > +
-> > > +	/* Copy the tail part of the range */
-> > > +	if (end < pg_end) {
-> > > +		loff_t tail_off = head_off + length;
-> > > +		loff_t tail_len = pg_end - end;
-> > > +
-> > > +		ret = copy_mc_to_kernel(daddr + tail_off, saddr + tail_off,
-> > > +					tail_len);
-> > > +		if (ret)
-> > > +			return -EIO;
-> > > +	}
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  /*
-> > >   * The user has performed a load from a hole in the file.  Allocating a new
-> > >   * page in the file would cause excessive storage usage for workloads
-> > > with @@ -1167,11 +1222,12 @@ dax_iomap_actor(struct inode *inode,
-> > loff_t pos, loff_t length, void *data,
-> > >  	struct dax_device *dax_dev = iomap->dax_dev;
-> > >  	struct iov_iter *iter = data;
-> > >  	loff_t end = pos + length, done = 0;
-> > > +	bool write = iov_iter_rw(iter) == WRITE;
-> > >  	ssize_t ret = 0;
-> > >  	size_t xfer;
-> > >  	int id;
-> > >
-> > > -	if (iov_iter_rw(iter) == READ) {
-> > > +	if (!write) {
-> > >  		end = min(end, i_size_read(inode));
-> > >  		if (pos >= end)
-> > >  			return 0;
-> > > @@ -1180,7 +1236,12 @@ dax_iomap_actor(struct inode *inode, loff_t pos,
-> > loff_t length, void *data,
-> > >  			return iov_iter_zero(min(length, end - pos), iter);
-> > >  	}
-> > >
-> > > -	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED))
-> > > +	/*
-> > > +	 * In DAX mode, we allow either pure overwrites of written extents, or
-> > > +	 * writes to unwritten extents as part of a copy-on-write operation.
-> > > +	 */
-> > > +	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED &&
-> > > +			!(iomap->flags & IOMAP_F_SHARED)))
-> > >  		return -EIO;
-> > >
-> > >  	/*
-> > > @@ -1219,6 +1280,13 @@ dax_iomap_actor(struct inode *inode, loff_t pos,
-> > loff_t length, void *data,
-> > >  			break;
-> > >  		}
-> > >
-> > > +		if (write && srcmap->addr != iomap->addr) {
-> > > +			ret = dax_iomap_cow_copy(pos, length, PAGE_SIZE, srcmap,
-> > > +						 kaddr);
-> > > +			if (ret)
-> > > +				break;
-> > > +		}
-> > > +
-> > >  		map_len = PFN_PHYS(map_len);
-> > >  		kaddr += offset;
-> > >  		map_len -= offset;
-> > > @@ -1230,7 +1298,7 @@ dax_iomap_actor(struct inode *inode, loff_t pos,
-> > loff_t length, void *data,
-> > >  		 * validated via access_ok() in either vfs_read() or
-> > >  		 * vfs_write(), depending on which operation we are doing.
-> > >  		 */
-> > > -		if (iov_iter_rw(iter) == WRITE)
-> > > +		if (write)
-> > >  			xfer = dax_copy_from_iter(dax_dev, pgoff, kaddr,
-> > >  					map_len, iter);
-> > >  		else
-> > > @@ -1382,6 +1450,7 @@ static vm_fault_t dax_fault_actor(struct vm_fault
-> > *vmf, pfn_t *pfnp,
-> > >  	unsigned long entry_flags = pmd ? DAX_PMD : 0;
-> > >  	int err = 0;
-> > >  	pfn_t pfn;
-> > > +	void *kaddr;
-> > >
-> > >  	/* if we are reading UNWRITTEN and HOLE, return a hole. */
-> > >  	if (!write &&
-> > > @@ -1392,18 +1461,25 @@ static vm_fault_t dax_fault_actor(struct
-> > vm_fault *vmf, pfn_t *pfnp,
-> > >  			return dax_pmd_load_hole(xas, vmf, iomap, entry);
-> > >  	}
-> > >
-> > > -	if (iomap->type != IOMAP_MAPPED) {
-> > > +	if (iomap->type != IOMAP_MAPPED && !(iomap->flags &
-> > IOMAP_F_SHARED))
-> > > +{
-> > >  		WARN_ON_ONCE(1);
-> > >  		return pmd ? VM_FAULT_FALLBACK : VM_FAULT_SIGBUS;
-> > >  	}
-> > >
-> > > -	err = dax_iomap_direct_access(iomap, pos, size, NULL, &pfn);
-> > > +	err = dax_iomap_direct_access(iomap, pos, size, &kaddr, &pfn);
-> > >  	if (err)
-> > >  		return pmd ? VM_FAULT_FALLBACK : dax_fault_return(err);
-> > >
-> > >  	*entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn, entry_flags,
-> > >  				  write && !sync);
-> > >
-> > > +	if (write &&
-> > > +	    srcmap->addr != IOMAP_HOLE && srcmap->addr != iomap->addr) {
-> > > +		err = dax_iomap_cow_copy(pos, size, size, srcmap, kaddr);
-> > > +		if (err)
-> > > +			return dax_fault_return(err);
-> > > +	}
-> > > +
-> > >  	if (sync)
-> > >  		return dax_fault_synchronous_pfnp(pfnp, pfn);
-> > >
-> > > --
-> > > 2.31.1
-> > >
-> > >
-> > >
+> diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
+> index 0b3bb7a..59185cf 100644
+> --- a/test/dpa-alloc.c
+> +++ b/test/dpa-alloc.c
+> @@ -38,12 +38,13 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>  	struct ndctl_region *region, *blk_region = NULL;
+>  	struct ndctl_namespace *ndns;
+>  	struct ndctl_dimm *dimm;
+> -	unsigned long size;
+> +	unsigned long size, page_size;
+>  	struct ndctl_bus *bus;
+>  	char uuid_str[40];
+>  	int round;
+>  	int rc;
+>  
+> +	page_size = sysconf(_SC_PAGESIZE);
+>  	/* disable nfit_test.1, not used in this test */
+>  	bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
+>  	if (!bus)
+> @@ -124,11 +125,11 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>  			return rc;
+>  		}
+>  		ndctl_namespace_disable_invalidate(ndns);
+> -		rc = ndctl_namespace_set_size(ndns, SZ_4K);
+> +		rc = ndctl_namespace_set_size(ndns, page_size);
+>  		if (rc) {
+> -			fprintf(stderr, "failed to init %s to size: %d\n",
+> +			fprintf(stderr, "failed to init %s to size: %lu\n",
+>  					ndctl_namespace_get_devname(ndns),
+> -					SZ_4K);
+> +					page_size);
+>  			return rc;
+>  		}
+>  		namespaces[i].ndns = ndns;
+> @@ -150,7 +151,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>  		ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
+>  		if (i % ARRAY_SIZE(namespaces) == 0)
+>  			round++;
+> -		size = SZ_4K * round;
+> +		size = page_size * round;
+>  		rc = ndctl_namespace_set_size(ndns, size);
+>  		if (rc) {
+>  			fprintf(stderr, "%s: set_size: %lx failed: %d\n",
+> @@ -166,7 +167,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>  	i--;
+>  	round++;
+>  	ndns = namespaces[i % ARRAY_SIZE(namespaces)].ndns;
+> -	size = SZ_4K * round;
+> +	size = page_size * round;
+>  	rc = ndctl_namespace_set_size(ndns, size);
+>  	if (rc) {
+>  		fprintf(stderr, "%s failed to update while labels full\n",
+> @@ -175,7 +176,7 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
+>  	}
+>  
+>  	round--;
+> -	size = SZ_4K * round;
+> +	size = page_size * round;
+>  	rc = ndctl_namespace_set_size(ndns, size);
+>  	if (rc) {
+>  		fprintf(stderr, "%s failed to reduce size while labels full\n",
+> diff --git a/test/multi-dax.sh b/test/multi-dax.sh
+> index e932569..9451ed0 100755
+> --- a/test/multi-dax.sh
+> +++ b/test/multi-dax.sh
+> @@ -12,6 +12,8 @@ check_min_kver "4.13" || do_skip "may lack multi-dax support"
+>  
+>  trap 'err $LINENO' ERR
+>  
+> +ALIGN_SIZE=`getconf PAGESIZE`
+> +
+>  # setup (reset nfit_test dimms)
+>  modprobe nfit_test
+>  $NDCTL disable-region -b $NFIT_TEST_BUS0 all
+> @@ -22,9 +24,9 @@ rc=1
+>  query=". | sort_by(.available_size) | reverse | .[0].dev"
+>  region=$($NDCTL list -b $NFIT_TEST_BUS0 -t pmem -Ri | jq -r "$query")
+>  
+> -json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a 4096 -s 16M)
+> +json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a $ALIGN_SIZE -s 16M)
+>  chardev1=$(echo $json | jq ". | select(.mode == \"devdax\") | .daxregion.devices[0].chardev")
+> -json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a 4096 -s 16M)
+> +json=$($NDCTL create-namespace -b $NFIT_TEST_BUS0 -r $region -t pmem -m devdax -a $ALIGN_SIZE -s 16M)
+>  chardev2=$(echo $json | jq ". | select(.mode == \"devdax\") | .daxregion.devices[0].chardev")
+>  
+>  _cleanup
+> diff --git a/test/sector-mode.sh b/test/sector-mode.sh
+> index dd7013e..d03c0ca 100755
+> --- a/test/sector-mode.sh
+> +++ b/test/sector-mode.sh
+> @@ -9,6 +9,8 @@ rc=77
+>  set -e
+>  trap 'err $LINENO' ERR
+>  
+> +ALIGN_SIZE=`getconf PAGESIZE`
+> +
+>  # setup (reset nfit_test dimms)
+>  modprobe nfit_test
+>  $NDCTL disable-region -b $NFIT_TEST_BUS0 all
+> @@ -25,7 +27,7 @@ NAMESPACE=$($NDCTL list -b $NFIT_TEST_BUS1 -N | jq -r "$query")
+>  REGION=$($NDCTL list -R --namespace=$NAMESPACE | jq -r "(.[]) | .dev")
+>  echo 0 > /sys/bus/nd/devices/$REGION/read_only
+>  $NDCTL create-namespace --no-autolabel -e $NAMESPACE -m sector -f -l 4K
+> -$NDCTL create-namespace --no-autolabel -e $NAMESPACE -m dax -f -a 4K
+> +$NDCTL create-namespace --no-autolabel -e $NAMESPACE -m dax -f -a $ALIGN_SIZE
+>  $NDCTL create-namespace --no-autolabel -e $NAMESPACE -m sector -f -l 4K
+>  
+>  _cleanup
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
