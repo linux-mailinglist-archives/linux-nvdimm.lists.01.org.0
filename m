@@ -2,59 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84E2381446
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 01:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AA4381458
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 01:43:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C6A39100F2268;
-	Fri, 14 May 2021 16:33:38 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+	by ml01.01.org (Postfix) with ESMTP id CCA1F100EAAE6;
+	Fri, 14 May 2021 16:43:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 13E33100ED4BA
-	for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 16:33:35 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id n2so930775ejy.7
-        for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 16:33:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E3777100F2268
+	for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 16:43:43 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id m12so992511eja.2
+        for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 16:43:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:from:date:message-id:subject:to:cc;
-        bh=1+NbqxnUts2cERrUKprfSG6COch8OgsrINoj1msojwQ=;
-        b=SE78uhsaW5vmO2PQwNgDVDEFZaLmLd2hYDNZhtr9Nt/nw9Asyt0kF6wBIRcaCQE94q
-         iFo9NmUEMIp1hQL34Xw1iwYmf+UkAl2N+08lUDF845tzB4wZaLM/OM2gen6ONHUtYSz7
-         CpZ1xfTo2Jg4UJ9OutADhkb19GX/5HMflMJF05nLMyzn5UQuaGvwkMIMASnORPA3Rd/P
-         FgZ1/x3PNkA7FZCp8OHCYRsQxDUyfrhsvaBWylUAX4Glxf2WL1OoaFEoTsTPAbce7R3Y
-         l10IgmrP7DIItHPkINgy5dP9A30nU7qafs9JueEYbZP/3+8ZFpGxN6oO2AultOlrolea
-         smUw==
+        bh=v3u3b9uT02hbX02b+XftSWgRRCv+2h7+b/1VyLPKTaw=;
+        b=K1r0Y34sTbOrf9jhumBPZ6G5hS4KTjCXmUPdNQawQh5HvGQBrptyVrAqG6jr6L8Y+L
+         LjY2R+rIs4BlpX2nZY0BmTPMwrDqRRjMSOVzKf6lde8k3YqjHrWXoh1kd4GNZ3dfjs4M
+         YxJ1mFbUVttbWsestCFpjlab/6Ryfb78NVImRllTfgPHiPE0EOaQxNFP1HPmZzo1dsBb
+         XJswTOGqiFzG5/qLR/D2shgk70Nn0o48RvU8ppVwTymgZuhmtqvLBuWgL76hZvBJYpsf
+         XHUHHlp1fd1woMT06xwZxUS6Vx25gSRI/Wlc74dyqBk41haWmtGrMUoctS0PWbzAN1ri
+         CGuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=1+NbqxnUts2cERrUKprfSG6COch8OgsrINoj1msojwQ=;
-        b=OCjQlBpazA3Q0EmBnorKrNun7xNi0Q/7S9b/xhzJDpNwYYGbjConZrBy7DxcVP9bug
-         LIIF9/gAyApBx3ViewHYe/rEnETQmTOIyTvxqCyM/jS9w8Rm26rDN1lfV2XneDDuYrln
-         9ECXZKPqguZEN+nqwRFDB2gr6QyFFMQaL5L6Ko/BipFyv55i6HLzEdVNUQWuZG+fyeko
-         aR2fix0MU652QyBQcFkc8gRM4g5sIj18cQI/GZhLMEcmwwXewwSq3oB9xNVDsEs0suR2
-         UO/KsmeOoY+5Qoq1BHtTC9Itr7LLqY9CGxf8fLz3+2mqly0MvrlBk2D1XomJAO72ylf8
-         jnsw==
-X-Gm-Message-State: AOAM530DsqnzfGou5f/NYfhiAL/Td6wdVoszDKCFKCAo/cBDFz52ZEdB
-	Qcw9Atyfe52RAQVIJxiiJ20nJALdwXiQ5xaXnj8Npg==
-X-Google-Smtp-Source: ABdhPJyg/1HU0s2ONvtTgrt5iERBgGgkS6JytB18uzIi8C03bdvf44hVYzlIqOF4VsHI3+YtSAzrMa4Jr9LrNS0IJRg=
-X-Received: by 2002:a17:906:33da:: with SMTP id w26mr51913539eja.472.1621035213402;
- Fri, 14 May 2021 16:33:33 -0700 (PDT)
+        bh=v3u3b9uT02hbX02b+XftSWgRRCv+2h7+b/1VyLPKTaw=;
+        b=F3GNj/GJbErT9WhGXb3JvY4+Kk5w3UKjNt44ZEadPW9DPibuh21yRdp0hRTkCkszj3
+         l0M/xl3Qgtroi8MYwzaEZB8o4S3fTxHM6kpKl5NidOrNNM0HjHq5U/WjAJcmquntbUW4
+         rjn06gja4w23fne3aKOd7s+Gr0Y4niZSFyaMaZhYa11/ozmi6ismKqC8GwLp0giZdQQG
+         2PZQKMcKQvCpPj0edC2AxF2JzVPaAOjg+Cw/Ubm/x7qEH9Th+1OImJftiC6WiauaLYTU
+         3dVgaAZ9YvsX181ngPe3elyG1+1wJJHWjFqyZrzTEyOwmq/Y/yUe+6Li86ndOMqi0BrO
+         5JQg==
+X-Gm-Message-State: AOAM530Nw6BYZ1iU7MXqMaDjsTQnJUPni0WlPQKmF9/Bb5+yK6YUjY3w
+	0L/c7RjuJBXGAHlqYVVI0bAC9AiL86NPsHOY3RZcXA==
+X-Google-Smtp-Source: ABdhPJxOQlIGiokO70SPnHXQBzx0NDpYA7ZkRGGn3AeoRPNbA/UMXqQl1o5UsxDfPBT75lhQedX4k1MOMo7xuNqSEMs=
+X-Received: by 2002:a17:906:bc8e:: with SMTP id lv14mr50659631ejb.418.1621035822234;
+ Fri, 14 May 2021 16:43:42 -0700 (PDT)
 MIME-Version: 1.0
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 14 May 2021 16:33:22 -0700
-Message-ID: <CAPcyv4hDfxpYh1rvvqFCQ+eNk_XxZD3grUOYkHWbERfxky43xQ@mail.gmail.com>
-Subject: [GIT PULL] dax fixes for v5.13-rc2
+Date: Fri, 14 May 2021 16:43:31 -0700
+Message-ID: <CAPcyv4gEKckAC2_mtjdK22OsEH4tHQSprYmuB7hkhafYquKNGQ@mail.gmail.com>
+Subject: [GIT PULL] libnvdimm fixes for 5.13-rc2
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Message-ID-Hash: 4Q3I2ZYTDSBXDS5JHOIPVLBZ7HRW6XMF
-X-Message-ID-Hash: 4Q3I2ZYTDSBXDS5JHOIPVLBZ7HRW6XMF
+Message-ID-Hash: UMFLXWVSOD2S5QG3IGCVQND3VZ47KPTA
+X-Message-ID-Hash: UMFLXWVSOD2S5QG3IGCVQND3VZ47KPTA
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, nvdimm@lists.linux.dev
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, nvdimm@lists.linux.dev, Linux ACPI <linux-acpi@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4Q3I2ZYTDSBXDS5JHOIPVLBZ7HRW6XMF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UMFLXWVSOD2S5QG3IGCVQND3VZ47KPTA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,77 +66,61 @@ Content-Transfer-Encoding: 7bit
 Hi Linus, please pull from:
 
   git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/dax-fixes-5.13-rc2
+tags/libnvdimm-fixes-5.13-rc2
 
-...to receive a fix for a hang condition in the filesystem-dax core
-when exercised by virtiofs. This bug has been there from the
-beginning, but the condition has not triggered on other filesystems
-since they hold a lock over invalidation events.
-
-The changes have appeared in -next with no reported issues. The
-patches were originally against v5.12 so you will see a minor conflict
-with Willy's nr_exceptional changes. My proposed conflict resolution
-appended below.
+...to receive a regression fix for a bootup crash condition introduced
+in -rc1 and some other minor fixups. This has all appeared in -next
+with no reported issues.
 
 ---
 
-The following changes since commit 9f4ad9e425a1d3b6a34617b8ea226d56a119a717:
 
-  Linux 5.12 (2021-04-25 13:49:08 -0700)
+The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
+
+  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
 
 are available in the Git repository at:
 
   git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/dax-fixes-5.13-rc2
+tags/libnvdimm-fixes-5.13-rc2
 
-for you to fetch changes up to 237388320deffde7c2d65ed8fc9eef670dc979b3:
+for you to fetch changes up to e9cfd259c6d386f6235395a13bd4f357a979b2d0:
 
-  dax: Wake up all waiters after invalidating dax entry (2021-05-07
-15:55:44 -0700)
-
-----------------------------------------------------------------
-dax fixes for 5.13-rc2
-
-- Fix a hang condition (missed wakeups with virtiofs when invalidating
-  entries)
+  ACPI: NFIT: Fix support for variable 'SPA' structure size
+(2021-05-12 12:38:25 -0700)
 
 ----------------------------------------------------------------
-Vivek Goyal (3):
-      dax: Add an enum for specifying dax wakup mode
-      dax: Add a wakeup mode parameter to put_unlocked_entry()
-      dax: Wake up all waiters after invalidating dax entry
+libnvdimm fixes for 5.13-rc2
 
- fs/dax.c | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+- Fix regression in ACPI NFIT table handling leading to crashes and
+  driver load failures.
 
-diff --cc fs/dax.c
-index 69216241392f,df5485b4bddf..62352cbcf0f4
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@@ -524,8 -535,8 +535,8 @@@ retry
+- Move the nvdimm mailing list
 
-                dax_disassociate_entry(entry, mapping, false);
-                xas_store(xas, NULL);   /* undo the PMD join */
--               dax_wake_entry(xas, entry, true);
-+               dax_wake_entry(xas, entry, WAKE_ALL);
- -              mapping->nrexceptional--;
- +              mapping->nrpages -= PG_PMD_NR;
-                entry = NULL;
-                xas_set(xas, index);
-        }
-@@@ -661,10 -672,10 +672,10 @@@ static int __dax_invalidate_entry(struc
-                goto out;
-        dax_disassociate_entry(entry, mapping, trunc);
-        xas_store(&xas, NULL);
- -      mapping->nrexceptional--;
- +      mapping->nrpages -= 1UL << dax_entry_order(entry);
-        ret = 1;
-  out:
--       put_unlocked_entry(&xas, entry);
-+       put_unlocked_entry(&xas, entry, WAKE_ALL);
-        xas_unlock_irq(&xas);
-        return ret;
-  }
+- Miscellaneous minor fixups
+
+----------------------------------------------------------------
+Dan Williams (2):
+      MAINTAINERS: Move nvdimm mailing list
+      ACPI: NFIT: Fix support for variable 'SPA' structure size
+
+Wan Jiabing (1):
+      libnvdimm: Remove duplicate struct declaration
+
+Zou Wei (1):
+      tools/testing/nvdimm: Make symbol '__nfit_test_ioremap' static
+
+ Documentation/ABI/obsolete/sysfs-class-dax    |  2 +-
+ Documentation/ABI/removed/sysfs-bus-nfit      |  2 +-
+ Documentation/ABI/testing/sysfs-bus-nfit      | 40 ++++++++++++-------------
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  4 +--
+ Documentation/driver-api/nvdimm/nvdimm.rst    |  2 +-
+ MAINTAINERS                                   | 14 ++++-----
+ drivers/acpi/nfit/core.c                      | 15 +++++++---
+ include/linux/libnvdimm.h                     |  1 -
+ tools/testing/nvdimm/test/iomap.c             |  2 +-
+ tools/testing/nvdimm/test/nfit.c              | 42 ++++++++++++++++-----------
+ 10 files changed, 69 insertions(+), 55 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
