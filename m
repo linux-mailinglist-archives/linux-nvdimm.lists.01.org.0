@@ -1,74 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502413816CD
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 10:16:01 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100773819D2
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 18:29:06 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 84273100EC1EE;
-	Sat, 15 May 2021 01:15:58 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.45.244; helo=jcb.co.jp; envelope-from=ksqrneyzok@jcb.co.jp; receiver=<UNKNOWN> 
-Received: from jcb.co.jp (unknown [116.85.45.244])
-	by ml01.01.org (Postfix) with ESMTP id 10431100EC1D7
-	for <linux-nvdimm@lists.01.org>; Sat, 15 May 2021 01:15:54 -0700 (PDT)
-Message-ID: <1625BE722C6F22573FDC8BA6DB84EDBC@jcb.co.jp>
-From: =?utf-8?B?SkNC44Kr44O844OJ5qCq5byP5Lya56S+?= <info@jcb.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQTXlKQ0LjgJHjgZTliKnnlKjnoro=?=
-	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
-Date: Sat, 15 May 2021 16:15:43 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: MRFBKLDVRTJVRKWQ4CUB6ZANC7PCRX6M
-X-Message-ID-Hash: MRFBKLDVRTJVRKWQ4CUB6ZANC7PCRX6M
-X-MailFrom: ksqrneyzok@jcb.co.jp
+	by ml01.01.org (Postfix) with ESMTP id 44FCC100EBBC0;
+	Sat, 15 May 2021 09:29:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 8EBD8100EBBA2
+	for <linux-nvdimm@lists.01.org>; Sat, 15 May 2021 09:28:59 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 486CA613C4;
+	Sat, 15 May 2021 16:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1621096136;
+	bh=X3+Sb559v2Vf5aXRxfe8iEp/yqakvWJ6olj5taOgRdI=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=rGbBBANDPEGJmbN5BSFfEf1NqHj4EXm8iOba/5hzLWCqpu7l17lCfUcLTgt01b8d2
+	 nBoJkZ3efceeHbympLKgqo6n197u8xb0B6/jlJecDLFdOwI6TpExDMIciEB6KC0uxM
+	 SxJ+J1vFQwPW/588QDAPpEmXP80gtnyCMzGPT8acPAOvRiv7Cocxn0NDqA8yNot+3c
+	 9Y15uyxAS0qskB0HmatntEXIOP073uusPxEhEmGLXrK6mL5va/VkyvdYIKzMmVSm6x
+	 1vI1yeJiihmSUQztk9hfHggH2gDhwVBbwPFhD0tWIZhzEtUjkw134A97nDYnCJD/6T
+	 7+d1rN/9SpXSw==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4260760727;
+	Sat, 15 May 2021 16:28:56 +0000 (UTC)
+Subject: Re: [GIT PULL] dax fixes for v5.13-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAPcyv4hDfxpYh1rvvqFCQ+eNk_XxZD3grUOYkHWbERfxky43xQ@mail.gmail.com>
+References: <CAPcyv4hDfxpYh1rvvqFCQ+eNk_XxZD3grUOYkHWbERfxky43xQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-fsdevel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAPcyv4hDfxpYh1rvvqFCQ+eNk_XxZD3grUOYkHWbERfxky43xQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/dax-fixes-5.13-rc2
+X-PR-Tracked-Commit-Id: 237388320deffde7c2d65ed8fc9eef670dc979b3
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 393f42f113b607786207449dc3241d05ec61d5dc
+Message-Id: <162109613626.13678.5421183533760328887.pr-tracker-bot@kernel.org>
+Date: Sat, 15 May 2021 16:28:56 +0000
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: HOARTTJN5H264IO6FGAGMTDM6UXWPAQT
+X-Message-ID-Hash: HOARTTJN5H264IO6FGAGMTDM6UXWPAQT
+X-MailFrom: pr-tracker-bot@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Linus Torvalds <torvalds@linux-foundation.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, nvdimm@lists.linux.dev
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MRFBKLDVRTJVRKWQ4CUB6ZANC7PCRX6M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HOARTTJN5H264IO6FGAGMTDM6UXWPAQT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-44CQTXlKQ0Ljgqvjg7zjg4njgJHliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbj
-gZTjgZbjgYTjgb7jgZnjgIINCuOBk+OBruOBn+OBs+OAgeOBlOacrOS6uuanmOOBruOBlOWIqeeU
-qOOBi+OBqeOBhuOBi+OCkueiuuiqjeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBn+OBhOOBiuWPluW8
-leOBjOOBguOCiuOBvuOBl+OBn+OBruOBp+OAgeiqoOOBq+WLneaJi+OBquOBjOOCieOAgeOCq+OD
-vOODieOBruOBlOWIqeeUqOOCkuS4gOmDqOWItumZkOOBleOBm+OBpuOBhOOBn+OBoOOBjeOAgeOB
-lOmAo+e1oeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBvuOBl+OBn+OAgg0K44Gk44GN44G+44GX44Gm
-44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So
-56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQog44GK5a6i5qeY
-44Gr44Gv44GU6L+35oOR44CB44GU5b+D6YWN44KS44GK5o6b44GR44GX44CB6Kqg44Gr55Sz44GX
-6Kiz44GU44GW44GE44G+44Gb44KT44CCDQrkvZXljZLjgZTnkIbop6PjgYTjgZ/jgaDjgY3jgZ/j
-gY/jgYrpoZjjgYTnlLPjgZfjgYLjgZLjgb7jgZnjgIINCuOBlOWbnuetlOOCkuOBhOOBn+OBoOOB
-keOBquOBhOWgtOWQiOOAgeOCq+ODvOODieOBruOBlOWIqeeUqOWItumZkOOBjOe2mee2muOBleOC
-jOOCi+OBk+OBqOOCguOBlOOBluOBhOOBvuOBmeOBruOBp+OAgeS6iOOCgeOBlOS6huaJv+S4i+OB
-leOBhOOAgg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh44KJDQoNCuW8iuekvuOBr+OAgeOC
-pOODs+OCv+ODvOODjeODg+ODiOS4iuOBruS4jeato+ihjOeCuuOBrumYsuatouODu+aKkeWItuOB
-ruims+eCueOBi+OCieOCteOCpOODiOOBqOOBl+OBpuOBruS/oemgvOaAp+ODu+ato+W9k+aAp+OC
-kumrmOOCgeOCi+OBn+OCgeOAgQ0K5aSn5aSJ44GK5omL5pWw44Gn44Gv44GU44GW44GE44G+44GZ
-44GM44CB5LiL6KiY77y177yy77ys44GL44KJ44Ot44Kw44Kk44Oz44GE44Gf44Gg44GN44CBDQrj
-gZTkuI3kvr/jgajjgZTlv4PphY3jgpLjgYrjgYvjgZHjgZfjgb7jgZfjgaboqqDjgavnlLPjgZfo
-qLPjgZTjgZbjgYTjgb7jgZvjgpPjgYzjgIENCuS9leOBqOOBnuOBlOeQhuino+iznOOCiuOBn+OB
-j+OBiumhmOOBhOeUs+OBl+OBguOBkuOBvuOBmeOAgg0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSADQrmoKrlvI/kvJrnpL7jgrjjgqfjg7zjgrfjg7zjg5Pjg7wN
-CuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pag55m66KGM
-6ICF4pagDQrmoKrlvI/kvJrnpL7jgrjjgqfjg7zjgrfjg7zjg5Pjg7wNCuadseS6rOmDvea4r+WM
-uuWNl+mdkuWxsTUtMS0yMg0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSADQrCqUpDQiBDby4sIEx0ZC4gMjAwMA0K54Sh5pat6Lui6LyJ44GK44KI44Gz5YaN6YWN
-5biD44KS56aB44GY44G+44GZ44CCCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
-c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
-ZWF2ZUBsaXN0cy4wMS5vcmcK
+The pull request you sent on Fri, 14 May 2021 16:33:22 -0700:
+
+> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/dax-fixes-5.13-rc2
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/393f42f113b607786207449dc3241d05ec61d5dc
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
