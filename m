@@ -1,37 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72AF38152F
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 04:37:11 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502413816CD
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 10:16:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 21E13100F2251;
-	Fri, 14 May 2021 19:37:10 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.32.239; helo=jcb.co.jp; envelope-from=ltcixcqb@jcb.co.jp; receiver=<UNKNOWN> 
-Received: from jcb.co.jp (unknown [116.85.32.239])
-	by ml01.01.org (Postfix) with ESMTP id 02406100F2250
-	for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 19:37:06 -0700 (PDT)
-Message-ID: <7ABEDA1137AFDADE28251D255715640C@jcb.co.jp>
-From: =?utf-8?B?5qCq5byP5Lya56S+44K444Kn44O844K344O844OT44O8?= <info@jcb.co.jp>
+	by ml01.01.org (Postfix) with ESMTP id 84273100EC1EE;
+	Sat, 15 May 2021 01:15:58 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.45.244; helo=jcb.co.jp; envelope-from=ksqrneyzok@jcb.co.jp; receiver=<UNKNOWN> 
+Received: from jcb.co.jp (unknown [116.85.45.244])
+	by ml01.01.org (Postfix) with ESMTP id 10431100EC1D7
+	for <linux-nvdimm@lists.01.org>; Sat, 15 May 2021 01:15:54 -0700 (PDT)
+Message-ID: <1625BE722C6F22573FDC8BA6DB84EDBC@jcb.co.jp>
+From: =?utf-8?B?SkNC44Kr44O844OJ5qCq5byP5Lya56S+?= <info@jcb.co.jp>
 To: <linux-nvdimm@lists.01.org>
 Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQTXlKQ0LjgJHjgZTliKnnlKjnoro=?=
 	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
-Date: Sat, 15 May 2021 10:36:56 +0800
+Date: Sat, 15 May 2021 16:15:43 +0800
 Mime-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2900.5512
 X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: NJKCJVW4HDOTMA7HVGMDLENQ5YS6Y6A7
-X-Message-ID-Hash: NJKCJVW4HDOTMA7HVGMDLENQ5YS6Y6A7
-X-MailFrom: ltcixcqb@jcb.co.jp
+Message-ID-Hash: MRFBKLDVRTJVRKWQ4CUB6ZANC7PCRX6M
+X-Message-ID-Hash: MRFBKLDVRTJVRKWQ4CUB6ZANC7PCRX6M
+X-MailFrom: ksqrneyzok@jcb.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NJKCJVW4HDOTMA7HVGMDLENQ5YS6Y6A7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MRFBKLDVRTJVRKWQ4CUB6ZANC7PCRX6M/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
