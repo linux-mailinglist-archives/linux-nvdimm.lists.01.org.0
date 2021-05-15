@@ -2,125 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AA4381458
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 01:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72AF38152F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 May 2021 04:37:11 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CCA1F100EAAE6;
-	Fri, 14 May 2021 16:43:46 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E3777100F2268
-	for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 16:43:43 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id m12so992511eja.2
-        for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 16:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=v3u3b9uT02hbX02b+XftSWgRRCv+2h7+b/1VyLPKTaw=;
-        b=K1r0Y34sTbOrf9jhumBPZ6G5hS4KTjCXmUPdNQawQh5HvGQBrptyVrAqG6jr6L8Y+L
-         LjY2R+rIs4BlpX2nZY0BmTPMwrDqRRjMSOVzKf6lde8k3YqjHrWXoh1kd4GNZ3dfjs4M
-         YxJ1mFbUVttbWsestCFpjlab/6Ryfb78NVImRllTfgPHiPE0EOaQxNFP1HPmZzo1dsBb
-         XJswTOGqiFzG5/qLR/D2shgk70Nn0o48RvU8ppVwTymgZuhmtqvLBuWgL76hZvBJYpsf
-         XHUHHlp1fd1woMT06xwZxUS6Vx25gSRI/Wlc74dyqBk41haWmtGrMUoctS0PWbzAN1ri
-         CGuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=v3u3b9uT02hbX02b+XftSWgRRCv+2h7+b/1VyLPKTaw=;
-        b=F3GNj/GJbErT9WhGXb3JvY4+Kk5w3UKjNt44ZEadPW9DPibuh21yRdp0hRTkCkszj3
-         l0M/xl3Qgtroi8MYwzaEZB8o4S3fTxHM6kpKl5NidOrNNM0HjHq5U/WjAJcmquntbUW4
-         rjn06gja4w23fne3aKOd7s+Gr0Y4niZSFyaMaZhYa11/ozmi6ismKqC8GwLp0giZdQQG
-         2PZQKMcKQvCpPj0edC2AxF2JzVPaAOjg+Cw/Ubm/x7qEH9Th+1OImJftiC6WiauaLYTU
-         3dVgaAZ9YvsX181ngPe3elyG1+1wJJHWjFqyZrzTEyOwmq/Y/yUe+6Li86ndOMqi0BrO
-         5JQg==
-X-Gm-Message-State: AOAM530Nw6BYZ1iU7MXqMaDjsTQnJUPni0WlPQKmF9/Bb5+yK6YUjY3w
-	0L/c7RjuJBXGAHlqYVVI0bAC9AiL86NPsHOY3RZcXA==
-X-Google-Smtp-Source: ABdhPJxOQlIGiokO70SPnHXQBzx0NDpYA7ZkRGGn3AeoRPNbA/UMXqQl1o5UsxDfPBT75lhQedX4k1MOMo7xuNqSEMs=
-X-Received: by 2002:a17:906:bc8e:: with SMTP id lv14mr50659631ejb.418.1621035822234;
- Fri, 14 May 2021 16:43:42 -0700 (PDT)
-MIME-Version: 1.0
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 14 May 2021 16:43:31 -0700
-Message-ID: <CAPcyv4gEKckAC2_mtjdK22OsEH4tHQSprYmuB7hkhafYquKNGQ@mail.gmail.com>
-Subject: [GIT PULL] libnvdimm fixes for 5.13-rc2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Message-ID-Hash: UMFLXWVSOD2S5QG3IGCVQND3VZ47KPTA
-X-Message-ID-Hash: UMFLXWVSOD2S5QG3IGCVQND3VZ47KPTA
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, nvdimm@lists.linux.dev, Linux ACPI <linux-acpi@vger.kernel.org>
+	by ml01.01.org (Postfix) with ESMTP id 21E13100F2251;
+	Fri, 14 May 2021 19:37:10 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.32.239; helo=jcb.co.jp; envelope-from=ltcixcqb@jcb.co.jp; receiver=<UNKNOWN> 
+Received: from jcb.co.jp (unknown [116.85.32.239])
+	by ml01.01.org (Postfix) with ESMTP id 02406100F2250
+	for <linux-nvdimm@lists.01.org>; Fri, 14 May 2021 19:37:06 -0700 (PDT)
+Message-ID: <7ABEDA1137AFDADE28251D255715640C@jcb.co.jp>
+From: =?utf-8?B?5qCq5byP5Lya56S+44K444Kn44O844K344O844OT44O8?= <info@jcb.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQTXlKQ0LjgJHjgZTliKnnlKjnoro=?=
+	=?utf-8?B?6KqN44Gu44GK6aGY44GE?=
+Date: Sat, 15 May 2021 10:36:56 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: NJKCJVW4HDOTMA7HVGMDLENQ5YS6Y6A7
+X-Message-ID-Hash: NJKCJVW4HDOTMA7HVGMDLENQ5YS6Y6A7
+X-MailFrom: ltcixcqb@jcb.co.jp
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UMFLXWVSOD2S5QG3IGCVQND3VZ47KPTA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NJKCJVW4HDOTMA7HVGMDLENQ5YS6Y6A7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hi Linus, please pull from:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/libnvdimm-fixes-5.13-rc2
-
-...to receive a regression fix for a bootup crash condition introduced
-in -rc1 and some other minor fixups. This has all appeared in -next
-with no reported issues.
-
----
-
-
-The following changes since commit 6efb943b8616ec53a5e444193dccf1af9ad627b5:
-
-  Linux 5.13-rc1 (2021-05-09 14:17:44 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/libnvdimm-fixes-5.13-rc2
-
-for you to fetch changes up to e9cfd259c6d386f6235395a13bd4f357a979b2d0:
-
-  ACPI: NFIT: Fix support for variable 'SPA' structure size
-(2021-05-12 12:38:25 -0700)
-
-----------------------------------------------------------------
-libnvdimm fixes for 5.13-rc2
-
-- Fix regression in ACPI NFIT table handling leading to crashes and
-  driver load failures.
-
-- Move the nvdimm mailing list
-
-- Miscellaneous minor fixups
-
-----------------------------------------------------------------
-Dan Williams (2):
-      MAINTAINERS: Move nvdimm mailing list
-      ACPI: NFIT: Fix support for variable 'SPA' structure size
-
-Wan Jiabing (1):
-      libnvdimm: Remove duplicate struct declaration
-
-Zou Wei (1):
-      tools/testing/nvdimm: Make symbol '__nfit_test_ioremap' static
-
- Documentation/ABI/obsolete/sysfs-class-dax    |  2 +-
- Documentation/ABI/removed/sysfs-bus-nfit      |  2 +-
- Documentation/ABI/testing/sysfs-bus-nfit      | 40 ++++++++++++-------------
- Documentation/ABI/testing/sysfs-bus-papr-pmem |  4 +--
- Documentation/driver-api/nvdimm/nvdimm.rst    |  2 +-
- MAINTAINERS                                   | 14 ++++-----
- drivers/acpi/nfit/core.c                      | 15 +++++++---
- include/linux/libnvdimm.h                     |  1 -
- tools/testing/nvdimm/test/iomap.c             |  2 +-
- tools/testing/nvdimm/test/nfit.c              | 42 ++++++++++++++++-----------
- 10 files changed, 69 insertions(+), 55 deletions(-)
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+44CQTXlKQ0Ljgqvjg7zjg4njgJHliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbj
+gZTjgZbjgYTjgb7jgZnjgIINCuOBk+OBruOBn+OBs+OAgeOBlOacrOS6uuanmOOBruOBlOWIqeeU
+qOOBi+OBqeOBhuOBi+OCkueiuuiqjeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBn+OBhOOBiuWPluW8
+leOBjOOBguOCiuOBvuOBl+OBn+OBruOBp+OAgeiqoOOBq+WLneaJi+OBquOBjOOCieOAgeOCq+OD
+vOODieOBruOBlOWIqeeUqOOCkuS4gOmDqOWItumZkOOBleOBm+OBpuOBhOOBn+OBoOOBjeOAgeOB
+lOmAo+e1oeOBleOBm+OBpuOBhOOBn+OBoOOBjeOBvuOBl+OBn+OAgg0K44Gk44GN44G+44GX44Gm
+44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU5Yip55So
+56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQog44GK5a6i5qeY
+44Gr44Gv44GU6L+35oOR44CB44GU5b+D6YWN44KS44GK5o6b44GR44GX44CB6Kqg44Gr55Sz44GX
+6Kiz44GU44GW44GE44G+44Gb44KT44CCDQrkvZXljZLjgZTnkIbop6PjgYTjgZ/jgaDjgY3jgZ/j
+gY/jgYrpoZjjgYTnlLPjgZfjgYLjgZLjgb7jgZnjgIINCuOBlOWbnuetlOOCkuOBhOOBn+OBoOOB
+keOBquOBhOWgtOWQiOOAgeOCq+ODvOODieOBruOBlOWIqeeUqOWItumZkOOBjOe2mee2muOBleOC
+jOOCi+OBk+OBqOOCguOBlOOBluOBhOOBvuOBmeOBruOBp+OAgeS6iOOCgeOBlOS6huaJv+S4i+OB
+leOBhOOAgg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh44KJDQoNCuW8iuekvuOBr+OAgeOC
+pOODs+OCv+ODvOODjeODg+ODiOS4iuOBruS4jeato+ihjOeCuuOBrumYsuatouODu+aKkeWItuOB
+ruims+eCueOBi+OCieOCteOCpOODiOOBqOOBl+OBpuOBruS/oemgvOaAp+ODu+ato+W9k+aAp+OC
+kumrmOOCgeOCi+OBn+OCgeOAgQ0K5aSn5aSJ44GK5omL5pWw44Gn44Gv44GU44GW44GE44G+44GZ
+44GM44CB5LiL6KiY77y177yy77ys44GL44KJ44Ot44Kw44Kk44Oz44GE44Gf44Gg44GN44CBDQrj
+gZTkuI3kvr/jgajjgZTlv4PphY3jgpLjgYrjgYvjgZHjgZfjgb7jgZfjgaboqqDjgavnlLPjgZfo
+qLPjgZTjgZbjgYTjgb7jgZvjgpPjgYzjgIENCuS9leOBqOOBnuOBlOeQhuino+iznOOCiuOBn+OB
+j+OBiumhmOOBhOeUs+OBl+OBguOBkuOBvuOBmeOAgg0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSADQrmoKrlvI/kvJrnpL7jgrjjgqfjg7zjgrfjg7zjg5Pjg7wN
+CuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pag55m66KGM
+6ICF4pagDQrmoKrlvI/kvJrnpL7jgrjjgqfjg7zjgrfjg7zjg5Pjg7wNCuadseS6rOmDvea4r+WM
+uuWNl+mdkuWxsTUtMS0yMg0K4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSADQrCqUpDQiBDby4sIEx0ZC4gMjAwMA0K54Sh5pat6Lui6LyJ44GK44KI44Gz5YaN6YWN
+5biD44KS56aB44GY44G+44GZ44CCCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
+c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
+ZWF2ZUBsaXN0cy4wMS5vcmcK
