@@ -2,52 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDD1381D3E
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 16 May 2021 09:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B493821FC
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 May 2021 01:14:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7BB15100EBB9F;
-	Sun, 16 May 2021 00:29:48 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D8F28100EC1EB;
+	Sun, 16 May 2021 16:14:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=fukuri.sai@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1ACC9100EBB61
-	for <linux-nvdimm@lists.01.org>; Sun, 16 May 2021 00:29:46 -0700 (PDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1E02561186;
-	Sun, 16 May 2021 07:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1621150183;
-	bh=+OVDWA7/0Ml7ugiOtMv/uSOFjjO2dGH0xRQLpIVrDKo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eBhIrhYCTFIxc+VLsj8yA1Hoe59pJz4TDDp6gfkIUHKRIu0++Cr5KOBRH7zrVG52p
-	 jLfgetdQBPFyGyYlCbhHgrA81HExKP2ocYEBnwzrEhSEVffjHtkoz36MNZWcelhnjr
-	 noHKLnAroU/P6toelBVnxQ/nCrteyUNSBeOVQywuuFyCuwJ6KjRHTSSw3C+ibOdCJ3
-	 nZMC/S7X0atBwkdwhNBuFLlwXmQxpjArOHlAb4RGnRXLMyIjWStS2eO92iGNxGhb4j
-	 AFUJ5pyWh3JLWvb+t/p5OaBJRuDbt8Hej/cPyKYdFGX/8WcxIDRg2v902Yv7qfiYZ0
-	 ydk4b7ykNjpwQ==
-Date: Sun, 16 May 2021 10:29:24 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v19 5/8] mm: introduce memfd_secret system call to create
- "secret" memory areas
-Message-ID: <YKDJ1L7XpJRQgSch@kernel.org>
-References: <20210513184734.29317-1-rppt@kernel.org>
- <20210513184734.29317-6-rppt@kernel.org>
- <b625c5d7-bfcc-9e95-1f79-fc8b61498049@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 95D2E100EC1DA
+	for <linux-nvdimm@lists.01.org>; Sun, 16 May 2021 16:14:44 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id 22so3337446pfv.11
+        for <linux-nvdimm@lists.01.org>; Sun, 16 May 2021 16:14:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1w8PCvrLVyRJVXoW9HTSK4I1VOm9sdjYz1UnXG8iwqs=;
+        b=qmZwwUhZPDpUZhwAhYBvcT9MUVlA06LCnX4wtyrBbllTT3PZtJe3ajg1ynohcwmWDK
+         EQU0TnOBOu7u+9IJQI4YfPsT6wngCE5eOtqMLcc6Eg2WjYrN3w4SY2m5rW6uW7Qv8Dys
+         JxpLP6ZpwkLIgLwFOzH0cAFYqOilHgtrgdcn8flwEN+r0zQnk0CrTL3zGv0KLAr5/JR2
+         G6JsOUjh8t5X7m0m2y5aj5i24PWVAGUHoOHco0LjRQZZ0vPO7c4iJkzVMNSQCQklVLS9
+         AsMPhwcVs14r6PkDuDdLhk5Es7c7gHzZ1evXteyJuDu9LMqBi1mJTwzgmnvBTUVbeyJ4
+         XJCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1w8PCvrLVyRJVXoW9HTSK4I1VOm9sdjYz1UnXG8iwqs=;
+        b=FMRnLxoMArSAEB+pOTkoWlpBmzeCUIuSee+NxjOJyOqkWPvii/y76yA3i0etJd2Ljr
+         +/rtvI7vy1ZT0uJsVFaVQBzze/1BeoxMUB7yi6AbyKRwRO5Hi5Tbw01l6YNuTFYSuxS/
+         VlnYrqZR/fLU8UJTObNEEcKZlRqUljnF+ntBLz8C2vGOb/4HZ2YBL0UiXnNS3uuXhHsz
+         mG8SEZ+l4Ciy/Vw1gzO/b3vhseInHmj0F70IKYkvUyVRXsXXhrYw8E4v0xOKTw41rsfG
+         2EnXv6k22jrJAwmRMxw6JuQWZpD/O4vLBkD4XgvSqM+3VfxHiYjQ23Ugjx2MrtgLXl1O
+         dSYw==
+X-Gm-Message-State: AOAM530sr326Mt1oDAtirQ8b3R8t8SawKTtenmI3nDelcDD6DdMKiVP0
+	lRiyDoWY7BFlH+JNiIDg32+8KEuZXf9k2nlO
+X-Google-Smtp-Source: ABdhPJxXCeZLzAuSUbVRtIX6gXPU7DSOL+8zzjmxGO2y8yutQBxr4NffZnDh3IgBPIFZ3IuEQ707yQ==
+X-Received: by 2002:a63:4b43:: with SMTP id k3mr57538853pgl.450.1621206882997;
+        Sun, 16 May 2021 16:14:42 -0700 (PDT)
+Received: from localhost.localdomain (softbank126008227016.bbtec.net. [126.8.227.16])
+        by smtp.gmail.com with ESMTPSA id c17sm9097890pgm.3.2021.05.16.16.14.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 May 2021 16:14:42 -0700 (PDT)
+From: QI Fuli <fukuri.sai@gmail.com>
+X-Google-Original-From: QI Fuli <qi.fuli@fujitsu.com>
+To: linux-nvdimm@lists.01.org
+Subject: [RFC ndctl PATCH 0/3] Rename monitor.conf to ndctl.conf as a ndctl global config file
+Date: Mon, 17 May 2021 08:14:24 +0900
+Message-Id: <20210516231427.64162-1-qi.fuli@fujitsu.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <b625c5d7-bfcc-9e95-1f79-fc8b61498049@redhat.com>
-Message-ID-Hash: HARZLB2I2ZWUMCFQQWKXTJBKOGJBXZOJ
-X-Message-ID-Hash: HARZLB2I2ZWUMCFQQWKXTJBKOGJBXZOJ
-X-MailFrom: rppt@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Hagen Paul Pfeifer <hagen@jauu.net>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, Kees Cook <keescook@chromium.org>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmerdabbelt@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net
- >, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+Message-ID-Hash: QLQSSII6YTSLKGDGTLP33SJOC74P6OM5
+X-Message-ID-Hash: QLQSSII6YTSLKGDGTLP33SJOC74P6OM5
+X-MailFrom: fukuri.sai@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: QI Fuli <qi.fuli@fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HARZLB2I2ZWUMCFQQWKXTJBKOGJBXZOJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QLQSSII6YTSLKGDGTLP33SJOC74P6OM5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,187 +71,43 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, May 14, 2021 at 11:25:43AM +0200, David Hildenbrand wrote:
-> >   #ifdef CONFIG_IA64
-> >   # include <linux/efi.h>
-> > @@ -64,6 +65,9 @@ static inline int valid_mmap_phys_addr_range(unsigned long pfn, size_t size)
-> >   #ifdef CONFIG_STRICT_DEVMEM
-> >   static inline int page_is_allowed(unsigned long pfn)
-> >   {
-> > +	if (pfn_valid(pfn) && page_is_secretmem(pfn_to_page(pfn)))
-> > +		return 0;
-> > +
-> 
-> 1. The memmap might be garbage. You should use pfn_to_online_page() instead.
-> 
-> page = pfn_to_online_page(pfn);
-> if (page && page_is_secretmem(page))
-> 	return 0;
-> 
-> 2. What about !CONFIG_STRICT_DEVMEM?
-> 
-> 3. Someone could map physical memory before a secretmem page gets allocated
-> and read the content after it got allocated and gets used. If someone would
-> gain root privileges and would wait for the target application to (re)start,
-> that could be problematic.
-> 
-> 
-> I do wonder if enforcing CONFIG_STRICT_DEVMEM would be cleaner.
-> devmem_is_allowed() should disallow access to any system ram, and thereby,
-> any possible secretmem pages, avoiding this check completely.
+From: QI Fuli <qi.fuli@fujitsu.com>
 
-I've been thinking a bit more about the /dev/mem case, it seems I was to
-fast on the trigger with adding that test for page_is_secretmem().
+This patch set is to rename monitor.conf to ndctl.conf, and make it a
+global ndctl configuration file that all ndctl commands can refer to.
 
-When CONFIG_STRICT_DEVMEM=y the access to RAM is anyway forbidden and if
-the user built a kernel with CONFIG_STRICT_DEVMEM=n all the physical memory
-is accessible by root anyway.
+As this patch set has been pending until now, I would like to know if
+current idea works or not. If yes, I will finish the documents and test.
 
-We might want to default STRICT_DEVMEM to "y" for all architectures and not
-only arm64, ppc and x86, but this is not strictly related to this series.
- 
-> [...]
-> 
-> > diff --git a/mm/secretmem.c b/mm/secretmem.c
-> > new file mode 100644
-> > index 000000000000..1ae50089adf1
-> > --- /dev/null
-> > +++ b/mm/secretmem.c
-> > @@ -0,0 +1,239 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Copyright IBM Corporation, 2021
-> > + *
-> > + * Author: Mike Rapoport <rppt@linux.ibm.com>
-> > + */
-> > +
-> > +#include <linux/mm.h>
-> > +#include <linux/fs.h>
-> > +#include <linux/swap.h>
-> > +#include <linux/mount.h>
-> > +#include <linux/memfd.h>
-> > +#include <linux/bitops.h>
-> > +#include <linux/printk.h>
-> > +#include <linux/pagemap.h>
-> > +#include <linux/syscalls.h>
-> > +#include <linux/pseudo_fs.h>
-> > +#include <linux/secretmem.h>
-> > +#include <linux/set_memory.h>
-> > +#include <linux/sched/signal.h>
-> > +
-> > +#include <uapi/linux/magic.h>
-> > +
-> > +#include <asm/tlbflush.h>
-> > +
-> > +#include "internal.h"
-> > +
-> > +#undef pr_fmt
-> > +#define pr_fmt(fmt) "secretmem: " fmt
-> > +
-> > +/*
-> > + * Define mode and flag masks to allow validation of the system call
-> > + * parameters.
-> > + */
-> > +#define SECRETMEM_MODE_MASK	(0x0)
-> > +#define SECRETMEM_FLAGS_MASK	SECRETMEM_MODE_MASK
-> > +
-> > +static bool secretmem_enable __ro_after_init;
-> > +module_param_named(enable, secretmem_enable, bool, 0400);
-> > +MODULE_PARM_DESC(secretmem_enable,
-> > +		 "Enable secretmem and memfd_secret(2) system call");
-> > +
-> > +static vm_fault_t secretmem_fault(struct vm_fault *vmf)
-> > +{
-> > +	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
-> > +	struct inode *inode = file_inode(vmf->vma->vm_file);
-> > +	pgoff_t offset = vmf->pgoff;
-> > +	gfp_t gfp = vmf->gfp_mask;
-> > +	unsigned long addr;
-> > +	struct page *page;
-> > +	int err;
-> > +
-> > +	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
-> > +		return vmf_error(-EINVAL);
-> > +
-> > +retry:
-> > +	page = find_lock_page(mapping, offset);
-> > +	if (!page) {
-> > +		page = alloc_page(gfp | __GFP_ZERO);
-> 
-> We'll end up here with gfp == GFP_HIGHUSER (via the mapping below), correct?
+Signed-off-by: QI Fuli <qi.fuli@fujitsu.com>
 
-Yes
- 
-> > +		if (!page)
-> > +			return VM_FAULT_OOM;
-> > +
-> > +		err = set_direct_map_invalid_noflush(page, 1);
-> > +		if (err) {
-> > +			put_page(page);
-> > +			return vmf_error(err);
-> 
-> Would we want to translate that to a proper VM_FAULT_..., which would most
-> probably be VM_FAULT_OOM when we fail to allocate a pagetable?
+QI Fuli (3):
+  ndctl, ccan: import ciniparser
+  ndctl, util: add parse-configs helper
+  ndctl, rename monitor.conf to ndctl.conf
 
-That's what vmf_error does, it translates -ESOMETHING to VM_FAULT_XYZ.
+ Makefile.am                        |   8 +-
+ ccan/ciniparser/ciniparser.c       | 480 +++++++++++++++++++++++++++++
+ ccan/ciniparser/ciniparser.h       | 262 ++++++++++++++++
+ ccan/ciniparser/dictionary.c       | 266 ++++++++++++++++
+ ccan/ciniparser/dictionary.h       | 166 ++++++++++
+ configure.ac                       |   8 +-
+ ndctl/Makefile.am                  |   9 +-
+ ndctl/monitor.c                    | 127 ++------
+ ndctl/{monitor.conf => ndctl.conf} |  16 +-
+ util/parse-configs.c               |  47 +++
+ util/parse-configs.h               |  26 ++
+ 11 files changed, 1294 insertions(+), 121 deletions(-)
+ create mode 100644 ccan/ciniparser/ciniparser.c
+ create mode 100644 ccan/ciniparser/ciniparser.h
+ create mode 100644 ccan/ciniparser/dictionary.c
+ create mode 100644 ccan/ciniparser/dictionary.h
+ rename ndctl/{monitor.conf => ndctl.conf} (82%)
+ create mode 100644 util/parse-configs.c
+ create mode 100644 util/parse-configs.h
 
-> > +		}
-> > +
-> > +		__SetPageUptodate(page);
-> > +		err = add_to_page_cache_lru(page, mapping, offset, gfp);
-> > +		if (unlikely(err)) {
-> > +			put_page(page);
-> > +			/*
-> > +			 * If a split of large page was required, it
-> > +			 * already happened when we marked the page invalid
-> > +			 * which guarantees that this call won't fail
-> > +			 */
-> > +			set_direct_map_default_noflush(page, 1);
-> > +			if (err == -EEXIST)
-> > +				goto retry;
-> > +
-> > +			return vmf_error(err);
-> > +		}
-> > +
-> > +		addr = (unsigned long)page_address(page);
-> > +		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> 
-> Hmm, to me it feels like something like that belongs into the
-> set_direct_map_invalid_*() calls? Otherwise it's just very easy to mess up
-> ...
-
-AFAIU set_direct_map() deliberately do not flush TLB and leave it to the
-caller to allow gathering multiple updates of the direct map and doing a
-single TLB flush afterwards.
-
-> I'm certainly not a filesystem guy. Nothing else jumped at me.
-> 
-> 
-> To me, the overall approach makes sense and I consider it an improved
-> mlock() mechanism for storing secrets, although I'd love to have some more
-> information in the log regarding access via root, namely that there are
-> still fancy ways to read secretmem memory once root via
-> 
-> 1. warm reboot attacks especially in VMs (e.g., modifying the cmdline)
-> 2. kexec-style reboot attacks (e.g., modifying the cmdline)
-> 3. kdump attacks
-> 4. kdb most probably
-> 5. "letting the process read the memory for us" via Kees if that still
->    applies
-> 6. ... most probably something else
-> 
-> Just to make people aware that there are still some things to be sorted out
-> when we fully want to protect against privilege escalations.
-> 
-> (maybe this information is buried in the cover letter already, where it
-> usually gets lost)
-
-I believe that it belongs more to the man page than to changelog so that
-the *users* are aware of secretmem limitations.
- 
 -- 
-Sincerely yours,
-Mike.
+2.30.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
