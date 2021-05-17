@@ -1,66 +1,119 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D113823C0
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 May 2021 07:38:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECED382499
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 May 2021 08:43:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7A107100ED49E;
-	Sun, 16 May 2021 22:38:40 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.41.133; helo=vpass.ne.jp; envelope-from=nbu@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (unknown [116.85.41.133])
-	by ml01.01.org (Postfix) with ESMTP id 745F7100EF276
-	for <linux-nvdimm@lists.01.org>; Sun, 16 May 2021 22:38:36 -0700 (PDT)
-Message-ID: <5DF4DAE64558009FF94DF22D85A33EBA@vpass.ne.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <info@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip?=
-	=?utf-8?B?55So56K66KqN44Gu44GK6aGY44GE?=
-Date: Mon, 17 May 2021 13:38:27 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: ZGJL66BCNAQ3AGBCHQ777WL4263FB3LY
-X-Message-ID-Hash: ZGJL66BCNAQ3AGBCHQ777WL4263FB3LY
-X-MailFrom: nbu@vpass.ne.jp
+	by ml01.01.org (Postfix) with ESMTP id 24CAA100EBB6E;
+	Sun, 16 May 2021 23:43:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 61E02100ED49E
+	for <linux-nvdimm@lists.01.org>; Sun, 16 May 2021 23:43:34 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14H6XvD2122432;
+	Mon, 17 May 2021 02:43:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=xdx0NJHTH3TXuVcwAPTBaPY/tyOPa2y5gp9KZo5KBSk=;
+ b=tXLjkVFaDsm8q/W9O2/Z2JLJgJfh0YA23k5Xh1QX9Sps+b5hOIfj5cPT3WxocUwQrmKJ
+ 8RCSVAIAjhV+WV82gyNFvZHM+hLxR45mQ5a6piiFeJs6V569a1rU9/UPoq4iqIb2xcNM
+ JizJWqVkzqzt5wYW6v4pk7aVt9bh2d09WOdU/h8ymXVq9Q0VMtnlEuVz3Doa5E7kNbeB
+ i/vp+o1wXst81rkJaKN121Qf2kb/iJM4GA7Ia12KvAtqX/PUpO1Srp4prfqykgz7tEE5
+ uEWDRIP0HORfOlv+NefNKaKY7Xs5giRiXWJIxGMSQyfB4AcJHq6BCtZ+9YxcHKVfe7bf Gw==
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 38kjmss77y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 May 2021 02:43:10 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14H6RFIi027591;
+	Mon, 17 May 2021 06:43:09 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+	by ppma01dal.us.ibm.com with ESMTP id 38j5x90ced-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 May 2021 06:43:09 +0000
+Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+	by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14H6h7n627853142
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 May 2021 06:43:07 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80BC9BE051;
+	Mon, 17 May 2021 06:43:07 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AC879BE054;
+	Mon, 17 May 2021 06:43:02 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.47.29])
+	by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Mon, 17 May 2021 06:43:02 +0000 (GMT)
+Subject: Re: [RFC 1/4] drivers/nvdimm: Add perf interface to expose nvdimm
+ performance stats
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20210512163824.255370-1-kjain@linux.ibm.com>
+ <20210512163824.255370-2-kjain@linux.ibm.com>
+ <YJwP9ByvAcDPixVN@hirez.programming.kicks-ass.net>
+ <37015d53-050a-acef-2958-b1ff5d02800b@linux.ibm.com>
+ <YJ5jQ1ixz7D0Ij2R@hirez.programming.kicks-ass.net>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <f15d6de4-8152-4960-8716-16bd9a12357b@linux.ibm.com>
+Date: Mon, 17 May 2021 12:13:00 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <YJ5jQ1ixz7D0Ij2R@hirez.programming.kicks-ass.net>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xDZBL9g-YAuBZJRqZNYjG2Yjrq2uXwea
+X-Proofpoint-GUID: xDZBL9g-YAuBZJRqZNYjG2Yjrq2uXwea
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-17_01:2021-05-12,2021-05-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=794
+ priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105170046
+Message-ID-Hash: Y4J7BUJWPM6O76P7QEZ7N4PIEKTACVWI
+X-Message-ID-Hash: Y4J7BUJWPM6O76P7QEZ7N4PIEKTACVWI
+X-MailFrom: kjain@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, maddy@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com, vaibhav@linux.ibm.com, atrajeev@linux.vnet.ibm.com, tglx@linutronix.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZGJL66BCNAQ3AGBCHQ777WL4263FB3LY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y4J7BUJWPM6O76P7QEZ7N4PIEKTACVWI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0KDQrilqDjgZTliKnnlKjnorroqo3jga/jgZPj
-gaHjgokNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pag
-55m66KGM6ICF4pagDQrkuInkupXkvY/lj4vjgqvjg7zjg4nmoKrlvI/kvJrnpL4NCuKAu+acrOOD
-oeODvOODq+OBr+mAgeS/oeWwgueUqOOBp+OBmeOAgg0K4oC75pys44Oh44O844Or44Gv44CMVnBh
-c3PjgI3jgavjg6Hjg7zjg6vjgqLjg4njg6zjgrnjgpLjgZTnmbvpjLLjgYTjgZ/jgaDjgYTjgZ/m
-lrnjgavjgYrpgIHjgorjgZfjgabjgYTjgb7jgZnjgIINCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKU
-geKUgeKUgeKUgeKUgeKUgeKUgeKUgQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBs
-aXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0t
-bGVhdmVAbGlzdHMuMDEub3JnCg==
+
+
+On 5/14/21 5:17 PM, Peter Zijlstra wrote:
+> On Thu, May 13, 2021 at 05:56:14PM +0530, kajoljain wrote:
+> 
+>> But yes the current read/add/del functions are not adding value. We
+>> could  add an arch/platform specific function which could handle the
+>> capturing of the counter data and do the rest of the operation here,
+>> is this approach better?
+> 
+> Right; have your register_nvdimm_pmu() set pmu->{add,del,read} to
+> nd_pmu->{add,del,read} directly, don't bother with these intermediates.
+> Also you can WARN_ON_ONCE() if any of them are NULL and fail
+> registration at that point.
+> 
+
+Hi Peter,
+    I will make all required changes and send next version of this patchset soon.
+
+Thanks,
+Kajol Jain
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
