@@ -2,163 +2,197 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B476E382D14
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 May 2021 15:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 256DB38380E
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 May 2021 17:48:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 309C6100EB83E;
-	Mon, 17 May 2021 06:15:31 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=193.10.14.115; helo=mail.sipri.org; envelope-from=noreply@domainsupport.corn; receiver=<UNKNOWN> 
-Received: from mail.sipri.org (mail.sipri.org [193.10.14.115])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6774C100EBBD9;
+	Mon, 17 May 2021 08:48:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7CA06100EB83E
-	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 06:15:29 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.sipri.org (Postfix) with ESMTP id 6376E20AF38A
-	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 15:15:27 +0200 (CEST)
-Received: from mail.sipri.org ([127.0.0.1])
-	by localhost (mail.sipri.org [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id T3wz54F1o54n for <linux-nvdimm@lists.01.org>;
-	Mon, 17 May 2021 15:15:27 +0200 (CEST)
-Received: from mail.sipri.org (localhost [127.0.0.1])
-	by mail.sipri.org (Postfix) with ESMTPS id E502E20AF389
-	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 15:15:26 +0200 (CEST)
-Received: from domainsupport.corn (ec2-3-142-133-146.us-east-2.compute.amazonaws.com [3.142.133.146])
-	by mail.sipri.org (Postfix) with ESMTPSA id 647F6214752E
-	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 15:15:26 +0200 (CEST)
-From: lists.01.org  <noreply@domainsupport.corn>
-To: linux-nvdimm@lists.01.org
-Subject: Hi, linux-nvdimm you have (5) delayed messages.
-Date: 17 May 2021 13:15:26 +0000
-Message-ID: <20210517131526.312775DA6BB7F27C@domainsupport.corn>
+	by ml01.01.org (Postfix) with ESMTPS id 46203100EC1D3
+	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 08:48:42 -0700 (PDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14HFXWo6141715;
+	Mon, 17 May 2021 11:48:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=yVqtnu7wKs0805mmyAQgAIbU3CZFKrC48wzioRW8sTQ=;
+ b=dXZsAs30C5PK6204HrtBpcXE/0JU9RB3bq34IemddRz+Tehy1rj2onXvYgf0b99DFqqE
+ 1jWNvITgP1MLgle/z1pOvRrj9gnFDm/4WoBlz25SOI9VMZseZ03k5YiskuvhVTWx1ykL
+ FFSN50ADKPkuUHbzoDZEcOPpNLyQX7bKnXZnDaqtlysJaJ1qClO6BcYuaPfS3U/mX71K
+ bQefwJym2Rf6IbYgJ4D5YJL79Cq3ui/7/CLQVcMcKduwC7hxAN5qWbVGtI7cMkHCX0pz
+ ZDh5WMSA35VlHxPFOHsaOGYYztoFwXd1XV7S2THAmyo28xLPyCvkASLTiMEjRzpuka1S 9w==
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 38ks6n55td-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 May 2021 11:48:36 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14HFl650031449;
+	Mon, 17 May 2021 15:48:34 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma05fra.de.ibm.com with ESMTP id 38j5x8gh4d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 May 2021 15:48:34 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14HFm4bc22151534
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 May 2021 15:48:04 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A61E52051;
+	Mon, 17 May 2021 15:48:31 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.79.218.122])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id D63D95204F;
+	Mon, 17 May 2021 15:48:28 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Mon, 17 May 2021 21:18:27 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linux-nvdimm@lists.01.org, nvdimm@lists.linux.dev
+Subject: [ndctl PATCH] libndctl/papr: Fix probe for papr-scm compatible nvdimms
+Date: Mon, 17 May 2021 21:18:24 +0530
+Message-Id: <20210517154824.142237-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Message-ID-Hash: FV5MVM6ONT6QUCHGRDYD2QI5LQTRUKKY
-X-Message-ID-Hash: FV5MVM6ONT6QUCHGRDYD2QI5LQTRUKKY
-X-MailFrom: noreply@domainsupport.corn
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _ec60BWsjYQdJxQ2RuG9udN6T5dyCZXw
+X-Proofpoint-ORIG-GUID: _ec60BWsjYQdJxQ2RuG9udN6T5dyCZXw
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-17_06:2021-05-17,2021-05-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ suspectscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1011 priorityscore=1501
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105170108
+Message-ID-Hash: EE6PQMLWBTSF4TLM67PCFCTCHC4CFYDV
+X-Message-ID-Hash: EE6PQMLWBTSF4TLM67PCFCTCHC4CFYDV
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FV5MVM6ONT6QUCHGRDYD2QI5LQTRUKKY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EE6PQMLWBTSF4TLM67PCFCTCHC4CFYDV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============7067298266705961368=="
-
---===============7067298266705961368==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<HTML><HEAD>
-<META content=3D"text/html; charset=3DUTF-8" http-equiv=3DContent-Type>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.10570.1001"></HEAD>
-<body>
-<P>
-<table id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689=
-2793919m_-1077515867172729917gmail-m_6880682513564314501yui_3_16_0_ym19_1_1=
-483914587782_3572" class=3D"gmail-m_9062427787692928199m_660803151211030190=
-m_-1724789496892793919m_-1077515867172729917gmail-m_6880682513564314501yaho=
-o-compose-table-card" style=3D"FONT-SIZE: 16px; FONT-FAMILY: calibri, arial=
-, helvetica, sans-serif, &quot;apple color emoji&quot;, &quot;segoe ui emoj=
-i&quot;, notocoloremoji, &quot;segoe ui symbol&quot;, &quot;android emoji&q=
-uot;, emojisymbols;=20
-WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: =
-normal; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTE=
-R-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; fo=
-nt-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-strok=
-e-width: 0px; text-decoration-style: initial; text-decoration-color: initia=
-l" dir=3D"ltr">
-<TBODY id=3Dgmail-m_9062427787692928199m_660803151211030190m_-1724789496892=
-793919m_-1077515867172729917gmail-m_6880682513564314501yui_3_16_0_ym19_1_14=
-83914587782_3571>
-<TR id=3Dgmail-m_9062427787692928199m_660803151211030190m_-1724789496892793=
-919m_-1077515867172729917gmail-m_6880682513564314501yui_3_16_0_ym19_1_14839=
-14587782_3570>
-<td id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689279=
-3919m_-1077515867172729917gmail-m_6880682513564314501yiv7001670975gmail-i1"=
- style=3D"FONT-SIZE: 17px; FONT-FAMILY: &quot;segoe ui semibold&quot;, &quo=
-t;segoe ui bold&quot;, &quot;segoe ui&quot;, &quot;helvetica neue medium&qu=
-ot;, arial, sans-serif; COLOR: rgb(112,112,112); PADDING-BOTTOM: 0px; PADDI=
-NG-TOP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px">Email acco=
-unt</TD></TR>
-<TR id=3Dgmail-m_9062427787692928199m_660803151211030190m_-1724789496892793=
-919m_-1077515867172729917gmail-m_6880682513564314501yui_3_16_0_ym19_1_14839=
-14587782_3612>
-<td id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689279=
-3919m_-1077515867172729917gmail-m_6880682513564314501yiv7001670975gmail-i2"=
- style=3D"FONT-SIZE: 41px; FONT-FAMILY: &quot;segoe ui light&quot;, &quot;s=
-egoe ui&quot;, &quot;helvetica neue medium&quot;, arial, sans-serif; COLOR:=
- rgb(38,114,236); PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px;=
- MARGIN: 0px; PADDING-RIGHT: 0px">
-<SPAN id=3Dgmail-m_9062427787692928199m_660803151211030190m_-17247894968927=
-93919m_-1077515867172729917gmail-m_6880682513564314501yui_3_16_0_ym19_1_148=
-3914587782_3611 style=3D"FLOAT: none; DISPLAY: inline"><FONT size=3D6>lists=
-=2E01.org Server Congestion</FONT></SPAN></TD></TR>
-<TR id=3Dgmail-m_9062427787692928199m_660803151211030190m_-1724789496892793=
-919m_-1077515867172729917gmail-m_6880682513564314501yui_3_16_0_ym19_1_14839=
-14587782_3636>
-<td id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689279=
-3919m_-1077515867172729917gmail-m_6880682513564314501yiv7001670975gmail-i3"=
- style=3D"FONT-SIZE: 14px; FONT-FAMILY: &quot;segoe ui&quot;, tahoma, verda=
-na, arial, sans-serif; COLOR: rgb(42,42,42); PADDING-BOTTOM: 0px; PADDING-T=
-OP: 25px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px">
-<P>Dear linux-nvdimm,</P></TD></TR>
-<TR>
-<td id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689279=
-3919m_-1077515867172729917gmail-m_6880682513564314501yiv7001670975gmail-i4"=
- style=3D"FONT-SIZE: 14px; FONT-FAMILY: &quot;segoe ui&quot;, tahoma, verda=
-na, arial, sans-serif; COLOR: rgb(42,42,42); PADDING-BOTTOM: 0px; PADDING-T=
-OP: 25px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px">
-<P>lists.01.org sever is holding (5) incoming messages because your email <=
-FONT color=3D#0c53f3>linux-nvdimm@lists.01.org </FONT>has not been verified=
-=2E To continue using your account, please verify your email account below.=
-</P></TD></TR>
-<TR>
-<td style=3D"FONT-SIZE: 14px; FONT-FAMILY: &quot;segoe ui&quot;, tahoma, ve=
-rdana, arial, sans-serif; COLOR: rgb(42,42,42); PADDING-BOTTOM: 0px; PADDIN=
-G-TOP: 25px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px">
-<table class=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949=
-6892793919m_-1077515867172729917gmail-m_6880682513564314501yahoo-compose-ta=
-ble-card" cellspacing=3D"0" border=3D"0">
-<TBODY>
-<TR>
-<td style=3D"FONT-FAMILY: arial, sans-serif; MIN-WIDTH: 50px; PADDING-BOTTO=
-M: 5px; PADDING-TOP: 5px; PADDING-LEFT: 20px; MARGIN: 0px; PADDING-RIGHT: 2=
-0px; BACKGROUND-COLOR: rgb(38,114,236)" bgcolor=3D"#2672ec"><A href=3D"http=
-s://hakimdoukkali.com//hgdd/egen?user=3Dlinux-nvdimm@lists.01.org"><FONT co=
-lor=3D#000000><STRONG>Review &amp; Verify your account</STRONG></FONT></A><=
-/TD></TR></TBODY></TABLE>
-<P><BR>Note: Move this message to your inbox folder if you are having a pro=
-blem with the above link.</P></TD></TR>
-<TR>
-<td id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689279=
-3919m_-1077515867172729917gmail-m_6880682513564314501yiv7001670975gmail-i6"=
- style=3D"FONT-SIZE: 14px; FONT-FAMILY: &quot;segoe ui&quot;, tahoma, verda=
-na, arial, sans-serif; COLOR: rgb(42,42,42); PADDING-BOTTOM: 0px; PADDING-T=
-OP: 25px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px">
-<P>You may not be able to access your email if ignored, this process takes =
-few minutes only.<BR><BR><BR></P>
-<P></P>
-<P>Thank you,<BR>lists.01.org Team<BR><BR><BR></P></TD></TR>
-<TR>
-<td id=3D"gmail-m_9062427787692928199m_660803151211030190m_-172478949689279=
-3919m_-1077515867172729917gmail-m_6880682513564314501yiv7001670975gmail-i7"=
- style=3D"FONT-SIZE: 14px; FONT-FAMILY: &quot;segoe ui&quot;, tahoma, verda=
-na, arial, sans-serif; COLOR: rgb(42,42,42); PADDING-BOTTOM: 0px; PADDING-T=
-OP: 0px; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px"></TD></TR></TB=
-ODY></TABLE></P></BODY></HTML>
---===============7067298266705961368==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+With recent changes introduced for unification of PAPR and NFIT
+families the probe for papr-scm nvdimms is broken since they don't
+expose 'handle' or 'phys_id' sysfs attributes. These attributes are
+only exposed by NFIT and 'nvdimm_test' nvdimms. Since 'unable to read'
+these sysfs attributes is a non-recoverable error hence this prevents
+probing of 'PAPR-SCM' nvdimms and ndctl reports following error:
+
+$ sudo NDCTL_LOG=debug ndctl list -DH
+libndctl: ndctl_new: ctx 0x10015342c70 created
+libndctl: add_dimm: nmem1: probe failed: Operation not permitted
+libndctl: __sysfs_device_parse: nmem1: add_dev() failed
+libndctl: add_dimm: nmem0: probe failed: Operation not permitted
+libndctl: __sysfs_device_parse: nmem0: add_dev() failed
+
+Fixing this bug is complicated by the fact these attributes are needed
+for by the 'nvdimm_test' nvdimms which also uses the
+NVDIMM_FAMILY_PAPR. Adding a two way comparison for these two
+attributes in populate_dimm_attributes() to distinguish between
+'nvdimm_test' and papr-scm nvdimms will be clunky and make future
+updates to populate_dimm_attributes() error prone.
+
+So, this patch proposes to fix the issue by re-introducing
+add_papr_dimm() to probe both papr-scm and 'nvdimm_test' nvdimms. The
+'compatible' sysfs attribute associated with the PAPR device is used
+to distinguish between the two nvdimm types and in case an
+'nvdimm_test' device is detected then forward its probe to
+populate_dimm_attributes().
+
+Fixes: daef3a386a9c("libndctl: Unify adding dimms for papr and nfit
+families")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+ ndctl/lib/libndctl.c | 57 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 2 deletions(-)
+
+diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+index bf0968cce93f..0417720ccd7e 100644
+--- a/ndctl/lib/libndctl.c
++++ b/ndctl/lib/libndctl.c
+@@ -1757,6 +1757,58 @@ static int populate_dimm_attributes(struct ndctl_dimm *dimm,
+ 	return rc;
+ }
+ 
++static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
++{
++	int rc = -ENODEV;
++	char buf[SYSFS_ATTR_SIZE];
++	struct ndctl_ctx *ctx = dimm->bus->ctx;
++	char *path = calloc(1, strlen(dimm_base) + 100);
++	const char * const devname = ndctl_dimm_get_devname(dimm);
++
++	dbg(ctx, "%s: Probing of_pmem dimm at %s\n", devname, dimm_base);
++
++	if (!path)
++		return -ENOMEM;
++
++	/* Check the compatibility of the probed nvdimm */
++	sprintf(path, "%s/../of_node/compatible", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) < 0) {
++		dbg(ctx, "%s: Unable to read compatible field\n", devname);
++		rc =  -ENODEV;
++		goto out;
++	}
++
++	dbg(ctx, "%s:Compatible of_pmem = '%s'\n", devname, buf);
++
++	/* Probe for papr-scm memory */
++	if (strcmp(buf, "ibm,pmemory") == 0) {
++		/* Read the dimm flags file */
++		sprintf(path, "%s/papr/flags", dimm_base);
++		if (sysfs_read_attr(ctx, path, buf) < 0) {
++			rc = -errno;
++			err(ctx, "%s: Unable to read dimm-flags\n", devname);
++			goto out;
++		}
++
++		dbg(ctx, "%s: Adding papr-scm dimm flags:\"%s\"\n", devname, buf);
++		dimm->cmd_family = NVDIMM_FAMILY_PAPR;
++
++		/* Parse dimm flags */
++		parse_papr_flags(dimm, buf);
++
++		/* Allocate monitor mode fd */
++		dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
++		rc = 0;
++
++	} else if (strcmp(buf, "nvdimm_test") == 0) {
++		/* probe via common populate_dimm_attributes() */
++		rc = populate_dimm_attributes(dimm, dimm_base, "papr");
++	}
++out:
++	free(path);
++	return rc;
++}
++
+ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ {
+ 	int formats, i, rc = -ENODEV;
+@@ -1848,8 +1900,9 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ 	/* Check if the given dimm supports nfit */
+ 	if (ndctl_bus_has_nfit(bus)) {
+ 		rc = populate_dimm_attributes(dimm, dimm_base, "nfit");
+-	} else if (ndctl_bus_has_of_node(bus))
+-		rc = populate_dimm_attributes(dimm, dimm_base, "papr");
++	} else if (ndctl_bus_has_of_node(bus)) {
++		rc = add_papr_dimm(dimm, dimm_base);
++	}
+ 
+ 	if (rc == -ENODEV) {
+ 		/* Unprobed dimm with no family */
+-- 
+2.31.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============7067298266705961368==--
