@@ -1,35 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 713EA386D82
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 May 2021 01:05:19 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408A6386DC4
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 May 2021 01:39:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C55CE100EB835;
-	Mon, 17 May 2021 16:05:17 -0700 (PDT)
-Received: from bounces.amazon.co.jp (v150-95-220-241.0tbu.static.cnode.io [150.95.220.241])
-	by ml01.01.org (Postfix) with ESMTP id 30087100EB82B
-	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 16:05:14 -0700 (PDT)
-Message-ID: <3615A3AFEC11C562C1ABE4A6CA810D96@bounces.amazon.co.jp>
-From: "Amazon.co.jp" <account-update@amazon.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQQW1hem9u44CR5rOo5paH44GM6Kq/5p+744GV44KM44G+44GX44Gf?=
-Date: Tue, 18 May 2021 08:05:08 +0900
-Mime-Version: 1.0
+	by ml01.01.org (Postfix) with ESMTP id 640A8100EB84D;
+	Mon, 17 May 2021 16:39:12 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.119.56.113; helo=webserd16.borrascasliberias.eu; envelope-from=contacto46525@webserd16.borrascasliberias.eu; receiver=<UNKNOWN> 
+Received: from webserd16.borrascasliberias.eu (unknown [185.119.56.113])
+	by ml01.01.org (Postfix) with ESMTP id BD0F3100EB848
+	for <linux-nvdimm@lists.01.org>; Mon, 17 May 2021 16:39:09 -0700 (PDT)
+Received: by webserd16.borrascasliberias.eu (Postfix, from userid 33)
+	id 7E64561F76; Tue, 18 May 2021 02:39:06 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=webserd16.borrascasliberias.eu; s=mail; t=1621294746;
+	bh=gUDhDxwgb2oksqPLyjMYdrGxXgaacA0Bdpt5uKM0t/M=;
+	h=To:Subject:Date:From:Reply-To:From;
+	b=PTL5u/Avc9DHLRiqbLWmxQMaC4GQAmsKaa1mgttPlgxJ3FtqPS5Ar0UdFpQWA2UaD
+	 kYqubDsv+KzZYpP5/XfRqfJdBBJR0N318+c1FowJ0uGa/aHKVAa54wZ7waOUrPDdCM
+	 CZuHAjoixN9bXen2d9Fh1YgOj264JDfN7N+ZUQmlLLAexIEzrrfrsn5ywjJ0Bx0Pc5
+	 vF04KcOLrKBXE2s2Y4YlO727ctvPx5n7bDedZhvMcOscAzvXz6x0ccdBv/fu6/aY0R
+	 PkozgRKF4BmfhPAL2f1/si1rL+YD0I6tycEmCLPctZzNAtk493HJFQE8S+vI9Zrn1k
+	 /F8LaHF/zEbqQ==
+To: linux-nvdimm@lists.01.org
+Subject: Ultima advertencia - Envio de Burofax Online
+Date: Tue, 18 May 2021 02:39:06 +0300
+From: Notificados 465785 <contacto46525@webserd16.borrascasliberias.eu>
+Message-ID: <7833a852dc8219be759ac7823d4e1f68@185.119.56.113>
 X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: Z5LYQ4ZTFCD3ZI5WMMST54VNKZHYTER5
-X-Message-ID-Hash: Z5LYQ4ZTFCD3ZI5WMMST54VNKZHYTER5
-X-MailFrom: idomklzw@bounces.amazon.co.jp
+X-Mailer: PHPMailer 5.2.4 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
+MIME-Version: 1.0
+Message-ID-Hash: YAP6DYVHIB6EO33SLCN4SLQ3EFLEBODX
+X-Message-ID-Hash: YAP6DYVHIB6EO33SLCN4SLQ3EFLEBODX
+X-MailFrom: contacto46525@webserd16.borrascasliberias.eu
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Notificados 465785 <contacto46525@webserd16.borrascasliberias.eu>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z5LYQ4ZTFCD3ZI5WMMST54VNKZHYTER5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YAP6DYVHIB6EO33SLCN4SLQ3EFLEBODX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -38,18 +50,12 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-IA0KDQogDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K44GK5a6i5qeY44GuYW1hem9u44Ki44Kr44Km
-44Oz44OI44KS6Kq/5p+744GV44Gb44Gm44GE44Gf44Gg44GE44Gm44GK44KK44G+44GZ44CC44Ki
-44Kr44Km44Oz44OI44Gr44Ot44Kw44Kk44Oz44GX44Gm55S76Z2i44Gu5oyH56S644Gr5b6T44GG
-44GT44Go44Gn44CB44Ki44Kr44Km44Oz44OI44Gu5Yi26ZmQ54q25oWL44KS6Kej6Zmk44GX44Gm
-44GE44Gf44Gg44GR44G+44GZ44CCDQoNCuS4i+iusFVSTOOCiOOCiuOCouOCq+OCpuODs+ODiOaz
-qOaWh+aDheWgseOCkuOBlOeiuuiqjeOBvuOBn+OBr+WkieabtOOAgg0KW+azqOaWh+eVquWPt10g
-NTUyNzMxLTIwMjEwNTA4LTE1NQ0KW+W6l+iIl+WPl+S7mOaXpeaZgl0gMjAyMS8wNS8wOCANClvj
-gYrmlK/miZXjgYTmlrnms5VdIOOCr+ODrOOCuOODg+ODiOOCq+ODvOODieaxuua4iA0KDQoNCuOB
-lOeiuuiqjeOBr+OBk+OBoeOCiTpodHRwczovL2FuYW96bS5tYWcyNi5jb20NCg0KDQoNCkFtYXpv
-bi5jby5qcOOBruOBvuOBn+OBruOBlOWIqeeUqOOCkuOBiuW+heOBoeOBl+OBpuOBiuOCiuOBvuOB
-meOAgg0KDQoNCg0KwqkgMTk5Ni0yMDIxLCBBbWF6b24uY29tLCBJbmMuIG9yIGl0cyBhZmZpbGlh
-dGVzIA0KDQoNCg0KDQoNCg0KDQoNCi4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
-QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
-bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Tm90aWZpY2FjacOzbiBmZWhhY2llbnRlcyAtIEJ1cm9mYXggT25saW5lDQpjb3JyZW8gZWxlY3Ry
+b25pY28gOmxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcNDQogRGVzY2FyZ2FyIHRvZG9zIGFyY2hp
+dm9zIGFkanVudG9zICggMTI4IGtiKQ0KICANCiAgDQoNClJlbWl0ZW50ZTogQUJPR0FET1MgVklO
+QVIgRE9HQVJJQSBWRVJEVSBDQUxMRSBMSU1BDQoNCkJ1cm9mYXgNCiZuYnNwOw0KCgpuXzEwNzA2
+Njc4ODI1Mjk0NzE2NTA0MjYzMjI3NjQwNTU0MDMxMjE0NTIxOTUzMjc2Mjc3ODk2NjI0Nzc1NzQw
+MTc1OTg0NDMxMDkwMDA5MzMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
+MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
+QGxpc3RzLjAxLm9yZwo=
