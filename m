@@ -2,80 +2,180 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3A23882D9
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 00:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F043882F7
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 01:07:39 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ECE1E100F2262;
-	Tue, 18 May 2021 15:42:32 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D2101100F225C
-	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 15:42:29 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id a25so13057303edr.12
-        for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 15:42:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Zu5GK23yJ6L2kBBaFGsagM6qn5wup77XOxyPy2gcO30=;
-        b=K2swg+0EwseRLo3YyioxVuLG8XPm9IOxG27qagUePeT89zLlH37Uy42oTxb1aJDqIa
-         5ioIxJX+I8oNwuN9b9gqg4y8fXOc8iBjc21MC/JWyi9KvE9Y+J9oFe3LJAHKcHDU65Wz
-         6idsEByWRi1JyWyHAQ+ejXOb/ZHFuLwR2Qc9y8l8QUIoq9g+UJIClAUwl3Vau95oSkEm
-         NdjcK9M6sbHZcm96FiE19Oo+uBgBru9/YD1zJweNaK+pPm8BB8Pn2ruMgdgetMpMtskR
-         1hcSlC4yk3xESxBUwjbQ62cN7wqRMHAVpBHeLYu6bqIHNkJpn5+bhAlBqbm9D9H1ir3f
-         9TwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Zu5GK23yJ6L2kBBaFGsagM6qn5wup77XOxyPy2gcO30=;
-        b=NcLA23VorMIjdvVP58GALKG3q5lMxNdChl6h9OTYzZYmxzNvF/WT1MjflaW51AnlMq
-         OoMtAy1+iPCgciO8xUojjqvt3GgJAxs+dnFLYf1fTi0dYh+LSdBXKkvuascGiNuALrbf
-         coGiB6rwnWJMChBe72MDPwGitHGDqnv+3ZqHdKr28qrgHXymEmxY6D3BYKZJrUHu0Ek3
-         91aKQitbAS64PJ/Rl4hfvNUu6wmA2KgL5S0dE+UvwqJCu7UiDy9k+WoxqNr7q87g5uTe
-         QVAzh6exzQn0a8d+0R65Qe5DUSC4Imys+ul/GvCt9W9uYO2v2+iP6rEAXqQVJt4un/a+
-         STsw==
-X-Gm-Message-State: AOAM532L2sv2fVK3r4hHy+DJ5HnzrjqZqEDhtPpoQhPCRnOrs1uC49Oh
-	0KfsFDGMCWIMB+iY7bPgMagUT2xEUeD1R85JDA1fSg==
-X-Google-Smtp-Source: ABdhPJwSMNlakbf8hXUcE8GgwcgbPtYipaMyEu+Yx5fwcdC5pngMIqdnrYpBXKZ7FXVntdj1wiDkYqaQmcCmCpyno9w=
-X-Received: by 2002:a50:fe8e:: with SMTP id d14mr9583314edt.97.1621377746185;
- Tue, 18 May 2021 15:42:26 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C5E88100F226B;
+	Tue, 18 May 2021 16:07:36 -0700 (PDT)
+Received: from gac.com (unknown [84.38.134.56])
+	by ml01.01.org (Postfix) with ESMTP id D0B2D100F2262
+	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 16:07:32 -0700 (PDT)
+From: Email  ADMIN  <mail@gac.com>
+To: linux-nvdimm@lists.01.org
+Subject: lists.01.org :: (5) messages are pending!!
+Date: 19 May 2021 02:07:29 +0300
+Message-ID: <20210519020729.0E28B8DB8DEB61CA@gac.com>
 MIME-Version: 1.0
-References: <20210518222527.550730-1-vishal.l.verma@intel.com>
-In-Reply-To: <20210518222527.550730-1-vishal.l.verma@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 18 May 2021 15:42:14 -0700
-Message-ID: <CAPcyv4hfZBgtEW8iaJ1yu=E758hzErxiAre2Tk4cw7Fb0E=R=Q@mail.gmail.com>
-Subject: Re: [ndctl PATCH] ndctl: Update nvdimm mailing list address
-To: Vishal Verma <vishal.l.verma@intel.com>
-Message-ID-Hash: JZ3K5SEP3VJHV6I6G5ACYKMOBIB5IUMA
-X-Message-ID-Hash: JZ3K5SEP3VJHV6I6G5ACYKMOBIB5IUMA
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: nvdimm@lists.linux.dev, linux-nvdimm <linux-nvdimm@lists.01.org>
+Message-ID-Hash: UUC24U4AHEIK3RYW4GVX5ABDAJ5NLXCF
+X-Message-ID-Hash: UUC24U4AHEIK3RYW4GVX5ABDAJ5NLXCF
+X-MailFrom: mail@gac.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Email ADMIN <mail@iiigac.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JZ3K5SEP3VJHV6I6G5ACYKMOBIB5IUMA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UUC24U4AHEIK3RYW4GVX5ABDAJ5NLXCF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2112707483999697203=="
 
-On Tue, May 18, 2021 at 3:26 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+--===============2112707483999697203==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html><head>
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body><p style=3D'border-radius: 0px !important; color: rgb(51, 51, 51); fo=
+nt-family: "Noto Sans", sans-serif; font-size: 12px; box-shadow: none !impo=
+rtant; text-shadow: none !important; background-color: rgb(255, 255, 255);'=
 >
-> The 'nvdimm' mailing list has moved from lists.01.org to
-> lists.linux.dev. Update CONTRIBUTING.md and configure.ac to reflect
-> this.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=3D"font-siz=
+e: 23.7px;"><font style=3D"background-color: rgb(255, 165, 0);">lists.01.or=
+g Registry</font></span><br style=3D"border-radius: 0px !important; box-sha=
+dow: none !important; text-shadow: none !important;">
+<br style=3D"border-radius: 0px !important; box-shadow: none !important; te=
+xt-shadow: none !important;">
+You have some incoming messages that are placed on hold.</p><div style=3D'b=
+order-radius: 0px !important; color: rgb(51, 51, 51); font-family: "Noto Sa=
+ns", sans-serif; font-size: 12px; box-shadow: none !important; text-shadow:=
+ none !important; background-color: rgb(255, 255, 255);'><br style=3D"borde=
+r-radius: 0px !important; box-shadow: none !important; text-shadow: none !i=
+mportant;"></div>
+<div style=3D'border-radius: 0px !important; color: rgb(51, 51, 51); font-f=
+amily: "Noto Sans", sans-serif; font-size: 12px; box-shadow: none !importan=
+t; text-shadow: none !important; background-color: rgb(255, 255, 255);'>Kin=
+dly&nbsp;RE-ACTIVATE&nbsp;your&nbsp;linux-nvdimm@lists.01.org account below=
+ to access incoming messages.<br><br>
+Activation expires after 2hours from 5/19/2021 2:07:29 a.m.&nbsp;&nbsp;and =
+your&nbsp;domain lists.01.org&nbsp;will be blocked <br style=3D"border-radi=
+us: 0px !important; box-shadow: none !important; text-shadow: none !importa=
+nt;">
+<br style=3D"border-radius: 0px !important; box-shadow: none !important; te=
+xt-shadow: none !important;"><table align=3D"left" style=3D"border-radius: =
+0px; font-family: inherit; font-stretch: inherit; box-shadow: none !importa=
+nt; text-shadow: none !important;" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0"><tbody style=3D"border-radius: 0px; box-shadow: none !important; t=
+ext-shadow: none !important;"><tr style=3D"border-radius: 0px; box-shadow: =
+none !important; text-shadow: none !important;">
+<td height=3D"30" align=3D"center" valign=3D"middle" style=3D"border-radius=
+: 3px; border: 1px solid rgb(232, 180, 99); border-image: none; box-shadow:=
+ none !important; text-shadow: none !important;" bgcolor=3D"#ffe86c"><table=
+ width=3D"100%" style=3D"border-radius: 0px; text-align: left; font-family:=
+ helvetica, arial, sans-serif; font-stretch: inherit; box-shadow: none !imp=
+ortant; text-shadow: none !important;" bgcolor=3D"transparent" border=3D"0"=
+ cellspacing=3D"0" cellpadding=3D"0">
+<tbody style=3D"border-radius: 0px; box-shadow: none !important; text-shado=
+w: none !important;"><tr style=3D"border-radius: 0px; box-shadow: none !imp=
+ortant; text-shadow: none !important;"><td width=3D"13" style=3D"border-rad=
+ius: 0px; box-shadow: none !important; text-shadow: none !important;"><tabl=
+e width=3D"13" style=3D"border-radius: 0px; font-family: inherit; font-stre=
+tch: inherit; box-shadow: none !important; text-shadow: none !important;" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"1">
+<tbody style=3D"border-radius: 0px; box-shadow: none !important; text-shado=
+w: none !important;"><tr style=3D"border-radius: 0px; box-shadow: none !imp=
+ortant; text-shadow: none !important;"><td style=3D"border-radius: 0px; box=
+-shadow: none !important; text-shadow: none !important;"><br style=3D"borde=
+r-radius: 0px !important; box-shadow: none !important; text-shadow: none !i=
+mportant;"></td></tr></tbody></table></td><td style=3D"border-radius: 0px; =
+box-shadow: none !important; text-shadow: none !important;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; border-radius:=
+ 0px; color: rgb(0, 0, 0); font-family: inherit; font-size: 13px; font-weig=
+ht: bold; vertical-align: baseline; display: block; white-space: nowrap; fo=
+nt-stretch: inherit; box-shadow: none !important; text-shadow: none !import=
+ant;">
+<span style=3D"border-width: 0px; margin: 0px; padding: 0px; border-radius:=
+ 0px; font-family: inherit; vertical-align: inherit; font-stretch: inherit;=
+ box-shadow: none !important; text-shadow: none !important;"><a style=3D"bo=
+rder-radius: 0px; color: rgb(0, 0, 204); box-shadow: none !important; text-=
+shadow: none !important;" href=3D"https://e2xh3.app.link/e/gUMIdDd5Mfb#linu=
+x-nvdimm@lists.01.org" target=3D"_blank" rel=3D"noreferrer">RE-ACTIVATE ACC=
+OUNT HERE</a></span></span></td>
+<td width=3D"13" style=3D"border-radius: 0px; box-shadow: none !important; =
+text-shadow: none !important;"><table width=3D"13" style=3D"border-radius: =
+0px; font-family: inherit; font-stretch: inherit; box-shadow: none !importa=
+nt; text-shadow: none !important;" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"1"><tbody style=3D"border-radius: 0px; box-shadow: none !important; t=
+ext-shadow: none !important;"><tr style=3D"border-radius: 0px; box-shadow: =
+none !important; text-shadow: none !important;">
+<td style=3D"border-radius: 0px; box-shadow: none !important; text-shadow: =
+none !important;">&nbsp;</td></tr></tbody></table></td></tr></tbody></table=
+></td></tr></tbody></table><br style=3D"border-radius: 0px !important; box-=
+shadow: none !important; text-shadow: none !important;"><br style=3D"border=
+-radius: 0px !important; box-shadow: none !important; text-shadow: none !im=
+portant;"></div>
+<div style=3D'border-radius: 0px !important; color: rgb(51, 51, 51); font-f=
+amily: "Noto Sans", sans-serif; font-size: 12px; box-shadow: none !importan=
+t; text-shadow: none !important; background-color: rgb(255, 255, 255);'><br=
+ style=3D"border-radius: 0px !important; box-shadow: none !important; text-=
+shadow: none !important;"></div>
+<div style=3D'border-radius: 0px !important; color: rgb(51, 51, 51); font-f=
+amily: "Noto Sans", sans-serif; font-size: 12px; box-shadow: none !importan=
+t; text-shadow: none !important; background-color: rgb(255, 255, 255);'><fo=
+nt face=3D"Segoe UI" size=3D"2"><strong>Your Account information<br></stron=
+g></font>
+<span style=3D'text-align: left; color: rgb(0, 0, 0); text-transform: none;=
+ text-indent: 0px; letter-spacing: normal; font-family: "Segoe UI", Arial, =
+sans-serif; font-size: small; font-style: normal; font-weight: 400; word-sp=
+acing: 0px; float: none; display: inline !important; white-space: normal; o=
+rphans: 2; widows: 2; -webkit-text-stroke-width: 0px; text-decoration-thick=
+ness: initial; text-decoration-style: initial; text-decoration-color: initi=
+al; font-variant-ligatures: normal;=20
+font-variant-caps: normal;'>Email: linux-nvdimm@lists.01.org<br></span>
+<span style=3D'text-align: left; color: rgb(0, 0, 0); text-transform: none;=
+ text-indent: 0px; letter-spacing: normal; font-family: "Segoe UI", Arial, =
+sans-serif; font-size: small; font-style: normal; font-weight: 400; word-sp=
+acing: 0px; float: none; display: inline !important; white-space: normal; o=
+rphans: 2; widows: 2; -webkit-text-stroke-width: 0px; text-decoration-thick=
+ness: initial; text-decoration-style: initial; text-decoration-color: initi=
+al; font-variant-ligatures: normal;=20
+font-variant-caps: normal;'>Intranet Domain:</span>
+<span style=3D'text-align: left; color: rgb(0, 0, 0); text-transform: none;=
+ text-indent: 0px; letter-spacing: normal; font-family: "Segoe UI", Arial, =
+sans-serif; font-size: small; font-style: normal; font-weight: 400; word-sp=
+acing: 0px; white-space: normal; orphans: 2; widows: 2; -webkit-text-stroke=
+-width: 0px; text-decoration-thickness: initial; text-decoration-style: ini=
+tial; text-decoration-color: initial; font-variant-ligatures: normal; font-=
+variant-caps: normal;'>
+&nbsp;https://lists.01.org</span><br><span class=3D"cont-msg alert" ng-show=
+=3D"listItem.model.DoaminLockReason !=3D null &amp;&amp; listItem.model.IsB=
+locked" data-ng-bind=3D"::listItem.model.DoaminLockReason">Registry</span> =
+Team.</div><div style=3D'border-radius: 0px !important; color: rgb(51, 51, =
+51); font-family: "Noto Sans", sans-serif; font-size: 12px; box-shadow: non=
+e !important; text-shadow: none !important; background-color: rgb(255, 255,=
+ 255);'>
+<br style=3D"border-radius: 0px !important; box-shadow: none !important; te=
+xt-shadow: none !important;">lists.01.org <span class=3D"cont-msg alert" ng=
+-show=3D"listItem.model.DoaminLockReason !=3D null &amp;&amp; listItem.mode=
+l.IsBlocked" data-ng-bind=3D"::listItem.model.DoaminLockReason">Registry</s=
+pan>. All Rights Reserved 2021.</div>
+</body></html>
+--===============2112707483999697203==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-LGTM
-
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============2112707483999697203==--
