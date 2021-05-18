@@ -1,47 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA4C3882B4
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 00:25:37 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3A23882D9
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 00:42:34 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7F629100F225C;
-	Tue, 18 May 2021 15:25:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id ECE1E100F2262;
+	Tue, 18 May 2021 15:42:32 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 291F7100F2255
-	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 15:25:32 -0700 (PDT)
-IronPort-SDR: GXrvTNp7Zs4bo9W6yAdBnh5F1Wlt2j0F2Pvy6kHCaqDAlh5HVwPiqUKyyJ902AbhDmDaSSkM5s
- 253PUFwG6GXQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9988"; a="197743974"
-X-IronPort-AV: E=Sophos;i="5.82,310,1613462400";
-   d="scan'208";a="197743974"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2021 15:25:31 -0700
-IronPort-SDR: C1HjXMhdbcMUJUgfDc7TgNIj5rtK9sV7Pj3mPPklRbk5oZhJ12I6mSmMf5vDuwEQBMYaXaT53S
- NeaAvurfuBfQ==
-X-IronPort-AV: E=Sophos;i="5.82,310,1613462400";
-   d="scan'208";a="542154866"
-Received: from rong2-mobl1.amr.corp.intel.com (HELO vverma7-desk.amr.corp.intel.com) ([10.254.2.111])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2021 15:25:31 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: <nvdimm@lists.linux.dev>
-Subject: [ndctl PATCH] ndctl: Update nvdimm mailing list address
-Date: Tue, 18 May 2021 16:25:27 -0600
-Message-Id: <20210518222527.550730-1-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.31.1
+	by ml01.01.org (Postfix) with ESMTPS id D2101100F225C
+	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 15:42:29 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id a25so13057303edr.12
+        for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 15:42:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Zu5GK23yJ6L2kBBaFGsagM6qn5wup77XOxyPy2gcO30=;
+        b=K2swg+0EwseRLo3YyioxVuLG8XPm9IOxG27qagUePeT89zLlH37Uy42oTxb1aJDqIa
+         5ioIxJX+I8oNwuN9b9gqg4y8fXOc8iBjc21MC/JWyi9KvE9Y+J9oFe3LJAHKcHDU65Wz
+         6idsEByWRi1JyWyHAQ+ejXOb/ZHFuLwR2Qc9y8l8QUIoq9g+UJIClAUwl3Vau95oSkEm
+         NdjcK9M6sbHZcm96FiE19Oo+uBgBru9/YD1zJweNaK+pPm8BB8Pn2ruMgdgetMpMtskR
+         1hcSlC4yk3xESxBUwjbQ62cN7wqRMHAVpBHeLYu6bqIHNkJpn5+bhAlBqbm9D9H1ir3f
+         9TwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Zu5GK23yJ6L2kBBaFGsagM6qn5wup77XOxyPy2gcO30=;
+        b=NcLA23VorMIjdvVP58GALKG3q5lMxNdChl6h9OTYzZYmxzNvF/WT1MjflaW51AnlMq
+         OoMtAy1+iPCgciO8xUojjqvt3GgJAxs+dnFLYf1fTi0dYh+LSdBXKkvuascGiNuALrbf
+         coGiB6rwnWJMChBe72MDPwGitHGDqnv+3ZqHdKr28qrgHXymEmxY6D3BYKZJrUHu0Ek3
+         91aKQitbAS64PJ/Rl4hfvNUu6wmA2KgL5S0dE+UvwqJCu7UiDy9k+WoxqNr7q87g5uTe
+         QVAzh6exzQn0a8d+0R65Qe5DUSC4Imys+ul/GvCt9W9uYO2v2+iP6rEAXqQVJt4un/a+
+         STsw==
+X-Gm-Message-State: AOAM532L2sv2fVK3r4hHy+DJ5HnzrjqZqEDhtPpoQhPCRnOrs1uC49Oh
+	0KfsFDGMCWIMB+iY7bPgMagUT2xEUeD1R85JDA1fSg==
+X-Google-Smtp-Source: ABdhPJwSMNlakbf8hXUcE8GgwcgbPtYipaMyEu+Yx5fwcdC5pngMIqdnrYpBXKZ7FXVntdj1wiDkYqaQmcCmCpyno9w=
+X-Received: by 2002:a50:fe8e:: with SMTP id d14mr9583314edt.97.1621377746185;
+ Tue, 18 May 2021 15:42:26 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: J2BII2IXF3OTZLMCMOFG4HFHSXJ7TJ2L
-X-Message-ID-Hash: J2BII2IXF3OTZLMCMOFG4HFHSXJ7TJ2L
-X-MailFrom: vishal.l.verma@intel.com
+References: <20210518222527.550730-1-vishal.l.verma@intel.com>
+In-Reply-To: <20210518222527.550730-1-vishal.l.verma@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 18 May 2021 15:42:14 -0700
+Message-ID: <CAPcyv4hfZBgtEW8iaJ1yu=E758hzErxiAre2Tk4cw7Fb0E=R=Q@mail.gmail.com>
+Subject: Re: [ndctl PATCH] ndctl: Update nvdimm mailing list address
+To: Vishal Verma <vishal.l.verma@intel.com>
+Message-ID-Hash: JZ3K5SEP3VJHV6I6G5ACYKMOBIB5IUMA
+X-Message-ID-Hash: JZ3K5SEP3VJHV6I6G5ACYKMOBIB5IUMA
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org
+CC: nvdimm@lists.linux.dev, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J2BII2IXF3OTZLMCMOFG4HFHSXJ7TJ2L/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JZ3K5SEP3VJHV6I6G5ACYKMOBIB5IUMA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,57 +67,15 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The 'nvdimm' mailing list has moved from lists.01.org to
-lists.linux.dev. Update CONTRIBUTING.md and configure.ac to reflect
-this.
+On Tue, May 18, 2021 at 3:26 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+>
+> The 'nvdimm' mailing list has moved from lists.01.org to
+> lists.linux.dev. Update CONTRIBUTING.md and configure.ac to reflect
+> this.
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- configure.ac    | 2 +-
- CONTRIBUTING.md | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+LGTM
 
-diff --git a/configure.ac b/configure.ac
-index 5ec8d2f..dc39dbe 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -2,7 +2,7 @@ AC_PREREQ(2.60)
- m4_include([version.m4])
- AC_INIT([ndctl],
-         GIT_VERSION,
--        [linux-nvdimm@lists.01.org],
-+        [nvdimm@lists.linux.dev],
-         [ndctl],
-         [https://github.com/pmem/ndctl])
- AC_CONFIG_SRCDIR([ndctl/lib/libndctl.c])
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 4c29d31..4f4865d 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -6,13 +6,14 @@ The following is a set of guidelines that we adhere to, and request that
- contributors follow.
- 
- 1. The libnvdimm (kernel subsystem) and ndctl developers primarily use
--   the [linux-nvdimm](https://lists.01.org/postorius/lists/linux-nvdimm.lists.01.org/)
-+   the [nvdimm](https://subspace.kernel.org/lists.linux.dev.html)
-    mailing list for everything. It is recommended to send patches to
--   **```linux-nvdimm@lists.01.org```**
-+   **```nvdimm@lists.linux.dev```**
-+   An archive is available on [lore](https://lore.kernel.org/nvdimm/)
- 
- 1. Github [issues](https://github.com/pmem/ndctl/issues) are an acceptable
-    way to report a problem, but if you just have a question,
--   [email](mailto:linux-nvdimm@lists.01.org) the above list.
-+   [email](mailto:nvdimm@lists.linux.dev) the above list.
- 
- 1. We follow the Linux Kernel [Coding Style Guide][cs] as applicable.
- 
-
-base-commit: a2a6fda4d7e93044fca4c67870d2ff7e193d3cf1
-prerequisite-patch-id: 8fc5baaf64b312b2459acea255740f79a23b76cd
--- 
-2.31.1
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
