@@ -1,66 +1,88 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCD9387569
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 May 2021 11:43:41 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD333875E7
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 May 2021 11:59:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D540B100EB341;
-	Tue, 18 May 2021 02:43:38 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=116.85.48.97; helo=vpass.ne.jp; envelope-from=wmfkjvs@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (unknown [116.85.48.97])
-	by ml01.01.org (Postfix) with ESMTP id D9AF4100EBB8F
-	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 02:43:33 -0700 (PDT)
-Message-ID: <FA539104AD39A3335F01BAAF99A88083@vpass.ne.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <info@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ6YeN6KaB44Gq44GK55+l44KJ44Gb44CR44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip?=
-	=?utf-8?B?55So56K66KqN44Gu44GK6aGY44GE?=
-Date: Tue, 18 May 2021 17:43:26 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: A6NPG6SCWZGMP4FPRKW34EZJ3FB2QH6I
-X-Message-ID-Hash: A6NPG6SCWZGMP4FPRKW34EZJ3FB2QH6I
-X-MailFrom: wmfkjvs@vpass.ne.jp
+	by ml01.01.org (Postfix) with ESMTP id 13AE6100EB350;
+	Tue, 18 May 2021 02:59:11 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=mhocko@suse.com; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id F0F55100EB34D
+	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 02:59:07 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1621331946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b8xv7F9R3YDRWAMnBTpPRwnYRLd13u+yXERM3M4MUTs=;
+	b=JS/jDkcP1gH5mTt25RX5I6j86/cz/ZDydaWWHW2hqY8nQAAzE3DLIomRP5iqBIJVDfMfru
+	o/w0GyCy15FdVoUInzSjJEpAT5R+5767DWCkHYFbUgNcLAIQDa3PDa25+ejFAKMWeiZdjA
+	Bt7ymH4NrrKr2c/O8dhrS2VhugnQsAg=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id BEF56AEAC;
+	Tue, 18 May 2021 09:59:05 +0000 (UTC)
+Date: Tue, 18 May 2021 11:59:03 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v19 5/8] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-ID: <YKOP5x8PPbqzcsdK@dhcp22.suse.cz>
+References: <20210513184734.29317-1-rppt@kernel.org>
+ <20210513184734.29317-6-rppt@kernel.org>
+ <b625c5d7-bfcc-9e95-1f79-fc8b61498049@redhat.com>
+ <YKDJ1L7XpJRQgSch@kernel.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <YKDJ1L7XpJRQgSch@kernel.org>
+Message-ID-Hash: JDZOHKAALZ44JLPE2NYBX2VCEDWFRL5E
+X-Message-ID-Hash: JDZOHKAALZ44JLPE2NYBX2VCEDWFRL5E
+X-MailFrom: mhocko@suse.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Hagen Paul Pfeifer <hagen@jauu.net>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, Kees Cook <keescook@chromium.org>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmerdabbelt@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysoc
+ ki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/A6NPG6SCWZGMP4FPRKW34EZJ3FB2QH6I/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JDZOHKAALZ44JLPE2NYBX2VCEDWFRL5E/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0KDQrilqDjgZTliKnnlKjnorroqo3jga/jgZPj
-gaHjgokNCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgeKUgQ0K4pag
-55m66KGM6ICF4pagDQrkuInkupXkvY/lj4vjgqvjg7zjg4nmoKrlvI/kvJrnpL4NCuKAu+acrOOD
-oeODvOODq+OBr+mAgeS/oeWwgueUqOOBp+OBmeOAgg0K4oC75pys44Oh44O844Or44Gv44CMVnBh
-c3PjgI3jgavjg6Hjg7zjg6vjgqLjg4njg6zjgrnjgpLjgZTnmbvpjLLjgYTjgZ/jgaDjgYTjgZ/m
-lrnjgavjgYrpgIHjgorjgZfjgabjgYTjgb7jgZnjgIINCuKUgeKUgeKUgeKUgeKUgeKUgeKUgeKU
-geKUgeKUgeKUgeKUgeKUgeKUgeKUgQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBs
-aXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0t
-bGVhdmVAbGlzdHMuMDEub3JnCg==
+On Sun 16-05-21 10:29:24, Mike Rapoport wrote:
+> On Fri, May 14, 2021 at 11:25:43AM +0200, David Hildenbrand wrote:
+[...]
+> > > +		if (!page)
+> > > +			return VM_FAULT_OOM;
+> > > +
+> > > +		err = set_direct_map_invalid_noflush(page, 1);
+> > > +		if (err) {
+> > > +			put_page(page);
+> > > +			return vmf_error(err);
+> > 
+> > Would we want to translate that to a proper VM_FAULT_..., which would most
+> > probably be VM_FAULT_OOM when we fail to allocate a pagetable?
+> 
+> That's what vmf_error does, it translates -ESOMETHING to VM_FAULT_XYZ.
+
+I haven't read through the rest but this has just caught my attention.
+Is it really reasonable to trigger the oom killer when you cannot
+invalidate the direct mapping. From a quick look at the code it is quite
+unlikely to se ENOMEM from that path (it allocates small pages) but this
+can become quite sublte over time. Shouldn't this simply SIGBUS if it
+cannot manipulate the direct mapping regardless of the underlying reason
+for that?
+-- 
+Michal Hocko
+SUSE Labs
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
