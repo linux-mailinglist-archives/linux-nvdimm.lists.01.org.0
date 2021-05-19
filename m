@@ -2,86 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17363887F7
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 09:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41161388800
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 09:13:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1D067100F2270;
-	Wed, 19 May 2021 00:06:58 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id A0A11100F2270;
+	Wed, 19 May 2021 00:13:33 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C6B64100F2251
-	for <linux-nvdimm@lists.01.org>; Wed, 19 May 2021 00:06:55 -0700 (PDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14J74S80160340;
-	Wed, 19 May 2021 03:06:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fBXR64mRS/oL4lgs3J4sJHfT03EYhYerJBpzWN58sXM=;
- b=JkhqtUinTHY18BsJLiJAUCOmA1bpdTYFJ097f+7GND4dY+dWgm+tGK3BiJK31Tj5Xlpe
- ORrN3WfhAd3fQaRiYoY8WoU+avtE7XAv7UbbpHrzL7tsDwEjL8rCyKv3Ue+cZakERi9Q
- 7nOU2lqSVYc2Pl1PxHHbI3oI9Djc44MMvq2hZ1B2Q9FqPOdtAG0piD7GTok50eDTQScp
- xDiDKn6TRcsQEPG8wo/Bxd62aEVo+Ser/8dYcjWViVt48A2o1f3Vk4J4/CJZULZ+uE1g
- DPkZ+KSKuQt1bCATmFi7j29WaB+u9hZTJmZ7GuZW5jOiBpSVxh1pIElGiOntEwRXGpaV TQ==
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 38mwxn84du-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 May 2021 03:06:51 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-	by ppma02wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14J6lDMC024897;
-	Wed, 19 May 2021 07:06:50 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma02wdc.us.ibm.com with ESMTP id 38jyu25k85-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 May 2021 07:06:50 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14J76oiH39321890
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 May 2021 07:06:50 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C88CAE068;
-	Wed, 19 May 2021 07:06:50 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E40B9AE06F;
-	Wed, 19 May 2021 07:06:46 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.42.71])
-	by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-	Wed, 19 May 2021 07:06:46 +0000 (GMT)
-Subject: Re: [PATCH v3] powerpc/papr_scm: Reduce error severity if nvdimm
- stats inaccessible
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-nvdimm@lists.01.org
-References: <20210508043642.114076-1-vaibhav@linux.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <4daf4282-79c3-a115-0441-c56a563fa15b@linux.ibm.com>
-Date: Wed, 19 May 2021 12:36:45 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+	by ml01.01.org (Postfix) with ESMTPS id 9F2B9100EB323
+	for <linux-nvdimm@lists.01.org>; Wed, 19 May 2021 00:13:30 -0700 (PDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 306EE6135B;
+	Wed, 19 May 2021 07:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1621408407;
+	bh=Ki50aQXwD1+I3Hw9xcIirZa4MRm+9KRJ+IEPHMwhBkI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oYyy/RZh+KV4+OBVGMz4vRqytOJ3S6neHrNHLUg1kHLXII61rwPkBThjJAvrsmUZo
+	 FjnPqLIJ5kAx/qeZGbRsU6kB8hQ4Hhb8cAmXfxBQtvxU8dgEHEV4y4yEtokhAPiKIr
+	 /MuOkK56iFsIUVMsvkPHddFEnBeu4T4s7c6IPe+YOzaeJb9MlSBih46lnNG19GWJXN
+	 Dr+Kz+dEZLJXS9T0HxuiavOJs0HPv1T3S1Qsh+y5zhmE6RBkRzoRn73O2mfgQvXLJ6
+	 Y/WFNcW+0oFbapTux4HghodwAEaeJ7uRFxUxBZQ17d8823037Btr6+DWDVvpylUSU6
+	 pxMi/n2f2auLQ==
+Date: Wed, 19 May 2021 10:13:09 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH v19 5/8] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-ID: <YKS6herUjtCDz7ko@kernel.org>
+References: <20210513184734.29317-1-rppt@kernel.org>
+ <20210513184734.29317-6-rppt@kernel.org>
+ <b625c5d7-bfcc-9e95-1f79-fc8b61498049@redhat.com>
+ <YKDJ1L7XpJRQgSch@kernel.org>
+ <YKOP5x8PPbqzcsdK@dhcp22.suse.cz>
+ <8e114f09-60e4-2343-1c42-1beaf540c150@redhat.com>
+ <YKOXbNWvUsqM4uxb@dhcp22.suse.cz>
+ <00644dd8-edac-d3fd-a080-0a175fa9bf13@redhat.com>
+ <YKOgK9eQSfgoz6eE@dhcp22.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20210508043642.114076-1-vaibhav@linux.ibm.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vv4tbiAqIpJJmpNmUDKHqRklj19zYurK
-X-Proofpoint-GUID: vv4tbiAqIpJJmpNmUDKHqRklj19zYurK
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-19_02:2021-05-18,2021-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=0
- mlxscore=0 clxscore=1015 bulkscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2105190050
-Message-ID-Hash: JLBCLIWRUMASSAPUHWKF7QTXKXKR54HY
-X-Message-ID-Hash: JLBCLIWRUMASSAPUHWKF7QTXKXKR54HY
-X-MailFrom: kjain@linux.ibm.com
+Content-Disposition: inline
+In-Reply-To: <YKOgK9eQSfgoz6eE@dhcp22.suse.cz>
+Message-ID-Hash: J32X7RDQAGN27ZYIDR2IULMJWDUM3O27
+X-Message-ID-Hash: J32X7RDQAGN27ZYIDR2IULMJWDUM3O27
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Hagen Paul Pfeifer <hagen@jauu.net>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, Kees Cook <keescook@chromium.org>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmerdabbelt@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rjw@rjwysoc
+ ki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JLBCLIWRUMASSAPUHWKF7QTXKXKR54HY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J32X7RDQAGN27ZYIDR2IULMJWDUM3O27/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -90,76 +62,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Tue, May 18, 2021 at 01:08:27PM +0200, Michal Hocko wrote:
+> On Tue 18-05-21 12:35:36, David Hildenbrand wrote:
+> > On 18.05.21 12:31, Michal Hocko wrote:
+> > >
+> > > Although I have to say openly that I am not a great fan of VM_FAULT_OOM
+> > > in general. It is usually a a wrong way to tell the handle the failure
+> > > because it happens outside of the allocation context so you lose all the
+> > > details (e.g. allocation constrains, numa policy etc.). Also whenever
+> > > there is ENOMEM then the allocation itself has already made sure that
+> > > all the reclaim attempts have been already depleted. Just consider an
+> > > allocation with GFP_NOWAIT/NO_RETRY or similar to fail and propagate
+> > > ENOMEM up the call stack. Turning that into the OOM killer sounds like a
+> > > bad idea to me.  But that is a more general topic. I have tried to bring
+> > > this up in the past but there was not much of an interest to fix it as
+> > > it was not a pressing problem...
+> > > 
+> > 
+> > I'm certainly interested; it would mean that we actually want to try
+> > recovering from VM_FAULT_OOM in various cases, and as you state, we might
+> > have to supply more information to make that work reliably.
+> 
+> Or maybe we want to get rid of VM_FAULT_OOM altogether... But this is
+> really tangent to this discussion. The only relation is that this would
+> be another place to check when somebody wants to go that direction.
 
+If we are to get rid of VM_FAULT_OOM, vmf_error() would be updated and this
+place will get the update automagically.
 
-On 5/8/21 10:06 AM, Vaibhav Jain wrote:
-> Currently drc_pmem_qeury_stats() generates a dev_err in case
-> "Enable Performance Information Collection" feature is disabled from
-> HMC or performance stats are not available for an nvdimm. The error is
-> of the form below:
+> > Having that said, I guess what we have here is just the same as when our
+> > process fails to allocate a generic page table in __handle_mm_fault(), when
+> > we fail p4d_alloc() and friends ...
 > 
-> papr_scm ibm,persistent-memory:ibm,pmemory@44104001: Failed to query
-> 	 performance stats, Err:-10
-> 
-> This error message confuses users as it implies a possible problem
-> with the nvdimm even though its due to a disabled/unavailable
-> feature. We fix this by explicitly handling the H_AUTHORITY and
-> H_UNSUPPORTED errors from the H_SCM_PERFORMANCE_STATS hcall.
-> 
-> In case of H_AUTHORITY error an info message is logged instead of an
-> error, saying that "Permission denied while accessing performance
-> stats" and an EPERM error is returned back.
-> 
-> In case of H_UNSUPPORTED error we return a EOPNOTSUPP error back from
-> drc_pmem_query_stats() indicating that performance stats-query
-> operation is not supported on this nvdimm.
-> 
-> Fixes: 2d02bf835e57('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
-> Changelog
-> 
-> v3:
-> * Return EOPNOTSUPP error in case of H_UNSUPPORTED [ Ira ]
-> * Return EPERM in case of H_AUTHORITY [ Ira ]
-> * Updated patch description
-> 
+> From a quick look it is really similar in a sense that it effectively never
+> happens and if it does then it certainly does the wrong thing. The point
+> I was trying to make is that there is likely no need to go that way.
 
-Patch looks good to me.
+As David pointed out, failure to handle direct map in secretmem_fault() is
+like any allocation failure in page fault handling and most of them result
+in VM_FAULT_OOM, so I think that having vmf_error() in secretmem_fault() is
+more consistent with the rest of the code than using VM_FAULT_SIGBUS.
 
-Reviewed-By: Kajol Jain<kjain@linux.ibm.com>
+Besides if the direct map manipulation failures would result in errors
+other than -ENOMEM, having vmf_error() may prove useful.
 
-Thanks,
-Kajol Jain
-
-> v2:
-> * Updated the message logged in case of H_AUTHORITY error [ Ira ]
-> * Switched from dev_warn to dev_info in case of H_AUTHORITY error.
-> * Instead of -EPERM return -EACCESS for H_AUTHORITY error.
-> * Added explicit handling of H_UNSUPPORTED error.
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index ef26fe40efb0..e2b69cc3beaf 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -310,6 +310,13 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->  		dev_err(&p->pdev->dev,
->  			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
->  		return -ENOENT;
-> +	} else if (rc == H_AUTHORITY) {
-> +		dev_info(&p->pdev->dev,
-> +			 "Permission denied while accessing performance stats");
-> +		return -EPERM;
-> +	} else if (rc == H_UNSUPPORTED) {
-> +		dev_dbg(&p->pdev->dev, "Performance stats unsupported\n");
-> +		return -EOPNOTSUPP;
->  	} else if (rc != H_SUCCESS) {
->  		dev_err(&p->pdev->dev,
->  			"Failed to query performance stats, Err:%lld\n", rc);
-> 
+-- 
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
