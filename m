@@ -2,96 +2,53 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFAA3885B5
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 05:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04744388717
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 May 2021 08:01:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D28D5100F2245;
-	Tue, 18 May 2021 20:51:34 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5899F100EB823
-	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 20:51:32 -0700 (PDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14J3nalJ109545;
-	Tue, 18 May 2021 23:51:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=RlHfyF6dV/ifSJEeZYS/RGJAYSImyxyDQ/6v4PYpUoQ=;
- b=RolvZNraQHV2P0qsntUMNydBlx0dyrhruAkYByqI3crIFJt30it3eMD9y1NI97YJlLBF
- lH6DuJL3/LDNdT9+XfECdNwXjT3ppXYd4fzdkztzifbZoyO1eST/M0EN/sWWCnsKPUuA
- H6yUOj/umX7XGfYGvS5ibBulsfPSz6SKd8vVmhFI43jBnRDxp7LT4KPHLt7J2Q5Dau17
- Cj6dF9IeuEdgqvHSFSWg1ukib6+/mHvqyFOXu1iQeX1CR2TyC88aG4iZ1bHXIXD9lr5e
- CzzvuZ7mMm9lvzxy43rUPcYtNcdwRbty82Q4G5bZScNpaeZL0p5CKCQtoBAQKkQrMsFM OQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 38mu4300f1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 May 2021 23:51:02 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 14J3p11q115720;
-	Tue, 18 May 2021 23:51:01 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 38mu4300et-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 May 2021 23:51:01 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.16.0.43/8.16.0.43) with SMTP id 14J3h0dU007850;
-	Wed, 19 May 2021 03:51:00 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-	by ppma05wdc.us.ibm.com with ESMTP id 38j7tb3hye-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 May 2021 03:51:00 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 14J3oxaK24117734
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 May 2021 03:50:59 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C57627805E;
-	Wed, 19 May 2021 03:50:59 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7B91F78060;
-	Wed, 19 May 2021 03:50:52 +0000 (GMT)
-Received: from jarvis.int.hansenpartnership.com (unknown [9.80.208.94])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Wed, 19 May 2021 03:50:52 +0000 (GMT)
-Message-ID: <d6b31cd039bf717bc4ea496c2aff1f7cb9c62bfc.camel@linux.ibm.com>
-Subject: Re: [PATCH v19 6/8] PM: hibernate: disable when there are active
- secretmem users
-From: James Bottomley <jejb@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 18 May 2021 20:50:51 -0700
-In-Reply-To: <CAPcyv4hwZ2e-xzsySOjaJXDSXRKctsoGA5zW-enTn2Y9ezWPVw@mail.gmail.com>
-References: <20210513184734.29317-1-rppt@kernel.org>
-	 <20210513184734.29317-7-rppt@kernel.org>
-	 <20210518102424.GD82842@C02TD0UTHF1T.local>
-	 <d99864e677cec4ed83e52c4417c58bbe5fd728b1.camel@linux.ibm.com>
-	 <CAPcyv4hwZ2e-xzsySOjaJXDSXRKctsoGA5zW-enTn2Y9ezWPVw@mail.gmail.com>
-User-Agent: Evolution 3.34.4 
+	by ml01.01.org (Postfix) with ESMTP id 0866B100F227C;
+	Tue, 18 May 2021 23:01:20 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id 02C15100F2245
+	for <linux-nvdimm@lists.01.org>; Tue, 18 May 2021 23:01:16 -0700 (PDT)
+IronPort-HdrOrdr: =?us-ascii?q?A9a23=3AGePduaDNy2aVBGflHemQ55DYdb4zR+YMi2TD?=
+ =?us-ascii?q?tnoBLSC9F/b0qynAppomPGDP4gr5NEtApTniAtjkfZq/z+8X3WB5B97LMzUO01?=
+ =?us-ascii?q?HYTr2Kg7GD/xTQXwX69sN4kZxrarVCDrTLZmRSvILX5xaZHr8brOW6zA=3D=3D?=
+X-IronPort-AV: E=Sophos;i="5.82,311,1613404800";
+   d="scan'208";a="108456993"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 19 May 2021 14:01:13 +0800
+Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
+	by cn.fujitsu.com (Postfix) with ESMTP id B64B34D0BA82;
+	Wed, 19 May 2021 14:01:10 +0800 (CST)
+Received: from G08CNEXCHPEKD07.g08.fujitsu.local (10.167.33.80) by
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Wed, 19 May 2021 14:01:10 +0800
+Received: from irides.mr.mr.mr (10.167.225.141) by
+ G08CNEXCHPEKD07.g08.fujitsu.local (10.167.33.209) with Microsoft SMTP Server
+ id 15.0.1497.2 via Frontend Transport; Wed, 19 May 2021 14:00:47 +0800
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+To: <linux-kernel@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
+	<linux-nvdimm@lists.01.org>, <linux-fsdevel@vger.kernel.org>
+Subject: [PATCH v6 0/7] fsdax,xfs: Add reflink&dedupe support for fsdax
+Date: Wed, 19 May 2021 14:00:38 +0800
+Message-ID: <20210519060045.1051226-1-ruansy.fnst@fujitsu.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VqtaOLO0XUQJCbKk9fXnTog4s3XC3y7U
-X-Proofpoint-GUID: TEWD-gwpPRN_Ns5w2NX9HRb7MXu4tE3d
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-19_01:2021-05-18,2021-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 impostorscore=0 phishscore=0 adultscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105190024
-Message-ID-Hash: ZAXZNQU7Q3U3EACZSVCMKP2Y2TK3377U
-X-Message-ID-Hash: ZAXZNQU7Q3U3EACZSVCMKP2Y2TK3377U
-X-MailFrom: jejb@linux.ibm.com
+X-yoursite-MailScanner-ID: B64B34D0BA82.AF539
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: ELSWFHAADNCKGVE37XNGD5TCRQA3KI3S
+X-Message-ID-Hash: ELSWFHAADNCKGVE37XNGD5TCRQA3KI3S
+X-MailFrom: ruansy.fnst@fujitsu.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Hagen Paul Pfeifer <hagen@jauu.net>, Ingo Molnar <mingo@redhat.com>, Kees Cook <keescook@chromium.org>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Matthew Garrett <mjg59@srcf.ucam.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Palmer Dabbelt <palmerdabbelt@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, "Rafa
- el J. Wysocki" <rjw@rjwysocki.net>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Roman Gushchin <guro@fb.com>, Shakeel Butt <shakeelb@google.com>, Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, Linux API <linux-api@vger.kernel.org>, linux-arch <linux-arch@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-kselftest@vger.kernel.org, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-riscv@lists.infradead.org, X86 ML <x86@kernel.org>
+CC: darrick.wong@oracle.com, willy@infradead.org, viro@zeniv.linux.org.uk, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: jejb@linux.ibm.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZAXZNQU7Q3U3EACZSVCMKP2Y2TK3377U/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ELSWFHAADNCKGVE37XNGD5TCRQA3KI3S/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -100,59 +57,68 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, 2021-05-18 at 18:49 -0700, Dan Williams wrote:
-> On Tue, May 18, 2021 at 6:33 PM James Bottomley <jejb@linux.ibm.com>
-> wrote:
-> > On Tue, 2021-05-18 at 11:24 +0100, Mark Rutland wrote:
-> > > On Thu, May 13, 2021 at 09:47:32PM +0300, Mike Rapoport wrote:
-> > > > From: Mike Rapoport <rppt@linux.ibm.com>
-> > > > 
-> > > > It is unsafe to allow saving of secretmem areas to the
-> > > > hibernation snapshot as they would be visible after the resume
-> > > > and this essentially will defeat the purpose of secret memory
-> > > > mappings.
-> > > > 
-> > > > Prevent hibernation whenever there are active secret memory
-> > > > users.
-> > > 
-> > > Have we thought about how this is going to work in practice, e.g.
-> > > on mobile systems? It seems to me that there are a variety of
-> > > common applications which might want to use this which people
-> > > don't expect to inhibit hibernate (e.g. authentication agents,
-> > > web browsers).
-> > 
-> > If mobile systems require hibernate, then the choice is to disable
-> > this functionality or implement a secure hibernation store.   I
-> > also thought most mobile hibernation was basically equivalent to
-> > S3, in which case there's no actual writing of ram into storage, in
-> > which case there's no security barrier and likely the inhibition
-> > needs to be made a bit more specific to the suspend to disk case?
-> > 
-> > > Are we happy to say that any userspace application can
-> > > incidentally inhibit hibernate?
-> > 
-> > Well, yes, for the laptop use case because we don't want suspend to
-> > disk to be able to compromise the secret area.  You can disable
-> > this for mobile if you like, or work out how to implement hibernate
-> > securely if you're really suspending to disk.
-> 
-> Forgive me if this was already asked and answered. Why not document
-> that secretmem is ephemeral in the case of hibernate and push the
-> problem to userspace to disable hibernation? In other words
-> hibernation causes applications to need to reload their secretmem, it
-> will be destroyed on the way down and SIGBUS afterwards. That at
-> least gives a system the flexibility to either sacrifice hibernate
-> for secretmem (with a userspace controlled policy), or sacrifice
-> secretmem using processes for hibernate.
+This patchset is attempt to add CoW support for fsdax, and take XFS,
+which has both reflink and fsdax feature, as an example.
 
-Well, realistically, there are many possibilities for embedded if it
-wants to use secret memory.  However, not really having much of an
-interest in the use cases, it's not really for Mike or me to be acting
-as armchair fly half.  I think the best we can do is demonstrate the
-system for our use cases and let embedded kick the tyres for theirs if
-they care, and if not they can disable the feature.
+Changes from V5:
+ - Fix the lock order of xfs_inode in xfs_mmaplock_two_inodes_and_break_dax_layout()
+ - move dax_remap_file_range_prep() to fs/dax.c
+ - change type of length to uint64_t in dax_iomap_cow_copy()
+ - fix mistake in dax_iomap_zero()
 
-James
+Changes from V4:
+ - Fix the mistake of breaking dax layout for two inodes
+ - Add CONFIG_FS_DAX judgement for fsdax code in remap_range.c
+ - Fix other small problems and mistakes
+
+One of the key mechanism need to be implemented in fsdax is CoW.  Copy
+the data from srcmap before we actually write data to the destance
+iomap.  And we just copy range in which data won't be changed.
+
+Another mechanism is range comparison.  In page cache case, readpage()
+is used to load data on disk to page cache in order to be able to
+compare data.  In fsdax case, readpage() does not work.  So, we need
+another compare data with direct access support.
+
+With the two mechanisms implemented in fsdax, we are able to make reflink
+and fsdax work together in XFS.
+
+Some of the patches are picked up from Goldwyn's patchset.  I made some
+changes to adapt to this patchset.
+
+
+(Rebased on v5.13-rc2 and patchset[1])
+[1]: https://lkml.org/lkml/2021/4/22/575
+
+Shiyang Ruan (7):
+  fsdax: Introduce dax_iomap_cow_copy()
+  fsdax: Replace mmap entry in case of CoW
+  fsdax: Add dax_iomap_cow_copy() for dax_iomap_zero
+  iomap: Introduce iomap_apply2() for operations on two files
+  fsdax: Dedup file range to use a compare function
+  fs/xfs: Handle CoW for fsdax write() path
+  fs/xfs: Add dax dedupe support
+
+ fs/dax.c               | 216 ++++++++++++++++++++++++++++++++++++-----
+ fs/iomap/apply.c       |  52 ++++++++++
+ fs/iomap/buffered-io.c |   2 +-
+ fs/remap_range.c       |  36 +++++--
+ fs/xfs/xfs_bmap_util.c |   3 +-
+ fs/xfs/xfs_file.c      |  11 +--
+ fs/xfs/xfs_inode.c     |  57 +++++++++++
+ fs/xfs/xfs_inode.h     |   1 +
+ fs/xfs/xfs_iomap.c     |  38 +++++++-
+ fs/xfs/xfs_iomap.h     |  24 +++++
+ fs/xfs/xfs_iops.c      |   7 +-
+ fs/xfs/xfs_reflink.c   |  15 +--
+ include/linux/dax.h    |  11 ++-
+ include/linux/fs.h     |  12 ++-
+ include/linux/iomap.h  |   7 +-
+ 15 files changed, 431 insertions(+), 61 deletions(-)
+
+-- 
+2.31.1
+
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
